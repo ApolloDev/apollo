@@ -1,0 +1,13 @@
+#summary A list of the models that are currently available in Apollo-WS.
+
+= Apollo-WS Available Models=
+
+The following epidemic models are currently available to Apollo-WS users:
+
+Anthrax Models:
+  * BARD Simulator - based on the [http://www.ncbi.nlm.nih.gov/pubmed/17948918 bayesian aerosol release detector].
+  * Compartmental Anthrax Model
+
+Influenza Models:
+  * FRED -
+  * SEIR -
