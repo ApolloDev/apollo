@@ -33,5 +33,5 @@ function logex2(objToWrite){
 }
 
 function logex2(name, obj){
-	console.log(name + " : " + JSON.stringify(objToWrite));
+	console.log(name + " : " + JSON.stringify(obj));
 }

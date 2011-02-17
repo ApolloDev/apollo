@@ -47,24 +47,44 @@ var vaccSchedule = new function(){
 		
 		//transfer current rate into an array
 		var currentRawData = deliveryGrid.getRowData();
-		//insert an new entry
-		currentRawData.splice(currid, 0, currentRawData[currid]);
+		//insert an new entry as its Deep copy
+		var newObject = jQuery.extend(true, {}, currentRawData[currid]);
+		currentRawData.splice(currid, 0, newObject);
 		
 		//for every element after currid, increae the date for 1 day
-		for (var idx = parseInt(currid + 2); idx < currentRawData.length; idx++){
+//		logex2("currentRawData", currentRawData);
+//		logex2('currid', currid);
+		for (var idx = parseInt(currid + 1); idx < currentRawData.length; idx++){
 			var currrow = currentRawData[idx];
-//			logex2(idx);
+			var prerow = currentRawData[idx - 1];
 			
 			//increase only if the two date has no gap
-			var dateVal = currrow.date;
-			var lastDate = dateFromString(dateVal);
-			currrow.date = dateToNextDaysStr(lastDate, 1);
+			var nowDateStr = currrow.date;
+			var nowDate = dateFromString(nowDateStr);
+
+			var preDateStr = prerow.date;
+			var preDate = dateFromString(preDateStr);
+			
+			var predictDate = dateToNextDays(nowDate, 1); 
+			
+//			logex2('predictDate', predictDate);
+//			logex2('nowDate', nowDate);
+//			logex2('preDate', preDate);
+			
+			if (nowDate.getTime() == preDate.getTime()){
+//				logex2('==');
+				currrow.date = dateToShortString(predictDate);
+			}
+			else{
+				break;
+			}
 		}
 		
+//		logex2("currentRawData", currentRawData);
 		loadRateAry(currentRawData);
 		
 		//set selection
-		deliveryGrid.setSelection(currid);
+//		deliveryGrid.setSelection(currid);
 		
 		//update the chart
 		var currentRawData = gridToRawArray();
