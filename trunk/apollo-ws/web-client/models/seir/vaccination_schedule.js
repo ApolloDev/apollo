@@ -45,18 +45,24 @@ var vaccSchedule = new function(){
 			return;
 		}
 		
+		currid = parseInt(currid);
+		
 		//transfer current rate into an array
 		var currentRawData = deliveryGrid.getRowData();
-		//insert an new entry as its Deep copy
+//		logex2('currentRawData', currentRawData);
+		//insert an new entry as its deep copy
 		var newObject = jQuery.extend(true, {}, currentRawData[currid]);
 		currentRawData.splice(currid, 0, newObject);
+//		logex2('currentRawData', currentRawData);
+//		logex2('currid', currid);
 		
 		//for every element after currid, increae the date for 1 day
-//		logex2("currentRawData", currentRawData);
-//		logex2('currid', currid);
-		for (var idx = parseInt(currid + 1); idx < currentRawData.length; idx++){
+		for (var idx = currid + 1; idx < currentRawData.length; idx++){
 			var currrow = currentRawData[idx];
 			var prerow = currentRawData[idx - 1];
+			
+//			logex2('currrow', currrow);
+//			logex2('prerow', prerow);
 			
 			//increase only if the two date has no gap
 			var nowDateStr = currrow.date;
@@ -67,12 +73,8 @@ var vaccSchedule = new function(){
 			
 			var predictDate = dateToNextDays(nowDate, 1); 
 			
-//			logex2('predictDate', predictDate);
-//			logex2('nowDate', nowDate);
-//			logex2('preDate', preDate);
-			
 			if (nowDate.getTime() == preDate.getTime()){
-//				logex2('==');
+				currrow.day = parseInt( currrow.day ) + 1;
 				currrow.date = dateToShortString(predictDate);
 			}
 			else{
@@ -80,10 +82,11 @@ var vaccSchedule = new function(){
 			}
 		}
 		
-//		logex2("currentRawData", currentRawData);
+		initRateGrid();
 		loadRateAry(currentRawData);
 		
-		//set selection
+		//TODO : set selection
+//		deliveryGrid.resetSelection();
 //		deliveryGrid.setSelection(currid);
 		
 		//update the chart
@@ -146,7 +149,6 @@ var vaccSchedule = new function(){
 		}
 		
 		if (currMode == 'rate'){//update the delivery rate number
-			//
 			var currentCount = parseInt( $('#delivery-rate-change').val() );
 			if (currentCount == 1)
 				return;
@@ -303,7 +305,7 @@ var vaccSchedule = new function(){
 		xa.setCategories(xAxis);
 	}
 	
-	function initRateGrid(rawData){
+	function initRateGrid(){
 		//set current mode
 		currMode = 'rate';
 		
@@ -365,13 +367,9 @@ var vaccSchedule = new function(){
 				
 				//update the chart
 				var currentRawData = gridToRawArray();
-//				console.log(JSON.stringify(currentRawData));
 				loadChart(currentRawData);
 			}
 		});
-
-		//construct data from parameter extra data
-		loadRateRawAry(rawData);
 	};
 	
 	function loadRateRawAry(rawData){
@@ -379,12 +377,6 @@ var vaccSchedule = new function(){
 	}
 	
 	function loadRateAry(mydata){
-		//clear
-		var ids = deliveryGrid.getDataIDs();
-		for(var idx = 0; idx < ids.length; idx++){
-		    deliveryGrid.delRowData(ids[idx]);
-		}
-		
 		//insert
 		for(var i=0;i<=mydata.length;i++) 
 			deliveryGrid.addRowData (i, mydata[i]);
@@ -576,23 +568,24 @@ var vaccSchedule = new function(){
 	};
 	
 	//when user select rate mode
-	function onRateMode(rawAry){
-		if (rawAry.length == 0 || rawAry == null)
-			//get current raw array data
-			rawAry = gridToRawArray();
+	function onRateMode(){
+		//get current raw array data
+		var rawAry = gridToRawArray();
 		
 		//init with rate mode with the raw array data
-		initRateGrid(rawAry);
+		initRateGrid();
+		loadRateRawAry(rawAry);
 		
 		//enable the insert function
 		$('#delivery-table-insert').button( "option", "disabled", false );
 	};
 	
 	//when user select table mode
-	function onTableMode(rawAry){
-		if (rawAry.length == 0 || rawAry == null)
-			//get current raw array data
-			rawAry = gridToRawArray();
+	function onTableMode(){
+		//get current raw array data
+		var rawAry = gridToRawArray();
+		
+//		logex2('rawAry.length', rawAry.length);
 		
 		//init with table mode with the raw array data
 		initTableGrid(rawAry);
@@ -602,13 +595,9 @@ var vaccSchedule = new function(){
 	};
 	
 	function gridToRawArray(){
-		//get current mode
-//		if ($('#table-mode').is(':checked'))
-//			currMode = 'table';
-		
 		//get the raw array
-//		var rowData = deliveryGrid.getGridParam('data');//deliveryGrid.getRowData();
 		var rowData = deliveryGrid.getRowData();
+//		logex2('rowData', rowData);
 //		logex(JSON.stringify(rowData));
 		var rawAry = new Array();
 		
@@ -667,7 +656,9 @@ var vaccSchedule = new function(){
 			var vacc = getVaccinationSchedule();
 			
 			//the init mode is rate grid
-			initRateGrid(vacc);
+			//init with rate mode with the raw array data
+			initRateGrid();
+			loadRateRawAry(vacc);
 			
 			initChart(vacc);
 			
