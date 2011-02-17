@@ -85,9 +85,9 @@ var vaccSchedule = new function(){
 		initRateGrid();
 		loadRateAry(currentRawData);
 		
-		//TODO : set selection
-//		deliveryGrid.resetSelection();
-//		deliveryGrid.setSelection(currid);
+		//focus to the new row
+//		logex2('currid', currid);
+		deliveryGrid.editCell(currid + 2, 2, true);
 		
 		//update the chart
 		var currentRawData = gridToRawArray();
