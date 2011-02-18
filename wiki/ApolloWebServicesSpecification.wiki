@@ -9,14 +9,14 @@
 ==3.3 Apollo Client Web Service==
 Implementation of an Apollo Client Web Service requires implementing the following methods.
 ||*return value*||*method name*||*parameters*||
-||int runId||run||{ModelType}RunRequestObjType||
-||{ModelType}RunResponseObjType||getResults||int runId||
+||int runId||run||RunRequestObjType||
+||RunResponseObjType||getResults||int runId||
 ||RunStatusEnum||getStatus||int runId||
 ||SupportedTypeCollectionType||getUnregisteredParametersDescription||||
-||{ModelType}RunRequestObjType||getDefaultRunParametersObj||||
+||RunRequestObjType||getDefaultRunParametersObj||||
 ||String description||getModelDescription||||
 
-Note 1: Replace {ModelType} with the type of model that the web service is exposing.  (e.g. for an AgentBased model, {ModelType}RunRequestObjType would be renamed AgentBasedRunRequestObjType)
+Note 1: Prefix RunRequestObjType and RunResponseObjType with the type of used in the model that the web service is exposing.  (e.g. for an AgentBased model, RunRequestObjType would be renamed AgentBasedRunRequestObjType)
 
 Note 2: Non-native classes are defined by this specification.  See Chapter 4 for a description of the non-native classes. 
 
