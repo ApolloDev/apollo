@@ -9,7 +9,7 @@
 ==3.3 Apollo Client Web Service==
 Implementation of an Apollo Client Web Service requires implementing the following methods.
 ||*return value*||*method name*||*parameters*||
-||int runId||run||{ModelType}RunRequestObjType||
+||int runId||run||`{`ModelType`}`RunRequestObjType||
 ||{ModelType}RunResponseObjType||getResults||int runId||
 ||RunStatusEnum||getStatus||int runId||
 ||SupportedTypeCollectionType||getUnregisteredParametersDescription||||
