@@ -12,9 +12,9 @@ Implementation of an Apollo Client Web Service requires implementing the followi
 ||int runId||run||RunRequestObjType||
 ||RunResponseObjType||getResults||int runId||
 ||RunStatusEnum||getStatus||int runId||
-||SupportedTypeCollectionType||getUnregisteredParametersDescription||||
-||RunRequestObjType||getDefaultRunParametersObj||||
-||String description||getModelDescription||||
+||SupportedTypeCollectionType||getUnregisteredParametersDescription||none||
+||RunRequestObjType||getDefaultRunParametersObj||none||
+||String description||getModelDescription||none||
 
 Note 1: Prefix RunRequestObjType and RunResponseObjType with the type of used in the model that the web service is exposing.  (e.g. for an AgentBased model, RunRequestObjType would be renamed AgentBasedRunRequestObjType)
 
