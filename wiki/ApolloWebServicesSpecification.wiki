@@ -27,7 +27,8 @@ Structured information is exchanged via web-services using the Simple Object Acc
 ==3.2 Apollo Web Service==
 ===3.2.1 Current===
 The Apollo Web Service acts as an epidemic model repository on a central server which processes requests from end-user applications.  ===Implementation of an Apollo Web Service requires implementing the following methods:===
-||*return value*||*method name*||*parameters*||
+
+||return value ||method name||parameters||
 ||Run{ModelType}RequestResult||run{ModelType}Request||{ModelType}RunRequestObjType||
 ||{ModelType}RunResponseObjType||get{ModelType}RunResults||RunRequestResultObjType||
 ||{ModelType}RunRequestObjType||getDefault{ModelType}RunRequestObj||ModelID||
@@ -35,13 +36,15 @@ The Apollo Web Service acts as an epidemic model repository on a central server 
 ||RunStatusEnum||getStatus||int runId||
 ||String||getModelDescription||ModelID||
 ||SupportedTypeColletionType||getUnregisteredParametersDescription||ModelID||
+
+
 {ModelType} = replace {ModelType} with corresponding concrete class name 
 
 ===3.2.2 Future===
 We are currently considering shifting some of the complexity of the API from the run{ModelType}Request, get{ModelType}RunResults, and getDefault{ModelType}RunRequestObj method names (which require a separate method for each registered model type) to the parameter values.  That is, the ModelType would be defined in method parameters, which would allow for a single "runRequest," "getRunResults," and "getDefaultRunRequestObj" method.  The {ModelType}RunRequestObjType and {ModelType}RunResponseObjType would be serialized as a JSON object which could then be passed to into the singular methods.
 ==3.3 Apollo-Enabled Epidemic-Model Web Service==
 ===Implementation of an Apollo-Enabled Epidemic-Model Web Service requires implementing the following methods:===
-||*return value*||*method name*||*parameters*||
+|return value||*method name||parameters||
 ||int runId||run||{ModelType}RunRequestObjType||
 ||{ModelType}RunResponseObjType||getResults||int runId||
 ||RunStatusEnum||getStatus||int runId||
