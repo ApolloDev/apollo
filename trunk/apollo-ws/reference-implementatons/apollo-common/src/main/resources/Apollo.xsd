@@ -385,6 +385,14 @@
 		</sequence>
 	</complexType>
 
+	<complexType name="AerosolReleaseCaseDescriptionObjType">
+		<sequence>
+			<element name="DateTimePresentedToED" type="dateTime"></element>
+			<element name="CensusBlockUnit" type="string"></element>
+			<element name="HomeZipCode" type="integer"></element>
+		</sequence>
+	</complexType>
+
 	<complexType name="BaseModelParamObjType">
 		<sequence>
 			<element name="TemporalGranularity" type="tns:TemporalGranularityEnum"></element>
@@ -398,6 +406,72 @@
 
 	<!-- element name="SEIRModelRunRequestObj" type="tns:SEIRModelRunRequestObjType" 
 		/ -->
+	<complexType name="AnthraxAerosolReleaseRunRequestObjType">
+		<sequence>
+			<element name="ModelID" type="tns:ModelID" />
+			<element name="Parameters">
+				<complexType>
+					<sequence>
+						<element name="registered">
+							<complexType>
+								<complexContent>
+									<extension base="tns:BaseModelParamObjType">
+										<sequence>
+											<element name="ReleaseQuantityInKilograms" type="double" />
+											<element name="ReleaseHeight" type="double" />
+											<element name="ReleaseLocation">
+												<complexType>
+													<sequence>
+														<element name="X" type="double" />
+														<element name="Y" type="double" />
+													</sequence>
+												</complexType>
+											</element>
+
+											<element name="ReleaseDateTime" type="dateTime" />
+											<element name="MaximumDownwindDistanceInMeters" type="double" />
+											<element name="MaximumCrosswindDistanceInMeters"
+												type="double" />
+											<element name="RandomNumberGeneratorSeed" type="integer" />
+										</sequence>
+									</extension>
+								</complexContent>
+							</complexType>
+						</element>
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AnthraxAerosolReleaseRunResponseObjType">
+		<sequence>
+			<element name="results">
+				<complexType>
+					<sequence>
+						<element name="registered">
+							<complexType>
+								<sequence>
+									<element name="WindDirection" type="double"></element>
+									<element name="WindCorrection" type="double"></element>
+									<element name="WindSpeed" type="double"></element>
+									<element name="WindStability" type="string"></element>
+									<element name="Cases"
+										type="tns:AerosolReleaseCaseDescriptionObjType" minOccurs="0"
+										maxOccurs="unbounded" />
+
+								</sequence>
+							</complexType>
+						</element>
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+
 
 	<complexType name="SEIRModelRunRequestObjType">
 		<sequence>
@@ -405,7 +479,7 @@
 			<element name="Parameters">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<complexContent>
 									<extension base="tns:BaseModelParamObjType">
@@ -451,7 +525,7 @@
 								</complexContent>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
@@ -465,7 +539,7 @@
 			<element name="results">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<sequence>
 									<element name="EpiCurve">
@@ -494,7 +568,7 @@
 								</sequence>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
@@ -509,7 +583,7 @@
 			<element name="Parameters">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<complexContent>
 									<extension base="tns:BaseModelParamObjType">
@@ -559,7 +633,7 @@
 								</complexContent>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
@@ -572,7 +646,7 @@
 			<element name="results">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<sequence>
 									<element name="EpiCurve">
@@ -593,7 +667,7 @@
 								</sequence>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
@@ -613,7 +687,7 @@
 		<restriction base="string">
 			<enumeration value="ACIP" />
 			<enumeration value="AgeBased" />
-			<enumeration value="None" />			
+			<enumeration value="None" />
 		</restriction>
 	</simpleType>
 
@@ -625,7 +699,7 @@
 			<element name="Parameters">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<complexContent>
 									<extension base="tns:BaseModelParamObjType">
@@ -686,7 +760,7 @@
 								</complexContent>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
@@ -701,7 +775,7 @@
 			<element name="results">
 				<complexType>
 					<sequence>
-						<element name="Recognized">
+						<element name="registered">
 							<complexType>
 								<sequence>
 									<element name="EpiCurve">
@@ -719,7 +793,7 @@
 								</sequence>
 							</complexType>
 						</element>
-						<element name="Unrecognized" type="tns:SupportedTypeCollectionType" />
+						<element name="Unregistered" type="tns:SupportedTypeCollectionType" />
 					</sequence>
 				</complexType>
 			</element>
