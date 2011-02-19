@@ -13,8 +13,13 @@
     * request the default configuration of an epidemic model 
   # Maintain a registry of available Apollo-Enabled Epidemic-Model Web Services
 ==1.3 Apollo-Enabled Epidemic-Model Web Service==
- 
-=2. System Requirements=
+  #  Provide facilities which allow desktop applications and implementations of the Apollo Web Service to inter-operate with a single epidemic model
+  #  Enable clients of the web service to:
+    * request runs of the epidemic model
+    * check status of previous run requests
+    * request results of previous runs
+    * request the default configuration of the epidemic model 
+ =2. System Requirements=
 =3. Architecture=
 
 ==3.2 Apollo Web Service==
