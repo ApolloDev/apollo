@@ -22,20 +22,35 @@
 =2. System Requirements=
 A system (or systems) capable of hosting and/or making calls to a SOAP web service.
 =3. Architecture=
-
+==3.1 Communication Protocol==
+Structured information is exchanged via web-services using the Simple Object Access Protocol (SOAP).  SOAP uses XML for its message format and HTTP for message negotiation and transmission.  SOAP was chosen over REST because:
 ==3.2 Apollo Web Service==
-==3.3 Apollo Client Web Service==
-===Implementation of an Apollo Client Web Service requires implementing the following methods:===
+===3.2.1 Current===
+The Apollo Web Service acts as an epidemic model repository on a central server which processes requests from end-user applications.  The web service exposes the following public methods, which can be called by end-user applications:
 ||*return value*||*method name*||*parameters*||
-||int runId||run||RunRequestObjType||
-||RunResponseObjType||getResults||int runId||
+||Run{ModelType}RequestResult||run{ModelType}Request||{ModelType}RunRequestObjType||
+||{ModelType}RunResponseObjType||get{ModelType}RunResults||RunRequestResultObjType||
+||{ModelType}RunRequestObjType||getDefault{ModelType}RunRequestObj||ModelID||
+||List of ModelID||getRegisteredModels||none||
+||RunStatusEnum||getStatus||int runId||
+||String||getModelDescription||ModelID||
+||SupportedTypeColletionType||getUnregisteredParametersDescription||ModelID||
+*{ModelType} = replace {ModelType} with corresponding concrete class name 
+
+===3.2.2 Future===
+We are currently considering shifting some of the complexity of the API from the run{ModelType}Request, get{ModelType}RunResults, and getDefault{ModelType}RunRequestObj method names (which require a separate method for each registered model type) to the parameter values.  That is, the ModelType would be defined in method parameters, which would allow for a single "runRequest," "getRunResults," and "getDefaultRunRequestObj" method.  The {ModelType}RunRequestObjType and {ModelType}RunResponseObjType would be serialized as a JSON object which could then be passed to into the singular methods.
+==3.3== Apollo-Enabled Epidemic-Model Web Service
+===Implementation of an Apollo-Enabled Epidemic-Model Web Service requires implementing the following methods:===
+||*return value*||*method name*||*parameters*||
+||int runId||run||{ModelType}RunRequestObjType||
+||{ModelType}RunResponseObjType||getResults||int runId||
 ||RunStatusEnum||getStatus||int runId||
 ||SupportedTypeCollectionType||getUnregisteredParametersDescription||none||
-||RunRequestObjType||getDefaultRunParametersObj||none||
+||{ModelType}RunRequestObjType||getDefaultRunParametersObj||none||
 ||String description||getModelDescription||none||
 
-Note 1: Prefix RunRequestObjType and RunResponseObjType with the type of used in the model that the web service is exposing.  (e.g. for an AgentBased model, RunRequestObjType would be renamed AgentBasedRunRequestObjType)
-===Example implementation of an Apollo Client Web Service exposing an Agent Based Model===
+**{ModelType} = replace {ModelType} with corresponding concrete class name 
+===Example implementation of an Apollo-Enabled Epidemic-Model Web Service exposing an Agent Based Model===
 ||*return value*||*method name*||*parameters*||
 ||int runId||run||AgentBasedModelRunRequestObjType||
 ||AgentBasedModelRunResponseObjType||getResults||int runId||
