@@ -22,7 +22,7 @@
 =2. System Requirements=
 A system (or systems) capable of hosting and/or making calls to a SOAP web service.
 =3. Architecture=
-[http://code.google.com/p/apollo/source/browse/wiki/img/ApolloOverview.png]
+[http://apollo.googlecode.com/svn/wiki/img/ApolloOverview.png]
 ==3.1 Communication Protocol==
 Structured information is exchanged via web-services using the Simple Object Access Protocol (SOAP).  SOAP uses XML for its message format and HTTP for message negotiation and transmission.  SOAP was chosen over REST because:
 ==3.2 Apollo Web Service==
