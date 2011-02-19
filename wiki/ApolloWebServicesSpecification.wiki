@@ -69,15 +69,18 @@ Note 2: Non-native classes are defined by this specification.  See Chapter 4 for
 
 =4. Classes=
 ==4.1 Apollo Common Classes==
-In addition to defining pubic methods, Apollo-WS provides a set of data-structures that are to be passed to and from the Apollo-WS services.  These classes (earlier referenced in the architecture section of the document) describe:
+In addition to defining pubic methods, Apollo-WS provides a set of data-structures that are to be passed to and from the Apollo-WS services.  The major classes (some referenced earlier in the architecture section of the document) are :
   # ModelID - a class used to uniquely identify a model
   # RunRequestObjTypes - classes used to store the configuration of a model, used when submitting run requests
   # RunResponseObjTypes - classes used to store the results of a model
   # RunStatusEnum - an enumeration of reportable run states, returned from calls to getStatus
   # SchoolClosurePolicyEnum - an enumeration of school closure policy names
-  # TemporalGranularityEnum - an enumeration of temporal granularities 
+  # TemporalGranularityEnum - an enumeration by temporal granularity 
   # VaccinationPrioritizationSchemeEnum - an enumeration of vaccination prioritization scheme names
   # UnrecognizedParametersDescriptionObjType - a class used to store any [UnregisteredParameters unregistered parameters].
-  # FipsType
 
-The Apollo Common Classes are defined via and XML schema located in the subversion repository here: [http://code.google.com/p/apollo/source/browse/trunk/apollo-ws/reference-implementatons/apollo-common/src/main/resources/Apollo.xsd Apollo.xsd]
+The Apollo Common Classes are defined in a programming-language independent way via and XML schema located in the subversion repository here: [http://code.google.com/p/apollo/source/browse/trunk/apollo-ws/reference-implementatons/apollo-common/src/main/resources/Apollo.xsd Apollo.xsd]
+===4.1.1 Future Design===
+As Apollo-SV matures, the Apollo Common Classes will be updated as well.  Likely additions include:
+  * a base type representing every type of supported control measure (vaccination, school closure, etc.)
+  * a reduction in ObjTypes as more shared parameters are identified
