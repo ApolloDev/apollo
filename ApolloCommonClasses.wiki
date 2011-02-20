@@ -11,14 +11,14 @@ Development tools are available for many languages that can automatically genera
 =Classes=
 The major classes (some referenced earlier in the architecture section of the document) are :
 
-   1. ModelID - a class used to uniquely identify a model
-   2. RunRequestObjTypes? - classes used to store the configuration of a model, used when submitting run requests
-   3. RunResponseObjTypes? - classes used to store the results of a model
-   4. RunStatusEnum? - an enumeration of reportable run states, returned from calls to getStatus
-   5. SchoolClosurePolicyEnum? - an enumeration of school closure policy names
-   6. TemporalGranularityEnum? - an enumeration by temporal granularity
-   7. VaccinationPrioritizationSchemeEnum? - an enumeration of vaccination prioritization scheme names
-   8. UnrecognizedParametersDescriptionObjType? - a class used to store any unregistered parameters. 
+   # ModelID - a class used to uniquely identify a model
+   # RunRequestObjTypes? - classes used to store the configuration of a model, used when submitting run requests
+   # RunResponseObjTypes? - classes used to store the results of a model
+   # RunStatusEnum? - an enumeration of reportable run states, returned from calls to getStatus
+   # SchoolClosurePolicyEnum? - an enumeration of school closure policy names
+   # TemporalGranularityEnum? - an enumeration by temporal granularity
+   # VaccinationPrioritizationSchemeEnum? - an enumeration of vaccination prioritization scheme names
+   # UnrecognizedParametersDescriptionObjType? - a class used to store any unregistered parameters. 
 
 =Java Development=
 ==Generating the Apollo Common Classes==
