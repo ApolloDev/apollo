@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.pitt.rods.apollo</groupId>
+	<artifactId>apollo-common</artifactId>
+	<version>1.0</version>
+	<dependencies>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>jaxb2-maven-plugin</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml</groupId>
+			<artifactId>relaxngDatatype</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+
+			<id>java.net</id>
+
+			<name>java.net Maven Repository</name>
+
+			<url>https://maven-repository.dev.java.net/nonav/repository</url>
+
+			<layout>legacy</layout>
+
+		</repository>
+	</repositories>
+	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+
+
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<packageName>edu.pitt.rods.research.apollo</packageName>
+					<!-- The name of your generated source package -->
+					<generateDirectory>${basedir}/src/main/java</generateDirectory>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+</project>
