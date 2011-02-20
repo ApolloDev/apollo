@@ -1,11 +1,6 @@
 #summary Description of the Apollo Common Classes
 
-Add your content here.
+=Introduction=
+The term "Apollo Common Classes" refers to a set of pre-defined data structures that are part of Apollo-WS.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The classes are defined in XML schema format in the file: [http://code.google.com/p/apollo/source/browse/trunk/apollo-ws/apollo-common/src/main/resources/Apollo.xsd  Apollo.xsd]
