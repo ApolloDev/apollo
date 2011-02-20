@@ -1,6 +1,27 @@
 #summary Description of the Apollo Common Classes
 
 =Introduction=
-The term "Apollo Common Classes" refers to a set of pre-defined data structures that are part of Apollo-WS.
+The term "Apollo Common Classes" refers to a set of pre-defined data structures that are part of Apollo-WS.  These data structures are used as parameters to, and return types of, methods that are defined as part of the Apollo-WS specification.
 
-The classes are defined in XML schema format in the file: [http://code.google.com/p/apollo/source/browse/trunk/apollo-ws/apollo-common/src/main/resources/Apollo.xsd  Apollo.xsd]
+=Apollo.xsd=
+To maintain the programming language agnostic nature of Apollo-WS, the Apollo Common Classes are defined in XML schema format.  The schema is stored in the source-code repository in [http://code.google.com/p/apollo/source/browse/trunk/apollo-ws/apollo-common/src/main/resources/Apollo.xsd /trunk/apollo-ws/apollo-common/src/main/resources/Apollo.xsd]  
+
+Development tools are available for many languages that can automatically generate classes given an XML schema. 
+
+=Classes=
+The major classes (some referenced earlier in the architecture section of the document) are :
+
+   1. ModelID - a class used to uniquely identify a model
+   2. RunRequestObjTypes? - classes used to store the configuration of a model, used when submitting run requests
+   3. RunResponseObjTypes? - classes used to store the results of a model
+   4. RunStatusEnum? - an enumeration of reportable run states, returned from calls to getStatus
+   5. SchoolClosurePolicyEnum? - an enumeration of school closure policy names
+   6. TemporalGranularityEnum? - an enumeration by temporal granularity
+   7. VaccinationPrioritizationSchemeEnum? - an enumeration of vaccination prioritization scheme names
+   8. UnrecognizedParametersDescriptionObjType? - a class used to store any unregistered parameters. 
+
+=Java Development=
+==Generating the Apollo Common Classes==
+For Java developers, the apollo-common project contains a Maven POM which automatically generates Java classes from Apollo.xsd using JAXB when the command "mvn compile" is issued from the same directory as the pom.xml file.
+==Building the apollo-common.jar==
+To package the generated Apollo Common Classes into a JAR file, issue the mvn command: "mvn package" form the same directory as the pom.xml file.
