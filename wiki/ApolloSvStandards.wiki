@@ -1,0 +1,11 @@
+#summary Existing standards that are used by Apollo-SV
+
+=Temporal Standards=
+
+=Spatial Standards=
+==United States==
+===Codes for the Identification of the States, the District of Columbia, Puerto Rico, and the Insular Areas of the United States===
+[http://www.census.gov/geo/www/ansi/statetables.html INCITS 38:2009]
+===County Level===
+
+==Global==
