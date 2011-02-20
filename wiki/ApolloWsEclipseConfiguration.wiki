@@ -1,5 +1,4 @@
-#summary One-sentence summary of this page.
-
+#summary For Java developers, step-by-step instructions on configuring your Eclipse development environment
 = Introduction =
 
 Add your content here.
