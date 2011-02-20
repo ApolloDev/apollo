@@ -1,4 +1,4 @@
-#summary Description of the provided Apollo-Enabled Epidemic-Model Web Service
+#summary Description of the provided reference implementation of the Apollo-Enabled Epidemic-Model Web Service
 
 = Introduction =
 
