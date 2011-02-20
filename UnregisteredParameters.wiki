@@ -1,3 +1,5 @@
+#summary Definition and reasoning behind the use of unregistered parameters
+
 =Definition=
 Any parameters that aren't specified as part of Apollo-SV, and as a result aren't defined in the common Apollo classes.
 
