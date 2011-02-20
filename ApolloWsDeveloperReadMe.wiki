@@ -1,13 +1,8 @@
-#summary If you plan on working on Apollo-WS as a software developer, read this first.
+#summary Introduction to working on Apollo-WS as a software developer
 
-= Introduction =
+=System Requirements=
 
-Add your content here.
+A design goal of Apollo-WS is to remain 100% programming-language agnostic.  Therefore development should be possible in any language that supports SOAP web services, and optimally, can generate classes given an XML schema.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+==Lead Developer== 
+The project's lead developer developed the components of Apollo-WS primarily in Java using the Eclipse IDE with the WTP plug-in.  It is likely that examples and documentation will be in Java format.   
