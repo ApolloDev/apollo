@@ -1,5 +1,5 @@
+#summary Specification (more like a design document) for Apollo-WS
 #labels Phase-Design
-#Specification for Apollo Web Services
 
 =1. Design Goals=
 ==1.1 General==
