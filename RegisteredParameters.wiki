@@ -1,5 +1,4 @@
-#summary One-sentence summary of this page.
-
+#summary Definition and reasoning behind the use of registered parameters
 = Introduction =
 
 Add your content here.
