@@ -9,5 +9,9 @@ Anthrax Models:
   * Compartmental Anthrax Model
 
 Influenza Models:
-  * FRED -
-  * SEIR -
+  * FRED Influenza Model- Developed at the Public Health Dynamics Lab at the University of Pittsburgh [https://midas.psc.edu/]
+  * H1N1 SEIR Model - Developed at the University of Pittsburgh
+
+= Models that are currently in the process of being connected to Apollo =
+
+Large Scale Agent Model (LSAM) 
