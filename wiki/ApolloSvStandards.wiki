@@ -1,7 +1,10 @@
 #summary Existing standards that are used by Apollo-SV
+#labels Featured
 
 =Standards for Identification of Disease=
 [http://www.nlm.nih.gov/research/umls/Snomed/snomed_main.html SNOMED-CT]
+
+Example SNOMED-CT code for "influenza due to influenza A virus subtype H1N1 (disorder):” 442696006  
 
 =Standards for reporting weather information=
 [http://en.wikipedia.org/wiki/METAR METAR]
