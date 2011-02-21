@@ -60,14 +60,23 @@ function customFormatter (cellvalue, options, rowObject) {
 	return cellvalue;
 }
 
-
-function loadParamGrid(modelName){
+function clearParamGrid(){
 	//unload grid first
 	paramGrid = $(dataExchange.gridId);
 	paramGrid.GridUnload();
 	//get the empty div by id
 	paramGrid = $(dataExchange.gridId);
+	
+	//hide the legend
+	$('#param-legend').hide();
+	
+	//show the model selection img
+	$('#select-img').show();
+}
 
+function loadParamGrid(modelName){
+	clearParamGrid();
+	
 	//left panel
 	paramGrid.jqGrid({
 	    url: "apollo_param.php?model=" + modelName,
@@ -214,6 +223,9 @@ jQuery(document).ready(function(){
 	
 	snomed.change(function(){
 		currVal = $(this).val();
+
+		clearParamGrid();
+		
 		if (currVal != 'UNDEF'){
 			model.attr('disabled', '');
 			
@@ -223,7 +235,7 @@ jQuery(document).ready(function(){
 			
 			if (currVal == 'Infulenza'){
 				model.append('<option value="SEIR">SEIR</option>');
-				model.append('<option value="AgentBased">AgentBased</option>');
+//				model.append('<option value="AgentBased">AgentBased</option>');
 			}else if (currVal == 'Anthrax'){
 				model.append('<option value="Compartment">Compartment</option>');
 			}
