@@ -55,13 +55,13 @@ function get_default_param_structure() {
 	$id = get_modelid();
 	$runObj = $client->getDefaultAgentBasedModelRunRequestObj ( array ('arg0' => $id ) );
 
-	$recognized = $runObj->return->Parameters->Recognized;
+	$recognized = $runObj->return->Parameters->registered;
 
 	$regIconHtml = \models\get_reg_icon_text();
 	$unregIconHtml = \models\get_unreg_icon_text();
 
-	//begin Recognized Parameters
-//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, 'Recognized Parameters', '', '', '',
+	//begin registered Parameters
+//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, 'registered Parameters', '', '', '',
 //		0, ++ $left, $left + 27, false, false ) );
 
 	//shared

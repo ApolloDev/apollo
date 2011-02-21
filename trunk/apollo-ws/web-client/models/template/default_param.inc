@@ -54,7 +54,7 @@ function get_default_param_structure() {
 	$id = get_modelid();
 //	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
 //
-//	$recognized = $runObj->return->Parameters->Recognized;
+//	$recognized = $runObj->return->Parameters->Registered;
 //
 //	//begin Recognized Parameters
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, 'Recognized Parameters', '', '', '', 0, ++ $left, $left + 27, false, false ) );

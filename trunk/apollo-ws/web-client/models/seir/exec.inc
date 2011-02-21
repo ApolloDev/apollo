@@ -42,11 +42,11 @@ function exec($params) {
 	//Fill in the correct parameters
 	$runObj = $runObj->return;
 	$runObj->ModelID = $id;
-	$runObj->Parameters->Recognized->Username = "";
-	$runObj->Parameters->Recognized->Password = "";
+	$runObj->Parameters->registered->Username = "";
+	$runObj->Parameters->registered->Password = "";
 
 	//fillinRecognized
-	$recognized = $runObj->Parameters->Recognized;
+	$recognized = $runObj->Parameters->registered;
 	$recognized->TemporalGranularity = $params['TemporalGranularity'];
 	$recognized->TemporalIncrement= $params['TemporalIncrement'];
 	$recognized->RunLength = $params['RunLength'];
@@ -90,7 +90,7 @@ function exec($params) {
 	//		$curves ['Exposed'] = $apolloResponse->return->results->Recognized->EpiCurve->Exposed->value;
 	//		$curves ['Infectious'] = $apolloResponse->return->results->Recognized->EpiCurve->Infectious->value;
 	//		$curves ['Recovered'] = $apolloResponse->return->results->Recognized->EpiCurve->Recovered->value;
-	$curves ['Incidence'] = $apolloResponse->results->Recognized->IncidenceCurve->value;
+	$curves ['Incidence'] = $apolloResponse->results->registered->IncidenceCurve->value;
 
 	return $curves;
 }

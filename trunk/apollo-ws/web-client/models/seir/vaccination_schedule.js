@@ -90,8 +90,8 @@ var vaccSchedule = new function(){
 		deliveryGrid.editCell(currid + 2, 2, true);
 		
 		//update the chart
-		var currentRawData = gridToRawArray();
-		loadChart(currentRawData);
+//		var currentRawData = gridToRawArray();
+//		loadChart(currentRawData);
 	};
 	function onGridAddClicked(){
 		//if user is still editing the table
