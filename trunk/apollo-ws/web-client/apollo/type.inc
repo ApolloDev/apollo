@@ -32,12 +32,15 @@ class ModelID {
 		$this->modeltype = $modeltype;
 		$this->modelid = $modelid;
 		$this->version = $version;
+		//TODO
+		$this->snomed_cid = -1;
 	}
 
 	private $groupid;
 	private $modeltype;
 	private $modelid;
 	private $version;
+	private $snomed_cid;
 };
 
 class RunResultRequestObjType{

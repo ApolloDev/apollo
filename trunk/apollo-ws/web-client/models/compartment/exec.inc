@@ -42,11 +42,11 @@ function exec($params) {
 	//Fill in the correct parameters
 	$runObj = $runObj->return;
 	$runObj->ModelID = $id;
-	$runObj->Parameters->Recognized->Username = "";
-	$runObj->Parameters->Recognized->Password = "";
+	$runObj->Parameters->registered->Username = "";
+	$runObj->Parameters->registered->Password = "";
 
 	//fillinRecognized
-	$recognized = $runObj->Parameters->Recognized;
+	$recognized = $runObj->Parameters->registered;
 	$recognized->TemporalGranularity = $params['TemporalGranularity'];
 	$recognized->TemporalIncrement= $params['TemporalIncrement'];
 	$recognized->RunLength = $params['RunLength'];
@@ -89,10 +89,10 @@ function exec($params) {
 		}
 	}
 
-	$curves ['Prodromal'] = $apolloResponse->results->Recognized->EpiCurve->Prodromal->value;
-	$curves ['Fulminant'] = $apolloResponse->results->Recognized->EpiCurve->Fulminant->value;
-	$curves ['Dead'] = $apolloResponse->results->Recognized->EpiCurve->Dead->value;
-	$curves ['Prophylaxed'] = $apolloResponse->results->Recognized->EpiCurve->Prophylaxed->value;
+	$curves ['Prodromal'] = $apolloResponse->results->registered->EpiCurve->Prodromal->value;
+	$curves ['Fulminant'] = $apolloResponse->results->registered->EpiCurve->Fulminant->value;
+	$curves ['Dead'] = $apolloResponse->results->registered->EpiCurve->Dead->value;
+	$curves ['Prophylaxed'] = $apolloResponse->results->registered->EpiCurve->Prophylaxed->value;
 //	$curves ['Incidence'] = $apolloResponse->results->Recognized->IncidenceCurve->value;
 
 //	$curves = Array();
