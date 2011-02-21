@@ -28,16 +28,23 @@ namespace apollo;
 
 require_once 'models\seir\exec.inc';
 require_once 'models\compartment\exec.inc';
+require_once 'models\agent_based\exec.inc';
 
 use models\seir as seir;
 use models\compartment as compartment;
+use models\agent_based as agent_based;
 
 function exec($modelType, $params) {
 	switch ($modelType){
-		case 'SEIR';
+		case 'SEIR':
 			return seir\exec($params);
-		case 'Compartment';
+
+		case 'Compartment':
 			return compartment\exec($params);
+
+		case 'AgentBased':
+			return agent_based\exec($params);
+
 		default:
 			die('Unknow Model Type!');
 	}

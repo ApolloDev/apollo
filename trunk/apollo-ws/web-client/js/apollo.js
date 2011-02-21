@@ -223,9 +223,9 @@ jQuery(document).ready(function(){
 			
 			if (currVal == 'Infulenza'){
 				model.append('<option value="SEIR">SEIR</option>');
-				model.append('<option value="Compartment">Compartment</option>');
-			}else if (currVal == 'Anthrax'){
 				model.append('<option value="AgentBased">AgentBased</option>');
+			}else if (currVal == 'Anthrax'){
+				model.append('<option value="Compartment">Compartment</option>');
 			}
 		}else {
 			model.attr('disabled', 'disabled');
