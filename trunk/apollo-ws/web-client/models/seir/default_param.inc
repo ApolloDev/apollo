@@ -137,8 +137,8 @@ function get_default_param_structure() {
 	//end Recognized Parameters
 
 	//begin Rnrecognized Parameters
-	$left += 1;
-	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $unregIconHtml, 'Unrecognized Parameters', '', '', '', 0, ++ $left, ++$left, false, false ) );
+//	$left += 1;
+//	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $unregIconHtml, 'Unrecognized Parameters', '', '', '', 0, ++ $left, ++$left, false, false ) );
 
 	$SEIR->records = count($SEIR->rows);
 	$SEIR->page = 1;
