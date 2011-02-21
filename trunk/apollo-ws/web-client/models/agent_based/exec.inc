@@ -45,27 +45,26 @@ function exec($params) {
 	$runObj->Parameters->registered->Username = "";
 	$runObj->Parameters->registered->Password = "";
 
-//	//fillinRecognized
-//	$recognized = $runObj->Parameters->Recognized;
-//	$recognized->TemporalGranularity = $params['TemporalGranularity'];
-//	$recognized->TemporalIncrement= $params['TemporalIncrement'];
-//	$recognized->RunLength = $params['RunLength'];
-//	$recognized->AverageDurationOfInfectiousness = $params['AverageDurationOfInfectiousness'];
-//	$recognized->AverageLatentPeriod = $params['AverageLatentPeriod'];
-//	$recognized->PercentCompliant = $params['PercentCompliant'];
-//	$recognized->r0 = $params['r0'];
-//	$recognized->VaccinationSchedule->value = $params['VaccinationSchedule'];
-//
-//	//InitialCompartmentSizes
-//	$recognized->InitialCompartmentSizes->Susceptible->Number = $params['Susceptible'];
-//	$recognized->InitialCompartmentSizes->Exposed = $params['Exposed'];
-//	$recognized->InitialCompartmentSizes->Infectious = $params['Infectious'];
-//	$recognized->InitialCompartmentSizes->Recovered = $params['Recovered'];
-//	//end InitialCompartmentSizes
-//
-//	//$temporalGranularity = $runObj->Parameters->Recognized->TemporalGranularity;
-//
-	$dbg = $client->__getFunctions();
+	//fillinRecognized
+	$recognized = $runObj->Parameters->registered;
+	$recognized->TemporalGranularity = $params['TemporalGranularity'];
+	$recognized->TemporalIncrement= $params['TemporalIncrement'];
+	$recognized->RunLength = $params['RunLength'];
+
+	$recognized->NumberOfRuns = $params['NumberOfRuns'];
+	$recognized->RandomSeed = $params['RandomSeed'];
+	$recognized->PercentImmune = $params['PercentImmune'];
+
+	//VaccinationScheduleControlMeasureInfo
+	$recognized->VaccinationScheduleControlMeasureInfo->VaccineTemporalDistribution->value = $params['VaccineTemporalDistribution'];
+	$recognized->VaccinationScheduleControlMeasureInfo->VaccinationPrioritizationScheme = $params['VaccinationPrioritizationScheme'];
+	$recognized->VaccinationScheduleControlMeasureInfo->Compliance = $params['Compliance'];
+
+	//SchoolClosureControlMeasureInfo
+	$recognized->SchoolClosureControlMeasureInfo->PolicyType = $params['PolicyType'];
+	$recognized->SchoolClosureControlMeasureInfo->Threshold = $params['Threshold'];
+	$recognized->SchoolClosureControlMeasureInfo->ClosurePeriod = $params['ClosurePeriod'];
+	$recognized->SchoolClosureControlMeasureInfo->ClosureDelay = $params['ClosureDelay'];
 
 	$apolloResponse = $client->runAgentBaseModelRequest ( array ('arg0' => $runObj ) );
 	$apolloResponse = $apolloResponse->return;
@@ -97,6 +96,4 @@ function exec($params) {
 //	$curves = Array();
 	return $curves;
 }
-
-exec(Array());
 ?>
