@@ -55,7 +55,7 @@ function get_default_param_structure() {
 	$id = get_modelid();
 	$runObj = $client->getDefaultCompartmentModelRunRequestObj ( array ('arg0' => $id ) );
 
-	$recognized = $runObj->return->Parameters->Recognized;
+	$recognized = $runObj->return->Parameters->registered;
 
 	$regIconHtml = \models\get_reg_icon_text();
 	$unregIconHtml = \models\get_unreg_icon_text();

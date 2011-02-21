@@ -29,6 +29,7 @@ namespace apollo;
 //$wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
 function get_wsdl(){
 	return 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
+//	return 'http://130.49.206.16:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
 }
 
 ?>
