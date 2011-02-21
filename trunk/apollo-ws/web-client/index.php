@@ -114,9 +114,6 @@ ini_set ( 'error_reporting', E_ALL | E_STRICT );
 	<div>Models:</div>
 	<select id="model-combo" style="width: 120px;">
 		<option value="UNDEF" selected="selected">--Please Select--</option>
-<!--		<option value="SEIR">SEIR</option>-->
-<!--		<option value="Compartment">Compartment</option>-->
-<!--		<option value="AgentBased">AgentBased</option>-->
 	</select>
 	</div>
 
