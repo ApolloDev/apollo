@@ -29,7 +29,7 @@ namespace models\agent_based;
 require_once 'apollo\type.inc';
 require_once 'apollo\constant.inc';
 
-require_once 'models\compartment\constant.inc';
+require_once 'models\agent_based\constant.inc';
 
 function exec($params) {
 	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
@@ -37,14 +37,14 @@ function exec($params) {
 	$client = new \SoapClient ( \apollo\get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
 
 	$id = get_modelid ();
-//	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
-//
-//	//Fill in the correct parameters
-//	$runObj = $runObj->return;
-//	$runObj->ModelID = $id;
-//	$runObj->Parameters->Recognized->Username = "";
-//	$runObj->Parameters->Recognized->Password = "";
-//
+	$runObj = $client->getDefaultAgentBasedModelRunRequestObj ( array ('arg0' => $id ) );
+
+	//Fill in the correct parameters
+	$runObj = $runObj->return;
+	$runObj->ModelID = $id;
+	$runObj->Parameters->registered->Username = "";
+	$runObj->Parameters->registered->Password = "";
+
 //	//fillinRecognized
 //	$recognized = $runObj->Parameters->Recognized;
 //	$recognized->TemporalGranularity = $params['TemporalGranularity'];
@@ -65,34 +65,38 @@ function exec($params) {
 //
 //	//$temporalGranularity = $runObj->Parameters->Recognized->TemporalGranularity;
 //
-//	$apolloResponse = $client->runSEIRModelRequest ( array ('arg0' => $runObj ) );
-//	$apolloResponse = $apolloResponse->return;
-//
-//	if ($apolloResponse->id == - 1) { //cache hit
-//		$apolloResponse = $apolloResponse->cachedResult;
-//	} else {
-//		$runId = $apolloResponse->id;
-//
-//		while ( true ) {
-//			$status = $client->getStatus ( array ('arg0' => $runId ) );
-//			$status = $status->return;
-//			if (strcmp ( $status, 'COMPLETED' ) == 0) {
-//				$rrro = new \apollo\RunResultRequestObjType ( $runId, '', '' );
-//				$apolloResponse = $client->getSEIRModelRunResults ( array ('arg0' => $rrro ) );
-//				$apolloResponse = $apolloResponse->return;
-//				break;
-//			} else
-//				sleep ( 1 ); //sleep for one second
-//		}
-//	}
-//
-//	//		$curves ['Susceptible'] = $apolloResponse->return->results->Recognized->EpiCurve->Susceptible->value;
-//	//		$curves ['Exposed'] = $apolloResponse->return->results->Recognized->EpiCurve->Exposed->value;
-//	//		$curves ['Infectious'] = $apolloResponse->return->results->Recognized->EpiCurve->Infectious->value;
-//	//		$curves ['Recovered'] = $apolloResponse->return->results->Recognized->EpiCurve->Recovered->value;
-//	$curves ['Incidence'] = $apolloResponse->results->Recognized->IncidenceCurve->value;
+	$dbg = $client->__getFunctions();
 
-	$curves = Array();
+	$apolloResponse = $client->runAgentBaseModelRequest ( array ('arg0' => $runObj ) );
+	$apolloResponse = $apolloResponse->return;
+
+	if ($apolloResponse->id == - 1) { //cache hit
+		$apolloResponse = $apolloResponse->cachedResult;
+	} else {
+		$runId = $apolloResponse->id;
+
+		while ( true ) {
+			$status = $client->getStatus ( array ('arg0' => $runId ) );
+			$status = $status->return;
+			if (strcmp ( $status, 'COMPLETED' ) == 0) {
+				$rrro = new \apollo\RunResultRequestObjType ( $runId, '', '' );
+				$apolloResponse = $client->getAgentBasedModelRunResults ( array ('arg0' => $rrro ) );
+				$apolloResponse = $apolloResponse->return;
+				break;
+			} else
+				sleep ( 1 ); //sleep for one second
+		}
+	}
+
+	//		$curves ['Susceptible'] = $apolloResponse->return->results->registered->EpiCurve->Susceptible->value;
+	//		$curves ['Exposed'] = $apolloResponse->return->results->registered->EpiCurve->Exposed->value;
+	//		$curves ['Infectious'] = $apolloResponse->return->results->registered->EpiCurve->Infectious->value;
+	//		$curves ['Recovered'] = $apolloResponse->return->results->registered->EpiCurve->Recovered->value;
+	$curves ['Incidence'] = $apolloResponse->results->registered->IncidenceCurve->value;
+
+//	$curves = Array();
 	return $curves;
 }
+
+exec(Array());
 ?>
