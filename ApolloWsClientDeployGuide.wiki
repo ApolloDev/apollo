@@ -9,18 +9,28 @@ ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
 
  * Download and install [http://www.apache.org/ Apache]
   * If you have little experience in server configuration, I recommend you can download and install [http://www.zend.com/en/products/server-ce/ Zend Server Community Edition]
-  * Please make sure you are dwonloading the [http://www.zend.com/en/download/355 newest version shipped with PHP 5.3].
+  * Please make sure you are dwonloading the [http://www.zend.com/en/download/355 Newest version shipped with PHP 5.3].
   * After you successfully installed the Zend Server CE, open the location that you've specified during the installation, locate the 'Apache2' subfolder.
 
  * Checkout the source code of ApolloWsClient using SVN.
   * Place the code into the 'webroot' of your apache server, usually its the 'htdoc' folder under the 'Apache2' subfolder.
-  * e.g. Check out the code using SVN like below:<br/>
-    svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client C:/ZendServerCE/Apache2/htdoc/WsClient
-  * Now the folder structure should be something like this: <br/>
-    C:/ZendServerCE/Apache2/htdoc/WsClient
+  * e.g. Check out the code using SVN like below:
+{{{
+svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client C:/ZendServerCE/Apache2/htdoc/WsClient
+}}}
+  * Now the folder structure should be something like this:
+{{{
+C:/ZendServerCE/Apache2/htdoc/WsClient
+}}}
  * Open the browser, type in the address you've specified in apache and try to access the client.
-  * From the example above, it should be 'http://localhost/WsClient'.
-  * If your server's port number is 8080 other than 80, you need to change the address above to 'http://localhost:8080/WsClient'.
+  * From the example above, it should be:
+{{{
+http://localhost/WsClient
+}}}
+  * If your server's port number is 8080 other than 80, you need to change the address above to
+{{{
+http://localhost:8080/WsClient
+}}}
 
 = Hints =
 
