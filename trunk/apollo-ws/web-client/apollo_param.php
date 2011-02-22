@@ -26,11 +26,11 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-set_include_path(getcwd() . ":" . get_include_path());
+define('AROOT', getcwd());
 
-require_once 'models/seir/default_param.inc';
-require_once 'models/compartment/default_param.inc';
-require_once 'models/agent_based/default_param.inc';
+require_once AROOT . '/models/seir/default_param.inc';
+require_once AROOT . '/models/compartment/default_param.inc';
+require_once AROOT . '/models/agent_based/default_param.inc';
 
 //use models\seir as seir;
 //use models\compartment as compartment;
