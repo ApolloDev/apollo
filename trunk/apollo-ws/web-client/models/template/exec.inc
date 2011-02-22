@@ -32,9 +32,9 @@ require_once 'apollo\constant.inc';
 require_once 'models\compartment\constant.inc';
 
 function exec($params) {
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient ( \apollo\get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new \SoapClient ( get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
 
 	$id = get_modelid ();
 //	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
@@ -77,7 +77,7 @@ function exec($params) {
 //			$status = $client->getStatus ( array ('arg0' => $runId ) );
 //			$status = $status->return;
 //			if (strcmp ( $status, 'COMPLETED' ) == 0) {
-//				$rrro = new \apollo\RunResultRequestObjType ( $runId, '', '' );
+//				$rrro = new RunResultRequestObjType ( $runId, '', '' );
 //				$apolloResponse = $client->getSEIRModelRunResults ( array ('arg0' => $rrro ) );
 //				$apolloResponse = $apolloResponse->return;
 //				break;

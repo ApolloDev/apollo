@@ -29,6 +29,6 @@ namespace models\PACKAGENAME;
 require_once 'apollo\type.inc';
 
 function get_modelid() {
-	return new \apollo\ModelID ( '%GROUPID%', '%MODELTYPE%', '%MODELID%', '%MODELVERSION%' );
+	return new ModelID ( '%GROUPID%', '%MODELTYPE%', '%MODELID%', '%MODELVERSION%' );
 }
 ?>

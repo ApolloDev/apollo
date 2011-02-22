@@ -30,19 +30,19 @@ require_once 'models\seir\default_param.inc';
 require_once 'models\compartment\default_param.inc';
 require_once 'models\agent_based\default_param.inc';
 
-use models\seir as seir;
-use models\compartment as compartment;
-use models\agent_based as agent_based;
+//use models\seir as seir;
+//use models\compartment as compartment;
+//use models\agent_based as agent_based;
 
 $modelName = $_GET['model'];
 
 try {
 	if (strcmp($modelName, 'SEIR') == 0)
-		$param_struct = seir\get_default_param_structure();
+		$param_struct = seir_get_default_param_structure();
 	if (strcmp($modelName, 'Compartment') == 0)
-		$param_struct = compartment\get_default_param_structure();
+		$param_struct = compartment_get_default_param_structure();
 	if (strcmp($modelName, 'AgentBased') == 0)
-		$param_struct = agent_based\get_default_param_structure();
+		$param_struct = agent_based_get_default_param_structure();
 
 	echo json_encode($param_struct);
 }catch (Exception $e){

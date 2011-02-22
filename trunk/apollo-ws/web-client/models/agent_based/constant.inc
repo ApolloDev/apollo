@@ -24,11 +24,11 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models\agent_based;
+//namespace models\agent_based;
 
 require_once 'apollo\type.inc';
 
-function get_modelid() {
-	return new \apollo\ModelID ( 'edu.pitt.rods', 'AGENTBASED', 'Influenza', '1.0' );
+function agent_based_get_modelid() {
+	return new ModelID ( 'edu.pitt.rods', 'AGENTBASED', 'Influenza', '1.0' );
 }
 ?>

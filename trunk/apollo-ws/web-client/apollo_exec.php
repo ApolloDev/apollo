@@ -32,7 +32,7 @@ require_once 'apollo/operation.inc';
 require_once 'models/misc.inc';
 //
 
-$ret = new apollo\Response();
+$ret = new Response();
 
 try {
 	//model name
@@ -66,7 +66,7 @@ try {
 		}
 	}
 
-	$curves = apollo\exec($modelName, $params);
+	$curves = apollo_exec($modelName, $params);
 	$ret->data = $curves;
 }catch (Exception $e){
 	$ret->exception = $e->getMessage();

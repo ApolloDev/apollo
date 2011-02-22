@@ -25,7 +25,7 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-namespace models\agent_based;
+//namespace models\agent_based;
 
 require_once 'constant.inc';
 
@@ -42,75 +42,75 @@ require_once 'apollo\constant.inc';
 // custom is 5
 //(rowid, registered, name, value, url, extradata, level, left, right, leaf, expend)
 
-function get_default_param_structure() {
-	$AgentBased = new \stdClass;
+function agent_based_get_default_param_structure() {
+	$AgentBased = new stdClass;
 
 	$left = 0;
 	$rowid = - 1;
 
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient (\apollo\get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new SoapClient (get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
 
-	$id = get_modelid();
+	$id = agent_based_get_modelid();
 	$runObj = $client->getDefaultAgentBasedModelRunRequestObj ( array ('arg0' => $id ) );
 
 	$recognized = $runObj->return->Parameters->registered;
 
-	$regIconHtml = \models\get_reg_icon_text();
-	$unregIconHtml = \models\get_unreg_icon_text();
+	$regIconHtml = get_reg_icon_text();
+	$unregIconHtml = get_unreg_icon_text();
 
 	//begin registered Parameters
 //	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, 'registered Parameters', '', '', '',
 //		0, ++ $left, $left + 27, false, false ) );
 
 	//shared
-	$pname = \models\get_time_granularity_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_time_granularity_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-	$pname = \models\get_temporal_increment_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_temporal_increment_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-	$pname = \models\get_run_length_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_run_length_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-//	$pname = \models\get_username_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_username_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 
-//	$pname = \models\get_password_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_password_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 	//end shared
 
 	$pname = 'Number Of Runs';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Random Seed';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Percent Immune';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 //	$pname = 'r0';
-//	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+//	$pvalue = get_value($recognized, deleteSpace($pname) );
 //	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'Vaccination Schedule';
-//	$pvalue = \models\get_value($recognized, deleteSpace($pname) )->value;
-//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, \models\get_edit_hint_text(),
+//	$pvalue = get_value($recognized, deleteSpace($pname) )->value;
+//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, get_edit_hint_text(),
 //		'models\seir\vaccination_schedule.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
 //
 
 //	$pname = 'Vaccination Schedule Control Measure Info';
-//	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
-//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, \models\get_edit_hint_text(),
+//	$pvalue = get_value($recognized, deleteSpace($pname) );
+//	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, get_edit_hint_text(),
 //		'models\seir\vaccination_schedule.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
 
 	//new level under Vaccination Schedule Control Measure Info
@@ -119,16 +119,16 @@ function get_default_param_structure() {
 	$basePath = deleteSpace($basePath);
 
 	$pname = 'Vaccine Temporal Distribution';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) )->value;
-	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, \models\get_edit_hint_text(),
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) )->value;
+	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, get_edit_hint_text(),
 		'models\agent_based\vaccine_temporal_distribution.html', json_encode($pvalue), 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Vaccination Prioritization Scheme';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Compliance';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 	// end SchoolClosureControlMeasureInfo
 
@@ -138,19 +138,19 @@ function get_default_param_structure() {
 	$basePath = deleteSpace($basePath);
 
 	$pname = 'Policy Type';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Threshold';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Closure Period';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Closure Delay';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 	// end SchoolClosureControlMeasureInfo
 

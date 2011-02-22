@@ -24,19 +24,19 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models\compartment;
+//namespace models\compartment;
 
 require_once 'apollo\type.inc';
 require_once 'apollo\constant.inc';
 
 require_once 'models\compartment\constant.inc';
 
-function exec($params) {
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+function compartment_exec($params) {
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient ( \apollo\get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new SoapClient ( get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
 
-	$id = get_modelid ();
+	$id = compartment_get_modelid ();
 	$runObj = $client->getDefaultCompartmentModelRunRequestObj ( array ('arg0' => $id ) );
 
 	//Fill in the correct parameters
@@ -80,7 +80,7 @@ function exec($params) {
 			$status = $client->getStatus ( array ('arg0' => $runId ) );
 			$status = $status->return;
 			if (strcmp ( $status, 'COMPLETED' ) == 0) {
-				$rrro = new \apollo\RunResultRequestObjType ( $runId, '', '' );
+				$rrro = new RunResultRequestObjType ( $runId, '', '' );
 				$apolloResponse = $client->getCompartmentModelRunResults ( array ('arg0' => $rrro ) );
 				$apolloResponse = $apolloResponse->return;
 				break;

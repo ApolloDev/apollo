@@ -24,26 +24,26 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace apollo;
+//namespace apollo;
 
 require_once 'models\seir\exec.inc';
 require_once 'models\compartment\exec.inc';
 require_once 'models\agent_based\exec.inc';
 
-use models\seir as seir;
-use models\compartment as compartment;
-use models\agent_based as agent_based;
+//use models\seir as seir;
+//use models\compartment as compartment;
+//use models\agent_based as agent_based;
 
-function exec($modelType, $params) {
+function apollo_exec($modelType, $params) {
 	switch ($modelType){
 		case 'SEIR':
-			return seir\exec($params);
+			return seir_exec($params);
 
 		case 'Compartment':
-			return compartment\exec($params);
+			return compartment_exec($params);
 
 		case 'AgentBased':
-			return agent_based\exec($params);
+			return agent_based_exec($params);
 
 		default:
 			die('Unknow Model Type!');
