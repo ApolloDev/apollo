@@ -27,7 +27,7 @@
 
 //namespace models\seir;
 
-require_once '../../apollo/type.inc';
+require_once 'apollo/type.inc';
 
 function seir_get_modelid() {
 	return new ModelID ( 'edu.pitt.rods', 'SEIR', 'Influenza', '1.0' );
