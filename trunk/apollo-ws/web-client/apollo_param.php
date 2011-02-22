@@ -36,12 +36,16 @@ use models\agent_based as agent_based;
 
 $modelName = $_GET['model'];
 
-if (strcmp($modelName, 'SEIR') == 0)
-	$param_struct = seir\get_default_param_structure();
-if (strcmp($modelName, 'Compartment') == 0)
-	$param_struct = compartment\get_default_param_structure();
-if (strcmp($modelName, 'AgentBased') == 0)
-	$param_struct = agent_based\get_default_param_structure();
+try {
+	if (strcmp($modelName, 'SEIR') == 0)
+		$param_struct = seir\get_default_param_structure();
+	if (strcmp($modelName, 'Compartment') == 0)
+		$param_struct = compartment\get_default_param_structure();
+	if (strcmp($modelName, 'AgentBased') == 0)
+		$param_struct = agent_based\get_default_param_structure();
 
- echo json_encode($param_struct);
+	echo json_encode($param_struct);
+}catch (Exception $e){
+	echo json_encode($e->getMessage());
+}
 ?>

@@ -46,20 +46,6 @@ var maintab;
 var lastEditId;
 //---
 
-function customFormatter (cellvalue, options, rowObject) {
-//	if (rowObject[1] == 'TemporalGranularity'){
-//		 var sb = [];
-//		 sb.push("<select class='selAction' id='" + rowObject[0] + "'>");
-//		 sb.push("<option value='1'>hour</option>");
-//		 sb.push("<option value='2'>day</option>");
-//		 sb.push("<option value='3'>week</option>");
-//		 sb.push("</select>");
-//		 var html = sb.join("");
-//		 return html;
-//	}
-	return cellvalue;
-}
-
 function clearParamGrid(){
 	//unload grid first
 	paramGrid = $(dataExchange.gridId);
@@ -94,20 +80,14 @@ function loadParamGrid(modelName){
 	        {name: "value", width:200, resizable: true, editable:true, 
 	        	edittype:"text", editoptions:{
 	        		size:10,
-	        		maxlength: 15//,
-//				    dataInit : function (elem) {
-//			        $(elem).datepicker({ 
-//			            dateFormat: "mm-dd-yy"
-//			        });
-//				   }
-	        	},
-	        	formatter: customFormatter},
+	        		maxlength: 15
+	        	}
+	        },
 			{name: "url",width:1,hidden:true},
 			{name: "extra",width:1,hidden:true}
 	    ],
 	    treeGrid: true,
 		caption: modelName + ' Model Parameters',
-//		caption: modelName,
 	    ExpandColumn: "pname",
 	    autowidth: true,
 //	    rowNum: 200,
@@ -148,7 +128,6 @@ function loadParamGrid(modelName){
 			
 			//hide the model selection img
 			$('#select-img').hide();
-			//debug code
 		},
 		onSelectRow : function (rowid, status){
 			if (lastEditId != -1){
@@ -157,9 +136,6 @@ function loadParamGrid(modelName){
 			}
 		}
 	});
-	
-	//replace the icon class when registered = false
-//	var rows = $('#west-grid tbody tr');
 };
 
 function createOrSelectInsturctionTab(){
@@ -181,8 +157,15 @@ function createOrSelectInsturctionTab(){
 function adjustMainDivSize(){
 	var topHeight = $("#top").height();
 	var footerHeight = $("#footer").height();
+	
 	//set the correct main height
-	$('#main').height($(window).height() - topHeight - footerHeight - 10);
+	var winHeight = $(window).height();
+	$('#main').height(winHeight - topHeight - footerHeight - 10);
+}
+
+//trigger the resize event make sure the whole web page to 100%
+function bottomBlankFix(){
+	$(window).trigger('resize');
 }
 
 jQuery(document).ready(function(){
@@ -207,14 +190,7 @@ jQuery(document).ready(function(){
 			model.val('UNDEF');
 			
 			//unload grid
-			paramGrid = $(dataExchange.gridId);
-			paramGrid.GridUnload();
-			
-			//hide the legend
-			$('#param-legend').hide();
-			
-			//show the model selection img
-			$('#select-img').show();
+			clearParamGrid();
 			
 			//disable the run button
 			$('#create').button( "option", "disabled", true );
@@ -258,11 +234,16 @@ jQuery(document).ready(function(){
 			maintab.tabs('remove', 1);
 		}
 		
+		//hide the model selection img
+		$('#select-img').hide();
+		
 		loadParamGrid(modelName);
 	});
 	
 	//adjust the main content div size
 	adjustMainDivSize();
+	//TODO I don't know why there will exist some blank at the bottom
+	setTimeout("bottomBlankFix()", 1000);
 
 	//If the User resizes the window, adjust the #container height
 	$(window).resize(adjustMainDivSize);	
@@ -275,7 +256,7 @@ jQuery(document).ready(function(){
         	$(dataExchange.gridId).setGridWidth($Pane.innerWidth() - 2);
 		}
 	});
-	$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
+	//$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
 
 	//center panel
 	maintab = $('#tabs','#CenterPane').tabs({
@@ -295,9 +276,6 @@ jQuery(document).ready(function(){
 	
 	//
 	//createOrSelectInsturctionTab();
-	
-	//
-//	$('#instruction-link').click();
 
 	// bind form using ajaxForm
 	$('#apollo-form').ajaxForm({
