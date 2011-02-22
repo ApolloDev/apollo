@@ -1,5 +1,5 @@
+#summary Instructions about how you can install ApolloWsClient on your server
 #labels Phase-Implementation,Phase-Deploy
-# Instructions about how you can install ApolloWsClient on your server
 
 = Introduction =
 
