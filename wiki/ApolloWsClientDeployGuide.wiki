@@ -5,9 +5,7 @@
 
 ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
 
-= Details =
+= How to install =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+ # Download and install [http://www.apache.org/ Apache]
+   * If you have little experience in server configuration, I recommend you can download and install [http://www.zend.com/en/products/server-ce/ Zend Server Community Edition]
