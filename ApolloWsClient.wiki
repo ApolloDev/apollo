@@ -1,8 +1,9 @@
 #summary Introduction to the Apollo-WS Client
+#labels Phase-Design
 
 = Introduction =
 
-ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
+ApolloWsClient is a simple Apollo Web Service front-end written in PHP. The key idea is that we want the end user can use ApolloWs anywhere they want without installing a native client on their machine, just open the browser, type in the address then GO!
 
 = Details =
 
