@@ -26,14 +26,14 @@
  */
 //namespace models\seir;
 
-require_once 'constant.inc';
+require_once 'models/seir/constant.inc';
 
-require_once 'models\misc.inc';
-require_once 'models\object_helper.inc';
-require_once 'models\shared_parameters.inc';
+require_once 'models/misc.inc';
+require_once 'models/object_helper.inc';
+require_once 'models/shared_parameters.inc';
 
-require_once 'apollo\type.inc';
-require_once 'apollo\constant.inc';
+require_once 'apollo/type.inc';
+require_once 'apollo/constant.inc';
 
 //for cell
 // total is 11
