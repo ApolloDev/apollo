@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models;
+//namespace models;
 
 /**
  * Return the value from the $obj using the according $path

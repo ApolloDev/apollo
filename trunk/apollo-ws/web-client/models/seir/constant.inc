@@ -25,11 +25,12 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-namespace models\seir;
+//namespace models\seir;
 
 require_once 'apollo\type.inc';
 
-function get_modelid() {
-	return new \apollo\ModelID ( 'edu.pitt.rods', 'SEIR', 'Influenza', '1.0' );
+function seir_get_modelid() {
+	return new ModelID ( 'edu.pitt.rods', 'SEIR', 'Influenza', '1.0' );
 }
+
 ?>
