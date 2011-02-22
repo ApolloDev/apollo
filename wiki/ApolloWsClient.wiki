@@ -1,0 +1,9 @@
+#summary Introduction to the Apollo-WS Client
+
+= Introduction =
+
+ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
+
+= Details =
+
+== Installation ==
