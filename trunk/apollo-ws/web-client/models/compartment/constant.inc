@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models\compartment;
+//namespace models\compartment;
 
 require_once 'apollo\type.inc';
 
@@ -35,7 +35,7 @@ require_once 'apollo\type.inc';
 			modelId.setVersion("1.0");
  * */
 
-function get_modelid() {
-	return new \apollo\ModelID ( 'edu.pitt.rods', 'COMPARTMENT', 'Anthrax', '1.0' );
+function compartment_get_modelid() {
+	return new ModelID ( 'edu.pitt.rods', 'COMPARTMENT', 'Anthrax', '1.0' );
 }
 ?>

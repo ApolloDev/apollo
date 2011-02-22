@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace apollo;
+//namespace apollo;
 
 class ModelID {
 	public function __construct($groupid, $modeltype, $modelid, $version) {

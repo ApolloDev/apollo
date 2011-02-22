@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models\seir;
+//namespace models\seir;
 
 require_once 'constant.inc';
 
@@ -41,75 +41,69 @@ require_once 'apollo\constant.inc';
 // custom is 5
 //(rowid, registered, name, value, url, extradata, level, left, right, leaf, expend)
 
-function get_default_param_structure() {
-	$SEIR = new \stdClass;
+function seir_get_default_param_structure() {
+	$SEIR = new stdClass;
 
 	$left = 0;
 	$rowid = - 1;
 
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient (\apollo\get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new SoapClient (get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
 
-
-	//debug
-	$funcs = $client->__getFunctions();
-	$types = $client->__getTypes();
-	//
-
-	$id = get_modelid();
+	$id = seir_get_modelid();
 	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
 
 	$recognized = $runObj->return->Parameters->registered;
 
-	$regIconHtml = \models\get_reg_icon_text();
-	$unregIconHtml = \models\get_unreg_icon_text();
+	$regIconHtml = get_reg_icon_text();
+	$unregIconHtml = get_unreg_icon_text();
 
 	//begin Recognized Parameters
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, 'Recognized Parameters', '', '', '',
 //		0, ++ $left, $left + 27, false, false ) );
 
 	//shared
-	$pname = \models\get_time_granularity_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_time_granularity_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-	$pname = \models\get_temporal_increment_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_temporal_increment_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-	$pname = \models\get_run_length_text();
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pname = get_run_length_text();
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
-//	$pname = \models\get_username_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_username_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 
-//	$pname = \models\get_password_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_password_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 	//end shared
 
 	$pname = 'Average Duration Of Infectiousness';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Average Latent Period';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Percent Compliant';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'r0';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) );
+	$pvalue = get_value($recognized, deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, $pvalue, '', '', 0, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Vaccination Schedule';
-	$pvalue = \models\get_value($recognized, deleteSpace($pname) )->value;
-	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, \models\get_edit_hint_text(),
+	$pvalue = get_value($recognized, deleteSpace($pname) )->value;
+	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, get_edit_hint_text(),
 		'models\seir\vaccination_schedule.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
 
 	//new level under InitialCompartmentSizes
@@ -118,19 +112,19 @@ function get_default_param_structure() {
 	$basePath = deleteSpace($basePath);
 
 	$pname = 'Susceptible';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname)  . '.' . 'Number');
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname)  . '.' . 'Number');
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Exposed';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Infectious';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Recovered';
-	$pvalue = \models\get_value($recognized, $basePath . '.' . deleteSpace($pname) );
+	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 	// end InitialCompartmentSizes
 

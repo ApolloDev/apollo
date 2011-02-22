@@ -24,19 +24,19 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models\agent_based;
+//namespace models\agent_based;
 
 require_once 'apollo\type.inc';
 require_once 'apollo\constant.inc';
 
 require_once 'models\agent_based\constant.inc';
 
-function exec($params) {
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+function agent_based_exec($params) {
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient ( \apollo\get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new SoapClient ( get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
 
-	$id = get_modelid ();
+	$id = agent_based_get_modelid ();
 	$runObj = $client->getDefaultAgentBasedModelRunRequestObj ( array ('arg0' => $id ) );
 
 	//Fill in the correct parameters
@@ -78,7 +78,7 @@ function exec($params) {
 			$status = $client->getStatus ( array ('arg0' => $runId ) );
 			$status = $status->return;
 			if (strcmp ( $status, 'COMPLETED' ) == 0) {
-				$rrro = new \apollo\RunResultRequestObjType ( $runId, '', '' );
+				$rrro = new RunResultRequestObjType ( $runId, '', '' );
 				$apolloResponse = $client->getAgentBasedModelRunResults ( array ('arg0' => $rrro ) );
 				$apolloResponse = $apolloResponse->return;
 				break;

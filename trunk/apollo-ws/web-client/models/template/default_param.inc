@@ -47,9 +47,9 @@ function get_default_param_structure() {
 	$left = 0;
 	$rowid = - 1;
 
-	$classmap = array ('ModelID' => '\apollo\ModelID', 'RunResultRequestObjType' => '\apollo\RunResultRequestObjType' );
+	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new \SoapClient (\apollo\get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
+	$client = new \SoapClient (get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
 
 	$id = get_modelid();
 //	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
@@ -60,45 +60,45 @@ function get_default_param_structure() {
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, 'Recognized Parameters', '', '', '', 0, ++ $left, $left + 27, false, false ) );
 //
 //	//shared
-//	$pname = \models\get_time_granularity_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_time_granularity_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
-//	$pname = \models\get_temporal_increment_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_temporal_increment_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
-//	$pname = \models\get_run_length_text();
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pname = get_run_length_text();
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
-////	$pname = \models\get_username_text();
-////	$pvalue = \models\get_value($recognized, $pname);
+////	$pname = get_username_text();
+////	$pvalue = get_value($recognized, $pname);
 ////	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 //
-////	$pname = \models\get_password_text();
-////	$pvalue = \models\get_value($recognized, $pname);
+////	$pname = get_password_text();
+////	$pvalue = get_value($recognized, $pname);
 ////	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', 1, ++ $left, ++ $left, true, false ) );
 //	//end shared
 //
 //	$pname = 'AverageDurationOfInfectiousness';
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'AverageLatentPeriod';
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'PercentCompliant';
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'r0';
-//	$pvalue = \models\get_value($recognized, $pname);
+//	$pvalue = get_value($recognized, $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 1, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'VaccinationSchedule';
-//	$pvalue = \models\get_value($recognized, $pname)->value;
+//	$pvalue = get_value($recognized, $pname)->value;
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, '',
 //		'models\seir\vaccination_schedule.html', json_encode($pvalue), 1, ++ $left, ++ $left, true, false ) );
 //
@@ -107,19 +107,19 @@ function get_default_param_structure() {
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $basePath, '', '', '', 1, ++ $left, $left + 9, false, false ) );
 //
 //	$pname = 'Susceptible';
-//	$pvalue = \models\get_value($recognized, $basePath . '.' . $pname . '.' . 'Number');
+//	$pvalue = get_value($recognized, $basePath . '.' . $pname . '.' . 'Number');
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 2, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'Exposed';
-//	$pvalue = \models\get_value($recognized, $basePath . '.' . $pname);
+//	$pvalue = get_value($recognized, $basePath . '.' . $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 2, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'Infectious';
-//	$pvalue = \models\get_value($recognized, $basePath . '.' . $pname);
+//	$pvalue = get_value($recognized, $basePath . '.' . $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 2, ++ $left, ++ $left, true, false ) );
 //
 //	$pname = 'Recovered';
-//	$pvalue = \models\get_value($recognized, $basePath . '.' . $pname);
+//	$pvalue = get_value($recognized, $basePath . '.' . $pname);
 //	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $pname, $pvalue, '', '', 2, ++ $left, ++ $left, true, false ) );
 //	// end InitialCompartmentSizes
 //

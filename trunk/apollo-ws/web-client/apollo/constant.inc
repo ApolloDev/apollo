@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace apollo;
+//namespace apollo;
 
 //$wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
 function get_wsdl(){
