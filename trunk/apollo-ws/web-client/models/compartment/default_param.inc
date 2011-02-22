@@ -27,7 +27,7 @@
 
 //namespace models\compartment;
 
-require_once 'models/compartment/constant.inc';
+require_once 'constant.inc';
 
 require_once 'models/misc.inc';
 require_once 'models/object_helper.inc';
