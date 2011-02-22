@@ -7,3 +7,4 @@ ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
 = Details =
 
 == Installation ==
+See: ApolloWsClientDeployGuide
