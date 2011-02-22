@@ -24,7 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-namespace models;
+//namespace models;
 
 function get_time_granularity_text() {
 	return "Temporal Granularity";
