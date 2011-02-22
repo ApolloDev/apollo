@@ -29,7 +29,7 @@
 require_once 'apollo\type.inc';
 
 /*
- * 			modelId.setGroupid("edu.pitt.rods");
+ *			modelId.setGroupid("edu.pitt.rods");
 			modelId.setModeltype("COMPARTMENT");
 			modelId.setModelid("Anthrax");
 			modelId.setVersion("1.0");
