@@ -36,4 +36,8 @@ http://localhost:8080/WsClient
 
  * Config the Apollo Web Service WSDL location
   * Please make sure the WSDL location is correct.
+  * Default WSDL location is:
+{{{
+http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl
+}}}
   * See 'get_wsdl()' in 'apollo/constant.inc'.
