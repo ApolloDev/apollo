@@ -27,10 +27,10 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-//
+set_include_path(getcwd() . ":" . get_include_path());
+
 require_once 'apollo/operation.inc';
 require_once 'models/misc.inc';
-//
 
 $ret = new Response();
 
