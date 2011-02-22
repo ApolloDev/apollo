@@ -3,7 +3,7 @@
 
 = Introduction =
 
-ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
+This page will tell you how to install ApolloWsClient on your local server step by step.
 
 = How to install =
 
