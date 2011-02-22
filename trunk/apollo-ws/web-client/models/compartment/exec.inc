@@ -26,10 +26,10 @@
  */
 //namespace models\compartment;
 
-require_once 'apollo\type.inc';
-require_once 'apollo\constant.inc';
+require_once 'apollo/type.inc';
+require_once 'apollo/constant.inc';
 
-require_once 'models\compartment\constant.inc';
+require_once 'models/compartment/constant.inc';
 
 function compartment_exec($params) {
 	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
