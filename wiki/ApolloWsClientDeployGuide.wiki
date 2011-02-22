@@ -10,7 +10,7 @@ ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
  * Download and install [http://www.apache.org/ Apache]
  If you have little experience in server configuration, I recommend you can download and install [http://www.zend.com/en/products/server-ce/ Zend Server Community Edition]
  * Checkout the source code of ApolloWsClient using SVN.
- svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client
+ svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client. <br/>
  Place the code into the 'webroot' of your apache server, usually its the 'htdoc' folder.
  * Open the browser, type in the address you've specified in apache and try to access the client.
 
