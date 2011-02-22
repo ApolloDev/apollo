@@ -98,8 +98,9 @@ class RunResultRequestObjType{
 };
 
 class Response {
+	// The data that apollo want to pass to the client
 	public $data;
+	// The exception record if something wrong happen
 	public $exception;
-	public $extra;
 };
 ?>
