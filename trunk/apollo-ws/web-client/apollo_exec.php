@@ -27,45 +27,50 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
+//
 require_once 'apollo/operation.inc';
-
 require_once 'models/misc.inc';
-
-//model name
-$modelName = $_POST ['ModelName'];
-//model parameters
-$rawParams = json_decode($_POST ['Parameters']);
-
-// Define the jason errors.
-$json_errors = array(
-    JSON_ERROR_NONE => 'No error has occurred',
-    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
-    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-    JSON_ERROR_SYNTAX => 'Syntax error',
-);
-
-if (json_last_error() != JSON_ERROR_NONE)
-	die('Json parse error : '. $json_errors[json_last_error()]. PHP_EOL);
-
-//cache the model parameters into map
-$params = array();
-foreach ($rawParams as $rawParam){
-	if ($rawParam->isLeaf == false)
-		continue;
-	//extra saves the complex data in json string
-	if (strlen($rawParam->extra) == 0){
-		//if its a single value
-		$params[deleteSpace( $rawParam->pname ) ] = $rawParam->value;
-	}
-	else{//if its a complex object
-		$params[deleteSpace( $rawParam->pname ) ] = json_decode($rawParam->extra);
-	}
-}
-
-$curves = apollo\exec($modelName, $params);
+//
 
 $ret = new apollo\Response();
-$ret->data = $curves;
+
+try {
+	//model name
+	$modelName = $_POST ['ModelName'];
+	//model parameters
+	$rawParams = json_decode($_POST ['Parameters']);
+
+	// Define the jason errors.
+	$json_errors = array(
+	    JSON_ERROR_NONE => 'No error has occurred',
+	    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+	    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+	    JSON_ERROR_SYNTAX => 'Syntax error',
+	);
+
+	if (json_last_error() != JSON_ERROR_NONE)
+		throw new Exception('Json parse error : '. $json_errors[json_last_error()]. PHP_EOL);
+
+	//cache the model parameters into map
+	$params = array();
+	foreach ($rawParams as $rawParam){
+		if ($rawParam->isLeaf == false)
+			continue;
+		//extra saves the complex data in json string
+		if (strlen($rawParam->extra) == 0){
+			//if its a single value
+			$params[deleteSpace( $rawParam->pname ) ] = $rawParam->value;
+		}
+		else{//if its a complex object
+			$params[deleteSpace( $rawParam->pname ) ] = json_decode($rawParam->extra);
+		}
+	}
+
+	$curves = apollo\exec($modelName, $params);
+	$ret->data = $curves;
+}catch (Exception $e){
+	$ret->exception = $e->getMessage();
+}
 
 echo json_encode($ret);
 ?>
