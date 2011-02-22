@@ -1,10 +1,9 @@
-#summary One-sentence summary of this page.
 #labels Phase-Implementation,Phase-Deploy
+# Instructions about how you can install ApolloWsClient on your server
 
 = Introduction =
 
-Add your content here.
-
+ApolloWsClient is a simple Apollo Web Service front-end written in PHP.
 
 = Details =
 
