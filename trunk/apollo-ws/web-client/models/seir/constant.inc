@@ -27,6 +27,8 @@
 
 //namespace models\seir;
 
+echo dirname('apollo/type.inc');
+
 require_once 'apollo/type.inc';
 
 function seir_get_modelid() {
