@@ -26,7 +26,7 @@
  */
 //namespace models\agent_based;
 
-require_once 'apollo\type.inc';
+require_once AROOT . '/apollo/type.inc';
 
 function agent_based_get_modelid() {
 	return new ModelID ( 'edu.pitt.rods', 'AGENTBASED', 'Influenza', '1.0' );
