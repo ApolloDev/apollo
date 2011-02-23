@@ -26,7 +26,7 @@
  */
 //namespace models\compartment;
 
-require_once 'apollo\type.inc';
+require_once AROOT . '/apollo/type.inc';
 
 /*
  *			modelId.setGroupid("edu.pitt.rods");
