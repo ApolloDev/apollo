@@ -24,17 +24,18 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-//namespace models\seir;
 
 require_once AROOT . '/apollo/type.inc';
-require_once AROOT . '/apollo/constant.inc';
+require_once AROOT . '/apollo/apollo.inc';
 
 require_once AROOT . '/models/seir/constant.inc';
 
 function seir_exec($params) {
 	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new SoapClient ( get_wsdl (), array ('trace' => true, 'classmap' => $classmap ) );
+	$apollo = new apollo();
+
+	$client = new SoapClient ( $apollo->getWSDL(), array ('trace' => true, 'classmap' => $classmap ) );
 
 	$id = seir_get_modelid ();
 	$runObj = $client->getDefaultSEIRModelRunRequestObj ( array ('arg0' => $id ) );
