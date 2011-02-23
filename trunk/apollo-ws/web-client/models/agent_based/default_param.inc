@@ -34,7 +34,7 @@ require_once AROOT . '/models/object_helper.inc';
 require_once AROOT . '/models/shared_parameters.inc';
 
 require_once AROOT . '/apollo/type.inc';
-require_once AROOT . '/apollo/constant.inc';
+require_once AROOT . '/apollo/apollo.inc';
 
 //for cell
 // total is 11
@@ -50,7 +50,8 @@ function agent_based_get_default_param_structure() {
 
 	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
 
-	$client = new SoapClient (get_wsdl(), array ('trace' => true, 'classmap' => $classmap ) );
+	$apollo = new apollo();
+	$client = new SoapClient ($apollo->getWSDL(), array ('trace' => true, 'classmap' => $classmap ) );
 
 	$id = agent_based_get_modelid();
 	$runObj = $client->getDefaultAgentBasedModelRunRequestObj ( array ('arg0' => $id ) );
