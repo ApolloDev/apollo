@@ -266,7 +266,7 @@ jQuery(document).ready(function(){
 		resizerClass : 'ui-state-default',
 		west__size : $('body').innerWidth() * 0.22, //width for the left panel
         west__onresize: function (pane, $Pane) {
-        	$(dataExchange.gridId).setGridWidth($Pane.innerWidth() - 16);
+        	$(dataExchange.gridId).setGridWidth($Pane.innerWidth() - 20);
 		}
 	});
 	//$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
