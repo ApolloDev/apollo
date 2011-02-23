@@ -109,7 +109,7 @@ function compartment_get_default_param_structure() {
 	$pname = 'Initial Compartment Sizes';
 	$pvalue = get_value($recognized, deleteSpace($pname))->named_Compartment;
 	$Compartment->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, get_edit_hint_text(),
-		'models\compartment\initial_compartment_sizes.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
+		'models/compartment/initial_compartment_sizes.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
 
 
 //	//new level under InitialCompartmentSizes
