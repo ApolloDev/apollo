@@ -100,7 +100,7 @@ Index page for the Apollo Test Client
 	</div>
 	<div id="snomed-ct-div" class="drop-box-div">
 	<div>Disease/SNOMED-CT Code:</div>
-	<select id="snomed-ct-combo" style="width: 120px;">
+	<select id="snomed-ct-combo" style="width: 220px;">
 		<option value="UNDEF" selected="selected">--Please Select--</option>
 		<option value="442696006">Influenza (H1N1)/442696006</option>
 		<option value="21927003">Anthrax/21927003</option>
