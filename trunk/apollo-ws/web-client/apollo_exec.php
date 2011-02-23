@@ -29,7 +29,7 @@
 
 define('AROOT', getcwd());
 
-require_once AROOT . '/apollo/operation.inc';
+require_once AROOT . '/apollo/apollo.inc';
 require_once AROOT . '/models/misc.inc';
 
 $ret = new Response();
@@ -69,7 +69,9 @@ try {
 		}
 	}
 
-	$curves = apollo_exec($snomed, $modelType, $params);
+	$apollo = new apollo();
+
+	$curves = $apollo->exec($snomed, $modelType, $params);
 	$ret->data = $curves;
 }catch (Exception $e){
 	$ret->exception = $e->getMessage();
