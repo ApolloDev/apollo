@@ -28,32 +28,16 @@
 
 define('AROOT', getcwd());
 
-require_once AROOT . '/apollo/constant.inc';
-
-require_once AROOT . '/models/seir/default_param.inc';
-require_once AROOT . '/models/compartment/default_param.inc';
-require_once AROOT . '/models/agent_based/default_param.inc';
+require_once AROOT . '/apollo/apollo.inc';
 
 $modelType = $_GET['model'];
 $snomed = $_GET['snomed'];
 
 try {
 
-	switch ($snomed) {
-		case get_snomed('Influenza'):
-			if ($modelType == 'Compartment');
-				$param_struct = seir_get_default_param_structure();
-		break;
+	$apollo = new apollo();
 
-		case get_snomed('Anthrax'):
-			if ($modelType == 'Compartment');
-				$param_struct = compartment_get_default_param_structure();
-		break;
-
-		default:
-			die('Unknow Model Type : ' . $modelType);
-		break;
-	}
+	$param_struct = $apollo->parameters($snomed, $modelType);
 
 	echo json_encode($param_struct);
 }catch (Exception $e){
