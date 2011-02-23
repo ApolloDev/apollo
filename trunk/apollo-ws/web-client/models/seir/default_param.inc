@@ -104,7 +104,7 @@ function seir_get_default_param_structure() {
 	$pname = 'Vaccination Schedule';
 	$pvalue = get_value($recognized, deleteSpace($pname) )->value;
 	$SEIR->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, $regIconHtml, $pname, get_edit_hint_text(),
-		'models\seir\vaccination_schedule.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
+		'models/seir/vaccination_schedule.html', json_encode($pvalue), 0, ++ $left, ++ $left, true, false ) );
 
 	//new level under InitialCompartmentSizes
 	$basePath = 'Initial Compartment Sizes'; //create base folder entry

@@ -121,7 +121,7 @@ function agent_based_get_default_param_structure() {
 	$pname = 'Vaccine Temporal Distribution';
 	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) )->value;
 	$AgentBased->rows [] = array ('id' => ++ $rowid, 'cell' => array ($rowid + 1, '', $pname, get_edit_hint_text(),
-		'models\agent_based\vaccine_temporal_distribution.html', json_encode($pvalue), 1, ++ $left, ++ $left, true, false ) );
+		'models/agent_based/vaccine_temporal_distribution.html', json_encode($pvalue), 1, ++ $left, ++ $left, true, false ) );
 
 	$pname = 'Vaccination Prioritization Scheme';
 	$pvalue = get_value($recognized, $basePath . '.' . deleteSpace($pname) );
