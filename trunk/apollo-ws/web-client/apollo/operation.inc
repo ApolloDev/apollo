@@ -34,12 +34,12 @@ require_once AROOT . '/models/agent_based/exec.inc';
 function apollo_exec($snomed, $modelType, $params) {
 	switch ($snomed) {
 		case get_snomed('Influenza'):
-			if ($modelType == 'Compartment');
+			if ($modelType == 'Compartment')
 				return seir_exec($params);
 		break;
 
 		case get_snomed('Anthrax'):
-			if ($modelType == 'Compartment');
+			if ($modelType == 'Compartment')
 				return compartment_exec($params);
 		break;
 
