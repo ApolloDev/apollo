@@ -26,9 +26,9 @@
  */
 //namespace apollo;
 
-require_once 'models\seir\exec.inc';
-require_once 'models\compartment\exec.inc';
-require_once 'models\agent_based\exec.inc';
+require_once AROOT . '/models/seir/exec.inc';
+require_once AROOT . '/models/compartment/exec.inc';
+require_once AROOT . '/models/agent_based/exec.inc';
 
 //use models\seir as seir;
 //use models\compartment as compartment;

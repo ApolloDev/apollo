@@ -27,10 +27,10 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-set_include_path(getcwd() . ":" . get_include_path());
+define('AROOT', getcwd());
 
-require_once 'apollo/operation.inc';
-require_once 'models/misc.inc';
+require_once AROOT . '/apollo/operation.inc';
+require_once AROOT . '/models/misc.inc';
 
 $ret = new Response();
 
