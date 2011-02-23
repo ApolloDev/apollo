@@ -41,15 +41,15 @@ try {
 	$rawParams = json_decode($_POST ['Parameters']);
 
 	// Define the jason errors.
-	$json_errors = array(
-	    JSON_ERROR_NONE => 'No error has occurred',
-	    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
-	    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-	    JSON_ERROR_SYNTAX => 'Syntax error',
-	);
+//	$json_errors = array(
+//	    JSON_ERROR_NONE => 'No error has occurred',
+//	    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+//	    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+//	    JSON_ERROR_SYNTAX => 'Syntax error',
+//	);
 
-	if (json_last_error() != JSON_ERROR_NONE)
-		throw new Exception('Json parse error : '. $json_errors[json_last_error()]. PHP_EOL);
+//	if (json_last_error() != JSON_ERROR_NONE)
+//		throw new Exception('Json parse error : '. $json_errors[json_last_error()]. PHP_EOL);
 
 	//cache the model parameters into map
 	$params = array();
