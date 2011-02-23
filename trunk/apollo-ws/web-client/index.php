@@ -30,10 +30,6 @@ Index page for the Apollo Test Client
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <title>Apollo-WS Client</title>
-<?php
-//set php in strict mode
-ini_set ( 'error_reporting', E_ALL | E_STRICT );
-?>
 
 <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>
@@ -106,8 +102,8 @@ ini_set ( 'error_reporting', E_ALL | E_STRICT );
 	<div>Disease/SNOMED-CT Code:</div>
 	<select id="snomed-ct-combo" style="width: 120px;">
 		<option value="UNDEF" selected="selected">--Please Select--</option>
-		<option value="Infulenza">Influenza (H1N1)/442696006</option>
-		<option value="Anthrax">Anthrax/21927003</option>
+		<option value="442696006">Influenza (H1N1)/442696006</option>
+		<option value="21927003">Anthrax/21927003</option>
 	</select>
 	</div>
 	<div id="model-div" class="drop-box-div">

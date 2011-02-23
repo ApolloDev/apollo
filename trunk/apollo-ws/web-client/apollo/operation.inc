@@ -24,29 +24,28 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-//namespace apollo;
+
+require_once AROOT . '/apollo/constant.inc';
 
 require_once AROOT . '/models/seir/exec.inc';
 require_once AROOT . '/models/compartment/exec.inc';
 require_once AROOT . '/models/agent_based/exec.inc';
 
-//use models\seir as seir;
-//use models\compartment as compartment;
-//use models\agent_based as agent_based;
+function apollo_exec($snomed, $modelType, $params) {
+	switch ($snomed) {
+		case get_snomed('Influenza'):
+			if ($modelType == 'Compartment');
+				return seir_exec($params);
+		break;
 
-function apollo_exec($modelType, $params) {
-	switch ($modelType){
-		case 'SEIR':
-			return seir_exec($params);
-
-		case 'Compartment':
-			return compartment_exec($params);
-
-		case 'AgentBased':
-			return agent_based_exec($params);
+		case get_snomed('Anthrax'):
+			if ($modelType == 'Compartment');
+				return compartment_exec($params);
+		break;
 
 		default:
-			die('Unknow Model Type!');
+			die('Unknow Model Type : ' . $modelType);
+		break;
 	}
 }
 ?>

@@ -28,21 +28,32 @@
 
 define('AROOT', getcwd());
 
+require_once AROOT . '/apollo/constant.inc';
+
 require_once AROOT . '/models/seir/default_param.inc';
 require_once AROOT . '/models/compartment/default_param.inc';
 require_once AROOT . '/models/agent_based/default_param.inc';
 
-$modelName = $_GET['model'];
+$modelType = $_GET['model'];
+$snomed = $_GET['snomed'];
 
 try {
-	if (strcmp($modelName, 'SEIR') == 0)
-		$param_struct = seir_get_default_param_structure();
-	else if (strcmp($modelName, 'Compartment') == 0)
-		$param_struct = compartment_get_default_param_structure();
-	else if (strcmp($modelName, 'AgentBased') == 0)
-		$param_struct = agent_based_get_default_param_structure();
-	else
-		throw new Exception("Unknow ModelName : " . $modelName);
+
+	switch ($snomed) {
+		case get_snomed('Influenza'):
+			if ($modelType == 'Compartment');
+				$param_struct = seir_get_default_param_structure();
+		break;
+
+		case get_snomed('Anthrax'):
+			if ($modelType == 'Compartment');
+				$param_struct = compartment_get_default_param_structure();
+		break;
+
+		default:
+			die('Unknow Model Type : ' . $modelType);
+		break;
+	}
 
 	echo json_encode($param_struct);
 }catch (Exception $e){

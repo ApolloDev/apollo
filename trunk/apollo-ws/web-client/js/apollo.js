@@ -44,6 +44,9 @@ var dataExchange = new function(){
 //--- Global Var
 var maintab;
 var lastEditId;
+
+var InfluenzaId = 442696006;
+var AnthraxId = 21927003;
 //---
 
 function clearParamGrid(){
@@ -60,12 +63,20 @@ function clearParamGrid(){
 	$('#select-img').show();
 }
 
-function loadParamGrid(modelName){
+function loadParamGrid(snomed, modelType){
+	//clear up
 	clearParamGrid();
+	
+	//TODO : make it into a map
+	var diseaseName = '';
+	if (parseInt(snomed) == InfluenzaId)
+		diseaseName = 'Influenza';
+	else if (parseInt(snomed) == AnthraxId)
+		diseaseName = 'Anthrax';
 	
 	//left panel
 	paramGrid.jqGrid({
-	    url: "apollo_param.php?model=" + modelName,
+	    url: "apollo_param.php?model=" + modelType + "&snomed=" + snomed,
 	    editurl: "edit.php",//dummy edit url
 	    datatype: "json",
 	    height: "auto",
@@ -87,7 +98,7 @@ function loadParamGrid(modelName){
 			{name: "extra",width:1,hidden:true}
 	    ],
 	    treeGrid: true,
-		caption: modelName + ' Model Parameters',
+		caption: diseaseName + ' ' + modelType + ' Model Parameters',
 	    ExpandColumn: "pname",
 	    autowidth: true,
 //	    rowNum: 200,
@@ -209,10 +220,10 @@ jQuery(document).ready(function(){
 			
 			model.append('<option value="UNDEF" selected="selected">--Please Select--</option>');
 			
-			if (currVal == 'Infulenza'){
-				model.append('<option value="SEIR">SEIR</option>');
+			if (parseInt (currVal) == InfluenzaId){
+				model.append('<option value="Compartment">Compartment</option>');
 //				model.append('<option value="AgentBased">AgentBased</option>');
-			}else if (currVal == 'Anthrax'){
+			}else if (parseInt (currVal) == AnthraxId){
 				model.append('<option value="Compartment">Compartment</option>');
 			}
 		}else {
@@ -224,8 +235,8 @@ jQuery(document).ready(function(){
 	
 	//load model when model drop down change
 	model.change(function(){
-		var modelName = $(this).val();
-		if (modelName == 'UNDEF')
+		var modelType = $(this).val();
+		if (modelType == 'UNDEF')
 			return;
 
 		//clear the tabs
@@ -237,7 +248,9 @@ jQuery(document).ready(function(){
 		//hide the model selection img
 		$('#select-img').hide();
 		
-		loadParamGrid(modelName);
+		var snomed = $('#snomed-ct-combo').val();
+		
+		loadParamGrid(snomed, modelType);
 	});
 	
 	//adjust the main content div size
@@ -301,12 +314,16 @@ jQuery(document).ready(function(){
 				var rowData = grid.getRowData();
 				var exportData = JSON.stringify(rowData);
 
-				var modelName = $('#model-combo').val();
+				var snomed = $('#snomed-ct-combo').val();
+				var modelType = $('#model-combo').val();
 
 				// push the data to the server
 				formData.push({
-					name : 'ModelName',
-					value : modelName
+					name : 'SNOMED',
+					value : snomed
+				},{
+					name : 'ModelType',
+					value : modelType
 				},{
 					name : 'Parameters',
 					value : exportData
