@@ -25,7 +25,7 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-require_once AROOT . 'apollo/type.inc';
+require_once AROOT . '/apollo/type.inc';
 
 function seir_get_modelid() {
 	return new ModelID ( 'edu.pitt.rods', 'SEIR', 'Influenza', '1.0' );
