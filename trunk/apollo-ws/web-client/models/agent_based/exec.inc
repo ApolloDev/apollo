@@ -26,10 +26,10 @@
  */
 //namespace models\agent_based;
 
-require_once 'apollo\type.inc';
-require_once 'apollo\constant.inc';
+require_once AROOT . '/apollo/type.inc';
+require_once AROOT . 'apollo/constant.inc';
 
-require_once 'models\agent_based\constant.inc';
+require_once AROOT . '/models/agent_based/constant.inc';
 
 function agent_based_exec($params) {
 	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );

@@ -26,10 +26,10 @@
  */
 //namespace models\seir;
 
-require_once 'apollo/type.inc';
-require_once 'apollo/constant.inc';
+require_once AROOT . '/apollo/type.inc';
+require_once AROOT . '/apollo/constant.inc';
 
-require_once 'models/seir/constant.inc';
+require_once AROOT . '/models/seir/constant.inc';
 
 function seir_exec($params) {
 	$classmap = array ('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType' );
