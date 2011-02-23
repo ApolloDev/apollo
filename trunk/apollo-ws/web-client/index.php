@@ -106,8 +106,8 @@ ini_set ( 'error_reporting', E_ALL | E_STRICT );
 	<div>Disease/SNOMED-CT Code:</div>
 	<select id="snomed-ct-combo" style="width: 120px;">
 		<option value="UNDEF" selected="selected">--Please Select--</option>
-		<option value="Infulenza">Influenza/0001</option>
-		<option value="Anthrax">Anthrax/0002</option>
+		<option value="Infulenza">Influenza (H1N1)/442696006</option>
+		<option value="Anthrax">Anthrax/21927003</option>
 	</select>
 	</div>
 	<div id="model-div" class="drop-box-div">
