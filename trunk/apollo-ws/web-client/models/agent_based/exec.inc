@@ -27,7 +27,7 @@
 //namespace models\agent_based;
 
 require_once AROOT . '/apollo/type.inc';
-require_once AROOT . 'apollo/constant.inc';
+require_once AROOT . '/apollo/constant.inc';
 
 require_once AROOT . '/models/agent_based/constant.inc';
 
