@@ -32,4 +32,19 @@ function get_wsdl(){
 //	return 'http://130.49.206.16:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
 }
 
+function get_snomed($diseaseName) {
+	switch ($diseaseName) {
+		case 'Influenza':
+			return '442696006';
+		break;
+
+		case 'Anthrax':
+			return '21927003';
+		break;
+		default:
+			;
+		break;
+	}
+}
+
 ?>

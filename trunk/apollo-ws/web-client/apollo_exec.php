@@ -35,8 +35,11 @@ require_once AROOT . '/models/misc.inc';
 $ret = new Response();
 
 try {
-	//model name
-	$modelName = $_POST ['ModelName'];
+	//snomed code
+	$snomed = $_POST ['SNOMED'];
+	//model type
+	$modelType = $_POST ['ModelType'];
+
 	//model parameters
 	$rawParams = json_decode($_POST ['Parameters']);
 
@@ -66,7 +69,7 @@ try {
 		}
 	}
 
-	$curves = apollo_exec($modelName, $params);
+	$curves = apollo_exec($snomed, $modelType, $params);
 	$ret->data = $curves;
 }catch (Exception $e){
 	$ret->exception = $e->getMessage();
