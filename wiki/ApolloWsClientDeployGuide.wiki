@@ -33,7 +33,7 @@ http://localhost/WsClient
 http://localhost:8080/WsClient
 }}}
 
-= Hints =
+= Tips=
 
  * Config the Apollo Web Service WSDL location
   * Please make sure the WSDL location is correct.
