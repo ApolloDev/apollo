@@ -10,4 +10,4 @@ The Apollo-WS Client is a simple web front-end to Apollo-WS written in PHP. This
 [http://apollo.googlecode.com/svn/wiki/img/ApolloWsClient.png]
 
 == Installation ==
-See: ApolloWsClientDeployGuide
+To install the Apollo-WS Client on your own web server, please see: ApolloWsClientDeployGuide
