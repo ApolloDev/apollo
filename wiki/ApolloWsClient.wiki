@@ -3,11 +3,11 @@
 
 = Introduction =
 
-ApolloWsClient is a simple Apollo Web Service front-end written in PHP. The key idea is that we want the end user can use ApolloWS anywhere they want without installing a native client on their machine, just open the browser, type in the client address then GO!
+The Apollo-WS Client is a simple web front-end to Apollo-WS written in PHP. This client enables end users to access Apollo-WS from any machine with a web browser and internet connect, with no software download required. 
 
 = Details =
 
-http://xx.png
+[http://apollo.googlecode.com/svn/wiki/img/ApolloWsClient.png]
 
 == Installation ==
 See: ApolloWsClientDeployGuide
