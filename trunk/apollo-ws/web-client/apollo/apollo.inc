@@ -39,12 +39,12 @@ class apollo {
 
 	public function exec($snomed, $modelType, $params) {
 		switch ($snomed) {
-			case $this->snomedDB ['Influenza'] :
+			case $this->getSNOMEDCode ('Influenza') :
 				if ($modelType == 'Compartment')
 					return seir_exec ( $params );
 				break;
 
-			case $this->snomedDB ['Anthrax'] :
+			case $this->getSNOMEDCode ('Anthrax') :
 				if ($modelType == 'Compartment')
 					return compartment_exec ( $params );
 				break;
