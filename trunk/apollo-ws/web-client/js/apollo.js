@@ -192,6 +192,9 @@ jQuery(document).ready(function(){
 	model.attr('disabled', 'disabled');
 	
 	jur.change(function(){
+		//disable the create button
+		$('#create').button( "option", "disabled", true );
+		
 		if ($(this).val() != 'UNDEF'){
 			snomed.attr('disabled', '');
 		}else {
@@ -209,6 +212,9 @@ jQuery(document).ready(function(){
 	});
 	
 	snomed.change(function(){
+		//disable the create button
+		$('#create').button( "option", "disabled", true );
+		
 		currVal = $(this).val();
 
 		clearParamGrid();
@@ -235,6 +241,9 @@ jQuery(document).ready(function(){
 	
 	//load model when model drop down change
 	model.change(function(){
+		//disable the create button
+		$('#create').button( "option", "disabled", true );
+		
 		var modelType = $(this).val();
 		if (modelType == 'UNDEF')
 			return;
