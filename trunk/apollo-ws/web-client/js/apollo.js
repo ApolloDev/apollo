@@ -52,7 +52,8 @@ var AnthraxId = 21927003;
 function clearParamGrid(){
 	//unload grid first
 	paramGrid = $(dataExchange.gridId);
-	paramGrid.GridUnload();
+	if (paramGrid.GridUnload)
+		paramGrid.GridUnload();
 	//get the empty div by id
 	paramGrid = $(dataExchange.gridId);
 	
