@@ -73,7 +73,8 @@ class apollo {
 	}
 	}
 
-	private $wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
+//	private $wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
+	private $wsdl = 'http://130.49.206.125:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
 	private $snomedDB = array();
 }
 
