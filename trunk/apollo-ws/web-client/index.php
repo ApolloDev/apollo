@@ -38,7 +38,9 @@ Index page for the Apollo Test Client
 <script src="js/jquery.form-2.36.js" type="text/javascript"></script>
 <script src="js/jquery.layout-1.3.0.js" type="text/javascript"></script>
 <!-- jqGrid -->
-<script src="js/jquery.jqGrid.js" type="text/javascript"></script>
+<script src="js/grid.locale-en.js" type="text/javascript"></script>
+<script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
+<!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
 
 <!-- Highchart -->
 <script type="text/javascript" src="js/highcharts.js"></script>
