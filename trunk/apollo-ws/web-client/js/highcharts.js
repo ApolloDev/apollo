@@ -2,7 +2,7 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license Highcharts JS v2.1.2 (2011-01-12)
+ * @license Highcharts JS v2.1.4 (2011-03-02)
  * 
  * (c) 2009-2010 Torstein Hønsi
  * 
@@ -35,7 +35,9 @@ var doc = document,
 	isIE = /msie/i.test(userAgent) && !win.opera,
 	docMode8 = doc.documentMode == 8,
 	isWebKit = /AppleWebKit/.test(userAgent),
-	hasSVG = win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"),
+	isFirefox = /Firefox/.test(userAgent),
+	//hasSVG = win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"),
+	hasSVG = !!doc.createElementNS && !!doc.createElementNS("http://www.w3.org/2000/svg", "svg").createSVGRect,
 	SVG_NS = 'http://www.w3.org/2000/svg',
 	hasTouch = 'ontouchstart' in doc.documentElement,
 	colorCounter,
@@ -1600,7 +1602,9 @@ SVGElement.prototype = {
 				if (key == 'text') {
 					// only one node allowed
 					this.textStr = value;
-					renderer.buildText(this);
+					if (this.added) {
+						renderer.buildText(this);
+					}
 				} else if (!skipAttr) {
 					//element.setAttribute(key, value);
 					attr(element, key, value);
@@ -1621,14 +1625,9 @@ SVGElement.prototype = {
 	symbolAttr: function(hash) {
 		var wrapper = this;
 		
-		wrapper.x = pick(hash.x, wrapper.x);
-		wrapper.y = pick(hash.y, wrapper.y); // mootools animation bug needs parseFloat
-		wrapper.r = pick(hash.r, wrapper.r);
-		wrapper.start = pick(hash.start, wrapper.start);
-		wrapper.end = pick(hash.end, wrapper.end);
-		wrapper.width = pick(hash.width, wrapper.width);
-		wrapper.height = pick(hash.height, wrapper.height);
-		wrapper.innerR = pick(hash.innerR, wrapper.innerR);
+		each (['x', 'y', 'r', 'start', 'end', 'width', 'height', 'innerR'], function(key) {
+			wrapper[key] = pick(hash[key], wrapper[key]);
+		});
 		
 		wrapper.attr({ 
 			d: wrapper.renderer.symbols[wrapper.symbolName](wrapper.x, wrapper.y, wrapper.r, {
@@ -1650,12 +1649,49 @@ SVGElement.prototype = {
 	},
 	
 	/**
+	 * Calculate the coordinates needed for drawing a rectangle crisply and return the
+	 * calculated attributes
+	 * @param {Number} strokeWidth
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @param {Number} width
+	 * @param {Number} height
+	 */
+	crisp: function(strokeWidth, x, y, width, height) {
+		
+		var wrapper = this,
+			key,
+			attr = {},
+			values = {},
+			normalizer;
+			
+		strokeWidth = strokeWidth || wrapper.strokeWidth || 0;
+		normalizer = strokeWidth % 2 / 2;
+
+		// normalize for crisp edges
+		values.x = mathFloor(x || wrapper.x || 0) + normalizer;
+		values.y = mathFloor(y || wrapper.y || 0) + normalizer;
+		values.width = mathFloor((width || wrapper.width || 0) - 2 * normalizer);
+		values.height = mathFloor((height || wrapper.height || 0) - 2 * normalizer);
+		values.strokeWidth = strokeWidth;
+		
+		for (key in values) {
+			if (wrapper[key] != values[key]) { // only set attribute if changed
+				wrapper[key] = attr[key] = values[key];
+			}
+		}
+		
+		return attr;
+	},
+	
+	/**
 	 * Set styles for the element
 	 * @param {Object} styles
 	 */
 	css: function(styles) {
 		var elemWrapper = this,
-			elem = elemWrapper.element;
+			elem = elemWrapper.element,
+			textWidth = styles && styles.width && elem.nodeName == 'text';
 		
 		// convert legacy
 		if (styles && styles.color) {
@@ -1668,21 +1704,25 @@ SVGElement.prototype = {
 			styles
 		);
 		
+		
+		// store object
+		elemWrapper.styles = styles;
+		
 		// serialize and set style attribute
-		if (isIE && !hasSVG) { // legacy IE doesn't support setting style attribute 
+		if (isIE && !hasSVG) { // legacy IE doesn't support setting style attribute
+			if (textWidth) {
+				delete styles.width;
+			} 
 			css(elemWrapper.element, styles);	
 		} else {
 			elemWrapper.attr({
 				style: serializeCSS(styles)
 			});
-		}
+		}	
 		
-		
-		// store object
-		elemWrapper.styles = styles;
 		
 		// re-build text
-		if (styles.width && elem.nodeName == 'text' && elemWrapper.added) {
+		if (textWidth && elemWrapper.added) {
 			elemWrapper.renderer.buildText(elemWrapper);
 		}
 		
@@ -1812,7 +1852,7 @@ SVGElement.prototype = {
 			x += (box.width - (alignOptions.width || 0) ) /
 					{ right: 1, center: 2 }[align];
 		}
-		attribs[alignByTranslate ? 'translateX' : 'x'] = x;
+		attribs[alignByTranslate ? 'translateX' : 'x'] = mathRound(x);
 		
 		
 		// vertical align
@@ -1821,7 +1861,7 @@ SVGElement.prototype = {
 					({ bottom: 1, middle: 2 }[vAlign] || 1);
 			
 		}
-		attribs[alignByTranslate ? 'translateY' : 'y'] = y;
+		attribs[alignByTranslate ? 'translateY' : 'y'] = mathRound(y);
 		
 		// animate only if already placed
 		this[this.placed ? 'animate' : 'attr'](attribs);
@@ -1899,13 +1939,17 @@ SVGElement.prototype = {
 			childNodes = parentNode.childNodes,
 			element = this.element,
 			zIndex = attr(element, 'zIndex'),
-			textStr = this.textStr,
 			otherElement,
 			otherZIndex,
 			i;
 			
 		// mark as inverted
 		this.parentInverted = parent && parent.inverted;
+		
+		// build formatted text
+		if (this.textStr !== undefined) {
+			renderer.buildText(this);
+		}
 		
 		// mark the container as having z indexed children
 		if (zIndex) {
@@ -1931,14 +1975,11 @@ SVGElement.prototype = {
 			}
 		}
 		
-		// operations before adding
-		if (textStr !== undefined) {
-			renderer.buildText(this);
-			this.added = true;
-		}
-		
 		// default: append at the end
 		parentNode.appendChild(element);
+		
+		this.added = true;
+		
 		return this;
 	},
 
@@ -2047,8 +2088,9 @@ SVGRenderer.prototype = {
 	 * @param {Object} container
 	 * @param {Number} width
 	 * @param {Number} height
+	 * @param {Boolean} forExport
 	 */
-	init: function(container, width, height) {
+	init: function(container, width, height, forExport) {
 		var renderer = this,
 			loc = location,
 			boxWrapper;
@@ -2067,6 +2109,7 @@ SVGRenderer.prototype = {
 		renderer.alignedObjects = [];
 		renderer.url = isIE ? '' : loc.href.replace(/#.*?$/, ''); // page url used for internal references
 		renderer.defs = this.createElement('defs').add();
+		renderer.forExport = forExport;
 		
 		renderer.setSize(width, height, false);
 		
@@ -2102,17 +2145,19 @@ SVGRenderer.prototype = {
 			hrefRegex = /href="([^"]+)"/,
 			parentX = attr(textNode, 'x'),
 			textStyles = wrapper.styles,
+			reverse = isFirefox && textStyles && textStyles.HcDirection == 'rtl' && !this.forExport, // issue #38
+			arr,
 			width = textStyles && pInt(textStyles.width),
 			textLineHeight = textStyles && textStyles.lineHeight,
 			lastLine,
 			i = childNodes.length;
-			
+		
 		// remove old text
 		while (i--) {
 			textNode.removeChild(childNodes[i]);
 		}
 		
-		if (width) {
+		if (width && !wrapper.added) {
 			this.box.appendChild(textNode); // attach it to the DOM to read offset width
 		}
 		
@@ -2139,9 +2184,20 @@ SVGRenderer.prototype = {
 					}
 					
 					span = span.replace(/<(.|\n)*?>/g, '') || ' ';
-					tspan.appendChild(doc.createTextNode(span)); // WebKit needs a string
 					
-					//console.log('"'+tspan.textContent+'"');
+					// issue #38 workaround.
+					if (reverse) {
+						arr = [];
+						i = span.length;
+						while (i--) {
+							arr.push(span.charAt(i))
+						}
+						span = arr.join('');
+					}
+					
+					// add the text node
+					tspan.appendChild(doc.createTextNode(span));
+					
 					if (!spanNo) { // first span in a line, align it to the left
 						attributes.x = parentX;
 					} else {
@@ -2177,22 +2233,24 @@ SVGRenderer.prototype = {
 							tooLong,
 							actualWidth,
 							rest = [];
-						
+							
 						while (words.length || rest.length) {
 							actualWidth = textNode.getBBox().width;
 							tooLong = actualWidth > width;
 							if (!tooLong || words.length == 1) { // new line needed
 								words = rest;
 								rest = [];
-								tspan = doc.createElementNS(SVG_NS, 'tspan');
-								attr(tspan, {
-									x: parentX,
-									dy: textLineHeight || 16
-								});
-								textNode.appendChild(tspan);
+								if (words.length) {
+									tspan = doc.createElementNS(SVG_NS, 'tspan');
+									attr(tspan, {
+										x: parentX,
+										dy: textLineHeight || 16
+									});
+									textNode.appendChild(tspan);
 								
-								if (actualWidth > width) { // a single word is pressing it out
-									width = actualWidth;
+									if (actualWidth > width) { // a single word is pressing it out
+										width = actualWidth;
+									}
 								}
 							} else { // append to existing line tspan
 								tspan.removeChild(tspan.firstChild);
@@ -2296,31 +2354,20 @@ SVGRenderer.prototype = {
 	 * @param {Number} strokeWidth A stroke width can be supplied to allow crisp drawing
 	 */
 	rect: function (x, y, width, height, r, strokeWidth) {
-		
-		if (arguments.length > 1) {
-			var normalizer = (strokeWidth || 0) % 2 / 2;
-
-			// normalize for crisp edges
-			x = mathRound(x || 0) + normalizer;
-			y = mathRound(y || 0) + normalizer;
-			width = mathRound((width || 0) - 2 * normalizer);
-			height = mathRound((height || 0) - 2 * normalizer);
+		if (isObject(x)) {
+			y = x.y;
+			width = x.width;
+			height = x.height;
+			r = x.r;
+			x = x.x;	
 		}
-		
-		var attr = isObject(x) ? 
-			x : // the attributes can be passed as the first argument
-			{
-				x: x,
-				y: y,
-				width: mathMax(width, 0),
-				height: mathMax(height, 0)
-			};			
-		
-		return this.createElement('rect').attr(extend(attr, {
-			rx: r || attr.r,
-			ry: r || attr.r,
+		var wrapper = this.createElement('rect').attr({
+			rx: r,
+			ry: r,
 			fill: NONE
-		}));
+		});
+		
+		return wrapper.attr(wrapper.crisp(strokeWidth, x, y, mathMax(width, 0), mathMax(height, 0)));
 	},
 	
 	/**
@@ -3002,20 +3049,24 @@ var VMLElement = extendClass( SVGElement, {
 	css: function(styles) {
 		var wrapper = this,
 			element = wrapper.element,
-			textWidth = styles && styles.width && element.tagName == 'SPAN';
+			textWidth = styles && element.tagName == 'SPAN' && styles.width;
 		
-		if (textWidth) {
+		/*if (textWidth) {
 			extend(styles, {
 				display: 'block',
 				whiteSpace: 'normal'
 			});	
+		}*/
+		if (textWidth) {
+			delete styles.width;
+			wrapper.textWidth = textWidth;
+			wrapper.updateTransform();	
 		}
+		
 		wrapper.styles = extend(wrapper.styles, styles);
 		css(wrapper.element, styles);
 		
-		if (textWidth) {
-			wrapper.updateTransform();	
-		}
+		
 		
 		return wrapper;
 	},
@@ -3132,9 +3183,10 @@ var VMLElement = extendClass( SVGElement, {
 				costheta = 1,
 				sintheta = 0,
 				quad,
+				textWidth = pInt(wrapper.textWidth),
 				xCorr = wrapper.xCorr || 0,
 				yCorr = wrapper.yCorr || 0,
-				currentTextTransform = [rotation, align, elem.innerHTML, elem.style.width].join(',');
+				currentTextTransform = [rotation, align, elem.innerHTML, wrapper.textWidth].join(',');
 				
 			if (currentTextTransform != wrapper.cTT) { // do the calculations and DOM access only if properties changed
 				
@@ -3154,6 +3206,16 @@ var VMLElement = extendClass( SVGElement, {
 				
 				width = elem.offsetWidth;
 				height = elem.offsetHeight;
+				
+				// update textWidth
+				if (width > textWidth) {
+					css(elem, {
+						width: textWidth +PX,
+						display: 'block',
+						whiteSpace: 'normal'
+					});
+					width = textWidth;
+				}
 				
 				// correct x and y
 				lineHeight = mathRound(pInt(elem.style.fontSize || 12) * 1.2);
@@ -3546,29 +3608,18 @@ VMLRenderer.prototype = merge( SVGRenderer.prototype, { // inherit SVGRenderer
 	 * VML uses a shape for rect to overcome bugs and rotation problems
 	 */
 	rect: function(x, y, width, height, r, strokeWidth) {
-		// todo: share this code with SVG
-		if (arguments.length > 1) {
-			var normalizer = (strokeWidth || 0) % 2 / 2;
-
-			// normalize for crisp edges
-			x = mathRound(x || 0) + normalizer;
-			y = mathRound(y || 0) + normalizer;
-			width = mathRound((width || 0) - 2 * normalizer);
-			height = mathRound((height || 0) - 2 * normalizer);
-		}
 		
-		if (isObject(x)) { // the attributes can be passed as the first argument 
+		if (isObject(x)) {
 			y = x.y;
 			width = x.width;
 			height = x.height;
 			r = x.r;
 			x = x.x;
-		} 
+		}
+		var wrapper = this.symbol('rect');
+		wrapper.r = r;
 		
-		return this.symbol('rect', x || 0, y || 0, r || 0, {
-			width: width || 0,
-			height: height || 0
-		});		
+		return wrapper.attr(wrapper.crisp(strokeWidth, x, y, mathMax(width, 0), mathMax(height, 0)));
 	},
 	
 	/**
@@ -3600,14 +3651,19 @@ VMLRenderer.prototype = merge( SVGRenderer.prototype, { // inherit SVGRenderer
 				sinStart = mathSin(start),
 				cosEnd = mathCos(end),
 				sinEnd = mathSin(end),
-				innerRadius = options.innerR;
+				innerRadius = options.innerR,
+				circleCorrection = 0.07 / radius,
+				innerCorrection = innerRadius && 0.1 / innerRadius || 0;
 				
 			if (end - start === 0) { // no angle, don't show it. 
 				return ['x'];
 				
-			} else if (end - start == 2 * mathPI) { // full circle
+			//} else if (end - start == 2 * mathPI) { // full circle
+			} else if (2 * mathPI - end + start < circleCorrection) { // full circle
 				// empirical correction found by trying out the limits for different radii
-				cosEnd = -0.07 / radius;
+				cosEnd = - circleCorrection;
+			} else if (end - start < innerCorrection) { // issue #186, another mysterious VML arc problem
+				cosEnd = mathCos(start + innerCorrection);
 			}
 								
 			return [
@@ -3657,13 +3713,16 @@ VMLRenderer.prototype = merge( SVGRenderer.prototype, { // inherit SVGRenderer
 		 * Add rectangle symbol path which eases rotation and omits arcsize problems
 		 * compared to the built-in VML roundrect shape
 		 * 
-		 * @param {Object} left Left position
-		 * @param {Object} top Top position
-		 * @param {Object} r Border radius
+		 * @param {Number} left Left position
+		 * @param {Number} top Top position
+		 * @param {Number} r Border radius
 		 * @param {Object} options Width and height
 		 */
 		
 		rect: function (left, top, r, options) {
+			if (!defined(options)) {
+				return [];
+			}
 			var width = options.width,
 				height = options.height,
 				right = left + width,
@@ -3933,11 +3992,12 @@ function Chart (options, callback) {
 					str,
 					withLabel = !((pos == min && !pick(options.showFirstLabel, 1)) ||
 						(pos == max && !pick(options.showLastLabel, 0))),
-					width/* = categories && horiz && categories.length && 
+					width = categories && horiz && categories.length && 
 						!labelOptions.step && !labelOptions.staggerLines &&
 						!labelOptions.rotation &&
 						plotWidth / categories.length ||
-						!horiz && plotWidth / 2*/,
+						!horiz && plotWidth / 2,
+					css,
 					label = this.label;
 					
 				
@@ -3949,8 +4009,11 @@ function Chart (options, callback) {
 						value: (categories && categories[pos] ? categories[pos] : pos)
 					});
 				
+				// prepare CSS
+				css = width && { width: (width - 2 * (labelOptions.padding || 10)) +PX };
+				css = extend(css, labelOptions.style);
+				
 				// first call
-				width = width && { width: (width - 2 * (labelOptions.padding || 10)) +PX };
 				if (label === UNDEFINED) {
 					this.label =  
 						defined(str) && withLabel && labelOptions.enabled ?
@@ -3964,16 +4027,15 @@ function Chart (options, callback) {
 									rotation: labelOptions.rotation
 								})
 								// without position absolute, IE export sometimes is wrong
-								.css(extend(width, labelOptions.style))
+								.css(css)
 								.add(axisGroup):
 							null;
 							
 				// update
 				} else if (label) {
 					label.attr({ text: str })
-						.css(width);
+						.css(css);
 				}
-					
 			},
 			/**
 			 * Get the offset height or width of the label
@@ -3983,7 +4045,7 @@ function Chart (options, callback) {
 				return label ? 
 					((this.labelBBox = label.getBBox()))[horiz ? 'height' : 'width'] :
 					0;
-			},
+				},
 			/**
 			 * Put everything in place
 			 * 
@@ -4974,7 +5036,6 @@ function Chart (options, callback) {
 		 */
 		function setExtremes(newMin, newMax, redraw, animation) {
 			
-			setAnimation(animation, chart);
 			redraw = pick(redraw, true); // defaults to true
 				
 			fireEvent(axis, 'setExtremes', { // fire an event to enable syncing of multiple charts
@@ -4988,7 +5049,7 @@ function Chart (options, callback) {
 				
 				// redraw
 				if (redraw) {
-					chart.redraw();
+					chart.redraw(animation);
 				}
 			});
 			
@@ -5120,6 +5181,7 @@ function Chart (options, callback) {
 				axisOffset[side], 
 				axisTitleMargin + titleOffset + directionFactor * offset
 			);
+			
 		}
 		
 		/**
@@ -5316,7 +5378,8 @@ function Chart (options, callback) {
 		 * @param {Object} id
 		 */
 		function removePlotBandOrLine(id) {
-			for (var i = 0; i < plotLinesAndBands.length; i++) {
+			var i = plotLinesAndBands.length;
+			while (i--) {
 				if (plotLinesAndBands[i].id == id) {
 					plotLinesAndBands[i].destroy();
 				}
@@ -5687,13 +5750,13 @@ function Chart (options, callback) {
 				
 				// get the bounding box
 				bBox = label.getBBox();
-				boxWidth = bBox.width;
-				boxHeight = bBox.height;
-				
+				boxWidth = bBox.width + 2 * padding;
+				boxHeight = bBox.height + 2 * padding;
+
 				// set the size of the box
 				box.attr({
-					width: boxWidth + 2 * padding,
-					height: boxHeight + 2 * padding,
+					width: boxWidth,
+					height: boxHeight,
 					stroke: options.borderColor || point.color || currentSeries.color || '#606060'
 				});
 				
@@ -6626,10 +6689,9 @@ function Chart (options, callback) {
 					.shadow(options.shadow);
 				
 				} else if (legendWidth > 0 && legendHeight > 0) {
-					box.animate({
-						width: legendWidth,
-						height: legendHeight
-					});
+					box.animate(
+						box.crisp(null, null, null, legendWidth, legendHeight)
+					);
 				}
 				
 				// hide the border if no items
@@ -7106,7 +7168,6 @@ function Chart (options, callback) {
 				title.destroy(); // remove old
 				title = null;
 			}
-			
 			if (chartTitleOptions && chartTitleOptions.text && !title) {
 				chart[name] = renderer.text(
 					chartTitleOptions.text, 
@@ -7189,8 +7250,8 @@ function Chart (options, callback) {
 		);
 		
 		chart.renderer = renderer = 
-			optionsChart.renderer == 'SVG' ? // force SVG, used for SVG export
-				new SVGRenderer(container, chartWidth, chartHeight) : 
+			optionsChart.forExport ? // force SVG, used for SVG export
+				new SVGRenderer(container, chartWidth, chartHeight, true) : 
 				new Renderer(container, chartWidth, chartHeight);
 				
 		// Issue 110 workaround:
@@ -7200,7 +7261,7 @@ function Chart (options, callback) {
 		// sharp lines, this must be compensated for. This doesn't seem to work inside
 		// iframes though (like in jsFiddle).
 		var subPixelFix, rect;
-		if (/Firefox/.test(userAgent) && container.getBoundingClientRect) {
+		if (isFirefox && container.getBoundingClientRect) {
 			subPixelFix = function() {
 				css(container, { left: 0, top: 0 });
 				rect = container.getBoundingClientRect();
@@ -7303,7 +7364,7 @@ function Chart (options, callback) {
 		if (!defined(optionsMarginRight)) {
 			marginRight += axisOffset[1];
 		}
-
+		
 		setChartSize();
 		
 	};
@@ -7468,10 +7529,9 @@ function Chart (options, callback) {
 					.add()
 					.shadow(optionsChart.shadow);
 			} else { // resize
-				chartBackground.animate({
-					width: chartWidth - mgn,
-					height:chartHeight - mgn
-				});
+				chartBackground.animate(
+					chartBackground.crisp(null, null, null, chartWidth - mgn, chartHeight - mgn)
+				);
 			}
 		}
 		
@@ -7509,7 +7569,9 @@ function Chart (options, callback) {
 					})
 					.add();
 			} else {
-				plotBorder.animate(plotSize);
+				plotBorder.animate(
+					plotBorder.crisp(null, plotLeft, plotTop, plotWidth, plotHeight)
+				);
 			}
 		}
 		
@@ -7652,16 +7714,21 @@ function Chart (options, callback) {
 		}
 		
 		// remove container and all SVG
-		container.innerHTML = '';
-		removeEvent(container);
-		if (parentNode) {
-			parentNode.removeChild(container);
+		if (container) { // can break in IE when destroyed before finished loading
+			container.innerHTML = '';
+			removeEvent(container);
+			if (parentNode) {
+				parentNode.removeChild(container);
+			}
+			
+			// IE6 leak 
+			container =	null;
 		}
 		
-		// IE6 leak 
-		container =	null;
 		// IE7 leak
-		renderer.alignedObjects = null;
+		if (renderer) { // can break in IE when destroyed before finished loading
+			renderer.alignedObjects = null;
+		}
 			
 		// memory and CPU leak
 		clearInterval(tooltipInterval);
@@ -7680,7 +7747,7 @@ function Chart (options, callback) {
 		// VML namespaces can't be added until after complete. Listening
 		// for Perini's doScroll hack is not enough.
 		var onreadystatechange = 'onreadystatechange';
-		if (!hasSVG && !win.parent && doc.readyState != 'complete') {
+		if (!hasSVG && win == win.top && doc.readyState != 'complete') {
 			doc.attachEvent(onreadystatechange, function() {
 				doc.detachEvent(onreadystatechange, firstRender);
 				firstRender();
@@ -8017,6 +8084,23 @@ Point.prototype = {
 	},
 	
 	/**
+	 * Get the formatted text for this point's data label
+	 * 
+	 * @return {String} The formatted data label pseudo-HTML
+	 */
+	getDataLabelText: function() {
+		var point = this;
+		return this.series.options.dataLabels.formatter.call({
+			x: point.x,
+			y: point.y,
+			series: point.series,
+			point: point,
+			percentage: point.percentage,
+			total: point.total || point.stackTotal
+		});
+	},
+	
+	/**
 	 * Update the point with new options (typically x/y data) and optionally redraw the series.
 	 * 
 	 * @param {Object} options Point options as defined in the series.data array
@@ -8028,20 +8112,35 @@ Point.prototype = {
 	update: function(options, redraw, animation) {
 		var point = this,
 			series = point.series,
+			dataLabel = point.dataLabel,
+			graphic = point.graphic,
 			chart = series.chart;
 		
-		setAnimation(animation, chart);
 		redraw = pick(redraw, true);
 		
 		// fire the event with a default handler of doing the update
 		point.firePointEvent('update', { options: options }, function() {
 
 			point.applyOptions(options);
-	
+			
+			if (dataLabel) {
+				dataLabel.attr({
+					text: point.getDataLabelText()
+				})
+			}
+			
+			// update visuals
+			if (isObject(options)) {
+				series.getAttribs();
+				if (graphic) {
+					graphic.attr(point.pointAttr[series.state]);
+				}
+			}
+			
 			// redraw
 			series.isDirty = true;
 			if (redraw) {
-				chart.redraw();
+				chart.redraw(animation);
 			}
 		});
 	},
@@ -8522,7 +8621,7 @@ Series.prototype = {
 			point.plotX = series.xAxis.translate(xValue);
 			
 			// calculate the bottom y value for stacked series
-			if (stacking && series.visible && stack[xValue]) {
+			if (stacking && series.visible && stack && stack[xValue]) {
 				pointStack = stack[xValue];
 				pointStackTotal = pointStack.total;
 				pointStack.cum = yBottom = pointStack.cum - yValue; // start from top
@@ -8916,7 +9015,7 @@ Series.prototype = {
 			chart = series.chart,
 			//chartSeries = series.chart.series,
 			clipRect = series.clipRect,
-			issue134 = /\/5[0-9\.]+ Safari\//.test(userAgent), // todo: update when Safari bug is fixed
+			issue134 = /\/5[0-9\.]+ (Safari|Mobile)\//.test(userAgent), // todo: update when Safari bug is fixed
 			destroy,
 			prop;
 		
@@ -9002,14 +9101,7 @@ Series.prototype = {
 					align = options.align;
 					
 				// get the string
-				str = options.formatter.call({
-					x: point.x,
-					y: point.y,
-					series: series,
-					point: point,
-					percentage: point.percentage,
-					total: point.total || point.stackTotal
-				});
+				str = point.getDataLabelText();
 				x = (inverted ? chart.plotWidth - plotY : plotX) + options.x;
 				y = (inverted ? chart.plotHeight - plotX : plotY) + options.y;
 				
@@ -9024,7 +9116,7 @@ Series.prototype = {
 						x: x,
 						y: y
 					});
-				} else if (str) {
+				} else if (defined(str)) {
 					dataLabel = point.dataLabel = chart.renderer.text(
 						str, 
 						x, 
@@ -9708,7 +9800,7 @@ var ColumnSeries = extendClass(Series, {
 						stackGroups[stackKey] = columnCount++;	
 					}					
 					columnIndex = stackGroups[stackKey];
-				} else {
+				} else if (otherSeries.visible){
 					columnIndex = columnCount++;
 				}
 				otherSeries.columnIndex = columnIndex;
@@ -9731,7 +9823,7 @@ var ColumnSeries = extendClass(Series, {
 			optionPointWidth = options.pointWidth,
 			pointPadding = defined(optionPointWidth) ? (pointOffsetWidth - optionPointWidth) / 2 : 
 				pointOffsetWidth * options.pointPadding,
-			pointWidth = pick(optionPointWidth, pointOffsetWidth - 2 * pointPadding),
+			pointWidth = mathMax(pick(optionPointWidth, pointOffsetWidth - 2 * pointPadding), 1),
 			colIndex = (reversedXAxis ? columnCount - 
 				series.columnIndex : series.columnIndex) || 0,
 			pointXOffset = pointPadding + (groupPadding + colIndex *
@@ -9747,7 +9839,6 @@ var ColumnSeries = extendClass(Series, {
 				yBottom = point.yBottom || translatedThreshold,
 				barX = point.plotX + pointXOffset,
 				barY = mathCeil(mathMin(plotY, yBottom)), 
-				barW = pointWidth,
 				barH = mathCeil(mathMax(plotY, yBottom) - barY),
 				trackerY;
 			
@@ -9766,14 +9857,14 @@ var ColumnSeries = extendClass(Series, {
 			extend(point, {
 				barX: barX,
 				barY: barY, 
-				barW: barW,
+				barW: pointWidth,
 				barH: barH
 			});
 			point.shapeType = 'rect';
 			point.shapeArgs = {
 				x: barX,
 				y: barY,
-				width: barW,
+				width: pointWidth,
 				height: barH,
 				r: options.borderRadius
 			};
@@ -10574,7 +10665,7 @@ win.Highcharts = {
 	merge: merge,
 	pick: pick,
 	extendClass: extendClass,
-	version: '2.1.2'
+	version: '2.1.4'
 };
 })();
 
