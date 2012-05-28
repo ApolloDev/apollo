@@ -16,11 +16,57 @@
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      ontologyIRI="http://purl.obolibrary.org/obo/geo.owl">
-    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
-    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Import>http://purl.obolibrary.org/obo/iao/ontology-metadata.owl</Import>
+    <Import>http://www.ifomis.org/bfo/1.1</Import>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/OBI_0000245"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000102"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000131"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000151"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000175"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000189"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000199"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000206"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000267"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000306"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000369"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GEO_000000390"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/GEO_000000001"/>
+        <Class IRI="http://purl.obolibrary.org/obo/OBI_0000245"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/GEO_000000002"/>
+        <Class IRI="http://www.ifomis.org/bfo/1.1/snap#IndependentContinuant"/>
+    </SubClassOf>
     <SubClassOf>
         <Class IRI="http://purl.obolibrary.org/obo/GEO_000000003"/>
         <Class IRI="http://purl.obolibrary.org/obo/GEO_000000001"/>
@@ -51,6 +97,54 @@
     <SubClassOf>
         <Class IRI="http://purl.obolibrary.org/obo/GEO_000000008"/>
         <Class IRI="http://purl.obolibrary.org/obo/GEO_000000002"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/OBI_0000245"/>
+        <Class IRI="http://www.ifomis.org/bfo/1.1/snap#IndependentContinuant"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000102"/>
+        <Class IRI="http://www.ifomis.org/bfo/1.1/snap#Object"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000131"/>
+        <Class IRI="#GEO_000000102"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000151"/>
+        <Class IRI="#GEO_000000102"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000175"/>
+        <Class IRI="#GEO_000000131"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000189"/>
+        <Class IRI="#GEO_000000199"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000199"/>
+        <Class IRI="#GEO_000000131"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000206"/>
+        <Class IRI="#GEO_000000199"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000267"/>
+        <Class IRI="http://www.ifomis.org/bfo/1.1/snap#ObjectAggregate"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000306"/>
+        <Class IRI="#GEO_000000267"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000369"/>
+        <Class IRI="#GEO_000000306"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GEO_000000390"/>
+        <Class IRI="#GEO_000000369"/>
     </SubClassOf>
     <ClassAssertion>
         <Class IRI="http://purl.obolibrary.org/obo/GEO_000000007"/>
@@ -1273,7 +1367,7 @@
         <NamedIndividual IRI="http://purl.obolibrary.org/obo/GEO_000000326"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class IRI="http://purl.obolibrary.org/obo/GEO_000000008"/>
+        <Class IRI="#GEO_000000390"/>
         <NamedIndividual IRI="http://purl.obolibrary.org/obo/GEO_000000327"/>
     </ClassAssertion>
     <ObjectPropertyAssertion>
@@ -2052,44 +2146,114 @@
         <NamedIndividual IRI="http://purl.obolibrary.org/obo/GEO_000000015"/>
     </ObjectPropertyAssertion>
     <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000001</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">An organization that governs the people living in a particular geographical region or aggregate of geographical regions.  The geographical region it governs can change over time (such as the westward expansion of the United States and the addition of Hawaii)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000001</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000001</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">In some cases, geopolitical entities possess uninhabited geographical regions.  However, it is that case that it controls the movement of people in and out of those regions, and its laws apply to those regions.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000001</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Geopolitical entity</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">geopolitical entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000002</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">An aggregate of geopoliticial entities.  Examples include the group of states of the United States, the nations of North America, and so on.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000002</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000002</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Group of geopolitical entities</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">group of geopolitical entities</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000003</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">A geopolitical entity that is self contained and recognizes no higher political authority than itself.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000003</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000003</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Nation</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">nation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000004</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">A geopolitical entity that recognizes a nation as its only higher political authority.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000004</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000004</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Subnational entity</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">subnational entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000005</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">A subnational entity that is the primary organizational member of a nation, is subject to the full set of laws of the nation, enjoys all the privileges established under the laws of the nation, is not a member of any other geopolitical entity, and itself governs a part of the geographical region governed by the nation.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000005</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000005</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Major administrative subdivision</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">major administrative subdivision</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000006</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">A subnational entity that is not under the full authority of the nation to which it belongs.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000006</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000006</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Although major administrative subdivisions have varying degrees of autonomy, this autonomy does not exist at the same level as for a subnational entity.  For example, Puerto Rico is not subject to the federal income tax, and it has no representatives in Congress.  In this respect it has autonomy that US states do not have.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000006</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Dependency</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">geopolitical dependency</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000007</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Group of major administrative subdivisions</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">group of major administrative subdivisions</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000008</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Group of dependencies</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">group of dependencies</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -3214,7 +3378,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000080</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Côte d&#39;Ivoire</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Côte d&apos;Ivoire</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://purl.obolibrary.org/obo/GEO_000000021"/>
@@ -3334,7 +3498,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000086</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Democratic People&#39;s Republic of Korea</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Democratic People&apos;s Republic of Korea</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://purl.obolibrary.org/obo/GEO_000000021"/>
@@ -4514,7 +4678,7 @@
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000148</IRI>
-        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Lao People&#39;s Democratic Republic</Literal>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">Lao People&apos;s Democratic Republic</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://purl.obolibrary.org/obo/GEO_000000021"/>
@@ -8037,9 +8201,170 @@
         <Literal datatypeIRI="&xsd;string">01878752</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000327</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">An aggregate of islands that are part of the territory of the United States of America, grouped together by the International Standards Organization for statistical purposes.  It has as members eight United States insular areas in the Pacific Ocean: Baker Island, Howland Island, Jarvis Island, Johnston Atoll, Kingman Reef, Midway Islands, Palmyra Atoll, and Wake Island; and one US insular area in the Caribbean Sea: Navassa Island.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000327</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">William R. Hogan</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000119"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000327</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Adapted from Wikipedia.org</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>http://purl.obolibrary.org/obo/GEO_000000327</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Despite having a unique two-digit state code and two-letter state abbreviation, this entity really just represents several, unihabited islands that are possessions of the United States and thus make up part of the United States geographical region.  They do not have any government with the exception of Palmyra Atoll.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/GEO_000000327</IRI>
         <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">U.S. Minor Outlying Islands</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000111"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">organization</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000112"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">PMID: 16353909.AAPS J. 2005 Sep 22;7(2):E274-80. Review. The joint food and agriculture organization of the United Nations/World Health Organization Expert Committee on Food Additives and its role in the evaluation of the safety of veterinary drug residues in foods.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000114"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <IRI>http://purl.obolibrary.org/obo/IAO_0000122</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">An organization is a continuant entity which can play roles,  has members, and has a set of organization rules.  Members of organizations are either organizations themselves or individual people. Members can bear specific organization member roles that are determined in the organization rules. The organization rules also determine how decisions are made on behalf of the organization by the organization members.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000116"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">BP: The definition summarizes long email discussions on the OBI developer, roles, biomaterial and denrie branches. It leaves open if an organization is a material entity or a dependent continuant, as no consensus was reached on that.  The current placement as material is therefore temporary, in order to move forward with development. Here is the entire email summary, on which the definition is based:
+
+1) there are organization_member_roles (president, treasurer, branch
+editor), with individual persons as bearers
+
+2) there are organization_roles (employer, owner, vendor, patent holder)
+
+3) an organization has a charter / rules / bylaws, which specify what roles
+there are, how they should be realized, and how to modify the
+charter/rules/bylaws themselves.
+
+It is debatable what the organization itself is (some kind of dependent
+continuant or an aggregate of people). This also determines who/what the
+bearer of organization_roles&apos; are. My personal favorite is still to define
+organization as a kind of &apos;legal entity&apos;, but thinking it through leads to
+all kinds of questions that are clearly outside the scope of OBI.
+
+Interestingly enough, it does not seem to matter much where we place
+organization itself, as long as we can subclass it (University, Corporation,
+Government Agency, Hospital), instantiate it (Affymetrix, NCBI, NIH, ISO,
+W3C, University of Oklahoma), and have it play roles.
+
+This leads to my proposal: We define organization through the statements 1 -
+3 above, but without an &apos;is a&apos; statement for now. We can leave it in its
+current place in the is_a hierarchy (material entity) or move it up to
+&apos;continuant&apos;. We leave further clarifications to BFO, and close this issue
+for now.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal datatypeIRI="&xsd;string">PERSON: Alan Ruttenberg</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal datatypeIRI="&xsd;string">PERSON: Bjoern Peters</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal datatypeIRI="&xsd;string">PERSON: Philippe Rocca-Serra</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000117"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal datatypeIRI="&xsd;string">PERSON: Susanna Sansone</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000119"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal datatypeIRI="&xsd;string">GROUP: OBI</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/OBI_0000245</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">organization</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000102</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">geographical entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000131</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">geographical feature</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000151</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">geographical region</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000175</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">body of water</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000189</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">continent</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000199</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">land mass</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000206</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">island</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.obolibrary.org/obo/IAO_0000115"/>
+        <IRI>#GEO_000000267</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">An object aggregate of geographical entities</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000267</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">aggregate of geographical entities</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000306</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">aggregate of geographical features</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000369</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">aggregate of land masses</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#GEO_000000390</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">aggregate of islands</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -8050,5 +8375,5 @@
 
 
 
-<!-- Generated by the OWL API (version 3.2.2.1789) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.5.1928) http://owlapi.sourceforge.net -->
 
