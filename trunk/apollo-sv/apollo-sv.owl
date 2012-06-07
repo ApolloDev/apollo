@@ -10,6 +10,7 @@
     <!ENTITY OBO_REL "http://purl.org/obo/owl/OBO_REL#" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY NCBITaxon "http://purl.org/obo/owl/NCBITaxon#" >
+    <!ENTITY asv "http://purl.obolibrary.org/obo/asv/" >
     <!ENTITY snap "http://www.ifomis.org/bfo/1.1/snap#" >
     <!ENTITY span "http://www.ifomis.org/bfo/1.1/span#" >
     <!ENTITY ro "http://www.obofoundry.org/ro/ro.owl#" >
@@ -25,8 +26,9 @@
      xmlns:snap="http://www.ifomis.org/bfo/1.1/snap#"
      xmlns:NCBITaxon="http://purl.org/obo/owl/NCBITaxon#"
      xmlns:bfo="http://www.ifomis.org/bfo/1.1#"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:asv="&obo;asv/"
      xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:IDOMAL="http://purl.org/obo/owl/IDOMAL#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -56,6 +58,7 @@ Roadmap:
 A KEY POINT ABOUT THIS ONTOLOGY:
 We are modeling a world not of patients or of epidemics in Apollo SV, but a world of models that are trying to interoperate.   For this reason, Apollo-SV has many classes with names like &quot;Epidemic Model&quot; and &quot;Configuratio_object.&quot;   (By way of contrast, an ontology intended to support an electronic medical record would be dominanted by classes with names like &quot;Patient&quot; and &quot;Symptom.&quot;)
 </rdfs:comment>
+        <imports rdf:resource="http://proper-name-ontology.googlecode.com/files/proper_name_ontology_v1.8.owl"/>
         <imports rdf:resource="&obo;geo.owl"/>
         <imports rdf:resource="http://purl.org/obo/owl/ro"/>
         <imports rdf:resource="http://www.ifomis.org/bfo/1.1"/>
@@ -373,14 +376,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
-    <!-- http://purl.obolibrary.org/obo/GEO_000000001 -->
-
-    <rdf:Description rdf:about="&obo;GEO_000000001">
-        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
-    </rdf:Description>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/GEO_000000002 -->
 
     <rdf:Description rdf:about="&obo;GEO_000000002">
@@ -497,6 +492,25 @@ of a plan  towards which the realization of the plan is directed.&quot;</obo:IAO
     
 
 
+    <!-- http://purl.obolibrary.org/obo/IAO_0000010 -->
+
+    <Class rdf:about="&obo;IAO_0000010">
+        <rdfs:label xml:lang="en">software</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <obo:IAO_0000119 xml:lang="en">GROUP: OBI</obo:IAO_0000119>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Alan Ruttenberg</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Bjoern Peters</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Chris Stoeckert</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Melanie Courtot</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">Software is a plan specification composed of a series of instructions that can be 
+interpreted by or directly executed by a processing unit.</obo:IAO_0000115>
+        <obo:IAO_0000116 xml:lang="en">see sourceforge tracker discussion at http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1958818&amp;group_id=177891&amp;atid=886178</obo:IAO_0000116>
+        <obo:IAO_0000111 xml:lang="en">software</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/IAO_0000027 -->
 
     <Class rdf:about="&obo;IAO_0000027">
@@ -520,6 +534,19 @@ JAR: A data item is an approximately justified approximately true approximate be
         <obo:IAO_0000115 xml:lang="en">a data item is an information content entity that is intended to be a truthful statement about something (modulo, e.g., measurement precision or other systematic errors) and is constructed/acquired by a method which reliably tends to produce (approximately) truthful statements.</obo:IAO_0000115>
         <obo:IAO_0000118 xml:lang="en">data</obo:IAO_0000118>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000028 -->
+
+    <Class rdf:about="&obo;IAO_0000028">
+        <rdfs:label xml:lang="en">symbol</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000116 xml:lang="en">20091104, MC: this needs work and will most probably change</obo:IAO_0000116>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Jonathan Rees</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">a smallish, word-like datum...</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">symbol</obo:IAO_0000111>
     </Class>
     
 
@@ -549,13 +576,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -637,13 +664,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -680,6 +707,43 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117 xml:lang="en">person:Chris Stoeckert</obo:IAO_0000117>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000129 -->
+
+    <Class rdf:about="&obo;IAO_0000129">
+        <rdfs:label xml:lang="en">version number</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000028"/>
+        <obo:IAO_0000115 xml:lang="en">A version number is an information content entity which is a sequence of characters borne by part of each of a class of manufactured products or its packaging and indicates its order within a set of other products having the same name.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">GROUP: IAO</obo:IAO_0000117>
+        <obo:IAO_0000116 xml:lang="en">Note: we feel that at the moment we are happy with a general version number, and that we will subclass as needed in the future. For example, see 7. genome sequence version</obo:IAO_0000116>
+        <obo:IAO_0000111 xml:lang="en">version number</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000178 -->
+
+    <rdf:Description rdf:about="&obo;IAO_0000178">
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <someValuesFrom>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000294"/>
+                                <someValuesFrom rdf:resource="&obo;IAO_0000030"/>
+                            </Restriction>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+    </rdf:Description>
     
 
 
@@ -1008,6 +1072,39 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0000047 -->
+
+    <Class rdf:about="&obo;OBI_0000047">
+        <rdfs:label xml:lang="en">processed material</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <obo:IAO_0000112 xml:lang="en">Examples include gel matrices, filter paper, parafilm and buffer solutions, mass spectrometer, tissue samples</obo:IAO_0000112>
+        <obo:IAO_0000115 xml:lang="en">Is a material entity that is created or changed during material processing.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">PERSON: Alan Ruttenberg</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">processed material</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0000968 -->
+
+    <Class rdf:about="&obo;OBI_0000968">
+        <rdfs:label rdf:datatype="&xsd;string">device</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000047"/>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">A device is a processed material which is designed to perform some function or functions</obo:IAO_0000115>
+        <obo:IAO_0000112 rdf:datatype="&xsd;string">A voltmeter is a measurement device which is intended to perform some measure function.</obo:IAO_0000112>
+        <obo:IAO_0000119 rdf:datatype="&xsd;string">OBI Vancouver workshop 2010</obo:IAO_0000119>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">PERSON: Helen Parkinson</obo:IAO_0000117>
+        <obo:IAO_0000111 rdf:datatype="&xsd;string">device</obo:IAO_0000111>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">food should not classify as a device - counter example for using manufacturer and not device. macroscopic only</obo:IAO_0000116>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">if we keep this exploratory term we could reinstate the old device class which is obsolete_device. didn&#39;t work before as we had manufacturing as part of  the definition. device was needed, but couldn&#39;t define in Philadelphia. If we decide  that in addition to function there are also capabilities for which a device is created we will include these in the definition.</obo:IAO_0000116>
+        <obo:IAO_0000118 rdf:datatype="&xsd;string">instrument</obo:IAO_0000118>
+        <rdfs:comment rdf:datatype="&xsd;string">would include reagents</rdfs:comment>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OBI_0100026 -->
 
     <Class rdf:about="&obo;OBI_0100026">
@@ -1015,6 +1112,22 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000115 xml:lang="en">A material entity that is an individual living system, such as animal, plant, bacteria or virus, that is capable of replicating or reproducing, growth and maintenance in the right environment. An organism may be unicellular or made up, like humans, of many billions of cells divided into specialized tissues and organs.</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">organism</obo:IAO_0000111>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0400107 -->
+
+    <Class rdf:about="&obo;OBI_0400107">
+        <rdfs:label xml:lang="en">computer</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
+        <obo:IAO_0000115 xml:lang="en">A computer is an instrument which manipulates (stores, retrieves, and processes) data according to a list of instructions.</obo:IAO_0000115>
+        <obo:IAO_0000112 xml:lang="en">Apple PowerBook, Dell OptiPlex</obo:IAO_0000112>
+        <obo:IAO_0000117 xml:lang="en">Melanie Courtot</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">Trish Whetzel</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">computer</obo:IAO_0000111>
+        <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Computer</obo:IAO_0000119>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </Class>
     
 
@@ -1028,6 +1141,164 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000232>creation date: 2009-06-23T11:21:20Z</obo:IAO_0000232>
         <obo:IAO_0000115 xml:lang="en">A disposition (i) to undergo pathological processes that (ii) exists in an organism because of one or more disorders in that organism.</obo:IAO_0000115>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000007 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000007">
+        <rdfs:label xml:lang="en">simulation software</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000008 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000008">
+        <rdfs:label xml:lang="en">software development</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0000011"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000299"/>
+                        <someValuesFrom rdf:resource="&obo;IAO_0000010"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Software_development</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000009 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000009">
+        <rdfs:label xml:lang="en">simulator development organization id</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;pno_0000002"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;pno_0000011"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;asv/ASV_00000008"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&obo;OBI_0000299"/>
+                                                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;pno_0000002"/>
+        <obo:IAO_0000115 xml:lang="en">ID designating an organization involved in the development of simulator software.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">group id</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000010 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000010">
+        <rdfs:label xml:lang="en">simulator id</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;pno_0000002"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;pno_0000011"/>
+                        <allValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;pno_0000002"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">ID designating an instance of simulator software.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000011 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000011">
+        <rdfs:label xml:lang="en">simulator</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;IAO_0000178"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;part_of"/>
+                                <someValuesFrom rdf:resource="&obo;OBI_0400107"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <someValuesFrom>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000294"/>
+                                <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
+                            </Restriction>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000178"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The inherence of a concretization of simulation software in a computer.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000013 -->
+
+    <Class rdf:about="&obo;asv/ASV_00000013">
+        <rdfs:label xml:lang="en">simulator version number</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IAO_0000129"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;part_of"/>
+                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000129"/>
+        <obo:IAO_0000115 xml:lang="en">A version number that is part of a simulation software.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">simulator version</obo:IAO_0000118>
     </Class>
     
 
