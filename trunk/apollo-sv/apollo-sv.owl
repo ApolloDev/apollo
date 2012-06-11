@@ -576,13 +576,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -664,13 +664,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -1252,30 +1252,38 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;IAO_0000178"/>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;part_of"/>
-                                <someValuesFrom rdf:resource="&obo;OBI_0400107"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
+                    <rdf:Description rdf:about="&obo;OBI_0000968"/>
                     <Restriction>
-                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <onProperty rdf:resource="&ro;has_part"/>
                         <someValuesFrom>
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;OBI_0000294"/>
-                                <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
-                            </Restriction>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0400107"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <someValuesFrom>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&obo;OBI_0000294"/>
+                                                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
+                                                    </Restriction>
+                                                </someValuesFrom>
+                                            </Restriction>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
                         </someValuesFrom>
                     </Restriction>
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000178"/>
+        <rdfs:subClassOf rdf:resource="&obo;FMA_67165"/>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
+        <obo:IAO_0000115 xml:lang="en">A device that has a computer as its part which has a part that bears the concretization of simulation software.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The inherence of a concretization of simulation software in a computer.</obo:IAO_0000115>
     </Class>
     
 
