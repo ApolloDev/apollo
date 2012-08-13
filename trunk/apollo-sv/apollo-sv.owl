@@ -16,12 +16,14 @@
     <!ENTITY ro "http://www.obofoundry.org/ro/ro.owl#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY apollo_sv "http://purl.obolibrary.org/obo/apollo_sv.owl/" >
 ]>
 
 
 <rdf:RDF xmlns="http://www.w3.org/2002/07/owl#"
      xml:base="http://www.w3.org/2002/07/owl"
      xmlns:ro="http://www.obofoundry.org/ro/ro.owl#"
+     xmlns:apollo_sv="&obo;apollo_sv.owl/"
      xmlns:UO="http://purl.org/obo/owl/UO#"
      xmlns:snap="http://www.ifomis.org/bfo/1.1/snap#"
      xmlns:NCBITaxon="http://purl.org/obo/owl/NCBITaxon#"
@@ -35,7 +37,7 @@
      xmlns:DOID="http://purl.org/obo/owl/DOID#"
      xmlns:OBO_REL="http://purl.org/obo/owl/OBO_REL#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
-    <Ontology rdf:about="&obo;asv">
+    <Ontology rdf:about="&obo;apollo_sv.owl">
         <rdfs:comment>The scope (domain) of the Apollo Structured Vocabulary (Apollo SV) is public health modeling.
 
 The intended users of Apollo SV are:
@@ -74,6 +76,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    <AnnotationProperty rdf:about="&obo;apollo_sv.owl/APOLLO_SV_0000040">
+        <rdfs:label xml:lang="en">Unique Apollo Label</rdfs:label>
+        <obo:IAO_0000118>UAL</obo:IAO_0000118>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115>This annotation property gives the unique label of all Apollo_SV entities that are refered to in the schema. The UAL is the denotator for the Apollo_SV class in the schema. There can at all times only be ONE value of UAL for each class.</obo:IAO_0000115>
+    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000115">
         <rdfs:label>definition</rdfs:label>
     </AnnotationProperty>
@@ -122,6 +130,21 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000039 -->
+
+    <ObjectProperty rdf:about="&obo;APOLLO_SV_00000039">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:label xml:lang="en">instantiates</rdfs:label>
+        <rdfs:comment>Barry Smith, Waclaw Kusnierczyk, Daniel Schober, Werner Ceusters, “Towards a Reference Terminology for Ontology Research and Development in the Biomedical Domain”, O. Bodenreider, ed., Proceedings of KR-MED, 2006, 57-66. Also available online at: http://ceur-ws.org/Vol-222.</rdfs:comment>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
+        <rdfs:range rdf:resource="&obo;APOLLO_SV_00000034"/>
+        <rdfs:domain rdf:resource="&bfo;Entity"/>
+    </ObjectProperty>
     
 
 
@@ -225,21 +248,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000039 -->
-
-    <ObjectProperty rdf:about="&obo;asv/ASV_00000039">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
-        <rdfs:label xml:lang="en">instantiates</rdfs:label>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
-        <rdfs:comment>Barry Smith, Waclaw Kusnierczyk, Daniel Schober, Werner Ceusters, “Towards a Reference Terminology for Ontology Research and Development in the Biomedical Domain”, O. Bodenreider, ed., Proceedings of KR-MED, 2006, 57-66. Also available online at: http://ceur-ws.org/Vol-222.</rdfs:comment>
-        <rdfs:range rdf:resource="&obo;asv/ASV_00000034"/>
-        <rdfs:domain rdf:resource="&bfo;Entity"/>
-    </ObjectProperty>
-    
-
-
     <!-- http://purl.org/obo/owl/OBO_REL#inheres_in -->
 
     <ObjectProperty rdf:about="&OBO_REL;inheres_in"/>
@@ -296,9 +304,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
-    <!-- http://purl.obolibrary.org/obo/ASV_00000001 -->
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000001 -->
 
-    <Class rdf:about="&obo;ASV_00000001">
+    <Class rdf:about="&obo;APOLLO_SV_00000001">
         <rdfs:label xml:lang="en">epidemic model</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000064"/>
         <rdfs:subClassOf>
@@ -310,7 +318,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                             <rdf:Description rdf:about="&snap;RealizableEntity"/>
                             <Restriction>
                                 <onProperty rdf:resource="&obo;BFO_0000054"/>
-                                <someValuesFrom rdf:resource="&obo;ASV_00000005"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
                             </Restriction>
                         </intersectionOf>
                     </Class>
@@ -323,22 +331,25 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
-    <!-- http://purl.obolibrary.org/obo/ASV_00000002 -->
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000002 -->
 
-    <Class rdf:about="&obo;ASV_00000002">
+    <Class rdf:about="&obo;APOLLO_SV_00000002">
+        <rdfs:label xml:lang="en">basic reproduction number</rdfs:label>
         <rdfs:label xml:lang="en">basic reproductive number</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_0000043"/>
         <obo:IAO_0000115 xml:lang="en">A measurement datum that is the average number of organisms directly infected by each infectious organism during the course of an epidemic.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
 
 
-    <!-- http://purl.obolibrary.org/obo/ASV_00000005 -->
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000005 -->
 
-    <Class rdf:about="&obo;ASV_00000005">
+    <Class rdf:about="&obo;APOLLO_SV_00000005">
         <rdfs:label xml:lang="en">simulating of process of type X</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
@@ -376,6 +387,457 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000115>a planned process that (1) has at least one process part that has as participants representations of participants (in place of those participants) of processes of type X, and where all such process parts substitute for parts of processes of type X, and (2) is carried out for the purpose of planning for processes of type X, learning more about processes of type X, or teaching about processes of type X.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000006 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000006">
+        <rdfs:label xml:lang="en">originator identifier</rdfs:label>
+        <rdfs:label xml:lang="en">simulation requester identifier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulation requester identifier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000007 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000007">
+        <rdfs:label xml:lang="en">simulation software</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000008 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000008">
+        <rdfs:label xml:lang="en">software development</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0000011"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000299"/>
+                        <someValuesFrom rdf:resource="&obo;IAO_0000010"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Software_development</obo:IAO_0000119>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000009 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000009">
+        <rdfs:label xml:lang="en">simulator developer identifier</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;pno_0000002"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;pno_0000011"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000008"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&obo;OBI_0000299"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">ID designating an organization involved in the development of simulator software.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator developer identifier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000010 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000010">
+        <rdfs:label xml:lang="en">simulator identifier</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;pno_0000002"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;pno_0000011"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">ID designating an instance of simulator software.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator identifier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000011 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000011">
+        <rdfs:label xml:lang="en">simulator</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0000968"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0400107"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <someValuesFrom>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&obo;OBI_0000294"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
+                                                    </Restriction>
+                                                </someValuesFrom>
+                                            </Restriction>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
+        <obo:IAO_0000115 xml:lang="en">A device that has a computer as its part which has a part that bears the concretization of simulation software.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000012 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000012">
+        <rdfs:label xml:lang="en">simulation time step value</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040>simulation time step value</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000013 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000013">
+        <rdfs:label xml:lang="en">simulator version identifier</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IAO_0000129"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;part_of"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A version number that is part of a simulation software.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator version identifier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000014 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000014">
+        <rdfs:label xml:lang="en">simulation time step unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulation time step unit</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000015 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000015">
+        <rdfs:label xml:lang="en">epidemic simulation run length</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">epidemic simulation run length</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000016 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000016">
+        <rdfs:label xml:lang="en">average duration of infectiousness</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">average duration of infectiousness</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000017 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000017">
+        <rdfs:label xml:lang="en">average latent period</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">average latent period</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000018 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000018">
+        <rdfs:label xml:lang="en">count of simulated susceptible population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated susceptible population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000019 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000019">
+        <rdfs:label xml:lang="en">count of simulated exposed population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated exposed population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000020 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000020">
+        <rdfs:label xml:lang="en">count of simulated contagious population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated contagious population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000021 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000021">
+        <rdfs:label xml:lang="en">count of simulated resistant population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated resistant population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000022 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000022">
+        <rdfs:label>simulation population count</rdfs:label>
+        <rdfs:label xml:lang="en">count of simulated population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000031"/>
+            </Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115>The count of all representations of organisms in a simulation.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000023 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000023">
+        <rdfs:label xml:lang="en">vaccination schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination schedule</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000024 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000024">
+        <rdfs:label xml:lang="en">vaccine compliance</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine compliance</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000025 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000025">
+        <rdfs:label xml:lang="en">vaccine efficacy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000026 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000026">
+        <rdfs:label xml:lang="en">delay of closure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000027 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000027">
+        <rdfs:label xml:lang="en">time step of closure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000031 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000031">
+        <rdfs:label xml:lang="en">simulation population data set</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000100"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                            <Class>
+                                <oneOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000035"/>
+                                </oneOf>
+                            </Class>
+                        </unionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A data set that is the aggregation of all organism representations to be used by a simulator.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000032 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000032">
+        <rdfs:label xml:lang="en">count</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <obo:IAO_0000115 xml:lang="en">A measurement datum that is the output of counting.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000033 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000033">
+        <rdfs:label xml:lang="en">counting</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000034 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000034">
+        <rdfs:label xml:lang="en">Universal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000039 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000039">
+        <rdfs:label xml:lang="en">simulated population location</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population location</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000042 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000042">
+        <rdfs:label xml:lang="en">simulated disease</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated disease</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000043 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000043">
+        <rdfs:label xml:lang="en">reproduction number</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reproduction number</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000044 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000044">
+        <rdfs:label xml:lang="en">vaccine efficacy delay</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -945,11 +1407,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">organism population</rdfs:label>
         <equivalentClass>
             <Restriction>
-                <onProperty rdf:resource="&obo;asv/ASV_00000039"/>
+                <onProperty rdf:resource="&obo;APOLLO_SV_00000039"/>
                 <someValuesFrom>
                     <Class>
                         <oneOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;asv/ASV_00000035"/>
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000035"/>
                         </oneOf>
                     </Class>
                 </someValuesFrom>
@@ -1332,394 +1794,6 @@ for now.</obo:IAO_0000116>
     
 
 
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000005 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000005">
-        <rdfs:label xml:lang="en">location</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000006 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000006">
-        <rdfs:label xml:lang="en">originator</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000007 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000007">
-        <rdfs:label xml:lang="en">simulation software</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000008 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000008">
-        <rdfs:label xml:lang="en">software development</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OBI_0000011"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000299"/>
-                        <someValuesFrom rdf:resource="&obo;IAO_0000010"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Software_development</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000009 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000009">
-        <rdfs:label xml:lang="en">simulator development organization id</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;pno_0000002"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;pno_0000011"/>
-                        <allValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;participates_in"/>
-                                        <someValuesFrom>
-                                            <Class>
-                                                <intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&obo;asv/ASV_00000008"/>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&obo;OBI_0000299"/>
-                                                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
-                                                    </Restriction>
-                                                </intersectionOf>
-                                            </Class>
-                                        </someValuesFrom>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </allValuesFrom>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;pno_0000002"/>
-        <obo:IAO_0000115 xml:lang="en">ID designating an organization involved in the development of simulator software.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">group id</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000010 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000010">
-        <rdfs:label xml:lang="en">simulator id</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;pno_0000002"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;pno_0000011"/>
-                        <allValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;pno_0000002"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">ID designating an instance of simulator software.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000011 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000011">
-        <rdfs:label xml:lang="en">simulator</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OBI_0000968"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OBI_0400107"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;has_part"/>
-                                        <someValuesFrom>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                <someValuesFrom>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&obo;OBI_0000294"/>
-                                                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
-                                                    </Restriction>
-                                                </someValuesFrom>
-                                            </Restriction>
-                                        </someValuesFrom>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </someValuesFrom>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;FMA_67165"/>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
-        <obo:IAO_0000115 xml:lang="en">A device that has a computer as its part which has a part that bears the concretization of simulation software.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000012 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000012">
-        <rdfs:label xml:lang="en">temporal granularity</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000013 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000013">
-        <rdfs:label xml:lang="en">simulator version number</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;IAO_0000129"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;part_of"/>
-                        <someValuesFrom rdf:resource="&obo;asv/ASV_00000007"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000129"/>
-        <obo:IAO_0000115 xml:lang="en">A version number that is part of a simulation software.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">simulator version</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000014 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000014">
-        <rdfs:label xml:lang="en">temporal increment</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000015 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000015">
-        <rdfs:label xml:lang="en">run length</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000016 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000016">
-        <rdfs:label xml:lang="en">average duration of infectiousness</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000017 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000017">
-        <rdfs:label xml:lang="en">average latent period</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000018 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000018">
-        <rdfs:label xml:lang="en">susceptible</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000019 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000019">
-        <rdfs:label xml:lang="en">exposed</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000020 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000020">
-        <rdfs:label xml:lang="en">infectious</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000021 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000021">
-        <rdfs:label xml:lang="en">recovered</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000022 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000022">
-        <rdfs:label>simulation population count</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;asv/ASV_00000032"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000136"/>
-                <someValuesFrom rdf:resource="&obo;asv/ASV_00000031"/>
-            </Restriction>
-        </rdfs:subClassOf>
-        <obo:IAO_0000115>The count of all representations of organisms in a simulation.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">population</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000023 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000023">
-        <rdfs:label xml:lang="en">vaccination schedule</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000024 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000024">
-        <rdfs:label xml:lang="en">vaccination compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000025 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000025">
-        <rdfs:label xml:lang="en">vaccine efficacy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000026 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000026">
-        <rdfs:label xml:lang="en">delay of closure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000027 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000027">
-        <rdfs:label xml:lang="en">time step of closure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000031 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000031">
-        <rdfs:label xml:lang="en">simulation population data set</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000100"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000136"/>
-                <someValuesFrom>
-                    <Class>
-                        <unionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;IDO_0000509"/>
-                            <Class>
-                                <oneOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;asv/ASV_00000035"/>
-                                </oneOf>
-                            </Class>
-                        </unionOf>
-                    </Class>
-                </someValuesFrom>
-            </Restriction>
-        </rdfs:subClassOf>
-        <obo:IAO_0000115 xml:lang="en">A data set that is the aggregation of all organism representations to be used by a simulator.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000032 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000032">
-        <rdfs:label xml:lang="en">count</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A measurement datum that is the output of counting.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000033 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000033">
-        <rdfs:label xml:lang="en">counting</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000034 -->
-
-    <Class rdf:about="&obo;asv/ASV_00000034">
-        <rdfs:label xml:lang="en">Universal</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
-    </Class>
-    
-
-
     <!-- http://purl.org/obo/owl/DOID#DOID_0050160 -->
 
     <Class rdf:about="&DOID;DOID_0050160">
@@ -1882,10 +1956,10 @@ for now.</obo:IAO_0000116>
     
 
 
-    <!-- http://purl.obolibrary.org/obo/asv/ASV_00000035 -->
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000035 -->
 
-    <NamedIndividual rdf:about="&obo;asv/ASV_00000035">
-        <rdf:type rdf:resource="&obo;asv/ASV_00000034"/>
+    <NamedIndividual rdf:about="&obo;APOLLO_SV_00000035">
+        <rdf:type rdf:resource="&obo;APOLLO_SV_00000034"/>
         <rdfs:label xml:lang="en">organism population universal</rdfs:label>
     </NamedIndividual>
 </rdf:RDF>
