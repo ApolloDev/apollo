@@ -88,15 +88,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <AnnotationProperty rdf:about="&obo;IAO_0000116">
         <rdfs:label>editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412"/>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412"/>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -842,6 +842,76 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000045 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000045">
+        <rdfs:label xml:lang="en">probability symptomatic</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">probability symptomatic</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000046 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000046">
+        <rdfs:label xml:lang="en">vaccine supply schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine supply schedule</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000047 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000047">
+        <rdfs:label xml:lang="en">vaccination administration schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination administration schedule</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000048 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000048">
+        <rdfs:label xml:lang="en">antiviral efficacy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000049 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000049">
+        <rdfs:label xml:lang="en">antiviral delay to efficacy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral delay to efficacy</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000050 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000050">
+        <rdfs:label xml:lang="en">antiviral compliance</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral compliance</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000051 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_0000051">
+        <rdfs:label xml:lang="en">antiviral supply schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral supply schedule</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/BO_0000001 -->
 
     <Class rdf:about="&obo;BO_0000001">
@@ -1056,13 +1126,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
