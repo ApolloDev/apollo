@@ -91,17 +91,17 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000114">
-        <rdfs:label xml:lang="en">has curation status</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000412">
         <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000119">
-        <rdfs:label>definition source</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000114">
+        <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000232">
         <rdfs:label>curator note</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000119">
+        <rdfs:label>definition source</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -594,10 +594,11 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000016 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000016">
-        <rdfs:label xml:lang="en">average duration of infectiousness</rdfs:label>
+        <rdfs:label xml:lang="en">duration of infectiousness</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">average duration of infectiousness</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">infectious period</rdfs:comment>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -605,10 +606,10 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000017 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000017">
-        <rdfs:label xml:lang="en">average latent period</rdfs:label>
+        <rdfs:label xml:lang="en">latent period</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">average latent period</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">latent period</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -730,6 +731,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000031 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000031">
+        <rdfs:label xml:lang="en">simulated population</rdfs:label>
         <rdfs:label xml:lang="en">simulation population data set</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000100"/>
         <rdfs:subClassOf>
@@ -751,6 +753,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">A data set that is the aggregation of all organism representations to be used by a simulator.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -835,9 +838,10 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_0000045 -->
 
     <Class rdf:about="&obo;APOLLO_SV_0000045">
-        <rdfs:label xml:lang="en">probability symptomatic</rdfs:label>
+        <rdfs:label xml:lang="en">asymptomatic infection probability
+</rdfs:label>
         <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">probability symptomatic</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">asymptomatic infection probablility</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1196,13 +1200,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
