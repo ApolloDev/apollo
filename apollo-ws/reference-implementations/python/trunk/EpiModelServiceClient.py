@@ -18,7 +18,6 @@ em_input = factory.new_epidemic_model_input()
 em_input._authentication._requester_id = "Fake User"
 em_input._authentication._requester_password = "Fake Password"
 
-em_input._simulator_identification = ns0.simulator_identification_Def(None).pyclass()
 em_input._simulator_identification._simulator_developer = "University of Pittsburgh"
 em_input._simulator_identification._simulator_name = "Simple Epidemic Model"
 em_input._simulator_identification._simulator_version = "1.0"
