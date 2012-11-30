@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="EpidemicSimulatorService" targetNamespace="http://service.apollo.pitt.edu/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.apollo.pitt.edu/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://types.apollo.pitt.edu/" version="1.0" xmlns:tns="http://types.apollo.pitt.edu/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="epidemic-model-input">
+<xs:sequence>
+<xs:element name="simulator_configuration" type="tns:simulator-configuration"/>
+<xs:element name="simulator_identification" type="tns:simulator-identification"/>
+<xs:element minOccurs="0" name="vaccination_control_measure" type="tns:vaccination-control-measure"/>
+<xs:element name="disease_dynamics" type="tns:disease"/>
+<xs:element minOccurs="0" name="antiviral_control_measure" type="tns:antiviral-control-measure"/>
+<xs:element name="authentication" type="tns:authentication"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="simulator-configuration">
+<xs:sequence>
+<xs:element name="time_step_unit" type="tns:time_step_unit"/>
+<xs:element name="time_step_value" type="xs:double"/>
+<xs:element name="run_length" type="xs:positiveInteger"/>
+<xs:element minOccurs="0" name="pop_count" type="xs:double"/>
+<xs:element minOccurs="0" name="disease" type="xs:string"/>
+<xs:element minOccurs="0" name="population_location" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="simulator-identification">
+<xs:sequence>
+<xs:element name="simulator_developer" type="xs:string"/>
+<xs:element name="simulator_name" type="xs:string"/>
+<xs:element name="simulator_version" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="vaccination-control-measure">
+<xs:sequence>
+<xs:element name="vaccine_cm_compliance" type="xs:double"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="vaccine_supply_schedule" type="xs:double"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="vaccination_admin_schedule" type="xs:double"/>
+<xs:element name="vaccine_efficacy" type="xs:double"/>
+<xs:element name="vaccine_efficacy_delay" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="disease">
+<xs:sequence>
+<xs:element name="infectious_period" type="xs:double"/>
+<xs:element name="latent_period" type="xs:double"/>
+<xs:element name="reproduction_number" type="xs:double"/>
+<xs:element name="asymptomatic_infection_fraction" type="xs:double"/>
+<xs:element maxOccurs="unbounded" name="population" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="pop_count" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="antiviral-control-measure">
+<xs:sequence>
+<xs:element name="antiviral_cm_compliance" type="xs:double"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="antiviral_supply_schedule" type="xs:double"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="antiviral_admin_schedule" type="xs:double"/>
+<xs:element name="antiviral_efficacy" type="xs:double"/>
+<xs:element name="antiviral_efficacy_delay" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="authentication">
+<xs:sequence>
+<xs:element minOccurs="0" name="requester_id" type="xs:string"/>
+<xs:element minOccurs="0" name="requester_password" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="epidemic-model-output">
+<xs:sequence>
+<xs:element name="population_time_series" type="tns:population_time_series"/>
+<xs:element name="control_measure_time_series" type="tns:control_measure_time_series_output"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="population_time_series">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="population" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="pop_count" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="control_measure_time_series_output">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="received_vaccination" type="xs:double"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="received_antiviral_treatment" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="run_status">
+<xs:sequence>
+<xs:element name="status" type="tns:run_status_enum"/>
+<xs:element name="message" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="probability_array">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="value" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="simulation_run_result">
+<xs:sequence>
+<xs:element name="model_output" type="tns:epidemic-model-output"/>
+<xs:element name="run_id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="time_step_unit">
+<xs:restriction base="xs:string">
+<xs:enumeration value="year"/>
+<xs:enumeration value="month"/>
+<xs:enumeration value="day"/>
+<xs:enumeration value="hour"/>
+<xs:enumeration value="minute"/>
+<xs:enumeration value="second"/>
+<xs:enumeration value="millisecond"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="run_status_enum">
+<xs:restriction base="xs:string">
+<xs:enumeration value="exiting"/>
+<xs:enumeration value="held"/>
+<xs:enumeration value="queued"/>
+<xs:enumeration value="running"/>
+<xs:enumeration value="moving"/>
+<xs:enumeration value="waiting"/>
+<xs:enumeration value="completed"/>
+<xs:enumeration value="failed"/>
+<xs:enumeration value="unauthorized"/>
+<xs:enumeration value="authentication_failure"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+    <xs:schema targetNamespace="http://service.apollo.pitt.edu/" version="1.0" xmlns:ns1="http://types.apollo.pitt.edu/" xmlns:tns="http://service.apollo.pitt.edu/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://types.apollo.pitt.edu/"/>
+<xs:element name="getJobStatus" type="tns:getJobStatus"/>
+<xs:element name="getJobStatusResponse" type="tns:getJobStatusResponse"/>
+<xs:element name="getModelConfiguration" type="tns:getModelConfiguration"/>
+<xs:element name="getModelConfigurationResponse" type="tns:getModelConfigurationResponse"/>
+<xs:element name="getModelDescription" type="tns:getModelDescription"/>
+<xs:element name="getModelDescriptionResponse" type="tns:getModelDescriptionResponse"/>
+<xs:element name="getNativeConfigurationFile" type="tns:getNativeConfigurationFile"/>
+<xs:element name="getNativeConfigurationFileResponse" type="tns:getNativeConfigurationFileResponse"/>
+<xs:element name="getPreconfiguredModels" type="tns:getPreconfiguredModels"/>
+<xs:element name="getPreconfiguredModelsResponse" type="tns:getPreconfiguredModelsResponse"/>
+<xs:element name="getResult" type="tns:getResult"/>
+<xs:element name="getResultResponse" type="tns:getResultResponse"/>
+<xs:element name="getSimulatorDescription" type="tns:getSimulatorDescription"/>
+<xs:element name="getSimulatorDescriptionResponse" type="tns:getSimulatorDescriptionResponse"/>
+<xs:element name="releaseResources" type="tns:releaseResources"/>
+<xs:element name="releaseResourcesResponse" type="tns:releaseResourcesResponse"/>
+<xs:element name="run" type="tns:run"/>
+<xs:element name="runGzipBatch" type="tns:runGzipBatch"/>
+<xs:element name="runGzipBatchResponse" type="tns:runGzipBatchResponse"/>
+<xs:element name="runResponse" type="tns:runResponse"/>
+<xs:complexType name="getPreconfiguredModels">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getPreconfiguredModelsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getModelConfiguration">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getModelConfigurationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:epidemic-model-input"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="run">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="ns1:epidemic-model-input"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="runResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:runResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="runResult">
+<xs:sequence>
+<xs:element minOccurs="0" name="output" type="ns1:epidemic-model-output"/>
+<xs:element name="runId" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="releaseResources">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="releaseResourcesResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:run_status_enum"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getNativeConfigurationFile">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getNativeConfigurationFileResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getSimulatorDescription">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getSimulatorDescriptionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getModelDescription">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getModelDescriptionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getResult">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getResultResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:epidemic-model-output"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="runGzipBatch">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" ns2:expectedContentTypes="application/octet-stream" type="xs:base64Binary" xmlns:ns2="http://www.w3.org/2005/05/xmlmime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="runGzipBatchResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" ns3:expectedContentTypes="application/octet-stream" type="xs:base64Binary" xmlns:ns3="http://www.w3.org/2005/05/xmlmime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getJobStatus">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getJobStatusResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:run_status_enum"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getSimulatorDescription">
+    <wsdl:part name="parameters" element="tns:getSimulatorDescription">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModelConfigurationResponse">
+    <wsdl:part name="parameters" element="tns:getModelConfigurationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="releaseResourcesResponse">
+    <wsdl:part name="parameters" element="tns:releaseResourcesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModelDescription">
+    <wsdl:part name="parameters" element="tns:getModelDescription">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNativeConfigurationFileResponse">
+    <wsdl:part name="parameters" element="tns:getNativeConfigurationFileResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getJobStatus">
+    <wsdl:part name="parameters" element="tns:getJobStatus">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSimulatorDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:getSimulatorDescriptionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="releaseResources">
+    <wsdl:part name="parameters" element="tns:releaseResources">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModelConfiguration">
+    <wsdl:part name="parameters" element="tns:getModelConfiguration">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="runGzipBatch">
+    <wsdl:part name="parameters" element="tns:runGzipBatch">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getResultResponse">
+    <wsdl:part name="parameters" element="tns:getResultResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPreconfiguredModels">
+    <wsdl:part name="parameters" element="tns:getPreconfiguredModels">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNativeConfigurationFile">
+    <wsdl:part name="parameters" element="tns:getNativeConfigurationFile">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModelDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:getModelDescriptionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="runResponse">
+    <wsdl:part name="parameters" element="tns:runResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="run">
+    <wsdl:part name="parameters" element="tns:run">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPreconfiguredModelsResponse">
+    <wsdl:part name="parameters" element="tns:getPreconfiguredModelsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getResult">
+    <wsdl:part name="parameters" element="tns:getResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="runGzipBatchResponse">
+    <wsdl:part name="parameters" element="tns:runGzipBatchResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getJobStatusResponse">
+    <wsdl:part name="parameters" element="tns:getJobStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="EpidemicModelSEI">
+    <wsdl:operation name="getPreconfiguredModels">
+      <wsdl:input name="getPreconfiguredModels" message="tns:getPreconfiguredModels">
+    </wsdl:input>
+      <wsdl:output name="getPreconfiguredModelsResponse" message="tns:getPreconfiguredModelsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModelConfiguration">
+      <wsdl:input name="getModelConfiguration" message="tns:getModelConfiguration">
+    </wsdl:input>
+      <wsdl:output name="getModelConfigurationResponse" message="tns:getModelConfigurationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="run">
+      <wsdl:input name="run" message="tns:run">
+    </wsdl:input>
+      <wsdl:output name="runResponse" message="tns:runResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="releaseResources">
+      <wsdl:input name="releaseResources" message="tns:releaseResources">
+    </wsdl:input>
+      <wsdl:output name="releaseResourcesResponse" message="tns:releaseResourcesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNativeConfigurationFile">
+      <wsdl:input name="getNativeConfigurationFile" message="tns:getNativeConfigurationFile">
+    </wsdl:input>
+      <wsdl:output name="getNativeConfigurationFileResponse" message="tns:getNativeConfigurationFileResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSimulatorDescription">
+      <wsdl:input name="getSimulatorDescription" message="tns:getSimulatorDescription">
+    </wsdl:input>
+      <wsdl:output name="getSimulatorDescriptionResponse" message="tns:getSimulatorDescriptionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModelDescription">
+      <wsdl:input name="getModelDescription" message="tns:getModelDescription">
+    </wsdl:input>
+      <wsdl:output name="getModelDescriptionResponse" message="tns:getModelDescriptionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getResult">
+      <wsdl:input name="getResult" message="tns:getResult">
+    </wsdl:input>
+      <wsdl:output name="getResultResponse" message="tns:getResultResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="runGzipBatch">
+      <wsdl:input name="runGzipBatch" message="tns:runGzipBatch">
+    </wsdl:input>
+      <wsdl:output name="runGzipBatchResponse" message="tns:runGzipBatchResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getJobStatus">
+      <wsdl:input name="getJobStatus" message="tns:getJobStatus">
+    </wsdl:input>
+      <wsdl:output name="getJobStatusResponse" message="tns:getJobStatusResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EpidemicSimulatorServiceSoapBinding" type="tns:EpidemicModelSEI">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPreconfiguredModels">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPreconfiguredModels">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPreconfiguredModelsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModelConfiguration">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getModelConfiguration">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getModelConfigurationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="run">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="run">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="runResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="releaseResources">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="releaseResources">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="releaseResourcesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNativeConfigurationFile">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getNativeConfigurationFile">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getNativeConfigurationFileResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModelDescription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getModelDescription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getModelDescriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSimulatorDescription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getSimulatorDescription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSimulatorDescriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getResult">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getResult">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getResultResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getJobStatus">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getJobStatus">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getJobStatusResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="runGzipBatch">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="runGzipBatch">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="runGzipBatchResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EpidemicSimulatorService">
+    <wsdl:port name="EpidemicSimulatorPort" binding="tns:EpidemicSimulatorServiceSoapBinding">
+      <soap:address location="http://localhost:8080/GenericEpidemicModelService/services/EpidemicSimulatorPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
