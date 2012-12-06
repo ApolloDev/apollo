@@ -1,3 +1,17 @@
+# Copyright 2012 University of Pittsburgh
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy of
+# the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
 '''
 Created on Nov 27, 2012
 
@@ -32,7 +46,7 @@ em_input._disease_dynamics._infectious_period = 3.2
 em_input._disease_dynamics._latent_period = 2.0
 em_input._disease_dynamics._reproduction_number = 1.7
 em_input._disease_dynamics._asymptomatic_infection_fraction = 0.5
-em_input._disease_dynamics._population = ['susceptible', 'exposed', 'infectious', 'recovered']
+em_input._disease_dynamics._simulated_population = ['susceptible', 'exposed', 'infectious', 'recovered']
 em_input._disease_dynamics._pop_count = [1157474.0, 0.0, 100.0, 60920.0]
 
 em_input._simulator_configuration._time_step_unit = "DAYS"
@@ -60,11 +74,23 @@ em_input._antiviral_control_measure._antiviral_supply_schedule= [0.0] * 365
 em_input._antiviral_control_measure._antiviral_admin_schedule = [0.0] * 365
 
 #create a run request object
-run_request = run()
+run_request = runRequest()
 #the run request object has a single member variable, which is set to the epidemic model input object
-run_request._arg0 = em_input
+run_request._epidemicModelinput = em_input
 
+print 'Calling "run"'
 #submit the request, receive the response
 run_response = service.run(run_request)
 
-print "Run submitted with ID: " + str(run_response._return._runId)
+print "Run submitted with ID: " + str(run_response._simulationRunResult._runId)
+
+get_run_status_request = getRunStatusRequest()
+get_run_status_request._runId = -1
+run_status_response = service.getRunStatus(get_run_status_request)
+
+print '\nCalling "getRunStatus"'
+print "Status Code: " +  run_status_response._runStatus._status + " Status Message: " + run_status_response._runStatus._message
+
+
+
+
