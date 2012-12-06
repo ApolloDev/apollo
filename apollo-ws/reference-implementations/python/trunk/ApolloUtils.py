@@ -1,3 +1,18 @@
+# Copyright 2012 University of Pittsburgh
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy of
+# the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+
 '''
 Created on Nov 29, 2012
 
@@ -57,7 +72,7 @@ class ApolloUtils:
         self.logger.debug("latent_period: %s", obj._disease_dynamics._latent_period)
         self.logger.debug("reproduction_number: %s", obj._disease_dynamics._reproduction_number)
         self.logger.debug("asymptomatic_infection_fraction: %s", obj._disease_dynamics._asymptomatic_infection_fraction)
-        self.logger.debug("population: %s", obj._disease_dynamics._population)
+        self.logger.debug("population: %s", obj._disease_dynamics._simulated_population)
         self.logger.debug("pop_count: %s", obj._disease_dynamics._pop_count)
 
         return
