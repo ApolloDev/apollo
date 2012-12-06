@@ -46,7 +46,7 @@ class ApolloFactory:
         epidemic_model_output._population_time_series._pop_count = [0.0] * 365
         
         epidemic_model_output._population_time_series._simulated_population = []
-		
+        
         epidemic_model_output._control_measure_time_series = ns1.control_measure_time_series_output_Def(None).pyclass()
 #       self._received_vaccination = None
 #       self._received_antiviral_treatment = None
