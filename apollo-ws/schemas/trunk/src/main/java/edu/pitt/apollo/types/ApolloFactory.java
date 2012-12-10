@@ -26,6 +26,7 @@ public class ApolloFactory {
 		input.setDiseaseDynamics(createDisease());
 		input.setSimulatorIdentification(new SimulatorIdentification());
 		input.setSimulatorConfiguration(new SimulatorConfiguration());
+		input.setAuthentication(new Authentication());
 		return input;
 	}
 
