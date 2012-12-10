@@ -52,7 +52,7 @@ em_input._disease_dynamics._pop_count = [1157474.0, 0.0, 100.0, 60920.0]
 em_input._simulator_configuration._time_step_unit = "DAYS"
 em_input._simulator_configuration._time_step_value = 1
 em_input._simulator_configuration._run_length = 365
-em_input._simulator_configuration._pop_count = 12
+em_input._simulator_configuration._pop_count = 1218494
 em_input._simulator_configuration._disease = "influenza"
 em_input._simulator_configuration._population_location = "Allegheny County"
 
