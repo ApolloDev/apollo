@@ -42,7 +42,6 @@
      xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
     <Ontology rdf:about="&obo;apollo_sv.owl">
-        <rdfs:comment xml:lang="en">Testing new representation strategy using &#39;purely intentional entities&#39;</rdfs:comment>
         <rdfs:comment>The scope (domain) of the Apollo Structured Vocabulary (Apollo SV) is public health modeling.
 
 The intended users of Apollo SV are:
@@ -92,24 +91,25 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412">
-        <rdfs:label xml:lang="en">imported from</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412">
+        <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
     </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
+    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
         <rdfs:label xml:lang="en">definition editor</rdfs:label>
     </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000600"/>
     <AnnotationProperty rdf:about="&obo;IAO_0000118">
         <rdfs:label xml:lang="en">alternative term</rdfs:label>
     </AnnotationProperty>
@@ -281,6 +281,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0000300 -->
+
+    <ObjectProperty rdf:about="&obo;OBI_0000300"/>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OBI_0000308 -->
 
     <ObjectProperty rdf:about="&obo;OBI_0000308">
@@ -320,9 +326,27 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://www.obofoundry.org/ro/ro.owl#has_proper_part -->
+
+    <ObjectProperty rdf:about="&ro;has_proper_part"/>
+    
+
+
+    <!-- http://www.obofoundry.org/ro/ro.owl#location_of -->
+
+    <ObjectProperty rdf:about="&ro;location_of"/>
+    
+
+
     <!-- http://www.obofoundry.org/ro/ro.owl#participates_in -->
 
     <ObjectProperty rdf:about="&ro;participates_in"/>
+    
+
+
+    <!-- http://www.obofoundry.org/ro/ro.owl#proper_part_of -->
+
+    <ObjectProperty rdf:about="&ro;proper_part_of"/>
     
 
 
@@ -835,6 +859,25 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000029 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000029">
+        <rdfs:label xml:lang="en">control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000030 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000030">
+        <rdfs:label xml:lang="en">control measure name</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040>control measure name</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000031 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000031">
@@ -894,6 +937,25 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000036 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000036">
+        <rdfs:label xml:lang="en">population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000038 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000038">
+        <rdfs:label xml:lang="en">exposed</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000039 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000039">
@@ -924,6 +986,24 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000115 xml:lang="en">An identifier referring to geographical location of the simulated population in the simulation.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population location</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000040 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000040">
+        <rdfs:label xml:lang="en">infectious</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000041 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000041">
+        <rdfs:label xml:lang="en">recovered</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
     </Class>
     
 
@@ -1106,6 +1186,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000053 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000053">
+        <rdfs:label xml:lang="en">available for</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000054 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000054">
@@ -1176,6 +1265,69 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000058 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000058">
+        <rdfs:label xml:lang="en">not available for</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000059 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000059">
+        <rdfs:label xml:lang="en">awaiting efficacy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000060 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000060">
+        <rdfs:label xml:lang="en">antiviral treatment</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000061 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000061">
+        <rdfs:label xml:lang="en">vaccination</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000062 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000062">
+        <rdfs:label xml:lang="en">initiated</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000063 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000063">
+        <rdfs:label xml:lang="en">received</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000064 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000064">
+        <rdfs:label xml:lang="en">time series</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/BO_0000001 -->
 
     <Class rdf:about="&obo;BO_0000001">
@@ -1195,6 +1347,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000119 rdf:datatype="&xsd;string">URL:http://www2.merriam-webster.com/cgi-bin/mwmednlm?book=Medical&amp;va=influenza</obo:IAO_0000119>
         <obo:IAO_0000115 xml:lang="en">Any of several acute highly contagious respiratory diseases caused by strains of three major orthomyxoviruses now considered to comprise three species assigned to three separate genera: (1): Influenza A (2): Influenza B (3): Influenza C.</obo:IAO_0000115>
     </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GAZ_00000448 -->
+
+    <Class rdf:about="&obo;GAZ_00000448"/>
     
 
 
@@ -1329,6 +1487,12 @@ JAR: A data item is an approximately justified approximately true approximate be
     
 
 
+    <!-- http://purl.obolibrary.org/obo/IAO_0000029 -->
+
+    <Class rdf:about="&obo;IAO_0000029"/>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/IAO_0000030 -->
 
     <Class rdf:about="&obo;IAO_0000030">
@@ -1442,13 +1606,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -1592,6 +1756,36 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000118 xml:lang="en">experimental time series</obo:IAO_0000118>
         <obo:IAO_0000112 xml:lang="en">pmid:20604925 - time-lapse live cell microscopy</obo:IAO_0000112>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000414 -->
+
+    <Class rdf:about="&obo;IDO_0000414">
+        <rdfs:label xml:lang="en">infectious agent host role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000415"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A pathogen host role borne by an organism in virtue of the fact that its extended organism contains an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <rdfs:comment>By this definition, vectors and other organisms that may not be infected are bearers of the infectious agent host role.</rdfs:comment>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000415 -->
+
+    <Class rdf:about="&obo;IDO_0000415">
+        <rdfs:label xml:lang="en">pathogen host role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000629"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>Bearing the infectious agent host role implies bearing the pathogen host role, but the reverse is not true.  See comment for infectious agent host role.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A host role borne by an organism in virtue of the fact that its extended organism contains a pathogen.</obo:IAO_0000115>
     </Class>
     
 
@@ -1768,6 +1962,20 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/IDO_0000537 -->
+
+    <Class rdf:about="&obo;IDO_0000537">
+        <rdfs:label xml:lang="en">infectious agent host</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An organism bearing an infectious agent host role.</obo:IAO_0000115>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/IDO_0000568 -->
 
     <Class rdf:about="&obo;IDO_0000568">
@@ -1777,6 +1985,34 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An infectious disease that has as its physical basis an infectious disorder composed of infectious agents that have a zoonotic disposition.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000569 -->
+
+    <Class rdf:about="&obo;IDO_0000569">
+        <rdfs:label xml:lang="en">aymptomatic host of infectious agent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An organism that is host to an infectious agent has no symptoms of the infectious disease associated with the infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000573 -->
+
+    <Class rdf:about="&obo;IDO_0000573">
+        <rdfs:label xml:lang="en">symptomatic host of infectious agent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An organism who is host to an infectious agent and has symptoms of the infectious disease associated with the infectious agent</obo:IAO_0000115>
     </Class>
     
 
@@ -1840,6 +2076,20 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000115 xml:lang="en">A process by which an infectious agent, established in a host, becomes part of an infection in the host.</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000629 -->
+
+    <Class rdf:about="&obo;IDO_0000629">
+        <rdfs:label xml:lang="en">host role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Role"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&#39;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
     </Class>
     
