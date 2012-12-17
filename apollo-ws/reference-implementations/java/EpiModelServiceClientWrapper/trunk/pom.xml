@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.pitt.apollo</groupId>
-    <artifactId>epimodel-service-wrapper</artifactId>
+    <artifactId>epimodel-service-client-wrapper</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   
     <licenses>
@@ -38,7 +38,7 @@
         </repository>
     </repositories>
 
-    <name>ApolloServiceWrapper</name>
+    <name>EpiModelServiceClientWrapper</name>
     <url>http://maven.apache.org</url>
 
     <properties>
