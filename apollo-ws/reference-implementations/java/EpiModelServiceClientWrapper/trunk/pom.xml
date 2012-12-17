@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.pitt.apollo</groupId>
-    <artifactId>apollo-service-wrapper</artifactId>
+    <artifactId>epimodel-service-wrapper</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   
     <licenses>
