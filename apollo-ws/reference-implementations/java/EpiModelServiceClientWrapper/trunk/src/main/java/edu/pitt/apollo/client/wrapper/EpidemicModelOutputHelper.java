@@ -60,11 +60,16 @@ public class EpidemicModelOutputHelper {
 		double[] result = new double[runLength];
 
 		result[0] = 0d;
-		List<Double> iArray = new ArrayList<Double>();
-		System.arraycopy(ts.getPopCount(), iIdx * runLength, iArray, 0, runLength);
+		List<Double> iArray = new ArrayList<Double>(runLength);
+		List<Double> rArray = new ArrayList<Double>(runLength);
+		int iStart = iIdx * runLength;
+		int rStart = rIdx * runLength;
 		
-		List<Double> rArray = new ArrayList<Double>();
-		System.arraycopy(ts.getPopCount(), rIdx * runLength, rArray, 0, runLength);
+		for (int i = 0 ; i < runLength; i++) {
+			iArray.add(ts.getPopCount().get(i + iStart));
+			rArray.add(ts.getPopCount().get(i + rStart));
+		}
+		
 		for (int i = 1; i < iArray.size(); i++) {
 			result[i] = iArray.get(i) - iArray.get(i - 1) + rArray.get(i)
 					- rArray.get(i - 1);
