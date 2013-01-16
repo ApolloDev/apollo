@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.pitt.apollo</groupId>
 	<artifactId>epimodel-service-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Generates a client for an Apollo Web Service</name>
+	<version>0.0.2-SNAPSHOT</version>
+	<name>Apollo Web Service Client</name>
 	<packaging>jar</packaging>
 	<url></url>
 
-	
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -18,7 +17,7 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -48,69 +47,7 @@
 	</profiles>
 
 	<build>
-		<finalName>rods-seir-epimodel-client</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
-				<version>1.0-beta-3</version>
-
-				<!-- <executions>
-					<execution>
-						<id>download-wsdl</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>download</goal>
-						</goals>
-						<configuration>
-							<url>http://research.rods.pitt.edu/wsdl</url>
-
-							<toDir>WEB-INF/wsdl</toDir>
-						</configuration>
-					</execution>
-					
-					<execution>
-						<id>download-base-types</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>download</goal>
-						</goals>
-						<configuration>
-							<url>http://research.rods.pitt.edu/wsdl</url>
-							<fromDir>base-types</fromDir>
-							<toDir>WEB-INF/wsdl/base-types</toDir>
-						</configuration>
-					</execution>
-					
-					<execution>
-						<id>download-input-types</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>download</goal>
-						</goals>
-						<configuration>
-							<url>http://research.rods.pitt.edu/wsdl</url>
-							<fromDir>input-types</fromDir>
-							<toDir>WEB-INF/wsdl/input-types</toDir>
-						</configuration>
-					</execution>
-					
-					<execution>
-						<id>download-output-types</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>download</goal>
-						</goals>
-						<configuration>
-							<url>http://research.rods.pitt.edu/wsdl</url>
-							<fromDir>output-types</fromDir>
-							<toDir>WEB-INF/wsdl/output-types</toDir>
-						</configuration>
-					</execution>
-
-				</executions> -->
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -119,8 +56,8 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -140,8 +77,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<useDefaultManifestFile>true</useDefaultManifestFile>
-					<!-- <classesDirectory>${project.build.directory}</classesDirectory> -->
+				
 				</configuration>
 			</plugin>
 
@@ -158,15 +94,14 @@
 							<sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
-									<!-- <wsdl>WEB-INF/wsdl/seirepimodelsimulator.wsdl</wsdl>  -->
-									<wsdl>http://research3.rods.pitt.edu:9001/Seir/services/seirepimodelsimulator?wsdl</wsdl>
-
+									<wsdl>http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl</wsdl>
 									<extraargs>
 										<extraarg>-client</extraarg>
 									</extraargs>
 								</wsdlOption>
 							</wsdlOptions>
 						</configuration>
+
 						<goals>
 							<goal>wsdl2java</goal>
 						</goals>
@@ -196,14 +131,13 @@
 			<!-- Build the JAR with dependencies -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-
-
 		</plugins>
 	</build>
 
