@@ -5,6 +5,7 @@
     <!ENTITY UO "http://purl.org/obo/owl/UO#" >
     <!ENTITY DOID "http://purl.org/obo/owl/DOID#" >
     <!ENTITY bfo "http://www.ifomis.org/bfo/1.1#" >
+    <!ENTITY TRANS "http://purl.org/obo/owl/TRANS#" >
     <!ENTITY obo "http://purl.obolibrary.org/obo/" >
     <!ENTITY IDOMAL "http://purl.org/obo/owl/IDOMAL#" >
     <!ENTITY OBO_REL "http://purl.org/obo/owl/OBO_REL#" >
@@ -40,6 +41,7 @@
      xmlns:DOID="http://purl.org/obo/owl/DOID#"
      xmlns:OBO_REL="http://purl.org/obo/owl/OBO_REL#"
      xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+     xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
     <Ontology rdf:about="&obo;apollo_sv.owl">
         <rdfs:comment>test</rdfs:comment>
@@ -92,19 +94,19 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000114">
-        <rdfs:label xml:lang="en">has curation status</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000412">
         <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000119">
-        <rdfs:label>definition source</rdfs:label>
-        <rdfs:label xml:lang="en">definition source</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000114">
+        <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000232">
         <rdfs:label>curator note</rdfs:label>
         <rdfs:label xml:lang="en">curator note</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000119">
+        <rdfs:label>definition source</rdfs:label>
+        <rdfs:label xml:lang="en">definition source</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -179,14 +181,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label xml:lang="en">commissions</rdfs:label>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:range>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
-                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
-                </unionOf>
-            </Class>
-        </rdfs:range>
         <rdfs:domain>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -195,6 +189,14 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </unionOf>
             </Class>
         </rdfs:domain>
+        <rdfs:range>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
+                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                </unionOf>
+            </Class>
+        </rdfs:range>
     </ObjectProperty>
     
 
@@ -345,6 +347,38 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     
 
 
+    <!-- http://purl.org/obo/owl/OBO_REL#realized_by -->
+
+    <ObjectProperty rdf:about="&OBO_REL;realized_by">
+        <rdfs:label xml:lang="en">realized_by</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">NOTE: there appears to be some consistency in usage as to whether processes or continuants realize</rdfs:comment>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
+        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
+        <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+    </ObjectProperty>
+    
+
+
     <!-- http://www.obofoundry.org/ro/ro.owl#bearer_of -->
 
     <ObjectProperty rdf:about="&ro;bearer_of"/>
@@ -452,10 +486,64 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000002">
         <rdfs:label xml:lang="en">basic reproduction number</rdfs:label>
-        <rdfs:label xml:lang="en">basic reproductive number</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000043"/>
-        <obo:IAO_0000115 xml:lang="en">A measurement datum that is the average number of organisms directly infected by each infectious organism during the course of an epidemic.</obo:IAO_0000115>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000656"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;part_of"/>
+                                                        <someValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&ro;has_part"/>
+                                                                        <allValuesFrom>
+                                                                            <Class>
+                                                                                <intersectionOf rdf:parseType="Collection">
+                                                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                                    <Restriction>
+                                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000468"/>
+                                                                                    </Restriction>
+                                                                                </intersectionOf>
+                                                                            </Class>
+                                                                        </allValuesFrom>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </someValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;precedes"/>
+                                <someValuesFrom rdf:resource="&obo;IDO_0000603"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The count of transmissions of the infectious agent from one infected organism to another, resulting in an infection in a completely susceptible population.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The number of organisms that each infected organism infects in a completely susceptible population. </obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
@@ -804,12 +892,45 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000016 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000016">
-        <rdfs:label xml:lang="en">duration of infectiousness</rdfs:label>
+        <rdfs:label xml:lang="en">duration of infectiousness measurement datum</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&span;TemporalInterval"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;IDO_0000458"/>
+                                            </Restriction>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;part_of"/>
+                                <someValuesFrom rdf:resource="&obo;OGMS_0000063"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the infectiousness of infectious individuals in a population expressed in time step units, for example “6.1”</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The value for the duration of the parts of an infectious disease course during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
-        <rdfs:comment xml:lang="en">infectious period</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The measurement datum for the duration of the parts of an infectious disease course during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -818,11 +939,64 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000017 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000017">
-        <rdfs:label xml:lang="en">latent period</rdfs:label>
+        <rdfs:label xml:lang="en">latent period measurement datum</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&span;TemporalInterval"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;part_of"/>
+                                <someValuesFrom rdf:resource="&obo;OGMS_0000063"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;preceded_by"/>
+                                <someValuesFrom rdf:resource="&obo;IDO_0000603"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;precedes"/>
+                                <someValuesFrom>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;part_of"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OGMS_0000063"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                                        <someValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000458"/>
+                                                                    </Restriction>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </someValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </someValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000600 xml:lang="en">The duration from infection until the organism becomes infectious among all infected organisms in the population.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The value for the time interval between the host&#39;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval between the host&#39;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">latent period</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1168,10 +1342,44 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000043">
         <rdfs:label xml:lang="en">reproduction number</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000656"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;part_of"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;precedes"/>
+                                <someValuesFrom rdf:resource="&obo;IDO_0000603"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000600 xml:lang="en">The number of times each infected organism successfully transmits the disease to a susceptible organism.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The number of transmissions of the infectious agent from one infected organism to another, resulting in an infection. </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The count of transmissions of the infectious agent from one infected organism to another, resulting in an infection. </obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The number of susceptible organisms that each infected organism infects.  ‘Infects’ carries the same meaning as ‘exposes’ in epidemic simulations such as SEIR simulation.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reproduction number</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2019,6 +2227,36 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/IDO_0000458 -->
+
+    <Class rdf:about="&obo;IDO_0000458">
+        <rdfs:label xml:lang="en">contagiousness</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;inheres_in"/>
+                        <someValuesFrom rdf:resource="&obo;IDO_0000537"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&OBO_REL;realized_by"/>
+                        <allValuesFrom rdf:resource="&obo;IDO_0000656"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <rdfs:comment>Highly contagious infections, those with a relatively high likelihood of spread, are referred to as contagious and are those for which spread is likely as a result of data-to-day activities of the host.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>The disposition is realized in a horizontal transmission process.</rdfs:comment>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A disposition that inheres in a host of infectious agent and is a disposition to transmit infectious agents to organisms of the same Species through casual contact with a high likelihood of realization.</obo:IAO_0000115>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/IDO_0000460 -->
 
     <Class rdf:about="&obo;IDO_0000460">
@@ -2102,6 +2340,31 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <rdfs:comment>A particular instance of infection incidence will depend on a type of infectious agent, a population, and a period of time.  Incidence is used as a measure of risk.  Actual measures of incidence are based only on reported cases and usually specify a time interval and geographic location.  Other constraints may include population demographics.  These constraints will vary with the context of the incidence measure.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">A quality that inheres in an organism population and is the number of organisms in the population that become infected with an infectious agent during a specified period of time.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000495 -->
+
+    <Class rdf:about="&obo;IDO_0000495">
+        <rdfs:label xml:lang="en">infectious disease course</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OGMS_0000063"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000308"/>
+                        <someValuesFrom rdf:resource="&obo;IDO_0000436"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OGMS_0000063"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A disease course that is the realization of an infectious disease.</obo:IAO_0000115>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
@@ -2286,6 +2549,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000603">
         <rdfs:label xml:lang="en">process of establishing an infection</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;Process"/>
+        <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">A process by which an infectious agent, established in a host, becomes part of an infection in the host.</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
@@ -2305,6 +2569,18 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&#39;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IDO_0000656 -->
+
+    <Class rdf:about="&obo;IDO_0000656">
+        <rdfs:label>horizontal pathogen transmission process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&TRANS;TRANS_0000000"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115>A pathogen transmission process in which a pathogen is transmitted from one host to another of the same Species, and the two hosts are not in a parent-child relationship.</obo:IAO_0000115>
     </Class>
     
 
@@ -2494,9 +2770,11 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OGMS_0000063">
         <rdfs:label>disease course</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000111>disease course</obo:IAO_0000111>
         <obo:IAO_0000232>creation date: 2009-06-23T11:55:44Z</obo:IAO_0000232>
         <obo:IAO_0000115 xml:lang="en">The totality of all processes through which a given disease instance is realized.</obo:IAO_0000115>
     </Class>
@@ -2789,6 +3067,21 @@ for now.</obo:IAO_0000116>
         <rdfs:subClassOf rdf:resource="&NCBITaxon;NCBITaxon_2759"/>
         <obo:IAO_0000111 xml:lang="en">Fungi/Metazoa group</obo:IAO_0000111>
         <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/NCBITaxon"/>
+    </Class>
+    
+
+
+    <!-- http://purl.org/obo/owl/TRANS#TRANS_0000000 -->
+
+    <Class rdf:about="&TRANS;TRANS_0000000">
+        <rdfs:label>transmission process</rdfs:label>
+        <rdfs:label>Suggested label: pathogen transmission process</rdfs:label>
+        <rdfs:label xml:lang="en">transmission process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000115>Suggested definition: A process by which a pathogen passes from one host organism to a second host organism of the same Species.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A process that is the means during which the pathogen is transmitted directly or indirectly from its natural reservoir, a susceptible host or source to a new host.</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">transmission process</obo:IAO_0000111>
     </Class>
     
 
