@@ -5,15 +5,15 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import edu.pitt.rods.SeirSimulatorService;
-import edu.pitt.apollo.service.epidemicsimulator.EpidemicSimulator;
 import edu.pitt.apollo.types.EpidemicModelInput;
 import edu.pitt.apollo.types.SimulationRunResult;
+import edu.pitt.rods.SeirEpiModelSimulator;
+import edu.pitt.rods.SimulatorService;
 
 public class SeirModelServiceWrapper {
 
 	private static final QName SERVICE_NAME = new QName(
-			"http://rods.pitt.edu/", "SeirSimulatorService");
+			"http://rods.pitt.edu/", "SimulatorService");
 
 	private URL wsdlURL = null;
 
@@ -28,15 +28,15 @@ public class SeirModelServiceWrapper {
 		}
 	}
 
-	private EpidemicSimulator getPort() {
-		EpidemicSimulator port = null;
-		SeirSimulatorService ss = new SeirSimulatorService(wsdlURL, SERVICE_NAME);
+	private SeirEpiModelSimulator getPort() {
+		SeirEpiModelSimulator port = null;
+		SimulatorService ss = new SimulatorService(wsdlURL, SERVICE_NAME);
 		port = ss.getSimulationServerPort();
 		return port;
 	}
 
 	public SimulationRunResult run(EpidemicModelInput input) {
-		EpidemicSimulator port = getPort();
+		SeirEpiModelSimulator port = getPort();
 		return port.run(input);
 	}
 
@@ -60,7 +60,7 @@ public class SeirModelServiceWrapper {
 		SeirModelTestHelper
 				.testRun(new URL(
 						//"http://research3.rods.pitt.edu:9001/ApolloSeirModelService/services/SeirServerPort?wsdl"));
-						"http://research3.rods.pitt.edu:9001/Seir/services/seirepimodelsimulator?wsdl"));
+						"http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
 //		SeirModelTestHelper
 //				.testRunBatch(
 //						new URL(
