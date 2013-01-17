@@ -94,19 +94,19 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412">
-        <rdfs:label xml:lang="en">imported from</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412">
+        <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -363,18 +363,18 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1049,7 +1049,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000022 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000022">
-        <rdfs:label>simulation population count</rdfs:label>
         <rdfs:label xml:lang="en">count of simulated population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
         <rdfs:subClassOf>
@@ -1059,8 +1058,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115>The count of all representations of organisms in a simulation.</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">count of simulated population</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">The count of simulated organisms.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The number of simulated organisms in a simulated population.  The number does not have to be an integer.  </obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">pop_count</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1139,13 +1139,22 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000031">
         <rdfs:label xml:lang="en">simulated population</rdfs:label>
-        <rdfs:label xml:lang="en">simulation population data set</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <Restriction>
-                        <onProperty rdf:resource="&obo;APOLLO_SV_00000028"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;part_of"/>
+                                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;participates_in"/>
@@ -1155,7 +1164,8 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
-        <obo:IAO_0000115 xml:lang="en">A data set that is the aggregation of all organism representations to be used by a simulator.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A simulated population is a set of simulated organisms.  The set can be null (e.g., the set of 200 year-old H. sapiens).  A simulated population can include more than one species, in which case it may be convenient to define each species as a simulated population and form the overall simulated population by set union.  Similarly, it may be convenient to define sociodemographic or geographic strata within a simulated population as simulated populations and obtain the overall simulated population by set union.  See examples in “Programmer’s Guide, page x)</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A simulation of the aggregate of all organisms that are members of the population participating in a simulator.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1940,13 +1950,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -2390,18 +2400,6 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
 
     <Class rdf:about="&obo;IDO_0000509">
         <rdfs:label xml:lang="en">organism population</rdfs:label>
-        <equivalentClass>
-            <Restriction>
-                <onProperty rdf:resource="&obo;APOLLO_SV_00000057"/>
-                <someValuesFrom>
-                    <Class>
-                        <oneOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000035"/>
-                        </oneOf>
-                    </Class>
-                </someValuesFrom>
-            </Restriction>
-        </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
         <rdfs:comment>The organism population may be delineated by spatio-temporal proximity or by demographic criteria such as age.</rdfs:comment>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
@@ -2789,14 +2787,14 @@ for now.</obo:IAO_0000116>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <Restriction>
-                        <onProperty rdf:resource="&obo;APOLLO_SV_00000028"/>
+                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&obo;GAZ_00000448"/>
                                     <Restriction>
                                         <onProperty rdf:resource="&ro;location_of"/>
-                                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000031"/>
                                     </Restriction>
                                 </intersectionOf>
                             </Class>
@@ -2826,6 +2824,9 @@ for now.</obo:IAO_0000116>
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
+        <obo:IAO_0000600 xml:lang="en">An identifier referring to geographical location of a simulated population.  Our intent is for the location identifiers to be INCITS codes.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The simulation of geographical location in which a simulated population is assumed to be located.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population location</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
