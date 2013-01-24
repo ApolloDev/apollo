@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:population xmlns:tns="http://types.apollo.pitt.edu/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://types.apollo.pitt.edu/ population.xsd ">
+	<tns:location>United States of America</tns:location>
+	<tns:name>United States of America</tns:name>
+	<tns:subpopulation>
+		<tns:location>Pennsylvania</tns:location>
+		<tns:subpopulation>
+			<tns:location>Allegheny County</tns:location>
+			<tns:subpopulation>
+				<tns:location>15222</tns:location>
+				<tns:gender>F</tns:gender>
+				<tns:count>211.0</tns:count>
+			</tns:subpopulation>
+			<tns:subpopulation>
+				<tns:location>other</tns:location> <!-- other in Allegheny County -->
+				<tns:count>1199779.0</tns:count>
+			</tns:subpopulation>
+		</tns:subpopulation>
+		<tns:subpopulation>
+			<tns:location>other</tns:location> <!-- other in PA -->
+			<tns:count>12000000.0</tns:count>
+		</tns:subpopulation>
+	</tns:subpopulation>
+	<tns:subpopulation>
+		<tns:location>Maine</tns:location>
+		<tns:subpopulation>
+			<tns:location>Penobscot County</tns:location>
+			<tns:subpopulation>
+				<tns:location>04401</tns:location>
+				<tns:gender>M</tns:gender>
+				<tns:count>23.0</tns:count>
+			</tns:subpopulation>
+			<tns:subpopulation>
+				<tns:location>other</tns:location> <!-- other in Penobsoct County -->
+				<tns:count>153000.0</tns:count>
+			</tns:subpopulation>
+		</tns:subpopulation>
+		<tns:subpopulation>
+			<tns:location>other</tns:location> <!-- other in Maine -->
+			<tns:count>1300000</tns:count>
+		</tns:subpopulation>
+	</tns:subpopulation>
+	<tns:subpopulation>
+		<tns:location>other</tns:location> <!-- other in US -->
+		<tns:count>314070000</tns:count>
+	</tns:subpopulation>
+</tns:population>
