@@ -61,7 +61,7 @@
 			</element>
 
 
-			<element name="simulated_population" type="string" maxOccurs="unbounded"
+			<element name="simulated_population" type="token" maxOccurs="unbounded"
 				minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000031">
