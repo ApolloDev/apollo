@@ -72,7 +72,7 @@
 			<element name="model_output"
 				type="tns:epidemic-model-output" maxOccurs="1" minOccurs="0">
 			</element>
-			<element name="runId" type="long"></element>
+			<element name="runId" type="token"></element>
 		</sequence>
 	</complexType>
 </schema>
