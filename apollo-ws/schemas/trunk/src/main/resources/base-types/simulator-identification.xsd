@@ -25,7 +25,7 @@
 	<complexType name="simulator-identification">
 		<sequence>
 			<element name="simulator_developer" maxOccurs="1"
-				minOccurs="1" type="string">
+				minOccurs="1" type="token">
 				<annotation>
 					<documentation
 						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000009">
@@ -33,7 +33,7 @@
 				</annotation>
 			</element>
 
-			<element name="simulator_name" maxOccurs="1" minOccurs="1" type="string">
+			<element name="simulator_name" maxOccurs="1" minOccurs="1" type="token">
 				<annotation>
 					<documentation
 						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000010">
@@ -43,7 +43,7 @@
 
 
 			<element name="simulator_version" maxOccurs="1"
-				minOccurs="1" type="string">
+				minOccurs="1" type="token">
 				<annotation>
 					<documentation
 						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000013">
