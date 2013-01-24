@@ -61,14 +61,14 @@
 					</documentation>
 				</annotation>
 			</element>
-			<element name="disease" type="string" maxOccurs="1"
+			<element name="disease" type="token" maxOccurs="1"
 				minOccurs="0">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000042">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="population_location" type="string" maxOccurs="1"
+			<element name="population_location" type="token" maxOccurs="1"
 				minOccurs="0">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000039">
