@@ -96,20 +96,20 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412">
-        <rdfs:label xml:lang="en">imported from</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412">
+        <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -187,14 +187,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label xml:lang="en">commissions</rdfs:label>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -203,6 +195,14 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -216,7 +216,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
         <rdfs:comment>Barry Smith, Waclaw Kusnierczyk, Daniel Schober, Werner Ceusters, “Towards a Reference Terminology for Ontology Research and Development in the Biomedical Domain”, O. Bodenreider, ed., Proceedings of KR-MED, 2006, 57-66. Also available online at: http://ceur-ws.org/Vol-222.</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <rdfs:range rdf:resource="&obo;APOLLO_SV_00000034"/>
         <rdfs:domain rdf:resource="&bfo;Entity"/>
     </ObjectProperty>
     
@@ -462,12 +461,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -477,9 +476,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
             <rdf:Description/>
-        </oboInOwl:hasDefinition>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -492,15 +491,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -894,9 +893,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000054"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000600 xml:lang="en">An identifier that refers to all versions of a specific simulator, such as “FRED”.  We intend that it uniquely identify a simulator when combined with simulator developer.  For example, the combination www.psc.edu/FRED would differentiate the FRED simulator created by a Pittsburgh organization from another “FRED” simulator maintained elsewhere. The implementation of namespace control for simulator name (i.e., making sure that they don’t use “FRED” twice) is the responsibility of simulator developer.</obo:IAO_0000600>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to all version of a specific simulator.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">An identifier that refers to all versions of a specific simulator, such as “FRED”.  We intend that it uniquely identify a simulator when combined with simulator developer.  For example, the combination www.psc.edu/FRED would differentiate the FRED simulator created by a Pittsburgh organization from another “FRED” simulator maintained elsewhere. The implementation of namespace control for simulator name (i.e., making sure that they don’t use “FRED” twice) is the responsibility of simulator developer.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator name</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1240,7 +1239,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000024">
         <rdfs:label xml:lang="en">vaccine compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1369,15 +1368,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000034 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000034">
-        <rdfs:label xml:lang="en">Universal</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
     </Class>
     
 
@@ -1710,26 +1700,16 @@ Note that the name for this concept, were it to be named based on its intent, wo
 
     <Class rdf:about="&obo;APOLLO_SV_00000044">
         <rdfs:label xml:lang="en">vaccine efficacy delay</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-        <rdfs:subClassOf>
+        <equivalentClass>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000136"/>
-                <someValuesFrom>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&span;TemporalInterval"/>
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;BFO_0000156"/>
-                                <someValuesFrom rdf:resource="&obo;IDO_0000499"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
-                </someValuesFrom>
+                <onProperty rdf:resource="&obo;IAO_0000413"/>
+                <someValuesFrom rdf:resource="&obo;IDO_0000499"/>
             </Restriction>
-        </rdfs:subClassOf>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000416"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the time period between an organism&#39;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The measurement of the time interval between an organism&#39;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent within a population of organism</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The time measurement datum of the time interval between the beginning of a vaccination against an infectious agent and the participant&#39;s acquisition of immunity. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1827,8 +1807,11 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000053 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000053">
-        <rdfs:label xml:lang="en">available for</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:label xml:lang="en">simulated organism awaiting control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “eligible, willing and able” to participate with a particular simulated control measure.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “eligible, willing and able” to participate with a particular control measure.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1897,8 +1880,11 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000058 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000058">
-        <rdfs:label xml:lang="en">not available for</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:label xml:lang="en">simulated organism not awaiting control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “ineligible, unwilling or unable” to participate with a particular simulated control measure.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “ineligible, unwilling or unable” to participate with a particular control measure.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">not awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1906,8 +1892,61 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000059 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000059">
-        <rdfs:label xml:lang="en">awaiting efficacy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:label xml:lang="en">simulated organism awaiting effect of control measure</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;participates_in"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                    <Class>
+                                        <complementOf>
+                                            <Class>
+                                                <unionOf rdf:parseType="Collection">
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000448"/>
+                                                    </Restriction>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&obo;OBI_0000308"/>
+                                                                        <someValuesFrom rdf:resource="&obo;CHEBI_36044"/>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </someValuesFrom>
+                                                    </Restriction>
+                                                </unionOf>
+                                            </Class>
+                                        </complementOf>
+                                    </Class>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000029"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <obo:IAO_0000115 xml:lang="en">A simulated organism that  participates in a particular control measure that has not yet been effective.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">This concept represents a simulated organism that has received a control measure such as vaccination in which a period of time must elapse before the benefit of the control measure accrues.  A simulated organism is ‘awaiting efficacy’ if ‘efficacy delay’ (e.g. the concept ‘antiviral efficacy delay’ for the particular simulated control measure is greater than the elapsed time between application of the control measure and the current simulated time.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">awaiting effect of control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3619,6 +3658,23 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0302867 -->
+
+    <Class rdf:about="&obo;OBI_0302867">
+        <rdfs:label xml:lang="en">calculated datum</rdfs:label>
+        <rdfs:label xml:lang="en">predicted data item</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">BP 12/21: Edited the incomplete definition from Philippe. It is still unclear to me if this should be a data item at all, or an information content entity. This will be important, because if we exclude predictions from data items, we will run into issues that we willl have to duplicate things like &#39;weight datum&#39; etc. all of which can be predicted. </obo:IAO_0000116>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">Philippe Rocca-Serra; Bjoern Peters</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000111 rdf:datatype="&xsd;string">predicted data item</obo:IAO_0000111>
+        <obo:IAO_0000115 xml:lang="en">A data item that was generated on the basis of a calculation or logical reasoning</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">APOLLO DEVELOPERS: We need to check whether OBI changes the label and the hierarchical place of this class.</rdfs:comment>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OBI_0400107 -->
 
     <Class rdf:about="&obo;OBI_0400107">
@@ -4085,7 +4141,6 @@ for now.</obo:IAO_0000116>
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000035 -->
 
     <NamedIndividual rdf:about="&obo;APOLLO_SV_00000035">
-        <rdf:type rdf:resource="&obo;APOLLO_SV_00000034"/>
         <rdfs:label xml:lang="en">organism population universal</rdfs:label>
     </NamedIndividual>
 </rdf:RDF>
