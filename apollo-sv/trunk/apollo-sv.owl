@@ -1809,8 +1809,10 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <Class rdf:about="&obo;APOLLO_SV_00000053">
         <rdfs:label xml:lang="en">simulated organism awaiting control measure</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <disjointWith rdf:resource="&obo;APOLLO_SV_00000058"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “eligible, willing and able” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “eligible, willing and able” to participate with a particular control measure.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">This class will need more ontological reasoning, since the &quot;willing&quot; part of the definition is not representable in BFO to date.</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1884,6 +1886,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “ineligible, unwilling or unable” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “ineligible, unwilling or unable” to participate with a particular control measure.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">This class will need more ontological reasoning, since the &quot;unwilling&quot; part of the definition is not representable in BFO to date.</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">not awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2676,13 +2679,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -3663,7 +3666,7 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OBI_0302867">
         <rdfs:label xml:lang="en">calculated datum</rdfs:label>
         <rdfs:label xml:lang="en">predicted data item</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <obo:IAO_0000116 rdf:datatype="&xsd;string">BP 12/21: Edited the incomplete definition from Philippe. It is still unclear to me if this should be a data item at all, or an information content entity. This will be important, because if we exclude predictions from data items, we will run into issues that we willl have to duplicate things like &#39;weight datum&#39; etc. all of which can be predicted. </obo:IAO_0000116>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">Philippe Rocca-Serra; Bjoern Peters</obo:IAO_0000117>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
