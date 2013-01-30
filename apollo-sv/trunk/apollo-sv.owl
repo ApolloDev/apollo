@@ -9,6 +9,7 @@
     <!ENTITY TRANS "http://purl.org/obo/owl/TRANS#" >
     <!ENTITY obo "http://purl.obolibrary.org/obo/" >
     <!ENTITY IDOMAL "http://purl.org/obo/owl/IDOMAL#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
     <!ENTITY OBO_REL "http://purl.org/obo/owl/OBO_REL#" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY NCBITaxon "http://purl.org/obo/owl/NCBITaxon#" >
@@ -26,6 +27,7 @@
 
 <rdf:RDF xmlns="http://www.w3.org/2002/07/owl#"
      xml:base="http://www.w3.org/2002/07/owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:ro="http://www.obofoundry.org/ro/ro.owl#"
      xmlns:geo="&obo;geo.owl#"
      xmlns:apollo_sv="&obo;apollo_sv.owl/"
@@ -67,6 +69,13 @@ Roadmap:
 
 A KEY POINT ABOUT THIS ONTOLOGY:
 We are modeling a world not of patients or of epidemics in Apollo SV, but a world of models that are trying to interoperate.   For this reason, Apollo-SV has many classes with names like &quot;Epidemic Model&quot; and &quot;Configuratio_object.&quot;   (By way of contrast, an ontology intended to support an electronic medical record would be dominanted by classes with names like &quot;Patient&quot; and &quot;Symptom.&quot;)</rdfs:comment>
+        <versionInfo xml:lang="en">2013-01-31 (Initial Release)</versionInfo>
+        <dc:contributor xml:lang="en">John Levander</dc:contributor>
+        <dc:contributor xml:lang="en">Josh Hanna</dc:contributor>
+        <dc:creator xml:lang="en">Mathias Brochhausen</dc:creator>
+        <dc:contributor xml:lang="en">Mike Wagner</dc:contributor>
+        <dc:contributor xml:lang="en">Shawn T. Brown</dc:contributor>
+        <dc:contributor xml:lang="en">William R. Hogan</dc:contributor>
         <imports rdf:resource="&obo;geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
     </Ontology>
@@ -83,7 +92,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <AnnotationProperty rdf:about="&obo;apollo_sv.owl/APOLLO_SV_0000040">
         <rdfs:label xml:lang="en">Unique Apollo Label</rdfs:label>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000118>UAL</obo:IAO_0000118>
         <obo:IAO_0000115>This annotation property gives the unique label of all Apollo_SV entities that are refered to in the schema. The UAL is the denotator for the Apollo_SV class in the schema. There can at all times only be ONE value of UAL for each class.</obo:IAO_0000115>
     </AnnotationProperty>
@@ -171,7 +179,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
         <rdfs:label xml:lang="en">is based on</rdfs:label>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">p is based on e, if p is a purely intentional entity, e is an entity and p assumption/simulation that e exists regardless of the truth of this assumption. </rdfs:comment>
         <rdfs:domain rdf:resource="&obo;APOLLO_SV_00000000"/>
         <rdfs:range rdf:resource="&bfo;Entity"/>
@@ -215,7 +222,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label xml:lang="en">instantiates</rdfs:label>
         <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
         <rdfs:comment>Barry Smith, Waclaw Kusnierczyk, Daniel Schober, Werner Ceusters, “Towards a Reference Terminology for Ontology Research and Development in the Biomedical Domain”, O. Bodenreider, ed., Proceedings of KR-MED, 2006, 57-66. Also available online at: http://ceur-ws.org/Vol-222.</rdfs:comment>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:domain rdf:resource="&bfo;Entity"/>
     </ObjectProperty>
     
@@ -400,6 +406,36 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label xml:lang="en">realizes</rdfs:label>
         <obo:IAO_0000111 xml:lang="en">realizes</obo:IAO_0000111>
         <rdfs:range rdf:resource="&snap;RealizableEntity"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/RO_0002222 -->
+
+    <ObjectProperty rdf:about="&obo;RO_0002222">
+        <rdfs:label xml:lang="en">temporal relation</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000116>move to BFO?</obo:IAO_0000116>
+        <rdfs:comment>A relation that holds between two occurrents. This is a grouping relation that collects together all the Allen relations.</rdfs:comment>
+        <obo:IAO_0000119>Allen</obo:IAO_0000119>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+        <rdfs:domain rdf:resource="&span;Occurrent"/>
+        <rdfs:range rdf:resource="&span;Occurrent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/RO_0002224 -->
+
+    <ObjectProperty rdf:about="&obo;RO_0002224">
+        <rdfs:label xml:lang="en">starts with</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000118>started by</obo:IAO_0000118>
+        <obo:IAO_0000115>x starts with y if and only if x has part y and the time point at which x starts is equivalent to the time point at which y starts. Formally: α(y) = α(x) ∧ ω(y) &lt; ω(x), where α is a function that maps a process to a start point, and ω is a function that maps a process to an end point.</obo:IAO_0000115>
+        <obo:IAO_0000112>Every insulin receptor signaling pathway starts with the binding of a ligand to the insulin receptor</obo:IAO_0000112>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+        <rdfs:subPropertyOf rdf:resource="&obo;RO_0002222"/>
     </ObjectProperty>
     
 
@@ -604,9 +640,8 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
     <Class rdf:about="&obo;APOLLO_SV_00000000">
         <rdfs:label xml:lang="en">purely intentional entity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;GenericallyDependentContinuant"/>
-        <rdfs:comment xml:lang="en">MB: We need to revisit the definition. I am not yet sure whether classes are also assumed. I&#39;d rather say only individuals. Then we could classify those according to their assumed properties. However, there might be some hidden implication of the above that we&#39;d want to prevent.</rdfs:comment>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that assumes non-existing individuals, and their properties. </obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">MB: We need to revisit the definition. I am not yet sure whether classes are also assumed. I&#39;d rather say only individuals. Then we could classify those according to their assumed properties. However, there might be some hidden implication of the above that we&#39;d want to prevent.</rdfs:comment>
     </Class>
     
 
@@ -681,7 +716,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">MB: Here we run into the well know DL problem that we cannot specify that the infectious agent that is transmitted is of the same type that the infectious agent the population is susceptible to.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The count of transmissions of the infectious agent from one infected organism to another, resulting in an infection in a completely susceptible population.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The number of organisms that each infected organism infects in a completely susceptible population. </obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
@@ -741,6 +776,10 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <rdfs:comment xml:lang="en">MB: I know that we agreed that you can do whatever you want with elucidation. I take the liberty, however, to give an advise:
+I strongly object to this sentence on the basis of the fact that it represents a use mention mistake. If you ask me &quot;What is a pipe.&quot; and I answer you &quot;A pipe is a word in the English language that represents a pipe&quot; I commit the same mistake. The elucidation should describe the members of the class (Personally, I discourage the use of the word concept, because in my experience is fosters mistake rather than clarity). In addition, our ontology, Apollo_SV.owl, does not contain concepts, it is a representation of classes in reality.
+Please consider this advise to hold for all usages of the term &quot;concept&quot; in this document/ontology.
+</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">a concept in the ontology that represents the process of simulating a process of type X. The concept is not used in Apollo-WS.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a planned process that (1) has at least one process part that has as participants representations of participants (in place of those participants) of processes of type X, and where all such process parts substitute for parts of processes of type X, and (2) is carried out for the purpose of planning for processes of type X, learning more about processes of type X, or teaching about processes of type X.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulating of process of type X</apollo_sv:APOLLO_SV_0000040>
@@ -781,7 +820,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to the legal person that commissions the simulation process.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An identifier that refers to the person or organization who is requesting one or more executions of the simulator software.</obo:IAO_0000600>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">requester id</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -793,7 +831,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label xml:lang="en">simulation software</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
     </Class>
     
@@ -817,7 +854,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
         <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Software_development</obo:IAO_0000119>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -863,7 +899,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to the legal person that maintains the simulator.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An identifier that refers to the person or organization who is responsible for the simulator.  It is intended to uniquely identify a person or organization.  That said, we do not plan to control the namespace for simulator developer at this point in development.  We will add our ideas about alternatives at a future date.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator developer</apollo_sv:APOLLO_SV_0000040>
@@ -893,7 +928,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000054"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to all version of a specific simulator.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An identifier that refers to all versions of a specific simulator, such as “FRED”.  We intend that it uniquely identify a simulator when combined with simulator developer.  For example, the combination www.psc.edu/FRED would differentiate the FRED simulator created by a Pittsburgh organization from another “FRED” simulator maintained elsewhere. The implementation of namespace control for simulator name (i.e., making sure that they don’t use “FRED” twice) is the responsibility of simulator developer.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator name</apollo_sv:APOLLO_SV_0000040>
@@ -938,7 +972,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
         <obo:IAO_0000115 xml:lang="en">A device that has a computer as its part which has a part that bears the concretization of simulation software.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -959,7 +992,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The numeral that is part of a simulation time step action specification.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">Time step value is the number of time step units that make up a time step in a simulation.  For example, if time step is 6 hours, then time step value is 6.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">time step value</apollo_sv:APOLLO_SV_0000040>
@@ -978,7 +1010,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000054"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">An identifier that refers to a unique version of a simulator. Simulator version distinguishes, for example, version “2.0” from “2.0.b”</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">An information content entity that as part of a complete simulator identifier identifies one specific version of a simulator software.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator version</apollo_sv:APOLLO_SV_0000040>
@@ -1002,7 +1033,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The time unit such as “hours” or “days” for each time step of a simulation.  Time step unit is always used with time step value.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The time unit that is part of a simulation time step action specification.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">time step unit</apollo_sv:APOLLO_SV_0000040>
@@ -1021,7 +1051,6 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000068"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The action specification that specifies the number of time steps a simulation is going to run.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The number of time steps for a simulator run.  If run length is 10 and time step is 6 hours, then the simulator will simulate a 60-hour period.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">run length</apollo_sv:APOLLO_SV_0000040>
@@ -1078,6 +1107,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs.</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">The duration of the infectiousness of infectious individuals in a population expressed in time step units, for example “6.1”</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The measurement datum for the duration of the parts of an infectious disease course during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period</apollo_sv:APOLLO_SV_0000040>
@@ -1152,6 +1182,7 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval between the host&#39;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
@@ -1216,6 +1247,10 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">MW: I know this causes problems with our set-theoretic definition.  Unfortunately the compartmental models produce fractional counts at each of their time steps, including the final step.  
+
+Any ideas?  I’ve considered and rejected allowing individual organisms to be fractional.  Perhaps if we just replace the term “cardinality” in the definition with ‘computed size’
+</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The count of (simulated organisms) in a simulated population.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The number of simulated organisms in a simulated population.  The number does not have to be an integer.  </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">pop_count</apollo_sv:APOLLO_SV_0000040>
@@ -1239,9 +1274,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000024">
         <rdfs:label xml:lang="en">vaccine compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine compliance</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
+        <rdfs:comment xml:lang="en">MB: This class is still awaiting its class restriction. It should be restricted as being about a population that has members that are eligible for a vaccination against the members that are eligible and consented the vaccination. There is a class &quot;eligibility rule&quot; in OBI (http://purl.obolibrary.org/obo/OBI_0500026), but it is restricted by definition to studies. I put in an issue in the OBI issue tracker. The consenting process and its specified outcome should be done in d-acts, but needs to be done properly.</rdfs:comment>
+        <rdfs:comment xml:lang="en">MW: I still see enough similarities at the abstract level among some control measures that we might add the concepts “Control measure compliance”, “Control measure efficacy”  and “control measure efficacy delay.”    We could then post-coordinate particular control measures such as vaccine.
+
+It is worth noting that there are control measures such as closing schools that are not applied at the individual level.   We have not represented those control measures yet.
+</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who is eligible according to a particular vaccination policy to be consented for that vaccination.</obo:IAO_0000115>
+        <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1250,8 +1291,49 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
 
     <Class rdf:about="&obo;APOLLO_SV_00000025">
         <rdfs:label xml:lang="en">vaccine efficacy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <allValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000036"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_part"/>
+                                <allValuesFrom>
+                                    <Class>
+                                        <unionOf rdf:parseType="Collection">
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000499"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom rdf:resource="&obo;VO_0000002"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </unionOf>
+                                    </Class>
+                                </allValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </allValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">MB: Due to BFO 1.1 vs BFO2 issues Vaccination from VO has not been formally defined in Apollo_SV. THis needs to be doen when curating Apollo_SV for BFO2 migration.</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been administered a vaccine to acquire immunity.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The fraction of vaccinated organisms in a simulated population that acquire immunity due to the vaccination.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1708,6 +1790,9 @@ Note that the name for this concept, were it to be named based on its intent, wo
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000416"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">MB: 1. The class restriction might seem counter-intuitive, but looking at the definition of &quot;vaccination…&quot; and has_specified_output convinced me that this is what it ought to be.
+2. In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs. 
+</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">The duration of the time period between an organism&#39;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The time measurement datum of the time interval between the beginning of a vaccination against an infectious agent and the participant&#39;s acquisition of immunity. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy delay</apollo_sv:APOLLO_SV_0000040>
@@ -1720,7 +1805,30 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <Class rdf:about="&obo;APOLLO_SV_00000045">
         <rdfs:label xml:lang="en">asymptomatic infection fraction
 </rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000036"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000569"/>
+                                    <rdf:Description rdf:about="&obo;IDO_0000573"/>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">The fraction given to express the probability of an organism to be infected, but stay asymptomatic.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The fraction of infectious individuals who do not develop symptoms during the course of their infections.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">asymptomatic infection fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1754,7 +1862,102 @@ Note that the name for this concept, were it to be named based on its intent, wo
 
     <Class rdf:about="&obo;APOLLO_SV_00000048">
         <rdfs:label xml:lang="en">antiviral efficacy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <allValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000036"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_part"/>
+                                <allValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                            <Class>
+                                                <unionOf rdf:parseType="Collection">
+                                                    <Class>
+                                                        <intersectionOf rdf:parseType="Collection">
+                                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                            <Class>
+                                                                <complementOf>
+                                                                    <Class>
+                                                                        <unionOf rdf:parseType="Collection">
+                                                                            <rdf:Description rdf:about="&obo;IDO_0000448"/>
+                                                                            <Restriction>
+                                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                                <someValuesFrom rdf:resource="&obo;IDO_0000414"/>
+                                                                            </Restriction>
+                                                                        </unionOf>
+                                                                    </Class>
+                                                                </complementOf>
+                                                            </Class>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&ro;participates_in"/>
+                                                                <someValuesFrom>
+                                                                    <Class>
+                                                                        <intersectionOf rdf:parseType="Collection">
+                                                                            <rdf:Description rdf:about="&obo;OGMS_0000090"/>
+                                                                            <Restriction>
+                                                                                <onProperty rdf:resource="&ro;has_participant"/>
+                                                                                <someValuesFrom>
+                                                                                    <Class>
+                                                                                        <intersectionOf rdf:parseType="Collection">
+                                                                                            <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                                                                                            <Restriction>
+                                                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                                                <someValuesFrom rdf:resource="&obo;CHEBI_36044"/>
+                                                                                            </Restriction>
+                                                                                        </intersectionOf>
+                                                                                    </Class>
+                                                                                </someValuesFrom>
+                                                                            </Restriction>
+                                                                        </intersectionOf>
+                                                                    </Class>
+                                                                </someValuesFrom>
+                                                            </Restriction>
+                                                        </intersectionOf>
+                                                    </Class>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;OGMS_0000090"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                                                        <someValuesFrom>
+                                                                            <Class>
+                                                                                <intersectionOf rdf:parseType="Collection">
+                                                                                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                                                                                    <Restriction>
+                                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                                        <someValuesFrom rdf:resource="&obo;CHEBI_36044"/>
+                                                                                    </Restriction>
+                                                                                </intersectionOf>
+                                                                            </Class>
+                                                                        </someValuesFrom>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </someValuesFrom>
+                                                    </Restriction>
+                                                </unionOf>
+                                            </Class>
+                                        </intersectionOf>
+                                    </Class>
+                                </allValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </allValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">MB: For DL reasons the easiest way to formalize the definition was to assume only organism that are either host or not immune undergo antiviral treatment. Is that adequate? I assume this&#39;ll create problems…</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been administered an antiviral to stop being an infectious agent host.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The fraction of a specific simulated population that receives antiviral treatment against a specific virus that either loses its infectious agent host role due to the antiviral treatment or does not become infected if the antiviral agent is being administered prophylactically (e.g., to household contacts of infected individuals).</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1763,9 +1966,73 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000049 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000049">
-        <rdfs:label xml:lang="en">antiviral delay to efficacy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral delay to efficacy</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:label xml:lang="en">antiviral efficacy delay</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000413"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000299"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                            <Class>
+                                                <complementOf>
+                                                    <Class>
+                                                        <unionOf rdf:parseType="Collection">
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                <someValuesFrom rdf:resource="&obo;IDO_0000414"/>
+                                                            </Restriction>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                <someValuesFrom rdf:resource="&obo;IDO_0000448"/>
+                                                            </Restriction>
+                                                        </unionOf>
+                                                    </Class>
+                                                </complementOf>
+                                            </Class>
+                                        </intersectionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;RO_0002224"/>
+                                <allValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OGMS_0000090"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;has_participant"/>
+                                                <someValuesFrom>
+                                                    <Class>
+                                                        <intersectionOf rdf:parseType="Collection">
+                                                            <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                <someValuesFrom rdf:resource="&obo;CHEBI_36044"/>
+                                                            </Restriction>
+                                                        </intersectionOf>
+                                                    </Class>
+                                                </someValuesFrom>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </allValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000416"/>
+        <obo:IAO_0000600 xml:lang="en">The duration of time (expressed in time steps) between initiation of a particular antiviral treatment to an organism and when the organism becomes non infectious or, if the antiviral is being administered prophylactically, protected from infection. </obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The value of the time interval between an organism&#39;s taking antivirals against a specific infectious agent and the organism’s losing its infectious agent host role. </obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1774,8 +2041,16 @@ Note that the name for this concept, were it to be named based on its intent, wo
 
     <Class rdf:about="&obo;APOLLO_SV_00000050">
         <rdfs:label xml:lang="en">antiviral compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral compliance</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
+        <rdfs:comment xml:lang="en">MB: This class is still awaiting its class restriction. It should be restricted as being about a population that has members that are eligible for an antiviral treatment against the members that are eligible and consented the antiviral treatment. There is a class &quot;eligibility rule&quot; in OBI (http://purl.obolibrary.org/obo/OBI_0500026), but it is restricted by definition to studies. I put in an issue in the OBI issue tracker. The consenting process and its specified outcome should be done in d-acts, but needs to be done properly.</rdfs:comment>
+        <rdfs:comment xml:lang="en">MW: Since the estimates that modelers use are from real populations, I have two questions:
+1. Should we distinguish between real and simulated population?
+2.  If so, do we want to represent a ‘measured’ antiviral compliance number that is a property of a real population and distinguish it from this number that we are using to study what might happen in a simulated population?
+
+MB: This issue will need to be taken care of in the axiomatization of simulated population</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism will be consented to receiving antiviral treatment when eligible.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The fraction of individuals in a simulated population that will accept antiviral treatment if offered. </obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1812,6 +2087,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
         <disjointWith rdf:resource="&obo;APOLLO_SV_00000058"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “eligible, willing and able” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “eligible, willing and able” to participate with a particular control measure.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">MB: APOLLO_SV_00000053 and APOLLO_SV_00000058 have not been given a class restriction, since they are not expressible in BFO right now, due to their referring to &quot;will&quot;. Both classes have been made disjoint in the OWL file, though.</rdfs:comment>
         <rdfs:comment xml:lang="en">This class will need more ontological reasoning, since the &quot;willing&quot; part of the definition is not representable in BFO to date.</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1837,6 +2113,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to a specific simulator.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">MB: I am not 100% happy with the elucidation. Can&#39;t we just say that this is the full identifier identifying the simulator with both its name and its version number?</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">The combination of simulator developer, simulator name, and simulator version, for example “www.psc.edu/FRED/2.0”  The combination is intended to uniquely identify the simulation algorithm that produced output X, given input Y to support scientific audit, error analysis, and reproducibility of results.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">complete simulator identifier</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1886,6 +2163,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “ineligible, unwilling or unable” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “ineligible, unwilling or unable” to participate with a particular control measure.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">MB: APOLLO_SV_00000053 and APOLLO_SV_00000058 have not been given a class restriction, since they are not expressible in BFO right now, due to their referring to &quot;will&quot;. Both classes have been made disjoint in the OWL file, though.</rdfs:comment>
         <rdfs:comment xml:lang="en">This class will need more ontological reasoning, since the &quot;unwilling&quot; part of the definition is not representable in BFO to date.</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">not awaiting control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2005,6 +2283,10 @@ Note that the name for this concept, were it to be named based on its intent, wo
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000115>The simulation of an antiviral control measure. </obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A type of control measure based on administration of chemotherapeutic agents to an infected or high-risk organism that kill or inhibit replication of viruses within a simulated organism.</obo:IAO_0000600>
+        <rdfs:comment xml:lang="en">MB: For all the antiviral-related classes I referred to ChEBI: Antiviral class. I wasn&#39;t able to use the plug-in though (there was a JAVA heap space error, probably due to the size of ChEBI).
+AND (more importantly) I did not re-use any of the ChEBI hierarchy which, even in the BFO version is a mess.
+Maybe we need to discuss this.
+</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">anitviral control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2049,8 +2331,8 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000062 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000062">
-        <rdfs:label xml:lang="en">initiated</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:label xml:lang="en">obsolete_initiated</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
     </Class>
     
 
@@ -2679,13 +2961,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -3694,6 +3976,27 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0600007 -->
+
+    <Class rdf:about="&obo;OBI_0600007">
+        <rdfs:label xml:lang="en">administering substance in vivo</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">2009-11-10. Tracker: https://sourceforge.net/tracker/?func=detail&amp;aid=2893050&amp;group_id=177891&amp;atid=886178</obo:IAO_0000116>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">A process by which a substance is intentionally given to an organism</obo:IAO_0000115>
+        <obo:IAO_0000112 rdf:datatype="&xsd;string">Balb/c mice received an intracameral or subconjunctival injection of trinitrophenylated spleen cells</obo:IAO_0000112>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">Person:Bjoern Peters</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000117 xml:lang="en">Bjoern Peters</obo:IAO_0000117>
+        <obo:IAO_0000116 xml:lang="en">Different routes and means of administration should go as children underneath this</obo:IAO_0000116>
+        <obo:IAO_0000119 xml:lang="en">IEDB</obo:IAO_0000119>
+        <obo:IAO_0000111 xml:lang="en">administering substance in vivo</obo:IAO_0000111>
+        <obo:IAO_0000112 xml:lang="en">injecting mice with 10 ug morphine intranasally, a patient taking two pills of 1 mg aspirin orally</obo:IAO_0000112>
+        <obo:IAO_0000116 xml:lang="en">needs roles such as perturber and perturbee (children of input role). Perturb is too strong. Host might be the name for one role. Others considered: Doner, Donated, Acceptor.</obo:IAO_0000116>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OGMS_0000031 -->
 
     <Class rdf:about="&obo;OGMS_0000031">
@@ -3887,6 +4190,19 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OMRSE_00000037">
         <rdfs:label xml:lang="en">aggregate of major administrative subdivisions</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000035"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/VO_0000002 -->
+
+    <Class rdf:about="&obo;VO_0000002">
+        <rdfs:label>vaccination</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0600007"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/vo.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>YH, BP</obo:IAO_0000117>
+        <obo:IAO_0000115>a process of administering substance in vivo that involves in adding a vaccine into a host (e.g., human) in vivo with the intent to invoke a protective or therapeutic adaptive immune response.</obo:IAO_0000115>
+        <obo:IAO_0000118>vaccine administration</obo:IAO_0000118>
     </Class>
     
 
