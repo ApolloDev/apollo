@@ -104,20 +104,20 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412">
+        <rdfs:label xml:lang="en">imported from</rdfs:label>
+    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412">
-        <rdfs:label xml:lang="en">imported from</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
-    </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -514,12 +514,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -529,9 +529,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
             <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
+        </oboInOwl:hasDefinition>
     </ObjectProperty>
     
 
@@ -544,15 +544,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1644,7 +1644,7 @@ It is worth noting that there are control measures such as closing schools that 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is neither susceptible, exposed, nor infectious for a particular simulated disease. 
-Note that the name for this concept, were it to be named based on its intent, would be ‘not susceptible.’  However, in the practice domain of epidemiology this concept is traditionally termed ‘recovered.’  The problem with the traditional name is that organisms can be considered ‘recovered’ by virtue of having been vaccinated, which differs from lay usage.
+Note that the name for this concept, were it to be named based on its intent, would be ‘immune.’  However, in the practice domain of epidemiology this concept is traditionally termed ‘recovered.’  The problem with the traditional name is that organisms can be considered ‘recovered’ by virtue of having been vaccinated, which differs from lay usage.
 </obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism in a simulated population that is not susceptible. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">recovered</apollo_sv:APOLLO_SV_0000040>
@@ -2890,13 +2890,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
