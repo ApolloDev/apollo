@@ -21,37 +21,38 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 	<include schemaLocation="../base-types/base-types.xsd"></include>
-	<complexType name="vaccination-control-measure">
+	<complexType name="VaccinationControlMeasure">
 		<sequence>
-			<element name="vaccine_cm_compliance" type="tns:probability">
+			<element name="vaccineCmCompliance" type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000024">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="vaccine_supply_schedule" type="tns:positiveDouble"
-				maxOccurs="unbounded" minOccurs="1">
+			<element name="vaccineSupplySchedule"
+				type="tns:NonNegativeDouble" maxOccurs="unbounded" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000046">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000046">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="vaccination_admin_schedule" type="tns:positiveDouble"
+			<element name="vaccinationAdminSchedule" type="tns:NonNegativeDouble"
 				maxOccurs="unbounded" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000047">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="vaccine_efficacy" type="tns:probability">
+			<element name="vaccineEfficacy" type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000025">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="vaccine_efficacy_delay" type="tns:positiveDouble">
+			<element name="vaccineEfficacyDelay" type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000044">
 					</documentation>
