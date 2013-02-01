@@ -21,17 +21,17 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 
-	<complexType name="authentication">
+	<complexType name="Authentication">
 		<sequence>
-			<element name="requester_id" type="token" maxOccurs="1"
-				minOccurs="0">
+			<element name="requesterId" type="token" maxOccurs="1"
+				minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/asv/ASV_00000006">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="requester_password" type="token" maxOccurs="1"
-				minOccurs="0">
+			<element name="requesterPassword" type="token" maxOccurs="1"
+				minOccurs="1">
 			</element>
 		</sequence>
 	</complexType>
