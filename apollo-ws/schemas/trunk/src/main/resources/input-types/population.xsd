@@ -21,11 +21,36 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 
+
 	<include schemaLocation="../base-types/base-types.xsd"></include>
-	<complexType name="control_measure_time_series_output">
+
+
+	<complexType name="PopulationDiseaseState">
 		<sequence>
-			<element name="received_vaccination_time_series" type="tns:positiveDouble" maxOccurs="unbounded" minOccurs="1"></element>
-			<element name="received_antiviral_treatment_time_series" type="tns:positiveDouble" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="diseaseState" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="popCount" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+
+
+	<complexType name="SimulatedPopulation">
+		<sequence>
+			<element name="populationLocation" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="gender" type="tns:Gender" maxOccurs="1" minOccurs="0"></element>
+			<element name="ageRange" type="tns:AgeRange"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<choice>
+				<element name="populationDiseaseState"
+					type="tns:PopulationDiseaseState" maxOccurs="unbounded" minOccurs="1">
+				</element>
+				<element name="subpopulation"
+					type="tns:SimulatedPopulation" maxOccurs="unbounded" minOccurs="1">
+				</element>
+			</choice>
 		</sequence>
 	</complexType>
 </schema>
