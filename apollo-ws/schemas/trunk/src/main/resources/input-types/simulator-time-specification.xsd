@@ -18,28 +18,43 @@
  */
  -->
 
-
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 
-	<include schemaLocation="../base-types/base-types.xsd"></include>
-	<complexType name="population_time_series">
+
+    <include schemaLocation="population.xsd"></include>
+    <include schemaLocation="../base-types/base-types.xsd"></include>
+
+	<complexType name="SimulatorTimeSpecification">
 		<sequence>
-			<element name="simulated_population" type="token" maxOccurs="unbounded"
-				minOccurs="1">
+			<element name="timeStepUnit" type="tns:TimeStepUnit"
+				maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000031">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000014">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="pop_count" type="tns:positiveDouble"
-				maxOccurs="unbounded" minOccurs="1">
+			<element name="timeStepValue" maxOccurs="1"
+				minOccurs="1" type="tns:PositiveDouble">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000022">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000012">
+					</documentation>
+				</annotation>
+			</element>
+
+			<element name="runLength" type="positiveInteger"
+				maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000015">
 					</documentation>
 				</annotation>
 			</element>
 		</sequence>
 	</complexType>
+
+
 </schema>
