@@ -21,35 +21,35 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 	<include schemaLocation="../base-types/base-types.xsd"></include>
-	<complexType name="antiviral-control-measure">
+	<complexType name="AntiviralControlMeasure">
 		<sequence>
-			<element name="antiviral_cm_compliance" type="tns:probability">
+			<element name="antiviralCmCompliance" type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000050">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="antiviral_supply_schedule" type="tns:positiveDouble"
+			<element name="antiviralSupplySchedule" type="tns:NonNegativeDouble"
 				maxOccurs="unbounded" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000051">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="antiviral_admin_schedule" type="tns:positiveDouble"
+			<element name="antiviralAdminSchedule" type="tns:NonNegativeDouble"
 				maxOccurs="unbounded" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000052">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="antiviral_efficacy" type="tns:probability">
+			<element name="antiviralEfficacy" type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000048">
 					</documentation>
 				</annotation>
 			</element>
-			<element name="antiviral_efficacy_delay" type="tns:positiveDouble">
+			<element name="antiviralEfficacyDelay" type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000049">
 					</documentation>
