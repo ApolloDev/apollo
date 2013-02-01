@@ -25,57 +25,48 @@
 
 	<include schemaLocation="../base-types/base-types.xsd"></include>
 
-	<complexType name="disease">
+	<complexType name="Disease">
 		<sequence>
 
-			<element name="infectious_period" type="tns:positiveDouble"
+			<element name="diseaseName" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="infectiousPeriod"
+				type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016">
+					</documentation>
+				</annotation>
+			</element>
+
+			<element name="latentPeriod" type="tns:NonNegativeDouble"
 				maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="latent_period" type="tns:positiveDouble"
-				maxOccurs="1" minOccurs="1">
+			<element name="reproductionNumber"
+				type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="reproduction_number" type="tns:positiveDouble"
-				maxOccurs="1" minOccurs="1">
+			<element name="asymptomaticInfectionFraction"
+				type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043">
-					</documentation>
-				</annotation>
-			</element>
-
-			<element name="asymptomatic_infection_fraction" type="tns:probability"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045">
 					</documentation>
 				</annotation>
 			</element>
 
 
-			<element name="simulated_population" type="token" maxOccurs="unbounded"
-				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000031">
-					</documentation>
-				</annotation>
-			</element>
 
-			<element name="pop_count" type="tns:positiveDouble"
-				maxOccurs="unbounded" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000022">
-					</documentation>
-				</annotation>
-			</element>
 		</sequence>
 	</complexType>
 
