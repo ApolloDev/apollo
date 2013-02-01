@@ -24,168 +24,185 @@
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	name="EpidemicSimulatorService" targetNamespace="http://service.apollo.pitt.edu/epidemicsimulator/">
 	<wsdl:types>
-		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/epidemicsimulator/"
-			xmlns:Q1="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="main-types.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import>
-			<xsd:element name="getPreconfiguredModels">
-				<xsd:complexType>
-					<xsd:sequence>
-          </xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getPreconfiguredModelsResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="modelNames" type="xsd:string"
-							maxOccurs="unbounded" minOccurs="0" />
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getModelConfiguration">
-				<xsd:complexType>
-					<xsd:sequence>
+		<wsdl:schema targetNamespace="http://service.apollo.pitt.edu/epidemicsimulator/" xmlns:Q1="http://types.apollo.pitt.edu/">
+			<wsdl:import schemaLocation="main-types.xsd" namespace="http://types.apollo.pitt.edu/"></wsdl:import>
+			<wsdl:element name="getPreconfiguredModels">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
+          </wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getPreconfiguredModelsResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
+						<wsdl:element name="modelNames" type="xsd:string" maxOccurs="unbounded" minOccurs="0" />
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getModelConfiguration">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="modelName" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getModelConfigurationResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="modelName" type="xsd:string"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getModelConfigurationResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="epidemicModelInput" type="Q1:epidemic-model-input"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="run">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="epidemicModelInput" type="Q1:epidemic-model-input"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="run">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="epidemicModelinput" type="Q1:epidemic-model-input"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="runResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="epidemicModelinput" type="Q1:epidemic-model-input"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="runResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="simulationRunResult" type="Q1:simulation_run_result"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="releaseResources">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="simulationRunResult" type="Q1:simulation_run_result"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="releaseResources">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runId" type="xsd:long"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="releaseResourcesResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runId" type="xsd:long"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="releaseResourcesResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runStatus" type="Q1:run_status"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getNativeConfigurationFile">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runStatus" type="Q1:run_status"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getNativeConfigurationFile">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runId" type="xsd:long"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getNativeConfigurationFileResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runId" type="xsd:long"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getNativeConfigurationFileResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="nativeConfigurationFileContents"
-							type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getSimulatorDescription">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="nativeConfigurationFileContents" type="xsd:string"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getSimulatorDescription">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-      		</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getSimulatorDescriptionResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+      		</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getSimulatorDescriptionResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="simulatorDescription" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getModelDescription">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="simulatorDescription" type="xsd:string"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getModelDescription">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="modelName" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getModelDescriptionResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="modelName" type="xsd:string"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getModelDescriptionResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="modelDescription" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getResult">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="modelDescription" type="xsd:string"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getResult">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runId" type="xsd:long"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getResultResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runId" type="xsd:long"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getResultResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="epidemicModelOutput" type="Q1:epidemic-model-output"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getRunStatus">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="epidemicModelOutput" type="Q1:epidemic-model-output"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getRunStatus">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runId" type="xsd:long"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getRunStatusResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runId" type="xsd:long"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="getRunStatusResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="runStatus" type="Q1:run_status"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="runBatch">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="runStatus" type="Q1:run_status"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="runBatch">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="batchFileLocation" type="xsd:anyURI"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="runBatchResponse">
-				<xsd:complexType>
-					<xsd:sequence>
+						<wsdl:element name="batchFileLocation" type="xsd:anyURI"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+			<wsdl:element name="runBatchResponse">
+				
+                <wsdl:complexType>
+					<wsdl:sequence>
 
-						<xsd:element name="resultFileLocation" type="xsd:anyURI"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-		</xsd:schema>
+						<wsdl:element name="resultFileLocation" type="xsd:anyURI"></wsdl:element>
+					</wsdl:sequence>
+				</wsdl:complexType>
+            </wsdl:element>
+		</wsdl:schema>
 	</wsdl:types>
 	<wsdl:message name="getPreconfiguredModelsRequest">
 		<wsdl:part element="tns:getPreconfiguredModels" name="parameters" />
