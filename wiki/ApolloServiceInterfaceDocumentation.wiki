@@ -24,7 +24,7 @@ This method runs a simulation on a specified SimulatorService.
 
 === runVisualization ===
 ==== Description ====
- This method runs a visualization on a specified VisualizationService for a given runId.
+ This method runs a visualization on a specified VisualizerService for a given runId.
 ==== Input ====
 
   # visualizationConfiguration (of type VisualizationConfiguration) - An object that contains the configuration parameters of a visualizer.
