@@ -2,8 +2,7 @@
 
 = Introduction =
 
-Add your content here.
-
+This page describes the methods that are exposed by the ApolloService.
 
 = Details =
 
