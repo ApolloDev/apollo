@@ -79,4 +79,4 @@ This method is used to query the status of a run of an ApolloService.
   # none
 
 ==== Output ====
-  # a list of [ServiceRecord ServiceRecords], a ServiceRecord contains a list of SimulatorServices and VisualizerServices
+  # a list of [ServiceRecord ServiceRecords], a ServiceRecord contains a list of [SimulatorService SimulatorServices] and [VisualizerServices VisualizerServices].
