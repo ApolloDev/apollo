@@ -68,6 +68,8 @@ Output:
   # message (of type String) - If unregistration encountered an error, the error will be described here.
 
 === getRegisteredServices ===
+Description: Called by the developer of an End User Application to get a listing of all SimulatorServices and VisualizerServices
+
 Input:
   # none
 
