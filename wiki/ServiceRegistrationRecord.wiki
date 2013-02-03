@@ -1,0 +1,9 @@
+#summary Description of the ServiceRegistrationRecord type
+= Introduction =
+
+The type as viewed in an XML Schema editor
+
+
+= Details =
+
+http://code.google.com/p/apollo/source/browse/wiki/img/ServiceRegistrationRecord.png
