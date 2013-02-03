@@ -10,33 +10,35 @@ Add your content here.
 == Methods ==
 
 === runSimulation ===
-Description: This method runs a simulation on a specified SimulatorService. 
+==== Description ==== This method runs a simulation on a specified SimulatorService. 
 
-Input:
+==== Input ====
 
   # simulatorConfiguration (of type SimulatorConfiguration) - An object that contains the configuration parameters of a simulator.
 
-Output:
+==== Output ==== 
 
   # runId (of type Token)- A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
 
 
 === runVisualization ===
-Description: This method runs a visualization on a specified VisualizationService for a given runId.
-Input:
+==== Description ====
+ This method runs a visualization on a specified VisualizationService for a given runId.
+==== Input ====
 
   # visualizationConfiguration (of type VisualizationConfiguration) - An object that contains the configuration parameters of a visualizer.
 
-Output:
+==== Output ====
   #  runId (of type Token) -  A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
   #  visualizationResultURL (of type anyURI) - a URL, which specifies the location at which the visualization will be available for download once it has been created
 
 === getRunStatus ===
-Description: This method is used to query the status of a run of an ApolloService.
-Input:
+==== Description ====
+This method is used to query the status of a run of an ApolloService.
+==== Input ====
   # runId (of type Token)
 
-Output:
+==== Output ====
   #  runStatus (of type RunStatus) - An object containing a free text status description, and an enumerated type containing on the following members:
         * queued
         * running
@@ -49,28 +51,31 @@ Output:
        * message: "Running since 1/1/2013 15:23:22"
 
 === registerService ===
-Description: Called by the developer of a SimulatorService or a VisualizerService to enable discovery of their service on the ApolloService.
-Input:
+==== Description ====
+ Called by the developer of a SimulatorService or a VisualizerService to enable discovery of their service on the ApolloService.
+==== Input ====
   # serviceRegistrationRecord (of type ServiceRegistrationRecord) - this object contains the username and password that will be required to unregister the service, an object that uniquely identifies either a SimulatorService or a VisualizerService on the ApolloService, and the URL of the web service at which the SimulatorService or VisualizerService is hosted
 
-Output:
+==== Output ====
   # registrationSuccessful (of type Boolean) - "true" if registration was successful, "false" if registration was unsuccessful
   # message (of type String) - If registration encountered an error, the error will be described here.
 
 === unregisterService ===
-Description: Called by the developer of a SimulatorService or a VisualizerService to disable discovery and usage of their service on the ApolloService.
-Input:
+==== Description ====
+ Called by the developer of a SimulatorService or a VisualizerService to disable discovery and usage of their service on the ApolloService.
+==== Input ====
   # serviceRegistrationRecord (of type ServiceRegistrationRecord)
 
-Output:
+==== Output ====
   # unregistrationSucessful (of type Boolean) - "true" if unregistering the service was successfully completed, "false" if the service could not be unregistered
   # message (of type String) - If unregistration encountered an error, the error will be described here.
 
 === getRegisteredServices ===
-Description: Called by the developer of an End User Application to get a listing of all SimulatorServices and VisualizerServices
+==== Description ====
+ Called by the developer of an End User Application to get a listing of all SimulatorServices and VisualizerServices
 
-Input:
+==== Input ====
   # none
 
-Output:
+==== Output ====
   # a list of ServiceRecords, a ServiceRecord contains a list of SimulatorServices and VisualizerServices
