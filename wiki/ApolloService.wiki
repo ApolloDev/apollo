@@ -1,0 +1,17 @@
+#summary Description of an ApolloService
+
+= Introduction =
+
+An ApolloService is a central service that hosts at least one SimulationService.  The ApolloService can optionally host at least one VisualizationService.
+
+End User Applications talk to an Apollo service, which then sends requests to SimulationServices or VisualizationServices.
+
+Need more info...
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
