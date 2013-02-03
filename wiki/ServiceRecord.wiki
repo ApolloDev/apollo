@@ -1,0 +1,10 @@
+#summary Description of the ServiceRecord type
+
+= Introduction =
+
+
+
+
+= Details =
+
+http://apollo.googlecode.com/svn/wiki/img/ServiceRecord.png
