@@ -9,7 +9,7 @@ This page describes the methods that are exposed by a SimulatorService.
 
 === runSimulation ===
 ==== Description ==== 
-This method runs a simulation on a specified SimulatorService. 
+This method runs a simulation on the epidemic model hosted by this web service.
 
 ==== Input ====
 
