@@ -2,7 +2,6 @@
 
 = Introduction =
 
-A SimulatorService is a web service that is hosted by the developer of a Simulator.
-
+A VisualizerService is a web service that is hosted by the developer of a Visualizer.  This type of web service takes a VisualizationConfiguration object as input, and returns a visualization of a simulation.
 
 = Details =
