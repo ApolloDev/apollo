@@ -48,7 +48,7 @@ This method is used to query the status of a run of an ApolloService.
         * unauthorized
         * authentication_failure
 *example runStatus*: 
-       * status: RUNNING
+       * status: running
        * message: "Running since 1/1/2013 15:23:22"
 
 === registerService ===
