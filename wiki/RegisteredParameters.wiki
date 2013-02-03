@@ -1,4 +1,0 @@
-#summary Definition and reasoning behind the use of registered parameters
-= Introduction =
-
-Registered parameters refers to the set of model parameters that are part of Apollo-SV
