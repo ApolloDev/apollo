@@ -25,7 +25,7 @@ Output:
 Description: This method runs a visualization on a specified VisualizationService for a given runId.
 Input:
 
-  # visualizationConfiguration (of type visualizationConfiguration) - An object that contains the configuration parameters of a visualizer.
+  # visualizationConfiguration (of type VisualizationConfiguration) - An object that contains the configuration parameters of a visualizer.
 
 Output:
   #  runId (of type Token) -  A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
