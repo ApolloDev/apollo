@@ -1,0 +1,8 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+A SimulatorService is a web service that is hosted by the developer of a Simulator.
+
+
+= Details =
