@@ -14,28 +14,27 @@ Description: This method runs a simulation on a specified SimulatorService.
 
 Input:
 
-  # simulatorConfiguration - An object that contains the configuration parameters of a simulator.
+  # simulatorConfiguration (of type SimulatorConfiguration) - An object that contains the configuration parameters of a simulator.
 
 Output:
 
-  # runId - A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
+  # runId (of type Token)- A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
 
 
 === runVisualization ===
 Description: This method runs a visualization on a specified VisualizationService for a given runId.
 Input:
 
-  # visualizationConfiguration - An object that contains the configuration parameters of a visualizer.
+  # visualizationConfiguration (of type visualizationConfiguration) - An object that contains the configuration parameters of a visualizer.
 
 Output:
-  #  runId  -  A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
-  #  visualizationResultURL - a URL, which specifies the location at which the visualization will be available for download once it has been created
+  #  runId (of type Token) -  A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _simulatorDeveloper_, _simulatorName_, and _simulatorVersion_ fields from the SoftwareIdentification section of the simulatorConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 59th run of the FRED simulator built by the University of Pittsburgh may look like this: *University of Pittsburgh_FRED_v1.0_59*.
+  #  visualizationResultURL (of type anyURI) - a URL, which specifies the location at which the visualization will be available for download once it has been created
 
 === getRunStatus ===
 Description: This method is used to query the status of a run of an ApolloService.
 Input:
-  # runId - 
-
+  # runId (of type Token)
 
 Output:
   #  runStatus (of type RunStatus) - An object containing a free text status description, and an enumerated type containing on the following members:
