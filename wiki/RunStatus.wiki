@@ -1,0 +1,3 @@
+#summary Description of the RunStatus type
+
+http://apollo.googlecode.com/svn/wiki/img/RunStatus.png
