@@ -31,7 +31,7 @@ This method runs a simulation on a specified SimulatorService.
 
 ==== Output ====
   #  runId (of type Token) -  A string identifier that uniquely identifies a run on all Apollo services.  A runId is created by concatenating the _visualizerDeveloper_, _visualizerName_, and _visualizerVersion_ fields from the VisualizerIdentification section of the VisualizerConfiguration object, and then appending a unique integer to the string.  All fields should be separated by an underscore.  For example, the runId for the 37th run of the GAIA simulator built by the University of Pittsburgh may look like this: *PSC_GAIA_v2.0_27*.
-  #  visualizationResultURL (of type anyURI) - a URL, which specifies the location at which the visualization will be available for download once it has been created
+  #  visualizationResultURL (of standard XML type anyURI) - a URL, which specifies the location at which the visualization will be available for download once it has been created
 
 === getRunStatus ===
 ==== Description ====
@@ -68,12 +68,12 @@ This method is used to query the status of a run of an ApolloService.
   # serviceRegistrationRecord (of type ServiceRegistrationRecord)
 
 ==== Output ====
-  # unregistrationSucessful (of type Boolean) - "true" if unregistering the service was successfully completed, "false" if the service could not be unregistered
+  # unregistrationSucessful (of standard XML type Boolean) - "true" if unregistering the service was successfully completed, "false" if the service could not be unregistered
   # message (of type String) - If unregistration encountered an error, the error will be described here.
 
 === getRegisteredServices ===
 ==== Description ====
- Called by the developer of an End User Application to get a listing of all SimulatorServices and VisualizerServices
+ Called by the developer of an End User Application to get a listing of all [SimulatorService SimulatorServices] and [VisualizerService VisualizerServices].
 
 ==== Input ====
   # none
