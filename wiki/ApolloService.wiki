@@ -2,7 +2,7 @@
 
 = Introduction =
 
-An ApolloService is a central service that hosts at least one SimulationService.  The ApolloService can optionally host one or more [VisualizerService VisualizerServices].
+An ApolloService is a central service that hosts at least one SimulatorService.  The ApolloService can optionally host one or more [VisualizerService VisualizerServices].
 
 End User Applications interoperate with the registered [SimulatorService SimulatorServices] and [VisualizerService VisualizerServices] through calls to the ApolloService.
 
