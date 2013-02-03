@@ -10,7 +10,8 @@ Add your content here.
 == Methods ==
 
 === runSimulation ===
-==== Description ==== This method runs a simulation on a specified SimulatorService. 
+==== Description ==== 
+This method runs a simulation on a specified SimulatorService. 
 
 ==== Input ====
 
