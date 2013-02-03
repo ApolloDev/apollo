@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Description of the  methods exposed by the SimulatorService
 
 = Introduction =
 
