@@ -1,7 +1,0 @@
-#summary Definition and reasoning behind the use of unregistered parameters
-
-=Definition=
-Any parameters that aren't specified as part of Apollo-SV, and as a result aren't defined in the common Apollo classes.
-
-=Why do we need unregistered parameters?=
-It is possible that Apollo-SV won't define required parameters for every epidemic model that is using Apollo.  While parameters defined in Apollo-SV ([RegisteredParameters] registered parameters) are defined in the common Apollo classes, there needs to be a mechanism in place to pass other parameters as well.
