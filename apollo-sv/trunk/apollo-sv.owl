@@ -48,28 +48,8 @@
      xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
     <Ontology rdf:about="&obo;apollo_sv.owl">
-        <rdfs:comment>The scope (domain) of the Apollo Structured Vocabulary (Apollo SV) is public health modeling.
-
-The intended users of Apollo SV are:
-1. Software developers who are building public health models
-2. Software developers who are building applications that use public health models.
-
-The needs that Apollo SV satisfies:   
-1. There are a growing number of mathematical models being used in public health
-2.  They are not readily available to decision makers
-3.  They all use different terms and different conceptualizations, increasing the barriers to use.
-
-Roadmap:
-1. In this initial phase, we are focused on:
-   a. epidemic models
-   b. the diseases Influenza and Anthrax.
-
-2. Much later, we will consider expanding to other models.
-
-
-A KEY POINT ABOUT THIS ONTOLOGY:
-We are modeling a world not of patients or of epidemics in Apollo SV, but a world of models that are trying to interoperate.   For this reason, Apollo-SV has many classes with names like &quot;Epidemic Model&quot; and &quot;Configuratio_object.&quot;   (By way of contrast, an ontology intended to support an electronic medical record would be dominanted by classes with names like &quot;Patient&quot; and &quot;Symptom.&quot;)</rdfs:comment>
-        <versionInfo xml:lang="en">2013-01-31 (Initial Release)</versionInfo>
+        <versionInfo xml:lang="en">2013-02-04</versionInfo>
+        <dc:title xml:lang="en">Apollo Standard Vocabulary Ontologized (Apollo_SV)</dc:title>
         <dc:contributor xml:lang="en">John Levander</dc:contributor>
         <dc:contributor xml:lang="en">Josh Hanna</dc:contributor>
         <dc:creator xml:lang="en">Mathias Brochhausen</dc:creator>
@@ -104,20 +84,20 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000412">
-        <rdfs:label xml:lang="en">imported from</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000114">
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
+    <AnnotationProperty rdf:about="&obo;IAO_0000412">
+        <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -514,12 +494,12 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -529,9 +509,9 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
             <rdf:Description/>
-        </oboInOwl:hasDefinition>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -544,15 +524,15 @@ We are modeling a world not of patients or of epidemics in Apollo SV, but a worl
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -2950,13 +2930,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
