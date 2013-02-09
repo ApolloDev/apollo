@@ -10,6 +10,8 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
 	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
 
+	<include schemaLocation="input-types/visualizer.xsd"></include>
+
 	<include schemaLocation="input-types/simulator-time-specification.xsd"></include>
 	<include schemaLocation="input-types/population.xsd"></include>
 	<include schemaLocation="input-types/authentication.xsd"></include>
@@ -17,8 +19,7 @@
 	<include schemaLocation="input-types/antiviral-control-measure.xsd"></include>
 	<include schemaLocation="input-types/vaccination-control-measure.xsd"></include>
 	<include schemaLocation="base-types/simulator-identification.xsd"></include>
-	<include schemaLocation="base-types/base-types.xsd"></include>
-
+	<include schemaLocation="base-types/visualizer-identification.xsd"></include>
 	<complexType name="SimulatorConfiguration">
 		<sequence>
 			<element name="simulatorIdentification" type="tns:SimulatorIdentification"
@@ -47,6 +48,14 @@
 	</complexType>
 
 
+	<complexType name="VisualizerConfiguration">
+		<sequence>
+			<element name="visualizerIdentification" type="tns:VisualizerIdentification">
+			</element>
+			<element name="authentication" type="tns:Authentication"></element>
+			<element name="visualizationOptions" type="tns:VisualizationOptions"></element>
+		</sequence>
+	</complexType>
 
 
 
@@ -54,4 +63,6 @@
 	<simpleType name="RunId">
 		<restriction base="token"></restriction>
 	</simpleType>
+
+
 </schema>
