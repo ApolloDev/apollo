@@ -42,21 +42,7 @@
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
 								<include>visualizerservice.wsdl</include>
-								<include>*.xsd</include>
-							</includes>
-						</resource>
-						<resource>
-							<directory>${basedir}/../src/main/resources/base-types</directory>
-							<targetPath>WEB-INF/wsdl/base-types</targetPath>
-							<includes>
-								<include>*.xsd</include>
-							</includes>
-						</resource>
-						<resource>
-							<directory>${basedir}/../src/main/resources/input-types</directory>
-							<targetPath>WEB-INF/wsdl/input-types</targetPath>
-							<includes>
-								<include>*.xsd</include>
+								<include>apollo-types.xsd</include>
 							</includes>
 						</resource>
 					</webResources>
