@@ -6,9 +6,9 @@
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/visualizerservice/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="main-types.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import>
+			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			</xsd:import>
 			<xsd:element name="run">
-				
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="visualizerConfiguration" type="apollo:VisualizerConfiguration" />
@@ -16,18 +16,15 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="runResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId" />
-						<xsd:element name="outputURL"
-							type="xsd:anyURI">
+						<xsd:element name="outputURL" type="xsd:anyURI">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
@@ -35,7 +32,6 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatusResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
@@ -66,8 +62,7 @@
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="VisualizerServiceBinding"
-		type="tns:VisualizerServiceEI">
+	<wsdl:binding name="VisualizerServiceBinding" type="tns:VisualizerServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="run">
@@ -93,7 +88,8 @@
 	</wsdl:binding>
 	<wsdl:service name="VisualizerService">
 		<wsdl:port binding="tns:VisualizerServiceBinding" name="VisualizerServiceEndpoint">
-			<soap:address location="http://localhost:8080/visualizerservice/services/visualizerservice" />
+			<soap:address
+				location="http://localhost:8080/visualizerservice/services/visualizerservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
