@@ -30,13 +30,13 @@
 			<minExclusive value="0" />
 		</restriction>
 	</simpleType>
-	
+
 	<simpleType name="NonNegativeDouble">
 		<restriction base="double">
 			<minInclusive value="0" />
 		</restriction>
 	</simpleType>
-	
+
 	<!-- <complexType name="positiveDouble_array"> <sequence> <element name="value" 
 		type="tns:positiveDouble" maxOccurs="unbounded" minOccurs="0"></element> 
 		</sequence> </complexType> -->
@@ -102,15 +102,24 @@
 			<enumeration value="decile90-99"></enumeration>
 			<enumeration value="decile100-109"></enumeration>
 			<enumeration value="decile110-119"></enumeration>
-			<enumeration value="decile120-129"></enumeration>			
+			<enumeration value="decile120-129"></enumeration>
 		</restriction>
 	</simpleType>
 
-    <simpleType name="Gender">
-    <restriction base="string">
+	<simpleType name="Gender">
+		<restriction base="string">
 			<enumeration value="M"></enumeration>
 			<enumeration value="F"></enumeration>
 			<enumeration value="U"></enumeration>
 		</restriction>
+	</simpleType>
+    
+    
+
+    <simpleType name="SoftwareCategory">
+    	<restriction base="string">
+    		<enumeration value="simulator"></enumeration>
+			<enumeration value="visualizer"></enumeration>
+			</restriction>
     </simpleType>
 </schema>
