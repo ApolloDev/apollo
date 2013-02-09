@@ -86,7 +86,7 @@ The tables for this set of populations would look like what's shown below.
 || 1 || 7 || 2 || 4000 ||
 || 1 || 8 || 2 || 6000 ||
 || .. || .. || .. || .. ||
-|| 1 || 8 || N || 10000
+|| 1 || 8 || N || 10000 ||
 
 
 = Influenza SIER for two census blocks and two age ranges =
