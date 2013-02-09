@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- 
 /*
  * Copyright 2012, University of Pittsburgh
@@ -17,43 +16,40 @@
  * limitations under the License.
  */
  -->
+ 
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://types.apollo.pitt.edu/"
+	xmlns:tns="http://types.apollo.pitt.edu/"
+	elementFormDefault="qualified">
 
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
-	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
-
-
-    <include schemaLocation="../base-types/base-types.xsd"></include>
-
-	<complexType name="SimulatorTimeSpecification">
+	<complexType name="VisualizerIdentification">
 		<sequence>
-			<element name="timeStepUnit" type="tns:TimeStepUnit"
-				maxOccurs="1" minOccurs="1">
+			<element name="visualizerDeveloper" maxOccurs="1"
+				minOccurs="1" type="token">
 				<annotation>
 					<documentation
-						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000014">
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000009">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="timeStepValue" maxOccurs="1"
-				minOccurs="1" type="tns:PositiveDouble">
+			<element name="visualizerName" maxOccurs="1" minOccurs="1" type="token">
 				<annotation>
 					<documentation
-						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000012">
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000010">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="runLength" type="positiveInteger"
-				maxOccurs="1" minOccurs="1">
+
+			<element name="visualizerVersion" maxOccurs="1"
+				minOccurs="1" type="token">
 				<annotation>
 					<documentation
-						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000015">
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000013">
 					</documentation>
 				</annotation>
 			</element>
 		</sequence>
 	</complexType>
-
-
 </schema>
