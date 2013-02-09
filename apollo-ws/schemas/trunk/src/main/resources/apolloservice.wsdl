@@ -6,10 +6,9 @@
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="serviceRecords.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import>
-			<xsd:import schemaLocation="main-types.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import>
+			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			</xsd:import>
 			<xsd:element name="runSimulation">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="simulatorConfiguration" type="apollo:SimulatorConfiguration" />
@@ -17,7 +16,6 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="runSimulationResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId" />
@@ -25,7 +23,6 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
@@ -33,7 +30,6 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatusResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
