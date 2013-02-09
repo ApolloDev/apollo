@@ -53,4 +53,13 @@
 			</choice>
 		</sequence>
 	</complexType>
+
+	<complexType name="SupportedPopulationLocation">
+		<sequence>
+			<element name="populationLocation" type="token"></element>
+			<element name="populationLocationDescription"
+				type="token">
+			</element>
+		</sequence>
+	</complexType>
 </schema>
