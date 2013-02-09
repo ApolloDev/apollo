@@ -199,7 +199,7 @@ The tables for this set of populations would look like what's shown below.
 
 In this example, we'll create a sample output from a SIER model which models influenza for two census blocks, keeping track of the number of newly exposed.  This model does not discriminate sex or age, only SIER states and location.
 
-So, we have 9 different simulated populations: 1 for each epidemic state (susceptible, infected, newly exposed, not newly exposed, and recovered) in each census block (CB1, CB2).
+So, we have 10 different simulated populations: 1 for each epidemic state (susceptible, infected, newly exposed, not newly exposed, and recovered) in each census block (CB1, CB2).
 
 || *Population* || *Epidemic State* || *Census Block* ||
 || 1 || susceptible || CB1 ||
@@ -209,8 +209,9 @@ So, we have 9 different simulated populations: 1 for each epidemic state (suscep
 || 5 || recovered || CB1 ||
 || 6 || susceptible || CB2 ||
 || 7 || infected || CB2 ||
-|| 8 || exposed || CB2 ||
-|| 9 || recovered || CB2 ||
+|| 8 || newly exposed || CB2 ||
+|| 9 || not newly exposed || CB2 ||
+|| 10 || recovered || CB2 ||
 
 The tables for this set of populations would look like what's shown below. 
 
@@ -224,8 +225,9 @@ The tables for this set of populations would look like what's shown below.
 || 5 || recovered in CB1 ||
 || 6 || susceptible in CB2 ||
 || 7 || infected in CB2 ||
-|| 8 || exposed in CB2 ||
-|| 9 || recovered in CB2 ||
+|| 8 || newly exposed in CB2 ||
+|| 9 || not newly exposed in CB2 ||
+|| 10 || recovered in CB2 ||
 
 == simulated_population_axis ==
 
@@ -255,5 +257,9 @@ The tables for this set of populations would look like what's shown below.
 || 7 || 2 || CB2 ||
 || 8 || 1 || exposed ||
 || 8 || 2 || CB2 ||
-|| 9 || 1 || recovered ||
+|| 8 || 3 || 1 ||
+|| 9 || 1 || exposed ||
 || 9 || 2 || CB2 ||
+|| 9 || 3 || > 1 ||
+|| 10 || 1 || recovered ||
+|| 10 || 2 || CB2 ||
