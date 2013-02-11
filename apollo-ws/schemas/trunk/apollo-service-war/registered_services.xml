@@ -1,0 +1,16 @@
+<list>
+  <edu.pitt.apollo.types.ServiceRegistrationRecord>
+    <authentication>
+      <requesterId>John</requesterId>
+      <requesterPassword>password</requesterPassword>
+    </authentication>
+    <url>www.google.com</url>
+    <serviceRecord>
+      <simulatorIdentification>
+        <simulatorDeveloper>John Lv</simulatorDeveloper>
+        <simulatorName>SEIR</simulatorName>
+        <simulatorVersion>2.32 beta</simulatorVersion>
+      </simulatorIdentification>
+    </serviceRecord>
+  </edu.pitt.apollo.types.ServiceRegistrationRecord>
+</list>
