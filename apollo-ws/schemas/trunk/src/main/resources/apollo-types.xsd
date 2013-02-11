@@ -172,15 +172,9 @@
 
 	<complexType name="ServiceRegistrationRecord">
 		<sequence>
-
 			<element name="authentication" type="tns:Authentication"></element>
-			<choice>
-				<element name="visualizerIdentification" type="tns:VisualizerIdentification">
-				</element>
-				<element name="simulatorIdentification" type="tns:SimulatorIdentification">
-				</element>
-			</choice>
 			<element name="url" type="anyURI"></element>
+			<element name="serviceRecord" type="tns:ServiceRecord"></element>
 		</sequence>
 	</complexType>
 
