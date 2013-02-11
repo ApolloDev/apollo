@@ -15,9 +15,15 @@
 
 package edu.pitt.apollo.apolloclient;
 
+import javax.xml.ws.Holder;
+
 import edu.pitt.apollo.service.apolloservice.ApolloService;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
+import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.RunStatus;
+import edu.pitt.apollo.types.ServiceRecord;
+import edu.pitt.apollo.types.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.SimulatorIdentification;
 
 public class WSClient {
 	public static void main(String[] args) {
@@ -28,5 +34,29 @@ public class WSClient {
 		System.out.println(rs.getMessage());
 
 		System.out.println("Status: " + rs.getStatus());
+		
+		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+		Authentication auth = new Authentication();
+		auth.setRequesterId("John");
+		auth.setRequesterPassword("password");
+		srr.setAuthentication(auth);
+		SimulatorIdentification sid = new SimulatorIdentification();
+		
+		sid.setSimulatorName("SEIR");
+		sid.setSimulatorDeveloper("John Lv");
+		sid.setSimulatorVersion("2.32 beta");
+		
+		ServiceRecord sr = new ServiceRecord();
+		sr.setSimulatorIdentification(sid);
+		srr.setServiceRecord(sr);
+		srr.setUrl("www.google.com");
+		
+		Holder<Boolean> success = new Holder<Boolean>();
+		Holder<String> msg = new Holder<String>();
+		port.registerService(srr, success, msg);
+		System.out.println(msg.value);
+		
+		port.unRegisterService(srr, success, msg);
+		System.out.println(msg.value);
 	}
 }
