@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /* * Copyright 2012, University of Pittsburgh * * Licensed under the 
+	Apache License, Version 2.0 (the "License"); * you may not use this file 
+	except in compliance with the License. * You may obtain a copy of the License 
+	at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by 
+	applicable law or agreed to in writing, software * distributed under the 
+	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. * See the License for the specific 
+	language governing permissions and * limitations under the License. */ -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
+	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
+
+
+	<simpleType name="Probability">
+		<restriction base="double">
+			<minInclusive value="0" />
+			<maxInclusive value="1" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="ProbabilityArray">
+		<sequence>
+			<element name="value" type="tns:Probability" maxOccurs="unbounded"
+				minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="PositiveDouble">
+		<restriction base="double">
+			<minExclusive value="0" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="NonNegativeDouble">
+		<restriction base="double">
+			<minInclusive value="0" />
+		</restriction>
+	</simpleType>
+
+	<!-- <complexType name="positiveDouble_array"> <sequence> <element name="value" 
+		type="tns:positiveDouble" maxOccurs="unbounded" minOccurs="0"></element> 
+		</sequence> </complexType> -->
+
+	<simpleType name="CompartmentNameEnum">
+		<restriction base="string">
+			<enumeration value="susceptible"></enumeration>
+			<enumeration value="exposed"></enumeration>
+			<enumeration value="infectious"></enumeration>
+			<enumeration value="recovered"></enumeration>
+
+
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TimeStepUnit">
+		<restriction base="string">
+			<enumeration value="year"></enumeration>
+			<enumeration value="month"></enumeration>
+			<enumeration value="day"></enumeration>
+			<enumeration value="hour"></enumeration>
+			<enumeration value="minute"></enumeration>
+			<enumeration value="second"></enumeration>
+			<enumeration value="millisecond"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="RunStatusEnum">
+		<restriction base="string">
+			<enumeration value="exiting"></enumeration>
+			<enumeration value="held"></enumeration>
+			<enumeration value="queued"></enumeration>
+			<enumeration value="running"></enumeration>
+			<enumeration value="moving"></enumeration>
+			<enumeration value="waiting"></enumeration>
+			<enumeration value="completed"></enumeration>
+			<enumeration value="failed"></enumeration>
+			<enumeration value="unauthorized"></enumeration>
+			<enumeration value="authentication_failure"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="RunStatus">
+		<sequence>
+			<element name="status" type="tns:RunStatusEnum"></element>
+			<element name="message" type="string"></element>
+		</sequence>
+	</complexType>
+
+
+
+	<simpleType name="AgeRange">
+		<restriction base="string">
+			<enumeration value="decile0-9"></enumeration>
+			<enumeration value="decile10-19"></enumeration>
+			<enumeration value="decile20-29"></enumeration>
+			<enumeration value="decile30-39"></enumeration>
+			<enumeration value="decile40-49"></enumeration>
+			<enumeration value="decile50-59"></enumeration>
+			<enumeration value="decile60-69"></enumeration>
+			<enumeration value="decile70-79"></enumeration>
+			<enumeration value="decile80-89"></enumeration>
+			<enumeration value="decile90-99"></enumeration>
+			<enumeration value="decile100-109"></enumeration>
+			<enumeration value="decile110-119"></enumeration>
+			<enumeration value="decile120-129"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Gender">
+		<restriction base="string">
+			<enumeration value="M"></enumeration>
+			<enumeration value="F"></enumeration>
+			<enumeration value="U"></enumeration>
+		</restriction>
+	</simpleType>
+    
+    
+
+    <simpleType name="SoftwareCategory">
+    	<restriction base="string">
+    		<enumeration value="simulator"></enumeration>
+			<enumeration value="visualizer"></enumeration>
+			</restriction>
+    </simpleType>
+</schema>
