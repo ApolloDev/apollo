@@ -63,8 +63,14 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.RunResponse")
 	public String run(
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return simulatorConfiguration.getSimulatorIdentification()
+				.getSimulatorDeveloper()
+				+ "_"
+				+ simulatorConfiguration.getSimulatorIdentification()
+						.getSimulatorName()
+				+ "_"
+				+ simulatorConfiguration.getSimulatorIdentification().getSimulatorVersion() + "_17";
 	}
 
 }
