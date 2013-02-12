@@ -9,13 +9,13 @@ import java.io.IOException;
 import edu.pitt.apollo.types.SimulatorIdentification;
 
 public class RunUtils {
-	public static String getErrorRunId(SimulatorIdentification si) {
-		return ApolloServiceImpl.RUN_ERROR_PREFIX + Long.toString(System.currentTimeMillis());
-
+	public static String getErrorRunId() {
+		return ApolloServiceImpl.getRunErrorPrefix()
+				+ Long.toString(System.currentTimeMillis());
 	}
-
+	
 	public synchronized static String getError(String runId) {
-		File errorFile = new File(ApolloServiceImpl.ERROR_FILE);
+		File errorFile = new File(ApolloServiceImpl.getErrorFilename());
 		if (errorFile.exists()) {
 			try {
 				BufferedReader br = new BufferedReader(
@@ -39,7 +39,7 @@ public class RunUtils {
 	}
 
 	public synchronized static void reportError(String runId, String error) {
-		File errorFile = new File(ApolloServiceImpl.ERROR_FILE);
+		File errorFile = new File(ApolloServiceImpl.getErrorFilename());
 		FileWriter fw;
 		try {
 			fw = new FileWriter(errorFile, true);
