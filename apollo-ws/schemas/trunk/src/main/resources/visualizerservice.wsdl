@@ -19,7 +19,8 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId" />
-						<xsd:element name="outputURL" type="xsd:anyURI">
+						<xsd:element name="visualizerResultResource"
+							type="apollo:VisulaizerResultResource" maxOccurs="unbounded" minOccurs="1">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
