@@ -260,9 +260,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
 
 			Holder<String> runIdHolder = new Holder<String>();
-			Holder<String> outputURLHolder = new Holder<String>();
+			//Holder<String> outputURLHolder = new Holder<String>();
 
-			port.run(visualizerConfiguration, runIdHolder, outputURLHolder);
+			//port.run(visualizerConfiguration, runIdHolder, outputURLHolder);
 			return runIdHolder.value;
 		} catch (MalformedURLException e) {
 			runId = RunUtils.getErrorRunId();
