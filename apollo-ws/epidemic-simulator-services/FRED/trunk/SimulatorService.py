@@ -111,7 +111,7 @@ class FredWebService(SimulatorService):
                     raise RuntimeError("Cannot make temporary FRED directory")
 
             os.chdir(tempDirName)
-            
+            doVacc = False
             with open('fred_input.params','wb') as f:
                     f.write('days = %d\n'%cfg._simulatorTimeSpecification._runLength)
                     f.write('symp[0] = %g\n'%cfg._disease._asymptomaticInfectionFraction)
