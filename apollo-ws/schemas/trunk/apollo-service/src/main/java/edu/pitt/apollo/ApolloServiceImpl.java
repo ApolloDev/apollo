@@ -16,6 +16,8 @@
 package edu.pitt.apollo;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -28,6 +30,8 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
+import edu.pitt.apollo.service.simulatorservice.SimulatorService;
+import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
@@ -41,90 +45,11 @@ import edu.pitt.apollo.types.VisualizerConfiguration;
 class ApolloServiceImpl implements ApolloServiceEI {
 
 	public static String REGISTRY = "registered_services.xml";
+	public static String ERROR_FILE = "run_errors.txt";
+	public static String RUN_ERROR_PREFIX = "ApolloServiceError";
 
-	@Override
-	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterService")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/unRegisterService")
-	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterServiceResponse")
-	public void unRegisterService(
-			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord,
-			@WebParam(mode = Mode.OUT, name = "unRegistrationSuccessful", targetNamespace = "") Holder<Boolean> unRegistrationSuccessful,
-			@WebParam(mode = Mode.OUT, name = "message", targetNamespace = "") Holder<String> message) {
-		List<ServiceRegistrationRecord> records;
-		try {
-			records = RegistrationUtils.getServiceRegistrationRecords();
-
-			for (ServiceRegistrationRecord record : records) {
-				if (RegistrationUtils.serviceIdentificationEqual(
-						record.getServiceRecord(),
-						serviceRegistrationRecord.getServiceRecord())) {
-					// found the service they want to unregister, now check the
-					// passwords
-					if (RegistrationUtils.authenticationEqual(
-							record.getAuthentication(),
-							serviceRegistrationRecord.getAuthentication())) {
-						try {
-							RegistrationUtils
-									.removeServiceRegistrationRecord(serviceRegistrationRecord);
-						} catch (IOException e) {
-							message.value = e.getMessage();
-							unRegistrationSuccessful.value = false;
-							return;
-						}
-						message.value = "unRegistration Successful!";
-						unRegistrationSuccessful.value = true;
-						return;
-					} else { // passwords do not match
-						message.value = "Username/Password does not match orignial ServiceRegistrationRecord!";
-						unRegistrationSuccessful.value = false;
-						return;
-					}
-				}
-				message.value = "Service not registered at this registry.";
-				unRegistrationSuccessful.value = false;
-			}
-		} catch (IOException e) {
-			message.value = "Error reading registry!";
-			unRegistrationSuccessful.value = false;
-		}
-	}
-
-	@Override
-	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulation")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulationResponse")
-	public String runSimulation(
-			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
-		// TODO Auto-generated method stub
-		return "This is not an error!";
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@WebResult(name = "serviceRecords", targetNamespace = "")
-	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServices")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRegisteredServices")
-	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServicesResponse")
-	public List<ServiceRecord> getRegisteredServices() {
-		try {
-			return RegistrationUtils.getServiceRecords();
-		} catch (IOException e) {
-			return null;
-		}
-	}
-
-	@Override
-	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatusResponse")
-	public RunStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "") String runId) {
-		RunStatus rs = new RunStatus();
-		rs.setMessage("Hello from apolloservice");
-		rs.setStatus(RunStatusEnum.COMPLETED);
-		return rs;
+	public static String getRegistryFile() {
+		return REGISTRY;
 	}
 
 	@Override
@@ -137,7 +62,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			@WebParam(mode = Mode.OUT, name = "message", targetNamespace = "") Holder<String> message) {
 
 		message.value = null;
-		// synchronized (this) {
+
 		List<ServiceRegistrationRecord> records;
 		try {
 
@@ -155,7 +80,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 							serviceRegistrationRecord)) {
 						message.value = "URL is already registered.";
 						registrationSuccessful.value = false;
-
 					}
 			}
 
@@ -167,7 +91,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
 					message.value = "Service Registration Successful!";
 					registrationSuccessful.value = true;
 				} catch (IOException e) {
-					message.value = e.getMessage();
+					message.value = "Error registering service: "
+							+ e.getMessage();
 					registrationSuccessful.value = false;
 				}
 			}
@@ -176,6 +101,121 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			registrationSuccessful.value = false;
 		}
 
+	}
+
+	@Override
+	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterService")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/unRegisterService")
+	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterServiceResponse")
+	public void unRegisterService(
+			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord,
+			@WebParam(mode = Mode.OUT, name = "unRegistrationSuccessful", targetNamespace = "") Holder<Boolean> unRegistrationSuccessful,
+			@WebParam(mode = Mode.OUT, name = "message", targetNamespace = "") Holder<String> message) {
+		List<ServiceRegistrationRecord> records;
+		try {
+			// get the entire list of current service registration records
+			records = RegistrationUtils.getServiceRegistrationRecords();
+
+			for (ServiceRegistrationRecord record : records) {
+				// for each record currently in the registry, see if we can find
+				// a record with a ServiceIdentification that is equal to one
+				// that the user is trying to unregister
+				if (RegistrationUtils.serviceIdentificationEqual(
+						record.getServiceRecord(),
+						serviceRegistrationRecord.getServiceRecord())) {
+					// found the service the user wants to unregister, now check
+					// that the username and password supplied with this request
+					// match the username and password sent with the
+					// registration request
+					if (RegistrationUtils.authenticationEqual(
+							record.getAuthentication(),
+							serviceRegistrationRecord.getAuthentication())) {
+						try {
+							// the username/password match, so remove the record
+							// from the registry
+							RegistrationUtils
+									.removeServiceRegistrationRecord(serviceRegistrationRecord);
+						} catch (IOException e) {
+							// there was en error removing the record, report
+							// this error to the caller
+							message.value = "Error Unregistering Service: "
+									+ e.getMessage();
+							unRegistrationSuccessful.value = false;
+							return;
+						}
+						// removal succeeded
+						message.value = "unregistration Successful!";
+						unRegistrationSuccessful.value = true;
+						return;
+					} else {
+						// username/passwords do not match
+						message.value = "Error Unregistering Service: Username/Password does not match orignial ServiceRegistrationRecord!";
+						unRegistrationSuccessful.value = false;
+						return;
+					}
+				}
+			}
+			// couldn't find matching ServiceRecords
+			message.value = "Error Unregistering Service: Service not registered at this registry.";
+			unRegistrationSuccessful.value = false;
+		} catch (IOException e) {
+			message.value = "Error Unregisterig Service: Error reading registry!";
+			unRegistrationSuccessful.value = false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@WebResult(name = "serviceRecords", targetNamespace = "")
+	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServices")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRegisteredServices")
+	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServicesResponse")
+	public List<ServiceRecord> getRegisteredServices() {
+		try {
+			return RegistrationUtils.getServiceRecords();
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	@Override
+	@WebResult(name = "runId", targetNamespace = "")
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulationResponse")
+	public String runSimulation(
+			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
+		// this method must return a runId, even if there is an error
+		String runId;
+		try {
+			String URL = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				URL = RegistrationUtils
+						.getUrlForSimulatorIdentification(simulatorConfiguration
+								.getSimulatorIdentification());
+				if (URL == null) {
+					runId = RunUtils.getErrorRunId(simulatorConfiguration.getSimulatorIdentification());
+					RunUtils.reportError(runId, "Service not registered.");
+				}
+			} catch (IOException e) {
+				runId = RunUtils.getErrorRunId(simulatorConfiguration
+						.getSimulatorIdentification());
+				RunUtils.reportError(runId, "Error reading registry.");
+				return runId;
+			}
+			// run the simulator
+			SimulatorService ss = new SimulatorService(new URL(URL));
+			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+			return port.run(simulatorConfiguration);
+		} catch (MalformedURLException e) {
+			runId = RunUtils.getErrorRunId(simulatorConfiguration
+					.getSimulatorIdentification());
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService:" + e.getMessage());
+			return runId;
+		}
 	}
 
 	@Override
@@ -189,6 +229,53 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return null;
 	}
 
+	@Override
+	@WebResult(name = "runStatus", targetNamespace = "")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatusResponse")
+	public RunStatus getRunStatus(
+			@WebParam(name = "runId", targetNamespace = "") String runId,
+			@WebParam(name = "serviceRecord", targetNamespace = "") ServiceRecord serviceRecord) {
+
+		if (runId.startsWith(RUN_ERROR_PREFIX)) {
+			RunStatus rs = new RunStatus();
+			rs.setStatus(RunStatusEnum.FAILED);
+			rs.setMessage(RunUtils.getError(runId));
+			return rs;
+		}
+		
+		String URL = null;
+		try {
+			// get the webservice WSDL URL for supplied
+			// SimulatorIdentification
+			if (serviceRecord.getSimulatorIdentification() != null) {
+				URL = RegistrationUtils
+						.getUrlForSimulatorIdentification(serviceRecord
+								.getSimulatorIdentification());
+				SimulatorService ss = new SimulatorService(new URL(URL));
+				SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+				return port.getRunStatus(runId);
+			} else if (serviceRecord.getVisualizerIdentification() != null) {
+				// not done yet
+				RunStatus rs = new RunStatus();
+				rs.setMessage("Not implemented yet...");
+				rs.setStatus(RunStatusEnum.FAILED);
+				return rs;
+			} else {
+				RunStatus rs = new RunStatus();
+				rs.setMessage("Not implemented yet...");
+				rs.setStatus(RunStatusEnum.FAILED);
+				return rs;
+			}
+		} catch (IOException e) {
+			RunStatus rs = new RunStatus();
+			rs.setMessage("Error geting remote runStatus!");
+			rs.setStatus(RunStatusEnum.FAILED);
+			return rs;
+		}
+	}
+
 	public static void main(String[] args) {
 		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
 		Authentication auth = new Authentication();
@@ -198,7 +285,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		SimulatorIdentification sid = new SimulatorIdentification();
 
 		sid.setSimulatorName("SEIR");
-		sid.setSimulatorDeveloper("John Lv");
+		sid.setSimulatorDeveloper("U. Pitt");
 		sid.setSimulatorVersion("2.32 beta");
 
 		ServiceRecord sr = new ServiceRecord();
@@ -215,5 +302,4 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		apollo.unRegisterService(srr, success, msg);
 		System.out.println(msg.value);
 	}
-
 }
