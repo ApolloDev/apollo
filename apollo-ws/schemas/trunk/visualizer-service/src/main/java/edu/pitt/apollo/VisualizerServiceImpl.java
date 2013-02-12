@@ -15,6 +15,8 @@
 
 package edu.pitt.apollo;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebParam.Mode;
@@ -28,6 +30,7 @@ import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.VisualizerConfiguration;
+import edu.pitt.apollo.types.VisulaizerResultResource;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", 
 portName="VisualizerServiceEndpoint",
@@ -48,6 +51,8 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 		return rs;
 	}
 
+	
+
 	@Override
 	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.Run")
 	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/run")
@@ -55,8 +60,8 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 	public void run(
 			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration,
 			@WebParam(mode = Mode.OUT, name = "runId", targetNamespace = "") Holder<String> runId,
-			@WebParam(mode = Mode.OUT, name = "outputURL", targetNamespace = "") Holder<String> outputURL) {
-		// TODO Auto-generated method stub
+			@WebParam(mode = Mode.OUT, name = "visualizerResultResource", targetNamespace = "") Holder<List<VisulaizerResultResource>> visualizerResultResource) {
+	
 		
 	}
 
