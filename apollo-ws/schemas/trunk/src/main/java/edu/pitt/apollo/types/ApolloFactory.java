@@ -17,6 +17,8 @@ package edu.pitt.apollo.types;
 
 import java.util.ArrayList;
 
+import javax.naming.spi.ObjectFactory;
+
 public class ApolloFactory {
 	private static ObjectFactory factory = new ObjectFactory();
 

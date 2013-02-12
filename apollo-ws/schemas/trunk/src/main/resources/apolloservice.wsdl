@@ -26,6 +26,9 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="serviceRecord"
+							type="apollo:ServiceRecord">
+						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
