@@ -2,7 +2,6 @@ package edu.pitt.apollo;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,11 +22,11 @@ public class RegistrationUtils {
 			throws IOException {
 		XStream xstream = new XStream();
 		List<ServiceRegistrationRecord> records = null;
-		File f = new File(ApolloServiceImpl.REGISTRY);
+		File f = new File(ApolloServiceImpl.getRegistryFile());
 		if (f.exists()) {
 
 			BufferedReader br = new BufferedReader(new FileReader(
-					ApolloServiceImpl.REGISTRY));
+					ApolloServiceImpl.getRegistryFile()));
 			StringBuffer buff = new StringBuffer();
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -35,11 +34,27 @@ public class RegistrationUtils {
 			}
 			records = (List<ServiceRegistrationRecord>) xstream.fromXML(buff
 					.toString());
+			br.close();
 		} else {
 			records = new ArrayList<ServiceRegistrationRecord>();
 		}
 		return records;
 
+	}
+	
+	public static String getUrlForSimulatorIdentification(SimulatorIdentification si) throws IOException {
+		List<ServiceRegistrationRecord> records = getServiceRegistrationRecords();
+		for (ServiceRegistrationRecord record: records) {
+			if (record.getServiceRecord().getSimulatorIdentification() != null) {
+				SimulatorIdentification sid = record.getServiceRecord().getSimulatorIdentification();
+				if (sid.getSimulatorDeveloper().equals(si.getSimulatorDeveloper()) &&
+						sid.getSimulatorName().equals(si.getSimulatorName()) &&
+						sid.getSimulatorVersion().equals(si.getSimulatorVersion())) {
+					return record.getUrl();
+				}
+			}
+		}
+		return null;
 	}
 
 	public synchronized static List<ServiceRecord> getServiceRecords()
@@ -63,7 +78,7 @@ public class RegistrationUtils {
 		serviceRegistrationRecords.add(serviceRegistrationRecord);
 
 		XStream xstream = new XStream();
-		FileWriter fw = new FileWriter(ApolloServiceImpl.REGISTRY);
+		FileWriter fw = new FileWriter(ApolloServiceImpl.getRegistryFile());
 		fw.write(xstream.toXML(serviceRegistrationRecords));
 		fw.close();
 	}
@@ -81,7 +96,7 @@ public class RegistrationUtils {
 		}
 
 		XStream xstream = new XStream();
-		FileWriter fw = new FileWriter(ApolloServiceImpl.REGISTRY);
+		FileWriter fw = new FileWriter(ApolloServiceImpl.getRegistryFile());
 		fw.write(xstream.toXML(serviceRegistrationRecords));
 		fw.close();
 	}
