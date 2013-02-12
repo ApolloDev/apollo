@@ -15,10 +15,12 @@
 
 package edu.pitt.apollo;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,6 +34,8 @@ import javax.xml.ws.ResponseWrapper;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
 import edu.pitt.apollo.service.simulatorservice.SimulatorService;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
+import edu.pitt.apollo.service.visualizerservice.VisualizerService;
+import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
 import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
@@ -44,12 +48,21 @@ import edu.pitt.apollo.types.VisualizerConfiguration;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService", endpointInterface = "edu.pitt.apollo.service.apolloservice.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
-	public static String REGISTRY = "registered_services.xml";
-	public static String ERROR_FILE = "run_errors.txt";
-	public static String RUN_ERROR_PREFIX = "ApolloServiceError";
+	private static final String REGISTRY_FILENAME = "registered_services.xml";
+	private static final String ERROR_FILENAME = "run_errors.txt";
+	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
+	private static String APOLLO_DIR = "";
 
-	public static String getRegistryFile() {
-		return REGISTRY;
+	public static String getRegistryFilename() {
+		return APOLLO_DIR + REGISTRY_FILENAME;
+	}
+
+	public static String getErrorFilename() {
+		return APOLLO_DIR + ERROR_FILENAME;
+	}
+
+	public static String getRunErrorPrefix() {
+		return RUN_ERROR_PREFIX;
 	}
 
 	@Override
@@ -60,8 +73,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord,
 			@WebParam(mode = Mode.OUT, name = "registrationSuccessful", targetNamespace = "") Holder<Boolean> registrationSuccessful,
 			@WebParam(mode = Mode.OUT, name = "message", targetNamespace = "") Holder<String> message) {
-
-		message.value = null;
 
 		List<ServiceRegistrationRecord> records;
 		try {
@@ -74,28 +85,28 @@ class ApolloServiceImpl implements ApolloServiceEI {
 						serviceRegistrationRecord.getServiceRecord())) {
 					message.value = "Service is already registered.  Please unRegisterService to make changes to the existing ServiceRecord.";
 					registrationSuccessful.value = false;
+					return;
 				}
-				if (message.value == null)
-					if (RegistrationUtils.serviceUrlEqual(record,
-							serviceRegistrationRecord)) {
-						message.value = "URL is already registered.";
-						registrationSuccessful.value = false;
-					}
+
+				if (RegistrationUtils.serviceUrlEqual(record,
+						serviceRegistrationRecord)) {
+					message.value = "URL is already registered.";
+					registrationSuccessful.value = false;
+					return;
+				}
 			}
 
 			// if we are here, it looks like a valid registration
-			if (message.value == null) {
-				try {
-					RegistrationUtils
-							.addServiceRegistrationRecord(serviceRegistrationRecord);
-					message.value = "Service Registration Successful!";
-					registrationSuccessful.value = true;
-				} catch (IOException e) {
-					message.value = "Error registering service: "
-							+ e.getMessage();
-					registrationSuccessful.value = false;
-				}
+			try {
+				RegistrationUtils
+						.addServiceRegistrationRecord(serviceRegistrationRecord);
+				message.value = "Service Registration Successful!";
+				registrationSuccessful.value = true;
+			} catch (IOException e) {
+				message.value = "Error registering service: " + e.getMessage();
+				registrationSuccessful.value = false;
 			}
+
 		} catch (IOException e) {
 			message.value = "Error reading registry!";
 			registrationSuccessful.value = false;
@@ -196,12 +207,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 						.getUrlForSimulatorIdentification(simulatorConfiguration
 								.getSimulatorIdentification());
 				if (URL == null) {
-					runId = RunUtils.getErrorRunId(simulatorConfiguration.getSimulatorIdentification());
+					runId = RunUtils.getErrorRunId();
 					RunUtils.reportError(runId, "Service not registered.");
+					return runId;
 				}
 			} catch (IOException e) {
-				runId = RunUtils.getErrorRunId(simulatorConfiguration
-						.getSimulatorIdentification());
+				runId = RunUtils.getErrorRunId();
 				RunUtils.reportError(runId, "Error reading registry.");
 				return runId;
 			}
@@ -210,8 +221,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
 			return port.run(simulatorConfiguration);
 		} catch (MalformedURLException e) {
-			runId = RunUtils.getErrorRunId(simulatorConfiguration
-					.getSimulatorIdentification());
+			runId = RunUtils.getErrorRunId();
 			RunUtils.reportError(runId,
 					"Problem with SimulatorService:" + e.getMessage());
 			return runId;
@@ -225,8 +235,41 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
 	public String runVisualization(
 			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
-		// TODO Auto-generated method stub
-		return null;
+		// this method must return a runId, even if there is an error
+		String runId;
+		try {
+			String URL = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				URL = RegistrationUtils
+						.getUrlForVisualizerIdentification(visualizerConfiguration
+								.getVisualizerIdentification());
+				if (URL == null) {
+					runId = RunUtils.getErrorRunId();
+					RunUtils.reportError(runId, "Service not registered.");
+					return runId;
+				}
+			} catch (IOException e) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId, "Error reading registry.");
+				return runId;
+			}
+			// run the simulator
+			VisualizerService ss = new VisualizerService(new URL(URL));
+			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
+
+			Holder<String> runIdHolder = new Holder<String>();
+			Holder<String> outputURLHolder = new Holder<String>();
+
+			port.run(visualizerConfiguration, runIdHolder, outputURLHolder);
+			return runIdHolder.value;
+		} catch (MalformedURLException e) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService:" + e.getMessage());
+			return runId;
+		}
 	}
 
 	@Override
@@ -244,7 +287,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			rs.setMessage(RunUtils.getError(runId));
 			return rs;
 		}
-		
+
 		String URL = null;
 		try {
 			// get the webservice WSDL URL for supplied
@@ -301,5 +344,15 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 		apollo.unRegisterService(srr, success, msg);
 		System.out.println(msg.value);
+	}
+
+	static {
+		Map<String, String> env = System.getenv();
+		APOLLO_DIR = env.get("APOLLO_WORK_DIR");
+		if (!APOLLO_DIR.endsWith(File.separator)) {
+			APOLLO_DIR += File.separator;
+		}
+		System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
+
 	}
 }
