@@ -420,4 +420,11 @@
 			</element>
 		</sequence>
 	</complexType>
+
+	<complexType name="VisulaizerResultResource">
+		<sequence>
+			<element name="description" type="token"></element>
+			<element name="URL" type="anySimpleType"></element>
+		</sequence>
+	</complexType>
 </schema>
