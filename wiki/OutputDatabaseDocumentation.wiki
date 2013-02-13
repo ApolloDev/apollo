@@ -81,7 +81,7 @@ CREATE TABLE population_axis (
 
 This table represents all of the ways your populations can be stratified.  For example, one axis can be sex which may have two possible values: male and female.
 
-The 'epidemic state' label is a special case.  The epidemic state is one of the pre-coordinated bins defined in Apollo-SV.  Some commonly used states are 'susceptible', 'exposed', 'infected', and 'recovered'.  Essentially, the 'epidemic state' axis is stating that all individuals within a population have the specified state with respect to the epidemic situation.
+The 'disease state' label is a special case.  The disease state is one of the pre-coordinated bins defined in Apollo-SV.  Some commonly used states are 'susceptible', 'exposed', 'infected', and 'recovered'.  Essentially, the 'disease state' axis is stating that all individuals within a population have the specified state with respect to the epidemic situation.
 
 You can also use qualities and dispositions to post-coordinate sets, but that is outside of the scope of this documentation.
 
@@ -89,7 +89,7 @@ You can also use qualities and dispositions to post-coordinate sets, but that is
 || 1 || sex ||
 || 2 || age ||
 || 3 || location ||
-|| 4 || epidemic state ||
+|| 4 || disease state ||
 || 5 || quality ||
 || 6 || disposition ||
 
