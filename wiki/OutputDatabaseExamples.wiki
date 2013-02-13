@@ -11,9 +11,9 @@ In all but the first case, the run table and the time_series table have been omi
 
 In this example, we'll create a sample output from a SIER model which models influenza for two census blocks.  This model does not discriminate sex or age, only SIER states and location.
 
-So, we have 8 different simulated populations: 1 for each epidemic state (susceptible, infected, exposed, and recovered) in each census block (CB1, CB2).
+So, we have 8 different simulated populations: 1 for each disease state (susceptible, infected, exposed, and recovered) in each census block (CB1, CB2).
 
-|| *Population* || *Epidemic State* || *Census Block* ||
+|| *Population* || *Disease State* || *Census Block* ||
 || 1 || susceptible || CB1 ||
 || 2 || infected || CB1 ||
 || 3 || exposed || CB1 ||
@@ -40,7 +40,7 @@ The tables for this set of populations would look like what's shown below.
 == simulated_population_axis ==
 
 || *id* || *label* ||
-|| 1 || epidemic state ||
+|| 1 || disease state ||
 || 2 || location ||
 
 == simulated_population_axis_value ==
@@ -93,9 +93,9 @@ The tables for this set of populations would look like what's shown below.
 
 In this example, we'll create a sample output from a SIER model which models influenza for two census blocks with two different age ranges.  
 
-So, we have 16 different simulated populations: 1 for each epidemic state (susceptible, infected, exposed, and recovered) in each census block (CB1, CB2) in each age range (0 - 9, 10 - 19).
+So, we have 16 different simulated populations: 1 for each disease state (susceptible, infected, exposed, and recovered) in each census block (CB1, CB2) in each age range (0 - 9, 10 - 19).
 
-|| *Population* || *Epidemic State* || *Census Block* || *Age Range* ||
+|| *Population* || *Disease State* || *Census Block* || *Age Range* ||
 || 1 || susceptible || CB1 || 0 - 9 || 
 || 2 || infected || CB1 || 0 - 9 ||
 || 3 || exposed || CB1 || 0 - 9 ||
@@ -138,7 +138,7 @@ The tables for this set of populations would look like what's shown below.
 == simulated_population_axis ==
 
 || *id* || *label* ||
-|| 1 || epidemic state ||
+|| 1 || disease state ||
 || 2 || location ||
 || 3 || age range ||
 
@@ -199,9 +199,9 @@ The tables for this set of populations would look like what's shown below.
 
 In this example, we'll create a sample output from a SIER model which models influenza for two census blocks, keeping track of the number of newly exposed.  This model does not discriminate sex or age, only SIER states and location.
 
-So, we have 10 different simulated populations: 1 for each epidemic state (susceptible, infected, newly exposed, not newly exposed, and recovered) in each census block (CB1, CB2).
+So, we have 10 different simulated populations: 1 for each disease state (susceptible, infected, newly exposed, not newly exposed, and recovered) in each census block (CB1, CB2).
 
-|| *Population* || *Epidemic State* || *Census Block* ||
+|| *Population* || *Disease State* || *Census Block* ||
 || 1 || susceptible || CB1 ||
 || 2 || infected || CB1 ||
 || 3 || newly exposed || CB1 ||
@@ -232,7 +232,7 @@ The tables for this set of populations would look like what's shown below.
 == simulated_population_axis ==
 
 || *id* || *label* ||
-|| 1 || epidemic state ||
+|| 1 || disease state ||
 || 2 || location ||
 || 3 || exposed time steps ||
 
