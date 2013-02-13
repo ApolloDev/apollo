@@ -40,7 +40,7 @@ runRequest._visualizerConfiguration._visualizerIdentification._visualizerDevelop
 runRequest._visualizerConfiguration._visualizerIdentification._visualizerName = "GAIA"
 runRequest._visualizerConfiguration._visualizerIdentification._visualizerVersion = "v1.0"
 
-runRequest._visualizerConfiguration._visualizationOptions._runId = "PSC_GAIA_v1.0_42"
+runRequest._visualizerConfiguration._visualizationOptions._runId = "PSC_FRED_v1.0_42"
 runRequest._visualizerConfiguration._visualizationOptions._location = "42003/Allegheny County"
 runRequest._visualizerConfiguration._visualizationOptions._outputFormat = "mp4"
 
