@@ -40,7 +40,7 @@ class ns0:
         schema = "http://service.apollo.pitt.edu/visualizerservice/"
         def __init__(self, **kw):
             ns = ns0.runResponse_Dec.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","RunId",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","VisulaizerResultResource",lazy=True)(pname="visualizerResultResource", aname="_visualizerResultResource", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunId",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","VisualizerOutputResource",lazy=True)(pname="visualizerOutputResource", aname="_visualizerOutputResource", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
             kw["pname"] = ("http://service.apollo.pitt.edu/visualizerservice/","runResponse")
             kw["aname"] = "_runResponse"
             self.attribute_typecode_dict = {}
@@ -50,7 +50,7 @@ class ns0:
                 def __init__(self):
                     # pyclass
                     self._runId = None
-                    self._visualizerResultResource = []
+                    self._visualizerOutputResource = []
                     return
             Holder.__name__ = "runResponse_Holder"
             self.pyclass = Holder
@@ -264,15 +264,6 @@ class ns1:
                     self._outputFormat = None
                     return
             Holder.__name__ = "VisualizationOptions_Holder"
-            self.pyclass = Holder
-
-    class MovieFormat_Def(ZSI.TC.String, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "MovieFormat")
-        def __init__(self, pname, **kw):
-            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
-            class Holder(str):
-                typecode = self
             self.pyclass = Holder
 
     class VisualizerIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
@@ -546,11 +537,11 @@ class ns1:
             Holder.__name__ = "SimulatorConfiguration_Holder"
             self.pyclass = Holder
 
-    class VisulaizerResultResource_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+    class VisualizerOutputResource_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "VisulaizerResultResource")
+        type = (schema, "VisualizerOutputResource")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.VisulaizerResultResource_Def.schema
+            ns = ns1.VisualizerOutputResource_Def.schema
             TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.AnyType(pname=(ns,"URL"), aname="_URL", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
@@ -563,7 +554,7 @@ class ns1:
                     self._description = None
                     self._URL = None
                     return
-            Holder.__name__ = "VisulaizerResultResource_Holder"
+            Holder.__name__ = "VisualizerOutputResource_Holder"
             self.pyclass = Holder
 
 # end class ns1 (tns: http://types.apollo.pitt.edu/)
