@@ -27,7 +27,7 @@ class VisualizerService(ServiceSOAPBinding):
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name=\"runId\" type=\"apollo:RunId\"/>
-						<xsd:element maxOccurs=\"unbounded\" minOccurs=\"1\" name=\"visualizerResultResource\" type=\"apollo:VisulaizerResultResource\">
+						<xsd:element maxOccurs=\"unbounded\" minOccurs=\"1\" name=\"visualizerOutputResource\" type=\"apollo:VisualizerOutputResource\">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>

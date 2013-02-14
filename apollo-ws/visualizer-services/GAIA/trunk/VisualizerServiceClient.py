@@ -47,7 +47,9 @@ runRequest._visualizerConfiguration._visualizationOptions._outputFormat = "mp4"
 print 'Calling "run"'
 run_response = service.run(runRequest)
 
-
+print "Webservice claims that the following resources will be available:"
+for o in run_response._visualizerOutputResource:
+    print "--" + o._description + " at " + o._URL
 
 print "Run submitted with ID: " + str(run_response._runId)
 
