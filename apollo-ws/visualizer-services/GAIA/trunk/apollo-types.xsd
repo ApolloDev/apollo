@@ -120,14 +120,6 @@
 		</sequence>
 	</complexType>
 
-	<simpleType name="MovieFormat">
-		<restriction base="string">
-			<enumeration value="mov"></enumeration>
-			<enumeration value="mp4"></enumeration>
-			<enumeration value="mpeg"></enumeration>
-		</restriction>
-	</simpleType>
-
 	<complexType name="VisualizerIdentification">
 		<sequence>
 			<element name="visualizerDeveloper" maxOccurs="1" minOccurs="1"
@@ -421,7 +413,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="VisulaizerResultResource">
+	<complexType name="VisualizerOutputResource">
 		<sequence>
 			<element name="description" type="token"></element>
 			<element name="URL" type="anySimpleType"></element>

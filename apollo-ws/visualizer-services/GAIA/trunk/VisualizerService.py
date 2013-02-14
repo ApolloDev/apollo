@@ -39,19 +39,19 @@ class GaiaWebService(VisualizerService):
            print "The client requests a visualization of the following location: " + vc._visualizationOptions._location
            print "The client requests the following output format: " + vc._visualizationOptions._outputFormat
            
-           vrr = self.factory.new_VisualizerResultResource()
+           vrr = self.factory.new_VisualizerOutputResource()
            vrr._description = "GAIA animation of Allegheny County"
            vrr._URL = "http://warhol-fred.psc.edu/GAIA/p98uau3a/anim.mp4"
-           response._visualizerResultResource.append(vrr);
+           response._visualizerOutputResource.append(vrr);
            return response;
         
         def soap_getRunStatus(self, ps, **kw):
             response = VisualizerService.soap_getRunStatus(self, ps, **kw)
             
-            print "The client requests the status of run" + self.request._runId
+            print "The client requests the status of run " + self.request._runId
             
             response._runStatus = self.factory.new_RunStatus()
-            response._runStatus._status = "FAILED"
+            response._runStatus._status = "WAITING"
             response._runStatus._message = "method not implemented"
             return response
         
