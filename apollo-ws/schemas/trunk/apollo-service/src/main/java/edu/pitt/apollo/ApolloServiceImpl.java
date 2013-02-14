@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ import edu.pitt.apollo.types.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.SimulatorConfiguration;
 import edu.pitt.apollo.types.SimulatorIdentification;
 import edu.pitt.apollo.types.VisualizerConfiguration;
+import edu.pitt.apollo.types.VisualizerOutputResource;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService", endpointInterface = "edu.pitt.apollo.service.apolloservice.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
@@ -229,50 +231,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
-	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualization")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runVisualization")
-	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
-	public String runVisualization(
-			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
-		// this method must return a runId, even if there is an error
-		String runId;
-		try {
-			String URL = null;
-			try {
-				// get the webservice WSDL URL for supplied
-				// SimulatorIdentification
-				URL = RegistrationUtils
-						.getUrlForVisualizerIdentification(visualizerConfiguration
-								.getVisualizerIdentification());
-				if (URL == null) {
-					runId = RunUtils.getErrorRunId();
-					RunUtils.reportError(runId, "Service not registered.");
-					return runId;
-				}
-			} catch (IOException e) {
-				runId = RunUtils.getErrorRunId();
-				RunUtils.reportError(runId, "Error reading registry.");
-				return runId;
-			}
-			// run the simulator
-			VisualizerService ss = new VisualizerService(new URL(URL));
-			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
-
-			Holder<String> runIdHolder = new Holder<String>();
-			//Holder<String> outputURLHolder = new Holder<String>();
-
-			//port.run(visualizerConfiguration, runIdHolder, outputURLHolder);
-			return runIdHolder.value;
-		} catch (MalformedURLException e) {
-			runId = RunUtils.getErrorRunId();
-			RunUtils.reportError(runId,
-					"Problem with SimulatorService:" + e.getMessage());
-			return runId;
-		}
-	}
-
-	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
 	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatus")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRunStatus")
@@ -349,10 +307,65 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	static {
 		Map<String, String> env = System.getenv();
 		APOLLO_DIR = env.get("APOLLO_WORK_DIR");
-		if (!APOLLO_DIR.endsWith(File.separator)) {
-			APOLLO_DIR += File.separator;
+		if (APOLLO_DIR != null) {
+			if (!APOLLO_DIR.endsWith(File.separator)) {
+				APOLLO_DIR += File.separator;
+			}
+			System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
+		} else {
+			System.out.println("APOLLO_DIR environment variable not found!");
+			APOLLO_DIR = "";
 		}
-		System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
+
+	}
+
+	@Override
+	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualization")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runVisualization")
+	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
+	public void runVisualization(
+			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration,
+			@WebParam(mode = Mode.OUT, name = "runId", targetNamespace = "") Holder<String> runId,
+			@WebParam(mode = Mode.OUT, name = "visualizerOutputResource", targetNamespace = "") Holder<List<VisualizerOutputResource>> visualizerOutputResource) {
+
+		try {
+			String URL = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				URL = RegistrationUtils
+						.getUrlForVisualizerIdentification(visualizerConfiguration
+								.getVisualizerIdentification());
+				if (URL == null) {
+					runId.value = RunUtils.getErrorRunId();
+					RunUtils.reportError(runId.value, "Service not registered.");
+					return;
+				}
+			} catch (IOException e) {
+				runId.value = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId.value, "Error reading registry.");
+				return;
+			}
+			// run the simulator
+			VisualizerService ss = new VisualizerService(new URL(URL));
+			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
+
+			Holder<String> runIdHolder = new Holder<String>();
+
+			Holder<List<VisualizerOutputResource>> visualizerOutputResourceHolder = new Holder<List<VisualizerOutputResource>>();
+			visualizerOutputResourceHolder.value = new ArrayList<VisualizerOutputResource>();
+
+			System.out.println("Running the visualization...");
+			port.run(visualizerConfiguration, runIdHolder,
+					visualizerOutputResourceHolder);
+			runId.value = runIdHolder.value;
+			visualizerOutputResource.value = visualizerOutputResourceHolder.value;
+		} catch (MalformedURLException e) {
+			runId.value = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId.value,
+					"Problem with SimulatorService:" + e.getMessage());
+			return;
+		}
 
 	}
 }
