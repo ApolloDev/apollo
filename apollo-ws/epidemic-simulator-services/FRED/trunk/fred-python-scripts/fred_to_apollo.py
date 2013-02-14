@@ -2,7 +2,7 @@ import os,sys,string
 import math
 import optparse
 from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Locations_Set,FRED_People_Set
-import MySQLdb
+import apollo
 import time
 
 if __name__ == '__main__':
@@ -35,6 +35,7 @@ if __name__ == '__main__':
     fred = FRED()
     
     key = opts.key
+
     run = opts.run
 
     try:
@@ -45,39 +46,49 @@ if __name__ == '__main__':
             sys.exit(1)
 
     fred_run = FRED_RUN(fred,key)
-
+    numberDays = int(fred_run.get_param("days"))
     outputsAve = fred_run.outputsAve
+
+    apolloDB = apollo.ApolloDB()
+    apolloDB.connect()
+    
 
     #for day in outputsAve:
 #	print "Day = %d I = %d"%(day['Day'],day['I'])
 
-    ApolloConn = MySQLdb.connect(host="warhol-fred.psc.edu",
-				 user="apolloext",
-				 db="apollo")
-    ApolloCursor = ApolloConn.cursor()
+
+    #ApolloConn = MySQLdb.connect(host="warhol-fred.psc.edu",
+#				 user="apolloext",
+#				 db="apollo")
+    #ApolloCursor = ApolloConn.cursor()
 
 
     ## Fill in the run table
     SQLString = 'INSERT INTO run set label = "' + key + '"'
-    ApolloCursor.execute(SQLString)
-    runInsertID = ApolloConn.insert_id()
+    apolloDB.query(SQLString)
+    runInsertID = apolloDB.insertID()
+#    print "Run ID = " + str(runInsertID)
+#    sys.exit()
+    #ApolloCursor.execute(SQLString)
+    #runInsertID = ApolloConn.insert_id()
 
 
     stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
     #axisList = ['disease_status','location']
     locationList = ['42003'] # need to replace with an automatic way of getting this info
     stateInsertIDDict = {}
-    axisInsertIDDict = {}
+    #axisInsertIDDict = {}
 
     ### setup simulated_population_axis
     #for axis in axisList:
     #    ApolloCursor.execute('INSERT INTO population_axis set label = "%s"'%axis)
     #    axisInsertIDDict[axis] = ApolloConn.insert_id()
-    ApolloCursor.execute("SELECT * from population_axis")
-    axisResults = ApolloCursor.fetchall()
+    axisInsertIDDict = apolloDB._populationAxis()
+    #ApolloCursor.execute("SELECT * from population_axis")
+    #axisResults = ApolloCursor.fetchall()
 
-    for row in axisResults:
-	axisInsertIDDict[row[1]] = row[0]
+    #for row in axisResults:
+#	axisInsertIDDict[row[1]] = row[0]
 
 #    print "Axis = " + str(axisInsertIDDict)
 #    sys.exit()
@@ -86,8 +97,9 @@ if __name__ == '__main__':
         for location in locationList:
             populationLabel = str(stateList[state]) + " in " + location
             SQLString = 'INSERT INTO simulated_population set label = "' + populationLabel + '"'
-            result = ApolloCursor.execute(SQLString)
-            stateInsertIDDict[(state,location)] = ApolloConn.insert_id()
+            #result = ApolloCursor.execute(SQLString)
+	    apolloDB.query(SQLString)
+            stateInsertIDDict[(state,location)] = apolloDB.insertID()
         
 
     ### Set up the simulated population axis value table
@@ -95,19 +107,16 @@ if __name__ == '__main__':
         for location in locationList:
             populationLabelID = stateInsertIDDict[(state,location)]
             axisID = axisInsertIDDict["disease_state"]
-            ApolloCursor.execute('INSERT INTO simulated_population_axis_value set ' +\
-                               'population_id = "' + str(populationLabelID) + '", ' +\
-                               'axis_id = "' + str(axisID) + '", ' +\
-                               'value = "' + stateList[state]  + '"')
+            apolloDB.query('INSERT INTO simulated_population_axis_value set ' +\
+			   'population_id = "' + str(populationLabelID) + '", ' +\
+			   'axis_id = "' + str(axisID) + '", ' +\
+			   'value = "' + stateList[state]  + '"')
             axisID = axisInsertIDDict['location']
-            ApolloCursor.execute('INSERT INTO simulated_population_axis_value set ' +\
-                               'population_id = "' + str(populationLabelID) + '", ' +\
-                               'axis_id = "' + str(axisID) + '", ' +\
-                               'value = "' + location  + '"')
+            apolloDB.query('INSERT INTO simulated_population_axis_value set ' +\
+			   'population_id = "' + str(populationLabelID) + '", ' +\
+			   'axis_id = "' + str(axisID) + '", ' +\
+			   'value = "' + location  + '"')
                            
-                           
-        
-    
     for state in stateList.keys():
         for location in locationList:
             for day in outputsAve:
@@ -117,8 +126,8 @@ if __name__ == '__main__':
                     +'population_id = "' + str(populationID) + '", '\
                     +'time_step = "' + str(day['Day']) +'", '\
                     +'pop_count = "' + str(day[state]) + '"'
-
-                result = ApolloCursor.execute(SQLString)
+		apolloDB.query(SQLString)
+                #result = ApolloCursor.execute(SQLString)
 	
 
     synth_pop_dir = fred_run.get_param("synthetic_population_directory")
@@ -151,7 +160,7 @@ if __name__ == '__main__':
 	    infected_id = int(infSet.get('host',i))
 	    #personRec = fred_population.people[int(infRec.infected_id)]
 	    personFips = fred_population.get("stcotrbg",infected_id)
-            print personFips
+            #print personFips
             if personFips not in fipsList:
                 fipsList.append(personFips)
 	    if aveInfByBG[day].has_key(personFips) is False:
@@ -169,48 +178,45 @@ if __name__ == '__main__':
     fipsInsertIDDict = {}
     #print 'fips list = ' + str(fipsList)
     for fips in fipsList:
-        ApolloCursor.execute('INSERT INTO simulated_population set label = "newly exposed in '+fips + '"')
-        insertID = ApolloConn.insert_id()
+        apolloDB.query('INSERT INTO simulated_population set label = "newly exposed in '+fips + '"')
+        insertID = apolloDB.insertID() 
         fipsInsertIDDict[fips] = insertID
         axisID = axisInsertIDDict['disease_state']
-        ApolloCursor.execute('INSERT INTO simulated_population_axis_value set ' +\
-                             'population_id = "' + str(insertID) + '", ' +\
-                             'axis_id = "' + str(axisID) + '", ' +\
-                             'value = "newly exposed"')
+        apolloDB.query('INSERT INTO simulated_population_axis_value set ' +\
+		       'population_id = "' + str(insertID) + '", ' +\
+		       'axis_id = "' + str(axisID) + '", ' +\
+		       'value = "newly exposed"')
         axisID = axisInsertIDDict['location']
 
-        ApolloCursor.execute('INSERT INTO simulated_population_axis_value set ' +\
-                             'population_id = "' + str(insertID) + '", ' +\
-                             'axis_id = "' + str(axisID) + '", ' +\
-                             'value = "' + fips + '"')
+        apolloDB.query('INSERT INTO simulated_population_axis_value set ' +\
+		       'population_id = "' + str(insertID) + '", ' +\
+		       'axis_id = "' + str(axisID) + '", ' +\
+		       'value = "' + fips + '"')
 
+	
     
-    
-    for day in range(0,len(aveInfByBG)):
-        for fips in aveInfByBG[day].keys():
-            print "Day = " + str(day) + " and Fips: " + fips
-            print "ave = " + str(int(aveInfByBG[day][fips]))
-            SQLString = 'INSERT INTO time_series set '\
+#    for day in range(0,len(aveInfByBG)):
+    for day in range(0,numberDays):
+        if day > len(aveInfByBG[day]):
+            for fips in fipsList:
+                SQLString = 'INSERT INTO time_series set '\
                         +'run_id = "' + str(runInsertID) + '", '\
                         +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
                         +'time_step = "' + str(day) + '", '\
-                        +'pop_count = "' + str(int(aveInfByBG[day][fips])) + '"'
-            ApolloCursor.execute(SQLString)
-
+                        +'pop_count = "0"'
+                apolloDB.query(SQLString)
+        else:
+            for fips in aveInfByBG[day].keys():
+            #print "Day = " + str(day) + " and Fips: " + fips
+            #print "ave = " + str(int(aveInfByBG[day][fips]))
+                SQLString = 'INSERT INTO time_series set '\
+                    +'run_id = "' + str(runInsertID) + '", '\
+                    +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
+                    +'time_step = "' + str(day) + '", '\
+                    +'pop_count = "' + str(int(aveInfByBG[day][fips])) + '"'
+                apolloDB.query(SQLString)
+                
     
-    ### Finally, put this information into the database
-    ##for day in range(0,len(aveInfByBG)):
-##	for fips in aveInfByBG[day].keys():
-##	    SQLString = "INSERT INTO SIMULATOR_OUTPUT SET " \
-##			+'run_id = "' + str(key)+ '",'\
-##			+'time_step = "' + str(day) + '",'\
-##			+'simulated_population_location = "'+ fips +'", '\
-##			+'disease_state = "newly_exposed",'\
-##			+'pop_count = "' + str(int(aveInfByBG[day][fips])) + '"'
-
-##	    print SQLString
-##	    ApolloCursor.execute(SQLString)
-
-    ApolloConn.close()
+    apolloDB.close()
     
     
