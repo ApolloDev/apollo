@@ -98,6 +98,9 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="visualizerOutputResource"
+							type="apollo:VisualizerOutputResource" maxOccurs="unbounded" minOccurs="1">
+						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
