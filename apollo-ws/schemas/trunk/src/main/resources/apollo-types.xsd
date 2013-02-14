@@ -116,17 +116,9 @@
 		<sequence>
 			<element name="runId" type="token"></element>
 			<element name="location" type="token"></element>
-			<element name="movieFormat" type="tns:MovieFormat"></element>
+			<element name="outputFormat" type="token"></element>
 		</sequence>
 	</complexType>
-
-	<simpleType name="MovieFormat">
-		<restriction base="string">
-			<enumeration value="mov"></enumeration>
-			<enumeration value="mp4"></enumeration>
-			<enumeration value="mpeg"></enumeration>
-		</restriction>
-	</simpleType>
 
 	<complexType name="VisualizerIdentification">
 		<sequence>
@@ -421,7 +413,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="VisulaizerResultResource">
+	<complexType name="VisualizerOutputResource">
 		<sequence>
 			<element name="description" type="token"></element>
 			<element name="URL" type="anySimpleType"></element>
