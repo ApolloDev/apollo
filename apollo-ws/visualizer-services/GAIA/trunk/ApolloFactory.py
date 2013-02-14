@@ -24,8 +24,8 @@ from VisualizerService_services_types import *
 class ApolloFactory:
     
    
-    def new_VisualizerResultResource(self):
-        vrr = ns1.VisulaizerResultResource_Def(None).pyclass
+    def new_VisualizerOutputResource(self):
+        vrr = ns1.VisualizerOutputResource_Def(None).pyclass
         return vrr
     
     def new_VisualizerIdentification(self):
