@@ -57,8 +57,8 @@ public class WSClient {
 		sr.setSimulatorIdentification(si);
 
 		srr.setServiceRecord(sr);
-		//srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
-		srr.setUrl("http://localhost:8087/fred?wsdl");
+		srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
+		//srr.setUrl("http://localhost:8087/fred?wsdl");
 
 		Holder<Boolean> success = new Holder<Boolean>();
 		Holder<String> msg = new Holder<String>();
