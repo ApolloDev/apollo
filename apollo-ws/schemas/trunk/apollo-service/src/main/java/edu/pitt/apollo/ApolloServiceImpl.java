@@ -32,6 +32,11 @@ import javax.xml.ws.Holder;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
 import edu.pitt.apollo.service.simulatorservice.SimulatorService;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
@@ -221,6 +226,15 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			// run the simulator
 			SimulatorService ss = new SimulatorService(new URL(URL));
 			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+			
+			//disable chunking for ZSI
+		    Client client = ClientProxy.getClient(port);
+	        HTTPConduit http = (HTTPConduit) client.getConduit();
+	        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+	        httpClientPolicy.setConnectionTimeout(36000);
+	        httpClientPolicy.setAllowChunking(false);
+	        http.setClient(httpClientPolicy);
+			
 			return port.run(simulatorConfiguration);
 		} catch (MalformedURLException e) {
 			runId = RunUtils.getErrorRunId();
@@ -350,6 +364,14 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			VisualizerService ss = new VisualizerService(new URL(URL));
 			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
 
+			//disable chunking for ZSI
+		    Client client = ClientProxy.getClient(port);
+	        HTTPConduit http = (HTTPConduit) client.getConduit();
+	        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+	        httpClientPolicy.setConnectionTimeout(36000);
+	        httpClientPolicy.setAllowChunking(false);
+	        http.setClient(httpClientPolicy);
+			
 			Holder<String> runIdHolder = new Holder<String>();
 
 			Holder<List<VisualizerOutputResource>> visualizerOutputResourceHolder = new Holder<List<VisualizerOutputResource>>();
