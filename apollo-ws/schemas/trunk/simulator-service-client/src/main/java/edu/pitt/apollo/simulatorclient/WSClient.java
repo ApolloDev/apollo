@@ -58,7 +58,7 @@ public class WSClient {
 
 
 	
-		SimulatorService service = new SimulatorService(new URL("http://localhost:8087/fred?wsdl"));
+		SimulatorService service = new SimulatorService(new URL("http://warhol-fred.psc.edu:8087/fred?wsdl"));
 		
 		
 		SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
