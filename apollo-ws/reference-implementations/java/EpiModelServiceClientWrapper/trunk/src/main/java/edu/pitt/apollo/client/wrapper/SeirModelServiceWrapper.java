@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
+import edu.pitt.apollo.client.wrapper.SeirModelTestHelper;
 import edu.pitt.apollo.types.EpidemicModelInput;
 import edu.pitt.apollo.types.SimulationRunResult;
 import edu.pitt.rods.SeirEpiModelSimulator;
@@ -60,8 +61,9 @@ public class SeirModelServiceWrapper {
 		SeirModelTestHelper
 				.testRun(new URL(
 						//"http://research3.rods.pitt.edu:9001/ApolloSeirModelService/services/SeirServerPort?wsdl"));
-						"http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
-//		SeirModelTestHelper
+					//	"http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
+						"https://betaweb.rods.pitt.edu/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
+		//		SeirModelTestHelper
 //				.testRunBatch(
 //						new URL(
 //								"http://research3.rods.pitt.edu:9001/ApolloSeirModelService/services/SeirServerPort?wsdl"),
