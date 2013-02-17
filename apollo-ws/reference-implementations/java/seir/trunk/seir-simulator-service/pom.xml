@@ -11,6 +11,13 @@
 	<name>-- SEIR SimulatorService Web Service Provider</name>
 	<packaging>bundle</packaging>
 
+	<repositories>
+		<repository>
+			<id>apollo</id>
+			<url>http://research.rods.pitt.edu/repo</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -18,7 +25,20 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>edu.pitt.apollo</groupId>
+			<artifactId>epimodel-service-client-wrapper</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.pitt.apollo</groupId>
+			<artifactId>epimodel-service-client</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
+
 
 	<build>
 		<plugins>
