@@ -96,6 +96,7 @@ class ApolloDB:
 	    self._conn = MySQLdb.connect(host=self._host,
 					    user=self._user,
 					    db=self._dbname)
+	    self._conn.autocommit(True)
 	except MySQLdb.Error, e:
 	    print "Problem connecting to Apollo database: %d %s"%(e.args[0],e.args[1])
             sys.exit(1)
