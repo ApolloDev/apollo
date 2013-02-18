@@ -27,9 +27,6 @@ public class WSClient {
 		SimulatorService service = new SimulatorService(new URL("http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl"));
 		SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
 
-		RunStatus rs = port.getRunStatus("test");
-		System.out.println(rs.getMessage());
-
-		System.out.println("Status: " + rs.getStatus());
+		
 	}
 }
