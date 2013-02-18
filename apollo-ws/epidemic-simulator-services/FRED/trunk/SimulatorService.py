@@ -1,3 +1,4 @@
+#!/usr/users/4/stbrown/bin/python 
 # Copyright 2012 University of Pittsburgh
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -66,7 +67,7 @@ class FredWebService(SimulatorService):
             status, message = fredConn._getStatus(runId)
             response._runStatus = self.factory.new_RunStatus()
             print "Fred status is:" + status
-            response._runStatus._status = status
+            response._runStatus._status = status.lower()
             print "Fred message is:" + message
             response._runStatus._message = message
             
