@@ -1,4 +1,4 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.seir.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,7 @@ import edu.pitt.apollo.types.RunStatusEnum;
 
 public class RunUtils {
 
-	public static String WORK_DIR = "/apollo/work/";
+	public static String WORK_DIR = "/apollo/work";
 
 	public static synchronized String getNextId() throws IOException {
 
