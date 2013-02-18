@@ -15,8 +15,6 @@
 package edu.pitt.apollo;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -26,7 +24,8 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.client.wrapper.SeirModelServiceWrapper;
+import edu.pitt.apollo.seir.utils.RunUtils;
+import edu.pitt.apollo.seir.utils.WorkerThread;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
@@ -44,10 +43,14 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatusResponse")
 	public RunStatus getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
-		RunStatus rs = new RunStatus();
-		rs.setMessage("hello from seirsimulatorservice");
-		rs.setStatus(RunStatusEnum.COMPLETED);
-		return rs;
+		try {
+			return RunUtils.getStatus(runId);
+		} catch (IOException e) {
+			RunStatus rs = new RunStatus();
+			rs.setMessage("Error getting runStatus from web service, error is: " + e.getMessage());
+			rs.setStatus(RunStatusEnum.FAILED);
+			return rs;
+		}
 	}
 
 	@Override
@@ -68,33 +71,34 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 	public String run(
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		try {
-			// SeirModelTestHelper
-			// .testRun(new URL(
-			// //
-			// "http://research3.rods.pitt.edu:9001/ApolloSeirModelService/services/SeirServerPort?wsdl"));
-			// //
-			// "http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
-			// "https://betaweb.rods.pitt.edu/SeirEpiModelService/services/seirepimodelsimulator?wsdl"));
-			
+		
 
 			SimulatorIdentification sid = simulatorConfiguration
 					.getSimulatorIdentification();
-			String runId = RunUtils.getNextId();
+			String runId = sid.getSimulatorDeveloper() + "_" + sid.getSimulatorName()
+					+ "_" + sid.getSimulatorVersion() + "_" + RunUtils.getNextId();
+			System.out.println("RunId is :" + runId);
 			(new WorkerThread(simulatorConfiguration, runId)).start();
 
-			return sid.getSimulatorDeveloper() + "_" + sid.getSimulatorName()
-					+ "_" + sid.getSimulatorVersion() + "_"
-					+ runId;
+			return runId;
+					
 
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "blah.";
 
+	}
+	
+	static {
+		try {
+			System.loadLibrary("seirjni");
+			System.out.println("Loaded seirjni in Apollo!");
+		} catch (Exception e) {
+			System.out.println("Error loading SEIR JNI: " + e.getMessage());
+		}
 	}
 
 }
