@@ -24,7 +24,7 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 
-var vaccSchedule = new function(){
+var vaccAdminSchedule = new function(){
 	//private functions
 	function onGridInsertClicked(){
 		//if user is still editing the table
@@ -119,9 +119,9 @@ var vaccSchedule = new function(){
 			};
 			deliveryGrid.addRowData(newRowId, mylastrow, 'last');
 			
-			var currentCount = parseInt( $('#delivery-rate-change').val() );
+			var currentCount = parseInt( $('#vaccination-admin-delivery-rate-change').val() );
 			currentCount++;
-			$('#delivery-rate-change').val(currentCount);
+			$('#vaccination-admin-delivery-rate-change').val(currentCount);
 		}else if (currMode == 'table'){
 			var mylastrow = {
 				delivery : parseInt(lastrow.delivery) + 1,
@@ -132,9 +132,9 @@ var vaccSchedule = new function(){
 			deliveryGrid.addRowData(newRowId, mylastrow, 'last');
 			
 			//update the deliveryCount
-			var currentCount = parseInt( $('#delivery-number').val() );
+			var currentCount = parseInt( $('#vaccination-admin-delivery-number').val() );
 			currentCount++;
-			$('#delivery-number').val(currentCount);
+			$('#vaccination-admin-delivery-number').val(currentCount);
 		}
 		
 		//update the chart
@@ -149,7 +149,7 @@ var vaccSchedule = new function(){
 		}
 		
 		if (currMode == 'rate'){//update the delivery rate number
-			var currentCount = parseInt( $('#delivery-rate-change').val() );
+			var currentCount = parseInt( $('#vaccination-admin-delivery-rate-change').val() );
 			if (currentCount == 1)
 				return;
 			
@@ -163,9 +163,9 @@ var vaccSchedule = new function(){
 			
 			deliveryGrid.delRowData( rowid );
 			
-			var currentCount = parseInt( $('#delivery-rate-change').val() );
+			var currentCount = parseInt( $('#vaccination-admin-delivery-rate-change').val() );
 			currentCount--;
-			$('#delivery-rate-change').val(currentCount);
+			$('#vaccination-admin-delivery-rate-change').val(currentCount);
 		}else if (currMode == 'table'){
 			var ids = deliveryGrid.getDataIDs();
 			if (ids.length == 0)
@@ -174,9 +174,9 @@ var vaccSchedule = new function(){
 			deliveryGrid.delRowData( ids.max() );
 			
 			//update the control
-			var currentCount = parseInt( $('#delivery-number').val() );
+			var currentCount = parseInt( $('#vaccination-admin-delivery-number').val() );
 			currentCount--;
-			$('#delivery-number').val(currentCount);
+			$('#vaccination-admin-delivery-number').val(currentCount);
 		}
 		
 		//update the chart
@@ -186,10 +186,10 @@ var vaccSchedule = new function(){
 	
 	function getVaccinationSchedule(){
 		var mainGrid = $(dataExchange.gridId);
-		var rowData = jqgridHelper.findDataByValue(mainGrid, 'pname', 'Vaccination Schedule');
+		var rowData = jqgridHelper.findDataByValue(mainGrid, 'pname', 'Vaccination Administration Schedule');
 
 		if (rowData.length == 0)
-			throw "Can't get Vaccination Schedule";
+			throw "Can't get Vaccination Administration Schedule";
 		
 		var rawData =  eval('(' + rowData[0].extra + ')');
 		
@@ -201,7 +201,7 @@ var vaccSchedule = new function(){
 		//chart
 		chart = new Highcharts.Chart({
 			chart: {
-				renderTo: 'delivery-chart',
+				renderTo: 'vaccination-admin-delivery-chart',
 				defaultSeriesType: 'line',
 				marginRight: 150,
 				marginBottom: 60,
@@ -310,10 +310,10 @@ var vaccSchedule = new function(){
 		currMode = 'rate';
 		
 		//unload grid first
-		deliveryGrid = $("#delivery-table");
+		deliveryGrid = $("#vaccination-admin-delivery-table");
 		deliveryGrid.GridUnload();
 		//get the empty div by id
-		deliveryGrid = $("#delivery-table");		
+		deliveryGrid = $("#vaccination-admin-delivery-table");		
 		
 		//init in rate mode
 		deliveryGrid.jqGrid({
@@ -323,10 +323,10 @@ var vaccSchedule = new function(){
 			loadonce:true,
 			colNames:['Day', 'Date', 'Rate'],
 			colModel:[
-				{name:'day', index:'day', width:156, editable: false, editoptions:{size:25}, sorttype:"int"},
+				{name:'day', index:'day', width:156, editable: true, editoptions:{size:25}, sorttype:"int"},
 				{name:'date', index:'date', width:157, editable: true,
 					editoptions:{size:25},
-					sorttype:"date" , editrules:{date:true}, datefmt: 'm-d-Y'},
+					sorttype:"date" , editrules:{date:true}, datefmt: 'm-d-Y', hidden:true},
 				{name:'rate', index:'rate', width:256, editable: true,
 					editoptions:{size:25}, sorttype:"int", editrules:{number:true}}		
 			],
@@ -337,7 +337,7 @@ var vaccSchedule = new function(){
 				if (iCol != 1) //We just want to change the day when date changes
 					return;
 				
-				var dateVal = $( "#date-of-first-delivery" ).val();
+				var dateVal = $( "#vaccination-admin-date-of-first-delivery" ).val();
 				var startDate = dateFromString(dateVal);
 				var newDate = dateFromString(value);
 				
@@ -352,7 +352,7 @@ var vaccSchedule = new function(){
 //				logex('after : ' + rowid + ' ' + cellname + ' ' + value + ' ' + iRow + ' ' + iCol);
 				
 				if (iCol == 1){ //We just want to change the day when date changes
-					var dateVal = $( "#date-of-first-delivery" ).val();
+					var dateVal = $( "#vaccination-admin-date-of-first-delivery" ).val();
 					var startDate = dateFromString(dateVal);
 					var newDate = dateFromString(value);
 					
@@ -382,12 +382,12 @@ var vaccSchedule = new function(){
 			deliveryGrid.addRowData (i, mydata[i]);
 		
 		//set the rate control (number of delivery)
-		$('#delivery-rate-change').val(mydata.length - 1);
+		$('#vaccination-admin-delivery-rate-change').val(mydata.length - 1);
 		
 		//hide the table control
-		$('#delivery-number-div').hide();
+		$('#vaccination-admin-delivery-number-div').hide();
 		//show the rate control
-		$('#delivery-rate-div').show();
+		$('#vaccination-admin-delivery-rate-div').show();
 	}
 	
 	function initTableGrid(rawData){
@@ -395,10 +395,10 @@ var vaccSchedule = new function(){
 		currMode = 'table';
 		
 		//unload grid first
-		deliveryGrid = $("#delivery-table");
+		deliveryGrid = $("#vaccination-admin-delivery-table");
 		deliveryGrid.GridUnload();
 		//get the empty div by id
-		deliveryGrid = $("#delivery-table");		
+		deliveryGrid = $("#vaccination-admin-delivery-table");		
 		
 		//init in table mode
 		deliveryGrid.jqGrid({
@@ -413,7 +413,7 @@ var vaccSchedule = new function(){
 			colNames:['Delivery #', 'Day', 'Quantity'],
 			colModel:[
 				{name:'delivery', index:'delivery', width:156, editable: false, editoptions:{size:25}, sorttype:"int"},
-				{name:'day', index:'day', width:157, editable: false, editoptions:{size:25}, sorttype:"int"},
+				{name:'day', index:'day', width:157, editable: true, editoptions:{size:25}, sorttype:"int"},
 				{name:'quantity', index:'quantity', width:256, editable: true, editoptions:{size:25}, sorttype:"int"}		
 			],
 //			editurl:"edit.php",
@@ -437,16 +437,16 @@ var vaccSchedule = new function(){
 			deliveryGrid.addRowData (i+1, mydata[i]);
 		
 		//set the rate control (number of delivery)
-		$('#delivery-number').val(mydata.length);
+		$('#vaccination-admin-delivery-number').val(mydata.length);
 		
 		//show the table control
-		$('#delivery-number-div').show();
+		$('#vaccination-admin-delivery-number-div').show();
 		//hide the rate control
-		$('#delivery-rate-div').hide();
+		$('#vaccination-admin-delivery-rate-div').hide();
 	};
 	
 	function initControl(){
-		var beginDatePicker = $( "#date-of-first-delivery" )
+		var beginDatePicker = $( "#vaccination-admin-date-of-first-delivery" )
 		beginDatePicker.datepicker();
 		beginDatePicker.datepicker( "option", "dateFormat", "mm-dd-yy" );
 		
@@ -470,11 +470,11 @@ var vaccSchedule = new function(){
 			onRateMode();
 		});
 		
-		$('#delivery-table-add').button().click(onGridAddClicked);
-		$('#delivery-table-insert').button().click(onGridInsertClicked);
-		$('#delivery-table-delete').button().click(onGridDeleteClicked);
+		$('#vaccination-admin-delivery-table-add').button().click(onGridAddClicked);
+		$('#vaccination-admin-delivery-table-insert').button().click(onGridInsertClicked);
+		$('#vaccination-admin-delivery-table-delete').button().click(onGridDeleteClicked);
 		
-		$('#vaccination-schedule-submit').button().click(function (){
+		$('#vaccination-admin-schedule-submit').button().click(function (){
 			//if user is still editing the table
 			if (deliveryGrid.find('input').length != 0){
 				alert('Please finish editing before save!');
@@ -483,9 +483,9 @@ var vaccSchedule = new function(){
 			}
 			
 			var mainGrid = $(dataExchange.gridId);
-			var rowData = jqgridHelper.findDataByValue(mainGrid, 'pname', 'Vaccination Schedule');
+			var rowData = jqgridHelper.findDataByValue(mainGrid, 'pname', 'Vaccination Administration Schedule');
 			if (rowData == null || rowData.length < 1)
-				throw "Can't find Vaccination Schedule Parameter!";
+				throw "Can't find Vaccination Administration Schedule Parameter!";
 			
 			rowData = rowData[0];
 			
@@ -502,12 +502,12 @@ var vaccSchedule = new function(){
 //			console.log('after: ' + JSON.stringify( mainGrid.getRowData(tgtRowId)) );
 		});
 		
-		$('#rate-mode').click(onRateMode);
-		$('#table-mode').click(onTableMode);
+		$('#vaccination-admin-rate-mode').click(onRateMode);
+		$('#vaccination-admin-table-mode').click(onTableMode);
 	};
 	
 	function toRateAry(srcAry){
-		var dateVal = $( "#date-of-first-delivery" ).val();
+		var dateVal = $( "#vaccination-admin-date-of-first-delivery" ).val();
 		var startDate = dateFromString( dateVal );
 
 		var rateAry = new Array();
@@ -577,7 +577,7 @@ var vaccSchedule = new function(){
 		loadRateRawAry(rawAry);
 		
 		//enable the insert function
-		$('#delivery-table-insert').button( "option", "disabled", false );
+		$('#vaccination-admin-delivery-table-insert').button( "option", "disabled", false );
 	};
 	
 	//when user select table mode
@@ -591,7 +591,7 @@ var vaccSchedule = new function(){
 		initTableGrid(rawAry);
 		
 		//disable the insert function 
-		$('#delivery-table-insert').button( "option", "disabled", true );
+		$('#vaccination-admin-delivery-table-insert').button( "option", "disabled", true );
 	};
 	
 	function gridToRawArray(){
@@ -649,7 +649,7 @@ var vaccSchedule = new function(){
 	this.init = function() {
 		try{
 			//init common vars
-			deliveryGrid = $("#delivery-table");
+			deliveryGrid = $("#vaccination-admin-delivery-table");
 			
 			initControl();
 			
@@ -672,4 +672,4 @@ var vaccSchedule = new function(){
 
 };
 
-var vaccs = vaccSchedule.init();
+var vaccadmins = vaccAdminSchedule.init();
