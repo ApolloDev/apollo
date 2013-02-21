@@ -22,7 +22,7 @@
 /**
  *
  * @author Yang Hu <yah14@pitt.edu>
- */
+*/
 
 /*
  * JQuery UI fix
@@ -33,102 +33,112 @@
 */
 
 #top {
-	position: fixed;/* Make it fixed at the top */
-	top: 0;
-	left: 0;
-	height: 60px;
-	margin: 0 auto;
-	padding: 0;
-	width: 100%;
-	overflow: hidden;/* hide the nav bar when size is too small */
-	/*background-image: url(../themes/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);
-	background-repeat: repeat-x;*/
-	z-index: 1;/* Make the top display at front */
+    position: fixed;/* Make it fixed at the top */
+    top: 0;
+    left: 0;
+    height: 60px;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;/* hide the nav bar when size is too small */
+    /*background-image: url(../themes/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);
+    background-repeat: repeat-x;*/
+    z-index: 1;/* Make the top display at front */
 }
 
 #main {
-	margin-top: 65px;/* leave the space for the #top*/
+    margin-top: 65px;/* leave the space for the #top*/
 }
 
 #header {
-	float:left;
-	height:75px;
-	margin:0 0 0 10px;
-	padding:0;
-	font-size: 20px;
+    float:left;
+    height:75px;
+    margin:0 0 0 10px;
+    padding:0;
+    font-size: 20px;
 }
 
 #header h1.title {
-	/*color: white;*/
-	/*font-family: Arial,Helvetica,sans-serif;*/
-	font-size: 180%;
-	margin:0;
-	padding:10px 0 0;
+    /*	font-family: Arial,Helvetica,sans-serif;*/
+    font-weight: normal;
+    font-size: 37px;
+    margin:0;
+    padding:7px 0 0;
 }
 
 #header p.desc {
-	/*color: white;*/
-	/*font-family:Verdana,Arial,Helvetica,sans-serif;*/
-	font-size:11px;
-	margin:0;
-	padding:0;
+    /*color: white;*/
+    /*font-family:Verdana,Arial,Helvetica,sans-serif;*/
+    font-size:11px;
+    margin:0;
+    padding:0;
 }
 
 #nav {
-	float:right;
-	height:75px;
-	margin:0 5px 0 0;
-	padding:0;
+    float:right;
+    height:75px;
+    margin:0 5px 0 0;
+    padding:0;
 }
 
 #select-img {
-	padding:0;
-	margin:0;
-	/*height: 100%;*/
-	width: 100%;
+    padding:0;
+    margin:0;
+    /*height: 100%;*/
+    width: 100%;
 }
 
 ul.nav {
-	float:right;
-	font-size:18px;
-	line-height:70px;
-	list-style:none outside none;
-	margin:0;
-	padding:0;
-	text-decoration:underline;
+    float:right;
+    font-size:18px;
+    line-height:70px;
+    list-style:none outside none;
+    margin:0;
+    padding:0;
+    text-decoration:underline;
 }
 
 ul.nav li {
-	float:left !important;
-	list-style-type:none;
-	margin:0;
-	padding:0;
+    float:left !important;
+    list-style-type:none;
+    margin:0;
+    padding:0;
 }
 
 ul.nav li a, ul.nav li a:link, ul.nav li a:visited {
-	color:white;
-	display:block;
-	float:left;
-	padding:0 10px;
-	text-decoration:none;
+    color:#0066CC;
+    display:block;
+    float:left;
+    padding:0 10px;
+    text-decoration:none;
+    font-size: 22px;
+}
+
+ul.nav li a:hover {
+    color:#000066;
+    display:block;
+    float:left;
+    padding:0 10px;
+    text-decoration:none;
+    font-size: 22px;
 }
 
 #header a:link, #header a:active, #header a:visited, #header a:hover {
-	border:medium none;
-	color:white;
-	text-decoration:none;
+    border:medium none;
+    color:#0066CC;
+    text-decoration:none;
 }
 
 #footer {
-	background:url("images/footerbck.gif") repeat-x scroll 0 0 transparent;
-	clear:both;
-	height:31px;
-	line-height:31px;
-	margin-top: 0.2em;
+    background:url("images/footerbck.gif") repeat-x scroll 0 0 transparent;
+    clear:both;
+    height:31px;
+    line-height:31px;
+    margin-top: 0.2em;
 }
 
 input#date {
-	background-image:url(../icon/date.jpg);
-	background-repeat:no-repeat;
-	background-position:right top;
+    background-image:url(../icon/date.jpg);
+    background-repeat:no-repeat;
+    background-position:right top;
 }
