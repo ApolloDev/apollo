@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+/*
+ * Copyright 2012, University of Pittsburgh
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/"
+	xmlns:tns="http://types.apollo.pitt.edu/" elementFormDefault="qualified">
+
+
+
+	<include schemaLocation="../base-types/base-types.xsd"></include>
+
+	<complexType name="Disease">
+		<sequence>
+
+			<element name="diseaseName" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="infectiousPeriod"
+				type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016">
+					</documentation>
+				</annotation>
+			</element>
+
+			<element name="latentPeriod" type="tns:NonNegativeDouble"
+				maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017">
+					</documentation>
+				</annotation>
+			</element>
+
+			<element name="reproductionNumber"
+				type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043">
+					</documentation>
+				</annotation>
+			</element>
+
+			<element name="asymptomaticInfectionFraction"
+				type="tns:Probability" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045">
+					</documentation>
+				</annotation>
+			</element>
+
+
+
+		</sequence>
+	</complexType>
+
+
+</schema>
