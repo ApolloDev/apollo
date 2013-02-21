@@ -17,20 +17,20 @@ Novice Users (Windows Users Only):
   # Place the code into the 'webroot' of your apache server, usually its the 'htdoc' folder under the 'Apache2' subfolder.
     * e.g. If you installed using the Zend Server Community Distribution of Apache, check out the code using SVN like below:
 {{{
-svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client C:/ZendServerCE/Apache2/htdoc/WsClient
+svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client C:/ZendServerCE/Apache2/htdoc/apollo-web-client
 }}}
   * Now the folder structure should look like this:
 {{{
-C:/ZendServerCE/Apache2/htdoc/WsClient
+C:/ZendServerCE/Apache2/htdoc/apollo-web-client
 }}}
  * Open the browser, type in the address you've specified in apache and try to access the client.
   * From the example above, it should be:
 {{{
-http://localhost/WsClient
+http://localhost/apollo-web-client
 }}}
   * If your server's port number is 8080 other than 80, you need to change the address above to
 {{{
-http://localhost:8080/WsClient
+http://localhost:8080/apollo-web-client
 }}}
 
 = Tips=
