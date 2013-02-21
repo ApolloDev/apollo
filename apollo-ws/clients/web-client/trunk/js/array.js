@@ -27,56 +27,71 @@
 
 
 var arrayHelper = new function(){
-	// resize the array by the step, then fix the float to 0.00..1
-	this.resize = function(srcAry, tgtStep, tgtPrecision) {
-		var srcLength = srcAry.length;
-		var srcIndex = 0;
-		var tgtAry = new Array();
-		while (srcIndex < srcLength){
-			var srcValue = srcAry[srcIndex];
-			srcValue = roundTo(srcValue, 3);
+    // resize the array by the step, then fix the float to 0.00..1
+    this.resize = function(srcAry, tgtStep, tgtPrecision) {
+        var srcLength = srcAry.length;
+        var srcIndex = 0;
+        var tgtAry = new Array();
+        while (srcIndex < srcLength){
+            var srcValue = srcAry[srcIndex];
+            srcValue = roundTo(srcValue, 3);
 			
-			tgtAry.push(srcValue);
-			srcIndex = srcIndex + tgtStep;
-		}
+            tgtAry.push(srcValue);
+            srcIndex = srcIndex + tgtStep;
+        }
 		
-		return tgtAry;
-	};
+        return tgtAry;
+    };
 	
-	this.cumulative = function (srcAry){
-		var cAry = new Array();
-		var cVal = 0;
-		for (var idx = 0; idx < srcAry.length; idx++){
-			cVal = cVal + srcAry[idx];
-			cAry.push(cVal);
-		}
+    this.cumulative = function (srcAry){
+        var cAry = new Array();
+        var cVal = 0;
+        for (var idx = 0; idx < srcAry.length; idx++){
+            cVal = cVal + srcAry[idx];
+            cAry.push(cVal);
+        }
 		
-		return cAry;
-	};
-	
-	// round a float number to #digits
-	// e.g. floatNum = 1.1234 digits = 3
-	// return 1.123
-	function roundTo(floatNum, digits) {
-		if (digits <= 0)
-			return floatNum;
+        return cAry;
+    };
+    this.addDates = function(srcAry, date) {
+            
+        var firstDate = Date.parse(date);
+        var newData = new Array(srcAry.length);
+        for (var idx = 0; idx < srcAry.length; idx++){
+            newData[idx] = new Array(2);
+            newData[idx][0] = firstDate + 1000 * 60 * 60 * 24 * idx;
+//        newData[idx][0] = idx + 1;
+            newData[idx][1] = srcAry[idx];
+        }
+            
+        return newData;
+    };
+        
+    // round a float number to #digits
+    // e.g. floatNum = 1.1234 digits = 3
+    // return 1.123
+    function roundTo(floatNum, digits) {
+        if (digits <= 0)
+            return floatNum;
 
-		var base = 1;
+        var base = 1;
 
-		while (digits > 0) {
-			base = base * 10;
-			digits = digits - 1;
-		}
+        while (digits > 0) {
+            base = base * 10;
+            digits = digits - 1;
+        }
 
-		return Math.round(floatNum * base) / base;
-	};
+        return Math.round(floatNum * base) / base;
+    };
+        
+
 };
 
 Array.prototype.max = function() {
-  return Math.max.apply(null, this)
+    return Math.max.apply(null, this)
 }
 
 Array.prototype.min = function() {
-  return Math.min.apply(null, this)
+    return Math.min.apply(null, this)
 }
 
