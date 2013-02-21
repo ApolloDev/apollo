@@ -81,8 +81,31 @@ html,body {
 }
 
 .drop-box-div {
-	padding: 2px;
-	width: 180px;
-	margin: auto;
+        font-family: Segoe UI, Arial, sans-serif;
+/*	padding: 2px;*/
+/*	width: 180px;*/
+	margin-left: auto;
+        margin-right: auto;
+        text-align: center;
 }
 
+.Color_Red { background:#99CCFF; 
+            font-style: normal}
+
+.ui-widget-content {
+    
+    font-family: Segoe UI, Arial, sans-serif
+}
+
+.ui-widget-header {
+    
+    font-size: 14px
+}
+
+.ui-layout-south {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    
+}
