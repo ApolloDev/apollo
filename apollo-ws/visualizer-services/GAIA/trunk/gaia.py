@@ -92,6 +92,7 @@ class Constants:
     MIME_VIDEO_MPG         = "video/mpeg"
     MIME_VIDEO_MOV         = "video/quicktime"
     MIME_VIDEO_MP4         = "video/mp4"
+    MIME_VIDEO_OGG         = "video/ogg"
     MIME_APP_TAR           = "application/x-tar"
     MIME_APP_GZIP          = "application/x-gzip"
     MIME_APP_OCT_STREAM    = "application/octet-stream"
@@ -105,6 +106,7 @@ class Constants:
                       MIME_VIDEO_MPG:'.mpg',
 		      MIME_VIDEO_MOV:'.mov',
 		      MIME_VIDEO_MP4:'.mp4',
+		      MIME_VIDEO_OGG:'.ogg',
                       MIME_APP_TAR:'.tgz',
                       MIME_APP_GZIP:'.gz'}
 
