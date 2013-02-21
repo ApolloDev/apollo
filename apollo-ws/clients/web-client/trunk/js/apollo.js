@@ -27,373 +27,945 @@
 
 //----- global exchange area
 //TODO : event communication?
-	//TODO : on tab destory
+//TODO : on tab destory
 //TODO : js access control?
 var dataExchange = new function(){
-	this.tab_input = null;
-	this.tab_return = null;
+    this.tab_input = null;
+    this.tab_return = null;
+    this.model_urls = null;
 
-	//for paramGrid
-	this.gridId = '#west-grid';
+    //for paramGrid
+    this.gridId = '#west-grid';
 
-	//for statusbar
-	this.statusBar = '#status-div';
+    //for statusbar
+    this.statusBar = '#status-div-3';
+};
+
+var diseaseExchange = new function(){
+    this.tab_input = null;
+    this.tab_return = null;
+
+    //for paramGrid
+    this.gridId = '#disease-grid';
+
+//for statusbar
+//    this.statusBar = '#status-div';
 };
 //-----
 
 //--- Global Var
 var maintab;
 var lastEditId;
+var finishedSimulators;
+var numSimulators;
+var combinedRunId;
 
 var InfluenzaId = 442696006;
 var AnthraxId = 21927003;
 //---
 
 function clearParamGrid(){
-	//unload grid first
-	paramGrid = $(dataExchange.gridId);
-	if (paramGrid.GridUnload)
-		paramGrid.GridUnload();
-	//get the empty div by id
-	paramGrid = $(dataExchange.gridId);
+    //unload grid first
+    paramGrid = $(dataExchange.gridId);
+    if (paramGrid.GridUnload)
+        paramGrid.GridUnload();
+    //get the empty div by id
+    paramGrid = $(dataExchange.gridId);
 	
-	//hide the legend
-	$('#param-legend').hide();
+    //hide the legend
+    $('#param-legend').hide();
 	
-	//show the model selection img
-	$('#select-img').show();
+    //show the model selection img
+    $('#select-img').show();
 }
 
-function loadParamGrid(snomed, modelType){
-	//clear up
-	clearParamGrid();
+var isRowEditable = function(id) {
+    
+    if (id == 0 || id == 3 || id == 7 || id == 14 || id == 20 || id == 26) {
+        return false
+    } else {
+        return true;
+    }
+}
+
+function loadParamGrid(){
+    //clear up
+    clearParamGrid();
+        
+    outerwidth=$('#west-div').width();
 	
-	//TODO : make it into a map
-	var diseaseName = '';
-	if (parseInt(snomed) == InfluenzaId)
-		diseaseName = 'Influenza';
-	else if (parseInt(snomed) == AnthraxId)
-		diseaseName = 'Anthrax';
+    //TODO : make it into a map
+    //    var diseaseName = '';
+    //    if (parseInt(snomed) == InfluenzaId)
+    //        diseaseName = 'Influenza';
+    //    else if (parseInt(snomed) == AnthraxId)
+    //        diseaseName = 'Anthrax';
 	
-	//left panel
-	paramGrid.jqGrid({
-	    url: "apollo_param.php?model=" + modelType + "&snomed=" + snomed,
-	    editurl: "edit.php",//dummy edit url
-	    datatype: "json",
-	    height: "auto",
-	    pager: false,
-	    loadui: "disable",
-	    //cellEdit: true,
-	    colNames: ["id", "", "Parameter Name", "Value", "url", "extra"],
-	    colModel: [
-	        {name: "id",width:1,hidden:true, key:true},
-	        {name: "registered", width:50, resizable: false},
-	        {name: "pname", width:600, resizable: true, sortable:false},
-	        {name: "value", width:200, resizable: true, editable:true, 
-	        	edittype:"text", editoptions:{
-	        		size:10,
-	        		maxlength: 15
-	        	}
-	        },
-			{name: "url",width:1,hidden:true},
-			{name: "extra",width:1,hidden:true}
-	    ],
-	    treeGrid: true,
-		caption: diseaseName + ' ' + modelType + ' Model Parameters',
-	    ExpandColumn: "pname",
-	    autowidth: true,
-//	    rowNum: 200,
-	    ExpandColClick: true,
-	    shrinkToFit: true,
-	    treeIcons: {leaf:'ui-icon-blank'},
-//	    treeIcons: {leaf:'ui-icon-document-b'},
-	    ondblClickRow: function(rowid, iRow, iCol, e) { // open a new tab when double click
+    //left panel
+    paramGrid.jqGrid({
+        url: "apollo_param.php",
+        editurl: "edit.php",//dummy edit url
+        datatype: "json",
+        height: "auto",
+        pager: false,
+        loadui: "disable",
+        //cellEdit: true,
+        colNames: ["id", "Parameter Name", "Value", "url", "extra"],
+        colModel: [
+        {
+            name: "id",
+            width:0,
+            hidden:true, 
+            key:true
+        },
+
+        {
+            name: "pname", 
+            width:305, 
+            resizable: false, 
+            sortable:false
+        },
+
+        {
+            name: "value", 
+            width: 100, 
+            resizable: false, 
+            editable:true, 
+            sortable: false,
+            edittype:"text", 
+            editoptions:{
+                size:10,
+                maxlength: 15
+            }
+        },
+        {
+            name: "url",
+            width:0,
+            hidden:true
+        },
+
+        {
+            name: "extra",
+            width:0,
+            hidden:true
+        }
+        ],
+        treeGrid: true,
+        caption: 'Simulator Configuration',
+        ExpandColumn: "pname",
+        autowidth: true,
+        rowNum: 36,
+        ExpandColClick: true,
+        shrinkToFit: true,
+        treeIcons: {
+            leaf:'ui-icon-blank'
+        },
+        
+        loadComplete: function(data){
+            var rowIDs = jQuery("#west-grid").getDataIDs();
+            //        $(".jqgrow").addClass("ui-state-hover").css("background", "none !important");
+            for (var i=0;i<rowIDs.length;i=i+1){ 
+                var rowData = $(this).getRowData(i);
+               
+                
+                var trElement = jQuery("#"+ rowIDs[i],jQuery('#west-grid'));
+        
+                if (i==5) {
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'select';
+                    cm.editoptions = {
+                        value: "day:day;hour:hour;millisecond:millisecond;minute:minute;month:month;second:second;year:year"
+                    };
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+        
+                // Red       
+                if (!isRowEditable(i)) {
+                    trElement.removeClass('ui-widget-content');
+                    trElement.addClass('Color_Red');
+                }
+
+            //                // Cyan        
+            //                if (rowData.Estado == 2) {
+            //                    trElement.removeClass('ui-widget-content');
+            //                    trElement.addClass('Color_Cyan');
+            //                }
+            }
+        },
+        
+        
+        //	    treeIcons: {leaf:'ui-icon-document-b'},
+        ondblClickRow: function(rowid, iRow, iCol, e) { // open a new tab when double click
 	
-	        var treedata = $(this).getRowData(rowid);
+            if (isRowEditable(rowid  - 1)) {
+  
+                var treedata = $(this).getRowData(rowid);
 	        
-			//don't open a tab if the url is empty
-			if (treedata.url == '' || treedata.url == null || treedata.url == undefined){
-				var extraLength = treedata.extra.length;
-				if (treedata.isLeaf === 'true'){
-					$(this).editRow(rowid, true);
-					lastEditId = rowid;
-				}
-			}else{
-				var st = "#t" + treedata.id;
-				if($(st).html() != null ) {
-					maintab.tabs('select',st);
-				} else {
-					maintab.tabs('add', st, treedata.pname);
-					$(st,"#tabs").load(treedata.url);
-				}
-			}
-	    },
-		gridComplete: function(){
-			//enable the button
-			$('#create').button( "option", "disabled", false );
-	
-			//gird load finish
-			$(dataExchange.statusBar).html('Load finished!');
-			
-			//enable the legend
-			$('#param-legend').show();
-			
-			//hide the model selection img
-			$('#select-img').hide();
-		},
-		onSelectRow : function (rowid, status){
-			if (lastEditId != -1){
-				$(this).saveRow(lastEditId);
-				lastEditId = -1;
-			}
-		}
-	});
+                //don't open a tab if the url is empty
+                if (treedata.url == '' || treedata.url == null || treedata.url == undefined){
+                    var extraLength = treedata.extra.length;
+                    if (treedata.isLeaf === 'true'){
+                        $(this).editRow(rowid, true);
+                        lastEditId = rowid;
+                    }
+                }else{
+                    var st = "#t" + treedata.id;
+                    if($(st).html() != null ) {
+                        maintab.tabs('select',st);
+                    } else {
+                        maintab.tabs('add', st, treedata.pname);
+                        $(st,"#tabs").load(treedata.url);
+                    }
+                }
+            }
+        },
+        gridComplete: function(){
+            //            //enable the button
+            $('#create').button( "option", "disabled", false );
+        //	
+        //            //gird load finish
+        //            $(dataExchange.statusBar).html('Load finished!');
+        //			
+        //            //enable the legend
+        //            $('#param-legend').show();
+        //			
+        //            //hide the model selection img
+        //            $('#select-img').hide();
+        //            alert(outerwidth);
+        },
+        onSelectRow : function (rowid, status){
+            
+            //            paramGrid.jqGrid('resetSelection');
+            if (lastEditId != -1){
+                $(this).saveRow(lastEditId);
+                lastEditId = -1;
+            }
+        },
+        
+        beforeSelectRow: function(rowid, e) {
+            //            alert(rowid);
+            return isRowEditable(rowid - 1);
+        }
+    });
 };
+//
+//function loadDiseaseGrid(snomed, modelType){
+//    //clear up
+//    //clear up
+//    diseaseGrid = $(diseaseExchange.gridId);
+//    if (diseaseGrid.GridUnload)
+//        diseaseGrid.GridUnload();
+//    //get the empty div by id
+//    diseaseGrid = $(diseaseExchange.gridId);
+//        
+//    outerwidth=$('#west-div').width();
+//	
+//    //TODO : make it into a map
+//    var diseaseName = '';
+//    if (parseInt(snomed) == InfluenzaId)
+//        diseaseName = 'Influenza';
+//    else if (parseInt(snomed) == AnthraxId)
+//        diseaseName = 'Anthrax';
+//	
+//    //left panel
+//    diseaseGrid.jqGrid({
+//        url: "apollo_param.php?model=" + modelType + "&snomed=" + snomed,
+//        editurl: "edit.php",//dummy edit url
+//        datatype: "json",
+//        height: "auto",
+//        pager: false,
+//        loadui: "disable",
+//        //cellEdit: true,
+//        colNames: ["id", "Parameter Name", "Value", "url", "extra"],
+//        colModel: [
+//        {
+//            name: "id",
+//            width:0,
+//            hidden:true, 
+//            key:true
+//        },
+//
+//        {
+//            name: "pname", 
+//            width:600, 
+//            resizable: false, 
+//            sortable:false
+//        },
+//
+//        {
+//            name: "value", 
+//            width:300, 
+//            resizable: false, 
+//            editable:true, 
+//            edittype:"text", 
+//            editoptions:{
+//                size:10,
+//                maxlength: 15
+//            }
+//        },
+//        {
+//            name: "url",
+//            width:0,
+//            hidden:true
+//        },
+//
+//        {
+//            name: "extra",
+//            width:0,
+//            hidden:true
+//        }
+//        ],
+//        treeGrid: true,
+//        //        caption: diseaseName + ' ' + modelType + ' Model Parameters',
+//        ExpandColumn: "pname",
+//        autowidth: false,
+//        //	    rowNum: 200,
+//        ExpandColClick: true,
+//        shrinkToFit: true,
+//        treeIcons: {
+//            leaf:'ui-icon-blank'
+//        },
+//        //	    treeIcons: {leaf:'ui-icon-document-b'},
+//        ondblClickRow: function(rowid, iRow, iCol, e) { // open a new tab when double click
+//	
+//            
+//        
+//            var treedata = $(this).getRowData(rowid);
+//	        
+//            //don't open a tab if the url is empty
+//            if (treedata.url == '' || treedata.url == null || treedata.url == undefined){
+//                var extraLength = treedata.extra.length;
+//                if (treedata.isLeaf === 'true'){
+//                    $(this).editRow(rowid, true);
+//                    lastEditId = rowid;
+//                }
+//            }else{
+//                var st = "#t" + treedata.id;
+//                if($(st).html() != null ) {
+//                    maintab.tabs('select',st);
+//                } else {
+//                    maintab.tabs('add', st, treedata.pname);
+//                    $(st,"#tabs").load(treedata.url);
+//                }
+//            }
+//        },
+//        gridComplete: function(){
+//        //                    //enable the button
+//        //                    $('#create').button( "option", "disabled", false );
+//        //        	
+//        //                    //gird load finish
+//        //                    $(dataExchange.statusBar).html('Load finished!');
+//        //        			
+//        //                  //enable the legend
+//        //                    $('#param-legend').show();
+//        //        			
+//        //                    //hide the model selection img
+//        //                    $('#select-img').hide();
+//        },
+//        onSelectRow : function (rowid, status){
+//            
+//            if (lastEditId != -1){
+//                $(this).saveRow(lastEditId);
+//                lastEditId = -1;
+//            }
+//        }
+//    }).setGridWidth(outerwidth-20);
+//};
 
 function createOrSelectInsturctionTab(){
-	//add instruction tab
+    //add instruction tab
 	
-	//create the ins tab
-	var insId = "#instruction";
+    //create the ins tab
+    var insId = "#instruction";
 	
-	if($(insId).html() != null ) {
-		//select the tab
-		maintab.tabs('select', insId);
-	}else{	
-		maintab.tabs('add', insId, 'Help');
-		//load the ins tab
-		$(insId, "#tabs").load('instructions.html');
-	}
+    if($(insId).html() != null ) {
+        //select the tab
+        maintab.tabs('select', insId);
+    } else {	
+        maintab.tabs('add', insId, 'Help');
+        //load the ins tab
+        $(insId, "#tabs").load('instructions.html');
+    }
 }
 
 function adjustMainDivSize(){
-	var topHeight = $("#top").height();
-	var footerHeight = $("#footer").height();
+    var topHeight = $("#top").height();
+    var footerHeight = $("#footer").height();
 	
-	//set the correct main height
-	var winHeight = $(window).height();
-	$('#main').height(winHeight - topHeight - footerHeight - 10);
+    //set the correct main height
+    var winHeight = $(window).height();
+    $('#main').height(winHeight - topHeight - footerHeight - 10);
 }
 
 //trigger the resize event make sure the whole web page to 100%
 function bottomBlankFix(){
-	$(window).trigger('resize');
+    $(window).trigger('resize');
+}
+
+function loadRegisteredModels(){
+    $.ajax({
+        type: "GET",
+        url: "registered_models.php",
+
+        async: true, /* If set to non-async, browser shows page as "Loading.."*/
+        cache: false,
+        timeout:50000, /* Timeout in ms */
+
+        success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+
+            jasonObj = $.parseJSON(jasonObj);
+            
+            var model = $('#model-combo');
+            model.val('UNDEF');
+            model.attr('disabled', '');
+            //            //			
+            model.empty();
+            
+            for (var i=0; i <jasonObj.data.length; i++) {
+            
+                if (jasonObj.data[i].hasOwnProperty('simulatorIdentification')) {
+                    var simDev = jasonObj.data[i].simulatorIdentification['simulatorDeveloper'];
+                    var simName = jasonObj.data[i].simulatorIdentification['simulatorName'];
+                    var simVer = jasonObj.data[i].simulatorIdentification['simulatorVersion'];
+                    model.append('<option value="' + encodeURIComponent(JSON.stringify(jasonObj.data[i])) + '">' + simDev + ',' + simName + ',' + simVer + '</option>');
+                }
+            }
+            
+        //            var test = JSON.stringify(jasonObj.data[0]);
+        //            model.append('<option value="' + encodeURIComponent(test.toString().replace('FRED', 'TEST')) + '">UPitt,PSC,CMU,TEST,2.0.1</option>');
+        
+       
+        //            jasonObj = $.parseJSON(jasonObj);
+        //            var diseaseStatesUrl = jasonObj.data['disease_states_url'];
+        //            var incidenceUrl = jasonObj.data['incidence_url'];
+        //            var dev = jasonObj.data['visualizerDeveloper'];
+        //            var name = jasonObj.data['visualizerName'];
+        //            var ver = jasonObj.data['visualizerVersion'];
+        //
+        //            waitForVisualizations(runId, dev, name, ver, diseaseStatesUrl, incidenceUrl);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            addmsg(textStatus + " (" + errorThrown + ")");
+            setTimeout(
+                poll, /* Try again after.. */
+                15000); /* milliseconds (15seconds) */
+        }
+    });
 }
 
 jQuery(document).ready(function(){
-	var jur = $('#jurisdiction-combo');
-	jur.val('UNDEF');
+    //    var jur = $('#jurisdiction-combo');
+    //    jur.val('UNDEF');
 	
-	var snomed = $('#snomed-ct-combo');
-	snomed.val('UNDEF');
-	snomed.attr('disabled', 'disabled');
+    loadRegisteredModels();
+    //    var snomed = $('#snomed-ct-combo');
+    //    snomed.val('UNDEF');
+    //    snomed.attr('disabled', 'disabled');
 	
-	var model = $('#model-combo');
-	model.val('UNDEF');
-	model.attr('disabled', 'disabled');
-	
-	jur.change(function(){
-		//disable the create button
-		$('#create').button( "option", "disabled", true );
-		
-		if ($(this).val() != 'UNDEF'){
-			snomed.attr('disabled', '');
-		}else {
-			snomed.attr('disabled', 'disabled');
-			snomed.val('UNDEF');
-			model.attr('disabled', 'disabled');
-			model.val('UNDEF');
+    var model = $('#model-combo');
+    //        model.val('UNDEF');
+    //            model.attr('disabled', '');
+    //    //			
+    //        model.empty();
 			
-			//unload grid
-			clearParamGrid();
-			
-			//disable the run button
-			$('#create').button( "option", "disabled", true );
-		}
-	});
+    //    model.append('<option value="UNDEF" selected="selected">--Please Select--</option>');
+    //    model.append('<option value="Compartment">Compartment</option>');
+    //    model.append('<option value="FRED">FRED</option>');
+    //        model.attr('disabled', 'disabled');
 	
-	snomed.change(function(){
-		//disable the create button
-		$('#create').button( "option", "disabled", true );
-		
-		currVal = $(this).val();
+    //    jur.change(function(){
+    //        //disable the create button
+    //        $('#create').button( "option", "disabled", true );
+    //		
+    //        if ($(this).val() != 'UNDEF'){
+    //            snomed.attr('disabled', '');
+    //        }else {
+    //            snomed.attr('disabled', 'disabled');
+    //            snomed.val('UNDEF');
+    //            model.attr('disabled', 'disabled');
+    //            model.val('UNDEF');
+    //			
+    //            //unload grid
+    //            clearParamGrid();
+    //			
+    //            //disable the run button
+    //            $('#create').button( "option", "disabled", true );
+    //        }
+    //    });
+	
+    //    snomed.change(function(){
+    //        //disable the create button
+    //        $('#create').button( "option", "disabled", true );
+    //		
+    //        currVal = $(this).val();
+    //
+    //        clearParamGrid();
+    //		
+    //        if (currVal != 'UNDEF'){
+    //            model.attr('disabled', '');
+    //			
+    //            model.empty();
+    //			
+    //            model.append('<option value="UNDEF" selected="selected">--Please Select--</option>');
+    //			
+    //            if (parseInt (currVal) == InfluenzaId){
+    //                model.append('<option value="Compartment">Compartment</option>');
+    //            //				model.append('<option value="AgentBased">AgentBased</option>');
+    //            }else if (parseInt (currVal) == AnthraxId){
+    //                model.append('<option value="Compartment">Compartment</option>');
+    //            }
+    //        }else {
+    //            model.attr('disabled', 'disabled');
+    //			
+    //            model.val('UNDEF');
+    //        }
+    //    });
+    loadParamGrid();
+        
+    //        $('#select-img').hide();
+    //load model when model drop down change
+    //    model.change(function(){
+    //        //disable the create button
+    //        $('#create').button( "option", "disabled", true );
+    //		
+    ////        var modelType = $(this).val();
+    ////        if (modelType == 'UNDEF')
+    ////            return;
+    //
+    //        //clear the tabs
+    //        var tabLength = maintab.tabs('length');
+    //        for (var i = 1; i <= tabLength; i++){
+    //            maintab.tabs('remove', 1);
+    //        }
+    //		
+    //        //hide the model selection img
+    ////        $('#select-img').hide();
+    //		
+    //        //        var snomed = $('#snomed-ct-combo').val();
+    //		
+    //        loadParamGrid();
+    //    //        loadDiseaseGrid(snomed, modelType);
+    //    });
+	
+    //adjust the main content div size
+    adjustMainDivSize();
+    //TODO I don't know why there will exist some blank at the bottom
+    setTimeout("bottomBlankFix()", 50);
 
-		clearParamGrid();
-		
-		if (currVal != 'UNDEF'){
-			model.attr('disabled', '');
-			
-			model.empty();
-			
-			model.append('<option value="UNDEF" selected="selected">--Please Select--</option>');
-			
-			if (parseInt (currVal) == InfluenzaId){
-				model.append('<option value="Compartment">Compartment</option>');
-//				model.append('<option value="AgentBased">AgentBased</option>');
-			}else if (parseInt (currVal) == AnthraxId){
-				model.append('<option value="Compartment">Compartment</option>');
-			}
-		}else {
-			model.attr('disabled', 'disabled');
-			
-			model.val('UNDEF');
-		}
-	});
+    //If the User resizes the window, adjust the #container height
+    $(window).resize(adjustMainDivSize);	
 	
-	//load model when model drop down change
-	model.change(function(){
-		//disable the create button
-		$('#create').button( "option", "disabled", true );
-		
-		var modelType = $(this).val();
-		if (modelType == 'UNDEF')
-			return;
-
-		//clear the tabs
-		var tabLength = maintab.tabs('length');
-		for (var i = 1; i <= tabLength; i++){
-			maintab.tabs('remove', 1);
-		}
-		
-		//hide the model selection img
-		$('#select-img').hide();
-		
-		var snomed = $('#snomed-ct-combo').val();
-		
-		loadParamGrid(snomed, modelType);
-	});
-	
-	//adjust the main content div size
-	adjustMainDivSize();
-	//TODO I don't know why there will exist some blank at the bottom
-	setTimeout("bottomBlankFix()", 1000);
-
-	//If the User resizes the window, adjust the #container height
-	$(window).resize(adjustMainDivSize);	
-	
-	//layout splitter
-	$('#main').layout({
-		resizerClass : 'ui-state-default',
-		west__size : $('body').innerWidth() * 0.22, //width for the left panel
+    //layout splitter
+    $('#main').layout({
+        resizerClass : 'ui-state-default',
+        west__size : $('body').innerWidth() * 0.25, //width for the left panel
+        west__resizable : false,
+        west__closable : false,
+        south__resizable : false,
+        south__closable : false,
         west__onresize: function (pane, $Pane) {
-        	$(dataExchange.gridId).setGridWidth($Pane.innerWidth() - 20);
-		}
-	});
-	//$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
+            $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
+        }
+    });
+    //$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
 
-	//center panel
-	maintab = $('#tabs','#CenterPane').tabs({
-		cache: false,
+    //center panel
+    maintab = $('#tabs','#CenterPane').tabs({
+        cache: false,
         add: function(e, ui) {
             // append close thingy
             $(ui.tab).parents('li:first')
-                .append('<span class="ui-tabs-close ui-icon ui-icon-close" title="Close Tab"></span>')
-                .find('span.ui-tabs-close')
-                .click(function() {
-                    maintab.tabs('remove', $('li', maintab).index($(this).parents('li:first')[0]));
+            .append('<span class="ui-tabs-close ui-icon ui-icon-close" title="Close Tab"></span>')
+            .find('span.ui-tabs-close')
+            .click(function() {
+                maintab.tabs('remove', $('li', maintab).index($(this).parents('li:first')[0]));
             });
             // select just added tab
             maintab.tabs('select', '#' + ui.panel.id);
+        },
+        select: function(e, ui) {
+            var tabname = ui.tab.text;
+            runMethod(tabname);
         }
     });
+    
+    function runMethod(tabindex) {
+        
+        switch (tabindex) {
+            
+            case "Disease states over time":
+                $("#result", "#tabs").load('result.html');
+                break;
+
+            case "Incidence over time":
+                $("#incidence", "#tabs").load('incidence.html');
+                break;
+                
+            default:
+                break;
+        }
+    };
+    
+    function addmsg(msg){
+        /* Simple helper to add a div.
+        type is the name of a CSS class (old/new/error).
+        msg is the contents of the div */
+        
+        // copy messages from status divs 1 and 2 to 2 and 3, respectively
+        var status3Html = $("#status-div-3").html();
+        var status2Html = $("#status-div-2").html();
+
+        $("#status-div-1").html(status2Html);
+        $("#status-div-2").html(status3Html);
+        $("#status-div-3").html(msg);
+    }
+    
+    function addZero(n) {
+        
+        return n<10? '0'+n:''+n;
+    }
+    
+    function startVisualization(runId, simName, modelIndex, vizDev, vizName, vizVer) {
+        
+        $.ajax({
+            type: "GET",
+            url: "exec_visualization.php?runId=" + runId + "&vizDev=" + vizDev + "&vizName=" + vizName + "&vizVer=" + vizVer,
+
+            async: true, /* If set to non-async, browser shows page as "Loading.."*/
+            cache: false,
+            timeout:50000, /* Timeout in ms */
+
+            success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+                jasonObj = $.parseJSON(jasonObj);
+                
+                var urls = jasonObj.data['urls'];
+                var dev = jasonObj.data['visualizerDeveloper'];
+                var name = jasonObj.data['visualizerName'];
+                var ver = jasonObj.data['visualizerVersion'];
+
+                waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                addmsg(textStatus + " (" + errorThrown + ")");
+                setTimeout(
+                    poll, /* Try again after.. */
+                    15000); /* milliseconds (15seconds) */
+            }
+        });
+    }
+    
+    function waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName) {
+        
+        $.ajax({
+            type: "GET",
+            url: "poller.php?runId=" + runId + "&dev=" + dev + "&name=" + name + "&ver=" + ver + "&type=visualization",
+
+            async: true, /* If set to non-async, browser shows page as "Loading.."*/
+            cache: false,
+            timeout:50000, /* Timeout in ms */
+
+            success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+                jasonObj = $.parseJSON(jasonObj);
+                //                alert(jasonObj);
+                var status = jasonObj.data['status'];
+                var message = jasonObj.data['message'];
+                var date = new Date();
+                
+                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>VISUALIZER STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+
+                if (status != 'completed') {
+                    setTimeout(
+                        function() {
+                            waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName)
+                        }, /* Request next message */
+                        5000 /* ..after 1 seconds */
+                        );
+                } else {
+                    
+                    var urlList = new Object();
+                    
+                    for (var key in urls) {
+                        
+                        if (key == 'Disease states') {
+                            urlList.disease_states = urls[key];
+                        } else if (key == 'Incidence' || key == 'Combined incidence') {
+                            urlList.incidence = urls[key];
+                        } else {
+                            urlList.gaia = urls[key];
+                        }
+                        
+                    }
+                    
+                    var encUrls = JSON.stringify(urlList);
+                    
+                    // call function passed in as parameter
+                    //                    $(dataExchange.statusBar).html('Web service call ' + statusText);
+
+                    //enable the button
+                    $('#create').button( "option", "disabled", false );
+
+                    //fillin the result so that tab can get it
+                    dataExchange.model_urls[modelIndex] = encUrls;
+
+                    //create or select the tab for the result
+                    var resultID = "#result-" + simName;
+                    var incidenceID = "#incidence-" + simName;
+                    var gaiaID = "#gaia-" + simName;
+                    var combinedIncidenceID = "#combined-incidence";
+
+                    for (key in urls) {
+
+
+                        if (key == 'Disease states') {
+                            if($(resultID).html() != null ) {
+                                //select the tab
+                                maintab.tabs('select', resultID);
+                                //clear current tab content
+                                $(resultID).empty();
+                            } else {
+                                //create the tab
+                                maintab.tabs('add', resultID, simName + ': Disease states over time');
+                            }
+                    
+                    
+                            //load the tab
+                            $(resultID, "#tabs").load('result.php?index=' + modelIndex);
+                        } else if (key == 'Incidence') {
+                            if ($(incidenceID).html() != null) {
+                                // select the tab
+                                maintab.tabs('select', incidenceID);
+                                //clear current tab content
+                                $(incidenceID).empty();
+                            } else {
+                                // create the tab
+                                maintab.tabs('add', incidenceID, simName + ': Incidence over time');
+                            }
+                        
+            
+                            // load the tab
+                            $(incidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                        } else if (key == 'Combined incidence') {
+                            if ($(combinedIncidenceID).html() != null) {
+                                // select the tab
+                                maintab.tabs('select', combinedIncidenceID);
+                                //clear current tab content
+                                $(combinedIncidenceID).empty();
+                            } else {
+                                // create the tab
+                                maintab.tabs('add', combinedIncidenceID, 'All simulators: Incidence over time');
+                            }
+                        
+            
+                            // load the tab
+                            $(combinedIncidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                        }
+                    
+                        if (simName == 'FRED' && key == 'GAIA animation of Allegheny County') {
+                            if($(gaiaID).html() != null ) {
+                                //select the tab
+                                maintab.tabs('select', testtabID);
+                                //clear current tab content
+                                $(gaiaID).empty();
+                            } else {
+                                //create the tab
+                                maintab.tabs('add', gaiaID, simName + ': GAIA Visualization for Simulation');
+                            }
+                    
+                    
+                            //load the tab
+                            $(gaiaID, "#tabs").load('gaia.php?index=' + modelIndex);
+                        }
+                 
+                    }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                addmsg(textStatus + " (" + errorThrown + ")");
+                setTimeout(
+                    poll, /* Try again after.. */
+                    15000); /* milliseconds (15seconds) */
+            }
+        });
+        
+
+    }
+    
+    function waitForSimulationsAndStartVisualizations(obj, modelIndex) {
+        
+        var runId = obj['runId'];
+        var simDev = obj['simulatorDeveloper'];
+        var simName = obj['simulatorName'];
+        var simVer = obj['simulatorVersion'];
+        
+        /* This requests the url "msgsrv.php"
+        When it complete (or errors)*/
+        $.ajax({
+            type: "GET",
+            url: "poller.php?runId=" + runId + "&dev=" + simDev + "&name=" + simName + "&ver=" + simVer + "&type=simulator",
+
+            async: true, /* If set to non-async, browser shows page as "Loading.."*/
+            cache: false,
+            timeout:50000, /* Timeout in ms */
+
+            success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+                jasonObj = $.parseJSON(jasonObj);
+                var status = jasonObj.data['status'];
+                var message = jasonObj.data['message'];
+                
+                var date = new Date();
+                
+                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>SIMULATOR STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                
+                if (status != 'completed') {
+                    setTimeout(
+                        function() {
+                            waitForSimulationsAndStartVisualizations(obj, modelIndex)
+                        }, /* Request next message */
+                        5000 /* ..after 1 seconds */
+                        );
+                } else {
+                    finishedSimulators++;
+                    startVisualization(runId, simName, modelIndex, 'nick', 'viztest', '1.0');
+                    if (simName == 'FRED') {
+                        startVisualization(runId, simName, modelIndex, 'PSC', 'GAIA', '1.0');
+                    }
+                    //                    waitForVisualizations();
+                    
+                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
+                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
+                    }
+                 
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                addmsg(textStatus + " (" + errorThrown + ")");
+                setTimeout(
+                    poll, /* Try again after.. */
+                    15000); /* milliseconds (15seconds) */
+            }
+        });
+        
+    }
 	
-	//
-	//createOrSelectInsturctionTab();
+    //
+    //createOrSelectInsturctionTab();
 
-	// bind form using ajaxForm
-	$('#apollo-form').ajaxForm({
-		// target identifies the element(s) to
-		// update with the server response
-		// target: '#apollo-chart',
-		// dataType identifies the expected
-		// content type of the server response
-		dataType : 'json',
+    // bind form using ajaxForm
+    $('#apollo-form').ajaxForm({
+        // target identifies the element(s) to
+        // update with the server response
+        // target: '#apollo-chart',
+        // dataType identifies the expected
+        // content type of the server response
+        dataType : 'json',
 
-		beforeSubmit : function(formData, jqForm, options) {
-			//put the parameters value here
-			try{
-				// get the current tree grid data
-				var grid = $(dataExchange.gridId);
+        beforeSubmit : function(formData, jqForm, options) {
+            //put the parameters value here
+            try{
+                // get the current tree grid data
+                var grid = $(dataExchange.gridId);
 
-//				var tmp = grid.find('input');
-				if (grid.find('input').length != 0){
-					$(dataExchange.statusBar).html('Please save before create.');
-					return;
-				}
-//
-				var rowData = grid.getRowData();
-				var exportData = JSON.stringify(rowData);
+                //				var tmp = grid.find('input');
+                //                if (grid.find('input').length != 0){
+                //                    $(dataExchange.statusBar).html('Please save before create.');
+                //                    return;
+                //                }
+                //
+                var rowData = grid.getRowData(); 
+                var timeStepUnit = $("#5_value").val(); // get the time step unit from the select
+                rowData[4]['value'] = timeStepUnit; // set the time step unit to store the value instead of html
+                var exportData = JSON.stringify(rowData);
 
-				var snomed = $('#snomed-ct-combo').val();
-				var modelType = $('#model-combo').val();
+                var snomed = $('#snomed-ct-combo').val();
+                var simulatorArray = $('#model-combo').val().toString().split(",");
+                
+                var simDev = '';
+                var simName = '';
+                var simVer = '';
+                
+                for (var i = 0; i < simulatorArray.length; i++) {
+                    var obj = $.parseJSON(decodeURIComponent(simulatorArray[i]));
+                    simDev += "," + encodeURIComponent(obj.simulatorIdentification['simulatorDeveloper']);
+                    simName += "," + encodeURIComponent(obj.simulatorIdentification['simulatorName']);
+                    simVer += "," + encodeURIComponent(obj.simulatorIdentification['simulatorVersion']);
+                }
+                
+                dataExchange.model_urls = new Array();
+                
+                simDev = simDev.substring(1);
+                simName = simName.substring(1);
+                simVer = simVer.substring(1);
 
-				// push the data to the server
-				formData.push({
-					name : 'SNOMED',
-					value : snomed
-				},{
-					name : 'ModelType',
-					value : modelType
-				},{
-					name : 'Parameters',
-					value : exportData
-				});
+                // push the data to the server
+                formData.push({
+                    name : 'SNOMED',
+                    value : snomed
+                },{
+                    name : 'Parameters',
+                    value : exportData
+                },{
+                    name : 'simulatorDeveloper',
+                    value : simDev
+                },{
+                    name : 'simulatorName',
+                    value : simName
+                },{
+                    name : 'simulatorVersion',
+                    value : simVer
+                });
 
-				// set the waiting feedback
-				$('#create').button( "option", "disabled", true );
-				$(dataExchange.statusBar).html('Wating for the server response..');
+                // set the waiting feedback
+                $('#create').button( "option", "disabled", true );
+                $(dataExchange.statusBar).html('Waiting for the server response..');
 
-				return true;
-			}catch (err){
-				// set the error message
-				$(dataExchange.statusBar).html(err);
-				return false;
-			}
+                return true;
+            }catch (err){
+                // set the error message
+                $(dataExchange.statusBar).html(err);
+                return false;
+            }
 
-		},
+        },
 
-		// success identifies the function to
-		// invoke when the server response
-		// has been received;
-		success : function(jasonObj, statusText) {
-			if (statusText != 'success') {// web server error
-				$(dataExchange.statusBar).html('Server error: <br/>' + statusText);
-				return;
-			}
 
-			// web service error
-			if (jasonObj.exception != null) {
-				$(dataExchange.statusBar).html('Web service error: <br/>' + jasonObj.exception);
-				return;
-			}
+        // success identifies the function to
+        // invoke when the server response
+        // has been received;
+        success : function(jasonObj, statusText) {
+            if (statusText != 'success') {// web server error
+                $(dataExchange.statusBar).html('Server error: <br/>' + statusText);
+                return;
+            }
 
-			$(dataExchange.statusBar).html('Web service call ' + statusText);
+            // web service error
+            if (jasonObj.exception != null) {
+                $(dataExchange.statusBar).html('Web service error: <br/>' + jasonObj.exception);
+                return;
+            }
 
-			//enable the button
-			$('#create').button( "option", "disabled", false );
+            numSimulators = 0;
+            finishedSimulators = 0;
+            var allRunIds = '';
+            for (var i = 0; i < jasonObj.data.length; i++) {
+                
+                numSimulators++;
+                var simulatorObj = jasonObj.data[i];
+                
+                var runId = simulatorObj['runId'];
+                allRunIds += ':' + runId;
+                
+                waitForSimulationsAndStartVisualizations(simulatorObj, i);
+            }
+            
+            combinedRunId = allRunIds.substring(1);
+            
+        }
+    });
 
-			//fillin the result so that tab can get it
-			dataExchange.tab_input = jasonObj;
-
-			//create or select the tab for the result
-			var resultID = "#result";
-
-			if($(resultID).html() != null ) {
-				//select the tab
-				maintab.tabs('select', resultID);
-				//clear current tab content
-				$(resultID).empty();
-			} else {
-				//create the tab
-				maintab.tabs('add', resultID, 'Result');
-			}
-			//load the tab
-			$(resultID, "#tabs").load('result.html');
-		}
-	});
-
-	//style the submit button
-	$('#create').button({
-		disabled : true //enable until everything is ready
-	});
+    //style the submit button
+    $('#create').button({
+        disabled : true //enable until everything is ready
+    });
 });
