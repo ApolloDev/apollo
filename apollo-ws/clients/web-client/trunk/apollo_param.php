@@ -30,14 +30,14 @@ define('AROOT', getcwd());
 
 require_once AROOT . '/apollo/apollo.inc';
 
-$modelType = $_GET['model'];
-$snomed = $_GET['snomed'];
+//$modelType = $_GET['model'];
+//$snomed = $_GET['snomed'];
 
 try {
 
 	$apollo = new apollo();
 
-	$param_struct = $apollo->parameters($snomed, $modelType);
+	$param_struct = $apollo->parameters();
 
 	echo json_encode($param_struct);
 }catch (Exception $e){
