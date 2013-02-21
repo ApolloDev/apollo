@@ -94,7 +94,7 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 	
 	static {
 		try {
-			System.loadLibrary("seirjni");
+			System.loadLibrary("seir2jni");
 			System.out.println("Loaded seirjni in Apollo!");
 		} catch (Exception e) {
 			System.out.println("Error loading SEIR JNI: " + e.getMessage());
