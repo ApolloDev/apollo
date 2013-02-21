@@ -1,6 +1,6 @@
 import os,sys
 import paramiko
-import datetime
+import datetime,dateutil.parser
 
 class FredSSHConn:
     def __init__(self,debug=False):
@@ -180,7 +180,8 @@ class FredSSHConn:
 	    raise RuntimeError("Error in getting PBS ID through connection %s"%self.name)
 
 	### Set PBSPBS directory
-	self.pbsWorkDir = self.remoteDir + '/fred.tmp.' + str(tmpID)
+	self.pbsWorkDir = self.remoteDir + '/fred.tmp.' + str(tmpId)
+
 	return idString
 		
     def _getPBSQueueStatus(self,pbsID):
@@ -204,6 +205,7 @@ class FredSSHConn:
 
 	status = "UNKNOWN"
 	percent = "00"
+	secondsRunning = 0
 	date = ""
 
 	
@@ -219,16 +221,26 @@ class FredSSHConn:
 	if status[:7] == "RUNNING":
 	    percent = status.split('-')[1]
 	    status = status.split('-')[0]
+	    if self.pbsWorkDir:
+		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
+		timeVal = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		now = datetime.datetime.now()
+		print "Time Val = " + str(timeVal) + " " + str(now)
+		secondsRunning = (now-timeVal).seconds
 	    date = " ".join(returnSplit[2:5])
 	    print "Date = " + date
 	elif status == "FINISHED":
-	    percent = "100"
+	    if self.pbsWorkDir:
+		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
+		timeVal = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		now = datetime.datetime.now()
+		secondsRunning = (now-timeVal).seconds
 	    date = " ".join(returnSplit[2:5])
 	elif status == "NOT":
-	    percent = "00"
+	    secondsRunning = 0
 	    status = "UNKNOWN"
 	    
-	return (status,date,percent)
+	return (status,date,secondsRunning)
 	
     def _getStatus(self,key):
 	pbsStatus = None
@@ -249,7 +261,7 @@ class FredSSHConn:
 	    elif pbsStatus == "R":
 		status = "RUNNING"
 		statTuple = self._getFredStatus(key)
-		response = "The run is currently %s percent complete on %s at %s"\
+		response = "The run has been running for %g seconds on %s at %s"\
 			   %(statTuple[2],self.machine,statTuple[1])
 	    else:
 		status = "UNKNOWN"
