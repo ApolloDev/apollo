@@ -41,4 +41,4 @@ http://localhost:8080/apollo-web-client
 {{{
 http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl
 }}}
-  * See 'get_wsdl()' in 'apollo/constant.inc'.
+  * See 'get_wsdl()' in 'apollo/apollo.inc'.
