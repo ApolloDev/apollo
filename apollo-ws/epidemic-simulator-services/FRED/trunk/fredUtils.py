@@ -37,6 +37,7 @@ class FredSSHConn:
 	self.runPBS = False
 	self.getScratch = False
 	self.remoteDir = None
+	self.pbsWorkDir = None
 	self.pbsSubmit = "qsub"
 	self.pbsQstat = "qstat"
 	
@@ -178,6 +179,8 @@ class FredSSHConn:
 	except:
 	    raise RuntimeError("Error in getting PBS ID through connection %s"%self.name)
 
+	### Set PBSPBS directory
+	self.pbsWorkDir = self.remoteDir + '/fred.tmp.' + str(tmpID)
 	return idString
 		
     def _getPBSQueueStatus(self,pbsID):
