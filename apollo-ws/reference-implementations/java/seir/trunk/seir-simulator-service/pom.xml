@@ -26,21 +26,24 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>epimodel-service-client-wrapper</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>epimodel-service-client</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>edu.pitt.rods</groupId>
 			<artifactId>SeirModelAdapter</artifactId>
 			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>edu.pitt.rods</groupId>
+			<artifactId>seir-jni</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
 		</dependency>
 
 	</dependencies>
