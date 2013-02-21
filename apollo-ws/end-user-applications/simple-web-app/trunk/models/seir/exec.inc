@@ -49,7 +49,7 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorIdentification->simulatorName = urldecode($simulatorName);
     $SimulatorIdentification->simulatorVersion = urldecode($simulatorVer);
     $SimulatorConfiguration->simulatorIdentification = $SimulatorIdentification;
-    ChromePhp::log($SimulatorIdentification->simulatorDeveloper);
+//    ChromePhp::log($SimulatorIdentification->simulatorDeveloper);
     // authentication
     $Authentication = new stdClass();
     $Authentication->requesterId = $params['RequesterID'];
@@ -61,7 +61,7 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorTimeSpecification->timeStepValue = $params['TimeStepValue'];
     $SimulatorTimeSpecification->runLength = $params['RunLength'];
     $SimulatorConfiguration->simulatorTimeSpecification = $SimulatorTimeSpecification;
-      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
+//      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
     $SimulatedPopulation = new stdClass();
     $SimulatedPopulation->populationLocation = $params['PopulationLocation'];
