@@ -26,159 +26,167 @@ Index page for the Apollo Test Client
 @author Yang Hu <yah14@pitt.edu>
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Apollo-WS Client</title>
+        <title>Apollo-WS Client</title>
 
-<script src="js/jquery-1.4.4.js" type="text/javascript"></script>
-<script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>
+        <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
+        <script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>
 
-<!-- JQuery Plugins -->
-<script src="js/jquery.form-2.36.js" type="text/javascript"></script>
-<script src="js/jquery.layout-1.3.0.js" type="text/javascript"></script>
-<!-- jqGrid -->
-<script src="js/grid.locale-en.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
-<!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
+        <!-- JQuery Plugins -->
+        <script src="js/jquery.form-2.36.js" type="text/javascript"></script>
+        <script src="js/jquery.layout-1.3.0.js" type="text/javascript"></script>
+        <!-- jqGrid -->
+        <script src="js/grid.locale-en.js" type="text/javascript"></script>
+        <script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
+        <!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
 
-<!-- Highchart -->
-<script type="text/javascript" src="js/highcharts.js"></script>
-<script type="text/javascript" src="js/modules/exporting.js"></script>
+        <!-- Highchart -->
+        <script type="text/javascript" src="js/highcharts.js"></script>
+<!--        <script type="text/javascript" src="js/highstock.js"></script>-->
+        <script type="text/javascript" src="js/modules/exporting.js"></script>
 
-<!--Misc -->
-<script type="text/javascript" src="js/debug-helper.js"></script>
-<script type="text/javascript" src="js/jqgrid-helper.js"></script>
+        <!--Misc -->
+        <script type="text/javascript" src="js/debug-helper.js"></script>
+        <script type="text/javascript" src="js/jqgrid-helper.js"></script>
 
-<!-- Base -->
-<script type="text/javascript" src="js/apollo.js"></script>
+        <!-- Base -->
+        <script type="text/javascript" src="js/apollo.js"></script>
 
-<!-- My Style -->
-<link rel="stylesheet" href="css/index.css" type="text/css" media="all" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="themes/redmond/jquery-ui-1.8.2.custom.css" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="themes/ui.jqgrid.css" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="themes/ui.multiselect.css" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="css/apollo.css" />
+        <!-- My Style -->
+        <link rel="stylesheet" href="css/index.css" type="text/css" media="all" />
+        <link rel="stylesheet" type="text/css" media="screen"
+              href="themes/redmond/jquery-ui-1.8.2.custom.css" />
+        <link rel="stylesheet" type="text/css" media="screen"
+              href="themes/ui.jqgrid.css" />
+        <link rel="stylesheet" type="text/css" media="screen"
+              href="themes/ui.multiselect.css" />
+        <link rel="stylesheet" type="text/css" media="screen"
+              href="css/apollo.css" />
 
-</head>
-<body>
+    </head>
+    <body>
 
-<div id="top" class="ui-widget-header">
-<div id="header">
+        <div id="top" style="font-family: Segoe UI, Arial, sans-serif">
+            <div id="header">
 
-<h1 class="title"><a href=".">Apollo-WS Client</a></h1>
-</div>
-<div id="nav">
-<ul class="nav">
-	<li><a id="instruction-link" href="javascript:createOrSelectInsturctionTab();">Help</a></li>
-	<li><a href="disclaimer.html">SNOMED-CT Notice</a></li>
-	<li><a href="http://code.google.com/p/apollo">Project Homepage</a></li>
-	<li><a
-		href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl">WSDL</a></li>
-	<li><a
-		href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?xsd=servicemanager_schema1.xsd">Schema</a></li>
-</ul>
+                <h1 class="title"><a href=".">Simple End-user Apollo App</a></h1>
+            </div>
+            <div id="nav" style="font-family: Segoe UI Light, Arial, sans-serif; padding-right: 20px">
+                <ul class="nav">
+                    <li><a id="instruction-link" href="javascript:createOrSelectInsturctionTab();">Help</a></li>
+                    <li><a href="http://code.google.com/p/apollo">Project Homepage</a></li>
+                    <li><a 
+                            href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl">WSDL</a></li>
+                    <li><a 
+                            href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?xsd=servicemanager_schema1.xsd">Schema</a></li>
+                </ul>
 
-</div>
-</div>
+            </div>
+        </div>
 
-<div id="main">
+        <div id="main">
 
-<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
-<div id="west-div">
-	<div class="ui-widget-header ui-corner-all" style="margin:2px;padding:2px">
-	Model Selection
-	</div>
-	<div id="jurisdiction-div" class="drop-box-div">
-	<div>Jurisdiction:</div>
-	<select id="jurisdiction-combo">
-		<option value="UNDEF" selected="selected">--Please Select--</option>
-		<option value="allegheny">Allegheny PA</option>
-	</select>
-	</div>
-	<div id="snomed-ct-div" class="drop-box-div">
-	<div>Disease/SNOMED-CT Code:</div>
-	<select id="snomed-ct-combo" style="width: 220px;">
-		<option value="UNDEF" selected="selected">--Please Select--</option>
-		<option value="442696006">Influenza (H1N1)/442696006</option>
-		<option value="21927003">Anthrax/21927003</option>
-	</select>
-	</div>
-	<div id="model-div" class="drop-box-div">
-	<div>Models:</div>
-	<select id="model-combo" style="width: 120px;">
-		<option value="UNDEF" selected="selected">--Please Select--</option>
-	</select>
-	</div>
+            <div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
+                <div id="west-div">
+                    <div id="model-selection-div" class="ui-widget-header ui-corner-all" style="margin:2px;padding:2px;">
+                        Epidemic Model Selection
+                    </div>
+<!--                    <div id="jurisdiction-div" class="drop-box-div">
+                        <div>Jurisdiction:</div>
+                        <select id="jurisdiction-combo" style="width: 120px;">
+                            <option value="UNDEF" selected="selected">--Please Select--</option>
+                            <option value="42003">Allegheny, PA</option>
+                        </select>
+                    </div>
+                    <div id="snomed-ct-div" class="drop-box-div">
+                        <div>Disease/SNOMED-CT Code:</div>
+                        <select id="snomed-ct-combo" style="width: 220px;">
+                            <option value="UNDEF" selected="selected">--Please Select--</option>
+                            <option value="442696006">Influenza (H1N1)/442696006</option>
+                            <option value="21927003">Anthrax/21927003</option>
+                        </select>
+                    </div>-->
+                    <div id="model-div" class="drop-box-div">
+                        <div>Epidemic Models:</div>
+                        <select id="model-combo" style="width: 240px;" size="2" multiple="multiple">
+                            <option value="loading">Loading...</option>
+                        </select>
+                        <br></br>
+                    </div>
 
-	<img id="select-img" src="images/select.png" />
-	<table id="west-grid"></table>
+<!--                    <img id="select-img" src="images/select.png" />-->
+                    <table id="west-grid"></table>
+<!--                    <table id="disease-grid"></table>-->
+                    
+                    <table id="param-legend" style="padding:10px;display:none;">
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="ui-icon ui-icon-squaresmall-minus"></div></td><td>Registered parameter</td>
+                            </tr>
+                            <tr>
+                                <td><div class="ui-icon ui-icon-circlesmall-minus"></div></td><td>Unregistered parameter</td>
+                            </tr>
+                            <tr>
+                                <td><div class="ui-icon ui-icon-pencil"></div></td><td>Complex parameter (double-click to edit)</td>
+                            </tr>
+                            <tr>
+                                <td><div class="ui-icon ui-icon-triangle-1-e"></div></td><td>Click to expand</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- #LeftPane -->
 
-	<table id="param-legend" style="padding:10px;display:none;">
-	<thead>
-	<tr>
-		<th>Icon</th>
-		<th>Description</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-		<td><div class="ui-icon ui-icon-squaresmall-minus"></div></td><td>Registered parameter</td>
-	</tr>
-	<tr>
-		<td><div class="ui-icon ui-icon-circlesmall-minus"></div></td><td>Unregistered parameter</td>
-	</tr>
-	<tr>
-		<td><div class="ui-icon ui-icon-pencil"></div></td><td>Complex parameter (double-click to edit)</td>
-	</tr>
-	<tr>
-		<td><div class="ui-icon ui-icon-triangle-1-e"></div></td><td>Click to expand</td>
-	</tr>
-	</tbody>
-	</table>
-</div>
-</div>
-<!-- #LeftPane -->
+            <!-- CenterPane -->
+            <div id="CenterPane"
+                 class="ui-layout-center ui-helper-reset ui-widget-content" style="overflow:auto;">
+                <div id="switcher"></div>
+                <div id="tabs" class="jqgtabs">
+                    <ul>
+                        <li><a href="#tabs-1">Welcome</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        Welcome to the Apollo Web Service Client! <br />
+                        Complete the model selection panel on the left to begin. <br /><br />
 
-<!-- CenterPane -->
-<div id="CenterPane"
-	class="ui-layout-center ui-helper-reset ui-widget-content" style="overflow:auto;">
-<div id="switcher"></div>
-<div id="tabs" class="jqgtabs">
-<ul>
-	<li><a href="#tabs-1">Welcome!</a></li>
-</ul>
-	<div id="tabs-1">
-	Welcome to the Apollo Web Service Client! <br />
-	Complete the model selection panel on the left to begin. <br />
-	</div>
-</div>
-</div>
-<!-- CenterPane -->
+                    </div>
+                </div>
+            </div>
+            <!-- CenterPane -->
 
-<div class="ui-layout-south">
-<div>
-<form id="apollo-form" action="apollo_exec.php" method="post"
-	style="padding: 10px;">
-<button id="create">Run Epidemic Model</button>
-</form>
-</div>
-<div id="status-div"
-	style="height: 40px; font-size: 12px; display: hidden; padding: 10px;"></div>
-</div>
-<!-- ButtomPane-->
+            <div class="ui-layout-south">
+                <div>
+                    <form id="apollo-form" action="apollo_exec.php" method="post"
+                          style="padding: 10px;">
+                        <button id="create" style="font-size: 16px">Run Epidemic Model</button>
+                    </form>
+                </div>
+                <div id="status-name-div" style="padding: 10px">Status:</div>
+                <div id="status-div-1"
+                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+                     <div id="status-div-2"
+                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+                     <div id="status-div-3"
+                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+            </div>
+            <!-- ButtomPane-->
 
-</div>
-<!-- End main -->
+        </div>
+        <!-- End main -->
 
-<div id="footer">
-<div class="footer">
-	&copy; 2011 University of Pittsburgh	</div>
-</div>
+        <div id="footer">
+            <div class="footer">
+                &copy; 2013 University of Pittsburgh	</div>
+        </div>
 
-</body>
+    </body>
 </html>
