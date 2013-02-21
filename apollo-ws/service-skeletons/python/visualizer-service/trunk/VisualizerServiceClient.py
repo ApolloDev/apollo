@@ -23,7 +23,7 @@ from ApolloFactory import *
 import time
 
 #create the service object
-service = VisualizerServiceLocator().getVisualizerServiceEI("http://127.0.0.1:8087/gaia")
+service = VisualizerServiceLocator().getVisualizerServiceEI("http://127.0.0.1:8087/visualizerservice")
 
 #create an epidemic model input object
 factory = ApolloFactory()
@@ -33,15 +33,15 @@ runRequest = runRequest()
 
 runRequest._visualizerConfiguration = factory.new_VisualizerConfiguration()
 
-runRequest._visualizerConfiguration._authentication._requesterId = "fake"
-runRequest._visualizerConfiguration._authentication._requesterPassword = "fake"
+runRequest._visualizerConfiguration._authentication._requesterId = "YOUR REQUSTER ID"
+runRequest._visualizerConfiguration._authentication._requesterPassword = "YOUR REQUESTER PASSWORD"
 
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerDeveloper = "PSC"
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerName = "GAIA"
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerVersion = "v1.0"
+runRequest._visualizerConfiguration._visualizerIdentification._visualizerDeveloper = "YOUR ORGANIZATION NAME"
+runRequest._visualizerConfiguration._visualizerIdentification._visualizerName = "YOUR VISUALIZER NAME"
+runRequest._visualizerConfiguration._visualizerIdentification._visualizerVersion = "YOUR VISUALIZER VERSION"
 
-runRequest._visualizerConfiguration._visualizationOptions._runId = "UPitt,PSC,CMU_FRED_2.0.1_231023"
-runRequest._visualizerConfiguration._visualizationOptions._location = "42003"
+runRequest._visualizerConfiguration._visualizationOptions._runId = "RUN_ID_OF_SIMULATION"
+runRequest._visualizerConfiguration._visualizationOptions._location = ""
 runRequest._visualizerConfiguration._visualizationOptions._outputFormat = "mp4"
 
 print 'Calling "run"'
