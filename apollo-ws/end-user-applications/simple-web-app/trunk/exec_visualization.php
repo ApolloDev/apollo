@@ -18,9 +18,9 @@ $vizDev = $_GET['vizDev'];
 $vizName = $_GET['vizName'];
 $vizVer = $_GET['vizVer'];
 
-ChromePhp::log($vizDev);
-ChromePhp::log($vizName);
-ChromePhp::log($vizVer);
+//ChromePhp::log($vizDev);
+//ChromePhp::log($vizName);
+//ChromePhp::log($vizVer);
 
 // run visualizer
 $VisualizerConfiguration = new stdClass();
@@ -47,7 +47,7 @@ $VisualizerConfiguration->visualizationOptions = $VisualizationOptions;
 // run the visualizer
 $apolloResponse = $client->runVisualization(array('visualizerConfiguration' => $VisualizerConfiguration));
 
-ChromePhp::log($apolloResponse);
+//ChromePhp::log($apolloResponse);
 
 $VisualizerOutputResourceList = $apolloResponse->visualizerOutputResource;
 $diseaseStatesURL = '';
