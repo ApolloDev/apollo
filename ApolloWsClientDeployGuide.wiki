@@ -17,7 +17,7 @@ Novice Users (Windows Users Only):
   # Place the code into the 'webroot' of your apache server, usually its the 'htdoc' folder under the 'Apache2' subfolder.
     * e.g. If you installed using the Zend Server Community Distribution of Apache, check out the code using SVN like below:
 {{{
-svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/web-client C:/ZendServerCE/Apache2/htdoc/apollo-web-client
+svn checkout https://apollo.googlecode.com/svn/trunk/apollo-ws/end-user-applications/simple-web-app/trunk C:/ZendServerCE/Apache2/htdoc/apollo-web-client
 }}}
   * Now the folder structure should look like this:
 {{{
