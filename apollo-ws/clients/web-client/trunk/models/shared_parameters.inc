@@ -26,12 +26,16 @@
  */
 //namespace models;
 
-function get_time_granularity_text() {
-	return "Temporal Granularity";
+function get_initial_date_text() {
+    return "Start Date";
 }
 
-function get_temporal_increment_text() {
-	return "Temporal Increment";
+function get_time_step_unit_text() {
+	return "Time Step Unit";
+}
+
+function get_time_step_value_text() {
+	return "Time Step Value";
 }
 
 function get_run_length_text() {
