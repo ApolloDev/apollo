@@ -1,0 +1,15 @@
+#!/bin/csh
+#PBS -l ncpus=16
+#PBS -N fred.pbs.out
+#PBS -l walltime=10:00
+#PBS -j oe
+#PBS -q debug
+
+source /usr/share/modules/init/csh
+source /etc/csh.cshrc.psc
+module load fred
+cd $PBS_O_WORKDIR
+### Get the PBS ID
+set words = `echo $PBS_JOBID | sed 's/\./ /g'`
+set id = $words[1]
+fred_job -p fred_input.params -n 8 -t 2 -m 8 -k $id
