@@ -37,45 +37,47 @@ class apollo {
 		return $this->snomedDB [$diseaseName];
 	}
 
-	public function exec($snomed, $modelType, $params) {
-		switch ($snomed) {
-			case $this->getSNOMEDCode ('Influenza') :
-				if ($modelType == 'Compartment')
-					return seir_exec ( $params );
-				break;
+	public function exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
+//		switch ($snomed) {
+//			case $this->getSNOMEDCode ('Influenza') :
+//				if ($modelType == 'Compartment')
+					return seir_exec ($params, $simulatorDev, $simulatorName, $simulatorVer);
+//				break;
 
-			case $this->getSNOMEDCode ('Anthrax') :
-				if ($modelType == 'Compartment')
-					return compartment_exec ( $params );
-				break;
+//			case $this->getSNOMEDCode ('Anthrax') :
+//				if ($modelType == 'Compartment')
+//					return compartment_exec ( $params );
+//				break;
 
-			default :
-				throw new Exception ( 'Can not find right handler! Model Type : ' . $modelType . ' SNOMED : ' . $snomed );
-				break;
-		}
+//			default :
+//				throw new Exception ( 'Can not find right handler! Model Type : ' . $modelType . ' SNOMED : ' . $snomed );
+//				break;
+//		}
 	}
 
-	public function parameters($snomed, $modelType) {
-		switch ($snomed) {
-		case $this->getSNOMEDCode('Influenza'):
-			if ($modelType == 'Compartment');
+	public function parameters() {
+//		switch ($snomed) {
+//		case $this->getSNOMEDCode('Influenza'):
+//			if ($modelType == 'Compartment');
 				return seir_get_default_param_structure();
-		break;
+//		break;
 
-		case $this->getSNOMEDCode('Anthrax'):
-			if ($modelType == 'Compartment');
-				return compartment_get_default_param_structure();
-		break;
+//		case $this->getSNOMEDCode('Anthrax'):
+//			if ($modelType == 'Compartment');
+//				return compartment_get_default_param_structure();
+//		break;
 
-		default:
-			throw new Exception('Unknow Model Type : ' . $modelType);
-		break;
+//		default:
+//			throw new Exception('Unknow Model Type : ' . $modelType);
+//		break;
 	}
-	}
+	
 
 //	private $wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
-	private $wsdl = 'http://130.49.206.125:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
-	private $snomedDB = array();
+//	private $wsdl = 'http://130.49.206.36:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
+//        private $wsdl = 'http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl';
+        private $wsdl = 'http://localhost:8070/apolloservice/services/apolloservice?wsdl';
+//	private $snomedDB = array();
 }
 
 ?>
