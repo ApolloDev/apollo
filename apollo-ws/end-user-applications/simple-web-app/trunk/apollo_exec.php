@@ -70,7 +70,7 @@ try {
             $params[deleteSpace($rawParam->pname)] = json_decode($rawParam->extra);
         }
         
-        ChromePhp::log(deleteSpace($rawParam->pname));
+//        ChromePhp::log(deleteSpace($rawParam->pname));
     }
     
     $apollo = new apollo();
