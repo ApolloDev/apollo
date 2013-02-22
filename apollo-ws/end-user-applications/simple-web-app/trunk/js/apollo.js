@@ -591,6 +591,12 @@ jQuery(document).ready(function(){
         }
     });
     
+    function clearTabs() {
+        for (var i = $('#tabs','#CenterPane').tabs('length') - 1; i >= 1; i--) {
+            $('#tabs','#CenterPane').tabs('remove', i);
+        }
+    }
+    
     function runMethod(tabindex) {
         
         switch (tabindex) {
@@ -864,6 +870,8 @@ jQuery(document).ready(function(){
         beforeSubmit : function(formData, jqForm, options) {
             //put the parameters value here
             try{
+                
+                clearTabs();
                 // get the current tree grid data
                 var grid = $(dataExchange.gridId);
 
