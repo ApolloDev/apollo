@@ -110,7 +110,7 @@ Index page for the Apollo Test Client
                     </div>-->
                     <div id="model-div" class="drop-box-div">
                         <div>Epidemic Models:</div>
-                        <select id="model-combo" style="width: 240px;" size="2" multiple="multiple">
+                        <select id="model-combo" style="width: 240px;" size="4" multiple="multiple">
                             <option value="loading">Loading...</option>
                         </select>
                         <br></br>
