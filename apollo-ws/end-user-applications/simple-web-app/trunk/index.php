@@ -29,7 +29,7 @@ Index page for the Apollo Test Client
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>Apollo-WS Client</title>
+        <title>Simple End-user Apollo App</title>
 
         <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
         <script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>
