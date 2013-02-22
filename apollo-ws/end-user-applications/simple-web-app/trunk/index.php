@@ -78,9 +78,9 @@ Index page for the Apollo Test Client
                     <li><a id="instruction-link" href="javascript:createOrSelectInsturctionTab();">Help</a></li>
                     <li><a href="http://code.google.com/p/apollo">Project Homepage</a></li>
                     <li><a 
-                            href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl">WSDL</a></li>
+                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl">WSDL</a></li>
                     <li><a 
-                            href="http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?xsd=servicemanager_schema1.xsd">Schema</a></li>
+                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?xsd=apollo-types.xsd">Schema</a></li>
                 </ul>
 
             </div>
