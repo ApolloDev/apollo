@@ -171,37 +171,37 @@ function seir_get_default_param_structure() {
     $pvalue = '0.5';
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
-    $pname = $sectionParagraph . '--- Antiviral Control Measure Section ---</p>';
-    $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
-
-    $pname = 'Antiviral Control Measure Compliance';
-    $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
-
-    $pname = 'Antiviral Supply Schedule';
-    $pvalue = array();
-    for ($i = 0; $i < 365; $i++) {
-        $pvalue[] = 0.0;
-    }
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'models/seir/antiviral_supply_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
-
-    $pname = 'Antiviral Administration Schedule';
-    $pvalue = array();
-    for ($i = 0; $i < 365; $i++) {
-        $pvalue[] = 0.0;
-    }
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'models/seir/antiviral_admin_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
-
-    $pname = 'Antiviral Efficacy';
-    $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
-
-    $pname = 'Antiviral Efficacy Delay';
-    $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+//    $pname = $sectionParagraph . '--- Antiviral Control Measure Section ---</p>';
+//    $pvalue = '';
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+//
+//    $pname = 'Antiviral Control Measure Compliance';
+//    $pvalue = '0.0';
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+//
+//    $pname = 'Antiviral Supply Schedule';
+//    $pvalue = array();
+//    for ($i = 0; $i < 365; $i++) {
+//        $pvalue[] = 0.0;
+//    }
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
+//            'models/seir/antiviral_supply_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
+//
+//    $pname = 'Antiviral Administration Schedule';
+//    $pvalue = array();
+//    for ($i = 0; $i < 365; $i++) {
+//        $pvalue[] = 0.0;
+//    }
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
+//            'models/seir/antiviral_admin_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
+//
+//    $pname = 'Antiviral Efficacy';
+//    $pvalue = '0.0';
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+//
+//    $pname = 'Antiviral Efficacy Delay';
+//    $pvalue = '0.0';
+//    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
     $pname = $sectionParagraph . '--- Vaccination Control Measure Section ---</p>';
     $pvalue = '';
@@ -213,7 +213,7 @@ function seir_get_default_param_structure() {
 
     $pname = 'Vaccination Supply Schedule';
     $pvalue = array();
-    for ($i = 0; $i < 365; $i++) {
+    for ($i = 0; $i < 45; $i++) {
         $pvalue[] = 0.0;
     }
 
