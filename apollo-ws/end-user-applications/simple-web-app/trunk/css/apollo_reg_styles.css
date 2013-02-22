@@ -1,0 +1,42 @@
+/* 
+    Document   : apollo_reg_styles
+    Created on : Feb 11, 2013, 12:24:57 PM
+    Author     : NEM41
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.reg-table-col {
+    text-align: right;
+}
+
+.disabled-text {
+    color: #C8C8C8;
+}
+
+.input-box {
+    width: 160px;
+}
+
+
+input, select, textarea {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.title {
+    /*	font-family: Arial,Helvetica,sans-serif;*/
+    font-family: Segoe UI, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 37px;
+    margin:0;
+    padding:0px 0 0;
+    color:#0066CC;
+}
+
