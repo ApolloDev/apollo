@@ -771,7 +771,7 @@ jQuery(document).ready(function(){
                         if (simName == 'FRED' && key == 'GAIA animation of Allegheny County') {
                             if($(gaiaID).html() != null ) {
                                 //select the tab
-                                maintab.tabs('select', testtabID);
+                                maintab.tabs('select', gaiaID);
                                 //clear current tab content
                                 $(gaiaID).empty();
                             } else {
