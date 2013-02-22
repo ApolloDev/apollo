@@ -59,6 +59,8 @@ var lastEditId;
 var finishedSimulators;
 var numSimulators;
 var combinedRunId;
+var numberOfVisualizations;
+var numberOfVisualizationsFinished;
 
 var InfluenzaId = 442696006;
 var AnthraxId = 21927003;
@@ -81,7 +83,7 @@ function clearParamGrid(){
 
 var isRowEditable = function(id) {
     
-    if (id == 0 || id == 3 || id == 7 || id == 14 || id == 20 || id == 26) {
+    if (id == 0 || id == 3 || id == 7 || id == 14 || id == 20) {
         return false
     } else {
         return true;
@@ -690,6 +692,7 @@ jQuery(document).ready(function(){
                         );
                 } else {
                     
+                    numberOfVisualizationsFinished += 1;
                     var urlList = new Object();
                     
                     for (var key in urls) {
@@ -709,8 +712,10 @@ jQuery(document).ready(function(){
                     // call function passed in as parameter
                     //                    $(dataExchange.statusBar).html('Web service call ' + statusText);
 
-                    //enable the button
-                    $('#create').button( "option", "disabled", false );
+                    if (numberOfVisualizationsFinished == numberOfVisualizations) { // enable the button when the last visualization finishes
+                        //enable the button
+                        $('#create').button( "option", "disabled", false );
+                    }
 
                     //fillin the result so that tab can get it
                     dataExchange.model_urls[modelIndex] = encUrls;
@@ -943,30 +948,40 @@ jQuery(document).ready(function(){
         // has been received;
         success : function(jasonObj, statusText) {
             if (statusText != 'success') {// web server error
-                $(dataExchange.statusBar).html('Server error: <br/>' + statusText);
+                $(dataExchange.statusBar).html('Server error: ' + statusText);
                 return;
             }
 
             // web service error
             if (jasonObj.exception != null) {
-                $(dataExchange.statusBar).html('Web service error: <br/>' + jasonObj.exception);
+                $(dataExchange.statusBar).html('Web service error: ' + jasonObj.exception);
                 return;
             }
 
-            numSimulators = 0;
+            numSimulators = jasonObj.data.length;
             finishedSimulators = 0;
+            numberOfVisualizations = 0;
+            numberOfVisualizationsFinished = 0;
             var allRunIds = '';
-            for (var i = 0; i < jasonObj.data.length; i++) {
-                
-                numSimulators++;
+            if (numSimulators > 1) {
+                numberOfVisualizations += 1; // one for the combined incidence
+            }
+            
+            for (var i = 0; i < numSimulators; i++) {
+
                 var simulatorObj = jasonObj.data[i];
                 
                 var runId = simulatorObj['runId'];
+                var simName = simulatorObj['simulatorName'];
                 allRunIds += ':' + runId;
                 
+                numberOfVisualizations += 1;
+                if (simName == 'FRED') {
+                    numberOfVisualizations += 1; // one for gaia
+                }
                 waitForSimulationsAndStartVisualizations(simulatorObj, i);
             }
-            
+
             combinedRunId = allRunIds.substring(1);
             
         }
