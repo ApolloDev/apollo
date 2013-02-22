@@ -156,11 +156,11 @@ function seir_get_default_param_structure() {
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Infectious Period';
-    $pvalue = '3.2';
+    $pvalue = '4.1';
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Latent Period';
-    $pvalue = '2';
+    $pvalue = '1.2';
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Reproduction Number';
