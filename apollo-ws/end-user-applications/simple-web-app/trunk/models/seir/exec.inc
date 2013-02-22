@@ -32,7 +32,6 @@ require_once AROOT . '/models/seir/constant.inc';
 
 function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    $classmap = array('ModelID' => 'ModelID', 'RunResultRequestObjType' => 'RunResultRequestObjType');
-
 //    $settings = parse_ini_file(AROOT . '\config.ini');
 
     $apollo = new apollo();
@@ -90,12 +89,24 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration->disease = $Disease;
     // antiviral control measure
     $AntiviralControlMeasure = new stdClass();
-    $AntiviralControlMeasure->antiviralCmCompliance = $params['AntiviralControlMeasureCompliance'];
-    $AntiviralControlMeasure->antiviralSupplySchedule = $params['AntiviralSupplySchedule'];
-    $AntiviralControlMeasure->antiviralAdminSchedule = $params['AntiviralAdministrationSchedule'];
-    $AntiviralControlMeasure->antiviralEfficacy = $params['AntiviralEfficacy'];
-    $AntiviralControlMeasure->antiviralEfficacyDelay = $params['AntiviralEfficacyDelay'];
+//    ce = $params['AntiviralControlMeasureCompliance'];
+    $pvalue = array();
+    for ($i = 0; $i < 45; $i++) {
+        $pvalue[] = '0.0';
+    }
+
+    $AntiviralControlMeasure->antiviralCmCompliance = '0.0';
+    $AntiviralControlMeasure->antiviralSupplySchedule = $pvalue;
+    $AntiviralControlMeasure->antiviralAdminSchedule = $pvalue;
+    $AntiviralControlMeasure->antiviralEfficacy = '0.0';
+    $AntiviralControlMeasure->antiviralEfficacyDelay = '0.0';
     $SimulatorConfiguration->antiviralControlMeasure = $AntiviralControlMeasure;
+//    $AntiviralControlMeasure->antiviralCmCompliance = $params['AntiviralControlMeasureCompliance'];
+//    $AntiviralControlMeasure->antiviralSupplySchedule = $params['AntiviralSupplySchedule'];
+//    $AntiviralControlMeasure->antiviralAdminSchedule = $params['AntiviralAdministrationSchedule'];
+//    $AntiviralControlMeasure->antiviralEfficacy = $params['AntiviralEfficacy'];
+//    $AntiviralControlMeasure->antiviralEfficacyDelay = $params['AntiviralEfficacyDelay'];
+//    $SimulatorConfiguration->antiviralControlMeasure = $AntiviralControlMeasure;
     // vaccination control measure
     $VaccinationControlMeasure = new stdClass();
     $VaccinationControlMeasure->vaccineCmCompliance = $params['VaccineControlMeasureCompliance'];
@@ -184,8 +195,6 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //
 //    $ServiceRecord = new stdClass();
 //    $ServiceRecord->simulatorIdentification = $SimulatorIdentification;
-
-
 //
 //
 //    while (true) {
@@ -266,8 +275,6 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //            sleep(5); //sleep for 10 seconds
 //        }
 //    }
-
-
 //
 //    $runID = 'UPitt,PSC,CMU_FRED_2.0.1_230125';
 //    // get the output
@@ -340,15 +347,14 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    $curves ['Infectious'] = $infectious;
 //    $curves ['Recovered'] = $recovered;
 //    $curves['Newly Exposed'] = $newly_exposed;
-
 //    $urls['disease_states'] = $diseaseStatesURL;
 //    $urls['incidence'] = $incidenceURL;
 
-      $ret['runId'] = $runId;
-      $ret['simulatorDeveloper'] = $SimulatorIdentification->simulatorDeveloper;
-      $ret['simulatorName'] = $SimulatorIdentification->simulatorName;
-      $ret['simulatorVersion'] = $SimulatorIdentification->simulatorVersion;
-    
+    $ret['runId'] = $runId;
+    $ret['simulatorDeveloper'] = $SimulatorIdentification->simulatorDeveloper;
+    $ret['simulatorName'] = $SimulatorIdentification->simulatorName;
+    $ret['simulatorVersion'] = $SimulatorIdentification->simulatorVersion;
+
     return $ret;
 }
 
