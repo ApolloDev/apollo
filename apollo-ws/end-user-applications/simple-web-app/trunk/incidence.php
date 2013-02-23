@@ -38,7 +38,7 @@
 
         var url = webservice_result.incidence;
 
-        document.getElementById("epi-curve-inc-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=100% />";
+        document.getElementById("epi-curve-inc-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=80% />";
 
         //        //chart data
         //        var data = new Array();
