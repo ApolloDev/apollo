@@ -253,7 +253,7 @@ class FredSSHConn:
                     now = datetime.datetime.now()
                     print "Time Val = " + str(timeVal) + " " + str(now)
                     secondsRunning = (now-timeVal).seconds
-		date = " ".joen(returnSplit[2:5])
+		date = " ".join(returnSplit[2:5])
 	elif status == "NOT":
 	    secondsRunning = 0
 	    status = "UNKNOWN"
