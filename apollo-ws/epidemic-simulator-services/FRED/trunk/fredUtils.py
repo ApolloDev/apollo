@@ -223,12 +223,13 @@ class FredSSHConn:
 	    status = status.split('-')[0]
 	    if self.pbsWorkDir:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
-		retTVal = self._executeCommand(remoteCommand)
+		retTVal = self._executeCommand(remoteCommand).read()
+		print "Return from FRED: = " + str(retTVal)
 		if retTVal.strip() == "Nothing":
 		    print "starttime nothing"
 		    secondsRunning = -1.0
 		else:
-		    timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		    #timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
 		    timeVal = timeValTZ.replace(tzinfo=None)
 		    
 		    now = datetime.datetime.now()
@@ -240,7 +241,7 @@ class FredSSHConn:
 	    if self.pbsWorkDir:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
                 
-		retTVal = self._executeCommand(remoteCommand)
+		retTVal = self._executeCommand(remoteCommand).read()
                 if retTVal.strip() == "Nothing":
 		    print "starttime nothing"
 		    secondsRunning = -1.0
@@ -278,12 +279,16 @@ class FredSSHConn:
 	    elif pbsStatus == "R":
 		status = "RUNNING"
 		statTuple = self._getFredStatus(key)
-	        if statTuple[2] == -1.0:
+		if statTuple[0] == "UNKNOWN":
 		    response = "The run has started on %s at %s"\
 			       %(self.machine,statTuple[1])
 		else:
-		    response = "The run has been running for %g seconds on %s at %s"\
-			       %(statTuple[2],self.machine,statTuple[1])
+		    if statTuple[2] == -1.0:
+			response = "The run has started on %s at %s"\
+				   %(self.machine,statTuple[1])
+		    else:
+			response = "The run has been running for %g seconds on %s at %s"\
+				   %(statTuple[2],self.machine,statTuple[1])
 	    else:
 		status = "UNKNOWN"
 		response = "getStatus on connection %s returned an unknown response"\
