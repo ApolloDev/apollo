@@ -4,6 +4,35 @@ import optparse
 from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Locations_Set,FRED_People_Set
 import apollo
 import time
+#from threading import Thread
+from multiprocessing import Process,Queue
+
+def fillInfection(q,j,fred_run):
+        InfByBG = []
+	numDays = fred_run.get_param("days")
+	for i in range(0,int(numDays)):
+		InfByBG.append({})
+
+        infection_file = fred_run.infection_file_names[j]
+        run_number = infection_file.split("infections")[1].split(".")[0]
+        print "Run = " + run_number
+        infSet = fred_run.get_infection_set(int(run_number))
+        #print "Length = %d"%len(infSet.infectionList)
+        for i in range(0,len(infSet.infectionList)):
+		day = int(infSet.get('day',i))
+		infected_id = int(infSet.get('host',i))
+            #personRec = fred_population.people[int(infRec.infected_id)]
+		personFips = fred_population.get("stcotrbg",infected_id)
+            #if personFips == "420034754012":
+            #    print "There is someone here on Day %d"%(day)
+            #print personFips
+	#	if personFips not in fipsList:
+	#		fipsList.append(personFips)
+            #print "%d %d"%(j,day)
+		if InfByBG[day].has_key(personFips) is False:
+			InfByBG[day][personFips] = 0.0
+		InfByBG[day][personFips] += 1
+	q.put(InfByBG)
 
 if __name__ == '__main__':
     parser = optparse.OptionParser(usage="""
@@ -147,35 +176,70 @@ if __name__ == '__main__':
     numDays = fred_run.get_param("days")
     aveInfByBG = []
     fipsList = []
+    time1 = time.time()
     for i in range(0,int(numDays)):
 	aveInfByBG.append({})
-    
-    for infection_file in fred_run.infection_file_names:
-	run_number = infection_file.split("infections")[1].split(".")[0]
-	print "Run = " + run_number
-	infSet = fred_run.get_infection_set(int(run_number))
+    InfByBG = []
+#    for i in range(0,len(fred_run.infection_file_names)):
+#	InfByBG.append([])
+#	for j in range(0,int(numDays)):
+#	    InfByBG[i].append({})
+#  
+    #for infection_file in fred_run.infection_file_names:
+    queues = [] 
+    threads = []
+    for j in range(0,len(fred_run.infection_file_names)):
+	queues.append(Queue())
+	threads.append(Process(target=fillInfection,args=(queues[j],j,fred_run)))
 
-	for i in range(0,len(infSet.infectionList)):
-	    day = int(infSet.get('day',i))
-	    infected_id = int(infSet.get('host',i))
-	    #personRec = fred_population.people[int(infRec.infected_id)]
-	    personFips = fred_population.get("stcotrbg",infected_id)
-            #print personFips
-            if personFips not in fipsList:
-                fipsList.append(personFips)
-	    if aveInfByBG[day].has_key(personFips) is False:
-		aveInfByBG[day][personFips] = 0.0
-	    aveInfByBG[day][personFips] += 1
+    for t in threads:
+	t.start()
+        	
+    for q in queues:
+	InfByBG.append(q.get())
+
+    for t in threads:
+	t.join()	
+#	infection_file = fred_run.infection_file_names[j]
+#	run_number = infection_file.split("infections")[1].split(".")[0]
+#	print "Run = " + run_number
+#	infSet = fred_run.get_infection_set(int(run_number))
+#.       #print "Length = %d"%len(infSet.infectionList)
+#for i in range(0,len(infSet.infectionList)):
+#    day = int(infSet.get('day',i))
+#    infected_id = int(infSet.get('host',i))
+#    #personRec = fred_population.people[int(infRec.infected_id)]
+#    personFips = fred_population.get("stcotrbg",infected_id)
+#           #if personFips == "420034754012":
+#           #    print "There is someone here on Day %d"%(day)
+#           #print personFips
+#           if personFips not in fipsList:
+#               fipsList.append(personFips)
+#    #print "%d %d"%(j,day)
+#    if InfByBG[j][day].has_key(personFips) is False:
+#	InfByBG[j][day][personFips] = 0.0
+#    InfByBG[j][day][personFips] += 1
 
     ### finish off averages
     numRuns = fred_run.number_of_runs
-    sum = 0
+    for infFile in InfByBG:
+	sum = 0
+        for day in range(0,len(infFile)):
+	    for fips in infFile[day].keys():
+		if fips not in fipsList:
+		   fipsList.append(fips)
+		if fips not in aveInfByBG[day].keys():
+		   aveInfByBG[day][fips]=0.0
+	        aveInfByBG[day][fips] += infFile[day][fips] 
+		sum += infFile[day][fips]
+	print "Sum = " + str(sum)
+
     for day in range(0,len(aveInfByBG)):
-	for fips in aveInfByBG[day].keys():
-	    sum += aveInfByBG[day][fips]	    
-	    aveInfByBG[day][fips] /= float(numRuns)
-   
-    print "sum = " + str(sum) 
+            for fips in aveInfByBG[day].keys():
+                aveInfByBG[day][fips] /= float(numRuns) 
+
+    time2 = time.time()
+    print "Time to calculate ave = %10.5f seconds"%(time2-time1) 
     ### update simulated_population
     fipsInsertIDDict = {}
     #print 'fips list = ' + str(fipsList)
@@ -183,6 +247,8 @@ if __name__ == '__main__':
         apolloDB.query('INSERT INTO simulated_population set label = "newly exposed in '+fips + '"')
         insertID = apolloDB.insertID() 
         fipsInsertIDDict[fips] = insertID
+        #if fips == "420034754012":
+        #    print "Fips = " + str(fips) + " id = " + str(insertID)
         axisID = axisInsertIDDict['disease_state']
         apolloDB.query('INSERT INTO simulated_population_axis_value set ' +\
 		       'population_id = "' + str(insertID) + '", ' +\
@@ -196,29 +262,30 @@ if __name__ == '__main__':
 		       'value = "' + fips + '"')
 
 	
-    
+    time1 = time.time() 
 #    for day in range(0,len(aveInfByBG)):
     for day in range(0,numberDays):
-        #if day > len(aveInfByBG):
-        #for fips in fipsList:
-        #    SQLString = 'INSERT INTO time_series set '\
-        #             +'run_id = "' + str(runInsertID) + '", '\
-        #             +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
-        #             +'time_step = "' + str(day) + '", '\
-        #             +'pop_count = "0"'
-        #    apolloDB.query(SQLString)
-        #else:
-        for fips in aveInfByBG[day].keys():
-         #print "Day = " + str(day) + " and Fips: " + fips
-        #    #print "ave = " + str(int(aveInfByBG[day][fips]))
-            SQLString = 'INSERT INTO time_series set '\
-                 +'run_id = "' + str(runInsertID) + '", '\
-                 +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
-                 +'time_step = "' + str(day) + '", '\
-                 +'pop_count = "' + str(int(aveInfByBG[day][fips])) + '"'
-            apolloDB.query(SQLString)
+        if False: #day > len(aveInfByBG):
+            for fips in fipsList:
+                SQLString = 'INSERT INTO time_series set '\
+                        +'run_id = "' + str(runInsertID) + '", '\
+                        +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
+                        +'time_step = "' + str(day) + '", '\
+                        +'pop_count = "0"'
+                apolloDB.query(SQLString)
+        else:
+            for fips in aveInfByBG[day].keys():
+            #print "Day = " + str(day) + " and Fips: " + fips
+            #print "ave = " + str(int(aveInfByBG[day][fips]))
+                SQLString = 'INSERT INTO time_series set '\
+                    +'run_id = "' + str(runInsertID) + '", '\
+                    +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
+                    +'time_step = "' + str(day) + '", '\
+                    +'pop_count = "' + str(int(aveInfByBG[day][fips])) + '"'
+                apolloDB.query(SQLString)
                 
-    
+    time2 = time.time()
+    print "Time To populate TimeSeries = %10.5f"%(time2-time1)
     apolloDB.close()
     
     
