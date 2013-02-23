@@ -167,6 +167,8 @@ class FredWebService(SimulatorService):
                     f.write('0 0 %d\n'%(numInfectious))
 
 		     ### if vaccination comes through, parse this
+            with open('starttime','wb') as f:
+		    f.write('Nothing')
 
 	    idPrefix = cfg._simulatorIdentification._simulatorDeveloper +\
 		       "_" + cfg._simulatorIdentification._simulatorName +\
@@ -186,13 +188,13 @@ class FredWebService(SimulatorService):
                     f.write('module load fred\n')
 		    f.write('module load python\n')
                     f.write('cd $PBS_O_WORKDIR\n')
-		    f.write('echo `date` > starttime\n')
+	#	    f.write('echo `date` > starttime\n')
                     f.write('### Get the PBS ID\n')
                     f.write("set words = `echo $PBS_JOBID | sed 's/\./ /g'`\n")
                     f.write("set id = $words[1]\n")
                     f.write('fred_job -p fred_input.params -n 8 -t 2 -m 8 -k %s$id\n'%idPrefix)
 		    f.write('touch .dbloading\n')
-                    f.write('python $FRED_HOME/bin/fred_to_apollo.py -k %s$id\n'%(idPrefix))
+                    f.write('python $FRED_HOME/bin/fred_to_apollo_new.py -k %s$id\n'%(idPrefix))
                     f.write('rm -rf .dbloading\n')
                     #f.write('echo COMPLETED > job_status')
                     
@@ -206,6 +208,7 @@ class FredWebService(SimulatorService):
             fredConn._sendFile(tempDirName+'/fred_submit.pbs')
             fredConn._sendFile(tempDirName+'/fred_input.params')
             fredConn._sendFile(tempDirName+'/fred_initial_population_0.txt')
+            fredConn._sendFile(tempDirName+'/starttime')		
 	    if doVacc:
 		    fredConn._sendFile(tempDirName+"/fred-vaccination-schedule_0.txt")
 

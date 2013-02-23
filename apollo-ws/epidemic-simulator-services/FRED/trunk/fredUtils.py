@@ -223,18 +223,34 @@ class FredSSHConn:
 	    status = status.split('-')[0]
 	    if self.pbsWorkDir:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
-		timeVal = dateutil.parser.parse(self._executeCommand(remoteCommand))
-		now = datetime.datetime.now()
-		print "Time Val = " + str(timeVal) + " " + str(now)
-		secondsRunning = (now-timeVal).seconds
+		retTVal = self._executeCommand(remoteCommand)
+		if retTVal == "Nothing":
+		   print "starttime nothing"
+		   secondsRunning = -1.0
+		else:
+		   timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		   timeVal = timeValTZ.replace(tzinfo=None)
+		
+		   now = datetime.datetime.now()
+		   print "Time Val = " + str(timeVal) + " " + str(now)
+		   secondsRunning = (now-timeVal).seconds
 	    date = " ".join(returnSplit[2:5])
 	    print "Date = " + date
 	elif status == "FINISHED":
 	    if self.pbsWorkDir:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
-		timeVal = dateutil.parser.parse(self._executeCommand(remoteCommand))
-		now = datetime.datetime.now()
-		secondsRunning = (now-timeVal).seconds
+                
+		retTVal = self._executeCommand(remoteCommand)
+                if retTVal == "Nothing":
+		   print "starttime nothing"
+                   secondsRunning = -1.0
+                else:
+                   timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+                   timeVal = timeValTZ.replace(tzinfo=None)
+
+                   now = datetime.datetime.now()
+                   print "Time Val = " + str(timeVal) + " " + str(now)
+                   secondsRunning = (now-timeVal).seconds
 	    date = " ".join(returnSplit[2:5])
 	elif status == "NOT":
 	    secondsRunning = 0
@@ -250,6 +266,7 @@ class FredSSHConn:
         pbsID = pbsSplit[len(pbsSplit)-1]
 	if self.runPBS:
 	    pbsStatus = self._getPBSQueueStatus(pbsID)
+	    print "PBS Status = " + str(pbsStatus)
 	    if pbsStatus == "U":
 		status = "COMPLETED"
 		statTuple = self._getFredStatus(key)
@@ -261,8 +278,12 @@ class FredSSHConn:
 	    elif pbsStatus == "R":
 		status = "RUNNING"
 		statTuple = self._getFredStatus(key)
-		response = "The run has been running for %g seconds on %s at %s"\
-			   %(statTuple[2],self.machine,statTuple[1])
+	        if statTuple[2] == -1.0:
+		     response = "The run has started on %s at %s"\
+				%(self.machine,statTuple[1])
+		else:
+		     response = "The run has been running for %g seconds on %s at %s"\
+				   %(statTuple[2],self.machine,statTuple[1])
 	    else:
 		status = "UNKNOWN"
 		response = "getStatus on connection %s returned an unknown response"\
