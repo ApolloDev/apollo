@@ -194,7 +194,7 @@ class FredWebService(SimulatorService):
                     f.write("set id = $words[1]\n")
                     f.write('fred_job -p fred_input.params -n 8 -t 2 -m 8 -k %s$id\n'%idPrefix)
 		    f.write('touch .dbloading\n')
-                    f.write('python $FRED_HOME/bin/fred_to_apollo_new.py -k %s$id\n'%(idPrefix))
+                    f.write('python $FRED_HOME/bin/fred_to_apollo_parallel.py -k %s$id\n'%(idPrefix))
                     f.write('rm -rf .dbloading\n')
                     #f.write('echo COMPLETED > job_status')
                     
