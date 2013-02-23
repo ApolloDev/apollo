@@ -100,7 +100,7 @@ class FredSSHConn:
     
     def _mkdir(self,remoteDirectoryName):
 	if self.debug: print "Making %s directory on %s"%(remoteDirectoryName,self.name)
-	    
+	
 	if self.isConnectedSFTP is False:
 	    raise RuntimeError("Trying to create a directory through %s before opening the SFTP connection"\
 			       %self.name)
@@ -187,7 +187,7 @@ class FredSSHConn:
     def _getPBSQueueStatus(self,pbsID):
 	remote_command = self.pbsQstat + " " + str(pbsID)
 	pbsStatus = "U"
-
+	
 	unkFlag = False
 	returnVal = None
 	try:    
@@ -197,9 +197,9 @@ class FredSSHConn:
 	    pbsStatus = pbsString.split()[4]
 	except:
 	    unkFlag = True
-
+	    
 	return pbsStatus
-
+	
     def _getFredStatus(self,key):
 	remote_command = "module load fred; fred_status -k " + str(key)
 
@@ -217,23 +217,23 @@ class FredSSHConn:
 	    status = returnSplit[0]
 	else:
 	    status = "UNKNOWN"
-
+	    
 	if status[:7] == "RUNNING":
 	    percent = status.split('-')[1]
 	    status = status.split('-')[0]
 	    if self.pbsWorkDir:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
 		retTVal = self._executeCommand(remoteCommand)
-		if retTVal == "Nothing":
-		   print "starttime nothing"
-		   secondsRunning = -1.0
+		if retTVal.strip() == "Nothing":
+		    print "starttime nothing"
+		    secondsRunning = -1.0
 		else:
-		   timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
-		   timeVal = timeValTZ.replace(tzinfo=None)
-		
-		   now = datetime.datetime.now()
-		   print "Time Val = " + str(timeVal) + " " + str(now)
-		   secondsRunning = (now-timeVal).seconds
+		    timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		    timeVal = timeValTZ.replace(tzinfo=None)
+		    
+		    now = datetime.datetime.now()
+		    print "Time Val = " + str(timeVal) + " " + str(now)
+		    secondsRunning = (now-timeVal).seconds
 	    date = " ".join(returnSplit[2:5])
 	    print "Date = " + date
 	elif status == "FINISHED":
@@ -241,17 +241,17 @@ class FredSSHConn:
 		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
                 
 		retTVal = self._executeCommand(remoteCommand)
-                if retTVal == "Nothing":
-		   print "starttime nothing"
-                   secondsRunning = -1.0
+                if retTVal.strip() == "Nothing":
+		    print "starttime nothing"
+		    secondsRunning = -1.0
                 else:
-                   timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
-                   timeVal = timeValTZ.replace(tzinfo=None)
-
-                   now = datetime.datetime.now()
-                   print "Time Val = " + str(timeVal) + " " + str(now)
-                   secondsRunning = (now-timeVal).seconds
-	    date = " ".join(returnSplit[2:5])
+		    timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		    timeVal = timeValTZ.replace(tzinfo=None)
+		    
+		    now = datetime.datetime.now()
+		    print "Time Val = " + str(timeVal) + " " + str(now)
+		    secondsRunning = (now-timeVal).seconds
+		date = " ".join(returnSplit[2:5])
 	elif status == "NOT":
 	    secondsRunning = 0
 	    status = "UNKNOWN"
@@ -279,11 +279,11 @@ class FredSSHConn:
 		status = "RUNNING"
 		statTuple = self._getFredStatus(key)
 	        if statTuple[2] == -1.0:
-		     response = "The run has started on %s at %s"\
-				%(self.machine,statTuple[1])
+		    response = "The run has started on %s at %s"\
+			       %(self.machine,statTuple[1])
 		else:
-		     response = "The run has been running for %g seconds on %s at %s"\
-				   %(statTuple[2],self.machine,statTuple[1])
+		    response = "The run has been running for %g seconds on %s at %s"\
+			       %(statTuple[2],self.machine,statTuple[1])
 	    else:
 		status = "UNKNOWN"
 		response = "getStatus on connection %s returned an unknown response"\
