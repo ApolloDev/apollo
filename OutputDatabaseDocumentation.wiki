@@ -4,7 +4,7 @@
 
 This page describes the layout and usage of each of the 5 database tables that a simulator must output its data.
 
-The full schema can be found [https://apollo.googlecode.com/svn/apollo-ws/schemas/output/db/trunk/apollo_output_schema.sql here].
+The full schema can be found [https://apollo.googlecode.com/svn/apollo-ws/database-scripts/trunk/apollo_output_schema.sql here].
 
 = Database initialization =
 
