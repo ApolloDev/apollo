@@ -23,57 +23,51 @@ class ApolloSimulatorOutput:
 	self._dbRunIndex = self.apolloDB.query(SQLStatement)[0]['id']
 	#print str(self.dbRunIndex)
 
-	### Get the Simulated Populations
-	self.simulatedPopulationsDict = {}
-	SQLStatement = "SELECT * FROM " + _simulatedPopulationTable
-	results = self.apolloDB.query(SQLStatement)
-	for row in results:
-	    self.simulatedPopulationsDict[row['label']] = row['id']
-
-	### Get the Simulated Populations Axis Values
-	self.simulatedPopulationAxisValueDict = {}
-	SQLStatement = "SELECT * FROM " + _simulatedPopulationAxisValueTable
-	results = self.apolloDB.query(SQLStatement)
-	for row in results:
-	    self.simulatedPopulationAxisValueDict[(row['population_id'],row['axis_id'])] = \
-					row['value']						 
-	
-    ##def getAvailableAxis(self):
-##	fullAxisDict = self.apolloDB.populationAxis()
-
-##	### now
-
     def printSimulatedPopulations(self):
 	print "Simulated Populations for run: " + str(self.runID)
 	for population,id in self.simulatedPopulationsDict.items():
 	    print population + ": id = " + str(id)
 
-    
-    def getTimeSeriesForSimulatedPopulation(self,simPopulation):
-	tsList = []
-	if not simPopulation in self.simulatedPopulationsDict.keys():
-	    raise RuntimeError("Requested %s simulated population that"\
-			       "doesn't exist in this Apollo output runID:%s"\
-			       %(simPopulation,self.runID))
+    def getNewlyInfectedTimeSeriesWithinLocation(self,location):
+	tsDict = {}
+	fipsTranslate = {}
+	### get the populationAxis value for "location"
+	LocationAxisID = self.apolloDB._populationAxis()['location']
 
-	popID = self.simulatedPopulationsDict[simPopulation]
-	SQLStatement = 'SELECT time_step,pop_count from ' + _timeSeriesTable +\
-		       ' WHERE run_id = "' + str(self._dbRunIndex) + '"'+\
-		       ' and population_id = "' + str(popID) + '" ORDER BY time_step'
-
+	### Get distince populations
+	SQLStatement = 'select population_id,value from simulated_population_axis_value '\
+		      +'where value <> "newly exposed" and population_id in '\
+		      +'(select DISTINCT population_id from time_series where run_id = "'\
+		      + str(self._dbRunIndex) + '" and population_id in '\
+		      +'(select id from (select p.id from simulated_population p, '\
+		      +'simulated_population_axis_value v, population_axis a '\
+		      +' where p.id = v.population_id and v.value like "newly exposed" '\
+		      +'and v.axis_id = a.id and a.label like "disease_state" and '\
+		      +'p.label like "% '+location+'%") as x) ) order by population_id'
+	popResults = self.apolloDB.query(SQLStatement)
+	#print "Pop = " + str(len(popResults))
+	for row in popResults:
+	    fipsTranslate[row['population_id']] = row['value']
+	### Get all of the Results for this time series
+	SQLStatement = 'select * from time_series where run_id = "'+str(self._dbRunIndex)+'" '\
+		      +'and population_id in (select id from (select p.id '\
+		      +'from simulated_population p, simulated_population_axis_value v, '\
+		      +'population_axis a where p.id = v.population_id and '\
+		      +'v.value like "newly exposed" and v.axis_id = a.id and '\
+		      +'a.label like "disease_state" and p.label like "% '+location+'%") as x)'\
+		      +' order by population_id, time_step'
 	#print SQLStatement
 	tsResults = self.apolloDB.query(SQLStatement)
+	#print "TS = " + str(len(tsResults))
 	for row in tsResults:
-	    tsList.append(row['pop_count'])
-
-    #def getNewlyInfectedTimeSeries(self,location):
+	    ## Get the fips code for this population
+	    fipsCode = fipsTranslate[row['population_id']]
+	    if tsDict.has_key(fipsCode) is False:
+		tsDict[fipsCode] = []
+	    tsDict[fipsCode].append(row['pop_count'])
 	
-
-	
-			  
-		     
-
-    
+	return tsDict
+					  		   
 class ApolloDB:
     
     def __init__(self,host_="warhol-fred.psc.edu",
@@ -86,6 +80,8 @@ class ApolloDB:
 	self._DictCursor = None
 	self._RegularCursor = None
 	self.populationAxis = None
+	self.simulatedPopulation = None
+	self.simulatedPopulationAxisValue = None
 
 
     def connect(self):
@@ -100,9 +96,10 @@ class ApolloDB:
 	except MySQLdb.Error, e:
 	    print "Problem connecting to Apollo database: %d %s"%(e.args[0],e.args[1])
             sys.exit(1)
-	    
+	
 	self._cursor = self._conn.cursor(MySQLdb.cursors.DictCursor)
 	self.populationAxis = self._populationAxis()
+	self.simulatedPopulation = self._simulatedPopulation()
 	
     def close(self):
 	if self._conn is None:
@@ -140,6 +137,51 @@ class ApolloDB:
 
 	return populationAxisDict
 
+    def _simulatedPopulation(self):
+	simulatedPopDict = {}
+	SQLStatement = "SELECT * from " + _simulatedPopulationTable
+
+	result = self.query(SQLStatement)
+	for row in result:
+	    simulatedPopDict[row["label"]] = row["id"]
+
+	return simulatedPopDict
+
+
+    def checkAndAddSimulatedPopulation(self,diseaseState,location):
+	if self.simulatedPopulation is None:
+	    raise RuntimeError("Trying to add to Apollo simulated populaton "\
+			       "before populating the simulated population structure")
+	if self.populationAxis is None:
+	    raise RuntimeError("Trying to add to Apollo simulated population "\
+			       "before populating the populationAxis structure")
+	### if this is not already in the database, add it
+	populationLabel = diseaseState + " in " + location
+	
+	if populationLabel not in self.simulatedPopulation.keys():
+	    SQLStatement = "INSERT INTO "+_simulatedPopulationTable+\
+			   ' SET label = "' + populationLabel + '"'
+
+	    self.query(SQLStatement)
+	    ### update current dictionary
+	    popID = self.insertID()
+	    self.simulatedPopulation[populationLabel] = popID
+
+	    ### add to the simulated axis value table
+	    SQLStatement = "INSERT INTO "+_simulatedPopulationAxisValueTable+\
+			   ' SET  population_id = "' + str(popID) + '", '\
+			   ' axis_id = "' + str(self.populationAxis['disease_state']) + '", '\
+			   ' value = "' + str(diseaseState) + '"'
+	    self.query(SQLStatement)
+
+	    SQLStatement = "INSERT INTO "+_simulatedPopulationAxisValueTable+\
+			   ' SET  population_id = "' + str(popID)  + '", '\
+			   ' axis_id = "' + str(self.populationAxis['location']) + '", '\
+			   ' value = "' + str(location) + '"'
+	    self.query(SQLStatement)
+
+	return self.simulatedPopulation[populationLabel]
+    
     def getRuns(self):
 	runList = []
 	SQLStatement = "SELECT * from " + _runTable
@@ -155,13 +197,14 @@ def main():
     apolloDB.connect()
     print "Connection to Database successful"
     #apolloDB.populationAxis()
-    print str(apolloDB.getRuns())
+    runList = apolloDB.getRuns()
     print "Closing connection to database"
     apolloDB.close()
     print "Closing successful"
 
-    apolloOut = ApolloSimulatorOutput("UPitt,PSC,CMU_FRED_2.0.1_230619")
-    apolloOut.getTimeSeriesForSimulatedPopulation("susceptible in 42003")
+    print "RunList 0: " + runList[0]
+    apolloOut = ApolloSimulatorOutput(runList[0])
+    apolloOut.getNewlyInfectedTimeSeriesWithinLocation("42003")
     #apolloOut.printSimulatedPopulations()
 
 ############
