@@ -92,8 +92,10 @@ pds.append(pds_s)
 em_input._vaccinationControlMeasure._vaccineCmCompliance = 0.60
 em_input._vaccinationControlMeasure._vaccineEfficacy= 0.8
 em_input._vaccinationControlMeasure._vaccineEfficacyDelay = 14.0
-em_input._vaccinationControlMeasure._vaccineSupplySchedule = [100000.0] * 365
-em_input._vaccinationControlMeasure._vaccinationAdminSchedule = [200000.0] * 365
+em_input._vaccinationControlMeasure._vaccineSupplySchedule = [0.0]*365
+em_input._vaccinationControlMeasure._vaccinationAdminSchedule = [0.0]*365
+#em_input._vaccinationControlMeasure._vaccineSupplySchedule = [100000.0] * 365
+#em_input._vaccinationControlMeasure._vaccinationAdminSchedule = [200000.0] * 365
 
 em_input._antiviralControlMeasure._antiviralCmCompliance = 1.0
 em_input._antiviralControlMeasure._antiviralEfficacy= 1.0
@@ -117,14 +119,14 @@ get_run_status_request = getRunStatusRequest()
 get_run_status_request._runId = run_response._runId
 run_status_response = service.getRunStatus(get_run_status_request)
 
-while run_status_response._runStatus._status != "COMPLETED":
+while run_status_response._runStatus._status != "completed":
     get_run_status_request = getRunStatusRequest()
     get_run_status_request._runId = run_response._runId
     run_status_response = service.getRunStatus(get_run_status_request)
 
     print '\nCalling "getRunStatus"'
     print "Status Code: " +  run_status_response._runStatus._status + " Status Message: " + run_status_response._runStatus._message
-    time.sleep(30)
+    time.sleep(5)
 
 
 
