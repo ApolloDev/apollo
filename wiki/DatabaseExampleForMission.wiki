@@ -1,0 +1,30 @@
+#summary Database Example for MISSION Video
+
+Simulated Population
+||id||label||
+||1||susceptible in Allegheny County||
+||2||exposed in Allegheny County||
+||3||infectious in Allegheny County||
+||4||recovered in Allegheny County||
+
+Population Characteristics
+||id||population_id||axis_id||value||
+||1||1||disease state||susceptible||
+||2||1||location||Allegheny County||
+||3||2||disease state||exposed||
+||4||2||location||Allegheny County||
+||5||3||disease state||infectious||
+||6||3||location||Allegheny County||
+||7||4||disease state||recovered||
+||8||4||location||Allegheny County||
+
+Time Series
+||run_id||population_id||time_step||pop_count||
+||7||1||1||983629||
+||7||2||1||24758||
+||7||3||1||20528||
+||7||4||1||189623||
+||7||1||2||983619||
+||7||2||2||24753||
+||7||3||2||20538||
+||7||4||2||189628||
