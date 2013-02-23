@@ -217,6 +217,7 @@ class FredSSHConn:
 	    status = returnSplit[0]
 	else:
 	    status = "UNKNOWN"
+	    date = str(datetime.datetime.now())
 	    
 	if status[:7] == "RUNNING":
 	    percent = status.split('-')[1]
@@ -229,7 +230,7 @@ class FredSSHConn:
 		    print "starttime nothing"
 		    secondsRunning = -1.0
 		else:
-		    #timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
+		    timeValTZ = dateutil.parser.parse(retTVal)
 		    timeVal = timeValTZ.replace(tzinfo=None)
 		    
 		    now = datetime.datetime.now()
@@ -239,20 +240,20 @@ class FredSSHConn:
 	    print "Date = " + date
 	elif status == "FINISHED":
 	    if self.pbsWorkDir:
-		remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
-                
-		retTVal = self._executeCommand(remoteCommand).read()
+                remoteCommand = "tail -1 " + self.pbsWorkDir + "/starttime"
+                retTVal = self._executeCommand(remoteCommand).read()
+                print "Return from FRED: = " + str(retTVal)
                 if retTVal.strip() == "Nothing":
-		    print "starttime nothing"
-		    secondsRunning = -1.0
+                    print "starttime nothing"
+                    secondsRunning = -1.0
                 else:
-		    timeValTZ = dateutil.parser.parse(self._executeCommand(remoteCommand))
-		    timeVal = timeValTZ.replace(tzinfo=None)
-		    
-		    now = datetime.datetime.now()
-		    print "Time Val = " + str(timeVal) + " " + str(now)
-		    secondsRunning = (now-timeVal).seconds
-		date = " ".join(returnSplit[2:5])
+                    timeValTZ = dateutil.parser.parse(retTVal)
+                    timeVal = timeValTZ.replace(tzinfo=None)
+
+                    now = datetime.datetime.now()
+                    print "Time Val = " + str(timeVal) + " " + str(now)
+                    secondsRunning = (now-timeVal).seconds
+		date = " ".joen(returnSplit[2:5])
 	elif status == "NOT":
 	    secondsRunning = 0
 	    status = "UNKNOWN"
