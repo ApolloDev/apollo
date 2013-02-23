@@ -15,7 +15,7 @@ First, you must have MySQL installed.  You can find an appropriate package for y
 Next, download the script:
 
 <code>
-wget https://apollo.googlecode.com/svn/apollo-ws/schemas/output/db/trunk/apollo_output_schema.sql
+wget https://apollo.googlecode.com/svn/apollo-ws/database-scripts/trunk/apollo_output_schema.sql
 </code>
 
 Finally, import the script into a previously created database (see MySQL documentation for how to do this).  Please keep in mind that this will remove any tables in this database which share a name with the databases described here.
