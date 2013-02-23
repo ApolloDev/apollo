@@ -188,7 +188,7 @@ class FredWebService(SimulatorService):
                     f.write('module load fred\n')
 		    f.write('module load python\n')
                     f.write('cd $PBS_O_WORKDIR\n')
-	#	    f.write('echo `date` > starttime\n')
+		    f.write('echo `date` > starttime\n')
                     f.write('### Get the PBS ID\n')
                     f.write("set words = `echo $PBS_JOBID | sed 's/\./ /g'`\n")
                     f.write("set id = $words[1]\n")
