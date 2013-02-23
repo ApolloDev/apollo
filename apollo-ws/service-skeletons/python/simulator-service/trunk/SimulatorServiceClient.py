@@ -30,7 +30,7 @@ from ApolloFactory import *
 import time
 
 #create the service object
-service = SimulatorServiceLocator().getSimulatorServiceEI("http://warhol-fred.psc.edu:8087/fred")
+service = SimulatorServiceLocator().getSimulatorServiceEI("http://localhost:8087/acme")
 
 #create an epidemic model input object
 factory = ApolloFactory()
@@ -117,7 +117,7 @@ get_run_status_request = getRunStatusRequest()
 get_run_status_request._runId = run_response._runId
 run_status_response = service.getRunStatus(get_run_status_request)
 
-while run_status_response._runStatus._status != "COMPLETED":
+'''while run_status_response._runStatus._status != "COMPLETED":
     get_run_status_request = getRunStatusRequest()
     get_run_status_request._runId = run_response._runId
     run_status_response = service.getRunStatus(get_run_status_request)
@@ -125,7 +125,7 @@ while run_status_response._runStatus._status != "COMPLETED":
     print '\nCalling "getRunStatus"'
     print "Status Code: " +  run_status_response._runStatus._status + " Status Message: " + run_status_response._runStatus._message
     time.sleep(30)
-
+'''
 
 
 
