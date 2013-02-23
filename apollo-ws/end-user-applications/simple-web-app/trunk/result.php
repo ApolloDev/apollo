@@ -39,7 +39,7 @@ l
         var webservice_result = $.parseJSON(dataExchange.model_urls[<?php print $modelIndex; ?>]);
 
         var url = webservice_result.disease_states;
-        document.getElementById("epi-curve-dis-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=100% />";
+        document.getElementById("epi-curve-dis-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=80% />";
         //        //chart data
         //        var data = new Array();
         //        var xAxis = new Array();
