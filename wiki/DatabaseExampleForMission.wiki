@@ -1,24 +1,24 @@
 #summary Database Example for MISSION Video
 
-Simulated Population
+*Simulated Population*
 ||id||label||
 ||1||susceptible in Allegheny County||
 ||2||exposed in Allegheny County||
 ||3||infectious in Allegheny County||
 ||4||recovered in Allegheny County||
 
-Population Characteristics
+*Population Characteristics*
 ||id||population_id||axis_id||value||
 ||1||1||disease state||susceptible||
-||2||1||location||Allegheny County||
+||2||1||location||42003||
 ||3||2||disease state||exposed||
-||4||2||location||Allegheny County||
+||4||2||location||42003||
 ||5||3||disease state||infectious||
-||6||3||location||Allegheny County||
+||6||3||location||42003||
 ||7||4||disease state||recovered||
-||8||4||location||Allegheny County||
+||8||4||location||42003||
 
-Time Series
+*Time Series*
 ||run_id||population_id||time_step||pop_count||
 ||7||1||1||983629||
 ||7||2||1||24758||
@@ -28,3 +28,25 @@ Time Series
 ||7||2||2||24753||
 ||7||3||2||20538||
 ||7||4||2||189628||
+
+
+*Simulated Population*
+||Field Name||Data Type||
+||id||int||
+||label||varchar(255)||
+
+*Time Series*
+||Field Name||Data Type||
+||run_id||int||
+||population_id||int||
+||time_step||int||
+||pop_count||float||
+
+*Population Characteristics*
+||Field Name||Data Type||
+||id||int||
+||population_id||int||
+||axis_id||varchar(255) ||
+||value||varchar(255)||
+
+
