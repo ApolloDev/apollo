@@ -1,8 +1,23 @@
 #summary Introduction to working on Apollo-WS as a software developer
 
-=System Requirements=
+=Getting Started=
 
-A design goal of Apollo-WS is to remain 100% programming-language agnostic.  Therefore development should be possible in any language that supports SOAP web services, and optimally, can generate classes given an XML schema.
+==Java==
+The URL [https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk/ https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk/] provides skeletons for the ApolloService, SimulatorService, and VisualizerService.
 
-==Lead Developer== 
-The project's lead developer developed the components of Apollo-WS primarily in Java using the Eclipse IDE with the WTP plug-in.  It is likely that examples and documentation will be in Java format.   
+To compile the services:
+  # download Maven 3 ([http://maven.apache.org/download.cgi http://maven.apache.org/download.cgi])
+  # edit your system path so that the "mvn" executable can be run from the command line
+  # from the project root directory, type "mvn clean install"
+
+The services will be built, and WARs will be produced in their respective "war/target" directories.  These wars can be deployed to Tomcat.  
+
+==Python==
+
+We currently provide Python service skeletons for the SimulatorService and the VisualizerService.  These skeletons require The Zolera Soap Infrastructure, v2.0_rc3.
+
+The SimulatorService can be downloaded here: [https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/python/simulator-service/trunk/ https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/python/simulator-service/trunk/], and the VisualizerService can be downloaded here: [https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/python/visualizer-service/trunk/ https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/python/visualizer-service/trunk/]. 
+
+To run the simulator service, run "SimulatorService.py."  To test the service, run "SimulatorServiceClient.py." 
+
+To run the visualizer service, run "VisualizerService.py." To test the service, run "VisualizerServiceClient.py."
