@@ -176,7 +176,10 @@ function loadParamGrid(){
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
-                        value: "day:day;hour:hour;millisecond:millisecond;minute:minute;month:month;second:second;year:year"
+                        value: "day:day;hour:hour;millisecond:millisecond;minute:minute;month:month;second:second;year:year",
+                        dataInit: function(elem) {
+                            $(elem).width(75);  // set the width which you need
+                        }
                     };
                     paramGrid.jqGrid('editRow', i);
                     cm.edittype = 'text';
@@ -240,7 +243,7 @@ function loadParamGrid(){
         onSelectRow : function (rowid, status){
             
             //            paramGrid.jqGrid('resetSelection');
-            if (lastEditId != -1){
+            if (lastEditId != -1) {
                 $(this).saveRow(lastEditId);
                 lastEditId = -1;
             }
