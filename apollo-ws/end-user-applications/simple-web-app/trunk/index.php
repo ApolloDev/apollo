@@ -91,7 +91,7 @@ Index page for the Apollo Test Client
             <div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
                 <div id="west-div">
                     <div id="model-selection-div" class="ui-widget-header ui-corner-all" style="margin:2px;padding:2px;">
-                        Epidemic Model Selection
+                        Epidemic Simulator Selection
                     </div>
 <!--                    <div id="jurisdiction-div" class="drop-box-div">
                         <div>Jurisdiction:</div>
@@ -109,7 +109,7 @@ Index page for the Apollo Test Client
                         </select>
                     </div>-->
                     <div id="model-div" class="drop-box-div">
-                        <div>Epidemic Models:</div>
+                        <div>Epidemic Simulators:</div>
                         <select id="model-combo" style="width: 240px;" size="4" multiple="multiple">
                             <option value="loading">Loading...</option>
                         </select>
