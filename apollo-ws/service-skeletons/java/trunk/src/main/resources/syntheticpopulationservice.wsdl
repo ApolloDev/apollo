@@ -10,14 +10,18 @@
 		<s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
 
-			<s:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd"
+			<!-- <s:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd"
+				namespace="http://types.apollo.pitt.edu/"></s:import> -->
+				
+				<s:import schemaLocation="apollo-types.xsd"
 				namespace="http://types.apollo.pitt.edu/"></s:import>
+				
 
 
 			<s:element name="SubmitJob">
 				<s:complexType>
 					<s:sequence>
-						<s:element name="simulatedPopulationConfiguration" type="apollo:SimulatedPopulationConfiguration"></s:element>
+						<s:element name="syntheticPopulationConfiguration" type="apollo:SyntheticPopulationConfiguration"></s:element>
 					</s:sequence>
 				</s:complexType>
 			</s:element>
