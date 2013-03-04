@@ -659,10 +659,15 @@ jQuery(document).ready(function(){
                 waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
-                addmsg(textStatus + " (" + errorThrown + ")");
-                setTimeout(
-                    poll, /* Try again after.. */
-                    15000); /* milliseconds (15seconds) */
+                if (textStatus == 'timeout') {
+                    var date = new Date();
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
+                        + " <b> ERROR: </b>" + "Could not call run on " + vizName + ", please run epidemic simulator again.");
+                //                }
+                //                                setTimeout(
+                //                                    poll, /* Try again after.. */
+                //                                    15000); /* milliseconds (15seconds) */
+                }
             }
         });
     }
@@ -796,10 +801,17 @@ jQuery(document).ready(function(){
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
-                addmsg(textStatus + " (" + errorThrown + ")");
-                setTimeout(
-                    poll, /* Try again after.. */
-                    15000); /* milliseconds (15seconds) */
+                if (textStatus == 'timeout') {
+                    var date = new Date();
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
+                        + "<b> ERROR: </b>" + "Could not call getStatus on " + vizName + ", retrying in 5 seconds.");
+                    setTimeout(
+                        function() {
+                            waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName)
+                        }, /* Request next message */
+                        5000 /* ..after 1 seconds */
+                        );
+                }
             }
         });
         
@@ -846,7 +858,7 @@ jQuery(document).ready(function(){
                         startVisualization(runId, simName, modelIndex, 'PSC', 'GAIA', '1.0');
                     }
                     //                    waitForVisualizations();
-                    
+                                    
                     if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
                         startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
                     }
@@ -854,10 +866,18 @@ jQuery(document).ready(function(){
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
-                addmsg(textStatus + " (" + errorThrown + ")");
-                setTimeout(
-                    poll, /* Try again after.. */
-                    15000); /* milliseconds (15seconds) */
+                //                addmsg(textStatus);
+                if (textStatus == 'timeout') {
+                    var date = new Date();
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
+                        + "<b> Error: </b>" + "Could not call getStatus on " + simName + ", retrying in 5 seconds.");
+                    setTimeout(
+                        function() {
+                            waitForSimulationsAndStartVisualizations(obj, modelIndex)
+                        }, /* Request next message */
+                        5000 /* ..after 1 seconds */
+                        );
+                }
             }
         });
         
@@ -874,6 +894,7 @@ jQuery(document).ready(function(){
         // dataType identifies the expected
         // content type of the server response
         dataType : 'json',
+        timeout:50000, /* Timeout in ms */
 
         beforeSubmit : function(formData, jqForm, options) {
             //put the parameters value here
@@ -982,11 +1003,23 @@ jQuery(document).ready(function(){
                 if (simName == 'FRED') {
                     numberOfVisualizations += 1; // one for gaia
                 }
+
                 waitForSimulationsAndStartVisualizations(simulatorObj, i);
             }
 
             combinedRunId = allRunIds.substring(1);
             
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+
+            if (textStatus == 'timeout') { 
+                var date = new Date();
+                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
+                    + " <b> ERROR: </b>" + "Could not call run for simulators, please run epidemic simulators again.");
+            //                setTimeout(
+            //                    poll, /* Try again after.. */
+            //                    15000); /* milliseconds (15seconds) */
+            }
         }
     });
 
