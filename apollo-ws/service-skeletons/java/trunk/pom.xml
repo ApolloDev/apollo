@@ -31,6 +31,10 @@
 	  <module>simulator-service</module>
 	  <module>simulator-service-war</module>
       <module>simulator-service-client</module>
+	
+	  <module>syntheticpopulation-service</module>
+	  <module>syntheticpopulation-service-war</module>
+      <module>syntheticpopulation-service-client</module>
 	  
 	  <module>visualizer-service</module>
 	  <module>visualizer-service-war</module>
