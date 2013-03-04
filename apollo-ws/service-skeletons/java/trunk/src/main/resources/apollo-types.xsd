@@ -420,7 +420,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="SimulatedPopulationConfiguration">
+	<complexType name="SyntheticPopulationConfiguration">
 		<sequence>
 			<element name="serviceIdentification"
 				type="tns:ServiceIdentification">
