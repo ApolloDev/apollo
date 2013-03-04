@@ -15,57 +15,56 @@
 
 package edu.pitt.apollo.apolloclient;
 
-import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.xml.ws.Holder;
 
 import edu.pitt.apollo.service.apolloservice.ApolloService;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
-import edu.pitt.apollo.types.AntiviralControlMeasure;
 import edu.pitt.apollo.types.Authentication;
-import edu.pitt.apollo.types.Disease;
-import edu.pitt.apollo.types.PopulationDiseaseState;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.ServiceRecord;
 import edu.pitt.apollo.types.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.SimulatedPopulation;
-import edu.pitt.apollo.types.SimulatorConfiguration;
 import edu.pitt.apollo.types.SimulatorIdentification;
-import edu.pitt.apollo.types.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.TimeStepUnit;
-import edu.pitt.apollo.types.VaccinationControlMeasure;
 
 public class WSClient {
-	public static void main(String[] args) throws InterruptedException {
-		ApolloService service = new ApolloService();
+	public static void main(String[] args) throws InterruptedException, MalformedURLException {
+		ApolloService service = new ApolloService(new URL("http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl"));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
-		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+//		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+//
+//		Authentication auth = new Authentication();
+//		auth.setRequesterId("fake_user");
+//		auth.setRequesterPassword("fake_password");
+//		srr.setAuthentication(auth);
+//
+//		ServiceRecord sr = new ServiceRecord();
+//		SimulatorIdentification si = new SimulatorIdentification();
+//		si.setSimulatorDeveloper("UPitt,PSC,CMU");
+//		si.setSimulatorName("YNIC");
+//		si.setSimulatorVersion("2.0.1");
+//		sr.setSimulatorIdentification(si);
+//
+//		srr.setServiceRecord(sr);
+//		srr.setUrl("http://youtube.com");
+//		//srr.setUrl("http://localhost:8087/fred?wsdl");
+//
+//		Holder<Boolean> success = new Holder<Boolean>();
+//		Holder<String> msg = new Holder<String>();
+//		port.registerService(srr, success, msg);
+//		System.out.println(msg.value);
 
-		Authentication auth = new Authentication();
-		auth.setRequesterId("fake_user");
-		auth.setRequesterPassword("fake_password");
-		srr.setAuthentication(auth);
-
-		ServiceRecord sr = new ServiceRecord();
-		SimulatorIdentification si = new SimulatorIdentification();
-		si.setSimulatorDeveloper("UPitt,PSC,CMU");
-		si.setSimulatorName("FRED");
-		si.setSimulatorVersion("2.0.1");
-		sr.setSimulatorIdentification(si);
-
-		srr.setServiceRecord(sr);
-		srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
-		//srr.setUrl("http://localhost:8087/fred?wsdl");
-
-		Holder<Boolean> success = new Holder<Boolean>();
-		Holder<String> msg = new Holder<String>();
-		port.registerService(srr, success, msg);
-		System.out.println(msg.value);
-
-		SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
+		 List<ServiceRecord> l = port.getRegisteredServices();
+		 System.out.println("Found " + l.size() + " registered services!");
+		 for (ServiceRecord r : l) {
+			 System.out.println(r.getSimulatorIdentification().getSimulatorDeveloper());
+			 System.out.println(r.getSimulatorIdentification().getSimulatorName());
+			 System.out.println(r.getSimulatorIdentification().getSimulatorVersion() + "\n\n");
+			 }
+		
+		/*SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
 
 		simulatorConfiguration.setAuthentication(auth);
 		simulatorConfiguration
