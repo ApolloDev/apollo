@@ -419,4 +419,43 @@
 			<element name="URL" type="anySimpleType"></element>
 		</sequence>
 	</complexType>
+
+	<complexType name="SimulatedPopulationConfiguration">
+		<sequence>
+			<element name="serviceIdentification"
+				type="tns:ServiceIdentification">
+			</element>
+			<element name="authentication" type="tns:Authentication"></element>
+            <element name="requesterIdentification" type="tns:RequesterIdentification"></element>
+            <element name="householdCharacteristics" type="token"
+				maxOccurs="4" minOccurs="1">
+			</element>
+
+			<element name="countiesOfInterest" type="tns:INCITS31"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ServiceIdentification">
+		<sequence>
+			<element name="serviceDeveloper" type="token"></element>
+			<element name="serviceName" type="token"></element>
+			<element name="serviceVersion" type="token"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="INCITS31">
+		<restriction base="positiveInteger">
+			<totalDigits value="5" fixed="true" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="RequesterIdentification">
+		<sequence>
+			<element name="requesterName" type="token"></element>
+			<element name="requesterCompany" type="token"></element>
+			<element name="requesterEmail" type="token"></element>
+		</sequence>
+	</complexType>
 </schema>
