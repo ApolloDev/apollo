@@ -167,7 +167,7 @@ Index page for the Apollo Test Client
                 <div>
                     <form id="apollo-form" action="apollo_exec.php" method="post"
                           style="padding: 10px;">
-                        <button id="create" style="font-size: 16px">Run Epidemic Model</button>
+                        <button id="create" style="font-size: 16px">Run Epidemic Simulator(s)</button>
                     </form>
                 </div>
                 <div id="status-name-div" style="padding: 10px">Status:</div>
