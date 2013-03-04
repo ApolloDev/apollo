@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/"
+	xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+
+		<s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/"
+			xmlns:apollo="http://types.apollo.pitt.edu/">
+
+			<s:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd"
+				namespace="http://types.apollo.pitt.edu/"></s:import>
+
+
+			<s:element name="SubmitJob">
+				<s:complexType>
+					<s:sequence>
+						<s:element name="simulatedPopulationConfiguration" type="apollo:SimulatedPopulationConfiguration"></s:element>
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="SubmitJobResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="SubmitJobResult"
+							type="apollo:RunId" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetStatus">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="runId"
+							type="apollo:RunId" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetStatusResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="GetStatusResult"
+							type="apollo:RunStatus" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetURL">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="runId"
+							type="apollo:RunId" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetURLResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="zipFileLocation"
+							type="s:anyURI" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="SubmitJobSoapIn">
+		<wsdl:part name="parameters" element="tns:SubmitJob" />
+	</wsdl:message>
+	<wsdl:message name="SubmitJobSoapOut">
+		<wsdl:part name="parameters" element="tns:SubmitJobResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusSoapIn">
+		<wsdl:part name="parameters" element="tns:GetStatus" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusSoapOut">
+		<wsdl:part name="parameters" element="tns:GetStatusResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetURLSoapIn">
+		<wsdl:part name="parameters" element="tns:GetURL" />
+	</wsdl:message>
+	<wsdl:message name="GetURLSoapOut">
+		<wsdl:part name="parameters" element="tns:GetURLResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Synthia_WSSoap">
+		<wsdl:operation name="SubmitJob">
+			<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">name optional: user
+				name&lt;br&gt;company optional&lt;br&gt;email
+				required&lt;br&gt;countyFIPSList required: one or more comma
+				seperated&lt;br&gt;variableList required,max
+				5:SIZE,HEATING,HOUSEHOLD_INCOME,LANGUAGE,FAM_TYPE,HOUSEHOLDER_AGE,HOUSEHOLDER_RACE,LINGUISTIC,CHILDREN,TENURE,BUILDING,YEAR
+				- SIZE is required then up to four more
+			</wsdl:documentation>
+			<wsdl:input message="tns:SubmitJobSoapIn" />
+			<wsdl:output message="tns:SubmitJobSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetStatus">
+			<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">requestID required
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetStatusSoapIn" />
+			<wsdl:output message="tns:GetStatusSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetURL">
+			<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">requestID required
+			</wsdl:documentation>
+			<wsdl:input message="tns:GetURLSoapIn" />
+			<wsdl:output message="tns:GetURLSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="Synthia_WSSoap" type="tns:Synthia_WSSoap">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="SubmitJob">
+			<soap:operation soapAction="http://tempuri.org/SubmitJob"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetStatus">
+			<soap:operation soapAction="http://tempuri.org/GetStatus"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetURL">
+			<soap:operation soapAction="http://tempuri.org/GetURL"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="Synthia_WSSoap12" type="tns:Synthia_WSSoap">
+		<soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="SubmitJob">
+			<soap12:operation soapAction="http://tempuri.org/SubmitJob"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetStatus">
+			<soap12:operation soapAction="http://tempuri.org/GetStatus"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetURL">
+			<soap12:operation soapAction="http://tempuri.org/GetURL"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Synthia_WS">
+		<wsdl:port name="Synthia_WSSoap" binding="tns:Synthia_WSSoap">
+			<soap:address location="http://synthiastage.rti.org/Account/synthia-WS.asmx" />
+		</wsdl:port>
+		<wsdl:port name="Synthia_WSSoap12" binding="tns:Synthia_WSSoap12">
+			<soap12:address location="http://synthiastage.rti.org/Account/synthia-WS.asmx" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
