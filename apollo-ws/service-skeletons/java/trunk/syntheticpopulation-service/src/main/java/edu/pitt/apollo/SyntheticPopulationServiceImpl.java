@@ -25,13 +25,13 @@ import javax.xml.ws.ResponseWrapper;
 import org.tempuri.SynthiaWSSoap;
 
 import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.SimulatedPopulationConfiguration;
+import edu.pitt.apollo.types.SyntheticPopulationConfiguration;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatedpopulationservice/", 
-portName="SimulatedPopulationServiceEndpoint",
-serviceName="SimulatedPopulationService", 
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
+portName="SyntheticPopulationServiceEndpoint",
+serviceName="SyntheticPopulationService", 
 endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
-class SimulatedPopulationService implements SynthiaWSSoap {
+class SyntheticPopulationService implements SynthiaWSSoap {
 
 	@Override
 	@WebResult(name = "zipFileLocation", targetNamespace = "http://tempuri.org/")
@@ -50,7 +50,7 @@ class SimulatedPopulationService implements SynthiaWSSoap {
 	@WebMethod(operationName = "SubmitJob", action = "http://tempuri.org/SubmitJob")
 	@ResponseWrapper(localName = "SubmitJobResponse", targetNamespace = "http://tempuri.org/", className = "org.tempuri.SubmitJobResponse")
 	public String submitJob(
-			@WebParam(name = "simulatedPopulationConfiguration", targetNamespace = "http://tempuri.org/") SimulatedPopulationConfiguration simulatedPopulationConfiguration) {
+			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://tempuri.org/") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
 		// TODO Auto-generated method stub
 		return null;
 	}
