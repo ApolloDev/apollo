@@ -45,6 +45,10 @@ class FredSSHConn:
 	    self.getScratch = True
 	    self.runPBS = True
 	    self.pbsSubmit = "module load torque; qsub"
+	elif self.machine == "warhol.psc.edu":
+	    self.getScratch = True
+	    self.runPBS = True
+	    self.pbsSubmit = "qsub"
 	elif self.machine == "unicron.psc.edu":
 	    self.remoteDir = "/media/scratch"
 	
