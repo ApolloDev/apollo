@@ -147,8 +147,8 @@ class FredWebService(SimulatorService):
                         f.write("vaccine_dose_efficacy_ages[0][0] = 2 0 100\n")
                         f.write("vaccine_dose_efficacy_values[0][0] = 1 %g\n"\
                                 %cfg._vaccinationControlMeasure._vaccineEfficacy)
-                        f.write("vaccine_dose_delay_ages[0][0] = 2 0 100\n")
-                        f.write("vaccine_dose_delay_values[0][0] = 1 %d\n"\
+                        f.write("vaccine_dose_efficacy_delay_ages[0][0] = 2 0 100\n")
+                        f.write("vaccine_dose_efficacy_delay_values[0][0] = 1 %d\n"\
                                 %cfg._vaccinationControlMeasure._vaccineEfficacyDelay)
                         f.write("vaccination_capacity_file = fred-vaccination-schedule_0.txt\n")
 
@@ -173,18 +173,26 @@ class FredWebService(SimulatorService):
 	    idPrefix = cfg._simulatorIdentification._simulatorDeveloper +\
 		       "_" + cfg._simulatorIdentification._simulatorName +\
 		       "_" + cfg._simulatorIdentification._simulatorVersion + "_"
-	    
+	    fredConn._setup("warhol.psc.edu",username="stbrown",
+				privateKeyFile="/usr/local/packages/Apollo-FRED-Webservice/id_rsa")
+            fredConn._connect()
+ 
             ### Write the PBS submission Script
             with open('fred_submit.pbs','wb') as f:
                     f.write('#!/bin/csh\n')
-                    f.write('#PBS -l ncpus=16\n')
+		    if fredConn.machine == "blacklight.psc.xsede.org":
+                        f.write('#PBS -l ncpus=16\n')
+		    else:
+			f.write('#PBS -l nodes=2:ppn=8\n')
                     f.write('#PBS -N fred.pbs.out\n')
                     f.write('#PBS -l walltime=30:00\n')
                     f.write('#PBS -j oe\n')
-                    f.write('#PBS -q debug\n')
+	     	    if fredConn.machine == "blacklight.psc.xsede.org":
+                   	 f.write('#PBS -q debug\n')
                     f.write('\n')
-                    f.write('source /usr/share/modules/init/csh\n')
-                    f.write('source /etc/csh.cshrc.psc\n')
+		    if fredConn.machine == "blacklight.psc.xsede.org":
+                        f.write('source /usr/share/modules/init/csh\n')
+                        f.write('source /etc/csh.cshrc.psc\n')
                     f.write('module load fred\n')
 		    f.write('module load python\n')
                     f.write('cd $PBS_O_WORKDIR\n')
@@ -200,8 +208,8 @@ class FredWebService(SimulatorService):
                     
                     
             os.chdir('../')
-            fredConn._setup("blacklight.psc.xsede.org",username="stbrown",privateKeyFile="./id_rsa")
-            fredConn._connect()
+            #fredConn._setup("warhol.psc.edu",username="stbrown",privateKeyFile="./id_rsa")
+            #fredConn._connect()
             print "Created Connection"
 
             fredConn._mkdir(tempDirName)
