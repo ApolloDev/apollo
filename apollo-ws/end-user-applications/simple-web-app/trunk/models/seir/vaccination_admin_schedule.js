@@ -477,7 +477,7 @@ var vaccAdminSchedule = new function(){
 		$('#vaccination-admin-schedule-submit').button().click(function (){
 			//if user is still editing the table
 			if (deliveryGrid.find('input').length != 0){
-				alert('Please finish editing before save!');
+				alert('Please finish editing before save! To finish editing, click on the edited cell and hit enter.');
 			//	$(this).val(previousDate);
 				return;
 			}
