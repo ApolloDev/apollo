@@ -99,7 +99,7 @@ if __name__ == '__main__':
     for state in stateList.keys():
         for location in locationList:
 	    stateInsertIDDict[(state,location)] =\
-			  apolloDB.checkAndAddSimulatedPopulation(state,location)
+			  apolloDB.checkAndAddSimulatedPopulation(stateList[state],location)
 
     for state in stateList.keys():
         for location in locationList:
