@@ -29,7 +29,7 @@ var vaccAdminSchedule = new function(){
 	function onGridInsertClicked(){
 		//if user is still editing the table
 		if (deliveryGrid.find('input').length != 0){
-			alert('Please save before add!');
+			alert('You must finish editing before you can add. To finish editing, click on the active cell (it is highlighted in yellow) and press the enter key.!');
 			return;
 		}
 		
@@ -41,7 +41,7 @@ var vaccAdminSchedule = new function(){
 		//get current select id
 		var currid = deliveryGrid.getGridParam('selrow');
 		if (currid == null){
-			alert('Please select one row before insert');
+			alert('You must select a row before you can insert.');
 			return;
 		}
 		
@@ -96,7 +96,7 @@ var vaccAdminSchedule = new function(){
 	function onGridAddClicked(){
 		//if user is still editing the table
 		if (deliveryGrid.find('input').length != 0){
-			alert('Please save before add!');
+			alert('You must finish editing before you can add. To finish editing, click on the active cell (it is highlighted in yellow) and press the enter key.!');
 		//	$(this).val(previousDate);
 			return;
 		}
@@ -144,7 +144,7 @@ var vaccAdminSchedule = new function(){
 	function onGridDeleteClicked(){
 		//if user is still editing the table
 		if (deliveryGrid.find('input').length != 0){
-			alert('Please save before delete!');
+			alert('You must finish editing before you can delete. To finish editing, click on the active cell (it is highlighted in yellow) and press the enter key.!');
 			return;
 		}
 		
@@ -157,7 +157,7 @@ var vaccAdminSchedule = new function(){
 			var rowid = deliveryGrid.getGridParam('selrow');
 			
 			if (rowid == null){
-				alert('Please select one row before insert');
+				alert('You must select a row before you can insert.');
 				return;
 			}
 			
@@ -460,7 +460,7 @@ var vaccAdminSchedule = new function(){
 			
 			//if user is still editing the table
 			if (deliveryGrid.find('input').length != 0){
-				alert('Please save before create the date!');
+				alert('You must finish editing before you can create a date. To finish editing, click on the active cell (it is highlighted in yellow) and press the enter key.!');
 				$(this).val(previousDate);
 				return;
 			}
@@ -477,7 +477,7 @@ var vaccAdminSchedule = new function(){
 		$('#vaccination-admin-schedule-submit').button().click(function (){
 			//if user is still editing the table
 			if (deliveryGrid.find('input').length != 0){
-				alert('Please finish editing before save! To finish editing, click on the edited cell and hit enter.');
+				alert('You must finish editing before you can save. To finish editing, click on the active cell (it is highlighted in yellow) and press the enter key.');
 			//	$(this).val(previousDate);
 				return;
 			}
