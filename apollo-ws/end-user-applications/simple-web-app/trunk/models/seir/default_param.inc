@@ -222,7 +222,7 @@ function seir_get_default_param_structure() {
 
     $pname = 'Vaccination Administration Schedule';
     $pvalue = array();
-    for ($i = 0; $i < 365; $i++) {
+    for ($i = 0; $i < 45; $i++) {
         $pvalue[] = 0.0;
     }
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
