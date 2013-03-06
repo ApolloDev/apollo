@@ -89,87 +89,87 @@ function seir_get_default_param_structure() {
 
     $pname = $sectionParagraph . '--- Authentication Section ---</p>';
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Requester ID';
     $pvalue = 'UpittUser';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 'The idendification username of the requester', 0, ++$left, ++$left, true, false));
 
 
     $pname = 'Requester Password';
     $pvalue = 'UpittPassword';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 'The password of the requester', 0, ++$left, ++$left, true, false));
 
     $pname = $sectionParagraph . '--- Simulator Time Specification Section ---</p>';
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
 
     $pname = get_time_step_unit_text();
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = get_time_step_value_text();
     $pvalue = '1';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = get_run_length_text();
     $pvalue = '45';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = $sectionParagraph . '--- Simulated Population Section ---</p>';
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Population Location';
     $pvalue = '42003';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $basePath = 'Initial Compartment Sizes'; //create base folder entry
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', 0, ++$left, $left + 9, false, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', '', 0, ++$left, $left + 9, false, false));
     $basePath = deleteSpace($basePath);
 
     $pname = 'Susceptible';
     $pvalue = '983629';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 1, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
     $pname = 'Exposed';
     $pvalue = '24758';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 1, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
 
     $pname = 'Infectious';
     $pvalue = '20528';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 1, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
     $pname = 'Recovered';
     $pvalue = '189623';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 1, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
 
     $pname = $sectionParagraph . '--- Disease Section ---</p>';
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Disease Name';
     $pvalue = 'Influenza';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Infectious Period';
     $pvalue = '4.1';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Latent Period';
     $pvalue = '1.2';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Reproduction Number';
     $pvalue = '1.7';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Asymptomatic Infection Fraction';
     $pvalue = '0.5';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
 //    $pname = $sectionParagraph . '--- Antiviral Control Measure Section ---</p>';
 //    $pvalue = '';
@@ -205,11 +205,11 @@ function seir_get_default_param_structure() {
 
     $pname = $sectionParagraph . '--- Vaccination Control Measure Section ---</p>';
     $pvalue = '';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '',  0, ++$left, ++$left, true, false));
 
     $pname = 'Vaccine Control Measure Compliance';
     $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Vaccination Supply Schedule';
     $pvalue = array();
@@ -218,7 +218,7 @@ function seir_get_default_param_structure() {
     }
 
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'models/seir/vaccination_supply_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
+            'models/seir/vaccination_supply_schedule.html', json_encode($pvalue), '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Vaccination Administration Schedule';
     $pvalue = array();
@@ -226,15 +226,15 @@ function seir_get_default_param_structure() {
         $pvalue[] = 0.0;
     }
     $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'models/seir/vaccination_admin_schedule.html', json_encode($pvalue), 0, ++$left, ++$left, true, false));
+            'models/seir/vaccination_admin_schedule.html', json_encode($pvalue), '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Vaccine Efficacy';
     $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
     $pname = 'Vaccine Efficacy Delay';
     $pvalue = '0.0';
-    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
+    $SEIR->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
 
     //new level under InitialCompartmentSizes
