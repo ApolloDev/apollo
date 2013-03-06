@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Lesser General Public
     License along with Apollo.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+ */
 
 /**
  * Base functions for apollo
@@ -61,6 +61,7 @@ var numSimulators;
 var combinedRunId;
 var numberOfVisualizations;
 var numberOfVisualizationsFinished;
+var firstMessage = true;
 
 var InfluenzaId = 442696006;
 var AnthraxId = 21927003;
@@ -112,7 +113,7 @@ function loadParamGrid(){
         pager: false,
         loadui: "disable",
         //cellEdit: true,
-        colNames: ["id", "Parameter Name", "Value", "url", "extra"],
+        colNames: ["id", "Parameter Name", "Value", "url", "extra", "tooltip"],
         colModel: [
         {
             name: "id",
@@ -123,7 +124,7 @@ function loadParamGrid(){
 
         {
             name: "pname", 
-            width:305, 
+            width: 325, 
             resizable: false, 
             sortable:false
         },
@@ -150,6 +151,12 @@ function loadParamGrid(){
             name: "extra",
             width:0,
             hidden:true
+        },
+        
+        {
+            name: "tooltip",
+            width:0,
+            hidden:true
         }
         ],
         treeGrid: true,
@@ -167,8 +174,13 @@ function loadParamGrid(){
             var rowIDs = jQuery("#west-grid").getDataIDs();
             //        $(".jqgrow").addClass("ui-state-hover").css("background", "none !important");
             for (var i=0;i<rowIDs.length;i=i+1){ 
-                var rowData = $(this).getRowData(i);
                
+                var cellData = $("#west-grid").jqGrid('getCell', i, 'tooltip');
+                $("#west-grid").jqGrid('setCell', i,'pname','','',{
+                    'title':cellData
+                });
+
+                var rowData = $(this).getRowData(i);
                 
                 var trElement = jQuery("#"+ rowIDs[i],jQuery('#west-grid'));
         
@@ -379,20 +391,30 @@ function loadParamGrid(){
 //    }).setGridWidth(outerwidth-20);
 //};
 
-function createOrSelectInsturctionTab(){
+function createOrSelectInstructionTab(){
     //add instruction tab
 	
     //create the ins tab
-    var insId = "#instruction";
+    var insId = "instructions.html";
+    var tabExists = false;
+    $('#tabs ul li a').each(function(i) {
+        if (this.text == insId) {
+            tabExists = true;
+        }
+    }); 
 	
-    if($(insId).html() != null ) {
-        //select the tab
-        maintab.tabs('select', insId);
-    } else {	
-        maintab.tabs('add', insId, 'Help');
-        //load the ins tab
-        $(insId, "#tabs").load('instructions.html');
-    }
+    //    if($(insId).html() != null ) {
+    //        //select the tab
+    ////        maintab.tabs('select', insId);
+    //    } else {	
+    //        maintab.tabs('add', insId, 'Help');
+    //        //load the ins tab
+    //        $(insId, "#tabs").load('instructions.html');
+    $( "<li><a href='instructions.html'>Help</a></li>" )
+    .appendTo( "#tabs .ui-tabs-nav" );
+    $( "#tabs" ).tabs( "refresh" );
+    $("#tabs").tabs( "option", "active", -1 );
+//    }
 }
 
 function adjustMainDivSize(){
@@ -424,7 +446,7 @@ function loadRegisteredModels(){
             
             var model = $('#model-combo');
             model.val('UNDEF');
-            model.attr('disabled', '');
+            //            model.attr('disabled', '');
             //            //			
             model.empty();
             
@@ -463,7 +485,6 @@ function loadRegisteredModels(){
 jQuery(document).ready(function(){
     //    var jur = $('#jurisdiction-combo');
     //    jur.val('UNDEF');
-	
     loadRegisteredModels();
     //    var snomed = $('#snomed-ct-combo');
     //    snomed.val('UNDEF');
@@ -527,7 +548,7 @@ jQuery(document).ready(function(){
     //            model.val('UNDEF');
     //        }
     //    });
-    loadParamGrid();
+  
         
     //        $('#select-img').hide();
     //load model when model drop down change
@@ -573,7 +594,9 @@ jQuery(document).ready(function(){
         west__onresize: function (pane, $Pane) {
             $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
         }
-    });
+    });  
+    
+    loadParamGrid();
     //$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
 
     //center panel
@@ -597,8 +620,15 @@ jQuery(document).ready(function(){
     });
     
     function clearTabs() {
-        for (var i = $('#tabs','#CenterPane').tabs('length') - 1; i >= 1; i--) {
-            $('#tabs','#CenterPane').tabs('remove', i);
+        for (var i = $('#tabs >ul >li').size() - 1; i >= 1; i--) {
+            //            $('#tabs','#CenterPane').tabs('remove', i); // deprecated
+            var tab = $( "#tabs" ).find( ".ui-tabs-nav li:eq(" + i + ")" ).remove();
+            // Find the id of the associated panel
+            var panelId = tab.attr( "aria-controls" );
+            // Remove the panel
+            $( "#" + panelId ).remove();
+            // Refresh the tabs widget
+            $( "tabs" ).tabs( "refresh" );
         }
     }
     
@@ -627,10 +657,68 @@ jQuery(document).ready(function(){
         // copy messages from status divs 1 and 2 to 2 and 3, respectively
         var status3Html = $("#status-div-3").html();
         var status2Html = $("#status-div-2").html();
-
+        
         $("#status-div-1").html(status2Html);
         $("#status-div-2").html(status3Html);
         $("#status-div-3").html(msg);
+    //        var terminal = document.getElementById('terminal');
+    //        terminal.value = terminal.value + "\n" + msg;
+    //        var message;
+    //        if (firstMessage == true) {
+    //            message = msg;
+    //            firstMessage = false;
+    //        } else {
+    //            message = CKEDITOR.instances.terminal.getData() + "<br>" + msg;
+    //        }
+    //
+    //        var editor = CKEDITOR.instances.terminal;
+    //        editor.setData(message, function() {
+    //            editor.focus();
+    //
+    //            var s = editor.getSelection(); // getting selection
+    //            var selected_ranges = s.getRanges(); // getting ranges
+    //            var node = selected_ranges[0].startContainer; // selecting the starting node
+    //            var parents = node.getParents(true);
+    //
+    //            node = parents[parents.length - 2].getFirst();
+    //
+    //            while (true) {
+    //                var x = node.getNext();
+    //                if (x == null) {
+    //                    break;
+    //                }
+    //                node = x;
+    //            }
+    //
+    //            s.selectElement(node);
+    //            selected_ranges = s.getRanges();
+    //            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+    //            s.selectRanges(selected_ranges);  // putting the current selection there
+    //        }
+    //                
+    //        );
+    }
+    
+    function positionCursor(editor) {
+        var s = editor.getSelection(); // getting selection
+        var selected_ranges = s.getRanges(); // getting ranges
+        var node = selected_ranges[0].startContainer; // selecting the starting node
+        var parents = node.getParents(true);
+
+        node = parents[parents.length - 2].getFirst();
+
+        while (true) {
+            var x = node.getNext();
+            if (x == null) {
+                break;
+            }
+            node = x;
+        }
+
+        s.selectElement(node);
+        selected_ranges = s.getRanges();
+        selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+        s.selectRanges(selected_ranges);  // putting the current selection there
     }
     
     function addZero(n) {
@@ -738,63 +826,79 @@ jQuery(document).ready(function(){
 
 
                         if (key == 'Disease states') {
-                            if($(resultID).html() != null ) {
-                                //select the tab
-                                maintab.tabs('select', resultID);
-                                //clear current tab content
-                                $(resultID).empty();
-                            } else {
-                                //create the tab
-                                maintab.tabs('add', resultID, simName + ': Disease states over time');
-                            }
+                            //                            if($(resultID).html() != null ) {
+                            ////                                //select the tab
+                            ////                                maintab.tabs('select', resultID);
+                            ////                                //clear current tab content
+                            ////                                $(resultID).empty();
+                            //                            } else {
+                            //create the tab
+                            // maintab.tabs('add', resultID, simName + ': Disease states over time'); // deprecated
+                            $( "<li><a href='result.php?index=" + modelIndex + "'>" + simName + ": Disease states over time</a></li>" )
+                            .appendTo( "#tabs .ui-tabs-nav" );
+                            $( "#tabs" ).tabs( "refresh" );
+                            $("#tabs").tabs( "option", "active", -1 );
+                        //                            }
                     
                     
-                            //load the tab
-                            $(resultID, "#tabs").load('result.php?index=' + modelIndex);
+                        //load the tab
+                        //                            $(resultID, "#tabs").load('result.php?index=' + modelIndex);
                         } else if (key == 'Incidence') {
-                            if ($(incidenceID).html() != null) {
-                                // select the tab
-                                maintab.tabs('select', incidenceID);
-                                //clear current tab content
-                                $(incidenceID).empty();
-                            } else {
-                                // create the tab
-                                maintab.tabs('add', incidenceID, simName + ': Incidence over time');
-                            }
+                            //                            if ($(incidenceID).html() != null) {
+                            ////                                // select the tab
+                            ////                                maintab.tabs('select', incidenceID);
+                            ////                                //clear current tab content
+                            ////                                $(incidenceID).empty();
+                            //                            } else {
+                            // create the tab
+                            //  maintab.tabs('add', incidenceID, simName + ': Incidence over time'); // deprecated
+                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>" + simName + ": Incidence over time</a></li>" )
+                            .appendTo( "#tabs .ui-tabs-nav" );
+                            $( "#tabs" ).tabs( "refresh" );
+                            $("#tabs").tabs( "option", "active", -1 );
+                        //                            }
                         
             
-                            // load the tab
-                            $(incidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                        // load the tab
+                        //                            $(incidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
                         } else if (key == 'Combined incidence') {
-                            if ($(combinedIncidenceID).html() != null) {
-                                // select the tab
-                                maintab.tabs('select', combinedIncidenceID);
-                                //clear current tab content
-                                $(combinedIncidenceID).empty();
-                            } else {
-                                // create the tab
-                                maintab.tabs('add', combinedIncidenceID, 'All simulators: Incidence over time');
-                            }
+                            //                            if ($(combinedIncidenceID).html() != null) {
+                            //                                // select the tab
+                            //                                maintab.tabs('select', combinedIncidenceID);
+                            //                                //clear current tab content
+                            //                                $(combinedIncidenceID).empty();
+                            //                            } else {
+                            // create the tab
+                            //                                maintab.tabs('add', combinedIncidenceID, 'All simulators: Incidence over time'); // deprecated
+                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>All simulators: Incidence over time</a></li>" )
+                            .appendTo( "#tabs .ui-tabs-nav" );
+                            $( "#tabs" ).tabs( "refresh" );
+                            $("#tabs").tabs( "option", "active", -1 );
+                        //                            }
                         
             
-                            // load the tab
-                            $(combinedIncidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                        // load the tab
+                        //                            $(combinedIncidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
                         }
                     
                         if (simName == 'FRED' && key == 'GAIA animation of Allegheny County') {
-                            if($(gaiaID).html() != null ) {
-                                //select the tab
-                                maintab.tabs('select', gaiaID);
-                                //clear current tab content
-                                $(gaiaID).empty();
-                            } else {
-                                //create the tab
-                                maintab.tabs('add', gaiaID, simName + ': GAIA Visualization for Simulation');
-                            }
+                            //                            //                            if($(gaiaID).html() != null ) {
+                            //                                //select the tab
+                            //                                maintab.tabs('select', gaiaID);
+                            //                                //clear current tab content
+                            //                                $(gaiaID).empty();
+                            //                            } else {
+                            //create the tab
+                            //                                maintab.tabs('add', gaiaID, simName + ': GAIA Visualization for Simulation'); // deprecated
+                            $( "<li><a href='gaia.php?index=" + modelIndex + "'>" + simName + ": GAIA Visualization for Simulation</a></li>" )
+                            .appendTo( "#tabs .ui-tabs-nav" );
+                            $( "#tabs" ).tabs( "refresh" );
+                            $("#tabs").tabs( "option", "active", -1 );
+                        //                            }
                     
                     
-                            //load the tab
-                            $(gaiaID, "#tabs").load('gaia.php?index=' + modelIndex);
+                        //load the tab
+                        //                            $(gaiaID, "#tabs").load('gaia.php?index=' + modelIndex);
                         }
                  
                     }
@@ -955,12 +1059,12 @@ jQuery(document).ready(function(){
 
                 // set the waiting feedback
                 $('#create').button( "option", "disabled", true );
-                $(dataExchange.statusBar).html('Waiting for the server response..');
+                addmsg('Waiting for the server response..');
 
                 return true;
             }catch (err){
                 // set the error message
-                $(dataExchange.statusBar).html(err);
+                addmsg("Error submitting form: " + err);
                 return false;
             }
 
@@ -972,13 +1076,13 @@ jQuery(document).ready(function(){
         // has been received;
         success : function(jasonObj, statusText) {
             if (statusText != 'success') {// web server error
-                $(dataExchange.statusBar).html('Server error: ' + statusText);
+                addmsg('Server error: ' + statusText);
                 return;
             }
 
             // web service error
             if (jasonObj.exception != null) {
-                $(dataExchange.statusBar).html('Web service error: ' + jasonObj.exception);
+                addmsg('Web service error: ' + jasonObj.exception);
                 return;
             }
 
