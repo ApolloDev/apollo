@@ -176,7 +176,7 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
     //end InitialCompartmentSizes
     //$temporalGranularity = $runObj->Parameters->Recognized->TemporalGranularity;
     //************************************************************************************
-    $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
+//    $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
 //    $apolloResponse = $apolloResponse->return;
 //    if ($apolloResponse->id == - 1) { //cache hit
 //        $apolloResponse = $apolloResponse->cachedResult;
@@ -187,8 +187,8 @@ function seir_exec($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    } else {
 //        $runId = 'upitt_seir_1.0_19';
 //    }
-    $runId = $apolloResponse->runId;
-//    $runId = 'UPitt,PSC,CMU_FRED_2.0.1_231631';
+//    $runId = $apolloResponse->runId;
+    $runId = 'UPitt_SEIR_1.0_221';
 //        $runId = '5';
 //    ChromePhp::log($runId);
 ////    ChromePhp::log($params['TimeStepUnit']);
