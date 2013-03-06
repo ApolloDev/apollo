@@ -31,16 +31,23 @@ Index page for the Apollo Test Client
 
         <title>Simple End-user Apollo App</title>
 
-        <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
-        <script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>
+<!--        <script src="js/jquery-1.4.4.js" type="text/javascript"></script>-->
+        <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+<!--        <script src="js/jquery-ui-1.8.9.custom.js" type="text/javascript"></script>-->
+        <script src="js/jquery-ui-1.10.1.custom.js" type="text/javascript"></script>
 
         <!-- JQuery Plugins -->
-        <script src="js/jquery.form-2.36.js" type="text/javascript"></script>
-        <script src="js/jquery.layout-1.3.0.js" type="text/javascript"></script>
+<!--        <script src="js/jquery.form-2.36.js" type="text/javascript"></script>-->
+        <script src="js/jquery.form-3.28.js" type="text/javascript"></script>
+        <script src="js/jquery.layout-1.3.0-latest.js" type="text/javascript"></script>
+<!--        <script src="js/jquery.layout-1.2.0.js" type="text/javascript"></script>-->
         <!-- jqGrid -->
         <script src="js/grid.locale-en.js" type="text/javascript"></script>
-        <script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
+<!--        <script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>-->
         <!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
+        <script src="js/jquery.jqGrid.src-4.4.4.js" type="text/javascript"></script>
+        <script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
+        <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 
         <!-- Highchart -->
         <script type="text/javascript" src="js/highcharts.js"></script>
@@ -53,15 +60,21 @@ Index page for the Apollo Test Client
 
         <!-- Base -->
         <script type="text/javascript" src="js/apollo.js"></script>
+        <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
         <!-- My Style -->
         <link rel="stylesheet" href="css/index.css" type="text/css" media="all" />
-        <link rel="stylesheet" type="text/css" media="screen"
-              href="themes/redmond/jquery-ui-1.8.2.custom.css" />
-        <link rel="stylesheet" type="text/css" media="screen"
-              href="themes/ui.jqgrid.css" />
+        <!--        <link rel="stylesheet" type="text/css" media="screen"
+                      href="themes/redmond/jquery-ui-1.8.2.custom.css" />-->
+        <!--        <link rel="stylesheet" type="text/css" media="screen"
+                      href="themes/ui.jqgrid.css" />-->
         <link rel="stylesheet" type="text/css" media="screen"
               href="themes/ui.multiselect.css" />
+        <link rel="stylesheet" type="text/css" media="screen"
+              href="themes/redmond/jquery-ui-1.10.1.custom.css" />
+        <!--        <link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.7.1.custom.css" />-->
+        <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
+
         <link rel="stylesheet" type="text/css" media="screen"
               href="css/apollo.css" />
 
@@ -75,7 +88,7 @@ Index page for the Apollo Test Client
             </div>
             <div id="nav" style="font-family: Segoe UI Light, Arial, sans-serif; padding-right: 20px">
                 <ul class="nav">
-                    <li><a id="instruction-link" href="javascript:createOrSelectInsturctionTab();">Help</a></li>
+                    <li><a id="instruction-link" href="javascript:createOrSelectInstructionTab();">Help</a></li>
                     <li><a href="http://code.google.com/p/apollo">Project Homepage</a></li>
                     <li><a 
                             href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl">WSDL</a></li>
@@ -93,23 +106,11 @@ Index page for the Apollo Test Client
                     <div id="model-selection-div" class="ui-widget-header ui-corner-all" style="margin:2px;padding:2px;">
                         Epidemic Simulator Selection
                     </div>
-<!--                    <div id="jurisdiction-div" class="drop-box-div">
-                        <div>Jurisdiction:</div>
-                        <select id="jurisdiction-combo" style="width: 120px;">
-                            <option value="UNDEF" selected="selected">--Please Select--</option>
-                            <option value="42003">Allegheny, PA</option>
-                        </select>
-                    </div>
-                    <div id="snomed-ct-div" class="drop-box-div">
-                        <div>Disease/SNOMED-CT Code:</div>
-                        <select id="snomed-ct-combo" style="width: 220px;">
-                            <option value="UNDEF" selected="selected">--Please Select--</option>
-                            <option value="442696006">Influenza (H1N1)/442696006</option>
-                            <option value="21927003">Anthrax/21927003</option>
-                        </select>
-                    </div>-->
+
                     <div id="model-div" class="drop-box-div">
-                        <div>Epidemic Simulators:</div>
+                        <div style="font-size: 5px">&nbsp;</div>
+                        <div style="font-size: 16px; font-family: Segoe UI, Arial, sans-serif; ">Epidemic Simulators:</div>
+                        <div style="font-size: 2px">&nbsp;</div>
                         <select id="model-combo" style="width: 240px;" size="4" multiple="multiple">
                             <option value="loading">Loading...</option>
                         </select>
@@ -119,7 +120,7 @@ Index page for the Apollo Test Client
 <!--                    <img id="select-img" src="images/select.png" />-->
                     <table id="west-grid"></table>
 <!--                    <table id="disease-grid"></table>-->
-                    
+
                     <table id="param-legend" style="padding:10px;display:none;">
                         <thead>
                             <tr>
@@ -155,8 +156,14 @@ Index page for the Apollo Test Client
                         <li><a href="#tabs-1">Welcome</a></li>
                     </ul>
                     <div id="tabs-1">
-                        Welcome to the Apollo Web Service Client! <br />
-                        Complete the model selection panel on the left to begin. <br /><br />
+                        Welcome to the Simple End-user Apollo App! <br /><br />
+                        Complete the simulator selection and configuration panels on the left to begin. 
+                        The simulators will model the effect of a vaccination control measure if all five 
+                        parameters that represent a vaccination program are non zero. If you wish to exclude 
+                        a vaccination program, simply set the compliance or efficacy to zero.<br /><br />
+
+                        The source for the terms in the configuration panel is the Apollo-SV ontology. Hover the
+                        mouse pointer over a term to see its definitions in the ontology.<br /><br /> 
 
                     </div>
                 </div>
@@ -171,11 +178,33 @@ Index page for the Apollo Test Client
                     </form>
                 </div>
                 <div id="status-name-div" style="padding: 10px">Status:</div>
+                <!--                <div id ='terminal-div' style="height: 200px">
+                                    <textarea id="terminal" rows="3" cols="75"></textarea>
+                                </div>-->
+                <!--                <script>
+                                    CKEDITOR.replace( 'terminal',
+                                    {
+                                        height:"150", 
+                                        width:"600",
+                                        readOnly: false,
+                                        autoParagraph: false,
+                                        on :
+                                            {
+                                            instanceReady : function ( evt )
+                                            {
+                                                // Hide the editor top bar.
+                                                document.getElementById('cke_1_top').style.display = 'none';
+                                                document.getElementById('cke_1_bottom').style.display = 'none';
+                                            }
+                                        }
+                                    });
+                                    
+                                </script>-->
                 <div id="status-div-1"
                      style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
-                     <div id="status-div-2"
+                <div id="status-div-2"
                      style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
-                     <div id="status-div-3"
+                <div id="status-div-3"
                      style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
             </div>
             <!-- ButtomPane-->
