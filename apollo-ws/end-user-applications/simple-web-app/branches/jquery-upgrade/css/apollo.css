@@ -22,84 +22,87 @@
 /**
  *
  * @author Yang Hu <yah14@pitt.edu>
- */
+*/
 
 html,body {
-	margin: 0; /* Remove body margin/padding */
-	padding: 0;
-	overflow : hidden; /* Remove scroll bars on browser window */
-	font-size: 12px;
-	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
-	overflow: hidden;
+    margin: 0; /* Remove body margin/padding */
+    padding: 0;
+    overflow : hidden; /* Remove scroll bars on browser window */
+    font-size: 12px;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    overflow: hidden;
 }
 
 /*Splitter style */
 #LeftPane { /* optional, initial splitbar position */
-	overflow: auto;
+    overflow: auto;
 }
 
 /*
  * Right-side element of the splitter.
 */
 #RightPane {
-	padding: 2px;
-	overflow: auto;
+    padding: 2px;
+    overflow: auto;
 }
 
 .ui-tabs-nav li {
-	position: relative;
+    position: relative;
 }
 
 .ui-tabs-selected a span {
-	padding-right: 10px;
+    padding-right: 10px;
 }
 
 .ui-tabs-close {
-	display: none;
-	position: absolute;
-	top: 3px;
-	right: 0px;
-	z-index: 800;
-	width: 16px;
-	height: 14px;
-	font-size: 10px;
-	font-style: normal;
-	cursor: pointer;
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    z-index: 800;
+    width: 16px;
+    height: 14px;
+    font-size: 10px;
+    font-style: normal;
+    cursor: pointer;
 }
 
 .ui-tabs-selected .ui-tabs-close {
-	display: block;
+    display: block;
 }
 
 .ui-layout-west .ui-jqgrid tr.jqgrow td {
-	border-bottom: 0px none;
+    font-family: Segoe UI, Arial, sans-serif;
+    font-style: normal;
+    font-size: 14px;
+    border-bottom: 0px none;
 }
 
 .ui-datepicker {
-	z-index: 1200;
-	display: none;
+    z-index: 1200;
+    display: none;
 }
 
 .drop-box-div {
-        font-family: Segoe UI, Arial, sans-serif;
-/*	padding: 2px;*/
-/*	width: 180px;*/
-	margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+    font-family: Segoe UI, Arial, sans-serif;
+    /*	padding: 2px;*/
+    /*	width: 180px;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .Color_Red { background:#99CCFF; 
-            font-style: normal}
+             font-style: normal}
 
 .ui-widget-content {
-    
+
     font-family: Segoe UI, Arial, sans-serif
 }
 
 .ui-widget-header {
-    
-    font-size: 14px
+
+    font-size: 16px
 }
 
 .ui-layout-south {
@@ -107,5 +110,12 @@ html,body {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    
+
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
 }
