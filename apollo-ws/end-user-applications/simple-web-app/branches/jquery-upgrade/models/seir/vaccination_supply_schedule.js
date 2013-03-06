@@ -41,7 +41,7 @@ var vaccSupplySchedule = new function(){
 		//get current select id
 		var currid = deliveryGrid.getGridParam('selrow');
 		if (currid == null){
-			alert('You must select a row before you can insert');
+			alert('You must select a row before you can insert.');
 			return;
 		}
 		
