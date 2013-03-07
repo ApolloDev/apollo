@@ -1,6 +1,8 @@
 import os,sys
 import paramiko
 import datetime,dateutil.parser
+import time
+from threading import Thread
 
 class FredSSHConn:
     def __init__(self,debug=False):
@@ -18,9 +20,34 @@ class FredSSHConn:
 	self.runPBS = False
 	self.getScratch = False
 	self.remoteDir = None
+	self.statusFileDir = None
+	self.statusFile = None
+	self.remoteTmpDir = None
 
-    def _setup(self,machine="blacklight.psc.xsede.org",username='stbrown',
-		 password='',privateKeyFile=None):
+    def _setup(self,configurationFile_="./apollofred.conf"):
+	machine = None
+	username = None
+	password = ''
+	pvKF = None
+	with open(configurationFile_,"rb") as f:
+	    for line in f:
+		lineSplit = line.split()
+
+		if lineSplit[0] == "machine":
+		    machine = str(lineSplit[1])
+		elif lineSplit[0] == "username":
+		    username = str(lineSplit[1])
+		elif lineSplit[0] == "password":
+		    password = str(lineSplit[1])
+		elif lineSplit[0] == "privateKeyFile":
+		    pvKF = str(lineSplit[1])
+		else:
+		    raise RuntimeError("Unrecognized key %s in configuration file %s"\
+				       %(lineSplit[0],configurationFile_))
+	self._setupExplicit(machine=machine,username=username,password=password,privateKeyFile=pvKF)
+	
+    def _setupExplicit(self,machine="blacklight.psc.xsede.org",username='stbrown',
+		       password='',privateKeyFile=None):
 	self.machine = machine
 	self.username = username
 	self.password = password
@@ -51,7 +78,8 @@ class FredSSHConn:
 	    self.pbsSubmit = "qsub"
 	elif self.machine == "unicron.psc.edu":
 	    self.remoteDir = "/media/scratch"
-	
+	    #self.statusFileDir = "/scratch/stbrown"
+	    self.statusFileDir = "./"
     def _connect(self):
 	### open SSH connection
 	self.ssh = paramiko.SSHClient()
@@ -165,7 +193,47 @@ class FredSSHConn:
 	except:
 	    raise RuntimeError("Error in getting SCRATCH directory through connection %s"%self.name)
 	return scratchString
-    
+
+    def _submitJob(self,tmpId):
+	idString = "BAD"
+	if self.runPBS:
+	    idString = self._submitPBSJob(tmpId)
+	else:
+	    ### Generate the runID here and pass it into submit Job for threading
+	    timeStamp = int(time.time())
+	    idSuffix = self.machine + str(timeStamp)
+	    t = Thread(target=self._submitDirectJob,args=(tmpId,idSuffix,))
+	    t.start()
+	    idString = idSuffix
+
+	if idString == "BAD":
+	    raise RuntimeError("There was a problem submitting the job through connection %s"%self.name)
+
+	return idString
+	
+    def _submitDirectJob(self,tmpId,idSuffix):
+
+	### set and update the status file
+	self.statusFile = self.statusFileDir +"/.status_"+idSuffix
+	self.remoteTmpDir = self.remoteDir + '/fred.tmp.' + str(tmpId)
+	
+	with open(self.statusFile,"wb") as f:
+	    f.write("Running")
+	remote_command = ""
+	if self.remoteDir is not None:
+	    remote_command += 'cd ' + self.remoteTmpDir + ';' 
+	else:
+	    remote_command += 'cd fred.tmp.'+str(tmpId) + ';'
+
+	remote_command += 'setenv id ' + idSuffix + '; '
+	remote_command += 'chmod a+x ./fred_run.csh; ./fred_run.csh'
+	print remote_command
+	retVal = self._executeCommand(remote_command)
+	tempVal = retVal.readlines() ### Need this to block for me
+	#print "Should not be here right away"
+	with open(self.statusFile,"wb") as f:
+	    f.write("Completed")
+		
     def _submitPBSJob(self,tmpId):
 	remote_command = ""
 	if self.remoteDir is not None:
@@ -268,9 +336,9 @@ class FredSSHConn:
 	pbsStatus = None
 	status = "UNKNOWN"
 	response = "Empty Response"
-        pbsSplit = str(key).split("_")
-        pbsID = pbsSplit[len(pbsSplit)-1]
 	if self.runPBS:
+	    pbsSplit = str(key).split("_")
+	    pbsID = pbsSplit[len(pbsSplit)-1]
 	    pbsStatus = self._getPBSQueueStatus(pbsID)
 	    print "PBS Status = " + str(pbsStatus)
 	    if pbsStatus == "U":
@@ -297,11 +365,60 @@ class FredSSHConn:
 	    else:
 		status = "UNKNOWN"
 		response = "getStatus on connection %s returned an unknown response"\
-			   %self.name
-
+			   %self.name		
+		
+	    return (status,response)
 	else:
 	    ### This is a direct Run
-	    response = "direct getStatus not implemented yet."
+	    if self.statusFile is None:
+		status = "Problem1"
+		response = "get status on connection %s has run into a problem"\
+			   +"polling a statusfile before it is set"%self.name
+		return (status,response)
+		
+	    try:
+		open(self.statusFile,"rb")
+	    except IOError:
+		status = "Problem2"
+		response = "get status on connection %s cannot open file %s to check status"\
+			   %(self.name,self.statusFile)
+		return (status,response)
+
+	    with open(self.statusFile,"rb") as f:
+		status = f.readline()
+	    print "Direct Status = %s"%status
+	    if status == "Running":
+		if self.remoteTmpDir:
+		    remoteCommand = "tail -1 " + self.remoteTmpDir + "/starttime"
+		else:
+		    status = "Problem3"
+		    response = "get status cannot find the remote temp directory %s on connection %s"\
+			       %(self.remoteTmpDir,self.name)
+		    return (status,response)
+		    
+		retTVal = self._executeCommand(remoteCommand).read()
+		if retTVal.strip() == "Nothing":
+		    print "starttime nothing"
+		    secondsRunning = -1.0
+		else:
+		    timeValTZ = dateutil.parser.parse(retTVal)
+		    timeVal = timeValTZ.replace(tzinfo=None)
+		    
+		    now = datetime.datetime.now()
+		    print "Time Val = " + str(timeVal) + " " + str(now)
+		    secondsRunning = (now-timeVal).seconds
+		    
+		    response = "The run has been running of %g seconds on %s at %s"\
+			       %(secondsRunning,self.machine,datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+		    
+		    
+		    return (status,response)
+
+	    elif status == "Completed":
+		response = "The run has completed on %s at %s"\
+			   %(self.machine,datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+		
+		return (status,response)
 
 	return (status,response)
     

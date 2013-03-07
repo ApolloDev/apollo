@@ -60,10 +60,7 @@ class FredWebService(SimulatorService):
             #get the run id of the job 
             request = ps.Parse(getRunStatusRequest.typecode)
             runId = request._runId
-	    ## extract the PBS ID
-	    #pbsSplit = runId.split("_")
-	    #pbsID = pbsSplit[len(pbsSplit)-1)]
-	    
+	    	   	    
             status, message = fredConn._getStatus(runId)
             response._runStatus = self.factory.new_RunStatus()
             print "Fred status is:" + status
@@ -76,6 +73,7 @@ class FredWebService(SimulatorService):
         
         #this method runs an epidemic model
         def soap_run(self, ps, **kw):
+	    fredConn._setup()
             response = SimulatorService.soap_run(self, ps, **kw)
             request = ps.Parse(runRequest.typecode)
             #extract the epidemic model input object from the request
@@ -109,7 +107,7 @@ class FredWebService(SimulatorService):
             try:
                     os.mkdir(tempDirName)
             except:
-                    raise RuntimeError("Cannot make temporary FRED directory")
+                    raise RuntimeError("Cannot make temporary FRED directory %s"%(tempDirName))
 
             os.chdir(tempDirName)
             doVacc = False
@@ -173,8 +171,7 @@ class FredWebService(SimulatorService):
 	    idPrefix = cfg._simulatorIdentification._simulatorDeveloper +\
 		       "_" + cfg._simulatorIdentification._simulatorName +\
 		       "_" + cfg._simulatorIdentification._simulatorVersion + "_"
-	    fredConn._setup("warhol.psc.edu",username="stbrown",
-				privateKeyFile="/usr/local/packages/Apollo-FRED-Webservice/id_rsa")
+	    
             fredConn._connect()
  
             ### Write the PBS submission Script
@@ -206,14 +203,24 @@ class FredWebService(SimulatorService):
                     f.write('rm -rf .dbloading\n')
                     #f.write('echo COMPLETED > job_status')
                     
-                    
+            ### for a direct Job.. write the csh script to run FRED
+	    with open('fred_run.csh','wb') as f:
+		f.write('#!/bin/csh\n')
+		f.write('echo `date` > starttime\n')
+		f.write('### Generate Timestamp for ID\n')
+		f.write('fred_job -p fred_input.params -n 4 -t 2 -m 4 -k %s$id > out.run\n'%idPrefix)
+		f.write('touch .dbloading\n')
+		f.write('python $FRED_HOME/bin/fred_to_apollo_parallel.py -k %s$id >& out.db\n'%idPrefix)
+		f.write('rm -rf .dbloading\n')
+
             os.chdir('../')
             #fredConn._setup("warhol.psc.edu",username="stbrown",privateKeyFile="./id_rsa")
             #fredConn._connect()
-            print "Created Connection"
+            #print "Created Connection"
 
             fredConn._mkdir(tempDirName)
             fredConn._sendFile(tempDirName+'/fred_submit.pbs')
+	    fredConn._sendFile(tempDirName+'/fred_run.csh')
             fredConn._sendFile(tempDirName+'/fred_input.params')
             fredConn._sendFile(tempDirName+'/fred_initial_population_0.txt')
             fredConn._sendFile(tempDirName+'/starttime')		
@@ -226,7 +233,8 @@ class FredWebService(SimulatorService):
             print "Running FRED"
             sys.stdout.flush()
 
-            returnVal = fredConn._submitPBSJob(randID)
+            #returnVal = fredConn._submitPBSJob(randID)
+	    returnVal = fredConn._submitJob(randID)
             print returnVal 
 
 	    ### parse the run ID
