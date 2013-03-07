@@ -62,6 +62,8 @@ var combinedRunId;
 var numberOfVisualizations;
 var numberOfVisualizationsFinished;
 var firstMessage = true;
+var lastActiveTabId = null;
+var currentActiveTabId = null;
 
 var InfluenzaId = 442696006;
 var AnthraxId = 21927003;
@@ -228,13 +230,27 @@ function loadParamGrid(){
                         lastEditId = rowid;
                     }
                 }else{
-                    var st = "#t" + treedata.id;
-                    if($(st).html() != null ) {
-                        maintab.tabs('select',st);
+                    
+                    // check if tab exists
+                    var tabId = getTabIndex(treedata.pname);
+                    if (tabId != null) {
+                        $('#tabs').tabs({
+                            active: tabId
+                        });
                     } else {
-                        maintab.tabs('add', st, treedata.pname);
-                        $(st,"#tabs").load(treedata.url);
+                        $( "<li><a href='" + treedata.url + "'>" + treedata.pname + "</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
+                        .appendTo( "#tabs .ui-tabs-nav" );
+                        $( "#tabs" ).tabs( "refresh" );
+                        $("#tabs").tabs( "option", "active", -1 );
                     }
+                    
+                //                    var st = "#t" + treedata.id;
+                //                    if($(st).html() != null ) {
+                //                        maintab.tabs('select',st);
+                //                    } else {
+                //                        maintab.tabs('add', st, treedata.pname);
+                //                        $(st,"#tabs").load(treedata.url);
+                //                    }
                 }
             }
         },
@@ -391,30 +407,98 @@ function loadParamGrid(){
 //    }).setGridWidth(outerwidth-20);
 //};
 
+function removeTab(tabindex) {
+    // first activate previous tab
+//    $("#tabs").tabs( "option", "active", tabindex - 1);
+    //
+    var tab = $( "#tabs" ).find( ".ui-tabs-nav li:eq(" + tabindex + ")" ).remove();
+    // Find the id of the associated panel
+    var panelId = tab.attr( "aria-controls" );
+    // Remove the panel
+    $( "#" + panelId ).remove();
+    // Refresh the tabs widget
+    $( "tabs" ).tabs( "refresh" );
+}
+
 function createOrSelectInstructionTab(){
     //add instruction tab
-	
-    //create the ins tab
-    var insId = "instructions.html";
-    var tabExists = false;
-    $('#tabs ul li a').each(function(i) {
-        if (this.text == insId) {
-            tabExists = true;
+
+    var tabId = getTabIndex("Help");
+    if(tabId != null) {
+        //        //select the tab
+        ////        maintab.tabs('select', insId);
+        $('#tabs').tabs({
+            active: tabId
+        });
+    } else {	
+        //        maintab.tabs('add', insId, 'Help');
+        //        //load the ins tab
+        //        $(insId, "#tabs").load('instructions.html');
+        $( "<li><a href='instructions.html'border=0>Help</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
+        .appendTo( "#tabs .ui-tabs-nav" );
+        $( "#tabs" ).tabs( "refresh" );
+        $("#tabs").tabs( "option", "active", -1 );
+    }
+}
+
+function getIndex(sender)
+{   
+    var currentLi = sender.parentNode;
+    var index = null;
+    var aElements = sender.parentNode.parentNode.getElementsByTagName("li");
+    var aElementsLength = aElements.length;
+
+    for (var i = 0; i < aElementsLength; i++)
+    {
+        console.log(aElements[i]);
+        if (aElements[i] == currentLi) //this condition is never true
+        {
+            index = i;
+            return index;
+        }
+    }
+    
+    return index;
+}
+
+function getTabIndexByAriaLabelledById(labelledbyId) {
+    var id = null;
+    $('#tabs ul li').each(function(i) {
+        console.log(this);
+        if (this.getAttribute("aria-labelledby") == lastActiveTabId) {
+            id = i;
         }
     }); 
-	
-    //    if($(insId).html() != null ) {
-    //        //select the tab
-    ////        maintab.tabs('select', insId);
-    //    } else {	
-    //        maintab.tabs('add', insId, 'Help');
-    //        //load the ins tab
-    //        $(insId, "#tabs").load('instructions.html');
-    $( "<li><a href='instructions.html'>Help</a></li>" )
-    .appendTo( "#tabs .ui-tabs-nav" );
-    $( "#tabs" ).tabs( "refresh" );
-    $("#tabs").tabs( "option", "active", -1 );
-//    }
+    
+    return id;
+}
+
+function selectLastActiveTab() {
+    
+    console.log(lastActiveTabId);
+    var id = getTabIndexByAriaLabelledById(lastActiveTabId);
+    console.log(id);
+    $("#tabs").tabs( "option", "active", id);
+    
+}
+
+function onCloseClicked(elem) {
+    selectLastActiveTab();
+    var tabindex = getTabIndexByAriaLabelledById(currentActiveTabId);
+    alert(tabindex);
+    removeTab(tabindex);
+//        alert('activiating tab ' + (tabindex - 1));
+}
+
+function getTabIndex(tabName) {
+    var id;
+    $('#tabs ul li a').each(function(i) {
+        if (this.text == tabName) {
+            id = i;
+        }
+    }); 
+    
+    return id;
 }
 
 function adjustMainDivSize(){
@@ -601,6 +685,7 @@ jQuery(document).ready(function(){
 
     //center panel
     maintab = $('#tabs','#CenterPane').tabs({
+        closable: true,
         cache: false,
         add: function(e, ui) {
             // append close thingy
@@ -613,22 +698,21 @@ jQuery(document).ready(function(){
             // select just added tab
             maintab.tabs('select', '#' + ui.panel.id);
         },
-        select: function(e, ui) {
-            var tabname = ui.tab.text;
-            runMethod(tabname);
+        activate: function( event, ui ) {
+            //            alert('You chose tab index '+ ui.newTab);
+            //            console.log(ui.newTab.context.getAttribute("id"));
+            lastActiveTabId = currentActiveTabId;
+            currentActiveTabId = ui.newTab.context.getAttribute("id");
+        //            var tabname = ui.tab.text;
+        //            runMethod(tabname);
         }
     });
+   
     
     function clearTabs() {
         for (var i = $('#tabs >ul >li').size() - 1; i >= 1; i--) {
             //            $('#tabs','#CenterPane').tabs('remove', i); // deprecated
-            var tab = $( "#tabs" ).find( ".ui-tabs-nav li:eq(" + i + ")" ).remove();
-            // Find the id of the associated panel
-            var panelId = tab.attr( "aria-controls" );
-            // Remove the panel
-            $( "#" + panelId ).remove();
-            // Refresh the tabs widget
-            $( "tabs" ).tabs( "refresh" );
+            removeTab(i);
         }
     }
     
@@ -834,7 +918,7 @@ jQuery(document).ready(function(){
                             //                            } else {
                             //create the tab
                             // maintab.tabs('add', resultID, simName + ': Disease states over time'); // deprecated
-                            $( "<li><a href='result.php?index=" + modelIndex + "'>" + simName + ": Disease states over time</a></li>" )
+                            $( "<li><a href='result.php?index=" + modelIndex + "'>" + simName + ": Disease states over time</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
                             .appendTo( "#tabs .ui-tabs-nav" );
                             $( "#tabs" ).tabs( "refresh" );
                             $("#tabs").tabs( "option", "active", -1 );
@@ -852,7 +936,7 @@ jQuery(document).ready(function(){
                             //                            } else {
                             // create the tab
                             //  maintab.tabs('add', incidenceID, simName + ': Incidence over time'); // deprecated
-                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>" + simName + ": Incidence over time</a></li>" )
+                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>" + simName + ": Incidence over time</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
                             .appendTo( "#tabs .ui-tabs-nav" );
                             $( "#tabs" ).tabs( "refresh" );
                             $("#tabs").tabs( "option", "active", -1 );
@@ -870,7 +954,7 @@ jQuery(document).ready(function(){
                             //                            } else {
                             // create the tab
                             //                                maintab.tabs('add', combinedIncidenceID, 'All simulators: Incidence over time'); // deprecated
-                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>All simulators: Incidence over time</a></li>" )
+                            $( "<li><a href='incidence.php?index=" + modelIndex + "'>All simulators: Incidence over time</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
                             .appendTo( "#tabs .ui-tabs-nav" );
                             $( "#tabs" ).tabs( "refresh" );
                             $("#tabs").tabs( "option", "active", -1 );
@@ -890,7 +974,7 @@ jQuery(document).ready(function(){
                             //                            } else {
                             //create the tab
                             //                                maintab.tabs('add', gaiaID, simName + ': GAIA Visualization for Simulation'); // deprecated
-                            $( "<li><a href='gaia.php?index=" + modelIndex + "'>" + simName + ": GAIA Visualization for Simulation</a></li>" )
+                            $( "<li><a href='gaia.php?index=" + modelIndex + "'>" + simName + ": GAIA Visualization for Simulation</a><span class=\"ui-icon ui-icon-close\" title=\"Close tab\" style=\"cursor:pointer\" onclick=\"onCloseClicked(this)\"></span></li>" )
                             .appendTo( "#tabs .ui-tabs-nav" );
                             $( "#tabs" ).tabs( "refresh" );
                             $("#tabs").tabs( "option", "active", -1 );
