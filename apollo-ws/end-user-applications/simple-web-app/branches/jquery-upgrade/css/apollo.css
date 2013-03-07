@@ -74,7 +74,7 @@ html,body {
 .ui-layout-west .ui-jqgrid tr.jqgrow td {
     font-family: Segoe UI, Arial, sans-serif;
     font-style: normal;
-    font-size: 14px;
+    font-size: 13px;
     border-bottom: 0px none;
 }
 
@@ -97,19 +97,19 @@ html,body {
 
 .ui-widget-content {
 
-    font-family: Segoe UI, Arial, sans-serif
+    font-family: Segoe UI, Arial, sans-serif;
 }
 
 .ui-widget-header {
 
-    font-size: 16px
+    font-size: 13px
 }
 
 .ui-layout-south {
     font-family: Segoe UI, Arial, sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
 
 }
 
@@ -118,4 +118,8 @@ html,body {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
+}
+
+li a {
+    outline-color: transparent;
 }
