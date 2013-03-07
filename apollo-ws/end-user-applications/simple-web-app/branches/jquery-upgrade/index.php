@@ -42,7 +42,7 @@ Index page for the Apollo Test Client
         <script src="js/jquery.layout-1.3.0-latest.js" type="text/javascript"></script>
 <!--        <script src="js/jquery.layout-1.2.0.js" type="text/javascript"></script>-->
         <!-- jqGrid -->
-        <script src="js/grid.locale-en.js" type="text/javascript"></script>
+<!--        <script src="js/grid.locale-en.js" type="text/javascript"></script>-->
 <!--        <script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>-->
         <!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
         <script src="js/jquery.jqGrid.src-4.4.4.js" type="text/javascript"></script>
@@ -57,6 +57,7 @@ Index page for the Apollo Test Client
         <!--Misc -->
         <script type="text/javascript" src="js/debug-helper.js"></script>
         <script type="text/javascript" src="js/jqgrid-helper.js"></script>
+        <script type="text/javascript" src="js/ui.tabs.closable.min.js"></script>
 
         <!-- Base -->
         <script type="text/javascript" src="js/apollo.js"></script>
@@ -153,7 +154,7 @@ Index page for the Apollo Test Client
                 <div id="switcher"></div>
                 <div id="tabs" class="jqgtabs">
                     <ul>
-                        <li><a href="#tabs-1">Welcome</a></li>
+                        <li><a href="#tabs-1">Welcome</a><span></span></li>
                     </ul>
                     <div id="tabs-1">
                         Welcome to the Simple End-user Apollo App! <br /><br />
