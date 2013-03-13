@@ -15,6 +15,9 @@
 package edu.pitt.apollo;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.security.MessageDigest;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -23,6 +26,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.pitt.apollo.seir.utils.RunUtils;
 import edu.pitt.apollo.seir.utils.WorkerThread;
@@ -47,7 +55,8 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			return RunUtils.getStatus(runId);
 		} catch (IOException e) {
 			RunStatus rs = new RunStatus();
-			rs.setMessage("Error getting runStatus from web service, error is: " + e.getMessage());
+			rs.setMessage("Error getting runStatus from web service, error is: "
+					+ e.getMessage());
 			rs.setStatus(RunStatusEnum.FAILED);
 			return rs;
 		}
@@ -71,17 +80,38 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 	public String run(
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		try {
-		
+
+			MessageDigest md = MessageDigest.getInstance("MD5");
+
+			XStream xStream = new XStream(new DomDriver());
+			String xml = xStream.toXML(simulatorConfiguration);
+
+			ObjectMapper mapper = new ObjectMapper();
+			Writer strWriter = new StringWriter();
+			mapper.writeValue(strWriter, simulatorConfiguration);
+			String userDataJSON = strWriter.toString();
+			
+			// System.out.println(xStream.toXML(person));
+			// String original = args[0];
+			// MessageDigest md = MessageDigest.getInstance("MD5");
+			// md.update(original.getBytes());
+			// byte[] digest = md.digest();
+			// StringBuffer sb = new StringBuffer();
+			// for (byte b : digest) {
+			// sb.append(Integer.toHexString((int) (b & 0xff)));
+			// }
+			//
+			//
 
 			SimulatorIdentification sid = simulatorConfiguration
 					.getSimulatorIdentification();
-			String runId = sid.getSimulatorDeveloper() + "_" + sid.getSimulatorName()
-					+ "_" + sid.getSimulatorVersion() + "_" + RunUtils.getNextId();
+			String runId = sid.getSimulatorDeveloper() + "_"
+					+ sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
+					+ "_" + RunUtils.getNextId();
 			System.out.println("RunId is :" + runId);
 			(new WorkerThread(simulatorConfiguration, runId)).start();
 
 			return runId;
-					
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -91,7 +121,7 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 		return "blah.";
 
 	}
-	
+
 	static {
 		try {
 			System.loadLibrary("seir2jni");
