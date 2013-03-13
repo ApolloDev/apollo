@@ -3,6 +3,7 @@ package edu.pitt.apollo.seir.utils;
 import java.io.IOException;
 
 import edu.pitt.apollo.types.SimulatorConfiguration;
+import edu.pitt.rods.apollo.SeirModelAdapter.DbUtils;
 import edu.pitt.rods.apollo.SeirModelAdapter.SeirModelAdapter;
 
 public class WorkerThread extends Thread {
@@ -19,7 +20,9 @@ public class WorkerThread extends Thread {
 	public void run() {
 		
 		try {
+			String runId = DbUtils.isRunCached(sc);			
 			RunUtils.setStarted(runId);
+		
 
 			SeirModelAdapter.run(sc, runId);
 			
