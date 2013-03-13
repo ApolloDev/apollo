@@ -91,6 +91,8 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			mapper.writeValue(strWriter, simulatorConfiguration);
 			String userDataJSON = strWriter.toString();
 			
+			
+			
 			// System.out.println(xStream.toXML(person));
 			// String original = args[0];
 			// MessageDigest md = MessageDigest.getInstance("MD5");
