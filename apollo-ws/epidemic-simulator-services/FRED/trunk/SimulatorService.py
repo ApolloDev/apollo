@@ -33,7 +33,7 @@ import shutil
 import random
 import datetime
 import paramiko
-from fredUtils import FredSSHConn
+from fredUtils import FredSSHConn,infectiousPeriod,incubationPeriod
 
 fredConn = FredSSHConn()
 
@@ -96,10 +96,11 @@ class FredWebService(SimulatorService):
             if cfg._simulatorTimeSpecification._timeStepValue != 1:
                     print ('This version of FRED only supports a time_step_value of 1')
                     print ('Apollo sent %d'%(cfg._simulatorTimeSpecification._timeStepValue))
-                    #### Put in Error Handling, have to ask John L.
 
-            print ('WARNING: This service is currently ignoring infectious_period')
-            print ('WARNING: This service is currently ignoring latent_period')
+	    #### Put in Error Handling, have to ask John L.
+	    
+            #print ('WARNING: This service is currently ignoring infectious_period')
+            #print ('WARNING: This service is currently ignoring latent_period')
 
             ### Make a random directory name so that multiple calls can be made
             randID = random.randint(0,100000)
@@ -117,6 +118,14 @@ class FredWebService(SimulatorService):
                     f.write('R0 = %g\n'%cfg._disease._reproductionNumber)
                     f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
                     f.write('residual_immunity_ages[0] = 2 0 100\n')
+		    f.write('days_latent[0] = %s\n'\
+			    %(incubationPeriod(float(cfg._disease._latentPeriod))))
+		    f.write('days_incubating[0] = %s\n'\
+			    %(incubationPeriod(float(cfg._disease._latentPeriod))))
+		    f.write('days_infectious[0] = %s\n'\
+			    %(infectiousPeriod(float(cfg._disease._infectiousPeriod))))
+		    f.write('days_symptomatic[0] = %s\n'\
+			    %(infectiousPeriod(float(cfg._disease._infectiousPeriod))))	     	       
                     totPop = self.utils.getTotalPopCount(cfg)
                     numImmune = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignoreed", "recovered")
                     percent_immune = float(numImmune)/float(totPop)
@@ -160,7 +169,7 @@ class FredWebService(SimulatorService):
 
             with open('fred_initial_population_0.txt','wb') as f:
                     f.write('#line_format\n')
-                    numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "infectious")
+                    numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "exposed")
                     #f.write('0 0 %d\n'%(cfg._disease_dynamics._pop_count[2]))
                     f.write('0 0 %d\n'%(numInfectious))
 
@@ -217,7 +226,6 @@ class FredWebService(SimulatorService):
             #fredConn._setup("warhol.psc.edu",username="stbrown",privateKeyFile="./id_rsa")
             #fredConn._connect()
             #print "Created Connection"
-
             fredConn._mkdir(tempDirName)
             fredConn._sendFile(tempDirName+'/fred_submit.pbs')
 	    fredConn._sendFile(tempDirName+'/fred_run.csh')
