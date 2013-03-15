@@ -2,6 +2,7 @@ import os,sys
 import paramiko
 import datetime,dateutil.parser
 import time
+import math
 from threading import Thread
 
 class FredSSHConn:
@@ -421,7 +422,68 @@ class FredSSHConn:
 		return (status,response)
 
 	return (status,response)
-    
+
+def infectiousPeriod(newAverage=4.1,gamma=2.378084,
+		     lamb=2.405191,shift=2.0,thresh=0.05):
+    pdfList = []
+    cdfList = []
+    thisAverage = 4.4 # days This is the mean of the Weibull distrubtion
+    aveShift = newAverage-thisAverage
+    for i in range(0,20):
+	pdfList.append(ShiftedWeibull(float(i),gamma,lamb,shift+aveShift))
+
+    #print(str(pdfList))
+
+    sum = 0.0
+    for i in range(0,len(pdfList)):
+	sum += pdfList[i]
+	if sum+thresh >= 1.0:
+	    cdfList.append(1.0)
+	    break
+	else:
+	    cdfList.append(sum)
+
+    cdfString = " %d"%len(cdfList)
+    for x in cdfList:
+	cdfString += " %1.2f"%x
+
+    return cdfString
+
+def incubationPeriod(newAverage=1.9,gamma=2.2126752,
+		     lamb=1.67,shift=0.5,thresh=0.05):
+    pdfList = []
+    cdfList = []
+    thisAverage = 1.984 # days This is the mean of the fitted Weibull distrubiton
+    aveShift = newAverage-thisAverage
+    for i in range(0,10):
+	pdfList.append(ShiftedWeibull(float(i),gamma,lamb,shift+aveShift))
+
+    sum = 0.0
+    for i in range(0,len(pdfList)):
+	sum += pdfList[i]
+	if sum+thresh >= 1.0:
+	    cdfList.append(1.0)
+	    break
+	else:
+	    cdfList.append(sum)
+	    
+    cdfString = " %d"%len(cdfList)
+    for x in cdfList:
+	cdfString += " %1.2f"%x
+
+    return cdfString
+def latentPeriod(newAverage=1.9,gamma=2.2126752,lamb=1.67,shift=0.5):
+    incubationPeriod(newAverage,gamma,lamb,shift)
+
+def ShiftedWeibull(x,gamma,lamb,shift=0.0):
+    xShift = x-shift
+    if xShift <= 0.0:
+	return 0
+    else:
+	return ((gamma/lamb)\
+		*math.pow((xShift/lamb),(gamma-1.0))\
+		*math.exp(-pow((xShift/lamb),gamma)))
+
 def main():
     import random
     import time
