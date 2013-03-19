@@ -11,7 +11,7 @@ import edu.pitt.apollo.types.RunStatusEnum;
 
 public class RunUtils {
 
-	public static String WORK_DIR = "/apollo/work/";
+	public static String WORK_DIR = "/Users/jdl50/apollo/work/";
 
 	public static synchronized String getNextId() throws IOException {
 
@@ -49,6 +49,8 @@ public class RunUtils {
 
 	public static synchronized void setStarted(String runId) throws IOException {
 		createRunDir(runId);
+		
+		//should be md5 hash of run id
 		File started = new File(WORK_DIR + runId + "/started.txt");
 		started.createNewFile();
 	}
