@@ -130,10 +130,14 @@ class FredWebService(SimulatorService):
                     numImmune = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignoreed", "recovered")
                     percent_immune = float(numImmune)/float(totPop)
                     f.write('residual_immunity_values[0] = 1 %g\n'%(percent_immune))
+		    numExposed = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","exposed"))
+		    numInfectious = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","infectious"))
+		    fractionExposed = numExposed/(numExposed+numInfectious)
+		    fractionInfectious = 1.0 - fractionExposed
+		    f.write('advanced_seeding = exposed:%1.2f;infectious:%1.2f\n'%(fractionExposed,fractionInfectious))
 		    f.write('track_infection_events = 1\n')
 		    if sum(cfg._vaccinationControlMeasure._vaccineSupplySchedule) > 0.0:
                         doVacc = True
-                        #print ('WARNING: This sevice is currently ignoring vaccine_cm_compliance due to someone fucking FRED up')
                         f.write("##### VACCINE PARAMETERS\n")
                         f.write("enable_behaviors = 1\n")
                         f.write("enable_vaccination = 1\n")
