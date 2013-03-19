@@ -18,16 +18,10 @@ public class WorkerThread extends Thread {
 	}
 
 	public void run() {
-		
 		try {
-
 			RunUtils.setStarted(runId);
-		
-
-//			SeirModelAdapter.run(sc, runId);
-//			
-//			RunUtils.setFinished(runId);
-
+			SeirModelAdapter.run(sc, runId);
+			RunUtils.setFinished(runId);
 		} catch (Exception e) {
 			try {
 				RunUtils.setError(runId, e.getMessage() + e.getStackTrace());
@@ -37,6 +31,5 @@ public class WorkerThread extends Thread {
 				e1.printStackTrace();
 			}
 		}
-
 	}
 }
