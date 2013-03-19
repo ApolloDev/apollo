@@ -11,7 +11,7 @@ import edu.pitt.apollo.types.RunStatusEnum;
 
 public class RunUtils {
 
-	public static String WORK_DIR = "/apollo/work";
+	public static String WORK_DIR = "/apollo/work/";
 
 	public static synchronized String getNextId() throws IOException {
 
@@ -53,6 +53,11 @@ public class RunUtils {
 		started.createNewFile();
 	}
 
+	public static synchronized String getWorkDir(String runId) {
+
+		return WORK_DIR + runId + File.separator;
+	}
+
 	public static synchronized void setFinished(String runId)
 			throws IOException {
 		File finished = new File(WORK_DIR + runId + "/finished.txt");
@@ -71,7 +76,7 @@ public class RunUtils {
 
 	public static synchronized String getError(String runId) throws IOException {
 		File error = new File(WORK_DIR + runId + "/error.txt");
-		
+
 		BufferedReader br = new BufferedReader(new FileReader(error));
 		String errorMsg = br.readLine();
 		br.close();
@@ -79,13 +84,13 @@ public class RunUtils {
 
 	}
 
-	public static synchronized RunStatus getStatus(String runId) throws IOException {
+	public static synchronized RunStatus getStatus(String runId)
+			throws IOException {
 		RunStatus rs = new RunStatus();
 		File error = new File(WORK_DIR + runId + "/error.txt");
 		File finished = new File(WORK_DIR + runId + "/finished.txt");
 		File started = new File(WORK_DIR + runId + "/started.txt");
 
-		
 		if (error.exists()) {
 			rs.setMessage(RunUtils.getError(runId));
 			rs.setStatus(RunStatusEnum.FAILED);
@@ -112,11 +117,10 @@ public class RunUtils {
 
 		RunUtils.setStarted("tester");
 		System.out.println(RunUtils.getStatus("tester").getStatus());
-		
-		
+
 		RunUtils.setFinished("tester");
 		System.out.println(RunUtils.getStatus("tester").getStatus());
-		
+
 		RunUtils.setError("tester", "not really an error, just a test.");
 		System.out.println(RunUtils.getStatus("tester").getStatus());
 	}
