@@ -58,6 +58,7 @@ if __name__ == '__main__':
 
     opts,args=parser.parse_args()
 
+    DBHosts = ["gaia.psc.edu","warhol-fred.psc.edu"]
     ### This only currently works for allegheny county
 
     #### Initialize the FRED SIMS
@@ -78,39 +79,40 @@ if __name__ == '__main__':
     numberDays = int(fred_run.get_param("days"))
     outputsAve = fred_run.outputsAve
 
-    apolloDB = apollo.ApolloDB()
-    apolloDB.connect()
+    apolloDBs = [ apollo.ApolloDB(host_=x) for x in DBHosts ]
+    for apolloDB in apolloDBs:
+	apolloDB.connect() 
     
 
     ## Fill in the run table
-    SQLString = 'INSERT INTO run set label = "' + key + '"'
-    apolloDB.query(SQLString)
-    runInsertID = apolloDB.insertID()
+    	SQLString = 'INSERT INTO run set label = "' + key + '"'
+    	apolloDB.query(SQLString)
+    	runInsertID = apolloDB.insertID()
 
-    stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
-    locationList = ['42003'] # need to replace with an automatic way of getting this info
-    stateInsertIDDict = {}
+    	stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
+    	locationList = ['42003'] # need to replace with an automatic way of getting this info
+    	stateInsertIDDict = {}
 
     ### setup simulated_population_axis
     
-    axisInsertIDDict = apolloDB._populationAxis()
-    
+    	axisInsertIDDict = apolloDB._populationAxis()
+	
     ### setup simulated_populations table
-    for state in stateList.keys():
-        for location in locationList:
-	    stateInsertIDDict[(state,location)] =\
-			  apolloDB.checkAndAddSimulatedPopulation(stateList[state],location)
-
-    for state in stateList.keys():
-        for location in locationList:
-            for day in outputsAve:
-                populationID = stateInsertIDDict[(state,location)]
-                SQLString = 'INSERT INTO time_series set '\
-                    +'run_id = "' + str(runInsertID) + '", '\
-                    +'population_id = "' + str(populationID) + '", '\
-                    +'time_step = "' + str(day['Day']) +'", '\
-                    +'pop_count = "' + str(day[state]) + '"'
-		apolloDB.query(SQLString)
+    	for state in stateList.keys():
+	    for location in locationList:
+		stateInsertIDDict[(state,location)] =\
+		  apolloDB.checkAndAddSimulatedPopulation(stateList[state],location)
+			
+    	for state in stateList.keys():
+	    for location in locationList:
+		for day in outputsAve:
+		    populationID = stateInsertIDDict[(state,location)]
+		    SQLString = 'INSERT INTO time_series set '\
+				+'run_id = "' + str(runInsertID) + '", '\
+				+'population_id = "' + str(populationID) + '", '\
+				+'time_step = "' + str(day['Day']) +'", '\
+				+'pop_count = "' + str(day[state]) + '"'
+		    apolloDB.query(SQLString)
 	
 
     synth_pop_dir = fred_run.get_param("synthetic_population_directory")
@@ -171,46 +173,41 @@ if __name__ == '__main__':
 
     time2 = time.time()
     print "Time to calculate ave = %10.5f seconds"%(time2-time1) 
+    for apolloDB in apolloDBs:
     ### update simulated_population
-    fipsInsertIDDict = {}
-    #print 'fips list = ' + str(fipsList)
-    for fips in fipsList:
-	insertID = apolloDB.checkAndAddSimulatedPopulation('newly exposed',fips)
-       
-        fipsInsertIDDict[fips] = insertID
+	fipsInsertIDDict = {}
+	for fips in fipsList:
+	    insertID = apolloDB.checkAndAddSimulatedPopulation('newly exposed',fips)
+	    fipsInsertIDDict[fips] = insertID
        	
-    time1 = time.time() 
-#    for day in range(0,len(aveInfByBG)):
-#    SQLString = 'INSERT INTO time_series (run_id,population_id,time_step,pop_count)'\
-#                        +' VALUES'
-    for day in range(0,numberDays):
-        if False: #day > len(aveInfByBG):
-            for fips in fipsList:
-                SQLString = 'INSERT INTO time_series set '\
-                        +'run_id = "' + str(runInsertID) + '", '\
-                        +'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
-                        +'time_step = "' + str(day) + '", '\
-                        +'pop_count = "0"'
-                apolloDB.query(SQLString)
-        else:
-	    if(len(aveInfByBG[day].keys())>0):
-		SQLString = 'INSERT INTO time_series (run_id,population_id,time_step,pop_count)'\
-                        +' VALUES'
- 
-            	for fips in aveInfByBG[day].keys():
-            #print "Day = " + str(day) + " and Fips: " + fips
-            #print "ave = " + str(int(aveInfByBG[day][fips]))
-                	SQLString += '('\
-                    		+'"'+str(runInsertID) + '", '\
-                    		+'"' + str(fipsInsertIDDict[fips]) + '",'\
-                    		+'"' + str(day) + '", '\
-                    		+'"' + str(int(aveInfByBG[day][fips])) + '"),'
-    		SQLString = SQLString[:-1]
-		
-    		apolloDB.query(SQLString)
+	time1 = time.time() 
+	#    for day in range(0,len(aveInfByBG)):
+	#    SQLString = 'INSERT INTO time_series (run_id,population_id,time_step,pop_count)'\
+	#                        +' VALUES'
+	for day in range(0,numberDays):
+	    if False: #day > len(aveInfByBG):
+		for fips in fipsList:
+		    SQLString = 'INSERT INTO time_series set '\
+				+'run_id = "' + str(runInsertID) + '", '\
+				+'population_id = "' + str(fipsInsertIDDict[fips]) + '", '\
+				+'time_step = "' + str(day) + '", '\
+				+'pop_count = "0"'
+		    apolloDB.query(SQLString)
+	    else:
+		if(len(aveInfByBG[day].keys())>0):
+		    SQLString = 'INSERT INTO time_series (run_id,population_id,time_step,pop_count)'\
+				+' VALUES'
+		    
+		    for fips in aveInfByBG[day].keys():
+			SQLString += '('\
+				     +'"'+str(runInsertID) + '", '\
+				     +'"' + str(fipsInsertIDDict[fips]) + '",'\
+				     +'"' + str(day) + '", '\
+				     +'"' + str(int(aveInfByBG[day][fips])) + '"),'
+		    SQLString = SQLString[:-1]
+			    
+	            apolloDB.query(SQLString)
                 
-    time2 = time.time()
-    print "Time To populate TimeSeries = %10.5f"%(time2-time1)
-    apolloDB.close()
-    
-    
+	time2 = time.time()
+	print "Time To populate TimeSeries = %10.5f"%(time2-time1)
+	apolloDB.close()
