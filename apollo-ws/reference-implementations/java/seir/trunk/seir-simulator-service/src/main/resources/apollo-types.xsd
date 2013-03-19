@@ -273,36 +273,33 @@
 			<element name="NewElement" type="string"></element>
 		</sequence>
 	</complexType>
+	
+	
 	<complexType name="Disease">
 		<sequence>
-			<element name="diseaseName" type="token" maxOccurs="1"
-				minOccurs="1"></element>
-			<element name="infectiousPeriod" type="tns:NonNegativeDouble"
-				maxOccurs="1" minOccurs="1">
+			<element name="diseaseName" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="infectiousPeriod" type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="latentPeriod" type="tns:NonNegativeDouble"
-				maxOccurs="1" minOccurs="1">
+			<element name="latentPeriod" type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="reproductionNumber" type="tns:NonNegativeDouble"
-				maxOccurs="1" minOccurs="1">
+			<element name="reproductionNumber" type="tns:NonNegativeDouble"	maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043">
 					</documentation>
 				</annotation>
 			</element>
 
-			<element name="asymptomaticInfectionFraction" type="tns:Probability"
-				maxOccurs="1" minOccurs="1">
+			<element name="asymptomaticInfectionFraction" type="tns:Probability" maxOccurs="1" minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045">
 					</documentation>
@@ -310,10 +307,13 @@
 			</element>
 		</sequence>
 	</complexType>
+	
+	
 	<complexType name="PopulationDiseaseState">
 		<sequence>
 			<element name="diseaseState" type="token" maxOccurs="1"
-				minOccurs="1"></element>
+				minOccurs="1">
+			</element>
 			<element name="popCount" type="nonNegativeInteger" maxOccurs="1"
 				minOccurs="1">
 			</element>
@@ -481,6 +481,7 @@
     	<sequence>
     		<element name="errorFile" type="anyURI"></element>
     		<element name="completedFile" type="anyURI"></element>
+    		<element name="runId" type="token"></element>
     	</sequence>
     </complexType>
 </schema>
