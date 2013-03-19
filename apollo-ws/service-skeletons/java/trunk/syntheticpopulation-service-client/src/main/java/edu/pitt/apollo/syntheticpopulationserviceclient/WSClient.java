@@ -16,27 +16,21 @@
 package edu.pitt.apollo.syntheticpopulationserviceclient;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.tempuri.SynthiaWS;
-import org.tempuri.SynthiaWSSoap;
-
-import edu.pitt.apollo.types.RunStatus;
 
 
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException {
-		SynthiaWS service = new SynthiaWS(new URL("https://synthiastage.rti.org/Account/synthia-WS.asmx?WSDL"));
-		SynthiaWSSoap port = service.getSynthiaWSSoap();
-		
-
-//		RunStatus rs = port.getRunStatus("test");
-//		System.out.println(rs.getMessage());
-
-		System.out.println("Using WSDL: https://synthiastage.rti.org/Account/synthia-WS.asmx?WSDL");
-		System.out.println("Calling getStatus for runId: 12497");
-		RunStatus rs = port.getStatus("12497");
-		System.out.println("Status Enum: " + rs.getStatus());
-		System.out.println("Status Message: " + rs.getMessage());
+//		SynthiaWS service = new SynthiaWS(new URL("https://synthiastage.rti.org/Account/synthia-WS.asmx?WSDL"));
+//		SynthiaWSSoap port = service.getSynthiaWSSoap();
+//		
+//
+////		RunStatus rs = port.getRunStatus("test");
+////		System.out.println(rs.getMessage());
+//
+//		System.out.println("Using WSDL: https://synthiastage.rti.org/Account/synthia-WS.asmx?WSDL");
+//		System.out.println("Calling getStatus for runId: 12497");
+//		RunStatus rs = port.getStatus("12497");
+//		System.out.println("Status Enum: " + rs.getStatus());
+//		System.out.println("Status Message: " + rs.getMessage());
 	}
 }
