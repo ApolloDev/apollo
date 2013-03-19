@@ -15,36 +15,52 @@
 
 package edu.pitt.apollo.apolloclient;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.List;
 
-import javax.xml.ws.Holder;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.pitt.apollo.service.apolloservice.ApolloService;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
+import edu.pitt.apollo.types.AntiviralControlMeasure;
 import edu.pitt.apollo.types.Authentication;
-import edu.pitt.apollo.types.ServiceRecord;
-import edu.pitt.apollo.types.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.Disease;
+import edu.pitt.apollo.types.PopulationDiseaseState;
+import edu.pitt.apollo.types.SimulatedPopulation;
+import edu.pitt.apollo.types.SimulatorConfiguration;
 import edu.pitt.apollo.types.SimulatorIdentification;
+import edu.pitt.apollo.types.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.TimeStepUnit;
+import edu.pitt.apollo.types.VaccinationControlMeasure;
 
 public class WSClient {
-	public static void main(String[] args) throws InterruptedException, MalformedURLException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		ApolloService service = new ApolloService(new URL("http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl"));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 //		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
 //
-//		Authentication auth = new Authentication();
-//		auth.setRequesterId("fake_user");
-//		auth.setRequesterPassword("fake_password");
+		Authentication auth = new Authentication();
+		auth.setRequesterId("fake_user");
+		auth.setRequesterPassword("fake_password");
 //		srr.setAuthentication(auth);
 //
 //		ServiceRecord sr = new ServiceRecord();
-//		SimulatorIdentification si = new SimulatorIdentification();
-//		si.setSimulatorDeveloper("UPitt,PSC,CMU");
-//		si.setSimulatorName("YNIC");
-//		si.setSimulatorVersion("2.0.1");
+		SimulatorIdentification si = new SimulatorIdentification();
+		si.setSimulatorDeveloper("UPitt,PSC,CMU");
+		si.setSimulatorName("YNIC");
+		si.setSimulatorVersion("2.0.1");
 //		sr.setSimulatorIdentification(si);
 //
 //		srr.setServiceRecord(sr);
@@ -56,15 +72,15 @@ public class WSClient {
 //		port.registerService(srr, success, msg);
 //		System.out.println(msg.value);
 
-		 List<ServiceRecord> l = port.getRegisteredServices();
-		 System.out.println("Found " + l.size() + " registered services!");
-		 for (ServiceRecord r : l) {
-			 System.out.println(r.getSimulatorIdentification().getSimulatorDeveloper());
-			 System.out.println(r.getSimulatorIdentification().getSimulatorName());
-			 System.out.println(r.getSimulatorIdentification().getSimulatorVersion() + "\n\n");
-			 }
+//		 List<ServiceRecord> l = port.getRegisteredServices();
+//		 System.out.println("Found " + l.size() + " registered services!");
+//		 for (ServiceRecord r : l) {
+//			 System.out.println(r.getSimulatorIdentification().getSimulatorDeveloper());
+//			 System.out.println(r.getSimulatorIdentification().getSimulatorName());
+//			 System.out.println(r.getSimulatorIdentification().getSimulatorVersion() + "\n\n");
+//			 }
 		
-		/*SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
+		SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
 
 		simulatorConfiguration.setAuthentication(auth);
 		simulatorConfiguration
@@ -130,23 +146,37 @@ public class WSClient {
 			vcm.getVaccinationAdminSchedule().add(0d);
 			vcm.getVaccineSupplySchedule().add(0d);
 		}
+		
+		//MessageDigest md = MessageDigest.getInstance("MD5");
+		
+//		XStream xStream = new XStream(new DomDriver());
+//		FileWriter fw = new FileWriter(new File("simulatorConfiguration.xml"));
+//		xStream.toXML(simulatorConfiguration, fw);
+//		fw.close();
 
-		String runId = port.runSimulation(simulatorConfiguration);
-		System.out.println("Simulator returned runId: "	+ runId );
-	//	String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
-		RunStatus rs = port.getRunStatus(runId, sr);
-		while (rs.getStatus() != RunStatusEnum.COMPLETED) {
-			System.out.println("Status is " + rs.getStatus());
-			System.out.println("Message is " + rs.getMessage());
-			System.out.println("\n");
-			Thread.sleep(500);
-		    rs = port.getRunStatus(runId, sr);
-		}
-		System.out.println("Status is " + rs.getStatus());
-		System.out.println("Message is " + rs.getMessage());
+		ObjectMapper mapper = new ObjectMapper();
+		Writer strWriter = new FileWriter(new File("simulatorConfiguration.json"));
+		mapper.writeValue(strWriter, simulatorConfiguration);
+		String userDataJSON = strWriter.toString();
+		strWriter.close();
+		
+
+//		String runId = port.runSimulation(simulatorConfiguration);
+//		System.out.println("Simulator returned runId: "	+ runId );
+//	//	String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
+//		RunStatus rs = port.getRunStatus(runId, sr);
+//		while (rs.getStatus() != RunStatusEnum.COMPLETED) {
+//			System.out.println("Status is " + rs.getStatus());
+//			System.out.println("Message is " + rs.getMessage());
+//			System.out.println("\n");
+//			Thread.sleep(500);
+//		    rs = port.getRunStatus(runId, sr);
+//		}
+//		System.out.println("Status is " + rs.getStatus());
+//		System.out.println("Message is " + rs.getMessage());
 
 		// port.unRegisterService(srr, success, msg);
-		// System.out.println(msg.value);*/
+		// System.out.println(msg.value);
 
 	}
 }
