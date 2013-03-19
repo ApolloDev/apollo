@@ -481,6 +481,7 @@
     	<sequence>
     		<element name="errorFile" type="anyURI"></element>
     		<element name="completedFile" type="anyURI"></element>
+    		<element name="runId" type="token"></element>
     	</sequence>
     </complexType>
 </schema>
