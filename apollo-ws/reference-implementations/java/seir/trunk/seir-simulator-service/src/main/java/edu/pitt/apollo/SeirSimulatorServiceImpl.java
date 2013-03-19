@@ -15,8 +15,6 @@
 package edu.pitt.apollo;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -28,18 +26,16 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import org.apache.commons.codec.binary.Base64;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import edu.pitt.apollo.seir.utils.BatchThread;
-import edu.pitt.apollo.seir.utils.FileUtils;
 import edu.pitt.apollo.seir.utils.RunUtils;
+import edu.pitt.apollo.seir.utils.WorkerThread;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
 import edu.pitt.apollo.types.BatchRunSimulatorResult;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SimulatorConfiguration;
+import edu.pitt.apollo.types.SimulatorIdentification;
 import edu.pitt.apollo.types.SoftwareIdentification;
 import edu.pitt.apollo.types.SupportedPopulationLocation;
 
@@ -93,39 +89,15 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			// if the run is not cached, or the user doesn't want a cache, then
 			// just run
 
-			MessageDigest md = MessageDigest.getInstance("MD5");
+			
+			SoftwareIdentification sid = simulatorConfiguration.getSimulatorIdentification();
+			String runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName()
+					+ "_" + sid.getSoftwareVersion() + "_"+ RunUtils.getNextId();
+			System.out.println("RunId is :" + runId);
+			(new WorkerThread(simulatorConfiguration, runId)).start();
 
-			// XStream xStream = new XStream(new DomDriver());
-			// String xml = xStream.toXML(obj,
-			// out)toXML(simulatorConfiguration);
-
-			ObjectMapper mapper = new ObjectMapper();
-			Writer strWriter = new StringWriter();
-			mapper.writeValue(strWriter, simulatorConfiguration);
-			String userDataJSON = strWriter.toString();
-
-			// System.out.println(xStream.toXML(person));
-			// String original = args[0];
-			// MessageDigest md = MessageDigest.getInstance("MD5");
-			// md.update(original.getBytes());
-			// byte[] digest = md.digest();
-			// StringBuffer sb = new StringBuffer();
-			// for (byte b : digest) {
-			// sb.append(Integer.toHexString((int) (b & 0xff)));
-			// }
-			//
-			//
-
-			// SimulatorIdentification sid = simulatorConfiguration
-			// .getSimulatorIdentification();
-			// String runId = sid.getSimulatorDeveloper() + "_"
-			// + sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
-			// + "_" + RunUtils.getNextId();
-			// System.out.println("RunId is :" + runId);
-			// (new WorkerThread(simulatorConfiguration, runId)).start();
-
-			// return runId;
-			return null;
+			return runId;
+			//return null;
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -177,12 +149,12 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 			BatchRunSimulatorResult result = new BatchRunSimulatorResult();
 
-			result.setCompletedFile(md5RunIdHash + "_results.zip");
-			result.setErrorFile(md5RunIdHash + "_errors.zip");
+			result.setCompletedFile(md5RunIdHash + "_results.txt");
+			result.setErrorFile(md5RunIdHash + "_errors.txt");
 			result.setRunId(runId);
 
 			BatchThread bt = new BatchThread(
-					batchRunSimulatorConfiguration.getBatchConfigurationFile(),
+					batchRunSimulatorConfiguration.getBatchConfigurationFile(), result,
 					runId, md5RunIdHash);
 			bt.start();
 
@@ -205,7 +177,7 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 		c.getSoftwareIdentification().setSoftwareDeveloper("DevName");
 		c.getSoftwareIdentification().setSoftwareName("Fake Simulator");
 		c.getSoftwareIdentification().setSoftwareVersion("1.0");
-		c.setBatchConfigurationFile("hello.txt");
+		c.setBatchConfigurationFile("http://localhost:8080/apollo/test.json");
 		s.batchRun(c);
 
 	}
