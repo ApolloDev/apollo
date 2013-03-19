@@ -22,50 +22,34 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import org.tempuri.SynthiaWSSoap;
-
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.SyntheticPopulationConfiguration;
+import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationServiceEI;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
 portName="SyntheticPopulationServiceEndpoint",
 serviceName="SyntheticPopulationService", 
 endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
-class SyntheticPopulationService implements SynthiaWSSoap {
+class SyntheticPopulationService implements SyntheticPopulationServiceEI {
 
 	@Override
-	@WebResult(name = "zipFileLocation", targetNamespace = "http://tempuri.org/")
-	@RequestWrapper(localName = "GetURL", targetNamespace = "http://tempuri.org/", className = "org.tempuri.GetURL")
-	@WebMethod(operationName = "GetURL", action = "http://tempuri.org/GetURL")
-	@ResponseWrapper(localName = "GetURLResponse", targetNamespace = "http://tempuri.org/", className = "org.tempuri.GetURLResponse")
-	public String getURL(
-			@WebParam(name = "runId", targetNamespace = "http://tempuri.org/") String runId) {
+	@WebResult(name = "out", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatusResponse")
+	public String getRunStatus(
+			@WebParam(name = "in", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String in) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@WebResult(name = "SubmitJobResult", targetNamespace = "http://tempuri.org/")
-	@RequestWrapper(localName = "SubmitJob", targetNamespace = "http://tempuri.org/", className = "org.tempuri.SubmitJob")
-	@WebMethod(operationName = "SubmitJob", action = "http://tempuri.org/SubmitJob")
-	@ResponseWrapper(localName = "SubmitJobResponse", targetNamespace = "http://tempuri.org/", className = "org.tempuri.SubmitJobResponse")
-	public String submitJob(
-			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://tempuri.org/") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
+	@WebResult(name = "out", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
+	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.Run")
+	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/run")
+	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.RunResponse")
+	public String run(
+			@WebParam(name = "in", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String in) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	@WebResult(name = "GetStatusResult", targetNamespace = "http://tempuri.org/")
-	@RequestWrapper(localName = "GetStatus", targetNamespace = "http://tempuri.org/", className = "org.tempuri.GetStatus")
-	@WebMethod(operationName = "GetStatus", action = "http://tempuri.org/GetStatus")
-	@ResponseWrapper(localName = "GetStatusResponse", targetNamespace = "http://tempuri.org/", className = "org.tempuri.GetStatusResponse")
-	public RunStatus getStatus(
-			@WebParam(name = "runId", targetNamespace = "http://tempuri.org/") String runId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
 }
