@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -27,8 +28,11 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import edu.pitt.apollo.seir.utils.BatchThread;
+import edu.pitt.apollo.seir.utils.FileUtils;
 import edu.pitt.apollo.seir.utils.RunUtils;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
@@ -79,27 +83,27 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		try {
 
-			//check to see if the user would be happy with a cached result
-			//if so, check to see if there is a cached run  by:
-			//		md5 hashing the sc
-			//		querying gthe database for the sc
-			//String runId = DbUtils.isRunCached(simulatorConfiguration);	
-			//		if run is cached return the old run id for that run and exit
-			
-			//if the run is not cached, or the user doesn't want a cache, then just run
-			
+			// check to see if the user would be happy with a cached result
+			// if so, check to see if there is a cached run by:
+			// md5 hashing the sc
+			// querying gthe database for the sc
+			// String runId = DbUtils.isRunCached(simulatorConfiguration);
+			// if run is cached return the old run id for that run and exit
+
+			// if the run is not cached, or the user doesn't want a cache, then
+			// just run
+
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			
-//			XStream xStream = new XStream(new DomDriver());
-//			String xml = xStream.toXML(obj, out)toXML(simulatorConfiguration);
+
+			// XStream xStream = new XStream(new DomDriver());
+			// String xml = xStream.toXML(obj,
+			// out)toXML(simulatorConfiguration);
 
 			ObjectMapper mapper = new ObjectMapper();
 			Writer strWriter = new StringWriter();
 			mapper.writeValue(strWriter, simulatorConfiguration);
 			String userDataJSON = strWriter.toString();
-			
-			
-			
+
 			// System.out.println(xStream.toXML(person));
 			// String original = args[0];
 			// MessageDigest md = MessageDigest.getInstance("MD5");
@@ -112,15 +116,15 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			//
 			//
 
-//			SimulatorIdentification sid = simulatorConfiguration
-//					.getSimulatorIdentification();
-//			String runId = sid.getSimulatorDeveloper() + "_"
-//					+ sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
-//					+ "_" + RunUtils.getNextId();
-//			System.out.println("RunId is :" + runId);
-//			(new WorkerThread(simulatorConfiguration, runId)).start();
+			// SimulatorIdentification sid = simulatorConfiguration
+			// .getSimulatorIdentification();
+			// String runId = sid.getSimulatorDeveloper() + "_"
+			// + sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
+			// + "_" + RunUtils.getNextId();
+			// System.out.println("RunId is :" + runId);
+			// (new WorkerThread(simulatorConfiguration, runId)).start();
 
-		//	return runId;
+			// return runId;
 			return null;
 
 		} catch (Exception e) {
@@ -134,7 +138,7 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	static {
 		try {
-			System.loadLibrary("seir2jni");
+			// System.loadLibrary("seir2jni");
 			System.out.println("Loaded seirjni in Apollo!");
 		} catch (Exception e) {
 			System.out.println("Error loading SEIR JNI: " + e.getMessage());
@@ -148,14 +152,62 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
 	public BatchRunSimulatorResult batchRun(
 			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
-		
-		SoftwareIdentification sid = batchRunSimulatorConfiguration.getSoftwareIdentification();
-		
-		String runId = sid.getSoftwareDeveloper() + "_"
-				+ sid.getSoftwareName() + "_" + sid.getSoftwareVersion()
-				+ "_" + RunUtils.getNextId();
-		System.out.println("RunId is :" + runId);
-		return null;
+
+		SoftwareIdentification sid = batchRunSimulatorConfiguration
+				.getSoftwareIdentification();
+
+		String runId = "-1";
+		try {
+			runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName()
+					+ "_" + sid.getSoftwareVersion() + "_"
+					+ RunUtils.getNextId();
+
+			MessageDigest md = null;
+
+			md = MessageDigest.getInstance("MD5");
+
+			md.update(runId.getBytes());
+			byte[] digest = md.digest();
+			StringBuffer sb = new StringBuffer();
+
+			for (byte b : digest)
+				sb.append(Integer.toHexString((int) (b & 0xff)));
+
+			String md5RunIdHash = sb.toString();
+
+			BatchRunSimulatorResult result = new BatchRunSimulatorResult();
+
+			result.setCompletedFile(md5RunIdHash + "_results.zip");
+			result.setErrorFile(md5RunIdHash + "_errors.zip");
+			result.setRunId(runId);
+
+			BatchThread bt = new BatchThread(
+					batchRunSimulatorConfiguration.getBatchConfigurationFile(),
+					runId, md5RunIdHash);
+			bt.start();
+
+			System.out.println("RunId is :" + runId);
+			
+			return result;
+
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		} catch (IOException e1) {
+			return null;
+		}
+	}
+
+	public static void main(String[] args) {
+		SeirSimulatorServiceImpl s = new SeirSimulatorServiceImpl();
+		BatchRunSimulatorConfiguration c = new BatchRunSimulatorConfiguration();
+		c.setAcceptCachedResults(true);
+		c.setSoftwareIdentification(new SoftwareIdentification());
+		c.getSoftwareIdentification().setSoftwareDeveloper("DevName");
+		c.getSoftwareIdentification().setSoftwareName("Fake Simulator");
+		c.getSoftwareIdentification().setSoftwareVersion("1.0");
+		c.setBatchConfigurationFile("hello.txt");
+		s.batchRun(c);
+
 	}
 
 }
