@@ -173,9 +173,10 @@ class FredWebService(SimulatorService):
 
             with open('fred_initial_population_0.txt','wb') as f:
                     f.write('#line_format\n')
-                    numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "exposed")
+                    numExposed = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "exposed")
+		    numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "infectious")
                     #f.write('0 0 %d\n'%(cfg._disease_dynamics._pop_count[2]))
-                    f.write('0 0 %d\n'%(numInfectious))
+                    f.write('0 0 %d\n'%(numExposed + numInfectious))
 
 		     ### if vaccination comes through, parse this
             with open('starttime','wb') as f:
