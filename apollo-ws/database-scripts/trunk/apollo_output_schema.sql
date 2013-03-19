@@ -45,5 +45,5 @@ CREATE TABLE time_series (
   pop_count     FLOAT  NOT NULL
 );
 
-INSERT INTO population_axis (label) values ("disease");
+INSERT INTO population_axis (label) values ("disease_state");
 INSERT INTO population_axis (label) values ("location");
