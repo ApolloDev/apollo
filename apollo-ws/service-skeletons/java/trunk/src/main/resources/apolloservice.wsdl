@@ -26,8 +26,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
-						<xsd:element name="serviceRecord"
-							type="apollo:ServiceRecord">
+						<xsd:element name="serviceRecord" type="apollo:ServiceRecord">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -98,9 +97,38 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
-						<xsd:element name="visualizerOutputResource"
-							type="apollo:VisualizerOutputResource" maxOccurs="unbounded" minOccurs="1">
+						<xsd:element name="visualizerOutputResource" type="apollo:VisualizerOutputResource"
+							maxOccurs="unbounded" minOccurs="1">
 						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="batchRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRunSimulatorConfiguration"
+							type="apollo:BatchRunSimulatorConfiguration"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="batchRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRunSimulatorResult" type="apollo:BatchRunSimulatorResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="generateSyntheticPopulation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="syntheticPopulationConfiguration" type="apollo:SyntheticPopulationConfiguration"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="generateSyntheticPopulationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -142,6 +170,18 @@
 	<wsdl:message name="runVisualizationResponse">
 		<wsdl:part name="parameters" element="tns:runVisualizationResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="batchRunRequest">
+		<wsdl:part name="parameters" element="tns:batchRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="batchRunResponse">
+		<wsdl:part name="parameters" element="tns:batchRunResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="generateSyntheticPopulationRequest">
+		<wsdl:part name="parameters" element="tns:generateSyntheticPopulation"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="generateSyntheticPopulationResponse">
+		<wsdl:part name="parameters" element="tns:generateSyntheticPopulationResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
@@ -167,9 +207,18 @@
 			<wsdl:input message="tns:getRegisteredServicesRequest"></wsdl:input>
 			<wsdl:output message="tns:getRegisteredServicesResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<wsdl:input message="tns:batchRunRequest"></wsdl:input>
+			<wsdl:output message="tns:batchRunResponse"></wsdl:output>
+		</wsdl:operation>
 
+		<wsdl:operation name="generateSyntheticPopulation">
+			<wsdl:input message="tns:generateSyntheticPopulationRequest"></wsdl:input>
+			<wsdl:output message="tns:generateSyntheticPopulationResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="ApolloServiceBinding" type="tns:ApolloServiceEI">
+	<wsdl:binding name="ApolloServiceBinding"
+		type="tns:ApolloServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="getRunStatus">
@@ -225,6 +274,16 @@
 		<wsdl:operation name="runVisualization">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/apolloservice/runVisualization" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/batchRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
