@@ -40,6 +40,12 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatusResponse")
 	public RunStatus getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
+		try {
+			Thread.sleep(120000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RunStatus rs = new RunStatus();
 		rs.setMessage("hello from simulatorservice");
 		rs.setStatus(RunStatusEnum.COMPLETED);
@@ -65,12 +71,24 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		
 		return simulatorConfiguration.getSimulatorIdentification()
-				.getSimulatorDeveloper()
+				.getSoftwareDeveloper()
 				+ "_"
 				+ simulatorConfiguration.getSimulatorIdentification()
-						.getSimulatorName()
+						.getSoftwareName()
 				+ "_"
-				+ simulatorConfiguration.getSimulatorIdentification().getSimulatorVersion() + "_17";
+				+ simulatorConfiguration.getSimulatorIdentification().getSoftwareVersion() + "_17";
+	}
+
+	@Override
+	@WebResult(name = "out", targetNamespace = "")
+	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
+	@WebMethod
+	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
+	public String batchRun(
+			@WebParam(name = "batchFile", targetNamespace = "") String batchFile,
+			@WebParam(name = "acceptCachedResults", targetNamespace = "") boolean acceptCachedResults) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

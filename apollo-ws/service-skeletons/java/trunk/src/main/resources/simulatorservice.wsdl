@@ -52,6 +52,20 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="batchRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRunSimulatorConfiguration" type="apollo:BatchRunSimulatorConfiguration"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="batchRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRun" type="apollo:BatchRunSimulatorResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runRequest">
@@ -72,6 +86,12 @@
 	<wsdl:message name="getSupportedLocationsResponse">
 		<wsdl:part name="parameters" element="tns:getSupportedLocationsResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="batchRunRequest">
+		<wsdl:part name="parameters" element="tns:batchRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="batchRunResponse">
+		<wsdl:part name="parameters" element="tns:batchRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="SimulatorServiceEI">
 		<wsdl:operation name="run">
 			<wsdl:input message="tns:runRequest" />
@@ -85,12 +105,18 @@
 			<wsdl:input message="tns:getSupportedLocationsRequest"></wsdl:input>
 			<wsdl:output message="tns:getSupportedLocationsResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<wsdl:input message="tns:batchRunRequest"></wsdl:input>
+			<wsdl:output message="tns:batchRunResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="SimulatorServiceBinding" type="tns:SimulatorServiceEI">
+	<wsdl:binding name="SimulatorServiceBinding"
+		type="tns:SimulatorServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="run">
-			<soap:operation soapAction="http://service.apollo.pitt.edu/simulatorservice/run" />
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/run" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -111,6 +137,16 @@
 		<wsdl:operation name="getSupportedLocations">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/simulatorservice/getSupportedLocations" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/batchRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
