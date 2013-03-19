@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.ws.Holder;
 
@@ -146,15 +145,15 @@ public class WSClient {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 		FileOutputStream out = new FileOutputStream(new File(
-				"/apollo/test.json"));
-		for (int i = 0; i < 5; i++) {
+				"test.json"));
+		for (int i = 0; i < 50000; i++) {
 			simulatorConfiguration.getSimulatorIdentification()
 					.setSoftwareDeveloper(String.valueOf(i));
 			mapper.writeValue(out, simulatorConfiguration);
 		}
 		out.close();
 
-		FileInputStream fis = new FileInputStream(new File("/apollo/test.json"));
+		FileInputStream fis = new FileInputStream(new File("test.json"));
 		for (Iterator it = new ObjectMapper().readValues(
 				new JsonFactory().createJsonParser(fis),
 				SimulatorConfiguration.class); it.hasNext();)
