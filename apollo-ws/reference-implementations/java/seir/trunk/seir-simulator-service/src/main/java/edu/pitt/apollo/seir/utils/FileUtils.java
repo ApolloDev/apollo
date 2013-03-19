@@ -15,6 +15,7 @@ public class FileUtils {
 		ReadableByteChannel rbc = Channels.newChannel(sourcefile.openStream());
 		FileOutputStream fos = new FileOutputStream(destFileName);
 		fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+		fos.flush();
 		fos.close();
 	}
 }
