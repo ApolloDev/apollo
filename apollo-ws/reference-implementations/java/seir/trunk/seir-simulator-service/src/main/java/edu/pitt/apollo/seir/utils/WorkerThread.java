@@ -20,13 +20,13 @@ public class WorkerThread extends Thread {
 	public void run() {
 		
 		try {
-			String runId = DbUtils.isRunCached(sc);			
+
 			RunUtils.setStarted(runId);
 		
 
-			SeirModelAdapter.run(sc, runId);
-			
-			RunUtils.setFinished(runId);
+//			SeirModelAdapter.run(sc, runId);
+//			
+//			RunUtils.setFinished(runId);
 
 		} catch (Exception e) {
 			try {
