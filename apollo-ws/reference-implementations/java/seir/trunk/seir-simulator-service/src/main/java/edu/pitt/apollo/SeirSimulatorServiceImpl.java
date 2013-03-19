@@ -29,16 +29,14 @@ import javax.xml.ws.ResponseWrapper;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import edu.pitt.apollo.seir.utils.RunUtils;
-import edu.pitt.apollo.seir.utils.WorkerThread;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
+import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types.BatchRunSimulatorResult;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SimulatorIdentification;
+import edu.pitt.apollo.types.SoftwareIdentification;
 import edu.pitt.apollo.types.SupportedPopulationLocation;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
@@ -81,10 +79,19 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		try {
 
+			//check to see if the user would be happy with a cached result
+			//if so, check to see if there is a cached run  by:
+			//		md5 hashing the sc
+			//		querying gthe database for the sc
+			//String runId = DbUtils.isRunCached(simulatorConfiguration);	
+			//		if run is cached return the old run id for that run and exit
+			
+			//if the run is not cached, or the user doesn't want a cache, then just run
+			
 			MessageDigest md = MessageDigest.getInstance("MD5");
-
-			XStream xStream = new XStream(new DomDriver());
-			String xml = xStream.toXML(simulatorConfiguration);
+			
+//			XStream xStream = new XStream(new DomDriver());
+//			String xml = xStream.toXML(obj, out)toXML(simulatorConfiguration);
 
 			ObjectMapper mapper = new ObjectMapper();
 			Writer strWriter = new StringWriter();
@@ -105,15 +112,16 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 			//
 			//
 
-			SimulatorIdentification sid = simulatorConfiguration
-					.getSimulatorIdentification();
-			String runId = sid.getSimulatorDeveloper() + "_"
-					+ sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
-					+ "_" + RunUtils.getNextId();
-			System.out.println("RunId is :" + runId);
-			(new WorkerThread(simulatorConfiguration, runId)).start();
+//			SimulatorIdentification sid = simulatorConfiguration
+//					.getSimulatorIdentification();
+//			String runId = sid.getSimulatorDeveloper() + "_"
+//					+ sid.getSimulatorName() + "_" + sid.getSimulatorVersion()
+//					+ "_" + RunUtils.getNextId();
+//			System.out.println("RunId is :" + runId);
+//			(new WorkerThread(simulatorConfiguration, runId)).start();
 
-			return runId;
+		//	return runId;
+			return null;
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -131,6 +139,23 @@ class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 		} catch (Exception e) {
 			System.out.println("Error loading SEIR JNI: " + e.getMessage());
 		}
+	}
+
+	@Override
+	@WebResult(name = "batchRun", targetNamespace = "")
+	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
+	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
+	public BatchRunSimulatorResult batchRun(
+			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+		
+		SoftwareIdentification sid = batchRunSimulatorConfiguration.getSoftwareIdentification();
+		
+		String runId = sid.getSoftwareDeveloper() + "_"
+				+ sid.getSoftwareName() + "_" + sid.getSoftwareVersion()
+				+ "_" + RunUtils.getNextId();
+		System.out.println("RunId is :" + runId);
+		return null;
 	}
 
 }
