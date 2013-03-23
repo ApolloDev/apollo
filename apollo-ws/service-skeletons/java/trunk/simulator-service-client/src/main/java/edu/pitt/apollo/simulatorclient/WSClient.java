@@ -15,37 +15,11 @@
 
 package edu.pitt.apollo.simulatorclient;
 
-import java.math.BigInteger;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.ws.Holder;
-
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-
-import edu.pitt.apollo.service.simulatorservice.SimulatorService;
-import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
-import edu.pitt.apollo.types.AntiviralControlMeasure;
-import edu.pitt.apollo.types.Authentication;
-import edu.pitt.apollo.types.Disease;
-import edu.pitt.apollo.types.PopulationDiseaseState;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import edu.pitt.apollo.types.ServiceRecord;
-import edu.pitt.apollo.types.SimulatedPopulation;
-import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SimulatorIdentification;
-import edu.pitt.apollo.types.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.TimeStepUnit;
-import edu.pitt.apollo.types.VaccinationControlMeasure;
 
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
-		
+/*		
 		
 //		SimulatorService ss = new SimulatorService(new URL("http://jdl50-mnb-024.home:8087/fred?wsdl"));
 //        SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();  
@@ -181,6 +155,6 @@ public class WSClient {
 		System.out.println("Message is " + rs.getMessage());
 		// port.unRegisterService(srr, success, msg);
 		// System.out.println(msg.value);
-	}
-		 
+	}*/
+	}	 
 }
