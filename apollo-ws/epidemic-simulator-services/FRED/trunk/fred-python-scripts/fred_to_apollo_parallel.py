@@ -1,7 +1,7 @@
 import os,sys,string
 import math
 import optparse
-from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Locations_Set,FRED_People_Set
+from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Household_Set,FRED_People_Set
 import apollo
 import time
 #from threading import Thread
@@ -90,7 +90,8 @@ if __name__ == '__main__':
     	runInsertID = apolloDB.insertID()
 
     	stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
-    	locationList = ['42003'] # need to replace with an automatic way of getting this info
+    	#locationList = ['42003'] # need to replace with an automatic way of getting this info
+	locationList = [fred_run.get_param('fips')]
     	stateInsertIDDict = {}
 
     ### setup simulated_population_axis
@@ -115,10 +116,11 @@ if __name__ == '__main__':
 		    apolloDB.query(SQLString)
 	
 
-    synth_pop_dir = fred_run.get_param("synthetic_population_directory")
-    synth_pop_id = fred_run.get_param("synthetic_population_id")
-    synth_pop_prefix = os.path.expandvars(synth_pop_dir + "/" + synth_pop_id + "/" + synth_pop_id)
-    synth_pop_filename = synth_pop_prefix + "_synth_people.txt"
+    synth_pops_dir = fred_run.get_param("synthetic_population_directory")
+    synth_pop_dir = os.path.expandvars(synth_pops_dir + "/2005_2009_ver2_"+location)
+    #synth_pop_id = fred_run.get_param("synthetic_population_id")
+    synth_pop_prefix = os.path.expandvars(synth_pop_dir +"/2005_2009_ver2_"+location)
+    synth_pop_filename = synth_pop_prefix + "_synth_people.txt.fsz"
     synth_household_filename = synth_pop_prefix + "_synth_households.txt"
     
     try:
@@ -127,8 +129,11 @@ if __name__ == '__main__':
         print "Problem opening FRED population file " + synth_pop_filename
         sys.exit(1)
 	
-    fred_population = FRED_People_Set(synth_pop_filename)
-    
+    tmpFilename = synth_pop_dir + "/tmp.txt"
+    os.system("fsz -u " + synth_pop_filename + " > " + tmpFilename) 
+    fred_population = FRED_People_Set(tmpFilename)
+   
+    os.remove(tmpFilename)
     numDays = fred_run.get_param("days")
     aveInfByBG = []
     fipsList = []
