@@ -38,7 +38,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

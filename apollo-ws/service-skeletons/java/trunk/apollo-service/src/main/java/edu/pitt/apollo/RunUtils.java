@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import edu.pitt.apollo.types.SimulatorIdentification;
-
 public class RunUtils {
 	public static String getErrorRunId() {
 		return ApolloServiceImpl.getRunErrorPrefix()
