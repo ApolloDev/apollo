@@ -15,6 +15,8 @@
 
 package edu.pitt.apollo;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -23,33 +25,38 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.types.RunStatus;
+import edu.pitt.apollo.types.ServiceResult;
+import edu.pitt.apollo.types.SyntheticPopulationConfiguration;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
 portName="SyntheticPopulationServiceEndpoint",
 serviceName="SyntheticPopulationService", 
 endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
-class SyntheticPopulationService implements SyntheticPopulationServiceEI {
+class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 
 	@Override
-	@WebResult(name = "out", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
+	@WebResult(name = "runStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
 	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatus")
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/getRunStatus")
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatusResponse")
-	public String getRunStatus(
-			@WebParam(name = "in", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String in) {
+	public RunStatus getRunStatus(
+			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String runId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@WebResult(name = "out", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
+	@WebResult(name = "serviceResult", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
 	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.Run")
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/run")
 	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.RunResponse")
-	public String run(
-			@WebParam(name = "in", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String in) {
+	public List<ServiceResult> run(
+			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 }
