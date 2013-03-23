@@ -25,6 +25,8 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
+import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types.BatchRunSimulatorResult;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SimulatorConfiguration;
@@ -80,15 +82,26 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	}
 
 	@Override
-	@WebResult(name = "out", targetNamespace = "")
+	@WebResult(name = "batchRun", targetNamespace = "")
 	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
-	@WebMethod
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
 	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
-	public String batchRun(
-			@WebParam(name = "batchFile", targetNamespace = "") String batchFile,
-			@WebParam(name = "acceptCachedResults", targetNamespace = "") boolean acceptCachedResults) {
+	public BatchRunSimulatorResult batchRun(
+			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigurationFileForRun")
+	@WebMethod
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runId", targetNamespace = "") String runId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
