@@ -17,9 +17,7 @@ package edu.pitt.apollo;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,17 +38,25 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
 import edu.pitt.apollo.service.simulatorservice.SimulatorService;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
+import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationService;
+import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationServiceEI;
 import edu.pitt.apollo.service.visualizerservice.VisualizerService;
 import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
+import edu.pitt.apollo.types.ApolloSoftwareType;
 import edu.pitt.apollo.types.Authentication;
+import edu.pitt.apollo.types.BatchRunResult;
+import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.ServiceRecord;
 import edu.pitt.apollo.types.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SimulatorIdentification;
+import edu.pitt.apollo.types.SoftwareIdentification;
+import edu.pitt.apollo.types.SyntheticPopulationConfiguration;
+import edu.pitt.apollo.types.SyntheticPopulationResult;
 import edu.pitt.apollo.types.VisualizerConfiguration;
-import edu.pitt.apollo.types.VisualizerOutputResource;
+import edu.pitt.apollo.types.VisualizerResult;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService", endpointInterface = "edu.pitt.apollo.service.apolloservice.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
@@ -87,9 +93,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			records = RegistrationUtils.getServiceRegistrationRecords();
 
 			for (ServiceRegistrationRecord record : records) {
-				if (RegistrationUtils.serviceIdentificationEqual(
-						record.getServiceRecord(),
-						serviceRegistrationRecord.getServiceRecord())) {
+				if (RegistrationUtils.softwareIdentificationEqual(
+						record.getSoftwareIdentification(),
+						serviceRegistrationRecord.getSoftwareIdentification())) {
 					message.value = "Service is already registered.  Please unRegisterService to make changes to the existing ServiceRecord.";
 					registrationSuccessful.value = false;
 					return;
@@ -138,9 +144,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				// for each record currently in the registry, see if we can find
 				// a record with a ServiceIdentification that is equal to one
 				// that the user is trying to unregister
-				if (RegistrationUtils.serviceIdentificationEqual(
-						record.getServiceRecord(),
-						serviceRegistrationRecord.getServiceRecord())) {
+				if (RegistrationUtils.softwareIdentificationEqual(
+						record.getSoftwareIdentification(),
+						serviceRegistrationRecord.getSoftwareIdentification())) {
 					// found the service the user wants to unregister, now check
 					// that the username and password supplied with this request
 					// match the username and password sent with the
@@ -190,57 +196,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServicesResponse")
 	public List<ServiceRecord> getRegisteredServices() {
 		try {
-			return RegistrationUtils.getServiceRecords();
+			return RegistrationUtils.getRegisteredSoftware();
 		} catch (IOException e) {
 			return null;
-		}
-	}
-
-	@Override
-	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulation")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulationResponse")
-	public String runSimulation(
-			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
-		// this method must return a runId, even if there is an error
-		String runId;
-		try {
-			String URL = null;
-			try {
-				// get the webservice WSDL URL for supplied
-				// SimulatorIdentification
-				URL = RegistrationUtils
-						.getUrlForSimulatorIdentification(simulatorConfiguration
-								.getSimulatorIdentification());
-				if (URL == null) {
-					runId = RunUtils.getErrorRunId();
-					RunUtils.reportError(runId, "Service not registered.");
-					return runId;
-				}
-			} catch (IOException e) {
-				runId = RunUtils.getErrorRunId();
-				RunUtils.reportError(runId, "Error reading registry.");
-				return runId;
-			}
-			// run the simulator
-			SimulatorService ss = new SimulatorService(new URL(URL));
-			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
-			
-			//disable chunking for ZSI
-		    Client client = ClientProxy.getClient(port);
-	        HTTPConduit http = (HTTPConduit) client.getConduit();
-	        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-	        httpClientPolicy.setConnectionTimeout(36000);
-	        httpClientPolicy.setAllowChunking(false);
-	        http.setClient(httpClientPolicy);
-			
-			return port.run(simulatorConfiguration);
-		} catch (MalformedURLException e) {
-			runId = RunUtils.getErrorRunId();
-			RunUtils.reportError(runId,
-					"Problem with SimulatorService:" + e.getMessage());
-			return runId;
 		}
 	}
 
@@ -250,33 +208,44 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRunStatus")
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatusResponse")
 	public RunStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "") String runId,
-			@WebParam(name = "serviceRecord", targetNamespace = "") ServiceRecord serviceRecord) {
+			@WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
 
-		if (runId.startsWith(RUN_ERROR_PREFIX)) {
+		if (runAndSoftwareIdentification.getRunId()
+				.startsWith(RUN_ERROR_PREFIX)) {
 			RunStatus rs = new RunStatus();
 			rs.setStatus(RunStatusEnum.FAILED);
-			rs.setMessage(RunUtils.getError(runId));
+			rs.setMessage(RunUtils.getError(runAndSoftwareIdentification
+					.getRunId()));
 			return rs;
 		}
 
 		String URL = null;
 		try {
+			ServiceRecord serviceRecord = RegistrationUtils
+					.getServiceRecordForSoftwareId(runAndSoftwareIdentification
+							.getSoftwareId());
+
+			URL url = new URL(serviceRecord.getUrl());
+
 			// get the webservice WSDL URL for supplied
 			// SimulatorIdentification
-			if (serviceRecord.getSimulatorIdentification() != null) {
-				URL = RegistrationUtils
-						.getUrlForSimulatorIdentification(serviceRecord
-								.getSimulatorIdentification());
-				SimulatorService ss = new SimulatorService(new URL(URL));
+			if (serviceRecord.getSoftwareIdentification().getSoftwareType() == ApolloSoftwareType.SIMULATOR) {
+				SimulatorService ss = new SimulatorService(url);
 				SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
-				return port.getRunStatus(runId);
-			} else if (serviceRecord.getVisualizerIdentification() != null) {
-				// not done yet
-				RunStatus rs = new RunStatus();
-				rs.setMessage("Not implemented yet...");
-				rs.setStatus(RunStatusEnum.FAILED);
-				return rs;
+				return port.getRunStatus(runAndSoftwareIdentification
+						.getRunId());
+			} else if (serviceRecord.getSoftwareIdentification()
+					.getSoftwareType() == ApolloSoftwareType.VISUALIZER) {
+				VisualizerService ss = new VisualizerService(url);
+				VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
+				return port.getRunStatus(runAndSoftwareIdentification
+						.getRunId());
+			} else if (serviceRecord.getSoftwareIdentification()
+					.getSoftwareType() == ApolloSoftwareType.SYNTHETIC_POPULATION_GENERATOR) {
+				SyntheticPopulationService ss = new SyntheticPopulationService(url);
+				SyntheticPopulationServiceEI port = ss.getSyntheticPopulationServiceEndpoint();
+				return port.getRunStatus(runAndSoftwareIdentification
+						.getRunId());
 			} else {
 				RunStatus rs = new RunStatus();
 				rs.setMessage("Not implemented yet...");
@@ -289,6 +258,184 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			rs.setStatus(RunStatusEnum.FAILED);
 			return rs;
 		}
+
+	}
+
+	@Override
+	@WebResult(name = "runId", targetNamespace = "")
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulationResponse")
+	public String runSimulation(
+			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
+		// this method must return a runId, even if there is an error
+		String runId;
+		try {
+			URL url = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				url = RegistrationUtils
+						.getUrlForSoftwareIdentification(simulatorConfiguration
+								.getSimulatorIdentification());
+				if (url == null) {
+					runId = RunUtils.getErrorRunId();
+					RunUtils.reportError(runId, "Service not registered.");
+					return runId;
+				}
+			} catch (IOException e) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId, "Error reading registry.");
+				return runId;
+			}
+			// run the simulator
+			SimulatorService ss = new SimulatorService(url);
+			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+
+			// disable chunking for ZSI
+			Client client = ClientProxy.getClient(port);
+			HTTPConduit http = (HTTPConduit) client.getConduit();
+			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+			httpClientPolicy.setConnectionTimeout(36000);
+			httpClientPolicy.setAllowChunking(false);
+			http.setClient(httpClientPolicy);
+
+			return port.run(simulatorConfiguration);
+		} catch (Exception e) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService:" + e.getMessage());
+			return runId;
+		}
+	}
+
+	@Override
+	@WebResult(name = "batchRunSimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.BatchRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/batchRun")
+	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.BatchRunResponse")
+	public BatchRunResult batchRunSimulation(
+			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+		BatchRunResult bsr = new BatchRunResult();
+
+		String runId;
+		try {
+			URL url = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				url = RegistrationUtils
+						.getUrlForSoftwareIdentification(batchRunSimulatorConfiguration
+								.getSoftwareIdentification());
+				if (url == null) {
+					runId = RunUtils.getErrorRunId();
+					RunUtils.reportError(runId, "Service not registered.");
+					bsr.setRunId(runId);
+					return bsr;
+				}
+			} catch (IOException e) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId, "Error reading registry.");
+				bsr.setRunId(runId);
+				return bsr;
+			}
+			// run the simulator
+			SimulatorService ss = new SimulatorService(url);
+			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+
+			// disable chunking for ZSI
+			Client client = ClientProxy.getClient(port);
+			HTTPConduit http = (HTTPConduit) client.getConduit();
+			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+			httpClientPolicy.setConnectionTimeout(36000);
+			httpClientPolicy.setAllowChunking(false);
+			http.setClient(httpClientPolicy);
+
+			return port.batchRun(batchRunSimulatorConfiguration);
+		} catch (Exception e) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService:" + e.getMessage());
+			bsr.setRunId(runId);
+			return bsr;
+		}
+	}
+
+	@Override
+	@WebResult(name = "visualizerResult", targetNamespace = "")
+	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualization")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runVisualization")
+	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
+	public VisualizerResult runVisualization(
+			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
+		try {
+			VisualizerResult result = new VisualizerResult();
+			URL url = null;
+			try {
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				url = RegistrationUtils
+						.getUrlForSoftwareIdentification(visualizerConfiguration
+								.getVisualizerIdentification());
+				if (url == null) {
+					result.setRunId(RunUtils.getErrorRunId());
+					RunUtils.reportError(result.getRunId(),
+							"Service not registered.");
+					return result;
+				}
+			} catch (IOException e) {
+				result.setRunId(RunUtils.getErrorRunId());
+				RunUtils.reportError(result.getRunId(),
+						"Error reading registry.");
+				return result;
+			}
+			// run the simulator
+			VisualizerService ss = new VisualizerService(url);
+			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
+
+			// disable chunking for ZSI
+			Client client = ClientProxy.getClient(port);
+			HTTPConduit http = (HTTPConduit) client.getConduit();
+			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+			httpClientPolicy.setConnectionTimeout(36000);
+			httpClientPolicy.setAllowChunking(false);
+			http.setClient(httpClientPolicy);
+
+			System.out.println("Running the visualization...");
+			VisualizerResult visualizerResult = port
+					.run(visualizerConfiguration);
+			return visualizerResult;
+		} catch (Exception e) {
+			VisualizerResult visualizerResult = new VisualizerResult();
+			visualizerResult.setRunId(RunUtils.getErrorRunId());
+
+			RunUtils.reportError(visualizerResult.getRunId(),
+					"Problem with SimulatorService:" + e.getMessage());
+			return visualizerResult;
+		}
+
+	}
+
+	@Override
+	@WebResult(name = "syntheticPopulationResult", targetNamespace = "")
+	@RequestWrapper(localName = "generateSyntheticPopulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GenerateSyntheticPopulation")
+	@WebMethod
+	@ResponseWrapper(localName = "generateSyntheticPopulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GenerateSyntheticPopulationResponse")
+	public SyntheticPopulationResult generateSyntheticPopulation(
+			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetConfigurationFileForRun")
+	@WebMethod
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runId", targetNamespace = "") String runId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public static void main(String[] args) {
@@ -297,15 +444,14 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		auth.setRequesterId("John");
 		auth.setRequesterPassword("password");
 		srr.setAuthentication(auth);
-		SimulatorIdentification sid = new SimulatorIdentification();
+		SoftwareIdentification sid = new SoftwareIdentification();
 
-		sid.setSimulatorName("SEIR");
-		sid.setSimulatorDeveloper("U. Pitt");
-		sid.setSimulatorVersion("2.32 beta");
+		sid.setSoftwareName("SEIR");
+		sid.setSoftwareDeveloper("U. Pitt");
+		sid.setSoftwareVersion("2.32 beta");
 
-		ServiceRecord sr = new ServiceRecord();
-		sr.setSimulatorIdentification(sid);
-		srr.setServiceRecord(sr);
+		srr.setSoftwareIdentification(sid);
+
 		srr.setUrl("www.google.com");
 
 		Holder<Boolean> success = new Holder<Boolean>();
@@ -329,64 +475,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		} else {
 			System.out.println("APOLLO_DIR environment variable not found!");
 			APOLLO_DIR = "";
-		}
-
-	}
-
-	@Override
-	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualization")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runVisualization")
-	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
-	public void runVisualization(
-			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration,
-			@WebParam(mode = Mode.OUT, name = "runId", targetNamespace = "") Holder<String> runId,
-			@WebParam(mode = Mode.OUT, name = "visualizerOutputResource", targetNamespace = "") Holder<List<VisualizerOutputResource>> visualizerOutputResource) {
-
-		try {
-			String URL = null;
-			try {
-				// get the webservice WSDL URL for supplied
-				// SimulatorIdentification
-				URL = RegistrationUtils
-						.getUrlForVisualizerIdentification(visualizerConfiguration
-								.getVisualizerIdentification());
-				if (URL == null) {
-					runId.value = RunUtils.getErrorRunId();
-					RunUtils.reportError(runId.value, "Service not registered.");
-					return;
-				}
-			} catch (IOException e) {
-				runId.value = RunUtils.getErrorRunId();
-				RunUtils.reportError(runId.value, "Error reading registry.");
-				return;
-			}
-			// run the simulator
-			VisualizerService ss = new VisualizerService(new URL(URL));
-			VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
-
-			//disable chunking for ZSI
-		    Client client = ClientProxy.getClient(port);
-	        HTTPConduit http = (HTTPConduit) client.getConduit();
-	        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-	        httpClientPolicy.setConnectionTimeout(36000);
-	        httpClientPolicy.setAllowChunking(false);
-	        http.setClient(httpClientPolicy);
-			
-			Holder<String> runIdHolder = new Holder<String>();
-
-			Holder<List<VisualizerOutputResource>> visualizerOutputResourceHolder = new Holder<List<VisualizerOutputResource>>();
-			visualizerOutputResourceHolder.value = new ArrayList<VisualizerOutputResource>();
-
-			System.out.println("Running the visualization...");
-			port.run(visualizerConfiguration, runIdHolder,
-					visualizerOutputResourceHolder);
-			runId.value = runIdHolder.value;
-			visualizerOutputResource.value = visualizerOutputResourceHolder.value;
-		} catch (MalformedURLException e) {
-			runId.value = RunUtils.getErrorRunId();
-			RunUtils.reportError(runId.value,
-					"Problem with SimulatorService:" + e.getMessage());
-			return;
 		}
 
 	}
