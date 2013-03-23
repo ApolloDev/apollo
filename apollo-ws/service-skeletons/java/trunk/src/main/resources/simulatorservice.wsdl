@@ -19,14 +19,14 @@
 			<xsd:element name="runResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId" />
+						<xsd:element name="runId" type="apollo:RunIdentification" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -62,7 +62,21 @@
 			<xsd:element name="batchRunResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="batchRun" type="apollo:BatchRunSimulatorResult"></xsd:element>
+						<xsd:element name="batchRun" type="apollo:BatchRunResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -92,6 +106,12 @@
 	<wsdl:message name="batchRunResponse">
 		<wsdl:part name="parameters" element="tns:batchRunResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunResponse">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="SimulatorServiceEI">
 		<wsdl:operation name="run">
 			<wsdl:input message="tns:runRequest" />
@@ -108,6 +128,10 @@
 		<wsdl:operation name="batchRun">
 			<wsdl:input message="tns:batchRunRequest"></wsdl:input>
 			<wsdl:output message="tns:batchRunResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="SimulatorServiceBinding"
