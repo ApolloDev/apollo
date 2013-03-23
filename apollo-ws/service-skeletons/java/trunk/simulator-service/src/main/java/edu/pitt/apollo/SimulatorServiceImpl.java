@@ -25,8 +25,8 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
+import edu.pitt.apollo.types.BatchRunResult;
 import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
-import edu.pitt.apollo.types.BatchRunSimulatorResult;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SimulatorConfiguration;
@@ -86,7 +86,7 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
 	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
 	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
-	public BatchRunSimulatorResult batchRun(
+	public BatchRunResult batchRun(
 			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
 		// TODO Auto-generated method stub
 		return null;
