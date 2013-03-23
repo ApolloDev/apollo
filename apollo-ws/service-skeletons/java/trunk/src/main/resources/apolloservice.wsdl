@@ -18,15 +18,15 @@
 			<xsd:element name="runSimulationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId" />
+						<xsd:element name="runId" type="apollo:RunIdentification" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
-						<xsd:element name="serviceRecord" type="apollo:ServiceRecord">
+						<xsd:element name="runAndSoftwareIdentification"
+							type="apollo:RunAndSoftwareIdentification">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -96,14 +96,13 @@
 			<xsd:element name="runVisualizationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
-						<xsd:element name="visualizerOutputResource" type="apollo:VisualizerOutputResource"
-							maxOccurs="unbounded" minOccurs="1">
+						<xsd:element name="visualizerResult"
+							type="apollo:VisualizerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="batchRun">
+			<xsd:element name="batchRunSimulation">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="batchRunSimulatorConfiguration"
@@ -111,10 +110,10 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="batchRunResponse">
+			<xsd:element name="batchRunSimulationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="batchRunSimulatorResult" type="apollo:BatchRunSimulatorResult"></xsd:element>
+						<xsd:element name="batchRunSimulatorResult" type="apollo:BatchRunResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -128,7 +127,21 @@
 			<xsd:element name="generateSyntheticPopulationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="out" type="xsd:string"></xsd:element>
+						<xsd:element name="syntheticPopulationResult" type="apollo:SyntheticPopulationResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -170,17 +183,23 @@
 	<wsdl:message name="runVisualizationResponse">
 		<wsdl:part name="parameters" element="tns:runVisualizationResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="batchRunRequest">
-		<wsdl:part name="parameters" element="tns:batchRun"></wsdl:part>
+	<wsdl:message name="batchRunSimulationRequest">
+		<wsdl:part name="parameters" element="tns:batchRunSimulation"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="batchRunResponse">
-		<wsdl:part name="parameters" element="tns:batchRunResponse"></wsdl:part>
+	<wsdl:message name="batchRunSimulationResponse">
+		<wsdl:part name="parameters" element="tns:batchRunSimulationResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="generateSyntheticPopulationRequest">
 		<wsdl:part name="parameters" element="tns:generateSyntheticPopulation"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="generateSyntheticPopulationResponse">
 		<wsdl:part name="parameters" element="tns:generateSyntheticPopulationResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunResponse">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
@@ -207,14 +226,18 @@
 			<wsdl:input message="tns:getRegisteredServicesRequest"></wsdl:input>
 			<wsdl:output message="tns:getRegisteredServicesResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="batchRun">
-			<wsdl:input message="tns:batchRunRequest"></wsdl:input>
-			<wsdl:output message="tns:batchRunResponse"></wsdl:output>
+		<wsdl:operation name="batchRunSimulation">
+			<wsdl:input message="tns:batchRunSimulationRequest"></wsdl:input>
+			<wsdl:output message="tns:batchRunSimulationResponse"></wsdl:output>
 		</wsdl:operation>
 
 		<wsdl:operation name="generateSyntheticPopulation">
 			<wsdl:input message="tns:generateSyntheticPopulationRequest"></wsdl:input>
 			<wsdl:output message="tns:generateSyntheticPopulationResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
@@ -281,9 +304,9 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="batchRun">
+		<wsdl:operation name="batchRunSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/batchRun" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/batchRunSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
