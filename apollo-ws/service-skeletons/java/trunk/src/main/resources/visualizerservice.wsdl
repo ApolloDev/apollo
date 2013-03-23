@@ -18,18 +18,14 @@
 			<xsd:element name="runResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId" />
-						<xsd:element name="visualizerOutputResource"
-							type="apollo:VisualizerOutputResource" maxOccurs="unbounded"
-							minOccurs="1">
-						</xsd:element>
+						<xsd:element name="visualizerResult" type="apollo:VisualizerResult" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
