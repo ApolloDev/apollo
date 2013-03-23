@@ -92,11 +92,20 @@ class FredWebService(SimulatorService):
                     print ('This verison of FRED only supports time_step_unit of days')
                     print ('Apollo sent %s'%(cfg._simulatorTimeSpecification._timeStepUnit))
                     #### Put in Error Handling, have to ask John L.
-                    
+                    response._runId = -401
+		    return response
             if cfg._simulatorTimeSpecification._timeStepValue != 1:
                     print ('This version of FRED only supports a time_step_value of 1')
                     print ('Apollo sent %d'%(cfg._simulatorTimeSpecification._timeStepValue))
-
+		    response._runId = -402
+		    return response
+		
+	    lenLoc = len(cfg._populationInitialization._populationLocation)
+	    print "lenLoc = " + str(lenLoc)
+	    if lenLoc != 5 and lenLoc != 2:
+		print ('This version of the FRED only supports 2 (state) or 5 (county) NSIDS codes')
+		response._runId = -403
+		return response
 	    #### Put in Error Handling, have to ask John L.
 	    
             #print ('WARNING: This service is currently ignoring infectious_period')
@@ -108,7 +117,9 @@ class FredWebService(SimulatorService):
             try:
                     os.mkdir(tempDirName)
             except:
-                    raise RuntimeError("Cannot make temporary FRED directory %s"%(tempDirName))
+                    print("Cannot make temporary FRED directory %s"%(tempDirName))
+		    response._runId = -404
+		    return response
 
             os.chdir(tempDirName)
             doVacc = False
@@ -118,6 +129,7 @@ class FredWebService(SimulatorService):
                     f.write('R0 = %g\n'%cfg._disease._reproductionNumber)
                     f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
                     f.write('residual_immunity_ages[0] = 2 0 100\n')
+		    f.write('fips = %s\n'%cfg._populationInitialization._populationLocation)
 		    f.write('days_latent[0] = %s\n'\
 			    %(incubationPeriod(float(cfg._disease._latentPeriod))))
 		    f.write('days_incubating[0] = %s\n'\
@@ -187,7 +199,7 @@ class FredWebService(SimulatorService):
 		       "_" + cfg._simulatorIdentification._simulatorVersion + "_"
 	    
             fredConn._connect()
- 
+
             ### Write the PBS submission Script
             with open('fred_submit.pbs','wb') as f:
                     f.write('#!/bin/csh\n')
