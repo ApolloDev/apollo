@@ -18,49 +18,51 @@ package edu.pitt.apollo.apolloclient;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import edu.pitt.apollo.service.apolloservice.ApolloService;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
-import edu.pitt.apollo.types.AntiviralControlMeasure;
+import edu.pitt.apollo.types.AntiviralTreatmentControlMeasure;
+import edu.pitt.apollo.types.ApolloSoftwareType;
 import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.Disease;
 import edu.pitt.apollo.types.PopulationDiseaseState;
+import edu.pitt.apollo.types.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.SimulatedPopulation;
 import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SimulatorIdentification;
 import edu.pitt.apollo.types.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.SoftwareIdentification;
 import edu.pitt.apollo.types.TimeStepUnit;
-import edu.pitt.apollo.types.VaccinationControlMeasure;
+
 
 public class WSClient {
+	
+	//public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://localhost:8080/apolloservice/services/apolloservice?wsdl";
 	public static void main(String[] args) throws InterruptedException, IOException {
-		ApolloService service = new ApolloService(new URL("http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl"));
+		ApolloService service = new ApolloService(new URL(WSDL_LOC));
+		@SuppressWarnings("unused")
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
-//		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
-//
+		@SuppressWarnings("unused")
+		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+
 		Authentication auth = new Authentication();
 		auth.setRequesterId("fake_user");
 		auth.setRequesterPassword("fake_password");
 //		srr.setAuthentication(auth);
 //
 //		ServiceRecord sr = new ServiceRecord();
-		SimulatorIdentification si = new SimulatorIdentification();
-		si.setSimulatorDeveloper("UPitt,PSC,CMU");
-		si.setSimulatorName("YNIC");
-		si.setSimulatorVersion("2.0.1");
+		SoftwareIdentification si = new SoftwareIdentification();
+		si.setSoftwareDeveloper("UPitt,PSC,CMU");
+		si.setSoftwareName("YNIC");
+		si.setSoftwareVersion("2.0.1");
+		si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
 //		sr.setSimulatorIdentification(si);
 //
 //		srr.setServiceRecord(sr);
@@ -84,14 +86,14 @@ public class WSClient {
 
 		simulatorConfiguration.setAuthentication(auth);
 		simulatorConfiguration
-				.setAntiviralControlMeasure(new AntiviralControlMeasure());
-		AntiviralControlMeasure acm = simulatorConfiguration
-				.getAntiviralControlMeasure();
-		acm.setAntiviralCmCompliance(0d);
-		acm.setAntiviralEfficacy(0d);
-		acm.setAntiviralEfficacyDelay(0d);
-		acm.getAntiviralAdminSchedule().add(1d);
-		acm.getAntiviralSupplySchedule().add(1d);
+				.setAntiviralControlMeasure(new AntiviralTreatmentControlMeasure());
+//		AntiviralTreatmentControlMeasure acm = simulatorConfiguration
+//				.getAntiviralControlMeasure();
+//		acm.setAntiviralCmCompliance(0d);
+//		acm.setAntiviralEfficacy(0d);
+//		acm.setAntiviralEfficacyDelay(0d);
+//		acm.getAntiviralAdminSchedule().add(1d);
+//		acm.getAntiviralSupplySchedule().add(1d);
 
 		simulatorConfiguration.setSimulatorIdentification(si);
 
@@ -112,19 +114,19 @@ public class WSClient {
 		List<PopulationDiseaseState> ds = sp.getPopulationDiseaseState();
 		PopulationDiseaseState pds = new PopulationDiseaseState();
 		pds.setDiseaseState("susceptible");
-		pds.setPopCount(new BigInteger("1157474"));
+		pds.setPopCount(0.95);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("exposed");
-		pds.setPopCount(new BigInteger("0"));
+		pds.setPopCount(0.0);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("infectious");
-		pds.setPopCount(new BigInteger("100"));
+		pds.setPopCount(0.01);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("recovered");
-		pds.setPopCount(new BigInteger("60920"));
+		pds.setPopCount(0.04);
 		ds.add(pds);
 
 		simulatorConfiguration
@@ -135,17 +137,17 @@ public class WSClient {
 		stc.setTimeStepUnit(TimeStepUnit.DAY);
 		stc.setTimeStepValue(1d);
 
-		simulatorConfiguration
-				.setVaccinationControlMeasure(new VaccinationControlMeasure());
-		VaccinationControlMeasure vcm = simulatorConfiguration
-				.getVaccinationControlMeasure();
-		vcm.setVaccineCmCompliance(0d);
-		vcm.setVaccineEfficacy(0d);
-		vcm.setVaccineEfficacyDelay(0d);
-		for (int i = 0; i < 30; i++) {
-			vcm.getVaccinationAdminSchedule().add(0d);
-			vcm.getVaccineSupplySchedule().add(0d);
-		}
+//		simulatorConfiguration
+//				.setVaccinationControlMeasure(new VaccinationControlMeasure());
+//		VaccinationControlMeasure vcm = simulatorConfiguration
+//				.getVaccinationControlMeasure();
+//		vcm.setVaccineCmCompliance(0d);
+//		vcm.setVaccineEfficacy(0d);
+//		vcm.setVaccineEfficacyDelay(0d);
+//		for (int i = 0; i < 30; i++) {
+//			vcm.getVaccinationAdminSchedule().add(0d);
+//			vcm.getVaccineSupplySchedule().add(0d);
+//		}
 		
 		//MessageDigest md = MessageDigest.getInstance("MD5");
 		
@@ -157,6 +159,7 @@ public class WSClient {
 		ObjectMapper mapper = new ObjectMapper();
 		Writer strWriter = new FileWriter(new File("simulatorConfiguration.json"));
 		mapper.writeValue(strWriter, simulatorConfiguration);
+		@SuppressWarnings("unused")
 		String userDataJSON = strWriter.toString();
 		strWriter.close();
 		
