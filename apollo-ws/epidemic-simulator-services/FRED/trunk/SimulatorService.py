@@ -114,6 +114,7 @@ class FredWebService(SimulatorService):
             ### Make a random directory name so that multiple calls can be made
             randID = random.randint(0,100000)
             tempDirName = "fred.tmp.%d"%(randID)
+
             try:
                     os.mkdir(tempDirName)
             except:
@@ -124,79 +125,79 @@ class FredWebService(SimulatorService):
             os.chdir(tempDirName)
             doVacc = False
             with open('fred_input.params','wb') as f:
-                    f.write('days = %d\n'%cfg._simulatorTimeSpecification._runLength)
-                    f.write('symp[0] = %g\n'%cfg._disease._asymptomaticInfectionFraction)
-                    f.write('R0 = %g\n'%cfg._disease._reproductionNumber)
-                    f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
-                    f.write('residual_immunity_ages[0] = 2 0 100\n')
-		    f.write('fips = %s\n'%cfg._populationInitialization._populationLocation)
-		    f.write('days_latent[0] = %s\n'\
-			    %(incubationPeriod(float(cfg._disease._latentPeriod))))
-		    f.write('days_incubating[0] = %s\n'\
-			    %(incubationPeriod(float(cfg._disease._latentPeriod))))
-		    f.write('days_infectious[0] = %s\n'\
-			    %(infectiousPeriod(float(cfg._disease._infectiousPeriod))))
-		    f.write('days_symptomatic[0] = %s\n'\
-			    %(infectiousPeriod(float(cfg._disease._infectiousPeriod))))	     	       
-                    totPop = self.utils.getTotalPopCount(cfg)
-                    numImmune = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignoreed", "recovered")
-                    percent_immune = float(numImmune)/float(totPop)
-                    f.write('residual_immunity_values[0] = 1 %g\n'%(percent_immune))
-		    numExposed = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","exposed"))
-		    numInfectious = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","infectious"))
-		    fractionExposed = numExposed/(numExposed+numInfectious)
-		    fractionInfectious = 1.0 - fractionExposed
-		    f.write('advanced_seeding = exposed:%1.2f;infectious:%1.2f\n'%(fractionExposed,fractionInfectious))
-		    f.write('track_infection_events = 1\n')
-		    if sum(cfg._vaccinationControlMeasure._vaccineSupplySchedule) > 0.0:
-                        doVacc = True
-			### Add pregnant and at_risk estimates for vaccination
-			f.write("pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110\n")
-			f.write("pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0\n")
-			f.write("\n")
-			f.write("at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110\n")
-			f.write("at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701\n")
-                        f.write("##### VACCINE PARAMETERS\n")
-                        f.write("enable_behaviors = 1\n")
-                        f.write("enable_vaccination = 1\n")
-                        f.write("number_of_vaccines = 1\n")
-			f.write("accept_vaccine_enabled = 1\n")
-			f.write("accept_vaccine_strategy_distribution = 7 %g %g 0 0 0 0 0\n"\
-				%(1.0-cfg._vaccinationControlMeasure._vaccineCmCompliance,\
-				  cfg._vaccinationControlMeasure._vaccineCmCompliance))
-                        f.write("### VACCINE 1\n")
-                        f.write("vaccine_number_of_doses[0] = 1\n")
-                        # Setting this to infinity for now
-                        # need to implement production as a time map as well
-                        f.write("vaccine_total_avail[0] = 300000000\n")
-                        f.write("vaccine_additional_per_day[0] = 300000000\n")
-                        f.write("vaccine_starting_day[0] = 0\n")
-                        f.write("##### Vaccine 1 Dose 0\n")
-                        f.write("vaccine_next_dosage_day[0][0] = 0\n")
-                        f.write("vaccine_dose_efficacy_ages[0][0] = 2 0 100\n")
-                        f.write("vaccine_dose_efficacy_values[0][0] = 1 %g\n"\
-                                %cfg._vaccinationControlMeasure._vaccineEfficacy)
-                        f.write("vaccine_dose_efficacy_delay_ages[0][0] = 2 0 100\n")
-                        f.write("vaccine_dose_efficacy_delay_values[0][0] = 1 %d\n"\
-                                %cfg._vaccinationControlMeasure._vaccineEfficacyDelay)
-                        f.write("vaccination_capacity_file = fred-vaccination-schedule_0.txt\n")
+		f.write('#FRED PARAM FILE\n')
+		f.write('days = %d\n'%cfg._simulatorTimeSpecification._runLength)
+		f.write('symp[0] = %g\n'%cfg._disease._asymptomaticInfectionFraction)
+		f.write('R0 = %g\n'%cfg._disease._reproductionNumber)
+		f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
+		f.write('residual_immunity_ages[0] = 2 0 100\n')
+		f.write('fips = %s\n'%cfg._populationInitialization._populationLocation)
+		f.write('days_latent[0] = %s\n'\
+			%(incubationPeriod(float(cfg._disease._latentPeriod))))
+		f.write('days_incubating[0] = %s\n'\
+			%(incubationPeriod(float(cfg._disease._latentPeriod))))
+		f.write('days_infectious[0] = %s\n'\
+			%(infectiousPeriod(float(cfg._disease._infectiousPeriod))))
+		f.write('days_symptomatic[0] = %s\n'\
+			%(infectiousPeriod(float(cfg._disease._infectiousPeriod))))	     	       
+		totPop = self.utils.getTotalPopCount(cfg)
+		numImmune = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignoreed", "recovered")
+		percent_immune = float(numImmune)/float(totPop)
+		f.write('residual_immunity_values[0] = 1 %g\n'%(percent_immune))
+		numExposed = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","exposed"))
+		numInfectious = float(self.utils.getPopCountGivenLocationAndDiseaseState(cfg,"ignoreed","infectious"))
+		fractionExposed = numExposed/(numExposed+numInfectious)
+		fractionInfectious = 1.0 - fractionExposed
+		f.write('advanced_seeding = exposed:%1.2f;infectious:%1.2f\n'%(fractionExposed,fractionInfectious))
+		f.write('track_infection_events = 1\n')
+		if sum(cfg._vaccinationControlMeasure._vaccineSupplySchedule) > 0.0:
+		    doVacc = True
+		    ### Add pregnant and at_risk estimates for vaccination
+		    f.write("pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110\n")
+		    f.write("pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0\n")
+		    f.write("\n")
+		    f.write("at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110\n")
+		    f.write("at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701\n")
+		    f.write("##### VACCINE PARAMETERS\n")
+		    f.write("enable_behaviors = 1\n")
+		    f.write("enable_vaccination = 1\n")
+		    f.write("number_of_vaccines = 1\n")
+		    f.write("accept_vaccine_enabled = 1\n")
+		    f.write("accept_vaccine_strategy_distribution = 7 %g %g 0 0 0 0 0\n"\
+			    %(1.0-cfg._vaccinationControlMeasure._vaccineCmCompliance,\
+			      cfg._vaccinationControlMeasure._vaccineCmCompliance))
+		    f.write("### VACCINE 1\n")
+		    f.write("vaccine_number_of_doses[0] = 1\n")
+		    # Setting this to infinity for now
+		    # need to implement production as a time map as well
+		    f.write("vaccine_total_avail[0] = 300000000\n")
+		    f.write("vaccine_additional_per_day[0] = 300000000\n")
+		    f.write("vaccine_starting_day[0] = 0\n")
+		    f.write("##### Vaccine 1 Dose 0\n")
+		    f.write("vaccine_next_dosage_day[0][0] = 0\n")
+		    f.write("vaccine_dose_efficacy_ages[0][0] = 2 0 100\n")
+		    f.write("vaccine_dose_efficacy_values[0][0] = 1 %g\n"\
+			    %cfg._vaccinationControlMeasure._vaccineEfficacy)
+		    f.write("vaccine_dose_efficacy_delay_ages[0][0] = 2 0 100\n")
+		    f.write("vaccine_dose_efficacy_delay_values[0][0] = 1 %d\n"\
+			    %cfg._vaccinationControlMeasure._vaccineEfficacyDelay)
+		    f.write("vaccination_capacity_file = fred-vaccination-schedule_0.txt\n")
 
-                        with open('fred-vaccination-schedule_0.txt','wb') as g:
-                            vaccineSupplySchedule = cfg._vaccinationControlMeasure._vaccineSupplySchedule
-                            vaccineAdminSchedule = cfg._vaccinationControlMeasure._vaccinationAdminSchedule
+		    with open('fred-vaccination-schedule_0.txt','wb') as g:
+			vaccineSupplySchedule = cfg._vaccinationControlMeasure._vaccineSupplySchedule
+			vaccineAdminSchedule = cfg._vaccinationControlMeasure._vaccinationAdminSchedule
 
-                            for day in range(0,len(vaccineSupplySchedule)) :
-                                ## Hack for now, because I don't have the resolution on production in FRED
-                                g.write("%d %d\n"%(day,min(vaccineSupplySchedule[day],vaccineAdminSchedule[day])))
+			for day in range(0,len(vaccineSupplySchedule)) :
+			    ## Hack for now, because I don't have the resolution on production in FRED
+			    g.write("%d %d\n"%(day,min(vaccineSupplySchedule[day],vaccineAdminSchedule[day])))
 
-            with open('fred_initial_population_0.txt','wb') as f:
-                    f.write('#line_format\n')
-                    numExposed = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "exposed")
-		    numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "infectious")
-                    #f.write('0 0 %d\n'%(cfg._disease_dynamics._pop_count[2]))
-                    f.write('0 0 %d\n'%(numExposed + numInfectious))
-
-		     ### if vaccination comes through, parse this
+	    with open('fred_initial_population_0.txt','wb') as f:
+		f.write('#line_format\n')
+		numExposed = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "exposed")
+		numInfectious = self.utils.getPopCountGivenLocationAndDiseaseState(cfg, "ignored", "infectious")
+		#f.write('0 0 %d\n'%(cfg._disease_dynamics._pop_count[2]))
+		f.write('0 0 %d\n'%(numExposed + numInfectious))
+	    
             with open('starttime','wb') as f:
 		    f.write('Nothing')
 
@@ -254,10 +255,10 @@ class FredWebService(SimulatorService):
 	    fredConn._sendFile(tempDirName+'/fred_run.csh')
             fredConn._sendFile(tempDirName+'/fred_input.params')
             fredConn._sendFile(tempDirName+'/fred_initial_population_0.txt')
-            fredConn._sendFile(tempDirName+'/starttime')		
+            fredConn._sendFile(tempDirName+'/starttime')
 	    if doVacc:
 		    fredConn._sendFile(tempDirName+"/fred-vaccination-schedule_0.txt")
-
+		    
 	    ### we do not need temp directory anymore
 	    shutil.rmtree(tempDirName)
 	
