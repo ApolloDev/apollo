@@ -199,7 +199,7 @@
 		<complexContent>
 			<extension base="tns:ControlMeasure">
 				<sequence>
-					<element name="antiviralId" type="token" maxOccurs="1"
+					<element name="antiviralTreatment" type="tns:AntiviralTreatment" maxOccurs="1"
 						minOccurs="1"></element>
 					<element name="treatmentReactiveEndPointFraction" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1">
@@ -219,7 +219,7 @@
 		<complexContent>
 			<extension base="tns:ControlMeasure">
 				<sequence>
-					<element name="vaccinationId" type="token" maxOccurs="1"
+					<element name="vaccination" type="tns:Vaccination" maxOccurs="1"
 						minOccurs="1"></element>
 					<element name="vaccinationReactiveEndPointFraction" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1">
@@ -461,16 +461,22 @@
 	<complexType name="Vaccination">
 		<sequence>
 			<element name="description" type="token" maxOccurs="1"
-				minOccurs="1"></element>
+				minOccurs="1">
+			</element>
 			<element name="vaccineId" type="token" maxOccurs="1"
-				minOccurs="1"></element>
+				minOccurs="1">
+			</element>
 			<element name="hostOrganism" type="token" maxOccurs="1"
-				minOccurs="1"></element>
+				minOccurs="1">
+			</element>
 
-			<element name="numDosesInVaccinationCourse" type="positiveInteger"
-				maxOccurs="1" minOccurs="1"></element>
-			<element name="vaccinationEfficacy" type="tns:MultidimensionalTemporalArrayOfFractions"
-				maxOccurs="1" minOccurs="1"></element>
+			<element name="numDosesInVaccinationCourse"
+				type="positiveInteger" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="vaccinationEfficacy"
+				type="tns:TreatmentEfficacyOverTime" maxOccurs="1"
+				minOccurs="1">
+			</element>
 		</sequence>
 	</complexType>
 
@@ -485,17 +491,17 @@
 
 			<element name="numDosesInTreatmentCourse" type="positiveInteger"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="treatmentEfficacy" type="tns:MultidimensionalTemporalArrayOfFractions"
+			<element name="antiviralTreatmentEfficacy" type="tns:TreatmentEfficacyOverTime"
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="MultidimensionalTemporalArrayOfFractions">
+	<complexType name="TreatmentEfficacyOverTime">
 		<sequence>
-			<element name="arrayDefinition" type="tns:MultidimensionalTemporalArrayDefinition"
+			<element name="arrayDefinition" type="tns:TreatmentEfficacyTemporalArrayDefinition"
 				maxOccurs="1" minOccurs="0">
 			</element>
-			<element name="fractions" type="tns:Fraction" maxOccurs="unbounded"
+			<element name="efficacyValues" type="tns:Fraction" maxOccurs="unbounded"
 				minOccurs="1">
 			</element>
 
@@ -504,7 +510,7 @@
 
 	<complexType name="TemporalPopulationStratificationAxes">
 		<complexContent>
-			<extension base="tns:TemporalArrayDimensionsDefinition">
+			<extension base="tns:TreatmentEfficacyTemporalArrayDimensionsDefinition">
 				<sequence>
 					<element name="ageRange" type="tns:AgeRange" maxOccurs="unbounded"
 						minOccurs="0">
@@ -524,20 +530,20 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="PopulationStratificationAxes">
+	<complexType name="PopulationStrataDefinition">
 		<complexContent>
 			<extension base="tns:ArrayDimensionsDefinition">
 				<sequence>
-					<element name="ageRange" type="tns:AgeRange" maxOccurs="unbounded"
+					<element name="ageRanges" type="tns:AgeRange" maxOccurs="unbounded"
 						minOccurs="0">
 					</element>
-					<element name="diseaseState" type="tns:DiseaseState"
+					<element name="diseaseStates" type="tns:DiseaseState"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<element name="gender" type="tns:Gender" maxOccurs="unbounded"
+					<element name="genders" type="tns:Gender" maxOccurs="unbounded"
 						minOccurs="0">
 					</element>
-					<element name="location" type="token" maxOccurs="unbounded"
+					<element name="locations" type="token" maxOccurs="unbounded"
 						minOccurs="0">
 					</element>
 
@@ -552,6 +558,19 @@
 				<sequence>
 					<element name="time" type="nonNegativeInteger" maxOccurs="unbounded"
 						minOccurs="1"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="TreatmentEfficacyTemporalArrayDimensionsDefinition">
+		<complexContent>
+			<extension base="tns:TemporalArrayDimensionsDefinition">
+				<sequence>
+					<element name="doseTimes" type="nonNegativeInteger"
+						maxOccurs="unbounded" minOccurs="1">
+					</element>
+					<element name="populationStratificationAxes" type="tns:PopulationStrataDefinition" maxOccurs="1" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -608,7 +627,7 @@
 			<element name="priority" type="nonNegativeInteger" maxOccurs="1"
 				minOccurs="1"></element>
 			<choice>
-				<element name="targetPopulationDefinition" type="tns:ArrayDimensionsDefinition"
+				<element name="targetPopulationDefinition" type="tns:PopulationStrataDefinition"
 					maxOccurs="1" minOccurs="1">
 				</element>
 				<element name="targetPopulationDefinitionEnum" type="tns:targetPopulationDefinitionEnum"
@@ -688,9 +707,9 @@
 	<complexType name="ArrayDimensionsDefinition">
 	</complexType>
 
-	<complexType name="MultidimensionalTemporalArrayDefinition">
+	<complexType name="TreatmentEfficacyTemporalArrayDefinition">
 		<sequence>
-			<element name="dimensionValues" type="tns:TemporalArrayDimensionsDefinition"
+			<element name="dimensionValues" type="tns:TreatmentEfficacyTemporalArrayDimensionsDefinition"
 				maxOccurs="1" minOccurs="1"></element>
 			<element name="orderedListOfDimensions" type="token"
 				maxOccurs="unbounded" minOccurs="1"></element>
@@ -751,6 +770,13 @@
 			<element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource"
 				maxOccurs="unbounded" minOccurs="1">
 			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ServiceRegistrationResult">
+		<sequence>
+			<element name="actionSuccessful" type="boolean"></element>
+			<element name="message" type="string"></element>
 		</sequence>
 	</complexType>
 </schema>
