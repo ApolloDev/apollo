@@ -50,6 +50,22 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="getConfigurationFileForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="runIdentification" type="apollo:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 
@@ -66,6 +82,12 @@
 	<wsdl:message name="getRunStatusResponse">
 		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunResponse">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="SyntheticPopulationServiceEI">		<wsdl:operation name="run">
 			<wsdl:input message="tns:runRequest"></wsdl:input>
 			<wsdl:output message="tns:runResponse"></wsdl:output>
@@ -73,6 +95,10 @@
 		<wsdl:operation name="getRunStatus">
 			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="SyntheticPopulationServiceBinding"
