@@ -15,10 +15,10 @@ class FRED:
             self.fred_class_error("FRED_HOME environment variable is undefined")
 
         #set up key variables
-	if os.getenv('FRED_RESULTS'):
-	    self.results_dir = os.getenv('FRED_RESULTS') + "/RESULTS"
-	else:
-	    self.results_dir = self.assign_directory(self.home_dir + "/RESULTS")
+        if os.getenv('FRED_RESULTS'):
+            self.results_dir = os.getenv('FRED_RESULTS') + "/RESULTS"
+        else:
+            self.results_dir = self.assign_directory(self.home_dir + "/RESULTS")
         self.results_key_file = self.assign_directory(self.results_dir + "/KEY")
         self.results_job_dir = self.assign_directory(self.results_dir + "/JOB")
         
@@ -164,30 +164,30 @@ class FRED_RUN:
                 
         #This is a dictionary so that I can load specific runs and index them.
         self.infections_files = {}
-	self.infection_file_names = glob.glob(self.run_data_out_dir+"/infections*.txt")
-        
-	#   create load members for large data sets from results so that one has control
-	#   to do them when only needed.
+        self.infection_file_names = glob.glob(self.run_data_out_dir+"/infections*.txt")
+
+        ## If grid files exist, make a pointer to those
+        self.gaiaDir = self.run_data_out_dir+"/GAIA"
+            
+#   create load members for large data sets from results so that one has control
+#   to do them when only needed.
 
     def get_infection_set(self,run_number):
-	inf_list = []
-	infection_file_name = self.run_data_out_dir + "/infections" + str(run_number) + ".txt"
-            #print infection_file_name
-	try:
-	    open(infection_file_name,"rb")
-	except IOError:
-	    self.fred.fred_class_error("Unable to load infection file for run " + str(run_number) + ".")
+        infection_file_name = self.run_data_out_dir + "/infections" + str(run_number) + ".txt"
+        #print infection_file_name
+        try:
+            open(infection_file_name,"rb")
+        except IOError:
+            self.fred.fred_class_error("Unable to load infection file for run " + str(run_number) + ".")
 
-	infSet = FRED_Infection_Set(infection_file_name)
-	return infSet
-	
+        infSet = FRED_Infection_Set(infection_file_name)
+        return infSet
     
     def load_infection_files(self,run_number=None):
         for i in range(1,self.number_of_runs+1):
             ### Not Specifying a run_number gives you all infections files
             if run_number is not None and int(run_number) != i:
                 continue
-            inf_list = []
             infection_file_name = self.run_data_out_dir + "/infections" + str(i) + ".txt"
             #print infection_file_name
             try:
@@ -195,20 +195,7 @@ class FRED_RUN:
             except IOError:
                 self.fred.fred_class_error("Unable to load infection file for run " + str(i) + ".")
 
-	    self.infections_files[i] = FRED_Infection_Set(infection_file_name)
-            ##with open(infection_file_name,"rb") as f:
-##             #   print infection_file_name
-##                for line in f:
-##                    inf_line = string.split(line)
-##	#	    print inf_line
-##                    inf_list.append(FRED_Infection_Record(inf_line[1],
-##                                                          inf_line[3],
-##                                                          inf_line[5],
-##                                                          inf_line[7],
-##                                                          inf_line[9],
-##                                                          inf_line[11],
-##                                                          inf_line[13]))
-##            self.infections_files[i]=inf_list
+            self.infections_files[i] = FRED_Infection_Set(infection_file_name)
             
     def print_meta_summary(self):
         print "----- Summary of Meta Data for FRED Job " + self.key + "------"
@@ -229,6 +216,7 @@ class FRED_RUN:
             for key in self.outputKeyOrdered:
                 dayString += "%s %s "%(key,day[key])
             print dayString
+            
     def print_ave_outputs(self):
         print "------ Average Outputs from FRED Job " + self.key + "------"
         print " "
@@ -246,7 +234,7 @@ class FRED_RUN:
 
     def get_meta_variable(self,variable):
         if os.access(self.run_meta_dir + "/" + variable,os.F_OK) == True:
-            return open(self.run_meta_dir + "/" + variable,"r").readline().strip()
+	    return open(self.run_meta_dir + "/" + variable,"rb").readline().strip()
         else:
             fred.fred_class_error("cannot obtain "+ variable +" from meta data for key = " + str(self.key))
 
@@ -270,225 +258,129 @@ class FRED_RUN:
                  
 class FRED_Infection_Set:
     def __init__(self,infection_file):
-	self.infectionList = []
-	self.infectionKey = {}
+        self.infectionList = []
+        self.infectionKey = {}
 
-	with open(infection_file,"rb") as f:
-	    for line in f:
-		## fill the infectionKey first
-		lineSplit = line.split()
-		if len(self.infectionKey) == 0:
-		    count = 0
-		    for i in range(0,len(lineSplit),2):
-			self.infectionKey[str(lineSplit[i])] = count
-			count += 1
-		infList = []
-		for i in range(1,len(lineSplit),2):
-		    infList.append(lineSplit[i])
-		self.infectionList.append(infList)
+        with open(infection_file,"rb") as f:
+            for line in f:
+                ## fill the infectionKey first
+                lineSplit = line.split()
+                if len(self.infectionKey) == 0:
+                    count = 0
+                    for i in range(0,len(lineSplit),2):
+                        self.infectionKey[str(lineSplit[i])] = count
+                        count += 1
+                infList = []
+                for i in range(1,len(lineSplit),2):
+                    infList.append(lineSplit[i])
+        
+        self.infectionList.append(infList)
 
     def get(self,key,infNum):
-	index = self.infectionKey[key]
-	return self.infectionList[infNum][index]
+        index = self.infectionKey[key]
+        return self.infectionList[infNum][index]
     
-class FRED_Locations_Set:
-    
-    def __init__(self,location_file,loc_type=None):
-        self.location_file = location_file
-        self.location_type = loc_type
-        self.locations = {}
-	self.locationsKey = {}
-        
-        with open(location_file,"r") as f:
-            #number_of_locations = int(string.split(f.readline(),"=")[1].strip())
-            header = f.readline()
-            headerSplit = header.split(",")
-	    count = 0
-	    for column in headerSplit:
-		self.locationsKey[column] = count
-		count += 1
-	    
-            #print "|" + str(number_of_locations) + "|"
-            for line in f:
-                recs = string.split(line,",")
-                if self.locations.has_key(recs[0]):
-                    print "FRED_Locations_Set ERROR: Detected a duplicate location number in file "\
-                          + location_file + " for the key " + str(recs[0])
-		self.locations[recs[0]] = recs
-                #self.locations[recs[0]] = FRED_Location(recs[0],float(recs[7]),float(recs[8]),int(recs[5]),
-                #                                        recs[2])
+class FRED_Household_Set:
+    def __init__(self,location_file=None):
+        self.locations = []
+        self.locationsKey = {}
+        self.locationsIDDict = {}
+        if location_file is not None:
+            self.location_file = location_file
+
+            with open(self.location_file,"r") as f:
+                header = f.readline()
+                headerSplit = header.split(",")
+                count = 0
+                for column in headerSplit:
+                    self.locationsKey[column.strip()] = count
+                    count +=1
+
+                lcount = 0
+                for line in f:
+                    recs = string.split(line,",")
+                    self.locations.append(recs)
+                    self.locationsIDDict[recs[0]] = lcount
+                    lcount += 1
 
         self.countyList = []
-	self.stateList = []
-	self.tractList = []
-	self.blockList = []
-	
-        for location in self.locations.keys():
-            place = self.locations[location] 
-	    fips = place[self.locationsKey['stcotrbg']]
-	    stateFips = fips[0:2]
-	    if stateFips not in self.stateList:
-		self.stateList.append(stateFips)
+        self.stateList = []
+        self.tractList = []
+        self.blockList = []
+        
+        for i in xrange(0,len(self.locations)):
+            fipsIndex = self.locationsKey['stcotrbg']
+        fips = self.locations[i][fipsIndex]
+        stateFips = fips[0:2]
+        if stateFips not in self.stateList:
+            self.stateList.append(stateFips)
             countyFips = fips[0:5]
             if countyFips not in self.countyList:
                 self.countyList.append(countyFips)
-	    tractFips = fips[0:11]
-	    if tractFips not in self.tractList:
-		self.tractList.append(tractFips)
-	    if fips not in self.blockList:
-		self.blockList.append(fips)
+            tractFips = fips[0:11]
+            if tractFips not in self.tractList:
+                self.tractList.append(tractFips)
+            if fips not in self.blockList:
+                self.blockList.append(fips)
 
-            ### Old style Synthetic populations
-            ## for line in f:
-            ##     recs = string.split(line)
-            ##     if self.locations.has_key(recs[0]):
-            ##         print "FRED_Locations_Set ERROR: Detected a duplicate location number in file "\
-            ##               + location_file + " for the key " + str(recs[0])
-            ##     #tuple = (type, lat, lon)
-            ##     if loc_type == None or loc_type == recs[1]:
-            ##         self.locations[recs[0]] = FRED_Location(recs[0],recs[1],recs[2],recs[3])
-        
+    def get(self,key,locNum):
+        index = self.locationsKey[key]
+        return self.locations[locNum][index]
+    
+    def getByID(self,key,locID):
+        indexID = self.locationsIDDict[locID]
+        index = self.locationsKey[key]
+        return self.locations[indexID][index]
+
     def bounding_box(self):
-        maxlat = -9999999
+        maxlat = -999999
         maxlon = -9999999
         minlat = 9999999
         minlon = 9999999
         
-        for location in self.locations.keys():
-            lat = self.locations[location].lat
-            lon = self.locations[location].lon
+        #for location in self.locations:
+        for i in range(0,len(self.locations)):
+            latIndex = self.locationsKey['latitude']
+            lonIndex = self.locationsKey['longitude']
+        
+            lat = float(self.locations[i][latIndex])
+            lon = float(self.locations[i][lonIndex])
             maxlat = max(maxlat,lat)
             maxlon = max(maxlon,lon)
             minlat = min(minlat,lat)
             minlon = min(minlon,lon)
 
-        return (minlat,minlon,maxlat,maxlon)	
-class FRED_Location:
-    def __init__(self,_id,lat,lon,size,fips):
-        self.id = _id
-        self.lat = float(lat)
-        self.lon = float(lon)
-        self.size = int(size)
-        self.fips = fips
+        return (minlat,minlon,maxlat,maxlon)
 
-    def __str__(self):
-        return "<FRED_Location> ID: " + str(self.id)\
-               + " lat,lon = " + str(self.lat) + "," + str(self.lon)
+    
 class FRED_People_Set:
 
     def __init__(self,population_file=None):
         self.people = []
-	self.peopleKey = {}
+        self.peopleKey = {}
         if population_file is not None:
             self.population_file = population_file
 
             with open(self.population_file,"r") as f:
                 ### header with column headings
                 header = f.readline()
-		headerSplit = header.split(",")
-		count = 0
-		for column in headerSplit:
-		    self.peopleKey[column] = count
-		    count += 1
+                headerSplit = header.split(",")
+                count = 0
+                for column in headerSplit:
+                    self.peopleKey[column.strip()] = count
+                    count += 1
 
                 for line in f:
                     recs = string.split(line,",")
-		    self.people.append(recs)
+                    self.people.append(recs)
                     
     def get(self,key,perNum):
-	index = self.peopleKey[key]
-	return self.people[perNum][index]
-	
-            ### Old Style FRED population file
-            #with open(self.population_file,"r") as f:
-                #number_of_people = int(string.split(f.readline(),"=")[1].strip())
-            #    header = f.readline()
-                
-            #    for line in f:
-            #        recs = string.split(line)
-            #        self.people.append(FRED_Person(recs[0],recs[1],recs[2],recs[3],recs[4],recs[5],recs[6],recs[7]))
-
+        index = self.peopleKey[key]
+        return self.people[int(perNum)][index]
 
     def __len__(self):
         return len(self.people)
 
     
-    ##def reduce(self,filter_age=None,filter_marital_status=None,
-##               filter_occupation=None,filter_household=None,filter_school=None,filter_workplace=None):
-##        reduced_people_set = FRED_People_Set()
-##        count = 0
-##        for person in self.people:
-##            reduced_people_set.people.append(person)
-        
-##        ## Filter age
-##        if filter_age is not None:
-##            if isinstance(filter_age,list) == False:
-##                print("FRED_People_Set ERROR: Filter age must be a list")
-##                sys.exit(1)
-##            else:
-##                for filter in filter_age:
-##                    if isinstance(filter,int) == False:
-##                        print("FRED_People_Set ERROR: Filter age must only contain integers")
-##                        sys.exit(1)
-##            person_new = [elem for elem in reduced_people_set.people if elem.age in filter_age]
-##            reduced_people_set.people = person_new
-            
-        
-##        allowed_marital_status = {'M':'1','S':'0'}
-##        if filter_marital_status is not None:
-##            if filter_marital_status in allowed_marital_status.keys():
-##                person_new = [elem for elem in reduced_people_set.people
-##                              if elem.marital_status == allowed_marital_status[filter_marital_status]]
-##                reduced_people_set.people = person_new
-
-##        if filter_occupation is not None:
-##            if isinstance(filter_occupation,list) == False:
-##                print("FRED_People_Set ERROR: Filter occupation must be a list")
-##                sys.exit(1)
-##            else:
-##                for filter in filter_occupation:
-##                    if isinstance(filter,int) == False:
-##                        print("FRED_People_Set ERROR: Filter occupation must only contain integers")
-##                        sys.exit(1)
-##            person_new = [elem for elem in reduced_people_set.people if elem.occupation in filter_occupation]
-##            reduced_people_set.people = person_new
-            
-##        if filter_school is not None:
-##            if isinstance(filter_school,list) == False:
-##                print("FRED_People_Set ERROR: Filter school must be a list")
-##                sys.exit(1)
-##            person_new = []
-##            for person in reduced_people_set.people:
-##                for filter in filter_school:
-##                    flength = len(filter)
-##                    if person.school[0:flength] == filter:
-##                        person_new.append(person)
-##            reduced_people_set.people = person_new
-
-##        if filter_household is not None:
-##            if isinstance(filter_household,list) == False:
-##                print("FRED_People_Set ERROR: Filter household must be a list")
-##                sys.exit(1)
-##            person_new = []
-##            for person in reduced_people_set.people:
-##                for filter in filter_household:
-##                    flength = len(filter)
-##                    if person.household[0:flength] == filter:
-##                        person_new.append(person)
-##            reduced_people_set.people = person_new
-
-##            if filter_workplace is not None:
-##                if isinstance(filter_workplace,list) == False:
-##                    print("FRED_People_Set ERROR: Filter workplace must be a list")
-##                    sys.exit(1)
-##                person_new = []
-##                for person in reduced_people_set.people:
-##                    for filter in filter_workplace:
-##                        flength = len(filter)
-##                        if person.workplace[0:flength] == filter:
-##                            person_new.append(person)
-##                reduced_people_set.people = person_new
-                    
-##        return reduced_people_set
 
 
