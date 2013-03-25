@@ -4,6 +4,7 @@ import optparse
 from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Household_Set,FRED_People_Set
 import apollo
 import time
+import glob,hashlib
 #from threading import Thread
 from multiprocessing import Process,Queue
 
@@ -82,10 +83,49 @@ if __name__ == '__main__':
     apolloDBs = [ apollo.ApolloDB(host_=x) for x in DBHosts ]
     for apolloDB in apolloDBs:
 	apolloDB.connect() 
-    
+	concString = ""
+	m5hash = ""
+    ### create a string of the concatenated input files
+	exclusionList = ['dbfile.txt','params.default']
+	fred_work_dir = fred_run.run_work_dir
+	if os.path.exists(fred_work_dir) is True:
+	    workingFiles = glob.glob(fred_work_dir + "/*")
+	    ### concatenate params file first
+	    ### find it and add it to the exclusionList
+	    print "Fred PARAMS file is " + fred_run.run_params_file
+	    for workingFile in workingFiles:
+		print "looking at workingFile " + str(workingFile)
+		with open(workingFile,"rb") as f:
+		    if f.readline() == "#FRED PARAM FILE\n":
+			exclusionList.append(os.path.basename(workingFile))
 
-    ## Fill in the run table
-    	SQLString = 'INSERT INTO run set label = "' + key + '"'
+	    print str(exclusionList)
+	    concList = []
+	    ### First the params List
+	    concList.append("===== FRED Parameter File =======\n")
+	    for key,value in fred_run.params_dict.items():
+		concList.append("%s = %s\n"%(key,value))
+
+	    ### Next add all of the files in the working directory that should be
+	    for workingFile in workingFiles:
+		if os.path.basename(workingFile) not in exclusionList:
+		    concList.append("====== %s =======\n"%workingFile)
+		    with open(workingFile,"rb") as f:
+			for line in f:
+			    concList.append(line)
+	    concString = "".join(concList)
+	    m = hashlib.md5()
+	    m.update(concString)
+	    m5hash = m.hexdigest()
+	    print "M5Hash = " + m5hash
+	else:
+	    print "!!!WARNING!!! No FRED working directory exists at %s"%fred_work_dir
+	    print "              Not doing adding configuration or MD5 hash to database"
+	   
+	## Fill in the run table
+    	SQLString = 'INSERT INTO run set label = "' + key + '",'\
+		    +' configurationFile = "' + concString + '",'\
+		    +' md5HashOfConfigurationFile = "' + m5hash + '"' 
     	apolloDB.query(SQLString)
     	runInsertID = apolloDB.insertID()
 
