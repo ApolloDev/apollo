@@ -58,6 +58,17 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 		return null;
 	}
 
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetConfigurationFileForRun")
+	@WebMethod
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	

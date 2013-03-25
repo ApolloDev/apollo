@@ -48,8 +48,7 @@
 			<xsd:element name="registerServiceResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="registrationSuccessful" type="xsd:boolean"></xsd:element>
-						<xsd:element name="message" type="xsd:string">
+						<xsd:element name="serviceRegistrationResult" type="apollo:ServiceRegistrationResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -64,9 +63,7 @@
 			<xsd:element name="unRegisterServiceResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="unRegistrationSuccessful" type="xsd:boolean">
-						</xsd:element>
-						<xsd:element name="message" type="xsd:string">
+						<xsd:element name="serviceRegistrationResult" type="apollo:ServiceRegistrationResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -134,7 +131,7 @@
 			<xsd:element name="getConfigurationFileForRun">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
+						<xsd:element name="runAndSoftwareIdentification" type="apollo:RunAndSoftwareIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
