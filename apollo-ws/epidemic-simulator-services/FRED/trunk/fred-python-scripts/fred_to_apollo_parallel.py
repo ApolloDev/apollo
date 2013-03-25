@@ -103,8 +103,8 @@ if __name__ == '__main__':
 	    concList = []
 	    ### First the params List
 	    concList.append("===== FRED Parameter File =======\n")
-	    for key,value in fred_run.params_dict.items():
-		concList.append("%s = %s\n"%(key,value))
+	    for keyV,value in fred_run.params_dict.items():
+		concList.append("%s = %s\n"%(keyV,value))
 
 	    ### Next add all of the files in the working directory that should be
 	    for workingFile in workingFiles:
@@ -121,12 +121,12 @@ if __name__ == '__main__':
 	else:
 	    print "!!!WARNING!!! No FRED working directory exists at %s"%fred_work_dir
 	    print "              Not doing adding configuration or MD5 hash to database"
-	   
+	
 	## Fill in the run table
     	SQLString = 'INSERT INTO run set label = "' + key + '",'\
 		    +' configurationFile = "' + concString + '",'\
-		    +' md5HashOfConfigurationFile = "' + m5hash + '"' 
-    	apolloDB.query(SQLString)
+		    +' md5HashOfConfigurationFile = "' + m5hash + '"'
+	apolloDB.query(SQLString)
     	runInsertID = apolloDB.insertID()
 
     	stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
