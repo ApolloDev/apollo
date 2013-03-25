@@ -85,9 +85,9 @@ public class WSClient {
 		SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
 
 		simulatorConfiguration.setAuthentication(auth);
-		simulatorConfiguration
-				.setAntiviralControlMeasure(new AntiviralTreatmentControlMeasure());
-//		AntiviralTreatmentControlMeasure acm = simulatorConfiguration
+//		simulatorConfiguration
+//				.setAntiviralControlMeasure(new AntiviralTreatmentControlMeasure());
+////		AntiviralTreatmentControlMeasure acm = simulatorConfiguration
 //				.getAntiviralControlMeasure();
 //		acm.setAntiviralCmCompliance(0d);
 //		acm.setAntiviralEfficacy(0d);
@@ -114,19 +114,19 @@ public class WSClient {
 		List<PopulationDiseaseState> ds = sp.getPopulationDiseaseState();
 		PopulationDiseaseState pds = new PopulationDiseaseState();
 		pds.setDiseaseState("susceptible");
-		pds.setPopCount(0.95);
+		pds.setFractionOfPopulation(0.95);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("exposed");
-		pds.setPopCount(0.0);
+		pds.setFractionOfPopulation(0.0);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("infectious");
-		pds.setPopCount(0.01);
+		pds.setFractionOfPopulation(0.01);
 		ds.add(pds);
 		pds = new PopulationDiseaseState();
 		pds.setDiseaseState("recovered");
-		pds.setPopCount(0.04);
+		pds.setFractionOfPopulation(0.04);
 		ds.add(pds);
 
 		simulatorConfiguration
