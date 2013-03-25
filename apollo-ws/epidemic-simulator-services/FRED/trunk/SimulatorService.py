@@ -150,6 +150,12 @@ class FredWebService(SimulatorService):
 		    f.write('track_infection_events = 1\n')
 		    if sum(cfg._vaccinationControlMeasure._vaccineSupplySchedule) > 0.0:
                         doVacc = True
+			### Add pregnant and at_risk estimates for vaccination
+			f.write("pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110\n")
+			f.write("pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0\n")
+			f.write("\n")
+			f.write("at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110\n")
+			f.write("at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701\n")
                         f.write("##### VACCINE PARAMETERS\n")
                         f.write("enable_behaviors = 1\n")
                         f.write("enable_vaccination = 1\n")
