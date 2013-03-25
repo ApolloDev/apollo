@@ -57,6 +57,17 @@ class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 		return null;
 	}
 
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetConfigurationFileForRun")
+	@WebMethod
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runIdentification", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String runIdentification) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
