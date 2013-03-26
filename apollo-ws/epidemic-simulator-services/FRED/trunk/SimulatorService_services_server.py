@@ -14,9 +14,10 @@ class SimulatorService(ServiceSOAPBinding):
 <wsdl:definitions name=\"SimulatorService\" targetNamespace=\"http://service.apollo.pitt.edu/simulatorservice/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:tns=\"http://service.apollo.pitt.edu/simulatorservice/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">
 	<wsdl:types>
 		<xsd:schema targetNamespace=\"http://service.apollo.pitt.edu/simulatorservice/\" xmlns:apollo=\"http://types.apollo.pitt.edu/\">
-            <xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"main-types.xsd\"/>
-            <xsd:element name=\"run\">
 
+			<xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"apollo-types.xsd\">
+			</xsd:import>
+			<xsd:element name=\"run\">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name=\"simulatorConfiguration\" type=\"apollo:SimulatorConfiguration\"/>
@@ -24,39 +25,65 @@ class SimulatorService(ServiceSOAPBinding):
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"runResponse\">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name=\"runId\" type=\"apollo:RunId\"/>
+						<xsd:element name=\"runId\" type=\"apollo:RunIdentification\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"getRunStatus\">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name=\"runId\" type=\"apollo:RunId\"/>
+						<xsd:element name=\"runId\" type=\"apollo:RunIdentification\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"getRunStatusResponse\">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name=\"runStatus\" type=\"apollo:RunStatus\"/>
+						<xsd:element name=\"runStatus\" type=\"apollo:RunStatus\">
+						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"getSupportedLocations\">
 				<xsd:complexType>
-					<xsd:sequence>
-					</xsd:sequence>
+					<xsd:sequence/>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"getSupportedLocationsResponse\">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element maxOccurs=\"unbounded\" minOccurs=\"1\" name=\"supportedPopluationLocations\" type=\"apollo:SupportedPopulationLocation\"/>
+						<xsd:element maxOccurs=\"unbounded\" minOccurs=\"1\" name=\"supportedPopluationLocations\" type=\"apollo:SupportedPopulationLocation\">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"batchRun\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"batchRunSimulatorConfiguration\" type=\"apollo:BatchRunSimulatorConfiguration\"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"batchRunResponse\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"batchRun\" type=\"apollo:BatchRunResult\"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"getConfigurationFileForRun\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"runId\" type=\"apollo:RunIdentification\"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"getConfigurationFileForRunResponse\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"configurationFile\" type=\"xsd:string\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -80,6 +107,18 @@ class SimulatorService(ServiceSOAPBinding):
 	<wsdl:message name=\"getSupportedLocationsResponse\">
 		<wsdl:part element=\"tns:getSupportedLocationsResponse\" name=\"parameters\"/>
 	</wsdl:message>
+	<wsdl:message name=\"batchRunRequest\">
+		<wsdl:part element=\"tns:batchRun\" name=\"parameters\"/>
+	</wsdl:message>
+	<wsdl:message name=\"batchRunResponse\">
+		<wsdl:part element=\"tns:batchRunResponse\" name=\"parameters\"/>
+	</wsdl:message>
+	<wsdl:message name=\"getConfigurationFileForRunRequest\">
+		<wsdl:part element=\"tns:getConfigurationFileForRun\" name=\"parameters\"/>
+	</wsdl:message>
+	<wsdl:message name=\"getConfigurationFileForRunResponse\">
+		<wsdl:part element=\"tns:getConfigurationFileForRunResponse\" name=\"parameters\"/>
+	</wsdl:message>
 	<wsdl:portType name=\"SimulatorServiceEI\">
 		<wsdl:operation name=\"run\">
 			<wsdl:input message=\"tns:runRequest\"/>
@@ -92,6 +131,14 @@ class SimulatorService(ServiceSOAPBinding):
 		<wsdl:operation name=\"getSupportedLocations\">
 			<wsdl:input message=\"tns:getSupportedLocationsRequest\"/>
 			<wsdl:output message=\"tns:getSupportedLocationsResponse\"/>
+		</wsdl:operation>
+		<wsdl:operation name=\"batchRun\">
+			<wsdl:input message=\"tns:batchRunRequest\"/>
+			<wsdl:output message=\"tns:batchRunResponse\"/>
+		</wsdl:operation>
+		<wsdl:operation name=\"getConfigurationFileForRun\">
+			<wsdl:input message=\"tns:getConfigurationFileForRunRequest\"/>
+			<wsdl:output message=\"tns:getConfigurationFileForRunResponse\"/>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name=\"SimulatorServiceBinding\" type=\"tns:SimulatorServiceEI\">
@@ -123,6 +170,24 @@ class SimulatorService(ServiceSOAPBinding):
 				<soap:body use=\"literal\"/>
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name=\"batchRun\">
+			<soap:operation soapAction=\"http://service.apollo.pitt.edu/simulatorservice/batchRun\"/>
+			<wsdl:input>
+				<soap:body use=\"literal\"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use=\"literal\"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name=\"getConfigurationFileForRun\">
+			<soap:operation soapAction=\"http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun\"/>
+			<wsdl:input>
+				<soap:body use=\"literal\"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use=\"literal\"/>
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name=\"SimulatorService\">
 		<wsdl:port binding=\"tns:SimulatorServiceBinding\" name=\"SimulatorServiceEndpoint\">
@@ -147,7 +212,7 @@ class SimulatorService(ServiceSOAPBinding):
     def soap_run(self, ps):
         self.request = ps.Parse(runRequest.typecode)
         parameters = self.request._simulatorConfiguration
-        
+
         # If we have an implementation object use it
         if hasattr(self,'impl'):
             parameters = self.impl.run(parameters)
@@ -193,4 +258,38 @@ class SimulatorService(ServiceSOAPBinding):
 
     soapAction['http://service.apollo.pitt.edu/simulatorservice/getSupportedLocations'] = 'soap_getSupportedLocations'
     root[(getSupportedLocationsRequest.typecode.nspname,getSupportedLocationsRequest.typecode.pname)] = 'soap_getSupportedLocations'
+
+    def soap_batchRun(self, ps):
+        self.request = ps.Parse(batchRunRequest.typecode)
+        parameters = self.request._batchRunSimulatorConfiguration
+
+        # If we have an implementation object use it
+        if hasattr(self,'impl'):
+            parameters = self.impl.batchRun(parameters)
+
+        result = batchRunResponse()
+        # If we have an implementation object, copy the result 
+        if hasattr(self,'impl'):
+            result._batchRun = parameters
+        return result
+
+    soapAction['http://service.apollo.pitt.edu/simulatorservice/batchRun'] = 'soap_batchRun'
+    root[(batchRunRequest.typecode.nspname,batchRunRequest.typecode.pname)] = 'soap_batchRun'
+
+    def soap_getConfigurationFileForRun(self, ps):
+        self.request = ps.Parse(getConfigurationFileForRunRequest.typecode)
+        parameters = self.request._runId
+
+        # If we have an implementation object use it
+        if hasattr(self,'impl'):
+            parameters = self.impl.getConfigurationFileForRun(parameters)
+
+        result = getConfigurationFileForRunResponse()
+        # If we have an implementation object, copy the result 
+        if hasattr(self,'impl'):
+            result._configurationFile = parameters
+        return result
+
+    soapAction['http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun'] = 'soap_getConfigurationFileForRun'
+    root[(getConfigurationFileForRunRequest.typecode.nspname,getConfigurationFileForRunRequest.typecode.pname)] = 'soap_getConfigurationFileForRun'
 
