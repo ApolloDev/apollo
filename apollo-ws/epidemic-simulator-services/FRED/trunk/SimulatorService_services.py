@@ -61,6 +61,28 @@ class SimulatorServiceBindingSOAP:
         response = self.binding.Receive(getSupportedLocationsResponse.typecode)
         return response
 
+    # op: batchRun
+    def batchRun(self, request):
+        if isinstance(request, batchRunRequest) is False:
+            raise TypeError, "%s incorrect request type" % (request.__class__)
+        kw = {}
+        # no input wsaction
+        self.binding.Send(None, None, request, soapaction="http://service.apollo.pitt.edu/simulatorservice/batchRun", **kw)
+        # no output wsaction
+        response = self.binding.Receive(batchRunResponse.typecode)
+        return response
+
+    # op: getConfigurationFileForRun
+    def getConfigurationFileForRun(self, request):
+        if isinstance(request, getConfigurationFileForRunRequest) is False:
+            raise TypeError, "%s incorrect request type" % (request.__class__)
+        kw = {}
+        # no input wsaction
+        self.binding.Send(None, None, request, soapaction="http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun", **kw)
+        # no output wsaction
+        response = self.binding.Receive(getConfigurationFileForRunResponse.typecode)
+        return response
+
 runRequest = ns0.run_Dec().pyclass
 
 runResponse = ns0.runResponse_Dec().pyclass
@@ -72,3 +94,11 @@ getRunStatusResponse = ns0.getRunStatusResponse_Dec().pyclass
 getSupportedLocationsRequest = ns0.getSupportedLocations_Dec().pyclass
 
 getSupportedLocationsResponse = ns0.getSupportedLocationsResponse_Dec().pyclass
+
+batchRunRequest = ns0.batchRun_Dec().pyclass
+
+batchRunResponse = ns0.batchRunResponse_Dec().pyclass
+
+getConfigurationFileForRunRequest = ns0.getConfigurationFileForRun_Dec().pyclass
+
+getConfigurationFileForRunResponse = ns0.getConfigurationFileForRunResponse_Dec().pyclass
