@@ -17,40 +17,18 @@ from ZSI.generate.pyclass import pyclass_type
 class ns1:
     targetNamespace = "http://types.apollo.pitt.edu/"
 
-    class VisualizationOptions_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "VisualizationOptions")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.VisualizationOptions_Def.schema
-            TClist = [ZSI.TC.Token(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"location"), aname="_location", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","MovieFormat",lazy=True)(pname=(ns,"movieFormat"), aname="_movieFormat", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._runId = None
-                    self._location = None
-                    self._movieFormat = None
-                    return
-            Holder.__name__ = "VisualizationOptions_Holder"
-            self.pyclass = Holder
-
-    class MovieFormat_Def(ZSI.TC.String, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "MovieFormat")
-        def __init__(self, pname, **kw):
-            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
-            class Holder(str):
-                typecode = self
-            self.pyclass = Holder
-
     class Probability_Def(ZSI.TCnumbers.FPdouble, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
         type = (schema, "Probability")
+        def __init__(self, pname, **kw):
+            ZSI.TCnumbers.FPdouble.__init__(self, pname, pyclass=None, **kw)
+            class Holder(float):
+                typecode = self
+            self.pyclass = Holder
+
+    class Fraction_Def(ZSI.TCnumbers.FPdouble, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "Fraction")
         def __init__(self, pname, **kw):
             ZSI.TCnumbers.FPdouble.__init__(self, pname, pyclass=None, **kw)
             class Holder(float):
@@ -95,15 +73,6 @@ class ns1:
                 typecode = self
             self.pyclass = Holder
 
-    class CompartmentNameEnum_Def(ZSI.TC.String, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "CompartmentNameEnum")
-        def __init__(self, pname, **kw):
-            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
-            class Holder(str):
-                typecode = self
-            self.pyclass = Holder
-
     class TimeStepUnit_Def(ZSI.TC.String, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
         type = (schema, "TimeStepUnit")
@@ -143,9 +112,9 @@ class ns1:
             Holder.__name__ = "RunStatus_Holder"
             self.pyclass = Holder
 
-    class AgeRange_Def(ZSI.TC.String, TypeDefinition):
+    class OldAgeRange_Def(ZSI.TC.String, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "AgeRange")
+        type = (schema, "OldAgeRange")
         def __init__(self, pname, **kw):
             ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
             class Holder(str):
@@ -159,82 +128,6 @@ class ns1:
             ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
             class Holder(str):
                 typecode = self
-            self.pyclass = Holder
-
-    class SoftwareCategory_Def(ZSI.TC.String, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "SoftwareCategory")
-        def __init__(self, pname, **kw):
-            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
-            class Holder(str):
-                typecode = self
-            self.pyclass = Holder
-
-    class SimulatorTimeSpecification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "SimulatorTimeSpecification")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.SimulatorTimeSpecification_Def.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","TimeStepUnit",lazy=True)(pname=(ns,"timeStepUnit"), aname="_timeStepUnit", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PositiveDouble",lazy=True)(pname=(ns,"timeStepValue"), aname="_timeStepValue", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.IpositiveInteger(pname=(ns,"runLength"), aname="_runLength", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._timeStepUnit = None
-                    self._timeStepValue = None
-                    self._runLength = None
-                    return
-            Holder.__name__ = "SimulatorTimeSpecification_Holder"
-            self.pyclass = Holder
-
-    class PopulationDiseaseState_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "PopulationDiseaseState")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.PopulationDiseaseState_Def.schema
-            TClist = [ZSI.TC.Token(pname=(ns,"diseaseState"), aname="_diseaseState", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"popCount"), aname="_popCount", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._diseaseState = None
-                    self._popCount = None
-                    return
-            Holder.__name__ = "PopulationDiseaseState_Holder"
-            self.pyclass = Holder
-
-    class SimulatedPopulation_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "SimulatedPopulation")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.SimulatedPopulation_Def.schema
-            TClist = [ZSI.TC.Token(pname=(ns,"populationLocation"), aname="_populationLocation", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Gender",lazy=True)(pname=(ns,"gender"), aname="_gender", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","AgeRange",lazy=True)(pname=(ns,"ageRange"), aname="_ageRange", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PopulationDiseaseState",lazy=True)(pname=(ns,"populationDiseaseState"), aname="_populationDiseaseState", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatedPopulation",lazy=True)(pname=(ns,"subpopulation"), aname="_subpopulation", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._populationLocation = None
-                    self._gender = None
-                    self._ageRange = None
-                    self._populationDiseaseState = []
-                    self._subpopulation = []
-                    return
-            Holder.__name__ = "SimulatedPopulation_Holder"
             self.pyclass = Holder
 
     class SupportedPopulationLocation_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
@@ -279,6 +172,153 @@ class ns1:
             Holder.__name__ = "Authentication_Holder"
             self.pyclass = Holder
 
+    class VisualizationOptions_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "VisualizationOptions")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.VisualizationOptions_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"location"), aname="_location", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"outputFormat"), aname="_outputFormat", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._runId = None
+                    self._location = None
+                    self._outputFormat = None
+                    return
+            Holder.__name__ = "VisualizationOptions_Holder"
+            self.pyclass = Holder
+
+    class VisualizerConfiguration_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "VisualizerConfiguration")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.VisualizerConfiguration_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"visualizerIdentification"), aname="_visualizerIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","VisualizationOptions",lazy=True)(pname=(ns,"visualizationOptions"), aname="_visualizationOptions", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._visualizerIdentification = None
+                    self._authentication = None
+                    self._visualizationOptions = None
+                    return
+            Holder.__name__ = "VisualizerConfiguration_Holder"
+            self.pyclass = Holder
+
+    class RunIdentification_Def(ZSI.TC.Token, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "RunIdentification")
+        def __init__(self, pname, **kw):
+            ZSI.TC.Token.__init__(self, pname, pyclass=None, **kw)
+            class Holder(str):
+                typecode = self
+            self.pyclass = Holder
+
+    class ServiceRecord_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ServiceRecord")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ServiceRecord_Def.schema
+            TClist = [ZSI.TC.URI(pname=(ns,"url"), aname="_url", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"softwareIdentification"), aname="_softwareIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._url = None
+                    self._softwareIdentification = None
+                    return
+            Holder.__name__ = "ServiceRecord_Holder"
+            self.pyclass = Holder
+
+    class ServiceRegistrationRecord_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ServiceRegistrationRecord")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.ServiceRegistrationRecord_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ServiceRecord_Def not in ns1.ServiceRegistrationRecord_Def.__bases__:
+                bases = list(ns1.ServiceRegistrationRecord_Def.__bases__)
+                bases.insert(0, ns1.ServiceRecord_Def)
+                ns1.ServiceRegistrationRecord_Def.__bases__ = tuple(bases)
+
+            ns1.ServiceRecord_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class SimulatorTimeSpecification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SimulatorTimeSpecification")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.SimulatorTimeSpecification_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","TimeStepUnit",lazy=True)(pname=(ns,"timeStepUnit"), aname="_timeStepUnit", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PositiveDouble",lazy=True)(pname=(ns,"timeStepValue"), aname="_timeStepValue", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.IpositiveInteger(pname=(ns,"runLength"), aname="_runLength", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._timeStepUnit = None
+                    self._timeStepValue = None
+                    self._runLength = None
+                    return
+            Holder.__name__ = "SimulatorTimeSpecification_Holder"
+            self.pyclass = Holder
+
+    class AntiviralTreatmentControlMeasure_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "AntiviralTreatmentControlMeasure")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.AntiviralTreatmentControlMeasure_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","AntiviralTreatment",lazy=True)(pname=(ns,"antiviralTreatment"), aname="_antiviralTreatment", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"treatmentReactiveEndPointFraction"), aname="_treatmentReactiveEndPointFraction", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname=(ns,"antiviralSupplySchedule"), aname="_antiviralSupplySchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"antiviralTreatmentAdministrationCapacity"), aname="_antiviralTreatmentAdministrationCapacity", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ControlMeasure_Def not in ns1.AntiviralTreatmentControlMeasure_Def.__bases__:
+                bases = list(ns1.AntiviralTreatmentControlMeasure_Def.__bases__)
+                bases.insert(0, ns1.ControlMeasure_Def)
+                ns1.AntiviralTreatmentControlMeasure_Def.__bases__ = tuple(bases)
+
+            ns1.ControlMeasure_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class VaccinationControlMeasure_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "VaccinationControlMeasure")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.VaccinationControlMeasure_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","Vaccination",lazy=True)(pname=(ns,"vaccination"), aname="_vaccination", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"vaccinationReactiveEndPointFraction"), aname="_vaccinationReactiveEndPointFraction", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname=(ns,"vaccineSupplySchedule"), aname="_vaccineSupplySchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"vaccinationAdministrationCapacity"), aname="_vaccinationAdministrationCapacity", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ControlMeasure_Def not in ns1.VaccinationControlMeasure_Def.__bases__:
+                bases = list(ns1.VaccinationControlMeasure_Def.__bases__)
+                bases.insert(0, ns1.ControlMeasure_Def)
+                ns1.VaccinationControlMeasure_Def.__bases__ = tuple(bases)
+
+            ns1.ControlMeasure_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
     class Disease_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
         type = (schema, "Disease")
@@ -303,12 +343,12 @@ class ns1:
             Holder.__name__ = "Disease_Holder"
             self.pyclass = Holder
 
-    class AntiviralControlMeasure_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+    class PopulationDiseaseState_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "AntiviralControlMeasure")
+        type = (schema, "PopulationDiseaseState")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.AntiviralControlMeasure_Def.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","Probability",lazy=True)(pname=(ns,"antiviralCmCompliance"), aname="_antiviralCmCompliance", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"antiviralSupplySchedule"), aname="_antiviralSupplySchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"antiviralAdminSchedule"), aname="_antiviralAdminSchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Probability",lazy=True)(pname=(ns,"antiviralEfficacy"), aname="_antiviralEfficacy", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"antiviralEfficacyDelay"), aname="_antiviralEfficacyDelay", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            ns = ns1.PopulationDiseaseState_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"diseaseState"), aname="_diseaseState", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"fractionOfPopulation"), aname="_fractionOfPopulation", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -318,21 +358,18 @@ class ns1:
                 typecode = self
                 def __init__(self):
                     # pyclass
-                    self._antiviralCmCompliance = None
-                    self._antiviralSupplySchedule = []
-                    self._antiviralAdminSchedule = []
-                    self._antiviralEfficacy = None
-                    self._antiviralEfficacyDelay = None
+                    self._diseaseState = None
+                    self._fractionOfPopulation = None
                     return
-            Holder.__name__ = "AntiviralControlMeasure_Holder"
+            Holder.__name__ = "PopulationDiseaseState_Holder"
             self.pyclass = Holder
 
-    class VaccinationControlMeasure_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+    class SimulatedPopulation_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "VaccinationControlMeasure")
+        type = (schema, "SimulatedPopulation")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.VaccinationControlMeasure_Def.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","Probability",lazy=True)(pname=(ns,"vaccineCmCompliance"), aname="_vaccineCmCompliance", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"vaccineSupplySchedule"), aname="_vaccineSupplySchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"vaccinationAdminSchedule"), aname="_vaccinationAdminSchedule", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Probability",lazy=True)(pname=(ns,"vaccineEfficacy"), aname="_vaccineEfficacy", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"vaccineEfficacyDelay"), aname="_vaccineEfficacyDelay", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            ns = ns1.SimulatedPopulation_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"populationLocation"), aname="_populationLocation", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Gender",lazy=True)(pname=(ns,"gender"), aname="_gender", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","AgeRange",lazy=True)(pname=(ns,"ageRange"), aname="_ageRange", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PopulationDiseaseState",lazy=True)(pname=(ns,"populationDiseaseState"), aname="_populationDiseaseState", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatedPopulation",lazy=True)(pname=(ns,"subpopulation"), aname="_subpopulation", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -342,57 +379,13 @@ class ns1:
                 typecode = self
                 def __init__(self):
                     # pyclass
-                    self._vaccineCmCompliance = None
-                    self._vaccineSupplySchedule = []
-                    self._vaccinationAdminSchedule = []
-                    self._vaccineEfficacy = None
-                    self._vaccineEfficacyDelay = None
+                    self._populationLocation = None
+                    self._gender = None
+                    self._ageRange = None
+                    self._populationDiseaseState = []
+                    self._subpopulation = []
                     return
-            Holder.__name__ = "VaccinationControlMeasure_Holder"
-            self.pyclass = Holder
-
-    class SimulatorIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "SimulatorIdentification")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.SimulatorIdentification_Def.schema
-            TClist = [ZSI.TC.Token(pname=(ns,"simulatorDeveloper"), aname="_simulatorDeveloper", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"simulatorName"), aname="_simulatorName", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"simulatorVersion"), aname="_simulatorVersion", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._simulatorDeveloper = None
-                    self._simulatorName = None
-                    self._simulatorVersion = None
-                    return
-            Holder.__name__ = "SimulatorIdentification_Holder"
-            self.pyclass = Holder
-
-    class VisualizerIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
-        schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "VisualizerIdentification")
-        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.VisualizerIdentification_Def.schema
-            TClist = [ZSI.TC.Token(pname=(ns,"visualizerDeveloper"), aname="_visualizerDeveloper", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"visualizerName"), aname="_visualizerName", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"visualizerVersion"), aname="_visualizerVersion", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
-            self.attribute_typecode_dict = attributes or {}
-            if extend: TClist += ofwhat
-            if restrict: TClist = ofwhat
-            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
-            class Holder:
-                __metaclass__ = pyclass_type
-                typecode = self
-                def __init__(self):
-                    # pyclass
-                    self._visualizerDeveloper = None
-                    self._visualizerName = None
-                    self._visualizerVersion = None
-                    return
-            Holder.__name__ = "VisualizerIdentification_Holder"
+            Holder.__name__ = "SimulatedPopulation_Holder"
             self.pyclass = Holder
 
     class SimulatorConfiguration_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
@@ -400,7 +393,7 @@ class ns1:
         type = (schema, "SimulatorConfiguration")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
             ns = ns1.SimulatorConfiguration_Def.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","SimulatorIdentification",lazy=True)(pname=(ns,"simulatorIdentification"), aname="_simulatorIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatorTimeSpecification",lazy=True)(pname=(ns,"simulatorTimeSpecification"), aname="_simulatorTimeSpecification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatedPopulation",lazy=True)(pname=(ns,"populationInitialization"), aname="_populationInitialization", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Disease",lazy=True)(pname=(ns,"disease"), aname="_disease", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","AntiviralControlMeasure",lazy=True)(pname=(ns,"antiviralControlMeasure"), aname="_antiviralControlMeasure", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","VaccinationControlMeasure",lazy=True)(pname=(ns,"vaccinationControlMeasure"), aname="_vaccinationControlMeasure", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"simulatorIdentification"), aname="_simulatorIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatorTimeSpecification",lazy=True)(pname=(ns,"simulatorTimeSpecification"), aname="_simulatorTimeSpecification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SimulatedPopulation",lazy=True)(pname=(ns,"populationInitialization"), aname="_populationInitialization", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Disease",lazy=True)(pname=(ns,"disease"), aname="_disease", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","ControlMeasures",lazy=True)(pname=(ns,"controlMeasures"), aname="_controlMeasures", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -415,18 +408,17 @@ class ns1:
                     self._simulatorTimeSpecification = None
                     self._populationInitialization = None
                     self._disease = None
-                    self._antiviralControlMeasure = None
-                    self._vaccinationControlMeasure = None
+                    self._controlMeasures = None
                     return
             Holder.__name__ = "SimulatorConfiguration_Holder"
             self.pyclass = Holder
 
-    class VisualizerConfiguration_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+    class UrlOutputResource_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "VisualizerConfiguration")
+        type = (schema, "UrlOutputResource")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
-            ns = ns1.VisualizerConfiguration_Def.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","VisualizerIdentification",lazy=True)(pname=(ns,"visualizerIdentification"), aname="_visualizerIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","VisualizationOptions",lazy=True)(pname=(ns,"visualizationOptions"), aname="_visualizationOptions", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            ns = ns1.UrlOutputResource_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.AnyType(pname=(ns,"URL"), aname="_URL", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -436,20 +428,779 @@ class ns1:
                 typecode = self
                 def __init__(self):
                     # pyclass
-                    self._visualizerIdentification = None
-                    self._authentication = None
-                    self._visualizationOptions = None
+                    self._description = None
+                    self._URL = None
                     return
-            Holder.__name__ = "VisualizerConfiguration_Holder"
+            Holder.__name__ = "UrlOutputResource_Holder"
             self.pyclass = Holder
 
-    class RunId_Def(ZSI.TC.Token, TypeDefinition):
+    class ServiceResult_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
         schema = "http://types.apollo.pitt.edu/"
-        type = (schema, "RunId")
+        type = (schema, "ServiceResult")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ServiceResult_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.URI(pname=(ns,"URL"), aname="_URL", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._URL = None
+                    return
+            Holder.__name__ = "ServiceResult_Holder"
+            self.pyclass = Holder
+
+    class SyntheticPopulationConfiguration_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SyntheticPopulationConfiguration")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.SyntheticPopulationConfiguration_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"serviceIdentification"), aname="_serviceIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Authentication",lazy=True)(pname=(ns,"authentication"), aname="_authentication", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","RequesterIdentification",lazy=True)(pname=(ns,"requesterIdentification"), aname="_requesterIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"householdCharacteristics"), aname="_householdCharacteristics", minOccurs=1, maxOccurs=4, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","INCITS31",lazy=True)(pname=(ns,"countiesOfInterest"), aname="_countiesOfInterest", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._serviceIdentification = None
+                    self._authentication = None
+                    self._requesterIdentification = None
+                    self._householdCharacteristics = []
+                    self._countiesOfInterest = []
+                    return
+            Holder.__name__ = "SyntheticPopulationConfiguration_Holder"
+            self.pyclass = Holder
+
+    class SoftwareIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SoftwareIdentification")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.SoftwareIdentification_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"softwareDeveloper"), aname="_softwareDeveloper", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"softwareName"), aname="_softwareName", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"softwareVersion"), aname="_softwareVersion", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","ApolloSoftwareType",lazy=True)(pname=(ns,"softwareType"), aname="_softwareType", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._softwareDeveloper = None
+                    self._softwareName = None
+                    self._softwareVersion = None
+                    self._softwareType = None
+                    return
+            Holder.__name__ = "SoftwareIdentification_Holder"
+            self.pyclass = Holder
+
+    class INCITS31_Def(ZSI.TCnumbers.IpositiveInteger, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "INCITS31")
         def __init__(self, pname, **kw):
-            ZSI.TC.Token.__init__(self, pname, pyclass=None, **kw)
+            ZSI.TCnumbers.IpositiveInteger.__init__(self, pname, pyclass=None, **kw)
+            class Holder(int):
+                typecode = self
+            self.pyclass = Holder
+
+    class RequesterIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "RequesterIdentification")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.RequesterIdentification_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"requesterName"), aname="_requesterName", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"requesterCompany"), aname="_requesterCompany", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"requesterEmail"), aname="_requesterEmail", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._requesterName = None
+                    self._requesterCompany = None
+                    self._requesterEmail = None
+                    return
+            Holder.__name__ = "RequesterIdentification_Holder"
+            self.pyclass = Holder
+
+    class Vaccine_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "Vaccine")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.Vaccine_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"vaccineId"), aname="_vaccineId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.IpositiveInteger(pname=(ns,"valence"), aname="_valence", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._vaccineId = None
+                    self._valence = []
+                    return
+            Holder.__name__ = "Vaccine_Holder"
+            self.pyclass = Holder
+
+    class EfficacyByDiseaseState_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "EfficacyByDiseaseState")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.EfficacyByDiseaseState_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"forSusceptibility"), aname="_forSusceptibility", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"forInfectiousness"), aname="_forInfectiousness", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"forIllnessGivenInfection"), aname="_forIllnessGivenInfection", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._forSusceptibility = None
+                    self._forInfectiousness = None
+                    self._forIllnessGivenInfection = None
+                    return
+            Holder.__name__ = "EfficacyByDiseaseState_Holder"
+            self.pyclass = Holder
+
+    class AgeGroupEfficacy_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "AgeGroupEfficacy")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.AgeGroupEfficacy_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","AgeRange",lazy=True)(pname=(ns,"ageRange"), aname="_ageRange", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"vaccineEfficacy"), aname="_vaccineEfficacy", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._ageRange = None
+                    self._vaccineEfficacy = None
+                    return
+            Holder.__name__ = "AgeGroupEfficacy_Holder"
+            self.pyclass = Holder
+
+    class VaccineContraindications_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "VaccineContraindications")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.VaccineContraindications_Def.schema
+            TClist = [ZSI.TC.Boolean(pname=(ns,"infants"), aname="_infants", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"preschoolers"), aname="_preschoolers", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"schoolAgeChildren"), aname="_schoolAgeChildren", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"youngAdults"), aname="_youngAdults", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"olderAdults"), aname="_olderAdults", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"elderly"), aname="_elderly", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"pregnantAdultsRestricted"), aname="_pregnantAdultsRestricted", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._infants = None
+                    self._preschoolers = None
+                    self._schoolAgeChildren = None
+                    self._youngAdults = None
+                    self._olderAdults = None
+                    self._elderly = None
+                    self._pregnantAdultsRestricted = None
+                    return
+            Holder.__name__ = "VaccineContraindications_Holder"
+            self.pyclass = Holder
+
+    class Antiviral_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "Antiviral")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.Antiviral_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"antiviralId"), aname="_antiviralId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._antiviralId = None
+                    return
+            Holder.__name__ = "Antiviral_Holder"
+            self.pyclass = Holder
+
+    class BatchRunSimulatorConfiguration_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "BatchRunSimulatorConfiguration")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.BatchRunSimulatorConfiguration_Def.schema
+            TClist = [ZSI.TC.URI(pname=(ns,"batchConfigurationFile"), aname="_batchConfigurationFile", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Boolean(pname=(ns,"acceptCachedResults"), aname="_acceptCachedResults", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"softwareIdentification"), aname="_softwareIdentification", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._batchConfigurationFile = None
+                    self._acceptCachedResults = None
+                    self._softwareIdentification = None
+                    return
+            Holder.__name__ = "BatchRunSimulatorConfiguration_Holder"
+            self.pyclass = Holder
+
+    class BatchRunResult_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "BatchRunResult")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.BatchRunResult_Def.schema
+            TClist = [ZSI.TC.URI(pname=(ns,"completedFile"), aname="_completedFile", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._completedFile = None
+                    self._runId = None
+                    return
+            Holder.__name__ = "BatchRunResult_Holder"
+            self.pyclass = Holder
+
+    class Vaccination_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "Vaccination")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.Vaccination_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"vaccineId"), aname="_vaccineId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"hostOrganism"), aname="_hostOrganism", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.IpositiveInteger(pname=(ns,"numDosesInVaccinationCourse"), aname="_numDosesInVaccinationCourse", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","TreatmentEfficacyOverTime",lazy=True)(pname=(ns,"vaccinationEfficacy"), aname="_vaccinationEfficacy", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._vaccineId = None
+                    self._hostOrganism = None
+                    self._numDosesInVaccinationCourse = None
+                    self._vaccinationEfficacy = None
+                    return
+            Holder.__name__ = "Vaccination_Holder"
+            self.pyclass = Holder
+
+    class AntiviralTreatment_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "AntiviralTreatment")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.AntiviralTreatment_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"antiviralId"), aname="_antiviralId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"hostOrganism"), aname="_hostOrganism", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.IpositiveInteger(pname=(ns,"numDosesInTreatmentCourse"), aname="_numDosesInTreatmentCourse", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","TreatmentEfficacyOverTime",lazy=True)(pname=(ns,"antiviralTreatmentEfficacy"), aname="_antiviralTreatmentEfficacy", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._antiviralId = None
+                    self._hostOrganism = None
+                    self._numDosesInTreatmentCourse = None
+                    self._antiviralTreatmentEfficacy = None
+                    return
+            Holder.__name__ = "AntiviralTreatment_Holder"
+            self.pyclass = Holder
+
+    class TreatmentEfficacyOverTime_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TreatmentEfficacyOverTime")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.TreatmentEfficacyOverTime_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","TreatmentEfficacyTemporalArrayDefinition",lazy=True)(pname=(ns,"arrayDefinition"), aname="_arrayDefinition", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"efficacyValues"), aname="_efficacyValues", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._arrayDefinition = None
+                    self._efficacyValues = []
+                    return
+            Holder.__name__ = "TreatmentEfficacyOverTime_Holder"
+            self.pyclass = Holder
+
+    class TemporalPopulationStratificationAxes_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TemporalPopulationStratificationAxes")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.TemporalPopulationStratificationAxes_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","AgeRange",lazy=True)(pname=(ns,"ageRange"), aname="_ageRange", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","DiseaseState",lazy=True)(pname=(ns,"diseaseState"), aname="_diseaseState", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Gender",lazy=True)(pname=(ns,"gender"), aname="_gender", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"location"), aname="_location", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def not in ns1.TemporalPopulationStratificationAxes_Def.__bases__:
+                bases = list(ns1.TemporalPopulationStratificationAxes_Def.__bases__)
+                bases.insert(0, ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def)
+                ns1.TemporalPopulationStratificationAxes_Def.__bases__ = tuple(bases)
+
+            ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class PopulationStrataDefinition_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "PopulationStrataDefinition")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.PopulationStrataDefinition_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","AgeRange",lazy=True)(pname=(ns,"ageRanges"), aname="_ageRanges", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","DiseaseState",lazy=True)(pname=(ns,"diseaseStates"), aname="_diseaseStates", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Gender",lazy=True)(pname=(ns,"genders"), aname="_genders", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"locations"), aname="_locations", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ArrayDimensionsDefinition_Def not in ns1.PopulationStrataDefinition_Def.__bases__:
+                bases = list(ns1.PopulationStrataDefinition_Def.__bases__)
+                bases.insert(0, ns1.ArrayDimensionsDefinition_Def)
+                ns1.PopulationStrataDefinition_Def.__bases__ = tuple(bases)
+
+            ns1.ArrayDimensionsDefinition_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class TemporalArrayDimensionsDefinition_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TemporalArrayDimensionsDefinition")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.TemporalArrayDimensionsDefinition_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"time"), aname="_time", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ArrayDimensionsDefinition_Def not in ns1.TemporalArrayDimensionsDefinition_Def.__bases__:
+                bases = list(ns1.TemporalArrayDimensionsDefinition_Def.__bases__)
+                bases.insert(0, ns1.ArrayDimensionsDefinition_Def)
+                ns1.TemporalArrayDimensionsDefinition_Def.__bases__ = tuple(bases)
+
+            ns1.ArrayDimensionsDefinition_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class TreatmentEfficacyTemporalArrayDimensionsDefinition_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TreatmentEfficacyTemporalArrayDimensionsDefinition")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"doseTimes"), aname="_doseTimes", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PopulationStrataDefinition",lazy=True)(pname=(ns,"populationStratificationAxes"), aname="_populationStratificationAxes", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.TemporalArrayDimensionsDefinition_Def not in ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def.__bases__:
+                bases = list(ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def.__bases__)
+                bases.insert(0, ns1.TemporalArrayDimensionsDefinition_Def)
+                ns1.TreatmentEfficacyTemporalArrayDimensionsDefinition_Def.__bases__ = tuple(bases)
+
+            ns1.TemporalArrayDimensionsDefinition_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class DiseaseState_Def(ZSI.TC.String, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "DiseaseState")
+        def __init__(self, pname, **kw):
+            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
             class Holder(str):
                 typecode = self
+            self.pyclass = Holder
+
+    class TreatmentStatus_Def(ZSI.TC.String, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TreatmentStatus")
+        def __init__(self, pname, **kw):
+            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
+            class Holder(str):
+                typecode = self
+            self.pyclass = Holder
+
+    class AgeRange_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "AgeRange")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.AgeRange_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"lowerBound"), aname="_lowerBound", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"upperBound"), aname="_upperBound", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._lowerBound = None
+                    self._upperBound = None
+                    return
+            Holder.__name__ = "AgeRange_Holder"
+            self.pyclass = Holder
+
+    class NonReactiveVaccinationControlMeasure_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "NonReactiveVaccinationControlMeasure")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.NonReactiveVaccinationControlMeasure_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"controlMeasureStartTime"), aname="_controlMeasureStartTime", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.VaccinationControlMeasure_Def not in ns1.NonReactiveVaccinationControlMeasure_Def.__bases__:
+                bases = list(ns1.NonReactiveVaccinationControlMeasure_Def.__bases__)
+                bases.insert(0, ns1.VaccinationControlMeasure_Def)
+                ns1.NonReactiveVaccinationControlMeasure_Def.__bases__ = tuple(bases)
+
+            ns1.VaccinationControlMeasure_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class TargetPriorityPopulation_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TargetPriorityPopulation")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.TargetPriorityPopulation_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"label"), aname="_label", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"fractionOfTargetPopulationToPrioritize"), aname="_fractionOfTargetPopulationToPrioritize", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"priority"), aname="_priority", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","PopulationStrataDefinition",lazy=True)(pname=(ns,"targetPopulationDefinition"), aname="_targetPopulationDefinition", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","targetPopulationDefinitionEnum",lazy=True)(pname=(ns,"targetPopulationDefinitionEnum"), aname="_targetPopulationDefinitionEnum", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._label = None
+                    self._fractionOfTargetPopulationToPrioritize = None
+                    self._priority = None
+                    self._targetPopulationDefinition = None
+                    self._targetPopulationDefinitionEnum = None
+                    return
+            Holder.__name__ = "TargetPriorityPopulation_Holder"
+            self.pyclass = Holder
+
+    class ReactiveControlMeasure_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ReactiveControlMeasure")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ReactiveControlMeasure_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","ControlMeasure",lazy=True)(pname=(ns,"controlMeasure"), aname="_controlMeasure", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","ReactiveTriggersDefinition",lazy=True)(pname=(ns,"controlMeasureReactiveTriggersDefinition"), aname="_controlMeasureReactiveTriggersDefinition", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._controlMeasure = None
+                    self._controlMeasureReactiveTriggersDefinition = None
+                    return
+            Holder.__name__ = "ReactiveControlMeasure_Holder"
+            self.pyclass = Holder
+
+    class ControlMeasure_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ControlMeasure")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ControlMeasure_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"description"), aname="_description", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","NonNegativeDouble",lazy=True)(pname=(ns,"controlMeasureResponseDelay"), aname="_controlMeasureResponseDelay", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"controlMeasureCompliance"), aname="_controlMeasureCompliance", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","TargetPriorityPopulation",lazy=True)(pname=(ns,"controlMeasureTargetPopulationsAndPrioritization"), aname="_controlMeasureTargetPopulationsAndPrioritization", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"controlMeasureNamedPrioritizationScheme"), aname="_controlMeasureNamedPrioritizationScheme", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._description = None
+                    self._controlMeasureResponseDelay = None
+                    self._controlMeasureCompliance = None
+                    self._controlMeasureTargetPopulationsAndPrioritization = []
+                    self._controlMeasureNamedPrioritizationScheme = None
+                    return
+            Holder.__name__ = "ControlMeasure_Holder"
+            self.pyclass = Holder
+
+    class ReactiveTriggersDefinition_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ReactiveTriggersDefinition")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ReactiveTriggersDefinition_Def.schema
+            TClist = [ZSI.TC.Token(pname=(ns,"reactiveControlMeasureTest"), aname="_reactiveControlMeasureTest", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"reactiveControlMeasureThreshold"), aname="_reactiveControlMeasureThreshold", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","Fraction",lazy=True)(pname=(ns,"ascertainmentFraction"), aname="_ascertainmentFraction", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"ascertainmentDelay"), aname="_ascertainmentDelay", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._reactiveControlMeasureTest = None
+                    self._reactiveControlMeasureThreshold = None
+                    self._ascertainmentFraction = None
+                    self._ascertainmentDelay = None
+                    return
+            Holder.__name__ = "ReactiveTriggersDefinition_Holder"
+            self.pyclass = Holder
+
+    class FixedStartTime_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "FixedStartTime")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.FixedStartTime_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"fixedStartTime"), aname="_fixedStartTime", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._fixedStartTime = None
+                    return
+            Holder.__name__ = "FixedStartTime_Holder"
+            self.pyclass = Holder
+
+    class FixedStartTimeControlMeasure_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "FixedStartTimeControlMeasure")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.FixedStartTimeControlMeasure_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","FixedStartTime",lazy=True)(pname=(ns,"controlMeasureFixedStartTime"), aname="_controlMeasureFixedStartTime", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","ControlMeasure",lazy=True)(pname=(ns,"controlMeasure"), aname="_controlMeasure", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._controlMeasureFixedStartTime = None
+                    self._controlMeasure = None
+                    return
+            Holder.__name__ = "FixedStartTimeControlMeasure_Holder"
+            self.pyclass = Holder
+
+    class targetPopulationDefinitionEnum_Def(ZSI.TC.String, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "targetPopulationDefinitionEnum")
+        def __init__(self, pname, **kw):
+            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
+            class Holder(str):
+                typecode = self
+            self.pyclass = Holder
+
+    class ArrayDimensionsDefinition_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ArrayDimensionsDefinition")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ArrayDimensionsDefinition_Def.schema
+            TClist = []
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    return
+            Holder.__name__ = "ArrayDimensionsDefinition_Holder"
+            self.pyclass = Holder
+
+    class TreatmentEfficacyTemporalArrayDefinition_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "TreatmentEfficacyTemporalArrayDefinition")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.TreatmentEfficacyTemporalArrayDefinition_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","TreatmentEfficacyTemporalArrayDimensionsDefinition",lazy=True)(pname=(ns,"dimensionValues"), aname="_dimensionValues", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.Token(pname=(ns,"orderedListOfDimensions"), aname="_orderedListOfDimensions", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._dimensionValues = None
+                    self._orderedListOfDimensions = []
+                    return
+            Holder.__name__ = "TreatmentEfficacyTemporalArrayDefinition_Holder"
+            self.pyclass = Holder
+
+    class SchoolClosureControlMeasure_Def(TypeDefinition):
+        #complexType/complexContent extension
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SchoolClosureControlMeasure")
+        def __init__(self, pname, ofwhat=(), extend=False, restrict=False, attributes=None, **kw):
+            ns = ns1.SchoolClosureControlMeasure_Def.schema
+            TClist = [ZSI.TCnumbers.InonNegativeInteger(pname=(ns,"schoolClosureDuration"), aname="_schoolClosureDuration", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SchoolClosureTargetFacilities",lazy=True)(pname=(ns,"schoolClosureTargetFacilities"), aname="_schoolClosureTargetFacilities", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            attributes = self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            if ns1.ControlMeasure_Def not in ns1.SchoolClosureControlMeasure_Def.__bases__:
+                bases = list(ns1.SchoolClosureControlMeasure_Def.__bases__)
+                bases.insert(0, ns1.ControlMeasure_Def)
+                ns1.SchoolClosureControlMeasure_Def.__bases__ = tuple(bases)
+
+            ns1.ControlMeasure_Def.__init__(self, pname, ofwhat=TClist, extend=True, attributes=attributes, **kw)
+
+    class ApolloSoftwareType_Def(ZSI.TC.String, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ApolloSoftwareType")
+        def __init__(self, pname, **kw):
+            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
+            class Holder(str):
+                typecode = self
+            self.pyclass = Holder
+
+    class RunAndSoftwareIdentification_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "RunAndSoftwareIdentification")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.RunAndSoftwareIdentification_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","SoftwareIdentification",lazy=True)(pname=(ns,"softwareId"), aname="_softwareId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._runId = None
+                    self._softwareId = None
+                    return
+            Holder.__name__ = "RunAndSoftwareIdentification_Holder"
+            self.pyclass = Holder
+
+    class SchoolClosureTargetFacilities_Def(ZSI.TC.String, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SchoolClosureTargetFacilities")
+        def __init__(self, pname, **kw):
+            ZSI.TC.String.__init__(self, pname, pyclass=None, **kw)
+            class Holder(str):
+                typecode = self
+            self.pyclass = Holder
+
+    class VisualizerResult_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "VisualizerResult")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.VisualizerResult_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","UrlOutputResource",lazy=True)(pname=(ns,"visualizerOutputResource"), aname="_visualizerOutputResource", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._runId = None
+                    self._visualizerOutputResource = []
+                    return
+            Holder.__name__ = "VisualizerResult_Holder"
+            self.pyclass = Holder
+
+    class SyntheticPopulationResult_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "SyntheticPopulationResult")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.SyntheticPopulationResult_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname=(ns,"runId"), aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","UrlOutputResource",lazy=True)(pname=(ns,"syntheticPopulationOutputResource"), aname="_syntheticPopulationOutputResource", minOccurs=1, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._runId = None
+                    self._syntheticPopulationOutputResource = []
+                    return
+            Holder.__name__ = "SyntheticPopulationResult_Holder"
+            self.pyclass = Holder
+
+    class ServiceRegistrationResult_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ServiceRegistrationResult")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ServiceRegistrationResult_Def.schema
+            TClist = [ZSI.TC.Boolean(pname=(ns,"actionSuccessful"), aname="_actionSuccessful", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.String(pname=(ns,"message"), aname="_message", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._actionSuccessful = None
+                    self._message = None
+                    return
+            Holder.__name__ = "ServiceRegistrationResult_Holder"
+            self.pyclass = Holder
+
+    class ControlMeasures_Def(ZSI.TCcompound.ComplexType, TypeDefinition):
+        schema = "http://types.apollo.pitt.edu/"
+        type = (schema, "ControlMeasures")
+        def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
+            ns = ns1.ControlMeasures_Def.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","FixedStartTimeControlMeasure",lazy=True)(pname=(ns,"fixedStartTimeControlMeasures"), aname="_fixedStartTimeControlMeasures", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), GTD("http://types.apollo.pitt.edu/","ReactiveControlMeasure",lazy=True)(pname=(ns,"reactiveControlMeasures"), aname="_reactiveControlMeasures", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            self.attribute_typecode_dict = attributes or {}
+            if extend: TClist += ofwhat
+            if restrict: TClist = ofwhat
+            ZSI.TCcompound.ComplexType.__init__(self, None, TClist, pname=pname, inorder=0, **kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._fixedStartTimeControlMeasures = []
+                    self._reactiveControlMeasures = []
+                    return
+            Holder.__name__ = "ControlMeasures_Holder"
             self.pyclass = Holder
 
 # end class ns1 (tns: http://types.apollo.pitt.edu/)
@@ -487,7 +1238,7 @@ class ns0:
         schema = "http://service.apollo.pitt.edu/simulatorservice/"
         def __init__(self, **kw):
             ns = ns0.runResponse_Dec.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","RunId",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","runResponse")
             kw["aname"] = "_runResponse"
             self.attribute_typecode_dict = {}
@@ -507,7 +1258,7 @@ class ns0:
         schema = "http://service.apollo.pitt.edu/simulatorservice/"
         def __init__(self, **kw):
             ns = ns0.getRunStatus_Dec.schema
-            TClist = [GTD("http://types.apollo.pitt.edu/","RunId",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","getRunStatus")
             kw["aname"] = "_getRunStatus"
             self.attribute_typecode_dict = {}
@@ -579,6 +1330,86 @@ class ns0:
                     self._supportedPopluationLocations = []
                     return
             Holder.__name__ = "getSupportedLocationsResponse_Holder"
+            self.pyclass = Holder
+
+    class batchRun_Dec(ZSI.TCcompound.ComplexType, ElementDeclaration):
+        literal = "batchRun"
+        schema = "http://service.apollo.pitt.edu/simulatorservice/"
+        def __init__(self, **kw):
+            ns = ns0.batchRun_Dec.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","BatchRunSimulatorConfiguration",lazy=True)(pname="batchRunSimulatorConfiguration", aname="_batchRunSimulatorConfiguration", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","batchRun")
+            kw["aname"] = "_batchRun"
+            self.attribute_typecode_dict = {}
+            ZSI.TCcompound.ComplexType.__init__(self,None,TClist,inorder=0,**kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._batchRunSimulatorConfiguration = None
+                    return
+            Holder.__name__ = "batchRun_Holder"
+            self.pyclass = Holder
+
+    class batchRunResponse_Dec(ZSI.TCcompound.ComplexType, ElementDeclaration):
+        literal = "batchRunResponse"
+        schema = "http://service.apollo.pitt.edu/simulatorservice/"
+        def __init__(self, **kw):
+            ns = ns0.batchRunResponse_Dec.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","BatchRunResult",lazy=True)(pname="batchRun", aname="_batchRun", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","batchRunResponse")
+            kw["aname"] = "_batchRunResponse"
+            self.attribute_typecode_dict = {}
+            ZSI.TCcompound.ComplexType.__init__(self,None,TClist,inorder=0,**kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._batchRun = None
+                    return
+            Holder.__name__ = "batchRunResponse_Holder"
+            self.pyclass = Holder
+
+    class getConfigurationFileForRun_Dec(ZSI.TCcompound.ComplexType, ElementDeclaration):
+        literal = "getConfigurationFileForRun"
+        schema = "http://service.apollo.pitt.edu/simulatorservice/"
+        def __init__(self, **kw):
+            ns = ns0.getConfigurationFileForRun_Dec.schema
+            TClist = [GTD("http://types.apollo.pitt.edu/","RunIdentification",lazy=True)(pname="runId", aname="_runId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","getConfigurationFileForRun")
+            kw["aname"] = "_getConfigurationFileForRun"
+            self.attribute_typecode_dict = {}
+            ZSI.TCcompound.ComplexType.__init__(self,None,TClist,inorder=0,**kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._runId = None
+                    return
+            Holder.__name__ = "getConfigurationFileForRun_Holder"
+            self.pyclass = Holder
+
+    class getConfigurationFileForRunResponse_Dec(ZSI.TCcompound.ComplexType, ElementDeclaration):
+        literal = "getConfigurationFileForRunResponse"
+        schema = "http://service.apollo.pitt.edu/simulatorservice/"
+        def __init__(self, **kw):
+            ns = ns0.getConfigurationFileForRunResponse_Dec.schema
+            TClist = [ZSI.TC.String(pname="configurationFile", aname="_configurationFile", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            kw["pname"] = ("http://service.apollo.pitt.edu/simulatorservice/","getConfigurationFileForRunResponse")
+            kw["aname"] = "_getConfigurationFileForRunResponse"
+            self.attribute_typecode_dict = {}
+            ZSI.TCcompound.ComplexType.__init__(self,None,TClist,inorder=0,**kw)
+            class Holder:
+                __metaclass__ = pyclass_type
+                typecode = self
+                def __init__(self):
+                    # pyclass
+                    self._configurationFile = None
+                    return
+            Holder.__name__ = "getConfigurationFileForRunResponse_Holder"
             self.pyclass = Holder
 
 # end class ns0 (tns: http://service.apollo.pitt.edu/simulatorservice/)
