@@ -178,14 +178,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +186,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -1273,11 +1273,11 @@ Any ideas?  I’ve considered and rejected allowing individual organisms to be f
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000023 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000023">
-        <rdfs:label xml:lang="en">vaccination schedule</rdfs:label>
+        <rdfs:label xml:lang="en">vaccination dose schedule</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
         <obo:IAO_0000600 xml:lang="en">A vaccination schedule specifies the intended timing of initial and subsequent booster doses of vaccine for an individual organism. </obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">An action specification comprising the number of doses and their timing for a vaccination of an individual organism against a specific infectious agent.</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination schedule</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination dose schedule</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1285,7 +1285,7 @@ Any ideas?  I’ve considered and rejected allowing individual organisms to be f
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000024 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000024">
-        <rdfs:label xml:lang="en">vaccine compliance</rdfs:label>
+        <rdfs:label xml:lang="en">vaccination compliance</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
         <rdfs:comment xml:lang="en">MB: This class is still awaiting its class restriction. It should be restricted as being about a population that has members that are eligible for a vaccination against the members that are eligible and consented the vaccination. There is a class &quot;eligibility rule&quot; in OBI (http://purl.obolibrary.org/obo/OBI_0500026), but it is restricted by definition to studies. I put in an issue in the OBI issue tracker. The consenting process and its specified outcome should be done in d-acts, but needs to be done properly.</rdfs:comment>
         <rdfs:comment xml:lang="en">MW: I still see enough similarities at the abstract level among some control measures that we might add the concepts “Control measure compliance”, “Control measure efficacy”  and “control measure efficacy delay.”    We could then post-coordinate particular control measures such as vaccine.
@@ -1294,7 +1294,7 @@ It is worth noting that there are control measures such as closing schools that 
 </rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who is eligible according to a particular vaccination policy to be consented for that vaccination.</obo:IAO_0000115>
         <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine cm compliance</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1302,7 +1302,7 @@ It is worth noting that there are control measures such as closing schools that 
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000025 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000025">
-        <rdfs:label xml:lang="en">vaccine efficacy</rdfs:label>
+        <rdfs:label xml:lang="en">vaccination efficacy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
         <rdfs:subClassOf>
             <Restriction>
@@ -1346,7 +1346,7 @@ It is worth noting that there are control measures such as closing schools that 
         <rdfs:comment xml:lang="en">MB: Due to BFO 1.1 vs BFO2 issues Vaccination from VO has not been formally defined in Apollo_SV. THis needs to be doen when curating Apollo_SV for BFO2 migration.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been administered a vaccine to acquire immunity.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of vaccinated organisms in a simulated population that acquire immunity due to the vaccination.</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1436,7 +1436,7 @@ It is worth noting that there are control measures such as closing schools that 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000600 xml:lang="en">A simulated population is a set of simulated organisms.  The set can be null (e.g., the set of 200 year-old H. sapiens).  A simulated population can include more than one species, in which case it may be convenient to define each species as a simulated population and form the overall simulated population by set union.  Similarly, it may be convenient to define sociodemographic or geographic strata within a simulated population as simulated populations and obtain the overall simulated population by set union.  See examples in “Programmer’s Guide, page x)</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">A simulation of the aggregate of all organisms that are members of the population participating in a simulator.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A simulation of the aggregate of organisms that are members of the population participating in a simulator.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1744,14 +1744,8 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000044 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000044">
-        <rdfs:label xml:lang="en">vaccine efficacy delay</rdfs:label>
-        <equivalentClass>
-            <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000413"/>
-                <someValuesFrom rdf:resource="&obo;IDO_0000499"/>
-            </Restriction>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000416"/>
+        <rdfs:label xml:lang="en">obsolete_vaccine efficacy delay</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">MB: 1. The class restriction might seem counter-intuitive, but looking at the definition of &quot;vaccination…&quot; and has_specified_output convinced me that this is what it ought to be.
 2. In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs. 
@@ -1812,11 +1806,11 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000047 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000047">
-        <rdfs:label xml:lang="en">vaccination administration schedule</rdfs:label>
+        <rdfs:label xml:lang="en">vaccination administration capacity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000005"/>
         <obo:IAO_0000115 xml:lang="en">An objective specification giving the number of vaccinations possible in a population during a specific time interval.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The counts of individuals that could be vaccinated in a population location per time step unit in the absence of any vaccine supply constraints.  It represents the capacity of medical system to vaccinate individuals.</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination admin schedule</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination administration capacity</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2772,6 +2766,312 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000117 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000117">
+        <rdfs:label xml:lang="en">vaccine ID</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccine </obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine ID</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000118 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000118">
+        <rdfs:label xml:lang="en">vaccination</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000119 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000119">
+        <rdfs:label xml:lang="en">vaccination ID</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccination protocol (the process of vaccinating one person)</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination ID</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000120 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000120">
+        <rdfs:label xml:lang="en">vaccination course</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">the number of doses of vaccine that are recommended to achieve immunity</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination course</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000121 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000121">
+        <rdfs:label xml:lang="en">species</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">an interbreeding population</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">species</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000122 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000122">
+        <rdfs:label xml:lang="en">antiviral ID</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A unique identifier for an antiviral drug</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral ID</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000123 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000123">
+        <rdfs:label xml:lang="en">school closure control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A control measure in which schools are closed in an attempt to reduce transmission of disease</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school closure control measure</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000124 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000124">
+        <rdfs:label xml:lang="en">school closure duration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">The number of time steps that a school closure control measure prescribes that schools will remain closed.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school closure duration</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000125 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000125">
+        <rdfs:label xml:lang="en">school calendar</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">The time steps that a school will be in session.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school calendar</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000126 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000126">
+        <rdfs:label xml:lang="en">control measure target facilities</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Faciilities that are the target of a control measure</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target facilities</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000127 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000127">
+        <rdfs:label xml:lang="en">control measure target populations and prioritization</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A simulated population that is the target of a control measure and its priority under triage conditions</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population and prioritization</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000128 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000128">
+        <rdfs:label xml:lang="en">control measure target population fraction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control measure program seeks to enroll or prioritize</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population fraction</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000129 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000129">
+        <rdfs:label xml:lang="en">Reactive control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Reactive control measure</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">a control measure (program) that is initiated or modified by an epidemic-related event (or if you prefer, an event occurring within/during the simulation)</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000130 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000130">
+        <rdfs:label xml:lang="en">Reactive control measure test</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">An event in the simulated population that triggers the start of a reactive control measure</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Reactive control measure test</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000131 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000131">
+        <rdfs:label xml:lang="en">reactive control measure threshold</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Fraction of the population ascertained as having disease that results in initiating a reactive control measure </obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reactive control measure threshold</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000132 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000132">
+        <rdfs:label xml:lang="en">control measure start time</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">The time step during which a control measure begins</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure start time</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000133 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000133">
+        <rdfs:label xml:lang="en">control measure response delay</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Number of time steps delay between a decision to start a control measure and initiation of control measure.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure response delay</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000134 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000134">
+        <rdfs:label xml:lang="en">ascertainment delay</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Number of time steps it takes medical personnel to ascertain a symptomatic individual from onset of symptoms</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment delay</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000135 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000135">
+        <rdfs:label xml:lang="en">ascertainment fraction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Fraction of all symptomatic individuals who will be ascertained</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment fraction</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000136 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000136">
+        <rdfs:label xml:lang="en">vaccination control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A control measure in which individuals in a population are vaccinated</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination control measure</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000137 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000137">
+        <rdfs:label xml:lang="en">vaccine valence</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">the number of distinct antigenic strains in a vaccine product </obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine valence</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000138 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000138">
+        <rdfs:label xml:lang="en">antiviral course</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">The quantity of antiviral drug used to treat one individual</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral course</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000139 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000139">
+        <rdfs:label xml:lang="en">control measure compliance</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure compliance</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">the fraction of a individuals who receive or participate in an offered control measure</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000146 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000146">
+        <rdfs:label xml:lang="en">beta</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Transmission parameter (sometime known as Ptrans). This value is multiplied by the inter-personal contact probability to determine the transmission probability between infected and susceptible persons.</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">beta</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000147 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000147">
+        <rdfs:label xml:lang="en">inter-personal contact probability</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">Transmission parameter</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">inter-personal contact probability</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000148 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000148">
+        <rdfs:label xml:lang="en">random number seed</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">random number seed</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">random number seed</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000149 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000149">
+        <rdfs:label xml:lang="en">susceptibility</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A number between 0 and 1 indicating the degree of susceptibility of an organism</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">susceptibility</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000150 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000150">
+        <rdfs:label xml:lang="en">vaccination reactive end point fraction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">a fraction of vaccination of individuals in a target population at which a vaccination program stops vaccinating that target population</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination reactive end point fraction</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/BO_0000001 -->
 
     <Class rdf:about="&obo;BO_0000001">
@@ -3656,6 +3956,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism bearing a host role.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000600 xml:lang="en">an organism that is the subject of infection</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">host organism</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3792,6 +4094,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism that has an infectious disposition.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">an organism that causes infection</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">disease organism</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
