@@ -14,7 +14,7 @@ class VisualizerService(ServiceSOAPBinding):
 <wsdl:definitions name=\"VisualizerService\" targetNamespace=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:tns=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">
 	<wsdl:types>
 		<xsd:schema targetNamespace=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:apollo=\"http://types.apollo.pitt.edu/\">
-			<xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"http://research.rods.pitt.edu/apollo-types.xsd\">
+			<xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"apollo-types.xsd\">
 			</xsd:import>
 			<xsd:element name=\"run\">
 				<xsd:complexType>
@@ -26,16 +26,14 @@ class VisualizerService(ServiceSOAPBinding):
 			<xsd:element name=\"runResponse\">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name=\"runId\" type=\"apollo:RunId\"/>
-						<xsd:element maxOccurs=\"unbounded\" minOccurs=\"1\" name=\"visualizerOutputResource\" type=\"apollo:VisualizerOutputResource\">
-						</xsd:element>
+						<xsd:element name=\"visualizerResult\" type=\"apollo:VisualizerResult\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name=\"getRunStatus\">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name=\"runId\" type=\"apollo:RunId\"/>
+						<xsd:element name=\"runId\" type=\"apollo:RunIdentification\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -43,6 +41,20 @@ class VisualizerService(ServiceSOAPBinding):
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name=\"runStatus\" type=\"apollo:RunStatus\"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"getConfigurationFileForRun\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"runIdentification\" type=\"apollo:RunIdentification\"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name=\"getConfigurationFileForRunResponse\">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name=\"configurationFile\" type=\"xsd:string\"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -60,6 +72,12 @@ class VisualizerService(ServiceSOAPBinding):
 	<wsdl:message name=\"getRunStatusResponse\">
 		<wsdl:part element=\"tns:getRunStatusResponse\" name=\"parameters\"/>
 	</wsdl:message>
+	<wsdl:message name=\"getConfigurationFileForRunRequest\">
+		<wsdl:part element=\"tns:getConfigurationFileForRun\" name=\"parameters\"/>
+	</wsdl:message>
+	<wsdl:message name=\"getConfigurationFileForRunResponse\">
+		<wsdl:part element=\"tns:getConfigurationFileForRunResponse\" name=\"parameters\"/>
+	</wsdl:message>
 	<wsdl:portType name=\"VisualizerServiceEI\">
 		<wsdl:operation name=\"run\">
 			<wsdl:input message=\"tns:runRequest\"/>
@@ -68,6 +86,10 @@ class VisualizerService(ServiceSOAPBinding):
 		<wsdl:operation name=\"getRunStatus\">
 			<wsdl:input message=\"tns:getRunStatusRequest\"/>
 			<wsdl:output message=\"tns:getRunStatusResponse\"/>
+		</wsdl:operation>
+		<wsdl:operation name=\"getConfigurationFileForRun\">
+			<wsdl:input message=\"tns:getConfigurationFileForRunRequest\"/>
+			<wsdl:output message=\"tns:getConfigurationFileForRunResponse\"/>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name=\"VisualizerServiceBinding\" type=\"tns:VisualizerServiceEI\">
