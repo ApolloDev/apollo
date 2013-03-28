@@ -140,11 +140,18 @@ class GaiaWebService(VisualizerService):
 	    print "The client requests a visualization of the following location: " + vc._visualizationOptions._location
 	    print "The client requests the following output format: " + vc._visualizationOptions._outputFormat
            
-	    vrr = self.factory.new_VisualizerOutputResource()
-	    vrr._description = "GAIA animation of Allegheny County"
-	    vrr._URL = "http://warhol-fred.psc.edu/GAIA/"+gaiaOutputFileName + ".ogg" 
-	    response._runId = vc._visualizationOptions._runId
-	    response._visualizerOutputResource.append(vrr);
+	    #old stuff, pre 1.1
+	    #response._runId = vc._visualizationOptions._runId
+	    #response._visualizerOutputResource.append(vrr);
+	    
+	    response._visualizerResult = self.factory.new_VisualizerResult()
+	    response._visualizerResult._runId = vc._visualizationOptions._runId
+	    response._visualizerResult._visualizerOutputResource = []
+	    outputResource = self.factory.new_UrlOutputResource_Def()
+	    outputResource._description = "GAIA animation of Allegheny County"
+	    outputResource._URL = "http://warhol-fred.psc.edu/GAIA/"+gaiaOutputFileName + ".ogg" 
+	    response._visualizerResult._visualizerOutputResource.append(outputResource)
+        
 	    return response;
         
 	def soap_getRunStatus(self, ps, **kw):
