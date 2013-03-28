@@ -27,94 +27,46 @@ This can be thought of as a unit test for the webservice
 from SimulatorService_services import *
 #from SimulatorService_services_types import *
 from ApolloFactory import *
-import time
+from fredConstants import _Const
+from newObjectExample import *
+import time,sys
 
 #create the service object
-service = SimulatorServiceLocator().getSimulatorServiceEI("http://warhol-fred.psc.edu:8087/fred")
+service = SimulatorServiceLocator().getSimulatorServiceEI("http://127.0.0.1:8087/fred")
 
 #create an epidemic model input object
 factory = ApolloFactory()
 
+#Not sure what these do, but I am pretty sure they are unnecessary
 gslRequest = getSupportedLocationsRequest()
 gslResponse = service.getSupportedLocations(gslRequest)
 
-print "This webservice supports the following locations:"
-for d in gslResponse._supportedPopluationLocations:
-    print "\tLocation:" + d._populationLocation
-    print "\tDescription:" + d._populationLocationDescription
-
-
-
-em_input = factory.new_SimulatorConfiguration()
-
-#populate the member variables
-em_input._authentication._requesterId = "Example User"
-em_input._authentication._requesterPassword = "Example Password"
-
-em_input._simulatorIdentification._simulatorDeveloper = "UPitt,PSC,CMU"
-em_input._simulatorIdentification._simulatorName = "FRED"
-em_input._simulatorIdentification._simulatorVersion = "2.0.1"
-
-em_input._disease._diseaseName = "Influenza"
-em_input._disease._infectiousPeriod = 3.2
-em_input._disease._latentPeriod = 2.0
-em_input._disease._reproductionNumber = 1.7
-em_input._disease._asymptomaticInfectionFraction = 0.5
-#em_input._disease._simulatedPopulation = ['susceptible', 'exposed', 'infectious', 'recovered']
-#em_input._disease._pop_count = [1157474.0, 0.0, 100.0, 60920.0]
-
-em_input._simulatorTimeSpecification._timeStepUnit = "days"
-em_input._simulatorTimeSpecification._timeStepValue = 1
-em_input._simulatorTimeSpecification._runLength = 150
-#em_input._simulatorTimeSpecification._pop_count = 1218494
-#em_input._simulatorTimeSpecification._disease = "influenza"
-#em_input._simulatorTimeSpecification._population_location = "Allegheny County"
-
-em_input._populationInitialization._populationLocation = "Allegheny County"
-pds_s = factory.new_PopulationDiseaseState();
-pds_s._diseaseState = 'susceptible'
-pds_s._popCount = 1157474
-pds_e = factory.new_PopulationDiseaseState();
-pds_e._diseaseState = 'exposed'
-pds_e._popCount = 0
-pds_i = factory.new_PopulationDiseaseState();
-pds_i._diseaseState ='infectious'
-pds_i._popCount = 100
-pds_r = factory.new_PopulationDiseaseState();
-pds_r._diseaseState ='recovered'
-pds_r._popCount = 60920
-pds = em_input._populationInitialization._populationDiseaseState
-pds.append(pds_r)
-pds.append(pds_i)
-pds.append(pds_e)
-pds.append(pds_s)
-
-em_input._vaccinationControlMeasure._vaccineCmCompliance = 0.60
-em_input._vaccinationControlMeasure._vaccineEfficacy= 0.8
-em_input._vaccinationControlMeasure._vaccineEfficacyDelay = 14.0
-em_input._vaccinationControlMeasure._vaccineSupplySchedule = [0.0]*365
-em_input._vaccinationControlMeasure._vaccinationAdminSchedule = [0.0]*365
-#em_input._vaccinationControlMeasure._vaccineSupplySchedule = [100000.0] * 365
-#em_input._vaccinationControlMeasure._vaccinationAdminSchedule = [200000.0] * 365
-
-em_input._antiviralControlMeasure._antiviralCmCompliance = 1.0
-em_input._antiviralControlMeasure._antiviralEfficacy= 1.0
-em_input._antiviralControlMeasure._antiviralEfficacyDelay = 0.0
-em_input._antiviralControlMeasure._antiviralSupplySchedule= [0.0] * 365
-em_input._antiviralControlMeasure._antiviralAdminSchedule = [0.0] * 365
+newObj = newObjectsExample()
+em_input = newObj.noControlMeasures("42003")
+em_input_fixedVacc = newObj.addFixedStartTimeVaccinationControlMeasure(\
+    newObj.noControlMeasures("42003"), "ACIP")
+em_input_fixedSchool = newObj.addFixedStartTimeAllSchoolClosureControlMeasure(newObj.noControlMeasures("42003"))
+em_input_reactSchool = newObj.addReactiveAllSchoolClosureControlMeasure(newObj.noControlMeasures("42003"))
+em_input_treatmentAV = newObj.addFixedStartTimeAntiviralControlMeasure(newObj.noControlMeasures("42003"))
 
 #create a run request object
 run_request = runRequest()
 #the run request object has a single member variable, which is set to the epidemic model input object
-run_request._simulatorConfiguration = em_input
+run_request._simulatorConfiguration = em_input_fixedSchool
 
-print 'Calling "run"'
-#submit the request, receive the response
+#print str(em_input_treatmentAV._controlMeasures._fixedStartTimeControlMeasures[0]._controlMeasure._antiviralTreatment._efficacyValues)
+#batch_request = batchRunRequest()
+#A = batch_request._batchRunSimulatorConfiguration
+#batch_request._batchSimulatorConfiguration = btch_input
+#print dir(batch_request)
+
+#print 'Calling "run"'
+###submit the request, receive the response
 
 run_response = service.run(run_request)
 
 print "Run submitted with ID: " + str(run_response._runId)
-
+ 
 get_run_status_request = getRunStatusRequest()
 get_run_status_request._runId = run_response._runId
 run_status_response = service.getRunStatus(get_run_status_request)
