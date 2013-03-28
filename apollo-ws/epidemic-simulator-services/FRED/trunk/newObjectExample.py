@@ -1,7 +1,7 @@
 '''
 Created on Mar 25, 2013
 
-@author: jdl50
+@author: jdl50 and stbrown
 '''
     
 from SimulatorService_services_types import *
@@ -108,7 +108,7 @@ class newObjectsExample(object):
         vaccination._vaccinationEfficacy._efficacyValues = [0.7]
         
         vaccination_control_measure = factory.new_VaccinationControlMeasure()
-        vaccination_control_measure._description
+        vaccination_control_measure._description = vaccination._description
         vaccination_control_measure._controlMeasureResponseDelay = 0
         vaccination_control_measure._controlMeasureCompliance = 0.9
         vaccination_control_measure._controlMeasureTargetPopulationsAndPrioritization = None
@@ -129,14 +129,18 @@ class newObjectsExample(object):
         antiviral = factory.new_Antiviral()
         antiviral._description = "Tamiflu tablets or IV"
         antiviral._antiviralId = "tamiflu"
+
+	antiviral_treatment_efficacy_over_time = factory.new_TreatmentEfficacyOverTime()
+	
+	print dir(antiviral_treatment_efficacy_over_time)
         
         antiviral_treatment = factory.new_AntiviralTreatment()
         antiviral_treatment._description = "treatment of newly symptomatic influenza cases with Tamiflu to reduce infectiousness"
         antiviral_treatment._antiviralId = "tamiflu"
         antiviral_treatment._hostOrganism = "human"
-        antiviral_treatment._numDosesInTreatmentCourse = 1
+        antiviral_treatment._numDosesInTreatmentCourse = 10
         antiviral_treatment._antiviralTreatmentEfficacy = factory.new_TreatmentEfficacyOverTime()
-        antiviral_treatment._efficacyValues = [0.7]
+        antiviral_treatment._antiviralTreatmentEfficacy._efficacyValues = [0.7]
         
         target_priority_population = factory.new_TargetPriorityPopulation()
         target_priority_population._label = "newly sick"
@@ -170,19 +174,23 @@ class newObjectsExample(object):
         school_closure_control_measure._schoolClosureDuration = 56
         #this means that all schools are involved in the control measure, not that you want to close all schools when the trigger fires
         school_closure_control_measure._schoolClosureTargetFacilities = "all"
-        school_closure_control_measure._description = "Each school within the location of the simulation closes when the disease incidence in its ??Student/student and faculty?? population exceeds a threshold.  A school stays closed for 8 weeks"
+        school_closure_control_measure._description = "Each school within the location of the simulation "\
+						      +"closes when the disease incidence in its ??Student/student and faculty?? "\
+						      +"population exceeds a threshold.  A school stays closed for 8 weeks"
         school_closure_control_measure._controlMeasureResponseDelay = 2
         school_closure_control_measure._controlMeasureCompliance = 1.0
         school_closure_control_measure._controlMeasureNamedPrioritizationScheme = "None"
-        
+
+        control_measure_reactive_trigger_definition = factory.new_ReactiveTriggersDefinition()
+	control_measure_reactive_trigger_definition._reactiveControlMeasureTest = "all"
+	control_measure_reactive_trigger_definition._reactiveControlMeasureThreshold = 0.03
+	control_measure_reactive_trigger_definition._ascertainmentFraction = 1.0
+	control_measure_reactive_trigger_definition._ascertainmentDelay = 0
+	
         reactive_school_closure_control_measure = factory.new_ReactiveControlMeasure()
-        reactive_school_closure_control_measure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureTest = "individual_schools"
-        reactive_school_closure_control_measure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureThreshold = 0.03
-        reactive_school_closure_control_measure._controlMeasureReactiveTriggersDefinition._ascertainmentFraction = 1.0
-        reactive_school_closure_control_measure._controlMeasureReactiveTriggersDefinition._ascertainmentDelay = 0
+	reactive_school_closure_control_measure._controlMeasureReactiveTriggersDefinition = control_measure_reactive_trigger_definition
         reactive_school_closure_control_measure._controlMeasure = school_closure_control_measure
-        
-        cfg._controlMeasures._reactiveControlMeasures.append(reactive_school_closure_control_measure)
+	cfg._controlMeasures._reactiveControlMeasures.append(reactive_school_closure_control_measure)
         return cfg
         
     def addFixedStartTimeAllSchoolClosureControlMeasure(self, cfg):
@@ -190,7 +198,9 @@ class newObjectsExample(object):
         school_closure_control_measure._schoolClosureDuration = 56
         #this means that all schools are involved in the control measure, not that you want to close all schools when the trigger fires
         school_closure_control_measure._schoolClosureTargetFacilities = "all"
-        school_closure_control_measure._description = "All schools within the location of the simulation close when the disease incidence in the student/faculty?? population of the location exceeds a threshold.  The schools stay closed for 8 weeks"
+        school_closure_control_measure._description = "All schools within the location of the simulation close when "\
+						      +"the disease incidence in the student/faculty?? population of "\
+						      +"the location exceeds a threshold.  The schools stay closed for 8 weeks"
         school_closure_control_measure._controlMeasureResponseDelay = 2
         school_closure_control_measure._controlMeasureCompliance = 1.0
         school_closure_control_measure._controlMeasureNamedPrioritizationScheme = "None"
