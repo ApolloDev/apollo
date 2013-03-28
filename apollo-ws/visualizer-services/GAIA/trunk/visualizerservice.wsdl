@@ -6,7 +6,7 @@
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/visualizerservice/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
 			</xsd:import>
 			<xsd:element name="run">
 				<xsd:complexType>
@@ -18,18 +18,14 @@
 			<xsd:element name="runResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId" />
-						<xsd:element name="visualizerOutputResource"
-							type="apollo:VisualizerOutputResource" maxOccurs="unbounded"
-							minOccurs="1">
-						</xsd:element>
+						<xsd:element name="visualizerResult" type="apollo:VisualizerResult" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -37,6 +33,20 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runIdentification" type="apollo:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -54,6 +64,12 @@
 	<wsdl:message name="getRunStatusResponse">
 		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunResponse">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="VisualizerServiceEI">
 		<wsdl:operation name="run">
 			<wsdl:input message="tns:runRequest" />
@@ -62,6 +78,10 @@
 		<wsdl:operation name="getRunStatus">
 			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="VisualizerServiceBinding" type="tns:VisualizerServiceEI">
