@@ -53,9 +53,9 @@
         <dc:contributor>William R. Hogan</dc:contributor>
         <dc:contributor>Josh Hanna</dc:contributor>
         <dc:contributor>Mike Wagner</dc:contributor>
+        <versionInfo>2013-03-28 (development)</versionInfo>
         <dc:creator>Mathias Brochhausen</dc:creator>
         <dc:contributor>Amanda Hicks</dc:contributor>
-        <versionInfo>2013-02-24 (release)</versionInfo>
         <dc:title xml:lang="en">Apollo Standard Vocabulary Ontologized (Apollo_SV)</dc:title>
         <dc:contributor>John Levander</dc:contributor>
         <dc:contributor>Shawn T. Brown</dc:contributor>
@@ -2770,7 +2770,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000117">
         <rdfs:label xml:lang="en">vaccine ID</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccine </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2781,7 +2781,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000118">
         <rdfs:label xml:lang="en">vaccination</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
     </Class>
     
 
@@ -2790,7 +2790,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000119">
         <rdfs:label xml:lang="en">vaccination ID</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccination protocol (the process of vaccinating one person)</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2801,7 +2801,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000120">
         <rdfs:label xml:lang="en">vaccination course</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">the number of doses of vaccine that are recommended to achieve immunity</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination course</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2812,7 +2812,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000121">
         <rdfs:label xml:lang="en">species</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">an interbreeding population</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">species</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2823,7 +2823,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000122">
         <rdfs:label xml:lang="en">antiviral ID</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for an antiviral drug</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2834,7 +2834,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000123">
         <rdfs:label xml:lang="en">school closure control measure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">A control measure in which schools are closed in an attempt to reduce transmission of disease</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school closure control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2845,7 +2845,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000124">
         <rdfs:label xml:lang="en">school closure duration</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">The number of time steps that a school closure control measure prescribes that schools will remain closed.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school closure duration</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2856,7 +2856,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000125">
         <rdfs:label xml:lang="en">school calendar</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">The time steps that a school will be in session.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school calendar</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2867,7 +2867,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000126">
         <rdfs:label xml:lang="en">control measure target facilities</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000600 xml:lang="en">Faciilities that are the target of a control measure</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target facilities</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2878,7 +2878,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000127">
         <rdfs:label xml:lang="en">control measure target populations and prioritization</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000071"/>
         <obo:IAO_0000600 xml:lang="en">A simulated population that is the target of a control measure and its priority under triage conditions</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population and prioritization</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2889,7 +2889,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000128">
         <rdfs:label xml:lang="en">control measure target population fraction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&snap;Continuant"/>
         <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control measure program seeks to enroll or prioritize</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2900,7 +2900,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000129">
         <rdfs:label xml:lang="en">Reactive control measure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Reactive control measure</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a control measure (program) that is initiated or modified by an epidemic-related event (or if you prefer, an event occurring within/during the simulation)</obo:IAO_0000600>
     </Class>
@@ -2911,7 +2911,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000130">
         <rdfs:label xml:lang="en">Reactive control measure test</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <obo:IAO_0000600 xml:lang="en">An event in the simulated population that triggers the start of a reactive control measure</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Reactive control measure test</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2922,7 +2922,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000131">
         <rdfs:label xml:lang="en">reactive control measure threshold</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">Fraction of the population ascertained as having disease that results in initiating a reactive control measure </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reactive control measure threshold</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2933,7 +2933,6 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000132">
         <rdfs:label xml:lang="en">control measure start time</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <obo:IAO_0000600 xml:lang="en">The time step during which a control measure begins</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure start time</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2944,7 +2943,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000133">
         <rdfs:label xml:lang="en">control measure response delay</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">Number of time steps delay between a decision to start a control measure and initiation of control measure.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure response delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2955,7 +2954,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000134">
         <rdfs:label xml:lang="en">ascertainment delay</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">Number of time steps it takes medical personnel to ascertain a symptomatic individual from onset of symptoms</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2966,7 +2965,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000135">
         <rdfs:label xml:lang="en">ascertainment fraction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">Fraction of all symptomatic individuals who will be ascertained</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2977,7 +2976,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000136">
         <rdfs:label xml:lang="en">vaccination control measure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">A control measure in which individuals in a population are vaccinated</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2988,7 +2987,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000137">
         <rdfs:label xml:lang="en">vaccine valence</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">the number of distinct antigenic strains in a vaccine product </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine valence</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2999,7 +2998,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000138">
         <rdfs:label xml:lang="en">antiviral course</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">The quantity of antiviral drug used to treat one individual</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral course</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3010,7 +3009,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000139">
         <rdfs:label xml:lang="en">control measure compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&snap;Continuant"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure compliance</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">the fraction of a individuals who receive or participate in an offered control measure</obo:IAO_0000600>
     </Class>
@@ -3021,7 +3020,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000146">
         <rdfs:label xml:lang="en">beta</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&snap;Continuant"/>
         <obo:IAO_0000600 xml:lang="en">Transmission parameter (sometime known as Ptrans). This value is multiplied by the inter-personal contact probability to determine the transmission probability between infected and susceptible persons.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">beta</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3032,7 +3031,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000147">
         <rdfs:label xml:lang="en">inter-personal contact probability</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">Transmission parameter</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">inter-personal contact probability</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3043,7 +3042,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000148">
         <rdfs:label xml:lang="en">random number seed</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">random number seed</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">random number seed</obo:IAO_0000600>
     </Class>
@@ -3054,7 +3053,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000149">
         <rdfs:label xml:lang="en">susceptibility</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">A number between 0 and 1 indicating the degree of susceptibility of an organism</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">susceptibility</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3065,7 +3064,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000150">
         <rdfs:label xml:lang="en">vaccination reactive end point fraction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <obo:IAO_0000600 xml:lang="en">a fraction of vaccination of individuals in a target population at which a vaccination program stops vaccinating that target population</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination reactive end point fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
