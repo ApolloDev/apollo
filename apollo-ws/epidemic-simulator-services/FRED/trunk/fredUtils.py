@@ -1,3 +1,23 @@
+# Copyright 2012 University of Pittsburgh
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy of
+# the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+
+'''
+Created on Feb, 8, 2013
+
+@author: Shawn Brown
+'''
 import os,sys
 import paramiko
 import datetime,dateutil.parser
@@ -24,6 +44,8 @@ class FredSSHConn:
 	self.statusFileDir = None
 	self.statusFile = None
 	self.remoteTmpDir = None
+	self.runScript = None
+	self.runScriptName = None
 
     def _setup(self,configurationFile_="./apollofred.conf"):
 	machine = None
@@ -81,6 +103,10 @@ class FredSSHConn:
 	    self.remoteDir = "/media/scratch"
 	    #self.statusFileDir = "/scratch/stbrown"
 	    self.statusFileDir = "./"
+	elif self.machine == "localhost":
+	    self.remoteDir = "C:\Users\Shawn\Simulations\temp"
+	    self.statusFileDir = "./"
+	    
     def _connect(self):
 	### open SSH connection
 	self.ssh = paramiko.SSHClient()
@@ -423,6 +449,61 @@ class FredSSHConn:
 
 	return (status,response)
 
+    def createRunScript(self,Id_):
+	if self.runPBS is True:
+	    self.runScriptName = "fred_submit.pbs"
+	    self.runScript = self.createPBSRunScript(Id_)
+	else:
+	    self.runScriptName = "fred_run.csh"
+	    self.runScript = self.createLocalRunScript(Id_)
+
+    def writeRunScript(self,Id_):
+	self.createRunScript(Id_)
+	with open(self.runScriptName,"wb") as f:
+	    f.write("%s"%self.runScript)
+    
+    def createPBSRunScript(self,Id_):
+	PBSList = []
+	PBSList.append('#!/bin/csh\n')
+	if self.machine == "blacklight.psc.xsede.org":
+	    PBSList.append('#PBS -l ncpus=16\n')
+	else:
+	    PBSList.append('#PBS -l nodes=2:ppn=8\n')
+	PBSList.append('#PBS -N fred.pbs.out\n')
+	PBSList.append('#PBS -l walltime=30:00\n')
+	PBSList.append('#PBS -j oe\n')
+	if self.machine == "blacklight.psc.xsede.org":
+	    PBSList.append('#PBS -q debug\n')
+	PBSList.append('\n')
+	if self.machine == "blacklight.psc.xsede.org":
+	    PBSList.append('source /usr/share/modules/init/csh\n')
+	    PBSList.append('source /etc/csh.cshrc.psc\n')
+	PBSList.append('module load fred\n')
+	PBSList.append('module load python\n')
+	PBSList.append('cd $PBS_O_WORKDIR\n')
+	PBSList.append('echo `date` > starttime\n')
+	PBSList.append('### Get the PBS ID\n')
+	PBSList.append("set words = `echo $PBS_JOBID | sed 's/\./ /g'`\n")
+	PBSList.append("set id = $words[1]\n")
+	PBSList.append('fred_job -p fred_input.params -n 8 -t 2 -m 8 -k %s$id\n'%Id_)
+	PBSList.append('touch .dbloading\n')
+	PBSList.append('python $FRED_HOME/bin/fred_to_apollo_parallel.py -k %s$id\n'%(Id_))
+	PBSList.append('rm -rf .dbloading\n')
+	#PBSList.append('echo COMPLETED > job_status')
+	return ("").join(PBSList)
+
+    def createLocalRunScript(self,Id_):
+	LocalList = []
+	LocalList.append('#!/bin/csh\n')
+	LocalList.append('echo `date` > starttime\n')
+	LocalList.append('### Generate Timestamp for ID\n')
+	LocalList.append('fred_job -p fred_input.params -n 4 -t 2 -m 4 -k %s$id > out.run\n'%Id_)
+	LocalList.append('touch .dbloading\n')
+	LocalList.append('python $FRED_HOME/bin/fred_to_apollo_parallel.py -k %s$id >& out.db\n'%Id_)
+	LocalList.append('rm -rf .dbloading\n')
+
+	return ('').join(LocalList)
+	
 def infectiousPeriod(newAverage=4.1,gamma=2.378084,
 		     lamb=2.405191,shift=2.0,thresh=0.05):
     pdfList = []
@@ -483,6 +564,201 @@ def ShiftedWeibull(x,gamma,lamb,shift=0.0):
 	return ((gamma/lamb)\
 		*math.pow((xShift/lamb),(gamma-1.0))\
 		*math.exp(-pow((xShift/lamb),gamma)))
+class FredInputFileSet:
+    def __init__(self,cfg_,inpDir_,fipsCountDict_,srvc_):
+	self.fileList = []
+	self.cfg = cfg_
+	self.inpDir = inpDir_
+	self.srvc = srvc_
+	self.fipsCountDict = fipsCountDict_
+	self.initParamsStarted = False
+	self.fileNames = {'paramsFile':'fred_input.params',
+			  'seedFile':'fred_initial_population_0.txt',
+			  'vaccCapFile':'fred-vaccination-schedule_0.txt'}
+	#self.create_param()
+	#self.parse_control_measures()
+
+
+    def createParam(self):
+	### Start the params file
+	os.chdir(self.inpDir)
+	#get the number of time steps in the simulation
+	run_length = self.cfg._simulatorTimeSpecification._runLength
+	totPop = float(self.fipsCountDict[self.cfg._populationInitialization._populationLocation])
+	fractionRecovered = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg, "ignoreed", "recovered"))	
+	fractionExposed = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","exposed"))
+	fractionInfectious = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","infectious"))
+	#print "fractions:  %g %g %g"%(fractionRecovered,fractionExposed,fractionInfectious)
+	
+	
+	with open(self.fileNames['paramsFile'],"wb") as f:
+	    self.fileList.append(self.fileNames['paramsFile'])
+	    f.write('#FRED PARAM FILE\n')
+	    f.write('days = %d\n'%self.cfg._simulatorTimeSpecification._runLength)
+	    f.write('symp[0] = %g\n'%self.cfg._disease._asymptomaticInfectionFraction)
+	    f.write('R0 = %g\n'%self.cfg._disease._reproductionNumber)
+	    f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
+	    f.write('residual_immunity_ages[0] = 2 0 100\n')
+	    f.write('fips = %s\n'%self.cfg._populationInitialization._populationLocation)
+	    f.write('days_latent[0] = %s\n'\
+		    %(incubationPeriod(float(self.cfg._disease._latentPeriod))))
+	    f.write('days_infectious[0] = %s\n'\
+		    %(infectiousPeriod(float(self.cfg._disease._infectiousPeriod))))
+	    f.write('days_symptomatic[0] = %s\n'\
+		    %(infectiousPeriod(float(self.cfg._disease._infectiousPeriod))))	     	       
+	    f.write('residual_immunity_values[0] = 1 %g\n'%(fractionRecovered))
+	    
+	    numExposed = float(fractionExposed * totPop)
+	    numInfectious = float(fractionInfectious * totPop)
+	    ratioExposed = numExposed/(numExposed+numInfectious)
+	    ratioInfectious = 1.0 - ratioExposed
+	    f.write('advanced_seeding = exposed:%1.2f;infectious:%1.2f\n'%(ratioExposed,ratioInfectious))
+	    f.write('track_infection_events = 1\n')
+
+	with open(self.fileNames['seedFile'],"wb") as f:
+	    self.fileList.append(self.fileNames['seedFile'])
+	    f.write('#line_format\n')
+	    numExposed = int(totPop*fractionExposed)
+	    numInfectious = int(totPop*fractionInfectious)
+	    #f.write('0 0 %d\n'%(cfg._disease_dynamics._pop_count[2]))
+	    f.write('0 0 %d\n'%(numExposed + numInfectious))
+	self.initParamsStarted = True
+	os.chdir('..')
+
+    def parseControlMeasures(self):
+	
+	### Parse the fixed control measures first
+	for controlMeasure in self.cfg._controlMeasures._fixedStartTimeControlMeasures:
+	    print "Control Dir = " + str(dir(controlMeasure._controlMeasure))
+	    if hasattr(controlMeasure._controlMeasure,'_vaccination') is True:
+		self.parseFixedVaccinationControlMeasure(controlMeasure)
+	    elif hasattr(controlMeasure._controlMeasure,'_schoolClosureDuration') is True:
+		self.parseFixedSchoolClosureControlMeasure(controlMeasure)
+	    elif hasattr(controlMeasure._controlMeasure,'_antiviralTreatment') is True:
+		self.parseFixedAntiviralControlMeasure(controlMeasure)
+	for controlMeasure in self.cfg._controlMeasures._reactiveControlMeasures:
+	    print dir(controlMeasure._controlMeasure)
+	    if hasattr(controlMeasure._controlMeasure,'_schoolClosureDuration') is True:
+		self.parseReactiveSchoolClosureControlMeasure(controlMeasure)
+
+    def parseReactiveSchoolClosureControlMeasure(self,controlMeasure):
+	if self.initParamsStarted is False:
+	    raise RuntimeError('Calling parseReativeSchoolClosureControlMeasure before'+\
+			       'initial parameters file has been made')
+	os.chdir(self.inpDir)
+	with open(self.fileNames['paramsFile'],'ab') as f:
+	    if controlMeasure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureTest == "individual_schools":
+		f.write('school_closure_policy = reactive\n')
+	    else:
+		f.write('school_closure_policy = global\n')
+	    f.write('school_closure_period = %d\n'%controlMeasure._controlMeasure._schoolClosureDuration)
+	    f.write('school_closure_delay = %d\n'%controlMeasure._controlMeasure._controlMeasureResponseDelay)
+	    f.write('school_closure_threshold = %g\n'%controlMeasure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureThreshold)
+
+	os.chdir('..')
+		    
+    def parseFixedSchoolClosureControlMeasure(self,controlMeasure):
+	if self.initParamsStarted is False:
+	    raise RuntimeError('Calling parseFixedSchoolClosureControlMeasure before'+\
+			       'initial parameters file has been made')
+	os.chdir(self.inpDir)
+	with open(self.fileNames['paramsFile'],'ab') as f:
+	    f.write("school_closure_policy = global\n")
+	    f.write("school_closure_period = %d\n"%controlMeasure._controlMeasure._schoolClosureDuration)
+	    f.write("school_closure_delay = %d\n"%controlMeasure._controlMeasure._controlMeasureResponseDelay)
+	    f.write("school_closure_day = %d\n"%controlMeasure._controlMeasureFixedStartTime._fixedStartTime)
+	os.chdir('..')
+
+    def parseFixedAntiviralControlMeasure(self,controlMeasure):
+	if self.initParamsStarted is False:
+	    raise RuntimeError('Calling parseFixedSchoolClosureControlMeasure before'+\
+			       'initial parameters file has been made')
+	os.chdir(self.inpDir)
+	with open(self.fileNames['paramsFile'],'ab') as f:
+	    f.write("##### ANTIVIRAL DEFINITIONS ####\n")
+	    f.write("enable_antivirals = 1\n")
+	    f.write("number_antivirals = 1\n")
+	    f.write("av_disease[0] = 0\n")
+	    if len(controlMeasure._controlMeasure._controlMeasureTargetPopulationsAndPrioritization) > 1:
+		print "!!WARNING!! FRED Apollo webservice only supports on Target Population for"
+		print "            Antivirals, using only the first list entry."
+	    if controlMeasure._controlMeasure._controlMeasureTargetPopulationsAndPrioritization[0]._targetPopulationDefinition._diseaseStates[0] == "newly sick":
+		f.write("av_prophylaxis[0] = 0\n")
+		f.write("av_prob_symptomatics[0] = %g\n"%controlMeasure._controlMeasure._controlMeasureCompliance)
+	    else:
+		f.write("av_prophylaxis[0] = 1\n")
+
+	    f.write("av_start_day[0] = %d\n"%controlMeasure._controlMeasureFixedStartTime._fixedStartTime)
+	    if len(set(controlMeasure._controlMeasure._antiviralTreatmentAdministrationCapacity)) > 1:
+		print "!!WARNING!! FRED only supports a uniform schedule for antivirals"
+		print "            Only using the first entry in antiviralTreatementAdministrationCapacity"
+	    if len(set(controlMeasure._controlMeasure._antiviralSupplySchedule)) > 1:
+		print "!!WARNING!! FRED only supports a uniform schedule for antivirals"
+		print "            Only using the first entry in antiviralSupplySchedule"
+
+	    avRate = min(controlMeasure._controlMeasure._antiviralTreatmentAdministrationCapacity[0],controlMeasure._controlMeasure._antiviralSupplySchedule[0])
+	    f.write("av_total_avail[0] = 30000000\n")
+	    f.write("av_additional_per_day[0] = %d\n"%avRate)
+	    f.write("av_initial_stock[0] = 0\n")
+	    f.write("av_course_length[0] = %d\n"%controlMeasure._controlMeasure._antiviralTreatment._numDosesInTreatmentCourse)
+	    f.write("av_reduce_susceptibility[0] = 0.0\n")
+	    f.write("av_reduce_infectivity[0] = %g\n"%controlMeasure._controlMeasure._antiviralTreatment._antiviralTreatmentEfficacy._efficacyValues[0])
+	    f.write("av_reduce_symptomatic_period[0] = %g\n"%controlMeasure._controlMeasure._antiviralTreatment._antiviralTreatmentEfficacy._efficacyValues[0])
+	    os.chdir('..')
+	    
+    def parseFixedVaccinationControlMeasure(self,controlMeasure):
+	if self.initParamsStarted is False:
+	    raise RuntimeError('Calling parseFixedVaccinationControlMeasure before'+\
+			       'initial parameters file has been made')
+
+	os.chdir(self.inpDir)
+	with open(self.fileNames['paramsFile'],'ab') as f:
+	    ### Add pregnant and at_risk estimates for vaccination
+	    f.write("pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110\n")
+	    f.write("pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0\n")
+	    f.write("\n")
+	    f.write("at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110\n")
+	    f.write("at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701\n")
+	    f.write("##### VACCINE PARAMETERS\n")
+	    f.write("enable_behaviors = 1\n")
+	    f.write("enable_vaccination = 1\n")
+	    f.write("number_of_vaccines = 1\n")
+	    f.write("accept_vaccine_enabled = 1\n")
+	    f.write("accept_vaccine_strategy_distribution = 7 %g %g 0 0 0 0 0\n"\
+		    %(1.0-controlMeasure._controlMeasure._controlMeasureCompliance,\
+		      controlMeasure._controlMeasure._controlMeasureCompliance))
+	    f.write("### VACCINE 1\n")
+	    f.write("vaccine_number_of_doses[0] = 1\n")
+	    # Setting this to infinity for now
+	    # need to implement production as a time map as well
+	    f.write("vaccine_total_avail[0] = 300000000\n")
+	    f.write("vaccine_additional_per_day[0] = 300000000\n")
+	    f.write("vaccine_starting_day[0] = %d\n"\
+		    %controlMeasure._controlMeasureFixedStartTime._fixedStartTime)
+	    f.write("##### Vaccine 1 Dose 0\n")
+	    f.write("vaccine_next_dosage_day[0][0] = 0\n")
+	    f.write("vaccine_dose_efficacy_ages[0][0] = 2 0 100\n")
+	    f.write("vaccine_dose_efficacy_values[0][0] = 1 %g\n"\
+		    %controlMeasure._controlMeasure._vaccination._vaccinationEfficacy._efficacyValues[0])
+	    f.write("vaccine_dose_efficacy_delay_ages[0][0] = 2 0 100\n")
+	    ### This is not longer a part of the schema.
+	    f.write("vaccine_dose_efficacy_delay_values[0][0] = 1 %d\n"\
+		    %14.0) 
+	    f.write("vaccination_capacity_file = fred-vaccination-schedule_0.txt\n")
+	    ## MUST ADD POPULATION BASEDD Control measures
+	    if controlMeasure._controlMeasure._controlMeasureNamedPrioritizationScheme == "ACIP":
+		f.write("vaccine_prioritize_acip = 1\n")
+
+	with open(self.fileNames['vaccCapFile'],"wb") as f:
+	    self.fileList.append(self.fileNames['vaccCapFile'])
+	    vaccineSupplySchedule = controlMeasure._controlMeasure._vaccineSupplySchedule
+	    vaccineAdminSchedule = controlMeasure._controlMeasure._vaccinationAdministrationCapacity
+	    
+	    for day in range(0,len(vaccineSupplySchedule)) :
+		## Hack for now, because I don't have the resolution on production in FRED
+		f.write("%d %d\n"%(day,min(vaccineSupplySchedule[day],vaccineAdminSchedule[day])))
+
+	os.chdir('..')
 
 def main():
     import random

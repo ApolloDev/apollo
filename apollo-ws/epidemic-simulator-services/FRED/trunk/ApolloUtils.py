@@ -37,8 +37,8 @@ class ApolloUtils:
         self.log_simulatorTimeSpecification(obj)
         self.log_simulatorIdentification(obj)
         self.log_disease(obj)
-        self.log_antiviralControlMeasure(obj)
-        self.log_vaccinationControlMeasure(obj)
+        #self.log_antiviralControlMeasure(obj)
+        #self.log_vaccinationControlMeasure(obj)
         self.log_simulatedPopulation(obj)
         self.logger.debug("-----end epidemic_model_input-----")
         return
@@ -51,9 +51,10 @@ class ApolloUtils:
     
     def log_simulatorIdentification(self, obj):
         self.logger.debug("-----simulatorIdentification")
-        self.logger.debug("simulatorDeveloper: %s", obj._simulatorIdentification._simulatorDeveloper)
-        self.logger.debug("simulatorName: %s", obj._simulatorIdentification._simulatorName)
-        self.logger.debug("simulaotrVersion: %s", obj._simulatorIdentification._simulatorVersion)
+        self.logger.debug("softwareDeveloper: %s", obj._simulatorIdentification._softwareDeveloper)
+        self.logger.debug("softwareName: %s", obj._simulatorIdentification._softwareName)
+        self.logger.debug("softwareVersion: %s", obj._simulatorIdentification._softwareVersion)
+	self.logger.debug("softwareType: %s",obj._simulatorIdentification._softwareType)
         return
     
     def log_simulatorTimeSpecification(self, obj):
@@ -72,23 +73,23 @@ class ApolloUtils:
         self.logger.debug("asymptomaticInfectionFraction: %s", obj._disease._asymptomaticInfectionFraction)
         return
     
-    def log_antiviralControlMeasure(self, obj):
-        self.logger.debug("-----antiviralControlMeasure")
-        self.logger.debug("antiviralCmCompliance: %s", obj._antiviralControlMeasure._antiviralCmCompliance)
-        self.logger.debug("antiviralEfficacy: %s", obj._antiviralControlMeasure._antiviralEfficacy)
-        self.logger.debug("antiviralEfficacyDelay: %s", obj._antiviralControlMeasure._antiviralEfficacyDelay) 
-        self.logger.debug("antiviralSupplySchedule: %s", obj._antiviralControlMeasure._antiviralSupplySchedule)
-        self.logger.debug("antiviralAdminSchedule: %s", obj._antiviralControlMeasure._antiviralAdminSchedule)
-        return
+##    def log_antiviralControlMeasure(self, obj):
+##        self.logger.debug("-----antiviralControlMeasure")
+##        self.logger.debug("antiviralCmCompliance: %s", obj._antiviralControlMeasure._antiviralCmCompliance)
+##        self.logger.debug("antiviralEfficacy: %s", obj._antiviralControlMeasure._antiviralEfficacy)
+##        self.logger.debug("antiviralEfficacyDelay: %s", obj._antiviralControlMeasure._antiviralEfficacyDelay) 
+##        self.logger.debug("antiviralSupplySchedule: %s", obj._antiviralControlMeasure._antiviralSupplySchedule)
+##        self.logger.debug("antiviralAdminSchedule: %s", obj._antiviralControlMeasure._antiviralAdminSchedule)
+##        return
         
-    def log_vaccinationControlMeasure(self, obj):
-        self.logger.debug("-----vaccinationControlMeasure")
-        self.logger.debug("vaccineCmCompliance: %s", obj._vaccinationControlMeasure._vaccineCmCompliance)
-        self.logger.debug("vaccineEfficacy: %s", obj._vaccinationControlMeasure._vaccineEfficacy)
-        self.logger.debug("vaccineEfficacy_delay: %s", obj._vaccinationControlMeasure._vaccineEfficacyDelay) 
-        self.logger.debug("vaccineSupplySchedule: %s", obj._vaccinationControlMeasure._vaccineSupplySchedule)
-        self.logger.debug("vaccinationAdminSchedule: %s", obj._vaccinationControlMeasure._vaccinationAdminSchedule)
-        return
+##    def log_vaccinationControlMeasure(self, obj):
+##        self.logger.debug("-----vaccinationControlMeasure")
+##        self.logger.debug("vaccineCmCompliance: %s", obj._vaccinationControlMeasure._vaccineCmCompliance)
+##        self.logger.debug("vaccineEfficacy: %s", obj._vaccinationControlMeasure._vaccineEfficacy)
+##        self.logger.debug("vaccineEfficacy_delay: %s", obj._vaccinationControlMeasure._vaccineEfficacyDelay) 
+##        self.logger.debug("vaccineSupplySchedule: %s", obj._vaccinationControlMeasure._vaccineSupplySchedule)
+##        self.logger.debug("vaccinationAdminSchedule: %s", obj._vaccinationControlMeasure._vaccinationAdminSchedule)
+##        return
    
     def log_simulatedPopulation(self, obj):
         self.logger.debug("-----populationInitialization")
@@ -98,10 +99,16 @@ class ApolloUtils:
         dbg = ""
         for d in obj._populationInitialization._populationDiseaseState:
             dbg += "\tdiseaseState: " + d._diseaseState
-            dbg += "\n\tpopCount:" + str(d._popCount) + "\n"
+            dbg += "\n\tfractionOfPopulation:" + str(d._fractionOfPopulation) + "\n"
         self.logger.debug("populationDiseaseState:\n %s", dbg)
         return
-    
+
+    def getPopFractionGivenLocationAndDiseaseState(self, obj, location, diseaseState):
+        ds = obj._populationInitialization._populationDiseaseState
+        for d in ds:
+            if d._diseaseState.lower() == diseaseState:
+                return d._fractionOfPopulation
+	return 0;
     def getPopCountGivenLocationAndDiseaseState(self, obj, location, diseaseState):
         ds = obj._populationInitialization._populationDiseaseState
         for d in ds:
