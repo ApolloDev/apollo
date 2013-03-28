@@ -16,7 +16,7 @@
 '''
 Created on Nov 29, 2012
 
-@author: John Levander
+@author: John Levander and Shawn Brown
 '''
 
 from SimulatorService_services_types import *
@@ -82,17 +82,31 @@ class ApolloFactory:
     def new_TargetPriorityPopulation(self):
         tpp = ns1.TargetPriorityPopulation_Def(None).pyclass()        
         return tpp
-        
+
     def new_ReactiveControlMeasure(self):
-        rcm = ns1.ReactiveControlMeasure_Def(self).pyclass()
-        rcm._controlMeasureReactiveTriggersDefinition = ns1.ReactiveTriggersDefinition_Def(None).pyclass()
-        return rcm;
+        rcm = ns1.ReactiveControlMeasure_Def(None).pyclass()
+        #rcm._controlMeasureReactiveTriggersDefinition = self.new_ReactiveTriggersDefinition()
+	for name,obj in inspect.getmembers(rcm):
+            if name[0:11] == "set_element":
+		print name
+		obj(None)
+	return rcm
     
+    def new_ReactiveTriggersDefinition(self):
+	rtd = ns1.ReactiveTriggersDefinition_Def(None).pyclass()
+	for name,obj in inspect.getmembers(rtd):
+	    if name[0:11] == "set_element":
+		obj(None)
+	return rtd
     
     def new_SchoolClosureControlMeasure(self):
         sc = ns1.SchoolClosureControlMeasure_Def(None).pyclass()
-        
-        return sc;
+        for name,obj in inspect.getmembers(sc):
+            if name[0:11] == "set_element":
+                #print name
+                obj(None)
+        return sc
+    
     def new_PopulationStrataDefinition(self):
         psd = ns1.PopulationStrataDefinition_Def(None).pyclass()
                
