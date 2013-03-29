@@ -1,5 +1,5 @@
 <?php
-  $modelIndex = $_GET['index']; 
+  $modelIndex = urldecode($_GET['index']); 
 
 ?>
 
@@ -34,11 +34,11 @@
 
 <script type="text/javascript">
     try{
-        var webservice_result = $.parseJSON(dataExchange.model_urls[<?php print $modelIndex; ?>]);
+        var webservice_result = $.parseJSON(dataExchange.model_urls['<?php print $modelIndex; ?>']);
 
         var url = webservice_result.incidence;
 
-        document.getElementById("epi-curve-inc-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=80% />";
+        document.getElementById("epi-curve-inc-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=95% />";
 
         //        //chart data
         //        var data = new Array();
