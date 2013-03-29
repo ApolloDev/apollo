@@ -36,9 +36,9 @@ runRequest._visualizerConfiguration = factory.new_VisualizerConfiguration()
 runRequest._visualizerConfiguration._authentication._requesterId = "fake"
 runRequest._visualizerConfiguration._authentication._requesterPassword = "fake"
 
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerDeveloper = "PSC"
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerName = "GAIA"
-runRequest._visualizerConfiguration._visualizerIdentification._visualizerVersion = "v1.0"
+runRequest._visualizerConfiguration._visualizerIdentification._softwareDeveloper = "PSC"
+runRequest._visualizerConfiguration._visualizerIdentification._softwareName = "GAIA"
+runRequest._visualizerConfiguration._visualizerIdentification._softwareVersion = "v1.0"
 
 runRequest._visualizerConfiguration._visualizationOptions._runId = "UPitt,PSC,CMU_FRED_2.0.1_231023"
 runRequest._visualizerConfiguration._visualizationOptions._location = "42003"
