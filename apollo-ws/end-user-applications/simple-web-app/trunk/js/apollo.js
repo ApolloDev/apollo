@@ -419,10 +419,11 @@ function loadParamGrid(){
 function changeDiseaseStateValues(popLocationValue) {
     
     if (popLocationValue.toLowerCase() == 'usa') {
-        paramGrid.jqGrid('setCell',11,'value', '200000000', '');
-        paramGrid.jqGrid('setCell',12,'value', '100000000', '');
-        paramGrid.jqGrid('setCell',13,'value', '200000000', '');
-        paramGrid.jqGrid('setCell',14,'value', '200000000', '');
+        var usaPop = 300000000;
+        paramGrid.jqGrid('setCell',11,'value', (usaPop * 0.94859).toString(), '');
+        paramGrid.jqGrid('setCell',12,'value', (usaPop * 0.00538).toString(), '');
+        paramGrid.jqGrid('setCell',13,'value', (usaPop * 0.00603).toString(), '');
+        paramGrid.jqGrid('setCell',14,'value', (usaPop * 0.04).toString(), '');
     } else if (popLocationValue == '42003') {
         paramGrid.jqGrid('setCell',11,'value', '1155854', '');
         paramGrid.jqGrid('setCell',12,'value', '6550', '');
