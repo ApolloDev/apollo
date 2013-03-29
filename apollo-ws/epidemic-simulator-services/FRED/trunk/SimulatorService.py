@@ -91,8 +91,9 @@ class FredWebService(SimulatorService):
 	    
 	    ### STB CREATE FRED INPUT FILE
 	    ### do some error checking for this version of the model
-	    if cfg._simulatorTimeSpecification._timeStepUnit.lower() != 'days':
-		print ('This verison of FRED only supports time_step_unit of days')
+	    print cfg._simulatorTimeSpecification._timeStepUnit
+	    if cfg._simulatorTimeSpecification._timeStepUnit.lower() != 'day':
+		print ('This verison of FRED only supports time_step_unit of day')
 		print ('Apollo sent %s'%(cfg._simulatorTimeSpecification._timeStepUnit))
 	        #### Put in Error Handling, have to ask John L.
 		response._runId = -401
@@ -171,5 +172,5 @@ class FredWebService(SimulatorService):
 #logger.setLevel(0)
 
 #run a webserver on 8087
-AsServer(port=8087, services=[FredWebService('fred'), ])
+AsServer(port=8089, services=[FredWebService('fred'), ])
 
