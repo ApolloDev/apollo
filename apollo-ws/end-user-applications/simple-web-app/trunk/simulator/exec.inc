@@ -92,7 +92,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration->simulatorTimeSpecification = $SimulatorTimeSpecification;
 //      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
-    $totalPopulation = 1218494.0;
+    $totalPopulation = $params['Susceptible'] + $params['Exposed'] + $params['Infectious'] + $params['Recovered'];
     $SimulatedPopulation = new stdClass();
     $SimulatedPopulation->populationLocation = $params['PopulationLocation'];
     $SPopulationDiseaseState = new stdClass();
