@@ -7,7 +7,6 @@
 
 define('AROOT', getcwd());
 require_once AROOT . '/apollo/apollo.inc';
-
 $ret = new Response();
 
 $apollo = new apollo();
@@ -21,7 +20,6 @@ $vizVer = $_GET['vizVer'];
 //ChromePhp::log($vizDev);
 //ChromePhp::log($vizName);
 //ChromePhp::log($vizVer);
-
 // run visualizer
 $VisualizerConfiguration = new stdClass();
 // authentication
@@ -30,11 +28,12 @@ $Authentication->requesterId = '';
 $Authentication->requesterPassword = '';
 $VisualizerConfiguration->authentication = $Authentication;
 // visualizer identification
-$VisualizerIdentification = new stdClass();
-$VisualizerIdentification->visualizerDeveloper = $vizDev;
-$VisualizerIdentification->visualizerName = $vizName;
-$VisualizerIdentification->visualizerVersion = $vizVer;
-$VisualizerConfiguration->visualizerIdentification = $VisualizerIdentification;
+$SoftwareIdentification = new stdClass();
+$SoftwareIdentification->softwareDeveloper = $vizDev;
+$SoftwareIdentification->softwareName = $vizName;
+$SoftwareIdentification->softwareVersion = $vizVer;
+$SoftwareIdentification->softwareType = 'visualizer'; // since we are calling a visualizer here
+$VisualizerConfiguration->visualizerIdentification = $SoftwareIdentification;
 // authentication
 $VisualizerConfiguration->authentication = $Authentication;
 // visualization options
@@ -44,25 +43,40 @@ $VisualizationOptions->location = '42003';
 $VisualizationOptions->outputFormat = 'ogg';
 $VisualizerConfiguration->visualizationOptions = $VisualizationOptions;
 
+// if runId is a list (separated by ;), the first runId is no vaccination,
+// and the second is vaccination
 // run the visualizer
-$apolloResponse = $client->runVisualization(array('visualizerConfiguration' => $VisualizerConfiguration));
+//if ($vizName != 'GAIA') {
+    $apolloResponse = $client->runVisualization(array('visualizerConfiguration' => $VisualizerConfiguration));
+//}
 
-//ChromePhp::log($apolloResponse);
+$UrlOutputResourceList = null;
 
-$VisualizerOutputResourceList = $apolloResponse->visualizerOutputResource;
-$diseaseStatesURL = '';
-$incidenceURL = '';
+
+//if ($vizName != 'GAIA') {
+    $UrlOutputResourceList = $apolloResponse->visualizerResult->visualizerOutputResource;
+    $diseaseStatesURL = '';
+    $incidenceURL = '';
+//} else {
+//    $diseaseStatesURL = '';
+//    $incidenceURL = '';
+//}
 
 $urls = array();
 
 if (strpos($runId, ':') !== false || $vizName == 'GAIA') {
-    $urls[$VisualizerOutputResourceList->description] = $VisualizerOutputResourceList->URL;
+//    if ($vizName == 'GAIA') {
+//        $urls['GAIA animation of Allegheny County'] = 'http://warhol-fred.psc.edu/GAIA/gaia.output.1363297461.ogg';
+//    } else {
+        $urls[$UrlOutputResourceList->description] = $UrlOutputResourceList->URL;
+//    }
+//    $urls[$VisualizerOutputResourceList->description] = 'http://warhol-fred.psc.edu/GAIA/gaia.output.1363279966.ogg';
 } else {
 
-    foreach ($VisualizerOutputResourceList as $visOutResource) {
+    foreach ($UrlOutputResourceList as $visOutResource) {
 
 //    ChromePhp::log(json_encode($visOutResource));
-    $urls[$visOutResource->description] = $visOutResource->URL;
+        $urls[$visOutResource->description] = $visOutResource->URL;
 
 //        if ($visOutResource->description == 'Disease states') {
 //            $diseaseStatesURL = $visOutResource->URL;
@@ -74,9 +88,9 @@ if (strpos($runId, ':') !== false || $vizName == 'GAIA') {
 
 $result['urls'] = $urls;
 $result['runId'] = $runId;
-$result['visualizerDeveloper'] = $VisualizerIdentification->visualizerDeveloper;
-$result['visualizerName'] = $VisualizerIdentification->visualizerName;
-$result['visualizerVersion'] = $VisualizerIdentification->visualizerVersion;
+$result['visualizerDeveloper'] = $SoftwareIdentification->softwareDeveloper;
+$result['visualizerName'] = $SoftwareIdentification->softwareName;
+$result['visualizerVersion'] = $SoftwareIdentification->softwareVersion;
 //$result['disease_states_url'] = $diseaseStatesURL;
 //$result['incidence_url'] = $incidenceURL;
 

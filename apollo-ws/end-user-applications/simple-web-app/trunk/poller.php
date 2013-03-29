@@ -22,29 +22,53 @@ try {
     $ver = $_GET['ver'];
     $type = $_GET['type'];
 
-    $ServiceRecord = new stdClass();
+    $RunAndSoftwareIdentification = new stdClass();
+    $SoftwareIdentification = new stdClass();
+    $SoftwareIdentification->softwareDeveloper = $dev;
+    $SoftwareIdentification->softwareName = $name;
+    $SoftwareIdentification->softwareVersion = $ver;
     if ($type == 'simulator') {
-        $SimulatorIdentification = new stdClass();
-        $SimulatorIdentification->simulatorDeveloper = $dev;
-        $SimulatorIdentification->simulatorName = $name;
-        $SimulatorIdentification->simulatorVersion = $ver;
-
-        $ServiceRecord->simulatorIdentification = $SimulatorIdentification;
+        $SoftwareIdentification->softwareType = 'simulator';
     } else {
-        $VisualizerIdentification = new stdClass();
-        $VisualizerIdentification->visualizerDeveloper = $dev;
-        $VisualizerIdentification->visualizerName = $name;
-        $VisualizerIdentification->visualizerVersion = $ver;
-
-        $ServiceRecord->visualizerIdentification = $VisualizerIdentification;
+        $SoftwareIdentification->softwareType = 'visualizer';
     }
+    
+//    ChromePhp::log($SoftwareIdentification->softwareDeveloper);
+//    ChromePhp::log($SoftwareIdentification->softwareName);
+//    ChromePhp::log($SoftwareIdentification->softwareVersion);
+//    ChromePhp::log($SoftwareIdentification->softwareType);
+    
+    $RunAndSoftwareIdentification->softwareId = $SoftwareIdentification;
+    $RunAndSoftwareIdentification->runId = $runId;
+    if (strpos($runId, ";") == FALSE || $type == 'visualization') {
 
-    $status = $client->getRunStatus(array('runId' => $runId, 'serviceRecord' => $ServiceRecord));
+//        if ($name == 'GAIA') {
+//            $statText['status_normal'] = 'completed';
+//            $statText['message_normal'] = 'run is completed';
+//            $statText['status_novacc'] = 'null';
+//            $statText['message_novacc'] = 'null';
+//        } else {
 
-    $statText['status'] = $status->runStatus->status;
-    $statText['message'] = $status->runStatus->message;
+        $status = $client->getRunStatus(array('runAndSoftwareIdentification' => $RunAndSoftwareIdentification));
+        $statText['status_normal'] = $status->runStatus->status;
+        $statText['message_normal'] = $status->runStatus->message;
+        $statText['status_novacc'] = 'null';
+        $statText['message_novacc'] = 'null';
+//        }
+    } else {
 
-//ChromePhp::log($statText['message']);
+        $runIdList = explode(';', $runId);
+
+        $RunAndSoftwareIdentification->runId = $runIdList[1];
+        $status = $client->getRunStatus(array('runAndSoftwareIdentification' => $RunAndSoftwareIdentification));
+        $statText['status_normal'] = $status->runStatus->status;
+        $statText['message_normal'] = $status->runStatus->message;
+
+        $RunAndSoftwareIdentification->runId = $runIdList[0];
+        $status = $client->getRunStatus(array('runAndSoftwareIdentification' => $RunAndSoftwareIdentification));
+        $statText['status_novacc'] = $status->runStatus->status;
+        $statText['message_novacc'] = $status->runStatus->message;
+    }
 
     $ret->data = $statText;
     echo json_encode($ret);

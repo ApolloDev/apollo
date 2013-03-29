@@ -1,0 +1,99 @@
+ <!--
+
+    Copyright (C) 2011 University of Pittsburgh
+
+    This file is part of Apollo.
+
+    Apollo is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of
+    the License, or (at your option) any later version.
+
+    Apollo is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Apollo.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<!--
+@author Yang Hu <yah14@pitt.edu>
+-->
+
+<div>
+
+<div id="left-panel" style="float:left;">
+	<div>
+	<fieldset>
+	<legend>Delivery Schedule:</legend>
+	
+	<div id="antiviral-admin-delivery-chart"></div>
+	
+	<div id="antiviral-admin-date-of-first-delivery-div" style="padding-bottom:10px;">
+<!--	<div style="float:left;">Date of First Delivery:</div>-->
+	<div><input id="antiviral-admin-date-of-first-delivery" type="hidden" value="01/13/2011"/></div>
+	</div>
+	
+	<div id="antiviral-admin-delivery-rate-div" style="padding-bottom:10px;">
+	<div style="float:left;">Number of delivery rate changes:</div>
+	<div id="antiviral-admin-delivery-rate-input-div"><input id="antiviral-admin-delivery-rate-change" type="text" disabled/></div>
+	</div>
+	
+	<div id="antiviral-admin-delivery-number-div" style="padding-bottom:10px;">
+	<div style="float:left;">Number of delivery:</div>
+	<div id="antiviral-admin-delivery-number-input-div"><input id="antiviral-admin-delivery-number" type="text" disabled/></div>
+	</div>
+	
+	<div id="antiviral-admin-delivery-type-div" style="clear:both;">
+	<fieldset>
+	<legend>Edit Deliveries Schedule as a:</legend>
+	<div style="float: left; width: 50%;">
+	<input id="antiviral-admin-rate-mode" type=radio name="delivery-type" value="rate" checked />Rate Change
+	</div>
+	<div>
+	<input id="antiviral-admin-table-mode" type=radio name="delivery-type" value="table"/>Quantity
+	</div>
+	</fieldset>
+	</div>
+	
+	<div id="antiviral-admin-delivery-table-div" style="padding-top:10px;">
+		<table id="antiviral-admin-delivery-table"></table>
+		<!-- <div id="pagernav"></div> -->
+		
+		<button id="antiviral-admin-delivery-table-add" style="margin:5px;">Add</button>
+		<button id="antiviral-admin-delivery-table-insert" style="margin:5px;">Insert</button>
+		<button id="antiviral-admin-delivery-table-delete" style="margin:5px;">Delete</button>
+		<button id="antiviral-admin-schedule-submit" style="margin:5px;">Save</button>
+	</div>
+	
+	</fieldset>
+	</div>
+
+</div>
+<!--div class="ui-helper-clearfix"></div-->
+
+<!--div id="right-panel" style="float:left;">
+	<div>
+	<fieldset>
+	<legend>Chart Style:</legend>
+	<div style="float: left; width: 50%;">
+	<input type=radio name="chart-type" value="nc" />Non-cumulative
+	</div>
+	<div><input type=radio name="chart-type" value="c" checked />Cumulative</div>
+	</fieldset>
+	</div>
+	<div class="ui-helper-clearfix"></div>
+</div-->
+<div class="ui-helper-clearfix"></div>
+
+</div><!-- end main -->
+
+<!-- Scripts -->
+
+<script src="js/array.js" type="text/javascript"></script>
+
+<script src="js/date-helper.js" type="text/javascript"></script>
+<script src="simulator/antiviral_admin_schedule.js" type="text/javascript"></script>
