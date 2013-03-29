@@ -647,10 +647,10 @@ class FredInputFileSet:
 			       'initial parameters file has been made')
 	os.chdir(self.inpDir)
 	with open(self.fileNames['paramsFile'],'ab') as f:
-	    if controlMeasure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureTest == "individual_schools":
-		f.write('school_closure_policy = reactive\n')
-	    else:
+	    if controlMeasure._controlMeasure._schoolClosureTargetFacilities == "all":
 		f.write('school_closure_policy = global\n')
+	    else:
+		f.write('school_closure_policy = reactive\n')
 	    f.write('school_closure_period = %d\n'%controlMeasure._controlMeasure._schoolClosureDuration)
 	    f.write('school_closure_delay = %d\n'%controlMeasure._controlMeasure._controlMeasureResponseDelay)
 	    f.write('school_closure_threshold = %g\n'%controlMeasure._controlMeasureReactiveTriggersDefinition._reactiveControlMeasureThreshold)
