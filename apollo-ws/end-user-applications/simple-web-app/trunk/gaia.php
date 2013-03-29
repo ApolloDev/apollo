@@ -1,16 +1,18 @@
 <?php
-$modelIndex = $_GET['index'];
+define('AROOT', getcwd());
+$modelIndex = urldecode($_GET['index']);
 ?>
 <script type="text/javascript" src="js/array.js"></script>
 
 <script type="text/javascript">
     try{
            
-        var webservice_result = $.parseJSON(dataExchange.model_urls[<?php print $modelIndex; ?>]);
+        var webservice_result = $.parseJSON(dataExchange.model_urls['<?php print $modelIndex; ?>']);
 
         var url = webservice_result.gaia;
         
-        document.getElementById("gaia-div-<?php print $modelIndex; ?>").innerHTML="<video controls> <source src='" + url + "' type=video/ogg></video>";
+        console.log(url);
+        document.getElementById("gaia-div-<?php print $modelIndex; ?>").innerHTML="<video width=70% controls> <source src='" + url + "' type=video/ogg></video>";
         
     }catch (err){
         alert(err);
