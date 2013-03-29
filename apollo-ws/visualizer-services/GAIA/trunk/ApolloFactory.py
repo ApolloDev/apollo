@@ -32,8 +32,8 @@ class ApolloFactory:
         r = ns1.UrlOutputResource_Def(None).pyclass
         return r
     
-    def new_VisualizerIdentification(self):
-        vid = ns1.VisualizerIdentification_Def(None).pyclass
+    def new_SoftwareIdentification(self):
+        vid = ns1.SoftwareIdentification_Def(None).pyclass
         return vid
     
     def new_Authentication(self):
@@ -50,7 +50,7 @@ class ApolloFactory:
     
     def new_VisualizerConfiguration(self):
         vc = ns1.VisualizerConfiguration_Def(None).pyclass()
-        vc._visualizerIdentification = self.new_VisualizerIdentification()
+        vc._visualizerIdentification = self.new_SoftwareIdentification()
         vc._authentication = self.new_Authentication()
         vc._visualizationOptions = self.new_VisualizationOptions()
         return vc
