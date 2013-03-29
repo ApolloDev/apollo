@@ -46,6 +46,18 @@ Index page for the Apollo Test Client
         <script type="text/javascript" src="js/highcharts.js"></script>
 <!--        <script type="text/javascript" src="js/highstock.js"></script>-->
         <script type="text/javascript" src="js/modules/exporting.js"></script>
+        <script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+
+        <script language="javascript" type="text/javascript">
+            tinyMCE.init({
+                content_css : "css/tiny_mce_custom_content.css",
+                theme : "advanced",
+                mode : "textareas",
+                theme_advanced_source_editor_wrap : true,
+                readonly : true
+            });
+
+        </script>
 
         <!--Misc -->
         <script type="text/javascript" src="js/debug-helper.js"></script>
@@ -93,33 +105,47 @@ Index page for the Apollo Test Client
                     <div id="model-selection-div" class="ui-widget-header ui-corner-all" style="margin:2px;padding:2px;">
                         Epidemic Simulator Selection
                     </div>
-<!--                    <div id="jurisdiction-div" class="drop-box-div">
-                        <div>Jurisdiction:</div>
-                        <select id="jurisdiction-combo" style="width: 120px;">
-                            <option value="UNDEF" selected="selected">--Please Select--</option>
-                            <option value="42003">Allegheny, PA</option>
-                        </select>
+                    <!--                    <div id="jurisdiction-div" class="drop-box-div">
+                                            <div>Jurisdiction:</div>
+                                            <select id="jurisdiction-combo" style="width: 120px;">
+                                                <option value="UNDEF" selected="selected">--Please Select--</option>
+                                                <option value="42003">Allegheny, PA</option>
+                                            </select>
+                                        </div>
+                                        <div id="snomed-ct-div" class="drop-box-div">
+                                            <div>Disease/SNOMED-CT Code:</div>
+                                            <select id="snomed-ct-combo" style="width: 220px;">
+                                                <option value="UNDEF" selected="selected">--Please Select--</option>
+                                                <option value="442696006">Influenza (H1N1)/442696006</option>
+                                                <option value="21927003">Anthrax/21927003</option>
+                                            </select>
+                                        </div>-->
+
+                    <div id="disease-div" class="drop-box-div" style="width: 250px">
+                        <div style="text-align: left">Disease:</div>
+                        <div style="text-align: left">
+                            <select name="disease-combo" id="disease-combo" style="width: 175px;">
+                                <option value="select">-- Please Select --</option>
+                                <option value="Influenza">Influenza</option>
+                            </select>
+                        </div>
+                        <br>
                     </div>
-                    <div id="snomed-ct-div" class="drop-box-div">
-                        <div>Disease/SNOMED-CT Code:</div>
-                        <select id="snomed-ct-combo" style="width: 220px;">
-                            <option value="UNDEF" selected="selected">--Please Select--</option>
-                            <option value="442696006">Influenza (H1N1)/442696006</option>
-                            <option value="21927003">Anthrax/21927003</option>
-                        </select>
-                    </div>-->
-                    <div id="model-div" class="drop-box-div">
-                        <div>Epidemic Simulators:</div>
-                        <select id="model-combo" style="width: 240px;" size="4" multiple="multiple">
-                            <option value="loading">Loading...</option>
-                        </select>
-                        <br></br>
+
+                    <div id="model-div" class="drop-box-div" style="width: 250px">
+                        <div style="text-align: left">Epidemic Simulators:</div>
+                        <div style="text-align: left">
+                            <select id="model-combo" style="width: 240px;" size="4" multiple="multiple" disabled>
+                                <option value="select">Please select a disease...</option>
+                            </select>
+                        </div>
+                        <br>
                     </div>
 
 <!--                    <img id="select-img" src="images/select.png" />-->
                     <table id="west-grid"></table>
 <!--                    <table id="disease-grid"></table>-->
-                    
+
                     <table id="param-legend" style="padding:10px;display:none;">
                         <thead>
                             <tr>
@@ -155,8 +181,18 @@ Index page for the Apollo Test Client
                         <li><a href="#tabs-1">Welcome</a></li>
                     </ul>
                     <div id="tabs-1">
-                        Welcome to the Apollo Web Service Client! <br />
-                        Complete the model selection panel on the left to begin. <br /><br />
+                        Welcome to the Simple End-user Apollo App! <br /><br />
+                        Use the panels on the left to select one or more epidemic simulators to run and the configuration settings the
+                        simulators will use. 
+                        The default settings correspond to the 2009 H1N1 Influenza outbreak in Allegheny County, PA, on the
+                        specific date of September 12, 2009.<br /><br />
+
+                        The simulators will model the effect of a vaccination control measure if all five 
+                        parameters that represent a vaccination program are non zero. If you wish to exclude 
+                        a vaccination program, simply set the compliance or efficacy to zero.<br /><br />
+
+                        The source for the terms in the simulator configuration panel is the Apollo-SV ontology. Hover the
+                        mouse pointer over a term to see its definitions in the ontology.<br /><br /> 
 
                     </div>
                 </div>
@@ -171,12 +207,17 @@ Index page for the Apollo Test Client
                     </form>
                 </div>
                 <div id="status-name-div" style="padding: 10px">Status:</div>
-                <div id="status-div-1"
-                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
-                     <div id="status-div-2"
-                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
-                     <div id="status-div-3"
-                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+                <div style="padding: 10px; font-size: 12px">
+                    <textarea id="statustextarea" style="width: 100%; height: 150px;" readonly="true">
+
+                    </textarea>
+                </div>
+                <!--                <div id="status-div-1"
+                                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+                                <div id="status-div-2"
+                                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>
+                                <div id="status-div-3"
+                                     style="height: 20px; font-size: 12px; display: hidden; padding-left: 10px;"></div>-->
             </div>
             <!-- ButtomPane-->
 
