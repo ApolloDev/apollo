@@ -29,7 +29,7 @@
 define('AROOT', getcwd());
 
 require_once AROOT . '/apollo/apollo.inc';
-require_once AROOT . '/models/misc.inc';
+require_once AROOT . '/util/misc.inc';
 
 $ret = new Response();
 
@@ -72,6 +72,9 @@ try {
         
 //        ChromePhp::log(deleteSpace($rawParam->pname));
     }
+    
+//    $params['VaccineEfficacy']);
+//    ChromePhp::log($params['VaccineControlMeasureCompliance']);
     
     $apollo = new apollo();
     

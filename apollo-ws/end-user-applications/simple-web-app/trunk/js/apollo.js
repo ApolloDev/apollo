@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Lesser General Public
     License along with Apollo.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+ */
 
 /**
  * Base functions for apollo
@@ -32,7 +32,7 @@
 var dataExchange = new function(){
     this.tab_input = null;
     this.tab_return = null;
-    this.model_urls = null;
+    this.model_urls = {};
 
     //for paramGrid
     this.gridId = '#west-grid';
@@ -59,8 +59,10 @@ var lastEditId;
 var finishedSimulators;
 var numSimulators;
 var combinedRunId;
+var combinedRunNumber;
 var numberOfVisualizations;
 var numberOfVisualizationsFinished;
+var firstLinePrinted = true;
 
 var InfluenzaId = 442696006;
 var AnthraxId = 21927003;
@@ -83,10 +85,28 @@ function clearParamGrid(){
 
 var isRowEditable = function(id) {
     
-    if (id == 0 || id == 3 || id == 7 || id == 14 || id == 20) {
+    if (id == 0 || id == 3 || id == 7 || id == 9 || id == 14 || id == 20 || id == 57) {
         return false
     } else {
         return true;
+    }
+}
+
+var isRowBlue = function(id) {
+    
+    if (id == 0 || id == 3 || id == 7 || id == 14 || id == 20) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var isRowTree = function(id) {
+    
+    if (id == 22 || id == 32 || id == 42 || id == 43 || id == 52) {
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -104,6 +124,18 @@ function loadParamGrid(){
     //        diseaseName = 'Anthrax';
 	
     //left panel
+    
+    var createRadioButtonChecked = function(value) {
+        return $("<input type='radio' name='radio1' id='reactiveCm' checked />").get();
+    }
+    var createRadioButton = function(value) {
+        return $("<input type='radio' name='radio1' id='fixedCm' />").get();
+    }
+    
+    var extractFromRadioButton = function(elem) {
+        return $(elem).val();
+    }
+    
     paramGrid.jqGrid({
         url: "apollo_param.php",
         editurl: "edit.php",//dummy edit url
@@ -112,7 +144,7 @@ function loadParamGrid(){
         pager: false,
         loadui: "disable",
         //cellEdit: true,
-        colNames: ["id", "Parameter Name", "Value", "url", "extra"],
+        colNames: ["id", "Parameter Name", "Value&nbsp;&nbsp;&nbsp;", "url", "extra",  "tooltip"],
         colModel: [
         {
             name: "id",
@@ -123,7 +155,7 @@ function loadParamGrid(){
 
         {
             name: "pname", 
-            width:305, 
+            width:370, 
             resizable: false, 
             sortable:false
         },
@@ -150,13 +182,19 @@ function loadParamGrid(){
             name: "extra",
             width:0,
             hidden:true
+        },
+        {
+            name: "tooltip",
+            width:0,
+            hidden:true
         }
         ],
         treeGrid: true,
+        treeGridModel: 'nested',
         caption: 'Simulator Configuration',
         ExpandColumn: "pname",
         autowidth: true,
-        rowNum: 36,
+        rowNum: 65,
         ExpandColClick: true,
         shrinkToFit: true,
         treeIcons: {
@@ -167,12 +205,18 @@ function loadParamGrid(){
             var rowIDs = jQuery("#west-grid").getDataIDs();
             //        $(".jqgrow").addClass("ui-state-hover").css("background", "none !important");
             for (var i=0;i<rowIDs.length;i=i+1){ 
+                
+                var cellData = $("#west-grid").jqGrid('getCell', i, 'tooltip');
+                $("#west-grid").jqGrid('setCell', i,'pname','','',{
+                    'title':cellData
+                });
+                
                 var rowData = $(this).getRowData(i);
                
                 
                 var trElement = jQuery("#"+ rowIDs[i],jQuery('#west-grid'));
         
-                if (i==5) {
+                if (i==5) { // TIME STEP UNIT
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
@@ -185,9 +229,91 @@ function loadParamGrid(){
                     cm.edittype = 'text';
                     cm.editoptions = null;
                 }
+                
+                if (i==35) { // VACCINATION NAMED PRIORITIZATION SCHEME
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'select';
+                    cm.editoptions = {
+                        value: "None:None;ACIP:ACIP",
+                        dataInit: function(elem) {
+                            $(elem).width(75);  // set the width which you need
+                        }
+                    };
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+                
+                if (i==46 || i ==55) { // SCHOOL CLOSURE TARGET FACILITIES
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'select';
+                    cm.editoptions = {
+                        value: "all:All;individual:Individual",
+                        dataInit: function(elem) {
+                            $(elem).width(75);  // set the width which you need
+                        }
+                    };
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+                
+                //                if (i==28) { // ANTIVIRAL NAMED PRIORITIZATION SCHEME
+                //                    var cm = paramGrid.jqGrid('getColProp','value');
+                //                    cm.edittype = 'select';
+                //                    cm.editoptions = {
+                //                        value: "none:None",
+                //                        dataInit: function(elem) {
+                //                            $(elem).width(75);  // set the width which you need
+                //                        }
+                //                    };
+                //                    paramGrid.jqGrid('editRow', i);
+                //                    cm.edittype = 'text';
+                //                    cm.editoptions = null;
+                //                }
+                
+                if (i == 22 || i == 32 || i ==42) {
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'checkbox';
+                    cm.editoptions = {
+                        value:"True:False"
+                    };
+                    //                    cm.formatter = "checkbox";
+                    //                    cm.editable = true;
+                    //                    cm.formatoptions = {disabled: false};
+                    
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+                
+                if (i == 43 || i == 52) {
+                    
+                    var customElement;
+                    if (i == 43) {
+                        customElement = createRadioButtonChecked;
+                    } else {
+                        customElement = createRadioButton;
+                    }
+                    
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'custom';
+                    cm.editoptions = {
+                        custom_element: customElement,
+                        custom_value: extractFromRadioButton
+                    };
+                    //                    cm.formatter = "checkbox";
+                    //                    cm.editable = true;
+                    //                    cm.formatoptions = {disabled: false};
+                    
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+                
         
                 // Red       
-                if (!isRowEditable(i)) {
+                if (!isRowEditable(i) && isRowBlue(i)) {
                     trElement.removeClass('ui-widget-content');
                     trElement.addClass('Color_Red');
                 }
@@ -198,14 +324,27 @@ function loadParamGrid(){
             //                    trElement.addClass('Color_Cyan');
             //                }
             }
+            
+            
+        //            $('input.myClass').prettyCheckboxes();
         },
-        
+
         
         //	    treeIcons: {leaf:'ui-icon-document-b'},
         ondblClickRow: function(rowid, iRow, iCol, e) { // open a new tab when double click
-	
+        
+   
+        
             if (isRowEditable(rowid  - 1)) {
-  
+                
+                if (rowid == 9) {
+                    $(this).jqGrid('editRow', rowid, true, null, null, null, {}, function (rowid) {
+                  
+                        var value = paramGrid.jqGrid('getCell',rowid,'value');
+                        changeDiseaseStateValues(value);
+                  
+                    }); 
+                }
                 var treedata = $(this).getRowData(rowid);
 	        
                 //don't open a tab if the url is empty
@@ -226,9 +365,11 @@ function loadParamGrid(){
                 }
             }
         },
+        
         gridComplete: function(){
             //            //enable the button
             $('#create').button( "option", "disabled", false );
+            $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
         //	
         //            //gird load finish
         //            $(dataExchange.statusBar).html('Load finished!');
@@ -241,11 +382,14 @@ function loadParamGrid(){
         //            alert(outerwidth);
         },
         onSelectRow : function (rowid, status){
-            
+
             //            paramGrid.jqGrid('resetSelection');
-            if (lastEditId != -1) {
-                $(this).saveRow(lastEditId);
-                lastEditId = -1;
+            if (rowid !== lastEditId && !isRowTree(rowid)) { // make sure row is not a tree or the value column will be affected
+                paramGrid.jqGrid('saveRow', lastEditId, null, null, null, function(){
+                    var value = paramGrid.jqGrid('getCell',lastEditId,'value');
+                    changeDiseaseStateValues(value);    
+                }, null, null);
+                lastEditId = rowid;
             }
         },
         
@@ -254,130 +398,38 @@ function loadParamGrid(){
             return isRowEditable(rowid - 1);
         }
     });
+    
+    var orgExpandNode = $.fn.jqGrid.expandNode,
+    orgCollapseNode = $.fn.jqGrid.collapseNode;
+    $.jgrid.extend({
+        expandNode: function (rc) {
+            //            alert('before expandNode: rowid="' + rc._id_ + '", name="' + rc.name + '"');
+            $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
+            return orgExpandNode.call(this, rc);
+        },
+        collapseNode: function (rc) {
+            //            alert('before collapseNode: rowid="' + rc._id_ + '", name="' + rc.name + '"');
+            $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
+            return orgCollapseNode.call(this, rc);
+        }
+    });
+    
 };
-//
-//function loadDiseaseGrid(snomed, modelType){
-//    //clear up
-//    //clear up
-//    diseaseGrid = $(diseaseExchange.gridId);
-//    if (diseaseGrid.GridUnload)
-//        diseaseGrid.GridUnload();
-//    //get the empty div by id
-//    diseaseGrid = $(diseaseExchange.gridId);
-//        
-//    outerwidth=$('#west-div').width();
-//	
-//    //TODO : make it into a map
-//    var diseaseName = '';
-//    if (parseInt(snomed) == InfluenzaId)
-//        diseaseName = 'Influenza';
-//    else if (parseInt(snomed) == AnthraxId)
-//        diseaseName = 'Anthrax';
-//	
-//    //left panel
-//    diseaseGrid.jqGrid({
-//        url: "apollo_param.php?model=" + modelType + "&snomed=" + snomed,
-//        editurl: "edit.php",//dummy edit url
-//        datatype: "json",
-//        height: "auto",
-//        pager: false,
-//        loadui: "disable",
-//        //cellEdit: true,
-//        colNames: ["id", "Parameter Name", "Value", "url", "extra"],
-//        colModel: [
-//        {
-//            name: "id",
-//            width:0,
-//            hidden:true, 
-//            key:true
-//        },
-//
-//        {
-//            name: "pname", 
-//            width:600, 
-//            resizable: false, 
-//            sortable:false
-//        },
-//
-//        {
-//            name: "value", 
-//            width:300, 
-//            resizable: false, 
-//            editable:true, 
-//            edittype:"text", 
-//            editoptions:{
-//                size:10,
-//                maxlength: 15
-//            }
-//        },
-//        {
-//            name: "url",
-//            width:0,
-//            hidden:true
-//        },
-//
-//        {
-//            name: "extra",
-//            width:0,
-//            hidden:true
-//        }
-//        ],
-//        treeGrid: true,
-//        //        caption: diseaseName + ' ' + modelType + ' Model Parameters',
-//        ExpandColumn: "pname",
-//        autowidth: false,
-//        //	    rowNum: 200,
-//        ExpandColClick: true,
-//        shrinkToFit: true,
-//        treeIcons: {
-//            leaf:'ui-icon-blank'
-//        },
-//        //	    treeIcons: {leaf:'ui-icon-document-b'},
-//        ondblClickRow: function(rowid, iRow, iCol, e) { // open a new tab when double click
-//	
-//            
-//        
-//            var treedata = $(this).getRowData(rowid);
-//	        
-//            //don't open a tab if the url is empty
-//            if (treedata.url == '' || treedata.url == null || treedata.url == undefined){
-//                var extraLength = treedata.extra.length;
-//                if (treedata.isLeaf === 'true'){
-//                    $(this).editRow(rowid, true);
-//                    lastEditId = rowid;
-//                }
-//            }else{
-//                var st = "#t" + treedata.id;
-//                if($(st).html() != null ) {
-//                    maintab.tabs('select',st);
-//                } else {
-//                    maintab.tabs('add', st, treedata.pname);
-//                    $(st,"#tabs").load(treedata.url);
-//                }
-//            }
-//        },
-//        gridComplete: function(){
-//        //                    //enable the button
-//        //                    $('#create').button( "option", "disabled", false );
-//        //        	
-//        //                    //gird load finish
-//        //                    $(dataExchange.statusBar).html('Load finished!');
-//        //        			
-//        //                  //enable the legend
-//        //                    $('#param-legend').show();
-//        //        			
-//        //                    //hide the model selection img
-//        //                    $('#select-img').hide();
-//        },
-//        onSelectRow : function (rowid, status){
-//            
-//            if (lastEditId != -1){
-//                $(this).saveRow(lastEditId);
-//                lastEditId = -1;
-//            }
-//        }
-//    }).setGridWidth(outerwidth-20);
-//};
+
+function changeDiseaseStateValues(popLocationValue) {
+    
+    if (popLocationValue.toLowerCase() == 'usa') {
+        paramGrid.jqGrid('setCell',11,'value', '200000000', '');
+        paramGrid.jqGrid('setCell',12,'value', '100000000', '');
+        paramGrid.jqGrid('setCell',13,'value', '200000000', '');
+        paramGrid.jqGrid('setCell',14,'value', '200000000', '');
+    } else if (popLocationValue == '42003') {
+        paramGrid.jqGrid('setCell',11,'value', '1155854', '');
+        paramGrid.jqGrid('setCell',12,'value', '6550', '');
+        paramGrid.jqGrid('setCell',13,'value', '7350', '');
+        paramGrid.jqGrid('setCell',14,'value', '48740', '');
+    }
+}
 
 function createOrSelectInsturctionTab(){
     //add instruction tab
@@ -420,6 +472,7 @@ function loadRegisteredModels(){
 
         success: function(jasonObj, statusText){ /* called when request to barge.php completes */
 
+            //            alert(jasonObj);
             jasonObj = $.parseJSON(jasonObj);
             
             var model = $('#model-combo');
@@ -430,11 +483,14 @@ function loadRegisteredModels(){
             
             for (var i=0; i <jasonObj.data.length; i++) {
             
-                if (jasonObj.data[i].hasOwnProperty('simulatorIdentification')) {
-                    var simDev = jasonObj.data[i].simulatorIdentification['simulatorDeveloper'];
-                    var simName = jasonObj.data[i].simulatorIdentification['simulatorName'];
-                    var simVer = jasonObj.data[i].simulatorIdentification['simulatorVersion'];
-                    model.append('<option value="' + encodeURIComponent(JSON.stringify(jasonObj.data[i])) + '">' + simDev + ',' + simName + ',' + simVer + '</option>');
+                if (jasonObj.data[i].hasOwnProperty('softwareIdentification')) {
+                    var simDev = jasonObj.data[i].softwareIdentification['softwareDeveloper'];
+                    var simName = jasonObj.data[i].softwareIdentification['softwareName'];
+                    var simVer = jasonObj.data[i].softwareIdentification['softwareVersion'];
+                    var softType = jasonObj.data[i].softwareIdentification['softwareType'];
+                    if (softType.toLowerCase() == 'simulator') {
+                        model.append('<option value="' + encodeURIComponent(JSON.stringify(jasonObj.data[i])) + '">' + simDev + ',' + simName + ',' + simVer + '</option>');
+                    }
                 }
             }
             
@@ -460,11 +516,28 @@ function loadRegisteredModels(){
     });
 }
 
+function clearRegisteredModels() {
+    
+    var model = $('#model-combo');
+    model.attr('disabled', 'disabled');
+    model.empty();
+    model.append('<option value="select">Please select a disease...</option>');
+
+}
+
 jQuery(document).ready(function(){
     //    var jur = $('#jurisdiction-combo');
     //    jur.val('UNDEF');
-	
-    loadRegisteredModels();
+        
+    $('#disease-combo').change(function(){
+        var diseaseName = this.options[this.selectedIndex].value;
+        if (diseaseName != 'select') {
+            loadRegisteredModels();  
+        } else {
+            clearRegisteredModels();
+        }
+    })
+   
     //    var snomed = $('#snomed-ct-combo');
     //    snomed.val('UNDEF');
     //    snomed.attr('disabled', 'disabled');
@@ -560,15 +633,15 @@ jQuery(document).ready(function(){
     setTimeout("bottomBlankFix()", 50);
 
     //If the User resizes the window, adjust the #container height
-    $(window).resize(adjustMainDivSize);	
-	
+    $(window).resize(adjustMainDivSize);
+
     //layout splitter
     $('#main').layout({
         resizerClass : 'ui-state-default',
-        west__size : $('body').innerWidth() * 0.25, //width for the left panel
-        west__resizable : false,
+        west__size : $('body').innerWidth() * 0.29, //width for the left panel
+        west__resizable : true,
         west__closable : false,
-        south__resizable : false,
+        south__resizable : true,
         south__closable : false,
         west__onresize: function (pane, $Pane) {
             $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
@@ -625,12 +698,28 @@ jQuery(document).ready(function(){
         msg is the contents of the div */
         
         // copy messages from status divs 1 and 2 to 2 and 3, respectively
-        var status3Html = $("#status-div-3").html();
-        var status2Html = $("#status-div-2").html();
+        //        var status3Html = $("#status-div-3").html();
+        //        var status2Html = $("#status-div-2").html();
+        //        
+        //        $("#status-div-1").html(status2Html);
+        //        $("#status-div-2").html(status3Html);
+        //        $("#status-div-3").html(msg);
+        //        var psconsole = $('#statustextarea');
+        //        psconsole.val(psconsole.val() + '\n' + msg);
+        //        psconsole.scrollTop(
+        //            psconsole[0].scrollHeight - psconsole.height()
+        //            );
+        if (firstLinePrinted) {
+            firstLinePrinted = false;
+        } else {
+            msg = '<br>' + msg;
+        }
+        tinyMCE.get('statustextarea').selection.setContent(msg);
+        //        var height = document.getElementById('statustextarea' + '_ifr').scrollHeight;
+        //        console.log(height);
+        tinyMCE.get('statustextarea').getWin().scrollTo(0, 1000000);
 
-        $("#status-div-1").html(status2Html);
-        $("#status-div-2").html(status3Html);
-        $("#status-div-3").html(msg);
+
     }
     
     function addZero(n) {
@@ -638,7 +727,7 @@ jQuery(document).ready(function(){
         return n<10? '0'+n:''+n;
     }
     
-    function startVisualization(runId, simName, modelIndex, vizDev, vizName, vizVer) {
+    function startVisualization(runId, simName, runNumber, vizDev, vizName, vizVer) {
         
         $.ajax({
             type: "GET",
@@ -656,7 +745,7 @@ jQuery(document).ready(function(){
                 var name = jasonObj.data['visualizerName'];
                 var ver = jasonObj.data['visualizerVersion'];
 
-                waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName);
+                waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if (textStatus == 'timeout') {
@@ -672,7 +761,7 @@ jQuery(document).ready(function(){
         });
     }
     
-    function waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName) {
+    function waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName) {
         
         $.ajax({
             type: "GET",
@@ -685,16 +774,16 @@ jQuery(document).ready(function(){
             success: function(jasonObj, statusText){ /* called when request to barge.php completes */
                 jasonObj = $.parseJSON(jasonObj);
                 //                alert(jasonObj);
-                var status = jasonObj.data['status'];
-                var message = jasonObj.data['message'];
+                var status = jasonObj.data['status_normal'];
+                var message = jasonObj.data['message_normal'];
                 var date = new Date();
                 
-                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>VISUALIZER STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + runId  + " </i><b>VISUALIZER STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
 
                 if (status != 'completed') {
                     setTimeout(
                         function() {
-                            waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName)
+                            waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
@@ -726,14 +815,32 @@ jQuery(document).ready(function(){
                     }
 
                     //fillin the result so that tab can get it
-                    dataExchange.model_urls[modelIndex] = encUrls;
+                    dataExchange.model_urls[runId.toString()] = encUrls;
+
+                    // get run number
 
                     //create or select the tab for the result
-                    var resultID = "#result-" + simName;
-                    var incidenceID = "#incidence-" + simName;
-                    var gaiaID = "#gaia-" + simName;
-                    var combinedIncidenceID = "#combined-incidence";
+                    var resultID;
+                    runNumber = runNumber.toString();
+                    var diseaseStatesRunNumber;
+                    if (runNumber.indexOf(" and ") !== -1) {
+                        var splitRunNumber = runNumber.split(" and ");
+                        resultID = "#result-" + simName + "-" + splitRunNumber[1]; // tab ids can't use commas
+                        diseaseStatesRunNumber = splitRunNumber[1];
+                    } else {
+                        resultID = "#result-" + simName + "-" + runNumber; // tab ids can't use commas
+                        diseaseStatesRunNumber = runNumber;
+                    }
+                    
+                    resultID = resultID.replace(/\./g, "-"); // can't use periods
+                            
+                    var incidenceID = "#incidence-" + simName + "-" + runNumber.replace(/ and /g, "");
+                    incidenceID = incidenceID.replace(/\./g, "-"); // can't use periods
+                    var gaiaID = "#gaia-" + simName + "-" + runNumber;
+                    console.log(combinedRunNumber.replace(/ and /g, ""));
+                    var combinedIncidenceID = "#combined-incidence" + "-" + combinedRunNumber.replace(/ and /g, "");
 
+                    console.log('looping over urls');
                     for (key in urls) {
 
 
@@ -745,12 +852,17 @@ jQuery(document).ready(function(){
                                 $(resultID).empty();
                             } else {
                                 //create the tab
-                                maintab.tabs('add', resultID, simName + ': Disease states over time');
+                                console.log("creating disease states tab");
+                                console.log(resultID);
+                                console.log(simName);
+                                console.log(diseaseStatesRunNumber);
+                                maintab.tabs('add', resultID, simName + ' run ' +  diseaseStatesRunNumber + ': Disease states over time');
                             }
                     
-                    
+                            console.log("requesting disease states page");
                             //load the tab
-                            $(resultID, "#tabs").load('result.php?index=' + modelIndex);
+                            console.log(encodeURIComponent(runId));
+                            $(resultID, "#tabs").load('result.php?index=' + encodeURIComponent(runId));
                         } else if (key == 'Incidence') {
                             if ($(incidenceID).html() != null) {
                                 // select the tab
@@ -759,12 +871,12 @@ jQuery(document).ready(function(){
                                 $(incidenceID).empty();
                             } else {
                                 // create the tab
-                                maintab.tabs('add', incidenceID, simName + ': Incidence over time');
+                                maintab.tabs('add', incidenceID, simName + ' run ' + runNumber + ': Incidence over time');
                             }
                         
             
                             // load the tab
-                            $(incidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                            $(incidenceID, "#tabs").load('incidence.php?index=' + encodeURIComponent(runId));
                         } else if (key == 'Combined incidence') {
                             if ($(combinedIncidenceID).html() != null) {
                                 // select the tab
@@ -773,12 +885,12 @@ jQuery(document).ready(function(){
                                 $(combinedIncidenceID).empty();
                             } else {
                                 // create the tab
-                                maintab.tabs('add', combinedIncidenceID, 'All simulators: Incidence over time');
+                                maintab.tabs('add', combinedIncidenceID, 'Runs ' + combinedRunNumber + ': Incidence over time');
                             }
                         
             
                             // load the tab
-                            $(combinedIncidenceID, "#tabs").load('incidence.php?index=' + modelIndex);
+                            $(combinedIncidenceID, "#tabs").load('incidence.php?index=' + encodeURIComponent(runId));
                         }
                     
                         if (simName == 'FRED' && key == 'GAIA animation of Allegheny County') {
@@ -789,12 +901,14 @@ jQuery(document).ready(function(){
                                 $(gaiaID).empty();
                             } else {
                                 //create the tab
-                                maintab.tabs('add', gaiaID, simName + ': GAIA Visualization for Simulation');
+                                console.log('creating tab');
+                                maintab.tabs('add', gaiaID, simName + ' ' + runNumber + ': GAIA Visualization for Simulation');
                             }
-                    
-                    
+                                       
+                            console.log(runId);
+                            console.log(encodeURIComponent(runId));
                             //load the tab
-                            $(gaiaID, "#tabs").load('gaia.php?index=' + modelIndex);
+                            $(gaiaID, "#tabs").load('gaia.php?index=' + encodeURIComponent(runId));
                         }
                  
                     }
@@ -807,7 +921,7 @@ jQuery(document).ready(function(){
                         + "<b> ERROR: </b>" + "Could not call getStatus on " + vizName + ", retrying in 5 seconds.");
                     setTimeout(
                         function() {
-                            waitForVisualizations(runId, dev, name, ver, urls, simName, modelIndex, vizName)
+                            waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
@@ -818,7 +932,7 @@ jQuery(document).ready(function(){
 
     }
     
-    function waitForSimulationsAndStartVisualizations(obj, modelIndex) {
+    function waitForSimulationsAndStartVisualizations(obj, runNumber) {
         
         var runId = obj['runId'];
         var simDev = obj['simulatorDeveloper'];
@@ -837,26 +951,44 @@ jQuery(document).ready(function(){
 
             success: function(jasonObj, statusText){ /* called when request to barge.php completes */
                 jasonObj = $.parseJSON(jasonObj);
-                var status = jasonObj.data['status'];
-                var message = jasonObj.data['message'];
+                var status_norm = jasonObj.data['status_normal'];
+                var status_novacc = jasonObj.data['status_novacc'];
+                var message_norm = jasonObj.data['message_normal'];
+                var message_novacc = jasonObj.data['message_novacc'];
                 
                 var date = new Date();
                 
-                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>SIMULATOR STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                if (status_novacc == 'null') {
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>RUN ID: </b><i>" + runId +  " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                } else {
+                    var noVaccId = runId.split(";")[0];
+                    var vaccId = runId.split(";")[1];
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + noVaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + vaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_novacc  + " </i><b>MESSAGE: </b><i>" + message_novacc + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                }
                 
-                if (status != 'completed') {
+                if (status_norm != 'completed' || (status_novacc != 'null' && status_novacc != 'completed')) {
                     setTimeout(
                         function() {
-                            waitForSimulationsAndStartVisualizations(obj, modelIndex)
+                            waitForSimulationsAndStartVisualizations(obj, runNumber)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
                 } else {
                     finishedSimulators++;
-                    startVisualization(runId, simName, modelIndex, 'nick', 'viztest', '1.0');
-                    if (simName == 'FRED') {
-                        startVisualization(runId, simName, modelIndex, 'PSC', 'GAIA', '1.0');
-                    }
+                    startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0');
+                    // not running gaia yet
+//                    if (simName == 'FRED') {
+//                        if (runId.indexOf(";") !== -1) {
+//                            var runIds = runId.split(";");
+//                            var runNumbers = runNumber.split(" and ");
+//                            startVisualization(runIds[0], simName, runNumbers[1], 'PSC', 'GAIA', '1.0');
+//                            startVisualization(runIds[1], simName, runNumbers[0], 'PSC', 'GAIA', '1.0');
+//                        } else {
+//                            console.log('starting gaia visualization');
+//                            startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0');
+//                        }
+//                    }
                     //                    waitForVisualizations();
                                     
                     if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
@@ -873,7 +1005,7 @@ jQuery(document).ready(function(){
                         + "<b> Error: </b>" + "Could not call getStatus on " + simName + ", retrying in 5 seconds.");
                     setTimeout(
                         function() {
-                            waitForSimulationsAndStartVisualizations(obj, modelIndex)
+                            waitForSimulationsAndStartVisualizations(obj, runNumber)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
@@ -899,11 +1031,19 @@ jQuery(document).ready(function(){
         beforeSubmit : function(formData, jqForm, options) {
             //put the parameters value here
             try{
+                var simulatorArray;
+    
+                if ($('#model-combo').val() == null) {
+                    addmsg('<b>ERROR:</b> No epidemic simulator is selected');
+                    return;
+                } else {
+                    simulatorArray = $('#model-combo').val().toString().split(",");
+                }
                 
-                clearTabs();
+                //                clearTabs();
                 // get the current tree grid data
                 var grid = $(dataExchange.gridId);
-
+                    
                 //				var tmp = grid.find('input');
                 //                if (grid.find('input').length != 0){
                 //                    $(dataExchange.statusBar).html('Please save before create.');
@@ -912,21 +1052,60 @@ jQuery(document).ready(function(){
                 //
                 var rowData = grid.getRowData(); 
                 var timeStepUnit = $("#5_value").val(); // get the time step unit from the select
-                rowData[4]['value'] = timeStepUnit; // set the time step unit to store the value instead of html
-                var exportData = JSON.stringify(rowData);
+                var vaccNamedPriScheme = $("#35_value").val();
+                var useAvControlMeasure = $("#22_value").is(':checked');
+                var useVaccControlMeasure = $("#32_value").is(':checked');
+                var useSchoolClosure = $("#42_value").is(':checked');
+                var scReactiveTargetFacilities = $("#46_value").val();
+                var useSchoolReactiveCm = $("#43_value").is(':checked');
+                var useSchoolFixedCm = $("#52_value").is(':checked');
+                var scFixedTargetFacilities = $("#55_value").val();
 
+                rowData[4]['value'] = timeStepUnit; // set the time step unit to store the value instead of html
+                rowData[21]['value'] = useAvControlMeasure;
+                rowData[31]['value'] = useVaccControlMeasure;
+                rowData[34]['value'] = vaccNamedPriScheme;
+                rowData[41]['value'] = useSchoolClosure;
+                rowData[45]['value'] = scReactiveTargetFacilities;
+                rowData[42]['value'] = useSchoolReactiveCm;
+                rowData[51]['value'] = useSchoolFixedCm;
+                rowData[54]['value'] = scFixedTargetFacilities;
+                
+                // replace the rows with the same parameter name with an adjusted one
+                rowData[22]['pname'] = 'Antiviral Control Measure Compliance';
+                rowData[23]['pname'] = 'Antiviral Treatment Response Delay';
+                rowData[24]['pname'] = 'Antiviral Treatment Fixed Start Time'
+                   
+                rowData[32]['pname'] = 'Vaccination Control Measure Compliance';
+                rowData[33]['pname'] = 'Vaccination Response Delay';
+                rowData[34]['pname'] = 'Vaccination Named Prioritization Scheme';
+                rowData[35]['pname'] = 'Vaccination Fixed Start Time';
+                
+                rowData[43]['pname'] = 'School Closure Reactive Compliance';
+                rowData[44]['pname'] = 'School Closure Reactive Response Delay';
+                rowData[45]['pname'] = 'School Closure Reactive Target Facilities';
+                rowData[46]['pname'] = 'School Closure Reactive Duration';
+                
+                rowData[52]['pname'] = 'School Closure Fixed Compliance';
+                rowData[53]['pname'] = 'School Closure Fixed Response Delay';
+                rowData[54]['pname'] = 'School Closure Fixed Target Facilities';
+                rowData[55]['pname'] = 'School Closure Fixed Duration';
+                rowData[56]['pname'] = 'School Closure Fixed Start Time';
+                
+                var exportData = JSON.stringify(rowData);
                 var snomed = $('#snomed-ct-combo').val();
-                var simulatorArray = $('#model-combo').val().toString().split(",");
+            
                 
                 var simDev = '';
                 var simName = '';
                 var simVer = '';
                 
                 for (var i = 0; i < simulatorArray.length; i++) {
+                    //                    alert(simulatorArray[i]);
                     var obj = $.parseJSON(decodeURIComponent(simulatorArray[i]));
-                    simDev += "," + encodeURIComponent(obj.simulatorIdentification['simulatorDeveloper']);
-                    simName += "," + encodeURIComponent(obj.simulatorIdentification['simulatorName']);
-                    simVer += "," + encodeURIComponent(obj.simulatorIdentification['simulatorVersion']);
+                    simDev += "," + encodeURIComponent(obj.softwareIdentification['softwareDeveloper']);
+                    simName += "," + encodeURIComponent(obj.softwareIdentification['softwareName']);
+                    simVer += "," + encodeURIComponent(obj.softwareIdentification['softwareVersion']);
                 }
                 
                 dataExchange.model_urls = new Array();
@@ -960,7 +1139,7 @@ jQuery(document).ready(function(){
                 return true;
             }catch (err){
                 // set the error message
-                $(dataExchange.statusBar).html(err);
+                addmsg('<b>ERROR: </b>' + err);
                 return false;
             }
 
@@ -976,6 +1155,7 @@ jQuery(document).ready(function(){
                 return;
             }
 
+            console.log(jasonObj);
             // web service error
             if (jasonObj.exception != null) {
                 $(dataExchange.statusBar).html('Web service error: ' + jasonObj.exception);
@@ -987,28 +1167,51 @@ jQuery(document).ready(function(){
             numberOfVisualizations = 0;
             numberOfVisualizationsFinished = 0;
             var allRunIds = '';
+            var allRunNums = '';
             if (numSimulators > 1) {
                 numberOfVisualizations += 1; // one for the combined incidence
             }
             
+            //            alert(numSimulators);
             for (var i = 0; i < numSimulators; i++) {
 
                 var simulatorObj = jasonObj.data[i];
                 
                 var runId = simulatorObj['runId'];
+                
+                var runNumber = '';  
+                if (runId.indexOf(";") !== -1) {
+                    // multiple control measure run
+                    var runs = runId.split(";");
+                    var splitRunId1 = runs[0].split("_");
+                    var splitRunId2 = runs[1].split("_");
+                    runNumber = splitRunId2[splitRunId2.length - 1].trim() + ' and ' + splitRunId1[splitRunId1.length - 1].trim();
+                } else {
+                    var splitRunId =   runId.split("_");
+                    runNumber = splitRunId[splitRunId.length - 1];
+                }
+                       
+               
+                console.log(runId);
                 var simName = simulatorObj['simulatorName'];
                 allRunIds += ':' + runId;
+                allRunNums += ' and ' + runNumber;
                 
                 numberOfVisualizations += 1;
-                if (simName == 'FRED') {
-                    numberOfVisualizations += 1; // one for gaia
-                }
+                // not running gaia yet
+//                if (simName == 'FRED') {
+//                    if (runId.indexOf(";") !== -1) {
+//                        numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
+//                    } else {
+//                        numberOfVisualizations += 1; // one for gaia
+//                    }
+//                }
 
-                waitForSimulationsAndStartVisualizations(simulatorObj, i);
+                waitForSimulationsAndStartVisualizations(simulatorObj, runNumber);
             }
 
             combinedRunId = allRunIds.substring(1);
-            
+            combinedRunNumber = allRunNums.substring(5);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
