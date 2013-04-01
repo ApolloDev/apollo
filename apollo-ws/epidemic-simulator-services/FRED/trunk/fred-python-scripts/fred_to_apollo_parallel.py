@@ -18,7 +18,7 @@ def fillInfection(q,j,fred_run):
         run_number = infection_file.split("infections")[1].split(".")[0]
         print "Run = " + run_number
         infSet = fred_run.get_infection_set(int(run_number))
-        #print "Length = %d"%len(infSet.infectionList)
+        print "Length = %d"%len(infSet.infectionList)
         for i in range(0,len(infSet.infectionList)):
 		day = int(infSet.get('day',i))
 		infected_id = int(infSet.get('host',i))
@@ -160,20 +160,25 @@ if __name__ == '__main__':
     synth_pop_dir = os.path.expandvars(synth_pops_dir + "/2005_2009_ver2_"+location)
     #synth_pop_id = fred_run.get_param("synthetic_population_id")
     synth_pop_prefix = os.path.expandvars(synth_pop_dir +"/2005_2009_ver2_"+location)
-    synth_pop_filename = synth_pop_prefix + "_synth_people.txt.fsz"
+    synth_pop_filename = synth_pop_prefix + "_synth_people.txt"
+    synth_pop_filename_fsz = synth_pop_filename + ".fsz"
     synth_household_filename = synth_pop_prefix + "_synth_households.txt"
     
-    try:
-        open(synth_pop_filename,"r")
-    except IOError:
-        print "Problem opening FRED population file " + synth_pop_filename
-        sys.exit(1)
+    #try:
+    #    open(synth_pop_filename,"r")
+    #except IOError:
+    #    print "Problem opening FRED population file " + synth_pop_filename
+    #    sys.exit(1)
 	
-    tmpFilename = synth_pop_dir + "/tmp.txt"
-    os.system("fsz -u " + synth_pop_filename + " > " + tmpFilename) 
-    fred_population = FRED_People_Set(tmpFilename)
-   
-    os.remove(tmpFilename)
+    fred_population = None
+    if os.path.exists(synth_pop_filename_fsz):
+    	tmpFilename = synth_pop_dir + "/tmp.txt"
+    	os.system("fsz -u " + synth_pop_filename + " > " + tmpFilename) 
+	fred_population = FRED_People_Set(tmpFilename)
+        os.remove(tmpFilename)
+    else:
+	fred_population = FRED_People_Set(synth_pop_filename)
+ 
     numDays = fred_run.get_param("days")
     aveInfByBG = []
     fipsList = []
@@ -250,7 +255,7 @@ if __name__ == '__main__':
 				     +'"' + str(day) + '", '\
 				     +'"' + str(int(aveInfByBG[day][fips])) + '"),'
 		    SQLString = SQLString[:-1]
-			    
+	            print "SQLSTring = " + SQLString		    
 	            apolloDB.query(SQLString)
                 
 	time2 = time.time()
