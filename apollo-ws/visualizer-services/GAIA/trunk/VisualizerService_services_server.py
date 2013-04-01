@@ -14,7 +14,7 @@ class VisualizerService(ServiceSOAPBinding):
 <wsdl:definitions name=\"VisualizerService\" targetNamespace=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:tns=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">
 	<wsdl:types>
 		<xsd:schema targetNamespace=\"http://service.apollo.pitt.edu/visualizerservice/\" xmlns:apollo=\"http://types.apollo.pitt.edu/\">
-			<xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"apollo-types.xsd\">
+			<xsd:import namespace=\"http://types.apollo.pitt.edu/\" schemaLocation=\"http://research.rods.pitt.edu/apollo-types.xsd\">
 			</xsd:import>
 			<xsd:element name=\"run\">
 				<xsd:complexType>
