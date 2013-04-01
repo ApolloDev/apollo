@@ -7,6 +7,7 @@
 
 define('AROOT', getcwd());
 require_once AROOT . '/apollo/apollo.inc';
+require_once AROOT . '/ChromePhp/ChromePhp.php';
 $ret = new Response();
 
 $apollo = new apollo();
@@ -54,6 +55,7 @@ $UrlOutputResourceList = null;
 
 
 //if ($vizName != 'GAIA') {
+ChromePhp::log($apolloResponse);
     $UrlOutputResourceList = $apolloResponse->visualizerResult->visualizerOutputResource;
     $diseaseStatesURL = '';
     $incidenceURL = '';
