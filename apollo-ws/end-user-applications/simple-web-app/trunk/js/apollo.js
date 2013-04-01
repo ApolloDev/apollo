@@ -715,6 +715,13 @@ jQuery(document).ready(function(){
         } else {
             msg = '<br>' + msg;
         }
+        
+        msg = msg + '<span id="caret_pos_holder"></span>';
+        
+        // the span helps set the caret position to the end
+        tinyMCE.get('statustextarea').selection.select(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //select the span
+        tinyMCE.get('statustextarea').dom.remove(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //remove the span
+       
         tinyMCE.get('statustextarea').selection.setContent(msg);
         //        var height = document.getElementById('statustextarea' + '_ifr').scrollHeight;
         //        console.log(height);
@@ -727,7 +734,60 @@ jQuery(document).ready(function(){
         
         return n<10? '0'+n:''+n;
     }
-    
+    function getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber) {
+        //        $.ajax({
+        //            type: "GET",
+        //            url: "configuration_file_text.php?runId=" + runId + "&dev=" + simDev + "&name=" + simName + "&ver=" + simVer,
+        //
+        //            async: true, /* If set to non-async, browser shows page as "Loading.."*/
+        //            cache: false,
+        //            timeout:50000, /* Timeout in ms */
+        //
+        //            success: function(text, statusText){ /* called when request to barge.php completes */
+        //                jasonObj = $.parseJSON(jasonObj);
+                
+        var tabid;
+        runNumber = runNumber.toString();
+  
+        if (runNumber.indexOf(" and ") !== -1) {
+            var splitRunNumber = runNumber.split(" and ");
+            tabid = "#formatted-text-" + simName + "-" + splitRunNumber[1]; // tab ids can't use commas
+              
+        } else {
+            tabid = "#formatted-text-" + simName + "-" + runNumber; // tab ids can't use commas
+ 
+        }
+        tabid = tabid.replace(/\./g, "-"); // can't use periods
+        console.log('tabid: ' + tabid);
+                    
+        if($(tabid).html() != null ) {
+            //select the tab
+            maintab.tabs('select', tabid);
+            //clear current tab content
+            $(tabid).empty();
+        } else {
+            //create the tab
+                              
+            maintab.tabs('add', tabid, simName + ' run ' +  runNumber + ': Configuration file');
+        }
+      
+        $(tabid, "#tabs").load('configuration_file_text.php?modelIndex=' + encodeURIComponent(runId) + "&runId=" + encodeURIComponent(runId)
+            + "&dev=" + simDev + "&name=" + simName + "&ver=" + simVer);
+                
+    //            },
+    //            error: function(XMLHttpRequest, textStatus, errorThrown){
+    //                if (textStatus == 'timeout') {
+    //                    var date = new Date();
+    //                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
+    //                        + " <b> ERROR: </b>" + "Could not call run on " + simName + ", please run epidemic simulator again.");
+    //                //                }
+    //                //                                setTimeout(
+    //                //                                    poll, /* Try again after.. */
+    //                //                                    15000); /* milliseconds (15seconds) */
+    //                }
+    //            }
+    //        });
+    }
     function startVisualization(runId, simName, runNumber, vizDev, vizName, vizVer) {
         
         $.ajax({
@@ -837,9 +897,12 @@ jQuery(document).ready(function(){
                             
                     var incidenceID = "#incidence-" + simName + "-" + runNumber.replace(/ and /g, "");
                     incidenceID = incidenceID.replace(/\./g, "-"); // can't use periods
+                    
                     var gaiaID = "#gaia-" + simName + "-" + runNumber;
-                    console.log(combinedRunNumber.replace(/ and /g, ""));
+                    gaiaID = gaiaID.replace(/\./g, "-"); // can't use periods
+                    
                     var combinedIncidenceID = "#combined-incidence" + "-" + combinedRunNumber.replace(/ and /g, "");
+                    combinedIncidenceID = combinedIncidenceID.replace(/\./g, "-"); // can't use periods
 
                     console.log('looping over urls');
                     for (key in urls) {
@@ -853,10 +916,6 @@ jQuery(document).ready(function(){
                                 $(resultID).empty();
                             } else {
                                 //create the tab
-                                console.log("creating disease states tab");
-                                console.log(resultID);
-                                console.log(simName);
-                                console.log(diseaseStatesRunNumber);
                                 maintab.tabs('add', resultID, simName + ' run ' +  diseaseStatesRunNumber + ': Disease states over time');
                             }
                     
@@ -957,6 +1016,8 @@ jQuery(document).ready(function(){
                 var message_norm = jasonObj.data['message_normal'];
                 var message_novacc = jasonObj.data['message_novacc'];
                 
+           
+                
                 var date = new Date();
                 
                 if (status_novacc == 'null') {
@@ -978,23 +1039,25 @@ jQuery(document).ready(function(){
                 } else {
                     finishedSimulators++;
                     startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0');
+                    //                    if (simName != 'FRED') {
+                    getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber);
+                    //                    }
                     // not running gaia yet
-//                    if (simName == 'FRED') {
-//                        if (runId.indexOf(";") !== -1) {
-//                            var runIds = runId.split(";");
-//                            var runNumbers = runNumber.split(" and ");
-//                            startVisualization(runIds[0], simName, runNumbers[1], 'PSC', 'GAIA', '1.0');
-//                            startVisualization(runIds[1], simName, runNumbers[0], 'PSC', 'GAIA', '1.0');
-//                        } else {
-//                            console.log('starting gaia visualization');
-//                            startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0');
-//                        }
-//                    }
-                    //                    waitForVisualizations();
-                                    
-                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
-                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
+                    if (simName == 'FRED') {
+                        if (runId.indexOf(";") !== -1) {
+                            var runIds = runId.split(";");
+                            var runNumbers = runNumber.split(" and ");
+                            startVisualization(runIds[0], simName, runNumbers[1], 'PSC', 'GAIA', '1.0');
+                            startVisualization(runIds[1], simName, runNumbers[0], 'PSC', 'GAIA', '1.0');
+                        } else {
+                            startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0');
+                        }
                     }
+                //                    waitForVisualizations();
+                                    
+                //                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
+                //                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
+                //                    }
                  
                 }
             },
@@ -1200,13 +1263,13 @@ jQuery(document).ready(function(){
                 
                 numberOfVisualizations += 1;
                 // not running gaia yet
-//                if (simName == 'FRED') {
-//                    if (runId.indexOf(";") !== -1) {
-//                        numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
-//                    } else {
-//                        numberOfVisualizations += 1; // one for gaia
-//                    }
-//                }
+                if (simName == 'FRED') {
+                    if (runId.indexOf(";") !== -1) {
+                        numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
+                    } else {
+                        numberOfVisualizations += 1; // one for gaia
+                    }
+                }
 
                 waitForSimulationsAndStartVisualizations(simulatorObj, runNumber);
             }
