@@ -32,6 +32,7 @@ from threading import Thread
 def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile):
 	time1 = time.time()
 	apolloSimOutput = ApolloSimulatorOutput(vc._visualizationOptions._runId)
+	print "Got sim output"
 	timeSeriesOutput = \
                apolloSimOutput.getNewlyInfectedTimeSeriesWithinLocation(vc._visualizationOptions._location)
 	time2 = time.time()
@@ -47,6 +48,7 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
         borderPercents = [0.0,0.05,0.10,0.20,0.40,0.60,1.1]
         with open(gaiaStyleFileName,"wb") as f:
             f.write("id=1\n")
+	    f.write("legend-support=1\n")
             for i in range(0,len(borderPercents)-1):
                 f.write("%s 1.0 %d %d\n"%(colors[i],int(borderPercents[i]*maxValue+1),
                                           int(borderPercents[i+1]*maxValue)))
@@ -67,14 +69,19 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
                 #for count in timeSeriesOutput[pop]:
                 tcount = 1
                 for count in timeSeriesOutput[pop]:
-                    if count != 0:
+		    ### THIS IS A HACK because FRED at the moment
+		    ### IS overcompensating on Day 0
+		    if tcount == 1:
+			if count != 0:
+				f.write("USFIPS st%s.ct%s.tr%s.bl%s %d %d:1\n"\
+                               	 	%(st,ct,tr,bg,1,tcount))
+                    elif count != 0:
                         f.write("USFIPS st%s.ct%s.tr%s.bl%s %d %d:1\n"\
                                 %(st,ct,tr,bg,count,tcount))
                     tcount += 1
 
                 if tcount > maxTCount: maxTCount = tcount
 
-	    print "MaxTCount = " + str(maxTCount)
             for i in range(0,maxTCount):
                 f.write("USFIPS st42.ct003.tr*.bl* -1 %d:-1\n"%i)
 
@@ -83,7 +90,9 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
                             styles_filenames_ = [gaiaStyleFileName],
                             output_format_="gif",
                             bundle_format_="ogg",
-                            max_resolution_ = 1000)
+                            max_resolution_ = 1000,
+			    legend_="Number of Incident Infections",
+			    legend_font_size_ = 16.0)
 
         gaia = GAIA(plotInfo)
         print "Calling GAIA"
@@ -132,7 +141,7 @@ class GaiaWebService(VisualizerService):
             gaiaStyleFileName = "gaia.style.%d.txt"%timeStamp
             gaiaOutputFileName = "gaia.output.%d"%timeStamp
             gaiaOutWDirFileName = "/home/4/stbrown/GAIA/" + gaiaOutputFileName
-
+            print "Gaia Style File NAme = " + gaiaStyleFileName
 	    t = Thread(target=ApolloToGaia,args=(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile))
             t.start()
 	   
