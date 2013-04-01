@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/simulatorservice/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SimulatorService"
-	targetNamespace="http://service.apollo.pitt.edu/simulatorservice/">
+	xmlns:tns="http://service.apollo.pitt.edu/simulatorservice/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="SimulatorService" targetNamespace="http://service.apollo.pitt.edu/simulatorservice/">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/simulatorservice/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
-            <xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import>
-            <xsd:element name="run">
 
+			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			</xsd:import>
+			<xsd:element name="run">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="simulatorConfiguration" type="apollo:SimulatorConfiguration" />
@@ -16,40 +17,66 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="runResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId" />
+						<xsd:element name="runId" type="apollo:RunIdentification" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatus">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunId"></xsd:element>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getRunStatusResponse">
-
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
+						<xsd:element name="runStatus" type="apollo:RunStatus">
+						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getSupportedLocations">
 				<xsd:complexType>
-					<xsd:sequence>
-					</xsd:sequence>
+					<xsd:sequence></xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getSupportedLocationsResponse">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="supportedPopluationLocations" type="apollo:SupportedPopulationLocation"
-							maxOccurs="unbounded" minOccurs="1"></xsd:element>
+							maxOccurs="unbounded" minOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="batchRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRunSimulatorConfiguration" type="apollo:BatchRunSimulatorConfiguration"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="batchRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="batchRun" type="apollo:BatchRunResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -73,6 +100,18 @@
 	<wsdl:message name="getSupportedLocationsResponse">
 		<wsdl:part name="parameters" element="tns:getSupportedLocationsResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="batchRunRequest">
+		<wsdl:part name="parameters" element="tns:batchRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="batchRunResponse">
+		<wsdl:part name="parameters" element="tns:batchRunResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getConfigurationFileForRunResponse">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="SimulatorServiceEI">
 		<wsdl:operation name="run">
 			<wsdl:input message="tns:runRequest" />
@@ -86,12 +125,22 @@
 			<wsdl:input message="tns:getSupportedLocationsRequest"></wsdl:input>
 			<wsdl:output message="tns:getSupportedLocationsResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<wsdl:input message="tns:batchRunRequest"></wsdl:input>
+			<wsdl:output message="tns:batchRunResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="SimulatorServiceBinding" type="tns:SimulatorServiceEI">
+	<wsdl:binding name="SimulatorServiceBinding"
+		type="tns:SimulatorServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="run">
-			<soap:operation soapAction="http://service.apollo.pitt.edu/simulatorservice/run" />
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/run" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -112,6 +161,26 @@
 		<wsdl:operation name="getSupportedLocations">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/simulatorservice/getSupportedLocations" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="batchRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/batchRun" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
