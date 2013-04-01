@@ -7,7 +7,7 @@
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/simulatorservice/"
 			xmlns:apollo="http://types.apollo.pitt.edu/">
 
-			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			<xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
 			</xsd:import>
 			<xsd:element name="run">
 				<xsd:complexType>
