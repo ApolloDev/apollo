@@ -162,12 +162,12 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
         $TargetPriorityPopulation->label = 'newly sick';
         $TargetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
         $TargetPriorityPopulation->priority = 1;
-        
+
         $PopulationStrataDefinition = new stdClass();
         $DiseaseState = 'newly_sick';
         $PopulationStrataDefinition->diseaseStates = $DiseaseState;
         $TargetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
-        
+
         $antiviralTreatmentControlMeasure->controlMeasureTargetPopulationsAndPrioritization = $TargetPriorityPopulation;
 
         $AntiviralTreatmentControlMeasureVar = new SoapVar($antiviralTreatmentControlMeasure,
@@ -290,9 +290,8 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     // Assign the control measures to the simulator configuration
     $SimulatorConfiguration->controlMeasures = $ControlMeasures;
 
-    $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
-
-    $runId = $apolloResponse->runId;
+//    $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
+//    $runId = $apolloResponse->runId;
 //    ChromePhp::log($client->__getLastRequest());
 //    if ($useVaccinationControlMeasure == 'true') {
 //
@@ -370,9 +369,12 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    }
 //    $runId = '';
 //    if (urldecode($simulatorName) == 'FRED') {
-//        $runId = 'UPitt,PSC,CMU_FRED_2.0.1_unicron.psc.edu1364583570';
+//        $runId = 'UPitt,PSC,CMU_FRED_2.0.1_unicron.psc.edu1364838234';
 //    } else {
-//        $runId = 'UPitt_SEIR_1.0_329;UPitt_SEIR_1.0_328';
+//        $runId = 'UPitt_SEIR_1.2_4045';
+        $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
+//
+        $runId = $apolloResponse->runId;
 //    }
 
     $ret['runId'] = $runId;
