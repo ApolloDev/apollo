@@ -311,6 +311,26 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="generateSyntheticPopulation">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/generateSyntheticPopulation" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/getConfigurationFileForRun" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="ApolloService">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
