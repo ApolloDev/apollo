@@ -24,6 +24,7 @@ import datetime,dateutil.parser
 import time
 import math
 from threading import Thread
+from ApolloUtils import *
 
 class FredSSHConn:
     def __init__(self,debug=False):
@@ -495,11 +496,25 @@ class FredSSHConn:
     def createLocalRunScript(self,Id_):
 	LocalList = []
 	LocalList.append('#!/bin/csh\n')
+	LocalList.append('while ( -e /tmp/.lock1 && -e /tmp/.lock2)\n')
+	LocalList.append('sleep 1\n')
+	LocalList.append('end\n')
+
+	LocalList.append('set lockfile = ""\n')
+	LocalList.append('if( ! -e /tmp/.lock1 ) then\n')
+	LocalList.append('   touch /tmp/.lock1\n')
+	LocalList.append('   set lockfile = /tmp/.lock1\n')
+	LocalList.append('else if ( ! -e /tmp.lock2 ) then\n')
+	LocalList.append('   touch /tmp/.lock2\n')
+	LocalList.append('  set lockfile = /tmp.lock2\n')
+	LocalList.append('endif\n')
+
 	LocalList.append('echo `date` > starttime\n')
 	LocalList.append('### Generate Timestamp for ID\n')
 	LocalList.append('fred_job -p fred_input.params -n 4 -t 2 -m 4 -k %s$id > out.run\n'%Id_)
 	LocalList.append('touch .dbloading\n')
 	LocalList.append('python $FRED_HOME/bin/fred_to_apollo_parallel.py -k %s$id >& out.db\n'%Id_)
+	LocalList.append('rm -rf $lockfile\n')
 	LocalList.append('rm -rf .dbloading\n')
 
 	return ('').join(LocalList)
@@ -565,7 +580,7 @@ def ShiftedWeibull(x,gamma,lamb,shift=0.0):
 		*math.pow((xShift/lamb),(gamma-1.0))\
 		*math.exp(-pow((xShift/lamb),gamma)))
 class FredInputFileSet:
-    def __init__(self,cfg_,inpDir_,fipsCountDict_,srvc_):
+    def __init__(self,cfg_,inpDir_,fipsCountDict_,srvc_=None):
 	self.fileList = []
 	self.cfg = cfg_
 	self.inpDir = inpDir_
@@ -578,16 +593,16 @@ class FredInputFileSet:
 	#self.create_param()
 	#self.parse_control_measures()
 
-
     def createParam(self):
+	apolloUtils = ApolloUtils()
 	### Start the params file
 	os.chdir(self.inpDir)
 	#get the number of time steps in the simulation
 	run_length = self.cfg._simulatorTimeSpecification._runLength
 	totPop = float(self.fipsCountDict[self.cfg._populationInitialization._populationLocation])
-	fractionRecovered = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg, "ignoreed", "recovered"))	
-	fractionExposed = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","exposed"))
-	fractionInfectious = float(self.srvc.utils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","infectious"))
+	fractionRecovered = float(apolloUtils.getPopFractionGivenLocationAndDiseaseState(self.cfg, "ignoreed", "recovered"))	
+	fractionExposed = float(apolloUtils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","exposed"))
+	fractionInfectious = float(apolloUtils.getPopFractionGivenLocationAndDiseaseState(self.cfg,"ingnoreed","infectious"))
 	#print "fractions:  %g %g %g"%(fractionRecovered,fractionExposed,fractionInfectious)
 	
 	
@@ -760,10 +775,75 @@ class FredInputFileSet:
 
 	os.chdir('..')
 
+class FredBatchInputs:
+    def __init__(self):
+	self.cfgList = []
+	self.inputDict = {}
+	self.batchId = None
+
+    def setupFromURL(self,url):
+	### Get zip file
+	#self.setupFromJSonZip(
+	pass
+    def setupFromJSonZip(self,jSonZipFile):
+	import zipfile
+	
+	zf = zipfile.ZipFile(jsonZipFile)
+	zf.extractall()
+
+    def setupFromJsonListFile(self,jsonListFile_):
+	try:
+	    import jsonpickle
+	except ImportError:
+	    raise RuntimeError("ERROR: Need to have the jsonpickle module to use FREDBatchInputs.setupFromJsonFile")
+
+	with open(jsonListFile_,"rb") as f:
+	    for json in f.readlines():
+		print "|"+str(json)+"|"
+		jsonObj = jsonDict2Obj(jsonpickle.decode(json))
+		print dir(jsonObj)
+		self.cfgList.append(jsonDict2Obj(jsonObj))
+
+
+	fipsCountDict = {}
+	with open("2005_2009_ver2_pop_counts_by_fips.txt","rb") as f:
+	    for line in f:
+		fipsCountDict[line.split()[0]] = int(line.split()[1].strip())
+		
+	dirCount = 0
+	for cfg in self.cfgList:
+	    print dir(cfg)
+	    fredDir = "fred.tmp.%d"%dirCount
+	    if os.path.exists(fredDir) is False:
+		os.mkdir(fredDir)
+	    fredInput = FredInputFileSet(cfg,fredDir,fipsCountDict)
+	    fredInput.createParam()
+	    dirCount += 1
+
+	
+	
+def jsonDict2Obj(d):
+    if isinstance(d, list):
+	d = [jsonDict2Obj(x) for x in d]
+    if not isinstance(d, dict):
+	return d
+    class C(object):
+	pass
+    o = C()
+    for k in d:
+	o.__dict__['_'+k] = jsonDict2Obj(d[k])
+    return o
+
 def main():
     import random
     import time
+
+    ### STB to do: Unit test parsings
+    ## Test the FREDInputBatch
+    fredBatch = FredBatchInputs()
+    fredBatch.setupFromJsonListFile("sample_json_simulator_configuration.txt")
     
+    sys.exit()
     ### Test on Blacklight
     fredConn = FredSSHConn(debug=True)
     fredConn._setup(machine="blacklight.psc.xsede.org",
