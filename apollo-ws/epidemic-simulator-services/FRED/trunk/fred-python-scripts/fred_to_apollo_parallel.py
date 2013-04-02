@@ -103,13 +103,16 @@ if __name__ == '__main__':
 	    concList = []
 	    ### First the params List
 	    concList.append("===== FRED Parameter File =======\n")
-	    for keyV,value in fred_run.params_dict.items():
-		concList.append("%s = %s\n"%(keyV,value))
+	    with open(fred_run.run_params_file,"rb") as f:
+		for line in f.readlines():
+		    concList.append(line)
+#	    for keyV,value in fred_run.params_dict.items():
+#		concList.append("%s = %s\n"%(keyV,value))
 
 	    ### Next add all of the files in the working directory that should be
 	    for workingFile in workingFiles:
 		if os.path.basename(workingFile) not in exclusionList:
-		    concList.append("====== %s =======\n"%workingFile)
+		    concList.append("====== %s =======\n"%os.path.basename(workingFile))
 		    with open(workingFile,"rb") as f:
 			for line in f:
 			    concList.append(line)
@@ -129,7 +132,9 @@ if __name__ == '__main__':
 	apolloDB.query(SQLString)
     	runInsertID = apolloDB.insertID()
 
-    	stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered'}
+    	stateList = {'S':'susceptible','E':'exposed','I':'infectious','R':'recovered',
+		     'V':'received vaccine control measure','Av':'received antiviral control measure',
+		     'ScCl':'school that is closed'}
     	#locationList = ['42003'] # need to replace with an automatic way of getting this info
 	locationList = [fred_run.get_param('fips')]
     	stateInsertIDDict = {}
@@ -147,13 +152,14 @@ if __name__ == '__main__':
     	for state in stateList.keys():
 	    for location in locationList:
 		for day in outputsAve:
-		    populationID = stateInsertIDDict[(state,location)]
-		    SQLString = 'INSERT INTO time_series set '\
+                    if state in day.keys():
+			    populationID = stateInsertIDDict[(state,location)]
+			    SQLString = 'INSERT INTO time_series set '\
 				+'run_id = "' + str(runInsertID) + '", '\
 				+'population_id = "' + str(populationID) + '", '\
 				+'time_step = "' + str(day['Day']) +'", '\
 				+'pop_count = "' + str(day[state]) + '"'
-		    apolloDB.query(SQLString)
+			    apolloDB.query(SQLString)
 	
 
     synth_pops_dir = fred_run.get_param("synthetic_population_directory")
@@ -255,7 +261,7 @@ if __name__ == '__main__':
 				     +'"' + str(day) + '", '\
 				     +'"' + str(int(aveInfByBG[day][fips])) + '"),'
 		    SQLString = SQLString[:-1]
-	            print "SQLSTring = " + SQLString		    
+		#print "SQLSTring = " + SQLString		    
 	            apolloDB.query(SQLString)
                 
 	time2 = time.time()
