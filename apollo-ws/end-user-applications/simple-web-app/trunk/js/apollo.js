@@ -1256,9 +1256,9 @@ jQuery(document).ready(function(){
             numberOfVisualizationsFinished = 0;
             var allRunIds = '';
             var allRunNums = '';
-            if (numSimulators > 1) {
-                numberOfVisualizations += 1; // one for the combined incidence
-            }
+//            if (numSimulators > 1) {
+//                numberOfVisualizations += 1; // one for the combined incidence
+//            }
             
             //            alert(numSimulators);
             for (var i = 0; i < numSimulators; i++) {
@@ -1282,10 +1282,13 @@ jQuery(document).ready(function(){
                
                 console.log(runId);
                 var simName = simulatorObj['simulatorName'];
-                allRunIds += ':' + runId;
-                allRunNums += ' and ' + runNumber;
                 
-                if (simName != 'FluTE') { // flute has no visualizations
+               
+                
+                if (simName != 'FluTE') { // flute has no visualizations and shouldn't be in the combined variables
+                    
+                    allRunIds += ':' + runId;
+                    allRunNums += ' and ' + runNumber;
                     numberOfVisualizations += 1;
                 }
                 
