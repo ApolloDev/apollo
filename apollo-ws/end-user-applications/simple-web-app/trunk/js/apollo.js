@@ -234,9 +234,9 @@ function loadParamGrid(){
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
-                        value: "None:None;ACIP:ACIP",
+                        value: "None:None;ACIP:ACIP;tpp:Described",
                         dataInit: function(elem) {
-                            $(elem).width(75);  // set the width which you need
+                            $(elem).width(88);  // set the width which you need
                         }
                     };
                     paramGrid.jqGrid('editRow', i);
@@ -418,18 +418,23 @@ function loadParamGrid(){
 
 function changeDiseaseStateValues(popLocationValue) {
     
+    var pop;
     if (popLocationValue.toLowerCase() == 'usa') {
-        var usaPop = 300000000;
-        paramGrid.jqGrid('setCell',11,'value', (usaPop * 0.94859).toString(), '');
-        paramGrid.jqGrid('setCell',12,'value', (usaPop * 0.00538).toString(), '');
-        paramGrid.jqGrid('setCell',13,'value', (usaPop * 0.00603).toString(), '');
-        paramGrid.jqGrid('setCell',14,'value', (usaPop * 0.04).toString(), '');
-    } else if (popLocationValue == '42003') {
-        paramGrid.jqGrid('setCell',11,'value', '1155854', '');
-        paramGrid.jqGrid('setCell',12,'value', '6550', '');
-        paramGrid.jqGrid('setCell',13,'value', '7350', '');
-        paramGrid.jqGrid('setCell',14,'value', '48740', '');
+        pop = 300000000;
+    } else if (popLocationValue == '42003') { // allegheny
+        pop = 1218494;
+    } else if (popLocationValue == '53003') { // king county, wa
+        pop = 1931249;
+    } else if (popLocationValue == '06037') { // la county, ca
+        pop = 9818605;
+    } else {
+        return;
     }
+    
+    paramGrid.jqGrid('setCell',11,'value', Math.round((pop * 0.94859)).toString(), '');
+    paramGrid.jqGrid('setCell',12,'value', Math.round((pop * 0.00538)).toString(), '');
+    paramGrid.jqGrid('setCell',13,'value', Math.round((pop * 0.00603)).toString(), '');
+    paramGrid.jqGrid('setCell',14,'value', Math.round((pop * 0.04)).toString(), '');
 }
 
 function createOrSelectInsturctionTab(){
@@ -768,7 +773,13 @@ jQuery(document).ready(function(){
         } else {
             //create the tab
                               
-            maintab.tabs('add', tabid, simName + ' run ' +  runNumber + ': Configuration file');
+            if (simName == 'FluTE' && runId == 'verbose') {
+                maintab.tabs('add', tabid, simName + ': Verbose configuration file');
+            } else if (simName == 'FluTE' && runId == 'nonverbose') {
+                maintab.tabs('add', tabid, simName + ': Non-verbose configuration file');
+            } else {
+                maintab.tabs('add', tabid, simName + ' run ' +  runNumber + ': Configuration file');
+            }
         }
       
         $(tabid, "#tabs").load('configuration_file_text.php?modelIndex=' + encodeURIComponent(runId) + "&runId=" + encodeURIComponent(runId)
@@ -788,11 +799,11 @@ jQuery(document).ready(function(){
     //            }
     //        });
     }
-    function startVisualization(runId, simName, runNumber, vizDev, vizName, vizVer) {
+    function startVisualization(runId, simName, runNumber, vizDev, vizName, vizVer, location) {
         
         $.ajax({
             type: "GET",
-            url: "exec_visualization.php?runId=" + runId + "&vizDev=" + vizDev + "&vizName=" + vizName + "&vizVer=" + vizVer,
+            url: "exec_visualization.php?runId=" + runId + "&vizDev=" + vizDev + "&vizName=" + vizName + "&vizVer=" + vizVer + "&location=" + location,
 
             async: true, /* If set to non-async, browser shows page as "Loading.."*/
             cache: false,
@@ -992,7 +1003,7 @@ jQuery(document).ready(function(){
 
     }
     
-    function waitForSimulationsAndStartVisualizations(obj, runNumber) {
+    function waitForSimulationsAndStartVisualizations(obj, runNumber, location) {
         
         var runId = obj['runId'];
         var simDev = obj['simulatorDeveloper'];
@@ -1032,28 +1043,41 @@ jQuery(document).ready(function(){
                 if (status_norm != 'completed' || (status_novacc != 'null' && status_novacc != 'completed')) {
                     setTimeout(
                         function() {
-                            waitForSimulationsAndStartVisualizations(obj, runNumber)
+                            waitForSimulationsAndStartVisualizations(obj, runNumber, location)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
                 } else {
                     finishedSimulators++;
-                    startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0');
+                   
                     //                    if (simName != 'FRED') {
-                    getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber);
+                    if (simName == 'FluTE') {
+                        getConfigurationFileForRun("verbose", simName, simDev, simVer, runNumber); 
+                        getConfigurationFileForRun("nonverbose", simName, simDev, simVer, runNumber + "_2"); 
+                    } else {
+                        getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber); 
+                    }
+                    if (simName != 'FluTE') {
+                        startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0', location);
+                    }
                     //                    }
                     // not running gaia yet
-                    if (simName == 'FRED') {
+                    if (simName == 'FRED' && location == '42003') {
                         if (runId.indexOf(";") !== -1) {
                             var runIds = runId.split(";");
                             var runNumbers = runNumber.split(" and ");
-                            startVisualization(runIds[0], simName, runNumbers[1], 'PSC', 'GAIA', '1.0');
-                            startVisualization(runIds[1], simName, runNumbers[0], 'PSC', 'GAIA', '1.0');
+                            startVisualization(runIds[0], simName, runNumbers[1], 'PSC', 'GAIA', '1.0', location);
+                            startVisualization(runIds[1], simName, runNumbers[0], 'PSC', 'GAIA', '1.0', location);
                         } else {
-                            startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0');
+                            startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0', location);
                         }
                     }
-                //                    waitForVisualizations();
+                    //                    waitForVisualizations();
+                                    
+                    console.log(finishedSimulators + "  " + numSimulators);
+                    if (finishedSimulators == numSimulators && numberOfVisualizations == 0) {
+                        $('#create').button( "option", "disabled", false );
+                    }
                                     
                 //                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
                 //                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
@@ -1104,7 +1128,7 @@ jQuery(document).ready(function(){
                     simulatorArray = $('#model-combo').val().toString().split(",");
                 }
                 
-                //                clearTabs();
+                clearTabs();
                 // get the current tree grid data
                 var grid = $(dataExchange.gridId);
                     
@@ -1261,9 +1285,13 @@ jQuery(document).ready(function(){
                 allRunIds += ':' + runId;
                 allRunNums += ' and ' + runNumber;
                 
-                numberOfVisualizations += 1;
+                if (simName != 'FluTE') { // flute has no visualizations
+                    numberOfVisualizations += 1;
+                }
+                
+                var location = simulatorObj['location'];
                 // not running gaia yet
-                if (simName == 'FRED') {
+                if (simName == 'FRED' && location == '42003') {
                     if (runId.indexOf(";") !== -1) {
                         numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
                     } else {
@@ -1271,7 +1299,8 @@ jQuery(document).ready(function(){
                     }
                 }
 
-                waitForSimulationsAndStartVisualizations(simulatorObj, runNumber);
+                
+                waitForSimulationsAndStartVisualizations(simulatorObj, runNumber, location);
             }
 
             combinedRunId = allRunIds.substring(1);
