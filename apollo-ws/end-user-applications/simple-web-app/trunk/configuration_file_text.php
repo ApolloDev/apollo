@@ -53,7 +53,10 @@ if ($name != "FRED") {
     $text = $response->configurationFile;
 //    ChromePhp::log($text);
 
-    $text = str_replace(" ", "&nbsp;&nbsp;&nbsp;", $text);
+  
+    if ($name != "FluTE") {
+        $text = str_replace(" ", "&nbsp;&nbsp;&nbsp;", $text);
+    } 
     $text = nl2br(urldecode($text));
 } else {
 
@@ -89,10 +92,13 @@ if ($name != "FRED") {
 //    $ret->data = $statText;
 //    echo json_encode($ret);
 //}
+
+print $text;
 ?>
 
-<html><head></head>
+
+<!--<html><head></head>
     <body>
         <div id="formatted-text-<?php print $index; ?>"><?php print $text; ?></div>
     </body>
-</html>
+</html>-->
