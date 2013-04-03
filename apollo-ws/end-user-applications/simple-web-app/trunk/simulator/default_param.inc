@@ -304,7 +304,7 @@ function get_default_param_structure() {
     $pvalue = '0';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Control Measure Response Delay']], 1, ++$left, ++$left, true, false));
 
-    $pname = 'Control Measure Named Prioritization Scheme';
+    $pname = 'Control Measure Prioritization Scheme';
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
