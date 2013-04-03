@@ -121,6 +121,10 @@ html,body {
 
 .ui-state-default {border: 1px solid #99cccc;}
 
+/*.ui-widget-content {
+    border: none;
+}*/
+
 .mceToolbar {
     display: none;
 }

@@ -27,6 +27,7 @@
  */
 require_once AROOT . '/apollo/type.inc';
 require_once AROOT . '/apollo/apollo.inc';
+//require_once AROOT . '/chromephp/ChromePhp.php';
 
 //require_once AROOT . '/simulator/constant.inc';
 
@@ -92,21 +93,21 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration->simulatorTimeSpecification = $SimulatorTimeSpecification;
 //      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
-    $totalPopulation = $params['Susceptible'] + $params['Exposed'] + $params['Infectious'] + $params['Recovered'];
+    $totalPopulation = floatval($params['Susceptible']) + floatval($params['Exposed']) + floatval($params['Infectious']) + floatval($params['Recovered']);
     $SimulatedPopulation = new stdClass();
     $SimulatedPopulation->populationLocation = $params['PopulationLocation'];
     $SPopulationDiseaseState = new stdClass();
     $SPopulationDiseaseState->diseaseState = 'Susceptible';
-    $SPopulationDiseaseState->fractionOfPopulation = $params['Susceptible'] / $totalPopulation;
+    $SPopulationDiseaseState->fractionOfPopulation = floatval($params['Susceptible']) / $totalPopulation;
     $EPopulationDiseaseState = new stdClass();
     $EPopulationDiseaseState->diseaseState = 'Exposed';
-    $EPopulationDiseaseState->fractionOfPopulation = $params['Exposed'] / $totalPopulation;
+    $EPopulationDiseaseState->fractionOfPopulation = floatval($params['Exposed']) / $totalPopulation;
     $IPopulationDiseaseState = new stdClass();
     $IPopulationDiseaseState->diseaseState = 'Infectious';
-    $IPopulationDiseaseState->fractionOfPopulation = $params['Infectious'] / $totalPopulation;
+    $IPopulationDiseaseState->fractionOfPopulation = floatval($params['Infectious']) / $totalPopulation;
     $RPopulationDiseaseState = new stdClass();
     $RPopulationDiseaseState->diseaseState = 'Recovered';
-    $RPopulationDiseaseState->fractionOfPopulation = $params['Recovered'] / $totalPopulation;
+    $RPopulationDiseaseState->fractionOfPopulation = floatval($params['Recovered']) / $totalPopulation;
     $SimulatedPopulation->populationDiseaseState = array($SPopulationDiseaseState, $EPopulationDiseaseState, $IPopulationDiseaseState,
         $RPopulationDiseaseState);
     $SimulatorConfiguration->populationInitialization = $SimulatedPopulation;
@@ -148,13 +149,13 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
         $AntiviralEfficacy[] = $params['AntiviralTreatmentEfficacy'];
         $TreatmentEfficacyOverTime->efficacyValues = $AntiviralEfficacy;
         $AntiviralTreatment->antiviralTreatmentEfficacy = $TreatmentEfficacyOverTime;
-        $AntiviralTreatment->description = 'treatment';
-        $AntiviralTreatment->antiviralId = 'id';
-        $AntiviralTreatment->hostOrganism = 'organism';
+        $AntiviralTreatment->description = 'treatment of newly symptomatic influenza cases with Tamiflu to reduce infectiousness';
+        $AntiviralTreatment->antiviralId = 'tamiflu';
+        $AntiviralTreatment->hostOrganism = 'human';
         $AntiviralTreatment->numDosesInTreatmentCourse = 1;
         $antiviralTreatmentControlMeasure->antiviralTreatment = $AntiviralTreatment;
         $antiviralTreatmentControlMeasure->controlMeasureCompliance = $params['AntiviralControlMeasureCompliance'];
-        $antiviralTreatmentControlMeasure->description = 'antiviral';
+        $antiviralTreatmentControlMeasure->description = 'antiviral treatment of newly sick during H1N1 outbreak';
         $antiviralTreatmentControlMeasure->controlMeasureResponseDelay = 0.0;
         $antiviralTreatmentControlMeasure->treatmentReactiveEndPointFraction = 1.0;
 
@@ -194,22 +195,195 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
         $useFixedStartTimeControlMeasures = true;
         $vaccinationControlMeasure->vaccineSupplySchedule = $params['VaccinationSupplySchedule'];
         $vaccinationControlMeasure->vaccinationAdministrationCapacity = $params['VaccinationAdministrationSchedule'];
+        
+        $scheme = $params['VaccinationNamedPrioritizationScheme'];
+        if ($scheme == "tpp") {
+
+            $TargetPriorityPopulations = array();
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "healthcare and emergency services personnel defined as a fraction of working age individuals";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 17;
+            $AgeRange->upperBound = 75;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.07;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "pregnant women defined as a fraction of reproductive age women";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 17;
+            $AgeRange->upperBound = 50;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $Genders = array();
+            $Genders[] = "F";
+            $PopulationStrataDefinition->genders = $Genders;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.06;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "household members and caregivers of infants < 6months defined within the simulator procedurally";
+            $targetPriorityPopulation->targetPopulationDefinitionEnum = "household_member_of_infant";
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.07;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "high risk preschoolers defined as a fraction of preschoolers";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 0;
+            $AgeRange->upperBound = 4;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.089;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "high risk school-age children defined as a fraction of  school-age children";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 5;
+            $AgeRange->upperBound = 18;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.089;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "high risk young adults defined as a fraction of young adults";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 19;
+            $AgeRange->upperBound = 29;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.212;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "high risk older adults defined as a fraction of older adults";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 30;
+            $AgeRange->upperBound = 65;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.212;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "high risk elderly defined as a fraction of elderly";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 65;
+            $AgeRange->upperBound = 200;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 0.0;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "preschoolers defined as children under 5";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 0;
+            $AgeRange->upperBound = 4;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "school-age children defined as children age 5-18";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 5;
+            $AgeRange->upperBound = 18;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "young adults defined as ages 19-29";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 19;
+            $AgeRange->upperBound = 29;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
+            $targetPriorityPopulation->priority = 1;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "older adults defined as people age 30-65";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 30;
+            $AgeRange->upperBound = 65;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
+            $targetPriorityPopulation->priority = 2;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+            $targetPriorityPopulation = new stdClass();
+            $targetPriorityPopulation->label = "elderly defined as people age 65 and older";
+            $PopulationStrataDefinition = new stdClass();
+            $AgeRange = new stdClass();
+            $AgeRange->lowerBound = 65;
+            $AgeRange->upperBound = 200;
+            $PopulationStrataDefinition->ageRanges = $AgeRange;
+            $targetPriorityPopulation->targetPopulationDefinition = $PopulationStrataDefinition;
+            $targetPriorityPopulation->fractionOfTargetPopulationToPrioritize = 1.0;
+            $targetPriorityPopulation->priority = 0;
+            $TargetPriorityPopulations[] = $targetPriorityPopulation;
+
+//            ChromePhp::log($TargetPriorityPopulations[0]->targetPopulationDefinition->ageRanges->upperBound);
+
+            $vaccinationControlMeasure->controlMeasureTargetPopulationsAndPrioritization = $TargetPriorityPopulations;
+        } else {
+            $vaccinationControlMeasure->controlMeasureNamedPrioritizationScheme = $scheme;
+        }
         $Vaccination = new stdClass();
         $TreatmentEfficacyOverTime = new stdClass();
         $VaccinationEfficacy = array();
         $VaccinationEfficacy[] = $params['VaccineEfficacy'];
         $TreatmentEfficacyOverTime->efficacyValues = $VaccinationEfficacy;
         $Vaccination->vaccinationEfficacy = $TreatmentEfficacyOverTime;
-        $Vaccination->description = 'treatment';
-        $Vaccination->vaccineId = 'id';
-        $Vaccination->hostOrganism = 'organism';
+        $Vaccination->description = 'single-dose vaccination of human with univalent H1N1 vaccine';
+        $Vaccination->vaccineId = 'H1N1';
+        $Vaccination->hostOrganism = 'human';
         $Vaccination->numDosesInVaccinationCourse = $params['NumberofDosesinVaccinationCourse'];
         $vaccinationControlMeasure->vaccination = $Vaccination;
         $vaccinationControlMeasure->controlMeasureCompliance = $params['VaccinationControlMeasureCompliance'];
-        $vaccinationControlMeasure->description = 'vaccination';
+        
+        if ($scheme == 'None') {
+            $vaccinationControlMeasure->description = 'mass vaccination';
+        } else if ($scheme == 'ACIP') {
+            $vaccinationControlMeasure->description = '2009 ACIP H1N1 vaccination prioritization';
+        } else {
+           $vaccinationControlMeasure->description = 'vaccination'; 
+        }
+        
         $vaccinationControlMeasure->controlMeasureResponseDelay = $params['VaccinationResponseDelay'];
         $vaccinationControlMeasure->vaccinationReactiveEndPointFraction = $params['VaccinationReactiveEndPointFraction'];
-        $vaccinationControlMeasure->controlMeasureNamedPrioritizationScheme = $params['VaccinationNamedPrioritizationScheme'];
 
         $VaccinationControlMeasureVar = new SoapVar($vaccinationControlMeasure,
                         SOAP_ENC_OBJECT,
@@ -234,12 +408,19 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
             $ReactiveControlMeasure = new stdClass();
             $schoolClosureControlMeasure = new SchoolClosureControlMeasure();
             $schoolClosureControlMeasure->schoolClosureDuration = $params['SchoolClosureReactiveDuration'];
-            $schoolClosureControlMeasure->schoolClosureTargetFacilities = $params['SchoolClosureReactiveTargetFacilities'];
+            $schoolClosureTargetFacilities = $params['SchoolClosureReactiveTargetFacilities'];
+            $schoolClosureControlMeasure->schoolClosureTargetFacilities = $schoolClosureTargetFacilities;
             $schoolClosureControlMeasure->controlMeasureResponseDelay = $params['SchoolClosureReactiveResponseDelay'];
             $schoolClosureControlMeasure->controlMeasureCompliance = $params['SchoolClosureReactiveCompliance'];
             $schoolClosureControlMeasure->controlMeasureNamedPrioritizationScheme = 'none';
-            $schoolClosureControlMeasure->description = 'school closure';
 
+            if ($schoolClosureTargetFacilities == "All") {
+                $schoolClosureControlMeasure->description = 'All schools within the location of the simulation close when the disease incidence in the most affected school exceeds a threshold. The schools stay closed for 8 weeks';
+            } else if ($schoolClosureTargetFacilities == 'Individual') {
+                $schoolClosureControlMeasure->description = "Each school within the location of the simulation closes when the disease incidence in its student and faculty population exceeds a threshold.  A school stays closed for 8 weeks";
+            } else {
+                $schoolClosureControlMeasure->description = "school closure";
+            }
             $SchoolClosureControlMeasureVar = new SoapVar($schoolClosureControlMeasure,
                             SOAP_ENC_OBJECT,
                             get_class($schoolClosureControlMeasure),
@@ -267,7 +448,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
             $schoolClosureControlMeasure->controlMeasureResponseDelay = $params['SchoolClosureFixedResponseDelay'];
             $schoolClosureControlMeasure->controlMeasureCompliance = $params['SchoolClosureFixedCompliance'];
             $schoolClosureControlMeasure->controlMeasureNamedPrioritizationScheme = 'none';
-            $schoolClosureControlMeasure->description = 'school closure';
+            $schoolClosureControlMeasure->description = 'All schools within the location of the simulation close at time zero of the simulation.  The schools stay closed for 8 weeks';
 
             $SchoolClosureControlMeasureVar = new SoapVar($schoolClosureControlMeasure,
                             SOAP_ENC_OBJECT,
@@ -372,15 +553,16 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //        $runId = 'UPitt,PSC,CMU_FRED_2.0.1_unicron.psc.edu1364838234';
 //    } else {
 //        $runId = 'UPitt_SEIR_1.2_4045';
-        $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
+    $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
 //
-        $runId = $apolloResponse->runId;
+    $runId = $apolloResponse->runId;
 //    }
 
     $ret['runId'] = $runId;
     $ret['simulatorDeveloper'] = $SoftwareIdentification->softwareDeveloper;
     $ret['simulatorName'] = $SoftwareIdentification->softwareName;
     $ret['simulatorVersion'] = $SoftwareIdentification->softwareVersion;
+    $ret['location'] = $SimulatedPopulation->populationLocation;
 
     return $ret;
 }
