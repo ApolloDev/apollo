@@ -17,6 +17,7 @@ $runId = $_GET ['runId'];
 $vizDev = $_GET['vizDev'];
 $vizName = $_GET['vizName'];
 $vizVer = $_GET['vizVer'];
+//$location = $_GET['location'];
 
 //ChromePhp::log($vizDev);
 //ChromePhp::log($vizName);
