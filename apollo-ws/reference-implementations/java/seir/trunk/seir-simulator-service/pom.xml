@@ -12,12 +12,19 @@
     <name>-- SEIR SimulatorService Web Service Provider</name>
     <packaging>bundle</packaging>
 
-<!--	<repositories>
-		<repository>
-			<id>apollo</id>
-			<url>http://research.rods.pitt.edu/repo</url>
-		</repository>
-	</repositories>-->
+    <repositories>
+	
+        <repository>
+            <id>sardine-google-svn-repo</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <name>Sardine maven repo at Google Code</name>
+            <url>http://sardine.googlecode.com/svn/maven/</url>
+        </repository>
+    </repositories>
+
+
 
     <dependencies>
         <dependency>
@@ -40,6 +47,18 @@
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.googlecode.sardine</groupId>
+            <artifactId>sardine</artifactId>
+            <version>314</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>  
             
 		
 <!--		<dependency>
