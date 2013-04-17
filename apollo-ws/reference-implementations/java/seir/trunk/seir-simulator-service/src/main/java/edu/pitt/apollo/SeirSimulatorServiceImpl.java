@@ -40,7 +40,6 @@ import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
 import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SimulatorConfiguration;
-//import edu.pitt.apollo.types.SimulatorIdentification;
 import edu.pitt.apollo.types.SoftwareIdentification;
 import edu.pitt.apollo.types.SupportedPopulationLocation;
 import edu.pitt.rods.apollo.SeirModelAdapter.DbUtils;
@@ -162,6 +161,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
             Thread worker = new SimulatorThread(simulatorConfiguration, simConfigHash, runId,
                     simConfigJson, !runIdProps.isRunIdInDatabase(), false, true);
             QueueThread queueThread = new QueueThread(worker);
+            System.out.println("starting queued thread");
             queueThread.start();
 
             return runId;
@@ -207,7 +207,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
         BatchRunResult result = new BatchRunResult();
 
-        result.setCompletedFile(md5RunIdHash + "_results.txt");
+        result.setCompletedFile("https://betaweb.rods.pitt.edu/jdl50_web_dav-source/" + md5RunIdHash + "_results.txt");
 //            result.setErrorFile(md5RunIdHash + "_errors.txt");
         result.setRunId(runId);
 
@@ -318,11 +318,26 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-//            mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             mapper.writeValue(baos, simConfig);
 
             return baos;
+        } catch (IOException ex) {
+            System.err.println("IO Exception JSON encoding and getting string from SimulatorConfiguration");
+            return null;
+        }
+    }
+    
+        public static String getJSONString(SimulatorConfiguration simConfig) {
+        try {
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//            mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mapper.writeValue(baos, simConfig);
+
+            return baos.toString();
         } catch (IOException ex) {
             System.err.println("IO Exception JSON encoding and getting bytes from SimulatorConfiguration");
             return null;
@@ -366,7 +381,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         c.getSoftwareIdentification().setSoftwareDeveloper("DevName");
         c.getSoftwareIdentification().setSoftwareName("Fake Simulator");
         c.getSoftwareIdentification().setSoftwareVersion("1.0");
-        c.setBatchConfigurationFile("http://localhost:8080/apollo/test.json");
+        c.setBatchConfigurationFile("http://localhost:8080/apollo/test_3.json");
         BatchRunResult result = s.batchRun(c);
 
         while (true) {
