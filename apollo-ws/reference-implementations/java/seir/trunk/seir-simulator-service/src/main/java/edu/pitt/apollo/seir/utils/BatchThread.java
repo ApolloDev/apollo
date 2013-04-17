@@ -1,5 +1,7 @@
 package edu.pitt.apollo.seir.utils;
 
+import com.googlecode.sardine.Sardine;
+import com.googlecode.sardine.SardineFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import edu.pitt.apollo.types.RunStatus;
 import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +54,7 @@ public class BatchThread extends Thread {
             RunUtils.setStarted(batchRunIdMd5Hash);
 
             // create completed file
-            String runIdResultsFilePath = RunUtils.getWorkDir(batchRunIdMd5Hash) + result.getCompletedFile();
+            String runIdResultsFilePath = RunUtils.getWorkDir(batchRunIdMd5Hash) + batchRunIdMd5Hash + "_results.txt";
             File resultsFile = new File(runIdResultsFilePath);
             PrintStream ps = new PrintStream(resultsFile);
 
@@ -89,7 +92,6 @@ public class BatchThread extends Thread {
                 String runId = runIdProps.getRunId();
 
                 // this should never store anything to the database
-                System.out.println("creating thread");
                 Thread worker = new SimulatorThread(sc, simConfigHash, runId,
                         simConfigJson, true, true, false);
 
@@ -123,7 +125,18 @@ public class BatchThread extends Thread {
 //                    String message = "Run is complete";
                     if (!(status == RunStatusEnum.RUNNING || (status == RunStatusEnum.FAILED && message.equalsIgnoreCase("unknown run")))) {
                         finishedRunIDs.add(simulatorRunId);
-                        String text = simulatorRunId + "\t" + status + "\t" + message;
+
+                        String resultsTextForLine = "";
+                        String results = RunUtils.getResultsString(simulatorRunId);
+                        if (results == null) {
+                            System.err.println("Error: there was no results file for runID " + simulatorRunId);
+                        } else {
+                            String[] resultsArray = results.split(",");
+                            resultsTextForLine = resultsArray[0] + "\t" + resultsArray[1] + "\t" + resultsArray[2]
+                                    + "\t" + "not_simulated" + "\t" + resultsArray[3] + "\t" + resultsArray[4];
+                        }
+
+                        String text = simulatorRunId + "\t" + status + "\t" + message + "\t" + resultsTextForLine;
                         lineWaitingToBeWritten.put(i, text);
                     }
 
@@ -139,6 +152,15 @@ public class BatchThread extends Thread {
 
             ps.flush();
             ps.close();
+
+            Sardine sardine = SardineFactory.begin();
+            try {
+                InputStream fis2 = new FileInputStream(resultsFile);
+                sardine.put("https://betaweb.rods.pitt.edu/jdl50_web_dav-source/" + resultsFile.getName(), fis2);
+                fis2.close();
+            } catch (IOException ex) {
+                System.err.println("Could not create file input stream");
+            }
 
             RunUtils.setFinished(batchRunIdMd5Hash);
         } catch (Exception e) {
