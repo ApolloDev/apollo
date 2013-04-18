@@ -35,7 +35,7 @@ require_once AROOT . '/util/shared_parameters.inc';
 require_once AROOT . '/apollo/type.inc';
 require_once AROOT . '/apollo/apollo.inc';
 
-//require_once AROOT . '/chromephp/ChromePhp.php';
+require_once AROOT . '/chromephp/ChromePhp.php';
 //for cell
 // total is 11
 // predefine is 6
@@ -77,8 +77,15 @@ function get_default_param_structure() {
         "Reactive Control Measure Threshold" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000131>",
         "Ascertainment Fraction" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000135>",
         "Ascertainment Delay" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000134>",
-        
-        
+        "Exposed" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000038>",
+        "Susceptible" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000072>",
+        "Infectious" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000040>",
+        "Recovered" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000041>",
+        "Number of Doses in Vaccination Course" => "not_defined",
+        "Fixed Start Time" => "not_defined",
+        "Treatment Reactive End Point Fraction" => "not_defined",
+        "Number of Doses in Treatment Course" => "not_defined",
+        "Control Measure Prioritization Scheme" => "not_defined",
     );
 
     $left = 0;
@@ -104,10 +111,11 @@ function get_default_param_structure() {
     foreach ($lines as $line_num => $line) {
         $splitLine = explode("\t", $line);
 //        $line = mb_convert_encoding($line, "UTF-8");
-        $toolTipTermArray[$splitLine[0]] = $splitLine[3];
+        $toolTipTermArray[$splitLine[0]] = trim($splitLine[2]);
 //        if ($line_num == 14) {
 //        }
     }
+    $toolTipTermArray["not_defined"] = "Definition not defined in ontology";
 
     $defaultRunLength = 150;
 
@@ -198,8 +206,7 @@ function get_default_param_structure() {
     $pname = 'Exposed';
     $pvalue = '6550';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Exposed']], 1, ++$left, ++$left, true, false));
-
-
+    
     $pname = 'Infectious';
     $pvalue = '7350';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Infectious']], 1, ++$left, ++$left, true, false));
@@ -251,7 +258,7 @@ function get_default_param_structure() {
 
     $pname = 'Fixed Start Time';
     $pvalue = '0';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Fixed Start Time']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Antiviral Supply Schedule';
     $pvalue = array();
@@ -276,11 +283,11 @@ function get_default_param_structure() {
 
     $pname = 'Number of Doses in Treatment Course';
     $pvalue = '1';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Number of Doses in Treatment Course']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Treatment Reactive End Point Fraction';
     $pvalue = '1.0';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Treatment Reactive End Point Fraction']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Target Populations and Prioritization';
     $pvalue = '';
@@ -306,11 +313,11 @@ function get_default_param_structure() {
 
     $pname = 'Control Measure Prioritization Scheme';
     $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Control Measure Prioritization Scheme']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Fixed Start Time';
     $pvalue = '0';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Fixed Start Time']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Vaccination Supply Schedule';
     $pvalue = array();
@@ -345,7 +352,7 @@ function get_default_param_structure() {
 
     $pname = 'Number of Doses in Vaccination Course';
     $pvalue = '1';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Number of Doses in Vaccination Course']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Vaccination Reactive End Point Fraction';
     $pvalue = '1.0';
@@ -414,7 +421,7 @@ function get_default_param_structure() {
 
     $pname = 'Fixed Start Time';
     $pvalue = '0';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 2, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Fixed Start Time']], 2, ++$left, ++$left, true, false));
 
 
     // extra row to help fix hidden scroll bar on OSX
