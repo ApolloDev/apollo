@@ -35,7 +35,7 @@ require_once AROOT . '/util/shared_parameters.inc';
 require_once AROOT . '/apollo/type.inc';
 require_once AROOT . '/apollo/apollo.inc';
 
-require_once AROOT . '/chromephp/ChromePhp.php';
+//require_once AROOT . '/chromephp/ChromePhp.php';
 //for cell
 // total is 11
 // predefine is 6
