@@ -91,13 +91,13 @@
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000119">
-        <rdfs:label>definition source</rdfs:label>
-        <rdfs:label xml:lang="en">definition source</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000232">
         <rdfs:label>curator note</rdfs:label>
         <rdfs:label xml:lang="en">curator note</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000119">
+        <rdfs:label>definition source</rdfs:label>
+        <rdfs:label xml:lang="en">definition source</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -178,14 +178,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:range>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
-                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
-                </unionOf>
-            </Class>
-        </rdfs:range>
         <rdfs:domain>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +186,14 @@
                 </unionOf>
             </Class>
         </rdfs:domain>
+        <rdfs:range>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
+                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                </unionOf>
+            </Class>
+        </rdfs:range>
     </ObjectProperty>
     
 
@@ -497,12 +497,12 @@
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -512,9 +512,9 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
             <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
+        </oboInOwl:hasDefinition>
     </ObjectProperty>
     
 
@@ -527,15 +527,15 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1500,6 +1500,30 @@ It is worth noting that there are control measures such as closing schools that 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000034 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000034">
+        <rdfs:label xml:lang="en">simulation of organism</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000070"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                        <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;participates_in"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:comment>a simulation that is about an organism</rdfs:comment>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000038 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000038">
@@ -1532,7 +1556,7 @@ It is worth noting that there are control measures such as closing schools that 
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that has acquired a particular simulated disease but is not yet able to transmit the disease to another simulated organism.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of an infectious agent host that is not contagious and is part of a simulated population.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">exposed</apollo_sv:APOLLO_SV_0000040>
@@ -1615,7 +1639,7 @@ It is worth noting that there are control measures such as closing schools that 
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that has acquired a particular simulated disease and is able to transmit the disease to another simulated organism.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of an infectious organism host that is contagious.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious</apollo_sv:APOLLO_SV_0000040>
@@ -1655,7 +1679,7 @@ It is worth noting that there are control measures such as closing schools that 
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is neither susceptible, exposed, nor infectious for a particular simulated disease. 
 Note that the name for this concept, were it to be named based on its intent, would be ‘immune.’  However, in the practice domain of epidemiology this concept is traditionally termed ‘recovered.’  The problem with the traditional name is that organisms can be considered ‘recovered’ by virtue of having been vaccinated, which differs from lay usage.
 </obo:IAO_0000600>
@@ -2074,7 +2098,7 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
 
     <Class rdf:about="&obo;APOLLO_SV_00000053">
         <rdfs:label xml:lang="en">simulation of organism awaiting control measure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <disjointWith rdf:resource="&obo;APOLLO_SV_00000058"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “eligible, willing and able” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “eligible, willing and able” to participate with a particular control measure.</obo:IAO_0000115>
@@ -2152,7 +2176,21 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
 
     <Class rdf:about="&obo;APOLLO_SV_00000058">
         <rdfs:label xml:lang="en">simulation of organism not awaiting control measure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000034"/>
+                    <Class>
+                        <complementOf>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;participates_in"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000029"/>
+                            </Restriction>
+                        </complementOf>
+                    </Class>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is “ineligible, unwilling or unable” to participate with a particular simulated control measure.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that is assumed “ineligible, unwilling or unable” to participate with a particular control measure.</obo:IAO_0000115>
         <rdfs:comment xml:lang="en">MB: APOLLO_SV_00000053 and APOLLO_SV_00000058 have not been given a class restriction, since they are not expressible in BFO right now, due to their referring to &quot;will&quot;. Both classes have been made disjoint in the OWL file, though.</rdfs:comment>
@@ -2216,7 +2254,7 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000115 xml:lang="en">A simulated organism that  participates in a particular control measure that has not yet been effective.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">This concept represents a simulated organism that has received a control measure such as vaccination in which a period of time must elapse before the benefit of the control measure accrues.  A simulated organism is ‘awaiting efficacy’ if ‘efficacy delay’ (e.g. the concept ‘antiviral efficacy delay’ for the particular simulated control measure is greater than the elapsed time between application of the control measure and the current simulated time.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">awaiting effect of control measure</apollo_sv:APOLLO_SV_0000040>
@@ -2357,7 +2395,7 @@ Maybe we need to discuss this.
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population has participated in a particular simulated control measure. (e.g. an organism received antiviral treatment)</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of an organism in a simulated population that has participated in an epidemic control measure.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">received control measure</apollo_sv:APOLLO_SV_0000040>
@@ -2589,7 +2627,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that is capable of acquiring a particular simulated disease.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of a susceptible organism in a simulated population.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">susceptible organism</apollo_sv:APOLLO_SV_0000040>
@@ -2615,7 +2653,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that has at least one symptom caused by a particular simulated disease.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of a symptomatic infectious agent host.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">symptomatic</apollo_sv:APOLLO_SV_0000040>
@@ -2641,7 +2679,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that has no symptoms caused by a particular simulated disease.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of an asymptomatic infectious agent host.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">asymptomatic</apollo_sv:APOLLO_SV_0000040>
@@ -2805,7 +2843,14 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000117">
         <rdfs:label xml:lang="en">vaccine identifier</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000219"/>
+                <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccine </obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">An identifier that refers to a type of vaccine, i.e., one of a class of manufactured vaccines that public health would consider interchangable.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2825,6 +2870,12 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000119">
         <rdfs:label xml:lang="en">vaccination identifier</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000219"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000033"/>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000115>a unique identifier that refers to a protocol for vaccinating one person</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccination protocol (the process of vaccinating one person)</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination ID</apollo_sv:APOLLO_SV_0000040>
@@ -2859,7 +2910,13 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000122">
         <rdfs:label xml:lang="en">antiviral identifier</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
-        <obo:IAO_0000115>a unique identifier that refers to an antiviral drug</obo:IAO_0000115>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000219"/>
+                <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
+            </Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115>a unique identifier that refers to an antiviral drug product</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for an antiviral drug</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2924,7 +2981,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000128">
         <rdfs:label xml:lang="en">control measure target population fraction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <rdfs:comment>a specification of a population that a control measure applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control measure program seeks to enroll or prioritize</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2990,9 +3047,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000134">
         <rdfs:label xml:lang="en">ascertainment delay</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000033"/>
         <obo:IAO_0000600 xml:lang="en">Number of time steps it takes medical personnel to ascertain a symptomatic individual from onset of symptoms</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment delay</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">per Mike Wagner, this is input</rdfs:comment>
     </Class>
     
 
@@ -3001,9 +3059,24 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000135">
         <rdfs:label xml:lang="en">ascertainment fraction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IAO_0000027"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000034"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;OBI_0200000"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">Fraction of all symptomatic individuals who will be ascertained</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment fraction</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">fraction of simulated organisms (usually infected) that a surveillance system detects from simulated organism in the population of the same type in the population</rdfs:comment>
     </Class>
     
 
@@ -3034,7 +3107,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000138">
         <rdfs:label xml:lang="en">antiviral course</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000005"/>
         <obo:IAO_0000600 xml:lang="en">The quantity of antiviral drug used to treat one individual</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral course</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3045,9 +3118,31 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000139">
         <rdfs:label xml:lang="en">control measure compliance</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IAO_0000109"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000029"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure compliance</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">the class restriction can be made more precise AH</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">the fraction of a individuals who receive or participate in an offered control measure</obo:IAO_0000600>
+        <rdfs:comment>the fraction of some population that is targeted for a control measure that accepts it.  It can obviously also be interpreted as a probability that the average individual in the targeted population accepts the CM.  It is not simulated</rdfs:comment>
     </Class>
     
 
@@ -3306,13 +3401,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
