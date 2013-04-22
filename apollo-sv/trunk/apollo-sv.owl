@@ -91,13 +91,13 @@
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -497,12 +497,12 @@
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -512,9 +512,9 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
             <rdf:Description/>
-        </oboInOwl:hasDefinition>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -527,15 +527,15 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1520,6 +1520,17 @@ It is worth noting that there are control measures such as closing schools that 
             </Class>
         </equivalentClass>
         <rdfs:comment>a simulation that is about an organism</rdfs:comment>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000036 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000036">
+        <rdfs:label xml:lang="en">normal distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A continuous probability distribution in which the parameter μ is the mean or expectation of the distribution and the parameter σ is its standard deviation</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">normal distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2698,6 +2709,94 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000076 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000076">
+        <rdfs:label xml:lang="en">μ</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">the mean or expectation of a distribution</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">μ</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000077 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000077">
+        <rdfs:label xml:lang="en">σ</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">standard deviation</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">σ</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000078 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000078">
+        <rdfs:label xml:lang="en">beta distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A continuous probability distribution in which the parameter μ is the mean or expectation of the distribution and the parameter σ is its standard deviation</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">beta distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000079 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000079">
+        <rdfs:label xml:lang="en">log normal distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">a continuous probability distribution over variable X whose parameters denoted μ and σ are, respectively, the mean and standard deviation of the variable’s natural logarithm</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">log normal distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000080 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000080">
+        <rdfs:label xml:lang="en">uniform distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">uniform distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000081 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000081">
+        <rdfs:label xml:lang="en">triangular distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">a continuous probability distribution with lower limit a, upper limit b and mode c, where a &lt; b and a &lt;= c &lt;= b.</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">triangular distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000082 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000082">
+        <rdfs:label xml:lang="en">Bayesian network</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Bayesian network</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">a discrete probability distribution</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000083 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000083">
+        <rdfs:label xml:lang="en">temporal Bayesian network</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">a discrete probability distribution that conditions on time</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">temporal Bayesian network</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000085 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000085">
@@ -3401,13 +3500,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -3489,13 +3588,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
