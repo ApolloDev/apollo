@@ -182,8 +182,8 @@ Index page for the Apollo Test Client
                     </ul>
                     <div id="tabs-1">
                         Welcome to the Simple End-user Apollo App! <br /><br />
-                        Use the panels on the left to select one or more epidemic simulators to run and the configuration settings the
-                        simulators will use. 
+                        Use the panels on the left to select the disease "Influenza", and a list of simulators will appear. Then select one or more epidemic simulators to run and the configuration settings the
+                        simulators will use. Click the "Run Epidemic Simulator(s)" button to run the selected simulators.
                         The default settings correspond to the 2009 H1N1 Influenza outbreak in Allegheny County, PA, on the
                         specific date of September 12, 2009.<br /><br />
 
