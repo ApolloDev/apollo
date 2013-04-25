@@ -111,7 +111,7 @@ function get_default_param_structure() {
     foreach ($lines as $line_num => $line) {
         $splitLine = explode("\t", $line);
 //        $line = mb_convert_encoding($line, "UTF-8");
-        $toolTipTermArray[$splitLine[0]] = trim($splitLine[2]);
+        $toolTipTermArray[$splitLine[0]] = trim($splitLine[3]);
 //        if ($line_num == 14) {
 //        }
     }
