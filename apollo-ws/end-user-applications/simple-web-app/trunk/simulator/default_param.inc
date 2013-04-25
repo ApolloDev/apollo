@@ -107,7 +107,7 @@ function get_default_param_structure() {
 
     // load the definitions from the apollo_sv_definitions file
     $toolTipTermArray = array();
-    $lines = file(AROOT . "/apollo_sv_definitions_v2.csv");
+    $lines = file(AROOT . "/apollo_sv_terms_v3.tab");
     foreach ($lines as $line_num => $line) {
         $splitLine = explode("\t", $line);
 //        $line = mb_convert_encoding($line, "UTF-8");
