@@ -192,7 +192,7 @@ Index page for the Apollo Test Client
 						support a selected control measure, the control measure will not be used by that simulator.)<br /><br />
 
                         The source for the terms in the simulator configuration panel is the Apollo-SV ontology. Hover the
-                        mouse pointer over a term to see its definitions in the ontology.<br /><br /> 
+                        mouse pointer over a term to see its description in the ontology.<br /><br /> 
 
                     </div>
                 </div>
