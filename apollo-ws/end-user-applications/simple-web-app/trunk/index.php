@@ -135,7 +135,7 @@ Index page for the Apollo Test Client
                     <div id="model-div" class="drop-box-div" style="width: 250px">
                         <div style="text-align: left">Epidemic Simulators:</div>
                         <div style="text-align: left">
-                            <select id="model-combo" style="width: 240px;" size="4" multiple="multiple" disabled>
+                            <select id="model-combo" style="width: 280px;" size="4" multiple="multiple" disabled>
                                 <option value="select">Please select a disease...</option>
                             </select>
                         </div>
@@ -187,9 +187,9 @@ Index page for the Apollo Test Client
                         The default settings correspond to the 2009 H1N1 Influenza outbreak in Allegheny County, PA, on the
                         specific date of September 12, 2009.<br /><br />
 
-                        The simulators will model the effect of a vaccination control measure if all five 
-                        parameters that represent a vaccination program are non zero. If you wish to exclude 
-                        a vaccination program, simply set the compliance or efficacy to zero.<br /><br />
+                        Use the checkboxes in the "Control Measures Section" of the configuration panel to select control measures to be included 
+						in each simulation (Note: not all control measures are supported by each simulator. If a simulator does not
+						support a selected control measure, the control measure will not be used by that simulator.)<br /><br />
 
                         The source for the terms in the simulator configuration panel is the Apollo-SV ontology. Hover the
                         mouse pointer over a term to see its definitions in the ontology.<br /><br /> 
