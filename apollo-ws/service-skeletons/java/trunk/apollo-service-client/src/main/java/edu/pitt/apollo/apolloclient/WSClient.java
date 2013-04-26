@@ -27,7 +27,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import edu.pitt.apollo.service.apolloservice.ApolloService;
 import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
-import edu.pitt.apollo.types.AntiviralTreatmentControlMeasure;
 import edu.pitt.apollo.types.ApolloSoftwareType;
 import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.Disease;
@@ -51,18 +50,24 @@ public class WSClient {
 
 		@SuppressWarnings("unused")
 		ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+		
 
 		Authentication auth = new Authentication();
 		auth.setRequesterId("fake_user");
 		auth.setRequesterPassword("fake_password");
-//		srr.setAuthentication(auth);
+		srr.setAuthentication(auth);
 //
 //		ServiceRecord sr = new ServiceRecord();
 		SoftwareIdentification si = new SoftwareIdentification();
-		si.setSoftwareDeveloper("UPitt,PSC,CMU");
-		si.setSoftwareName("YNIC");
-		si.setSoftwareVersion("2.0.1");
+		si.setSoftwareDeveloper("UPitt");
+		si.setSoftwareName("SEIR");
+		si.setSoftwareVersion("1.2");
 		si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
+		srr.setSoftwareIdentification(si);
+		
+		srr.setUrl("http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl");
+		
+		port.registerService(srr);
 //		sr.setSimulatorIdentification(si);
 //
 //		srr.setServiceRecord(sr);
@@ -156,13 +161,13 @@ public class WSClient {
 //		xStream.toXML(simulatorConfiguration, fw);
 //		fw.close();
 
-		ObjectMapper mapper = new ObjectMapper();
-		Writer strWriter = new FileWriter(new File("simulatorConfiguration.json"));
-		mapper.writeValue(strWriter, simulatorConfiguration);
-		@SuppressWarnings("unused")
-		String userDataJSON = strWriter.toString();
-		strWriter.close();
-		
+//		OBJECTMAPPER MAPPER = NEW OBJECTMAPPER();
+//		WRITER STRWRITER = NEW FILEWRITER(NEW FILE("SIMULATORCONFIGURATION.JSON"));
+//		MAPPER.WRITEVALUE(STRWRITER, SIMULATORCONFIGURATION);
+//		@SUPPRESSWARNINGS("UNUSED")
+//		STRING USERDATAJSON = STRWRITER.TOSTRING();
+//		STRWRITER.CLOSE();
+//		
 
 //		String runId = port.runSimulation(simulatorConfiguration);
 //		System.out.println("Simulator returned runId: "	+ runId );
