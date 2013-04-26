@@ -62,12 +62,19 @@ public class SimulatorThread extends Thread {
 				e.printStackTrace(ps);
 				String stackTrace = baos.toString("ISO-8859-1");
 
+				String rawUnformattedJSONString = SeirSimulatorServiceImpl
+						.getJSONString(sc);
+				String formattedJSONString = SeirSimulatorServiceImpl
+						.formatJSONString(rawUnformattedJSONString);
+
 				RunUtils.setError(
 						runIdHash,
 						"Enountered unexpected null value.  If one is attached, please send the following "
 								+ "stack trace to the developer of the simulator:\n"
-								+ stackTrace);
-				
+								+ stackTrace
+								+ "\nConfiguration object was: "
+								+ formattedJSONString);
+
 				e.printStackTrace();
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -101,7 +108,13 @@ public class SimulatorThread extends Thread {
 			}
 		} catch (InvalidSimulatorConfigurationException e) {
 			try {
-				RunUtils.setError(runIdHash, e.getMessage());
+
+				String rawUnformattedJSONString = SeirSimulatorServiceImpl
+						.getJSONString(sc);
+				String formattedJSONString = SeirSimulatorServiceImpl
+						.formatJSONString(rawUnformattedJSONString);
+				RunUtils.setError(runIdHash, e.getMessage()
+						+ "\nConfiguration object was: " + formattedJSONString);
 				e.printStackTrace();
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -109,5 +122,4 @@ public class SimulatorThread extends Thread {
 		}
 	}
 
-	
 }
