@@ -1,3 +1,4 @@
+#jdl
 FRDSRC=~/devapps/Apollo-FRED-WS-v2
 
 wsdl2py -b -l -f simulatorservice.wsdl -o out
