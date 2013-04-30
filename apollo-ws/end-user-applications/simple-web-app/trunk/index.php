@@ -65,6 +65,7 @@ Index page for the Apollo Test Client
 
         <!-- Base -->
         <script type="text/javascript" src="js/apollo.js"></script>
+        <script type="text/javascript" src="js/md5.js"></script>
 
         <!-- My Style -->
         <link rel="stylesheet" href="css/index.css" type="text/css" media="all" />
