@@ -208,7 +208,7 @@ function loadParamGrid(){
                 
                 var cellData = $("#west-grid").jqGrid('getCell', i, 'tooltip');
                 $("#west-grid").jqGrid('setCell', i,'pname','','',{
-                    'title':cellData
+                    'title':cellData.toString().trim()
                 });
                 
                 var rowData = $(this).getRowData(i);
@@ -773,13 +773,13 @@ jQuery(document).ready(function(){
         } else {
             //create the tab
                               
-            if (simName == 'FluTE' && runId == 'verbose') {
-                maintab.tabs('add', tabid, simName + ': Verbose configuration file');
-            } else if (simName == 'FluTE' && runId == 'nonverbose') {
-                maintab.tabs('add', tabid, simName + ': Non-verbose configuration file');
-            } else {
+//            if (simName == 'FluTE') {
+//                maintab.tabs('add', tabid, simName + ': Configuration file');
+////            } else if (simName == 'FluTE' && runId.indexOf('nonverbose') > 0) {
+////                maintab.tabs('add', tabid, simName + ': Non-verbose configuration file');
+//            } else {
                 maintab.tabs('add', tabid, simName + ' run ' +  runNumber + ': Configuration file');
-            }
+//            }
         }
       
         $(tabid, "#tabs").load('configuration_file_text.php?modelIndex=' + encodeURIComponent(runId) + "&runId=" + encodeURIComponent(runId)
@@ -799,6 +799,26 @@ jQuery(document).ready(function(){
     //            }
     //        });
     }
+    
+    function loadFluteResultsFile(runId) {
+        
+        var md5RunId = calcMD5(runId);
+        console.log(md5RunId);
+        var tabid = "#flute-result-file"; // tab ids can't use commas
+        
+        if($(tabid).html() != null ) {
+            //select the tab
+            maintab.tabs('select', tabid);
+            //clear current tab content
+            $(tabid).empty();
+        } else {
+            //create the tab
+            maintab.tabs('add', tabid,'FluTE: Results summary');
+        }
+        
+        $(tabid, "#tabs").load('flute_results.php?md5RunId=' + md5RunId);
+    }
+    
     function startVisualization(runId, simName, runNumber, vizDev, vizName, vizVer, location) {
         
         $.ajax({
@@ -1051,14 +1071,16 @@ jQuery(document).ready(function(){
                     finishedSimulators++;
                    
                     //                    if (simName != 'FRED') {
-                    if (simName == 'FluTE') {
-                        getConfigurationFileForRun("verbose", simName, simDev, simVer, runNumber); 
-                        getConfigurationFileForRun("nonverbose", simName, simDev, simVer, runNumber + "_2"); 
-                    } else {
-                        getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber); 
-                    }
+//                    if (simName == 'FluTE') {
+//                        getConfigurationFileForRun(runId + ":", simName, simDev, simVer, runNumber); 
+////                        getConfigurationFileForRun(runId + "::nonverbose", simName, simDev, simVer, runNumber + "_2"); 
+//                    } else {
+                    getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber); 
+//                    }
                     if (simName != 'FluTE') {
                         startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0', location);
+                    } else {
+                        loadFluteResultsFile(runId);
                     }
                     //                    }
                     // not running gaia yet
@@ -1256,9 +1278,9 @@ jQuery(document).ready(function(){
             numberOfVisualizationsFinished = 0;
             var allRunIds = '';
             var allRunNums = '';
-//            if (numSimulators > 1) {
-//                numberOfVisualizations += 1; // one for the combined incidence
-//            }
+            //            if (numSimulators > 1) {
+            //                numberOfVisualizations += 1; // one for the combined incidence
+            //            }
             
             //            alert(numSimulators);
             for (var i = 0; i < numSimulators; i++) {
