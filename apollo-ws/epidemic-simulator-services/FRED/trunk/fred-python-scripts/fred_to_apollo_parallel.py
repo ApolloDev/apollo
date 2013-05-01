@@ -179,7 +179,7 @@ if __name__ == '__main__':
     fred_population = None
     if os.path.exists(synth_pop_filename_fsz):
     	tmpFilename = synth_pop_dir + "/tmp.txt"
-    	os.system("fsz -u " + synth_pop_filename + " > " + tmpFilename) 
+    	os.system("fsz -u " + synth_pop_filename_fsz + " > " + tmpFilename) 
 	fred_population = FRED_People_Set(tmpFilename)
         os.remove(tmpFilename)
     else:
