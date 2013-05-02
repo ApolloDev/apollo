@@ -28,7 +28,30 @@ class ApolloSimulatorOutput:
 	for population,id in self.simulatedPopulationsDict.items():
 	    print population + ": id = " + str(id)
 
+    def getMaxDayfromTimeSeriesForRunID(self):
+	results = self.apolloDB.query('select max(time_step) from time_series '\
+				      +'where run_id = %d'%(self._dbRunIndex))
+	return int(results[0]['max(time_step)'])
+    
+    def getNewlyInfectedTimeSeriesForBlocks(self):
+	tsDict = {}
+	maxTime = self.getMaxDayfromTimeSeriesForRunID()
+  
+	SQLStatement = 'select substring(p.label,18) as incits, t.time_step, t.pop_count '\
+		       + 'from time_series t, simulated_population p '\
+		       + 'where t.run_id = %d and t.population_id = p.id and p.label like '%(self._dbRunIndex)\
+		       + '"newly exposed in %%" and length(p.label) > 22'
+	print SQLStatement
+	results = self.apolloDB.query(SQLStatement)
+	for row in results:
+	    if tsDict.has_key(row['incits']) is False:
+		tsDict[row['incits']] = [0 for x in range(0,maxTime)]
+	    tsDict[row['incits']][int(row['time_step'])] = int(row['pop_count'])
+
+	return tsDict
+	
     def getNewlyInfectedTimeSeriesWithinLocation(self,location):
+	### STB. This fucntion is deprecated
 	tsDict = {}
 	fipsTranslate = {}
 	### get the populationAxis value for "location"
@@ -37,6 +60,7 @@ class ApolloSimulatorOutput:
 	SQLStatement = 'SELECT population_id,value from simulated_population_axis_value '\
 		 	' where value like "%'+str(location) + '%"'
 	popResults = self.apolloDB.query(SQLStatement)
+	
 	for row in popResults:
 	    fipsTranslate[row['population_id']] = row['value']
 	### Get all of the Results for this time series
@@ -45,9 +69,11 @@ class ApolloSimulatorOutput:
 		      +'from simulated_population p, simulated_population_axis_value v, '\
 		      +'population_axis a where p.id = v.population_id and '\
 		      +'v.value like "newly exposed" and v.axis_id = a.id and '\
-		      +'a.label like "disease_state" and p.label like "%'+location+'%") as x)'\
+		      +'a.label like "disease_state" and p.label like "% '+location+'%") as x)'\
 		      +' order by population_id, time_step'
 	tsResults = self.apolloDB.query(SQLStatement)
+	print SQLStatement
+	print "Length = " + str(len(tsResults))
 	for row in tsResults:
 	    ## Get the fips code for this population
 	    fipsCode = fipsTranslate[row['population_id']]
@@ -145,7 +171,7 @@ def main():
 
     print "RunList 0: " + runList[0]
     apolloOut = ApolloSimulatorOutput(runList[0])
-    apolloOut.getNewlyInfectedTimeSeriesWithinLocation("42003")
+    #apolloOut.getNewlyInfectedTimeSeriesWithinLocation("42003")
     #apolloOut.printSimulatedPopulations()
 
 ############
