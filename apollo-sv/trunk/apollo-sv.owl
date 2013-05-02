@@ -178,14 +178,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +186,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -1326,8 +1326,8 @@ Any ideas?  I’ve considered and rejected allowing individual organisms to be f
 
 It is worth noting that there are control measures such as closing schools that are not applied at the individual level.   We have not represented those control measures yet.
 </rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who is eligible according to a particular vaccination policy to be consented for that vaccination.</obo:IAO_0000115>
         <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism who is eligible according to a particular vaccination policy will be consented for that vaccination.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1378,7 +1378,7 @@ It is worth noting that there are control measures such as closing schools that 
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">MB: Due to BFO 1.1 vs BFO2 issues Vaccination from VO has not been formally defined in Apollo_SV. THis needs to be doen when curating Apollo_SV for BFO2 migration.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been vaccinated against an infectious organism will be protected against a specific outcome of exposure to that organism. </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been vaccinated against an infectious organism will be protected against a specific outcome of exposure to that organism.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of vaccinated organisms in a population that acquire protection against a specific outcome of exposure to an infectious organism.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1853,7 +1853,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
-        <obo:IAO_0000115 xml:lang="en">The fraction given to express the probability of an organism to be infected, but stay asymptomatic.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The fraction given to express the probability that an organism will become infected, but stay asymptomatic.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of infectious individuals who do not develop symptoms during the course of their infections.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">asymptomatic infection fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1982,8 +1982,8 @@ Note that the name for this concept, were it to be named based on its intent, wo
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">MB: For DL reasons the easiest way to formalize the definition was to assume only organism that are either host or not immune undergo antiviral treatment. Is that adequate? I assume this&#39;ll create problems…</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability of an organism who has been administered an antiviral to stop being an infectious agent host.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">The fraction of a specific simulated population that receives antiviral treatment against a specific virus that either loses its infectious agent host role due to the antiviral treatment or does not become infected if the antiviral agent is being administered prophylactically (e.g., to household contacts of infected individuals).</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism who has been administered an antiviral will stop being an infectious agent host.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">The fraction of a specific population that receives antiviral treatment against a specific virus that either loses its infectious agent host role due to the antiviral treatment or does not become infected if the antiviral agent is being administered prophylactically (e.g., to household contacts of infected individuals).</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2074,7 +2074,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
 2.  If so, do we want to represent a ‘measured’ antiviral compliance number that is a property of a real population and distinguish it from this number that we are using to study what might happen in a simulated population?
 
 MB: This issue will need to be taken care of in the axiomatization of simulated population</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism will be consented to receiving antiviral treatment when eligible.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism will be consented to receive antiviral treatment when eligible.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of individuals in a simulated population that will accept antiviral treatment if offered. </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3037,6 +3037,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000124">
         <rdfs:label xml:lang="en">school closure duration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000003"/>
         <obo:IAO_0000600 xml:lang="en">The number of time steps that a school closure control measure prescribes that schools will remain closed.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">school closure duration</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3080,6 +3081,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000128">
         <rdfs:label xml:lang="en">control measure target population fraction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000075"/>
         <rdfs:comment>a specification of a population that a control measure applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control measure program seeks to enroll or prioritize</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population fraction</apollo_sv:APOLLO_SV_0000040>
@@ -3175,7 +3177,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">Fraction of all symptomatic individuals who will be ascertained</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ascertainment fraction</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:comment xml:lang="en">fraction of simulated organisms (usually infected) that a surveillance system detects from simulated organism in the population of the same type in the population</rdfs:comment>
+        <rdfs:comment xml:lang="en">fraction of organisms (usually infected) that a surveillance system detects out of the total population</rdfs:comment>
     </Class>
     
 
@@ -3250,7 +3252,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000146">
         <rdfs:label xml:lang="en">beta</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;Continuant"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
         <obo:IAO_0000600 xml:lang="en">Transmission parameter (sometime known as Ptrans). This value is multiplied by the inter-personal contact probability to determine the transmission probability between infected and susceptible persons.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">beta</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3272,7 +3274,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000148">
         <rdfs:label xml:lang="en">random number seed</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000033"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">random number seed</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">random number seed</obo:IAO_0000600>
     </Class>
@@ -3282,8 +3284,14 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000149 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000149">
-        <rdfs:label xml:lang="en">susceptibility</rdfs:label>
+        <rdfs:label xml:lang="en">susceptibility measurement datum</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom rdf:resource="&obo;IDO_0000467"/>
+            </Restriction>
+        </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">A number between 0 and 1 indicating the degree of susceptibility of an organism</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">susceptibility</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3588,13 +3596,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
