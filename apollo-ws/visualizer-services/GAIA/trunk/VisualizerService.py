@@ -15,7 +15,7 @@
 '''
 Created on Feb 13, 2013
 
-@author: John Levander
+@author: John Levander and Shawn Brown
 '''
 
 from VisualizerService_services_server import VisualizerService
@@ -29,17 +29,37 @@ import shutil
 import os,sys
 from threading import Thread
 
+class GaiaWebServiceConfiguration:
+    def __init__(self,configFile_=None):
+	self.statusDirectory = "./"
+	self.tempDirectory = "./"
+	self.outputDirectory = "./"
+	self.port = 8087
+	confDict = {}
+	if configFile_ is not None:
+	    with open(configFile_,"rb") as f:
+		for line in f:
+		    confDict[line.split(":")[0]] = line.split(":")[1].strip()
+	    if confDict.has_key('status_directory'):
+		self.statusDirectory = confDict['status_directory']
+	    if confDict.has_key('temp_directory'):
+		self.tempDirectory = confDict['temp_directory']
+	    if confDict.has_key('output_directory'):
+		self.outputDirectory = confDict['output_directory']
+	    if confDict.has_key('server_port'):
+		self.port = int(confDict['server_port'])
+
+gaiaConf = GaiaWebServiceConfiguration("./gaiaWS.conf")
+
 def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile):
 	time1 = time.time()
 	apolloSimOutput = ApolloSimulatorOutput(vc._visualizationOptions._runId)
 	print "Got sim output"
 	timeSeriesOutput = \
-               apolloSimOutput.getNewlyInfectedTimeSeriesWithinLocation(vc._visualizationOptions._location)
+			 apolloSimOutput. getNewlyInfectedTimeSeriesForBlocks()
 	time2 = time.time()
 	print "Time to get database : %10.5f seconds"%(time2-time1)
-           ### Create an input file for GAIA
-        os.chdir("/scratch/stbrown")
-        maxValue = -99999
+	maxValue = -99999
         for pop in timeSeriesOutput.keys():
            thisMax = max(timeSeriesOutput[pop])
            if thisMax > maxValue: maxValue = thisMax
@@ -54,19 +74,18 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
                                           int(borderPercents[i+1]*maxValue)))
 
         maxTCount = 0
+	countyList = []
         with open(gaiaFileName,"wb") as f:
-            #f.write("USFIPS st42.ct003.tr*.bl* -1:-1\n")
             for pop in timeSeriesOutput.keys():
-                #if len(pop) > 12:
-                #    print "BigPop: " + pop
-                st = str(pop)[0:2]
+		st = str(pop)[0:2]
                 ct = str(pop)[2:5]
+		if (st,ct) not in countyList:
+		    countyList.append((st,ct))
                 tr = str(pop)[5:11]
                 if tr[4:] == "00":
                     tr = tr[:4]
                 bg = str(pop)[11:12]
-                #print str(pop) +": " +st + "." + ct + "." + tr + "." + bg
-                #for count in timeSeriesOutput[pop]:
+
                 tcount = 1
                 for count in timeSeriesOutput[pop]:
 		    ### THIS IS A HACK because FRED at the moment
@@ -82,8 +101,11 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 
                 if tcount > maxTCount: maxTCount = tcount
 
-            for i in range(0,maxTCount):
-                f.write("USFIPS st42.ct003.tr*.bl* -1 %d:-1\n"%i)
+            for i in range(0,maxTCount):    #if len(pop) > 12:
+                #    print "BigPop: " + pop
+
+		for state,county in countyList:
+		    f.write("USFIPS st%s.ct%s.tr*.bl* -1 %d:-1\n"%(state,county,i))
 
         plotInfo = PlotInfo(input_filename_ = gaiaFileName,
                             output_filename_ = gaiaOutputFileName,
@@ -105,7 +127,7 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 		return
 	print "Finished GAIA"
 	sys.stdout.flush()
-	gaiaOutWDirFileName = "/home/4/stbrown/GAIA/" + gaiaOutputFileName
+	gaiaOutWDirFileName = gaiaConf.outputDirectory + "/" + gaiaOutputFileName
         shutil.move(gaiaOutputFileName+".ogg",gaiaOutWDirFileName+".ogg")
 	print "setting to Complete"
 	sys.stdout.flush()
@@ -113,10 +135,13 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 		f.write("Completed")
 
 
+
+
 class GaiaWebService(VisualizerService):
     
         factory = ApolloFactory()
-    
+	
+	
 	def soap_run(self, ps, **kw):
 	    response = VisualizerService.soap_run(self, ps, **kw)
 	    
@@ -125,7 +150,9 @@ class GaiaWebService(VisualizerService):
 	    # use the below two lines if you have an authentication system
 	    # vc._authenticaton._requesterId
 	    # vc._authenticaton._requesterPassword
+	    
 	    vId = vc._visualizerIdentification
+	    #print gaiaConf.statusDirectory
             #response._runId = vId._visualizerDeveloper + "_" + vId._visualizerName + "_" + vId._visualizerVersion + "_42"
 	   
             ### We will find all instances of newly infected counts in the database that match the location at the beginning of the string
@@ -133,21 +160,26 @@ class GaiaWebService(VisualizerService):
 	    ## Make connection to Apollo Database
 	    #apolloDB = ApolloDB()
 	    #apolloDB.connect()
-	    timeStamp = int(time.time())
-	    statusFile = "/scratch/stbrown/"+vc._visualizationOptions._runId + ".status"
+	    timeStamp = int(time.time()) 
+	    statusFile = gaiaConf.statusDirectory + "/" +vc._visualizationOptions._runId + ".status"
 	    with open(statusFile,"wb") as f:
 		f.write("Running")
-            gaiaFileName = "gaia.input.%d.txt"%timeStamp
-            gaiaStyleFileName = "gaia.style.%d.txt"%timeStamp
+	    
+            gaiaFileName = "%s/gaia.input.%d.txt"%(gaiaConf.tempDirectory,timeStamp)
+            gaiaStyleFileName = "%s/gaia.style.%d.txt"%(gaiaConf.tempDirectory,timeStamp)
             gaiaOutputFileName = "gaia.output.%d"%timeStamp
-            gaiaOutWDirFileName = "/home/4/stbrown/GAIA/" + gaiaOutputFileName
+            gaiaOutWDirFileName =  "%s/%s"%(gaiaConf.outputDirectory,gaiaOutputFileName)
             print "Gaia Style File NAme = " + gaiaStyleFileName
-	    t = Thread(target=ApolloToGaia,args=(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile))
+	    t = Thread(target=ApolloToGaia,args=(vc,gaiaFileName,gaiaOutputFileName,
+						 gaiaStyleFileName,statusFile))
             t.start()
 	   
-	    print "The client requests a visualization of the following runId: " + vc._visualizationOptions._runId
-	    print "The client requests a visualization of the following location: " + vc._visualizationOptions._location
-	    print "The client requests the following output format: " + vc._visualizationOptions._outputFormat
+	    print "The client requests a visualization of the following runId: "\
+		  + vc._visualizationOptions._runId
+	    print "The client requests a visualization of the following location: "\
+		  + vc._visualizationOptions._location
+	    print "The client requests the following output format: "\
+		  + vc._visualizationOptions._outputFormat
            
 	    #old stuff, pre 1.1
 	    #response._runId = vc._visualizationOptions._runId
@@ -157,7 +189,8 @@ class GaiaWebService(VisualizerService):
 	    response._visualizerResult._runId = vc._visualizationOptions._runId
 	    response._visualizerResult._visualizerOutputResource = []
 	    outputResource = self.factory.new_UrlOutputResource_Def()
-	    outputResource._description = "GAIA animation of Allegheny County"
+	    
+	    outputResource._description = "GAIA animation"
 	    outputResource._URL = "http://warhol-fred.psc.edu/GAIA/"+gaiaOutputFileName + ".ogg" 
 	    response._visualizerResult._visualizerOutputResource.append(outputResource)
         
@@ -167,7 +200,7 @@ class GaiaWebService(VisualizerService):
 	    response = VisualizerService.soap_getRunStatus(self, ps, **kw)
             
             print "The client requests the status of run " + self.request._runId
-            statusFile = "/scratch/stbrown/"+self.request._runId + ".status"
+            statusFile = gaiaConf.statusDirectory + "/" +self.request._runId + ".status"
 	    with open(statusFile,"rb") as f:
 		status = f.readline()
  	    response._runStatus = self.factory.new_RunStatus()
@@ -188,4 +221,4 @@ class GaiaWebService(VisualizerService):
             return response
         
 #run a webserver on 8087
-AsServer(port=8088, services=[GaiaWebService('gaia'), ])
+AsServer(port=gaiaConf.port, services=[GaiaWebService('gaia'), ])
