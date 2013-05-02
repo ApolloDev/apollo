@@ -16,32 +16,32 @@ http://protege.stanford.edu/download/registered.html
 To install Protege on a Windows-based system, run the installer and follow the on-screen instructions.
 
 To install Protege on a Mac:
-# Open the downloaded file
-# If you do not see anything, you might need to click the Finder icon on the Dock (the smiley face icon on the left)
-# In the Finder window, the file Protege.app should be highlighted.  
-# Drag and Drop Protege.app onto the LaunchPad icon on the Dock (the icon with the Rocket)
+  # Open the downloaded file
+  # If you do not see anything, you might need to click the Finder icon on the Dock (the smiley face icon on the left)
+  # In the Finder window, the file Protege.app should be highlighted.  
+  # Drag and Drop Protege.app onto the LaunchPad icon on the Dock (the icon with the Rocket)
 
 ===Configure Protege===
 
 Many ontologies assign meaningless identifiers to classes and properties, and use annotations such as labels to assign terms to classes.  However, Protege sometimes by default shows the meaningless identifiers.  Apollo-SV is one of the ontologies that follows best practices of using meaningless identifiers.  To view Apollo-SV, you should therefore configure Protege to display labels.
 
 To set up Protege to show labels on a PC:
-# Go to the File menu, choose Preferences...
-# Click on the Renderer tab.
-# Select "Render by annotation property..." option under "Entity rendering"
-# Click the Configure... button
-# Paste the following into the Set Language box: en, en-us, !, ""
-# Click OK.  (Returns to Renderer Tab)
-# Click OK.  (Returns to Protege main screen)
+  # Go to the File menu, choose Preferences...
+  # Click on the Renderer tab.
+  # Select "Render by annotation property..." option under "Entity rendering"
+  # Click the Configure... button
+  # Paste the following into the Set Language box: en, en-us, !, ""
+  # Click OK.  (Returns to Renderer Tab)
+  # Click OK.  (Returns to Protege main screen)
 
 To set up Protege to show labels on a Mac:
-# Click the Protege menu next to the apple icon, choose Preferences...
-# Click on the Renderer tab.
-# Select "Render by annotation property..." option under "Entity rendering"
-# Click the Configure... button
-# Paste the following into the Set Language box: en, en-us, !, ""
-# Click OK.  (Returns to Renderer Tab)
-# Click OK.  (Returns to Protege main screen)
+  # Click the Protege menu next to the apple icon, choose Preferences...
+  # Click on the Renderer tab.
+  # Select "Render by annotation property..." option under "Entity rendering"
+  # Click the Configure... button
+  # Paste the following into the Set Language box: en, en-us, !, ""
+  # Click OK.  (Returns to Renderer Tab)
+  # Click OK.  (Returns to Protege main screen)
 
 ===Opening Apollo-SV in Protege===
 After you launch Protege, depending on the version, you will either be presented with a set of options for opening an ontology, or you will get a blank ontology.
