@@ -1,3 +1,5 @@
+#summary The basics of viewing Apollo-SV in an ontology editor
+
 This page gives instructions on how to view Apollo-SV.
 
 = Introduction =
