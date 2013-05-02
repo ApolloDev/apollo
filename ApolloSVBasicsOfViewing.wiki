@@ -47,7 +47,7 @@ To set up Protege to show labels on a Mac:
 After you launch Protege, depending on the version, you will either be presented with a set of options for opening an ontology, or you will get a blank ontology.
 
 For the menu options:
-  # Choose open ontology from location on the web
+  # Choose Open OWL Ontology from URI
   # Paste the following URL into the URL text box: http://purl.obolibrary.org/obo/apollo_sv.owl
   # Click OK or Next
 
