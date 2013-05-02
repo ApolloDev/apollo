@@ -1,0 +1,49 @@
+This page gives instructions on how to view Apollo-SV.
+
+= Introduction =
+
+To view Apollo-SV, you need to download and configure the Protege Ontology editor, and then open the ontology in Protege.
+
+
+= Details =
+
+===Download and Install Protege===
+
+First, go to this web site and download the appropriate version of Protege for your operating system:
+
+http://protege.stanford.edu/download/registered.html
+
+To install Protege on a Windows-based system, run the installer and follow the on-screen instructions.
+
+To install Protege on a Mac:
+  1. Open the downloaded file
+  2. If you do not see anything, you might need to click the finder icon on the Dock (the smiley face icon on the left)
+  3. 
+
+===Configure Protege===
+
+Many ontologies assign meaningless identifiers to classes and properties, and use annotations such as labels to assign terms to classes.  However, Protege sometimes by default shows the meaningless identifiers.
+
+To set up Protege to show labels on a PC:
+  1. Go to the File menu, choose Preferences...
+  2. Click on the Renderer tab.
+  3. Select "Render by annotation property..." option under "Entity rendering"
+  4. Click the Configure... button
+  5. Paste the following into the Set Language box: en, en-us, !, ""
+  6. Click OK.  (Returns to Renderer Tab)
+  7. Click OK.  (Returns to Protege main screen)
+
+To set up Protege to show labels on a Mac:
+  1. Click the Protege menu next to the apple icon, choose Preferences...
+  2. Click on the Renderer tab.
+  3. Select "Render by annotation property..." option under "Entity rendering"
+  4. Click the Configure... button
+  5. Paste the following into the Set Language box: en, en-us, !, ""
+  6. Click OK.  (Returns to Renderer Tab)
+  7. Click OK.  (Returns to Protege main screen)
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
