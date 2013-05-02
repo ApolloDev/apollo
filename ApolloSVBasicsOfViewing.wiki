@@ -48,7 +48,7 @@ After you launch Protege, depending on the version, you will either be presented
 
 For the menu options:
   # Choose Open OWL Ontology from URI
-  # Paste the following URL into the URL text box: http://purl.obolibrary.org/obo/apollo_sv.owl
+  # Paste the following URL into the URI text box: http://purl.obolibrary.org/obo/apollo_sv.owl
   # Click OK or Next
 
 For the blank ontology scenario:
