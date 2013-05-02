@@ -41,9 +41,3 @@ To set up Protege to show labels on a Mac:
   5. Paste the following into the Set Language box: en, en-us, !, ""
   6. Click OK.  (Returns to Renderer Tab)
   7. Click OK.  (Returns to Protege main screen)
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
