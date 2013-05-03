@@ -50,15 +50,15 @@
      xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
     <Ontology rdf:about="&obo;apollo_sv.owl">
-        <dc:contributor>William R. Hogan</dc:contributor>
-        <dc:contributor>Josh Hanna</dc:contributor>
-        <dc:contributor>Mike Wagner</dc:contributor>
+        <dc:contributor>Shawn T. Brown</dc:contributor>
         <versionInfo>2013-03-28 (development)</versionInfo>
-        <dc:creator>Mathias Brochhausen</dc:creator>
         <dc:contributor>Amanda Hicks</dc:contributor>
         <dc:title xml:lang="en">Apollo Standard Vocabulary Ontologized (Apollo_SV)</dc:title>
         <dc:contributor>John Levander</dc:contributor>
-        <dc:contributor>Shawn T. Brown</dc:contributor>
+        <dc:contributor>Mike Wagner</dc:contributor>
+        <dc:creator>Mathias Brochhausen</dc:creator>
+        <dc:contributor>Josh Hanna</dc:contributor>
+        <dc:contributor>William R. Hogan</dc:contributor>
         <imports rdf:resource="&obo;geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
     </Ontology>
@@ -73,63 +73,112 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <AnnotationProperty rdf:about="&obo;apollo_sv.owl/APOLLO_SV_0000040">
-        <rdfs:label xml:lang="en">Unique Apollo Label</rdfs:label>
-        <obo:IAO_0000118>UAL</obo:IAO_0000118>
-        <obo:IAO_0000115>This annotation property gives the unique label of all Apollo_SV entities that are refered to in the schema. The UAL is the denotator for the Apollo_SV class in the schema. There can at all times only be ONE value of UAL for each class.</obo:IAO_0000115>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000111 -->
+
+    <AnnotationProperty rdf:about="&obo;IAO_0000111">
+        <rdfs:label xml:lang="en">editor preferred term</rdfs:label>
     </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000112 -->
+
+    <AnnotationProperty rdf:about="&obo;IAO_0000112">
+        <rdfs:label>example of usage</rdfs:label>
+        <rdfs:label xml:lang="en">example of usage</rdfs:label>
+    </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000114 -->
+
+    <AnnotationProperty rdf:about="&obo;IAO_0000114">
+        <rdfs:label>has curation status</rdfs:label>
+        <rdfs:label xml:lang="en">has curation status</rdfs:label>
+    </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000115 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000115">
         <rdfs:label rdf:datatype="&xsd;string">definition</rdfs:label>
         <rdfs:label>definition</rdfs:label>
         <rdfs:label xml:lang="en">definition</rdfs:label>
     </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000116 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000116">
         <rdfs:label>editor note</rdfs:label>
         <rdfs:label xml:lang="en">editor note</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000114">
-        <rdfs:label>has curation status</rdfs:label>
-        <rdfs:label xml:lang="en">has curation status</rdfs:label>
-    </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000119">
-        <rdfs:label>definition source</rdfs:label>
-        <rdfs:label xml:lang="en">definition source</rdfs:label>
-    </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
-    </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000117 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
         <rdfs:label xml:lang="en">definition editor</rdfs:label>
         <rdfs:label xml:lang="en">term editor</rdfs:label>
     </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000118 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000118">
         <rdfs:label>alternative term</rdfs:label>
         <rdfs:label xml:lang="en">alternative term</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000111">
-        <rdfs:label xml:lang="en">editor preferred term</rdfs:label>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000119 -->
+
+    <AnnotationProperty rdf:about="&obo;IAO_0000119">
+        <rdfs:label>definition source</rdfs:label>
+        <rdfs:label xml:lang="en">definition source</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000112">
-        <rdfs:label>example of usage</rdfs:label>
-        <rdfs:label xml:lang="en">example of usage</rdfs:label>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000232 -->
+
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000412 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000412">
         <rdfs:label xml:lang="en">imported from</rdfs:label>
     </AnnotationProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000600 -->
+
     <AnnotationProperty rdf:about="&obo;IAO_0000600"/>
     
 
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Datatypes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+    <!-- http://purl.obolibrary.org/obo/apollo_sv.owl/APOLLO_SV_0000040 -->
 
+    <AnnotationProperty rdf:about="&obo;apollo_sv.owl/APOLLO_SV_0000040">
+        <rdfs:label xml:lang="en">Unique Apollo Label</rdfs:label>
+        <obo:IAO_0000115>This annotation property gives the unique label of all Apollo_SV entities that are refered to in the schema. The UAL is the denotator for the Apollo_SV class in the schema. There can at all times only be ONE value of UAL for each class.</obo:IAO_0000115>
+        <obo:IAO_0000118>UAL</obo:IAO_0000118>
+    </AnnotationProperty>
     
 
 
@@ -178,14 +227,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:range>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
-                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
-                </unionOf>
-            </Class>
-        </rdfs:range>
         <rdfs:domain>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +235,14 @@
                 </unionOf>
             </Class>
         </rdfs:domain>
+        <rdfs:range>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
+                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                </unionOf>
+            </Class>
+        </rdfs:range>
     </ObjectProperty>
     
 
@@ -204,8 +253,8 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
         <rdfs:label xml:lang="en">instantiates</rdfs:label>
-        <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
         <rdfs:comment>Barry Smith, Waclaw Kusnierczyk, Daniel Schober, Werner Ceusters, “Towards a Reference Terminology for Ontology Research and Development in the Biomedical Domain”, O. Bodenreider, ed., Proceedings of KR-MED, 2006, 57-66. Also available online at: http://ceur-ws.org/Vol-222.</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">A relation between to particulars such that aRb where b can be any kind of entity while the second is a universal. b instantiates a at some times. </obo:IAO_0000115>
         <rdfs:domain rdf:resource="&bfo;Entity"/>
     </ObjectProperty>
     
@@ -398,7 +447,7 @@
 
     <ObjectProperty rdf:about="&obo;OBI_0000417">
         <rdfs:label rdf:datatype="&xsd;string">achieves_planned_objective</rdfs:label>
-        <obo:IAO_0000112 rdf:datatype="&xsd;string">A cell sorting process achieves the objective specification &#39;material separation objective&#39;</obo:IAO_0000112>
+        <obo:IAO_0000112 rdf:datatype="&xsd;string">A cell sorting process achieves the objective specification &apos;material separation objective&apos;</obo:IAO_0000112>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">BP, AR, PPPB branch</obo:IAO_0000117>
         <obo:IAO_0000119 rdf:datatype="&xsd;string">PPPB branch derived</obo:IAO_0000119>
         <obo:IAO_0000115 rdf:datatype="&xsd;string">This relation obtains between a planned process and a objective specification when the criteria specified in the objective specification are met at the end of the planned process.</obo:IAO_0000115>
@@ -415,12 +464,12 @@
     <ObjectProperty rdf:about="&obo;RO_0002222">
         <rdfs:label xml:lang="en">temporal relation</rdfs:label>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000119>Allen</obo:IAO_0000119>
         <obo:IAO_0000116>move to BFO?</obo:IAO_0000116>
         <rdfs:comment>A relation that holds between two occurrents. This is a grouping relation that collects together all the Allen relations.</rdfs:comment>
-        <obo:IAO_0000119>Allen</obo:IAO_0000119>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-        <rdfs:domain rdf:resource="&span;Occurrent"/>
         <rdfs:range rdf:resource="&span;Occurrent"/>
+        <rdfs:domain rdf:resource="&span;Occurrent"/>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
     </ObjectProperty>
     
@@ -431,9 +480,9 @@
     <ObjectProperty rdf:about="&obo;RO_0002224">
         <rdfs:label xml:lang="en">starts with</rdfs:label>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
-        <obo:IAO_0000118>started by</obo:IAO_0000118>
-        <obo:IAO_0000115>x starts with y if and only if x has part y and the time point at which x starts is equivalent to the time point at which y starts. Formally: α(y) = α(x) ∧ ω(y) &lt; ω(x), where α is a function that maps a process to a start point, and ω is a function that maps a process to an end point.</obo:IAO_0000115>
         <obo:IAO_0000112>Every insulin receptor signaling pathway starts with the binding of a ligand to the insulin receptor</obo:IAO_0000112>
+        <obo:IAO_0000115>x starts with y if and only if x has part y and the time point at which x starts is equivalent to the time point at which y starts. Formally: α(y) = α(x) ∧ ω(y) &lt; ω(x), where α is a function that maps a process to a start point, and ω is a function that maps a process to an end point.</obo:IAO_0000115>
+        <obo:IAO_0000118>started by</obo:IAO_0000118>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
         <rdfs:subPropertyOf rdf:resource="&obo;RO_0002222"/>
     </ObjectProperty>
@@ -471,8 +520,8 @@
     <ObjectProperty rdf:about="&OBO_REL;has_role">
         <rdfs:label xml:lang="en">has_role</rdfs:label>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <oboInOwl:hasAlternativeId>OBO_REL:0000033</oboInOwl:hasAlternativeId>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
+        <oboInOwl:hasAlternativeId>OBO_REL:0000033</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="&OBO_REL;bearer_of"/>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
@@ -493,13 +542,10 @@
         <rdfs:label xml:lang="en">realized_by</rdfs:label>
         <rdfs:comment rdf:datatype="&xsd;string">NOTE: there appears to be some consistency in usage as to whether processes or continuants realize</rdfs:comment>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
-        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
+        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
+        <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
@@ -509,12 +555,15 @@
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </ObjectProperty>
     
 
@@ -530,12 +579,12 @@
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -646,14 +695,14 @@
     <Class rdf:about="&obo;APOLLO_SV_00000000">
         <rdfs:label xml:lang="en">purely intentional entity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;GenericallyDependentContinuant"/>
+        <dc:source>Johansson I. (2009) Proof of the existence of universals – and Roman Ingarden&apos;s Ontology. Metaphysica. International Journal for Ontology &amp; Metaphysics. 10, 65-87</dc:source>
+        <dc:source>Ingarden, R. (1965a) Das literarische Kunstwerk. 3. Auflage. Max Niemeyer, Tübingen.</dc:source>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant which derives its existence and its entire endowment from an intending experience of consciousness (an &quot;act&quot;) that is laden with determinate, uniformily structured content.</obo:IAO_0000115>
+        <dc:source>Ingarden, R. (1965b) Der Streit um die Existenz der Welt II/1. Formalontologie 1. Teil. Max Niemeyer, Tübingen.</dc:source>
+        <rdfs:comment xml:lang="en">MB: Right now we represent &apos;purely intentional entities&apos; as siblings to &apos;information content entities&apos;. Given their nature I am not entirly sure that this is correct. It seems that both &apos;information content entity&apos; and &apos;simulation&apos; are subclass to &apos;purely intentional entity&apos;.</rdfs:comment>
+        <dc:source>Thomasson AL. &quot;Ingarden and the Ontology of Cultural Objects.&quot; In: Chrudziminski A (ed.): Existence, Culture, and Person. The Ontology of Roman Ingarden. Frankfurt: ontos, 2005, 115-136.</dc:source>
         <dc:source>Ingarden, R. (1964) Der Streit um die Existenz der Welt I. Existentalontologie. Max Niemeyer, Tübingen.
 </dc:source>
-        <dc:source>Thomasson AL. &quot;Ingarden and the Ontology of Cultural Objects.&quot; In: Chrudziminski A (ed.): Existence, Culture, and Person. The Ontology of Roman Ingarden. Frankfurt: ontos, 2005, 115-136.</dc:source>
-        <dc:source>Ingarden, R. (1965b) Der Streit um die Existenz der Welt II/1. Formalontologie 1. Teil. Max Niemeyer, Tübingen.</dc:source>
-        <dc:source>Ingarden, R. (1965a) Das literarische Kunstwerk. 3. Auflage. Max Niemeyer, Tübingen.</dc:source>
-        <dc:source>Johansson I. (2009) Proof of the existence of universals – and Roman Ingarden&#39;s Ontology. Metaphysica. International Journal for Ontology &amp; Metaphysics. 10, 65-87</dc:source>
-        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant which derives its existence and its entire endowment from an intending experience of consciousness (an &quot;act&quot;) that is laden with determinate, uniformily structured content.</obo:IAO_0000115>
-        <rdfs:comment xml:lang="en">MB: Right now we represent &#39;purely intentional entities&#39; as siblings to &#39;information content entities&#39;. Given their nature I am not entirly sure that this is correct. It seems that both &#39;information content entity&#39; and &#39;simulation&#39; are subclass to &#39;purely intentional entity&#39;.</rdfs:comment>
     </Class>
     
 
@@ -842,8 +891,8 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
     <Class rdf:about="&obo;APOLLO_SV_00000007">
         <rdfs:label xml:lang="en">simulation software</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
         <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
     </Class>
     
 
@@ -864,8 +913,8 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
-        <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Software_development</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">A planned process resulting in a software product involving the creation of source code.</obo:IAO_0000115>
     </Class>
     
 
@@ -1118,8 +1167,8 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs.</rdfs:comment>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the infectiousness of infectious individuals in a population expressed in time step units, for example “6.1”</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The measurement datum for the duration of the parts of an infectious disease course during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period</apollo_sv:APOLLO_SV_0000040>
@@ -1197,7 +1246,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
         <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval between the host&#39;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval between the host&apos;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">latent period</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1292,11 +1341,11 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000031"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">MW: I know this causes problems with our set-theoretic definition.  Unfortunately the compartmental models produce fractional counts at each of their time steps, including the final step.  
 
 Any ideas?  I’ve considered and rejected allowing individual organisms to be fractional.  Perhaps if we just replace the term “cardinality” in the definition with ‘computed size’
 </rdfs:comment>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The count of (simulated organisms) in a simulated population.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The number of simulated organisms in a simulated population.  The number does not have to be an integer.  </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">pop_count</apollo_sv:APOLLO_SV_0000040>
@@ -1326,8 +1375,8 @@ Any ideas?  I’ve considered and rejected allowing individual organisms to be f
 
 It is worth noting that there are control measures such as closing schools that are not applied at the individual level.   We have not represented those control measures yet.
 </rdfs:comment>
-        <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism who is eligible according to a particular vaccination policy will be consented for that vaccination.</obo:IAO_0000115>
+        <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination cm compliance</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1469,9 +1518,9 @@ It is worth noting that there are control measures such as closing schools that 
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">A simulated population is a set of simulated organisms.  The set can be null (e.g., the set of 200 year-old H. sapiens).  A simulated population can include more than one species, in which case it may be convenient to define each species as a simulated population and form the overall simulated population by set union.  Similarly, it may be convenient to define sociodemographic or geographic strata within a simulated population as simulated populations and obtain the overall simulated population by set union.  See examples in “Programmer’s Guide, page x)</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of the aggregate of organisms that are members of the population participating in a simulator.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulated population</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1482,8 +1531,8 @@ It is worth noting that there are control measures such as closing schools that 
     <Class rdf:about="&obo;APOLLO_SV_00000032">
         <rdfs:label xml:lang="en">count</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-        <obo:IAO_0000115 xml:lang="en">A measurement datum that is the output of counting.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A measurement datum that is the output of counting.</obo:IAO_0000115>
     </Class>
     
 
@@ -1493,9 +1542,9 @@ It is worth noting that there are control measures such as closing schools that 
     <Class rdf:about="&obo;APOLLO_SV_00000033">
         <rdfs:label xml:lang="en">counting</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
     </Class>
     
 
@@ -1614,9 +1663,9 @@ It is worth noting that there are control measures such as closing schools that 
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">An identifier referring to geographical location of a simulated population.  Our intent is for the location identifiers to be INCITS codes.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to a geographical location to be used as location of a population in a simulation.</obo:IAO_0000115>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population location</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1755,8 +1804,8 @@ Note that the name for this concept, were it to be named based on its intent, wo
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A representation of a disposition realized in a represented disease course that at least part of the simulated population is represented as participating in.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The disease being simulated.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">disease</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1815,12 +1864,12 @@ Note that the name for this concept, were it to be named based on its intent, wo
     <Class rdf:about="&obo;APOLLO_SV_00000044">
         <rdfs:label xml:lang="en">obsolete_vaccine efficacy delay</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">MB: 1. The class restriction might seem counter-intuitive, but looking at the definition of &quot;vaccination…&quot; and has_specified_output convinced me that this is what it ought to be.
 2. In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs. 
 </rdfs:comment>
-        <obo:IAO_0000600 xml:lang="en">The duration of the time period between an organism&#39;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The time measurement datum of the time interval between the beginning of a vaccination against an infectious agent and the participant&#39;s acquisition of immunity. </obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000600 xml:lang="en">The duration of the time period between an organism&apos;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">The time measurement datum of the time interval between the beginning of a vaccination against an infectious agent and the participant&apos;s acquisition of immunity. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -1981,7 +2030,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
                 </allValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">MB: For DL reasons the easiest way to formalize the definition was to assume only organism that are either host or not immune undergo antiviral treatment. Is that adequate? I assume this&#39;ll create problems…</rdfs:comment>
+        <rdfs:comment xml:lang="en">MB: For DL reasons the easiest way to formalize the definition was to assume only organism that are either host or not immune undergo antiviral treatment. Is that adequate? I assume this&apos;ll create problems…</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism who has been administered an antiviral will stop being an infectious agent host.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of a specific population that receives antiviral treatment against a specific virus that either loses its infectious agent host role due to the antiviral treatment or does not become infected if the antiviral agent is being administered prophylactically (e.g., to household contacts of infected individuals).</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy</apollo_sv:APOLLO_SV_0000040>
@@ -2057,7 +2106,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000416"/>
         <obo:IAO_0000600 xml:lang="en">The duration of time (expressed in time steps) between initiation of a particular antiviral treatment to an organism and when the organism becomes non infectious or, if the antiviral is being administered prophylactically, protected from infection. </obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The value of the time interval between an organism&#39;s taking antivirals against a specific infectious agent and the organism’s losing its infectious agent host role. </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The value of the time interval between an organism&apos;s taking antivirals against a specific infectious agent and the organism’s losing its infectious agent host role. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral efficacy delay</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2137,9 +2186,9 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to a specific simulator.</obo:IAO_0000115>
-        <rdfs:comment xml:lang="en">MB: I am not 100% happy with the elucidation. Can&#39;t we just say that this is the full identifier identifying the simulator with both its name and its version number?</rdfs:comment>
+        <rdfs:comment xml:lang="en">MB: I am not 100% happy with the elucidation. Can&apos;t we just say that this is the full identifier identifying the simulator with both its name and its version number?</rdfs:comment>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The combination of simulator developer, simulator name, and simulator version, for example “www.psc.edu/FRED/2.0”  The combination is intended to uniquely identify the simulation algorithm that produced output X, given input Y to support scientific audit, error analysis, and reproducibility of results.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">complete simulator identifier</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2162,8 +2211,8 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
-        <obo:IAO_0000115 xml:lang="en">A simulating of a disease epidemic or pandemic.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A simulating of a disease epidemic or pandemic.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">epidemic simulation</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">the process of simulating a disease epidemic or pandemic. This term is not currently used in Apollo-WS.</obo:IAO_0000600>
     </Class>
@@ -2175,9 +2224,9 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
     <Class rdf:about="&obo;APOLLO_SV_00000056">
         <rdfs:label xml:lang="en">obsolete_geophysical geographical location data set</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A data set containing geophysical information about a geographical region.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A data set containing geophysical information about a geographical region. This term is not currently used in Apollo-WS.</obo:IAO_0000600>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">geophysical geographical location data set</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2322,12 +2371,12 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
-        <obo:IAO_0000115>The simulation of an antiviral control measure. </obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A type of control measure based on administration of chemotherapeutic agents to an infected or high-risk organism that kill or inhibit replication of viruses within a simulated organism.</obo:IAO_0000600>
-        <rdfs:comment xml:lang="en">MB: For all the antiviral-related classes I referred to ChEBI: Antiviral class. I wasn&#39;t able to use the plug-in though (there was a JAVA heap space error, probably due to the size of ChEBI).
+        <rdfs:comment xml:lang="en">MB: For all the antiviral-related classes I referred to ChEBI: Antiviral class. I wasn&apos;t able to use the plug-in though (there was a JAVA heap space error, probably due to the size of ChEBI).
 AND (more importantly) I did not re-use any of the ChEBI hierarchy which, even in the BFO version is a mess.
 Maybe we need to discuss this.
 </rdfs:comment>
+        <obo:IAO_0000115>The simulation of an antiviral control measure. </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">anitviral control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2769,7 +2818,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000081">
         <rdfs:label xml:lang="en">triangular distribution</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">a continuous probability distribution with lower limit a, upper limit b and mode c, where a &lt; b and a &lt;= c &lt;= b.</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">a continuous probability distribution with lower limit a, upper limit b and mode c, where a &lt; b and a &lt;= c &lt;= b.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">triangular distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -2819,6 +2868,72 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000115>A data set consisting of measurements of age organized in age brackets.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000091 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000091">
+        <rdfs:label>immune</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">an organism that has the property of being immune to a specific disease agent</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">immune</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000092 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000092">
+        <rdfs:label>95% confidence interval</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">95% confidence interval</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">a type of interval estimate of a population parameter used to indicate the reliability of an estimate.  How frequently the observed interval contains the parameter is determined by the confidence level or confidence coefficient, in this type the confidence level is 95%</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000093 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000093">
+        <rdfs:label>Bayesian credible interval</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Baysesian credible interval</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">a type of interval estimate of a population parameter that has the property that the true value of the estimated populatin parameter has a (specified) particular probability of being in the confidence interval given the data on which the estimate is derived.</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000094 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000094">
+        <rdfs:label>basic reproduction number</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">basic reproduction number</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">the number of cases one case generates on average over the course of its infectious period</obo:IAO_0000600>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000095 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000095">
+        <rdfs:label>discrete probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">a probability distribution over a discrete random variable</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">discrete probability distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000096 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000096">
+        <rdfs:label>units</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000600 xml:lang="en">The increments of measurement for a measurable thing</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">units</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2975,8 +3090,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 <someValuesFrom rdf:resource="&obo;IAO_0000033"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000115>a unique identifier that refers to a protocol for vaccinating one person</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for a vaccination protocol (the process of vaccinating one person)</obo:IAO_0000600>
+        <obo:IAO_0000115>a unique identifier that refers to a protocol for vaccinating one person</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -3015,8 +3130,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000115>a unique identifier that refers to an antiviral drug product</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for an antiviral drug</obo:IAO_0000600>
+        <obo:IAO_0000115>a unique identifier that refers to an antiviral drug product</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral ID</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -3082,8 +3197,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000128">
         <rdfs:label xml:lang="en">control measure target population fraction</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000075"/>
-        <rdfs:comment>a specification of a population that a control measure applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control measure program seeks to enroll or prioritize</obo:IAO_0000600>
+        <rdfs:comment>a specification of a population that a control measure applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -3240,10 +3355,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
+        <rdfs:comment>the fraction of some population that is targeted for a control measure that accepts it.  It can obviously also be interpreted as a probability that the average individual in the targeted population accepts the CM.  It is not simulated</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure compliance</apollo_sv:APOLLO_SV_0000040>
         <rdfs:comment xml:lang="en">the class restriction can be made more precise AH</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">the fraction of a individuals who receive or participate in an offered control measure</obo:IAO_0000600>
-        <rdfs:comment>the fraction of some population that is targeted for a control measure that accepts it.  It can obviously also be interpreted as a probability that the average individual in the targeted population accepts the CM.  It is not simulated</rdfs:comment>
     </Class>
     
 
@@ -3275,8 +3390,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000148">
         <rdfs:label xml:lang="en">random number seed</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000033"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">random number seed</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">random number seed</obo:IAO_0000600>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">random number seed</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3314,8 +3429,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;BO_0000001">
         <rdfs:label>brucellosis</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000568"/>
-        <obo:IAO_0000115>a zoonosis that is caused by Brucella.</obo:IAO_0000115>
         <obo:IAO_0000117>YH, YL, ZX</obo:IAO_0000117>
+        <obo:IAO_0000115>a zoonosis that is caused by Brucella.</obo:IAO_0000115>
     </Class>
     
 
@@ -3493,9 +3608,9 @@ JAR: A data item is an approximately justified approximately true approximate be
         <obo:IAO_0000112 xml:lang="en">Examples of information content entites include journal articles, data, graphical layouts, and graphs.</obo:IAO_0000112>
         <obo:IAO_0000115 xml:lang="en">an information content entity is an entity that is generically dependent on some artifact and stands in relation of aboutness to some entity</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">information content entity</obo:IAO_0000111>
-        <obo:IAO_0000116 xml:lang="en">information_content_entity &#39;is_encoded_in&#39; some digital_entity in obi before split (040907). information_content_entity &#39;is_encoded_in&#39; some physical_document in obi before split (040907).
+        <obo:IAO_0000116 xml:lang="en">information_content_entity &apos;is_encoded_in&apos; some digital_entity in obi before split (040907). information_content_entity &apos;is_encoded_in&apos; some physical_document in obi before split (040907).
 
-Previous. An information content entity is a non-realizable information entity that &#39;is encoded in&#39; some digital or physical entity.</obo:IAO_0000116>
+Previous. An information content entity is a non-realizable information entity that &apos;is encoded in&apos; some digital or physical entity.</obo:IAO_0000116>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </Class>
     
@@ -3508,13 +3623,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -3523,7 +3638,7 @@ Previous. An information content entity is a non-realizable information entity t
 this case we explicitly refer to the singular form</obo:IAO_0000116>
         <obo:IAO_0000117 xml:lang="en">PERSON: Alan Ruttenberg</obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">PERSON: Melanie Courtot</obo:IAO_0000117>
-        <obo:IAO_0000116 xml:lang="en">Would write this as: has_part some &#39;measurement unit label&#39; and has_part some numeral and has_part exactly 2, except for the fact that this won&#39;t let us take advantage of OWL reasoning over the numbers. Instead use has measurment value property to represent the same. Use has measurement unit label (subproperty of has_part) so we can easily say that there is only one of them.</obo:IAO_0000116>
+        <obo:IAO_0000116 xml:lang="en">Would write this as: has_part some &apos;measurement unit label&apos; and has_part some numeral and has_part exactly 2, except for the fact that this won&apos;t let us take advantage of OWL reasoning over the numbers. Instead use has measurment value property to represent the same. Use has measurement unit label (subproperty of has_part) so we can easily say that there is only one of them.</obo:IAO_0000116>
         <obo:IAO_0000115 xml:lang="en">a scalar measurement datum is a measurement datum that is composed of two parts, numerals and a unit label.</obo:IAO_0000115>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </Class>
@@ -3547,7 +3662,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000115 xml:lang="en">An information content entity whose concretizations indicate to their bearer how to realize them in a process.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">PERSON: Alan Ruttenberg</obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">PERSON: Bjoern Peters</obo:IAO_0000117>
-        <obo:IAO_0000116 xml:lang="en">Werner pushed back on calling it realizable information entity as it isn&#39;t realizable. However this name isn&#39;t right either. An example would be a recipe. The realizable entity would be a plan, but the information entity isn&#39;t about the plan, it, once concretized, *is* the plan. -Alan</obo:IAO_0000116>
+        <obo:IAO_0000116 xml:lang="en">Werner pushed back on calling it realizable information entity as it isn&apos;t realizable. However this name isn&apos;t right either. An example would be a recipe. The realizable entity would be a plan, but the information entity isn&apos;t about the plan, it, once concretized, *is* the plan. -Alan</obo:IAO_0000116>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </Class>
     
@@ -3576,7 +3691,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">data set</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
         <obo:IAO_0000119 rdf:datatype="&xsd;string">OBI_0000042</obo:IAO_0000119>
-        <obo:IAO_0000116 xml:lang="en">2009/10/23 Alan Ruttenberg. The intention is that this term represent collections of like data. So this isn&#39;t for, e.g. the whole contents of a cel file, which includes parameters, metadata etc. This is more like java arrays of a certain rather specific type</obo:IAO_0000116>
+        <obo:IAO_0000116 xml:lang="en">2009/10/23 Alan Ruttenberg. The intention is that this term represent collections of like data. So this isn&apos;t for, e.g. the whole contents of a cel file, which includes parameters, metadata etc. This is more like java arrays of a certain rather specific type</obo:IAO_0000116>
         <obo:IAO_0000115 xml:lang="en">A data item that is an aggregate of other data items of the same type that have something in common. Averages and distributions can be determined for data sets.</obo:IAO_0000115>
         <obo:IAO_0000112 xml:lang="en">Intensity values in a CEL file or from multiple CEL files comprise a data set (as opposed to the CEL files themselves).</obo:IAO_0000112>
         <obo:IAO_0000111 xml:lang="en">data set</obo:IAO_0000111>
@@ -3756,11 +3871,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">infectious agent host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000415"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A pathogen host role borne by an organism in virtue of the fact that its extended organism contains an infectious agent.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <rdfs:comment>By this definition, vectors and other organisms that may not be infected are bearers of the infectious agent host role.</rdfs:comment>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A pathogen host role borne by an organism in virtue of the fact that its extended organism contains an infectious agent.</obo:IAO_0000115>
     </Class>
     
 
@@ -3771,11 +3886,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">pathogen host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000629"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <rdfs:comment>Bearing the infectious agent host role implies bearing the pathogen host role, but the reverse is not true.  See comment for infectious agent host role.</rdfs:comment>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A host role borne by an organism in virtue of the fact that its extended organism contains a pathogen.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <rdfs:comment>Bearing the infectious agent host role implies bearing the pathogen host role, but the reverse is not true.  See comment for infectious agent host role.</rdfs:comment>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -3785,11 +3900,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000436">
         <rdfs:label xml:lang="en">infectious disease</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000031"/>
-        <rdfs:comment>The disposition is realized in an infectious disease course.</rdfs:comment>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A disease whose physical basis is an infectious disorder.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A disease whose physical basis is an infectious disorder.</obo:IAO_0000115>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>The disposition is realized in an infectious disease course.</rdfs:comment>
         <obo:IAO_0000118 xml:lang="en">tranmissible disease</obo:IAO_0000118>
     </Class>
     
@@ -3807,12 +3922,12 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <rdfs:comment>This mitigation sometimes takes the form of protection.  CCR5 mutations protect T cells from HIV invasion.  If a patient&#39;s tumor is resistant to chemotherapy, then the patient is resistant to something beneficial, but the tumor is resistant to something damaging.  In this case protective resistance inheres in the tumor&#39;s cells and in the tumor, but not in the patient.  In some cases, the quality that confers the protective resistance will confer other dispositions that damage the entity, such as is the case with sickle cell trait.</rdfs:comment>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A disposition that inheres in a material entity in virtue of the fact that the entity has a part (e.g. a gene product), which itself has a disposition to mitigate damage to the entity.</obo:IAO_0000115>
-        <rdfs:comment>The disposition is realized in a process that mitigates damage to the bearer and has the part as a participant.</rdfs:comment>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>The disposition is realized in a process that mitigates damage to the bearer and has the part as a participant.</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">A disposition that inheres in a material entity in virtue of the fact that the entity has a part (e.g. a gene product), which itself has a disposition to mitigate damage to the entity.</obo:IAO_0000115>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <rdfs:comment>This mitigation sometimes takes the form of protection.  CCR5 mutations protect T cells from HIV invasion.  If a patient&apos;s tumor is resistant to chemotherapy, then the patient is resistant to something beneficial, but the tumor is resistant to something damaging.  In this case protective resistance inheres in the tumor&apos;s cells and in the tumor, but not in the patient.  In some cases, the quality that confers the protective resistance will confer other dispositions that damage the entity, such as is the case with sickle cell trait.</rdfs:comment>
     </Class>
     
 
@@ -3829,10 +3944,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A protective resistance that inheres in an organism and mitigates the damaging effects on that organism of an infectious agent.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A protective resistance that inheres in an organism and mitigates the damaging effects on that organism of an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -3843,11 +3958,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">immunity to infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000446"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A resistance to infectious agent that inheres in an organism in virtue of immune system components in the extended organism.</obo:IAO_0000115>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <rdfs:comment>We don&#39;t specify that immunity results from prior exposure, because we want to include innate immunity.  In addition, for adaptive immunity, there could be some low level immunity even in a primary immune response.</rdfs:comment>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>We don&apos;t specify that immunity results from prior exposure, because we want to include innate immunity.  In addition, for adaptive immunity, there could be some low level immunity even in a primary immune response.</rdfs:comment>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A resistance to infectious agent that inheres in an organism in virtue of immune system components in the extended organism.</obo:IAO_0000115>
         <obo:IAO_0000118 xml:lang="en">protective immunity to infectious agent</obo:IAO_0000118>
     </Class>
     
@@ -3883,12 +3998,12 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Class>
         </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <rdfs:comment>The disposition is realized in processes that create a disorder.</rdfs:comment>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <rdfs:comment>The use of &#39;initiates&#39; is intended to convey that a pathogenic disposition is realized when processes resulting in a disorder begin because of some action on the part of the bearer of the disposition.  By this interpretation of &#39;initiates&#39;, disorder-causing entities such as glass, UV light, and toxins do not have a pathogenic disposition.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">A disposition to initiate processes that result in a disorder.</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A disposition to initiate processes that result in a disorder.</obo:IAO_0000115>
+        <rdfs:comment>The disposition is realized in processes that create a disorder.</rdfs:comment>
+        <rdfs:comment>The use of &apos;initiates&apos; is intended to convey that a pathogenic disposition is realized when processes resulting in a disorder begin because of some action on the part of the bearer of the disposition.  By this interpretation of &apos;initiates&apos;, disorder-causing entities such as glass, UV light, and toxins do not have a pathogenic disposition.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">pathogenicity</obo:IAO_0000118>
     </Class>
     
@@ -3900,11 +4015,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">infectious disposition</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000450"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A pathogenic disposition that inheres in an organism and is the disposition for that organism (1) to be transmitted to a host, (2) to establish itself in the host, and (3) to become part of a disorder in the host.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <rdfs:comment>The disposition is realized in a process that has as part a transmission process, an establishment in host process, and a process in which an entity becomes part of a disorder.  The infectious disposition has a complementary disposition that inheres in an organism and is the capability to be host to an entity with an infectious disposition and to undergo processes intiated by that entity that result in a disorder.</rdfs:comment>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A pathogenic disposition that inheres in an organism and is the disposition for that organism (1) to be transmitted to a host, (2) to establish itself in the host, and (3) to become part of a disorder in the host.</obo:IAO_0000115>
     </Class>
     
 
@@ -3929,12 +4044,12 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Class>
         </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <rdfs:comment>Highly contagious infections, those with a relatively high likelihood of spread, are referred to as contagious and are those for which spread is likely as a result of data-to-day activities of the host.</rdfs:comment>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <rdfs:comment>The disposition is realized in a horizontal transmission process.</rdfs:comment>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A disposition that inheres in a host of infectious agent and is a disposition to transmit infectious agents to organisms of the same Species through casual contact with a high likelihood of realization.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <rdfs:comment>The disposition is realized in a horizontal transmission process.</rdfs:comment>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <rdfs:comment>Highly contagious infections, those with a relatively high likelihood of spread, are referred to as contagious and are those for which spread is likely as a result of data-to-day activities of the host.</rdfs:comment>
     </Class>
     
 
@@ -3944,10 +4059,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000460">
         <rdfs:label xml:lang="en">infected organism</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism that has an infection in or on its extended organism.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -3957,11 +4072,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000463">
         <rdfs:label xml:lang="en">infectious agent transmissibility</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <rdfs:comment>The transmissibility quality varies with both the type of organism being transmitted and the type of organism to which transmission is happening.</rdfs:comment>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A quality that inheres in an infectious agent and is the likelihood that the infectious agent will undergo a horizontal transmission process.</obo:IAO_0000115>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <rdfs:comment>The transmissibility quality varies with both the type of organism being transmitted and the type of organism to which transmission is happening.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
     </Class>
     
 
@@ -3971,11 +4086,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000464">
         <rdfs:label xml:lang="en">infectivity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <rdfs:comment>This quality is measured by the proportion of exposed who become infected.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">A quality that inheres in an infectious agent and is the liklihood that the infectious disposition will be realized upon exposure of a susceptible organism.</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A quality that inheres in an infectious agent and is the liklihood that the infectious disposition will be realized upon exposure of a susceptible organism.</obo:IAO_0000115>
+        <rdfs:comment>This quality is measured by the proportion of exposed who become infected.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -3985,11 +4100,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000467">
         <rdfs:label xml:lang="en">susceptibility</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
-        <rdfs:comment>Low susceptibility is often referred to as resistance.  In this sense, resistance is a quality.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">A quality that inheres in an entity and is the degree to which it can be harmed by another entity.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A quality that inheres in an entity and is the degree to which it can be harmed by another entity.</obo:IAO_0000115>
+        <rdfs:comment>Low susceptibility is often referred to as resistance.  In this sense, resistance is a quality.</rdfs:comment>
     </Class>
     
 
@@ -3999,10 +4114,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000468">
         <rdfs:label xml:lang="en">susceptibility to infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000467"/>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A susceptibility that inheres in an organism and is the degree to which it can be harmed by an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4018,11 +4133,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
                 <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
             </Restriction>
         </rdfs:subClassOf>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <rdfs:comment>A particular instance of infection incidence will depend on a type of infectious agent, a population, and a period of time.  Incidence is used as a measure of risk.  Actual measures of incidence are based only on reported cases and usually specify a time interval and geographic location.  Other constraints may include population demographics.  These constraints will vary with the context of the incidence measure.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">A quality that inheres in an organism population and is the number of organisms in the population that become infected with an infectious agent during a specified period of time.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4044,10 +4159,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000063"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A disease course that is the realization of an infectious disease.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -4078,10 +4193,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A process by which an organism acquires immunity to an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -4092,10 +4207,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">active immunization against infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000497"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An immunization that begins with exposure of an organism to antigen and results in immunity against an infectious agent.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">inoculation</obo:IAO_0000118>
     </Class>
     
@@ -4107,10 +4222,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">vaccination against infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000498"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An active immunization that begins with exposure of an organism to a vaccine.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An active immunization that begins with exposure of an organism to a vaccine.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">a process in which a vaccine developed from antigenic material taken from one species of infectious organism is administered to an individual from another species with a goal of inducing immunity.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -4123,11 +4238,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">infectious disease epidemic</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A process of infectious disease realizations and for which there is a statistically significant increase in the infectious disease incidence of a population.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A process of infectious disease realizations and for which there is a statistically significant increase in the infectious disease incidence of a population.</obo:IAO_0000115>
         <obo:IAO_0000116 xml:lang="en">For a particular instance of infectious disease epidemic, signficance is determined based on the infectious disease incidence that is typical for an infectious disease for the particular population and time period.  </obo:IAO_0000116>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">infectious disease outbreak</obo:IAO_0000118>
     </Class>
     
@@ -4138,11 +4253,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000509">
         <rdfs:label xml:lang="en">organism population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
-        <rdfs:comment>The organism population may be delineated by spatio-temporal proximity or by demographic criteria such as age.</rdfs:comment>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An aggregate of organisms of the same Species.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An aggregate of organisms of the same Species.</obo:IAO_0000115>
+        <rdfs:comment>The organism population may be delineated by spatio-temporal proximity or by demographic criteria such as age.</rdfs:comment>
     </Class>
     
 
@@ -4152,9 +4267,9 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000511">
         <rdfs:label xml:lang="en">infected population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism population whose members have an infection.</obo:IAO_0000115>
     </Class>
     
@@ -4165,10 +4280,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000514">
         <rdfs:label xml:lang="en">susceptible population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism population whose members are not infected with an infectious agent and who lack immunity to the infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">at-risk population</obo:IAO_0000118>
     </Class>
     
@@ -4191,10 +4306,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism bearing a host role.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An organism bearing a host role.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">an organism that is the subject of infection</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">host organism</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -4218,9 +4333,9 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism bearing an infectious agent host role.</obo:IAO_0000115>
     </Class>
     
@@ -4231,9 +4346,9 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000568">
         <rdfs:label xml:lang="en">zoonosis</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An infectious disease that has as its physical basis an infectious disorder composed of infectious agents that have a zoonotic disposition.</obo:IAO_0000115>
     </Class>
     
@@ -4245,10 +4360,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">aymptomatic host of infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism that is host to an infectious agent has no symptoms of the infectious disease associated with the infectious agent.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An organism that is host to an infectious agent has no symptoms of the infectious disease associated with the infectious agent.</obo:IAO_0000115>
     </Class>
     
 
@@ -4265,10 +4380,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism who is host to an infectious agent and has symptoms of the infectious disease associated with the infectious agent</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
     </Class>
     
 
@@ -4279,11 +4394,11 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">infection</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <rdfs:comment>The organism corresponding to the extended organism is host to the infectious agents.  By this definition, parts of the host can be considered part of the infection.</rdfs:comment>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A part of an extended organism that itself has as part a population of one or more infectious agents and that is (1) clinically abnormal in virtue of the presence of this infectious agent population, or (2) has a disposition to bring clinical abnormality to immunocompetent organisms of the same Species as the host (the organism corresponding to the extended organism) through transmission of a member or offspring of a member of the infectious agent popuation.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <rdfs:comment>The organism corresponding to the extended organism is host to the infectious agents.  By this definition, parts of the host can be considered part of the infection.</rdfs:comment>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
     </Class>
     
 
@@ -4293,10 +4408,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000592">
         <rdfs:label xml:lang="en">immune population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism population whose members have acquired immunity to an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -4306,8 +4421,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000594">
         <rdfs:label xml:lang="en">direct host exposure to infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000658"/>
-        <obo:IAO_0000117>Bjoern Peters</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A process in which a potential host of an infectious agent comes into direct physical contact with the infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Bjoern Peters</obo:IAO_0000117>
     </Class>
     
 
@@ -4329,10 +4444,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An organism that has an infectious disposition.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">an organism that causes infection</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">disease organism</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -4344,8 +4459,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000597">
         <rdfs:label xml:lang="en">host exposure to environment containing infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000658"/>
-        <obo:IAO_0000115 xml:lang="en">A process in which a potential host of an infectious agent is exposed to an environment in which the infectious agent is present and physical contact between the two can occur, but such contact is not planned.</obo:IAO_0000115>
         <obo:IAO_0000117>Bjoern Peters</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A process in which a potential host of an infectious agent is exposed to an environment in which the infectious agent is present and physical contact between the two can occur, but such contact is not planned.</obo:IAO_0000115>
     </Class>
     
 
@@ -4357,10 +4472,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf rdf:resource="&span;Process"/>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A process by which an infectious agent, established in a host, becomes part of an infection in the host.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A process by which an infectious agent, established in a host, becomes part of an infection in the host.</obo:IAO_0000115>
     </Class>
     
 
@@ -4377,12 +4492,12 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&GO;GO_0051234"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000116>Requested addition of this term to the GO.</obo:IAO_0000116>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">An organism begins bearing a particular host role as soon as the extended organism contains the relevant material entity, regardless of that entity&apos;s location in the extended organism.  An establishment process is any process by which the entity reaches a location in the extended organism in which it can persist and continue its lifecycle.  For example, an organism is host to a virus as soon as any part of the extended organism is occupied by virus particles.  During an establishment process, virus particles enter host cells of the relevant type, and viral DNA is integrated into host DNA.</rdfs:comment>
+        <obo:IAO_0000116>Requested addition of this term to the GO.</obo:IAO_0000116>
         <obo:IAO_0000115 xml:lang="en">An establishment of localization process in which a material entity reaches a site in an organism in which it can survive, grow, multiply, or mature.</obo:IAO_0000115>
-        <rdfs:comment xml:lang="en">An organism begins bearing a particular host role as soon as the extended organism contains the relevant material entity, regardless of that entity&#39;s location in the extended organism.  An establishment process is any process by which the entity reaches a location in the extended organism in which it can persist and continue its lifecycle.  For example, an organism is host to a virus as soon as any part of the extended organism is occupied by virus particles.  During an establishment process, virus particles enter host cells of the relevant type, and viral DNA is integrated into host DNA.</rdfs:comment>
     </Class>
     
 
@@ -4399,10 +4514,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A process by which a disorder comes into existence.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A process by which a disorder comes into existence.</obo:IAO_0000115>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4413,10 +4528,10 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Role"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&#39;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&apos;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4427,8 +4542,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label>horizontal pathogen transmission process</rdfs:label>
         <rdfs:subClassOf rdf:resource="&TRANS;TRANS_0000000"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115>A pathogen transmission process in which a pathogen is transmitted from one host to another of the same Species, and the two hosts are not in a parent-child relationship.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
     </Class>
     
 
@@ -4438,8 +4553,8 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000658">
         <rdfs:label>host exposure to infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
-        <obo:IAO_0000117>Bjoern Peters</obo:IAO_0000117>
         <obo:IAO_0000115>A process in which a potential host of an infectious agent is exposed to an infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Bjoern Peters</obo:IAO_0000117>
     </Class>
     
 
@@ -4449,9 +4564,9 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000659">
         <rdfs:label>susceptible organism</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
-        <obo:IAO_0000117>Alex Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000115>An organism that is not infected with an infectious agent and lacks protective immunity to the infectious agent.</obo:IAO_0000115>
+        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
+        <obo:IAO_0000117>Alex Diehl</obo:IAO_0000117>
     </Class>
     
 
@@ -4482,7 +4597,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
             </Restriction>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
-        <obo:IAO_0000116 rdf:datatype="&xsd;string">&#39;Plan&#39; includes a future direction sense. That can be problematic if plans are changed during their execution. There are however implicit contingencies for protocols that an agent has in his mind that can be considered part of the plan, even if the agent didn&#39;t have them in mind before. Therefore, a planned process can diverge from what the agent would have said the plan was before executing it, by adjusting to problems encountered during execution (e.g. choosing another reagent with equivalent properties, if the originally planned one has run out.)</obo:IAO_0000116>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">&apos;Plan&apos; includes a future direction sense. That can be problematic if plans are changed during their execution. There are however implicit contingencies for protocols that an agent has in his mind that can be considered part of the plan, even if the agent didn&apos;t have them in mind before. Therefore, a planned process can diverge from what the agent would have said the plan was before executing it, by adjusting to problems encountered during execution (e.g. choosing another reagent with equivalent properties, if the originally planned one has run out.)</obo:IAO_0000116>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">Bjoern Peters</obo:IAO_0000117>
         <obo:IAO_0000112 rdf:datatype="&xsd;string">Injecting mice with a vaccine in order to test its efficacy</obo:IAO_0000112>
         <obo:IAO_0000116 rdf:datatype="&xsd;string">We are only considering successfully completed planned processes. A plan may be modified, and details added during execution. For a given planned process, the associated realized plan specification is the one encompassing all changes made during execution. This means that all processes in which an agent acts towards achieving some 
@@ -4533,8 +4648,8 @@ charter/rules/bylaws themselves.
 
 It is debatable what the organization itself is (some kind of dependent
 continuant or an aggregate of people). This also determines who/what the
-bearer of organization_roles&#39; are. My personal favorite is still to define
-organization as a kind of &#39;legal entity&#39;, but thinking it through leads to
+bearer of organization_roles&apos; are. My personal favorite is still to define
+organization as a kind of &apos;legal entity&apos;, but thinking it through leads to
 all kinds of questions that are clearly outside the scope of OBI.
 
 Interestingly enough, it does not seem to matter much where we place
@@ -4543,9 +4658,9 @@ Government Agency, Hospital), instantiate it (Affymetrix, NCBI, NIH, ISO,
 W3C, University of Oklahoma), and have it play roles.
 
 This leads to my proposal: We define organization through the statements 1 -
-3 above, but without an &#39;is a&#39; statement for now. We can leave it in its
+3 above, but without an &apos;is a&apos; statement for now. We can leave it in its
 current place in the is_a hierarchy (material entity) or move it up to
-&#39;continuant&#39;. We leave further clarifications to BFO, and close this issue
+&apos;continuant&apos;. We leave further clarifications to BFO, and close this issue
 for now.</obo:IAO_0000116>
         <obo:IAO_0000112 xml:lang="en">PMID: 16353909.AAPS J. 2005 Sep 22;7(2):E274-80. Review. The joint food and agriculture organization of the United Nations/World Health Organization Expert Committee on Food Additives and its role in the evaluation of the safety of veterinary drug residues in foods.</obo:IAO_0000112>
         <obo:IAO_0000111 xml:lang="en">organization</obo:IAO_0000111>
@@ -4562,7 +4677,7 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">Elisabetta Manduchi</obo:IAO_0000117>
         <obo:IAO_0000119 rdf:datatype="&xsd;string">PERSON: Elisabetta Manduchi</obo:IAO_0000119>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
-        <obo:IAO_0000112 xml:lang="en">A mean calculation which has averaging objective is a descriptive statistics calculation in which the mean is calculated by taking the sum of all of the observations in a data set divided by the total number of observations. It gives a measure of the &#39;center of gravity&#39; for the data set. It is also known as the first moment.</obo:IAO_0000112>
+        <obo:IAO_0000112 xml:lang="en">A mean calculation which has averaging objective is a descriptive statistics calculation in which the mean is calculated by taking the sum of all of the observations in a data set divided by the total number of observations. It gives a measure of the &apos;center of gravity&apos; for the data set. It is also known as the first moment.</obo:IAO_0000112>
         <obo:IAO_0000115 xml:lang="en">An averaging objective is a data transformation objective where the aim is to perform mean calculations on the input of the data transformation.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">James Malone</obo:IAO_0000117>
         <obo:IAO_0000111 xml:lang="en">averaging objective</obo:IAO_0000111>
@@ -4604,7 +4719,7 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">PERSON: Helen Parkinson</obo:IAO_0000117>
         <obo:IAO_0000111 rdf:datatype="&xsd;string">device</obo:IAO_0000111>
         <obo:IAO_0000116 rdf:datatype="&xsd;string">food should not classify as a device - counter example for using manufacturer and not device. macroscopic only</obo:IAO_0000116>
-        <obo:IAO_0000116 rdf:datatype="&xsd;string">if we keep this exploratory term we could reinstate the old device class which is obsolete_device. didn&#39;t work before as we had manufacturing as part of  the definition. device was needed, but couldn&#39;t define in Philadelphia. If we decide  that in addition to function there are also capabilities for which a device is created we will include these in the definition.</obo:IAO_0000116>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">if we keep this exploratory term we could reinstate the old device class which is obsolete_device. didn&apos;t work before as we had manufacturing as part of  the definition. device was needed, but couldn&apos;t define in Philadelphia. If we decide  that in addition to function there are also capabilities for which a device is created we will include these in the definition.</obo:IAO_0000116>
         <obo:IAO_0000118 rdf:datatype="&xsd;string">instrument</obo:IAO_0000118>
         <rdfs:comment rdf:datatype="&xsd;string">would include reagents</rdfs:comment>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
@@ -4705,7 +4820,7 @@ for now.</obo:IAO_0000116>
         <rdfs:label xml:lang="en">calculated datum</rdfs:label>
         <rdfs:label xml:lang="en">predicted data item</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
-        <obo:IAO_0000116 rdf:datatype="&xsd;string">BP 12/21: Edited the incomplete definition from Philippe. It is still unclear to me if this should be a data item at all, or an information content entity. This will be important, because if we exclude predictions from data items, we will run into issues that we willl have to duplicate things like &#39;weight datum&#39; etc. all of which can be predicted. </obo:IAO_0000116>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">BP 12/21: Edited the incomplete definition from Philippe. It is still unclear to me if this should be a data item at all, or an information content entity. This will be important, because if we exclude predictions from data items, we will run into issues that we willl have to duplicate things like &apos;weight datum&apos; etc. all of which can be predicted. </obo:IAO_0000116>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">Philippe Rocca-Serra; Bjoern Peters</obo:IAO_0000117>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
         <obo:IAO_0000111 rdf:datatype="&xsd;string">predicted data item</obo:IAO_0000111>
@@ -4758,10 +4873,10 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OGMS_0000031">
         <rdfs:label>disease</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000232>creation date: 2009-06-23T11:21:20Z</obo:IAO_0000232>
-        <obo:IAO_0000115 xml:lang="en">A disposition (i) to undergo pathological processes that (ii) exists in an organism because of one or more disorders in that organism.</obo:IAO_0000115>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">A disposition (i) to undergo pathological processes that (ii) exists in an organism because of one or more disorders in that organism.</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2009-06-23T11:21:20Z</obo:IAO_0000232>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4772,10 +4887,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>disorder</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A material entity which is clinically abnormal and part of an extended organism. Disorders are the physical basis of disease.</obo:IAO_0000115>
         <obo:IAO_0000232>creation date: 2009-06-23T11:39:44Z</obo:IAO_0000232>
+        <obo:IAO_0000115 xml:lang="en">A material entity which is clinically abnormal and part of an extended organism. Disorders are the physical basis of disease.</obo:IAO_0000115>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
     </Class>
     
 
@@ -4787,11 +4902,11 @@ for now.</obo:IAO_0000116>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000111>disease course</obo:IAO_0000111>
-        <obo:IAO_0000232>creation date: 2009-06-23T11:55:44Z</obo:IAO_0000232>
         <obo:IAO_0000115 xml:lang="en">The totality of all processes through which a given disease instance is realized.</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2009-06-23T11:55:44Z</obo:IAO_0000232>
+        <obo:IAO_0000111>disease course</obo:IAO_0000111>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
     </Class>
     
 
@@ -4802,10 +4917,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>extended organism</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
+        <obo:IAO_0000232>creation date: 2010-01-25T04:51:11Z</obo:IAO_0000232>
+        <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=3</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An object aggregate consisting of an organism and all material entities located within the organism, overlapping the organism, or occupying sites formed in part by the organism.</obo:IAO_0000115>
-        <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=3</obo:IAO_0000119>
-        <obo:IAO_0000232>creation date: 2010-01-25T04:51:11Z</obo:IAO_0000232>
     </Class>
     
 
@@ -4816,10 +4931,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>treatment</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=35</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">A processual entity whose completion is hypothesized (by a healthcare provider) to alleviate the signs and symptoms associated with a disorder</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
-        <obo:IAO_0000115 xml:lang="en">A processual entity whose completion is hypothesized (by a healthcare provider) to alleviate the signs and symptoms associated with a disorder</obo:IAO_0000115>
+        <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=35</obo:IAO_0000119>
     </Class>
     
 
@@ -4830,10 +4945,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>life course</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
-        <obo:IAO_0000115 xml:lang="en">A processual entity which has as parts all the processes in which a given organism is participant.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=38</obo:IAO_0000119>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A processual entity which has as parts all the processes in which a given organism is participant.</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
     </Class>
     
 
@@ -4844,10 +4959,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>health care process</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A social process that has at least one human participant and that includes as parts the treatment, diagnosis, or prevention of disease or injury--or the following of instructions of another human for treatment, diagnosis, or prevention--of a participant in the process</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A social process that has at least one human participant and that includes as parts the treatment, diagnosis, or prevention of disease or injury--or the following of instructions of another human for treatment, diagnosis, or prevention--of a participant in the process</obo:IAO_0000115>
     </Class>
     
 
@@ -4858,10 +4973,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>health care encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000096"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000115 xml:lang="en">A temporally-connected health care process that has as participants an organization or person realizing the health care provider role and a person realizing the patient role.  The health care provider role and patient are realized during the health care encounter</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
     </Class>
     
 
@@ -4872,10 +4987,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>hospitalization</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
     </Class>
     
 
@@ -4886,10 +5001,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>outpatient encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
-        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
     </Class>
     
 
@@ -4900,10 +5015,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>inpatient encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
     </Class>
     
 
@@ -4914,10 +5029,10 @@ for now.</obo:IAO_0000116>
         <rdfs:label>ED encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
         <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
     </Class>
     
 
@@ -5003,7 +5118,7 @@ for now.</obo:IAO_0000116>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000028"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">A geopolitical entity with a defined territory on which it exercises internal and external sovereignty, a permanent population, a government, and the capacity to enter into relations with other sovereign states.</obo:IAO_0000115>
-        <rdfs:comment xml:lang="en">Per Wikipedia, the word &#39;nation&#39; does not always refer to soverign states.  For example, the &quot;nation of Islam&quot;.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Per Wikipedia, the word &apos;nation&apos; does not always refer to soverign states.  For example, the &quot;nation of Islam&quot;.</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
         <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Sovereign_state</obo:IAO_0000119>
         <obo:IAO_0000118 xml:lang="en">nation</obo:IAO_0000118>
@@ -5038,7 +5153,7 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OMRSE_00000032">
         <rdfs:label xml:lang="en">geopolitical dependency</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000030"/>
-        <obo:IAO_0000115 xml:lang="en">A subnational entity that does not possess full political independence or sovereignty as a sovereign state, but remains politically outside of the controlling state and controls a geographical region that is outside the controlling state&#39;s integral region.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A subnational entity that does not possess full political independence or sovereignty as a sovereign state, but remains politically outside of the controlling state and controls a geographical region that is outside the controlling state&apos;s integral region.</obo:IAO_0000115>
         <rdfs:comment xml:lang="en">Typically, the common feature is that the dependency does not conduct foreign affairs, and relegates this authority to the sovereign state.  BUt otherwise, it is largely or completely autonomous relative to the administrative subdivisions.  Examples include Puerto Rico (U.S.), Guam (U.S.), Greenland (Denmark), French Polynesia (France), and Falkland Islands (United Kingdom). </rdfs:comment>
     </Class>
     
@@ -5115,7 +5230,7 @@ for now.</obo:IAO_0000116>
         <rdfs:label xml:lang="en">biological sex</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">An organismal quality inhering in a bearer by virtue of the bearer&#39;s ability to undergo sexual reproduction in order to differentiate the individuals or types involved.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An organismal quality inhering in a bearer by virtue of the bearer&apos;s ability to undergo sexual reproduction in order to differentiate the individuals or types involved.</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">biological sex</obo:IAO_0000111>
     </Class>
     
@@ -5151,9 +5266,9 @@ for now.</obo:IAO_0000116>
         <rdfs:label>vaccination</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0600007"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/vo.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>YH, BP</obo:IAO_0000117>
-        <obo:IAO_0000115>a process of administering substance in vivo that involves in adding a vaccine into a host (e.g., human) in vivo with the intent to invoke a protective or therapeutic adaptive immune response.</obo:IAO_0000115>
         <obo:IAO_0000118>vaccine administration</obo:IAO_0000118>
+        <obo:IAO_0000115>a process of administering substance in vivo that involves in adding a vaccine into a host (e.g., human) in vivo with the intent to invoke a protective or therapeutic adaptive immune response.</obo:IAO_0000115>
+        <obo:IAO_0000117>YH, BP</obo:IAO_0000117>
     </Class>
     
 
@@ -5315,13 +5430,13 @@ for now.</obo:IAO_0000116>
     <!-- http://purl.org/obo/owl/TRANS#TRANS_0000000 -->
 
     <Class rdf:about="&TRANS;TRANS_0000000">
-        <rdfs:label>transmission process</rdfs:label>
         <rdfs:label>Suggested label: pathogen transmission process</rdfs:label>
+        <rdfs:label>transmission process</rdfs:label>
         <rdfs:label xml:lang="en">transmission process</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115>Suggested definition: A process by which a pathogen passes from one host organism to a second host organism of the same Species.</obo:IAO_0000115>
         <obo:IAO_0000115 xml:lang="en">A process that is the means during which the pathogen is transmitted directly or indirectly from its natural reservoir, a susceptible host or source to a new host.</obo:IAO_0000115>
+        <obo:IAO_0000115>Suggested definition: A process by which a pathogen passes from one host organism to a second host organism of the same Species.</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">transmission process</obo:IAO_0000111>
     </Class>
     
@@ -5417,5 +5532,5 @@ for now.</obo:IAO_0000116>
 
 
 
-<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
 
