@@ -17,36 +17,41 @@
 
    You should have received a copy of the GNU Lesser General Public
    License along with Apollo.  If not, see <http://www.gnu.org/licenses/>.
-
+l
 -->
 
 <!--
 @author Yang Hu <yah14@pitt.edu>
 -->
 
+<?php
+$modelIndex = urldecode($_GET['index']);
+?>
 
 <script type="text/javascript" src="js/array.js"></script>
 
 <script type="text/javascript">
     try{
-        var webservice_result = $.parseJSON(dataExchange.tab_input);
 
-        var url = webservice_result.incidence;
+    console.log('disease states index: <?php print $modelIndex; ?>');
+        var webservice_result = $.parseJSON(dataExchange.model_urls['<?php print $modelIndex; ?>']);
 
-        document.getElementById("epi-curve2").innerHTML="<img src='" + url + "' alt='' width=100% />";
-
+        var url = webservice_result.disease_states;
+        console.log('url: ' + url);
+        document.getElementById("epi-curve-dis-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=95% />";
         //        //chart data
         //        var data = new Array();
         //        var xAxis = new Array();
         //        var step = 1;
         //
         //        var maxLength = 0;
-        //        //file in the chart data
+        //file in the chart data
         //        for ( var key in webservice_result.data) {
-        //            if (!webservice_result.data.hasOwnProperty(key))
+        //            
+        //            if (key == 'Newly Exposed')
         //                continue;
         //            
-        //            if (key != 'Newly Exposed')
+        //            if (!webservice_result.data.hasOwnProperty(key))
         //                continue;
         //
         //            theData = webservice_result.data[key];
@@ -81,14 +86,13 @@
         //	
         //        var chart = new Highcharts.Chart({
         //            chart : {
-        //                renderTo : 'epi-curve2',
+        //                renderTo : 'epi-curve',
         //                defaultSeriesType: 'line',
         //                marginBottom: 100,
         //                height: 500
         //            },
         //            
         //            xAxis: {
-        //                //                type: 'datetime',
         //                labels: {
         //                    rotation: 90,
         //                    y: 13,
@@ -98,16 +102,7 @@
         //                        font: 'normal 13px Verdana, sans-serif'
         //                    }
         //                }
-        //                //                tickmarkPlacement:'between',
-        //                //                dateTimeLabelFormats: {
-        //                //                    second: '%Y-%m-%d<br/>%H:%M:%S',
-        //                //                    minute: '%Y-%m-%d<br/>%H:%M',
-        //                //                    hour: '%Y-%m-%d<br/>%H:%M',
-        //                //                    day: '%b %e, %y',
-        //                //                    week: '%b %e, %y',
-        //                //                    month: '%b %e, %y',
-        //                //                    year: '%y'
-        //                //                }
+        //                //                tickmarkPlacement:'between'
         //            },
         //            
         //            yAxis: {
@@ -124,17 +119,9 @@
         //                        hintLabel + this.x +': '+ this.y;
         //                }
         //            },
-        //            
-        //            //            navigator: {
-        //            //                baseSeries: 0
-        //            //            },
-        //            //
-        //            //            rangeSelector : {
-        //            //                selected : 5
-        //            //            },
         //
         //            title : {
-        //                text : 'Incidence over time'
+        //                text : 'Disease states over time'
         //            },
         //			
         //            series : data,
@@ -221,4 +208,4 @@
         alert(err);
     }
 </script>
-<div id="epi-curve2"></div>
+<div id="epi-curve-dis-<?php print $modelIndex; ?>"></div>
