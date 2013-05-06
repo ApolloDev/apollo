@@ -5,8 +5,7 @@
  * and open the template in the editor.
  */
 
-define('AROOT', getcwd());
-require_once AROOT . '/apollo/apollo.inc';
+require_once __DIR__ . '/util/apollo.inc';
 
 $ret = new Response();
 
