@@ -26,10 +26,9 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-define('AROOT', getcwd());
 
-require_once AROOT . '/apollo/apollo.inc';
-require_once AROOT . '/util/misc.inc';
+require_once __DIR__ . '/../util/apollo.inc';
+require_once __DIR__ . '/../util/misc.inc';
 
 $ret = new Response();
 
