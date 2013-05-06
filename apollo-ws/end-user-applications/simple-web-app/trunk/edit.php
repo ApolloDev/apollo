@@ -24,4 +24,7 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
+
+// This file is referenced in apollo.js for editing the data in the configuration panel
+
 ?>
