@@ -25,8 +25,8 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-require_once AROOT . '/apollo/type.inc';
-require_once AROOT . '/apollo/apollo.inc';
+require_once __DIR__ . '/../util/type.inc';
+require_once __DIR__ . '/../util/apollo.inc';
 //require_once AROOT . '/chromephp/ChromePhp.php';
 
 //require_once AROOT . '/simulator/constant.inc';
@@ -93,21 +93,33 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration->simulatorTimeSpecification = $SimulatorTimeSpecification;
 //      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
-    $totalPopulation = floatval($params['Susceptible']) + floatval($params['Exposed']) + floatval($params['Infectious']) + floatval($params['Recovered']);
+//    $totalPopulation = floatval($params['Susceptible']) + floatval($params['Exposed']) + floatval($params['Infectious']) + floatval($params['Recovered']);
     $SimulatedPopulation = new stdClass();
+    
+    $popLocation = $params['PopulationLocation'];
+    if ($SoftwareIdentification->softwareName == 'FRED') {
+        if ($popLocation == 'usa' || $popLocation == 'USA') {
+            $params['PopulationLocation'] = 'US';
+        }
+    } else if ($SoftwareIdentification->softwareName == 'FluTE-tiny population') {
+        $params['PopulationLocation'] = '00000';
+    }
+    
+//    ChromePhp::log($params['PopulationLocation']);
+    
     $SimulatedPopulation->populationLocation = $params['PopulationLocation'];
     $SPopulationDiseaseState = new stdClass();
     $SPopulationDiseaseState->diseaseState = 'Susceptible';
-    $SPopulationDiseaseState->fractionOfPopulation = floatval($params['Susceptible']) / $totalPopulation;
+    $SPopulationDiseaseState->fractionOfPopulation = floatval($params['Susceptible']);
     $EPopulationDiseaseState = new stdClass();
     $EPopulationDiseaseState->diseaseState = 'Exposed';
-    $EPopulationDiseaseState->fractionOfPopulation = floatval($params['Exposed']) / $totalPopulation;
+    $EPopulationDiseaseState->fractionOfPopulation = floatval($params['Exposed']);
     $IPopulationDiseaseState = new stdClass();
     $IPopulationDiseaseState->diseaseState = 'Infectious';
-    $IPopulationDiseaseState->fractionOfPopulation = floatval($params['Infectious']) / $totalPopulation;
+    $IPopulationDiseaseState->fractionOfPopulation = floatval($params['Infectious']);
     $RPopulationDiseaseState = new stdClass();
     $RPopulationDiseaseState->diseaseState = 'Recovered';
-    $RPopulationDiseaseState->fractionOfPopulation = floatval($params['Recovered']) / $totalPopulation;
+    $RPopulationDiseaseState->fractionOfPopulation = floatval($params['Recovered']);
     $SimulatedPopulation->populationDiseaseState = array($SPopulationDiseaseState, $EPopulationDiseaseState, $IPopulationDiseaseState,
         $RPopulationDiseaseState);
     $SimulatorConfiguration->populationInitialization = $SimulatedPopulation;
