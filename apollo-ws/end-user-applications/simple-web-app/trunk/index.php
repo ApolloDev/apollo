@@ -211,8 +211,12 @@ Index page for the Apollo Test Client
                         
                         Note: Currently, the SEUA only supports running the FluTE simulator for Los Angeles County, California. 
                         If any population location other than Los Angeles County is specified, a default 2000 person population will be used by the 
-                        FluTE simulator. GAIA visualizations of FluTE simulations in Los Angeles County will be available shortly. 
-                        The expected run time for a non-cached run of FluTE for Los Angeles County is 90 minutes. <br /><br />
+                        FluTE simulator. GAIA visualizations of FluTE simulations in Los Angeles County will be available shortly.
+                        <br /><br />
+                        
+                        The expected run time for a non-cached run of the FluTE simulator for Los Angeles County
+                        using a run length of 150 days is 90 minutes. The expected run time for a non-cached run of the FRED simulator 
+                        for Los Angeles County using a run length of 150 days is 30 minutes.<br /><br />
                         
 
                     </div>
