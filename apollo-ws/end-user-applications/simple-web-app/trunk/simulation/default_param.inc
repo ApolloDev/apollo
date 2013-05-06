@@ -26,14 +26,13 @@
  * @author Yang Hu <yah14@pitt.edu>
  */
 //namespace models\PARAMS;
-//require_once 'constant.inc';
 
-require_once AROOT . '/util/misc.inc';
-require_once AROOT . '/util/object_helper.inc';
-require_once AROOT . '/util/shared_parameters.inc';
+require_once __DIR__ . '/../util/misc.inc';
+require_once __DIR__ . '/../util/object_helper.inc';
+require_once __DIR__ . '/../util/shared_parameters.inc';
 
-require_once AROOT . '/apollo/type.inc';
-require_once AROOT . '/apollo/apollo.inc';
+require_once __DIR__ . '/../util/type.inc';
+require_once __DIR__ . '/../util/apollo.inc';
 
 //require_once AROOT . '/chromephp/ChromePhp.php';
 //for cell
@@ -46,7 +45,7 @@ function get_default_param_structure() {
     $PARAMS = new stdClass;
 
     $apolloUriTermMap = array(
-        "Time Step Unit" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000005>",
+        "Time Step Unit" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000014>",
         "Time Step Value" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000012>",
         "Run Length" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000015>",
         "Population Location" => "<http://purl.obolibrary.org/obo/APOLLO_SV_00000039>",
@@ -107,15 +106,15 @@ function get_default_param_structure() {
 
     // load the definitions from the apollo_sv_definitions file
     $toolTipTermArray = array();
-    $lines = file(AROOT . "/apollo_sv_terms_v3.tab");
+    $lines = file("../apollo_sv_terms_v3.tab");
     foreach ($lines as $line_num => $line) {
         $splitLine = explode("\t", $line);
 //        $line = mb_convert_encoding($line, "UTF-8");
-        $toolTipTermArray[$splitLine[0]] = trim($splitLine[3]);
+        $toolTipTermArray[$splitLine[0]] = 'DEFINITION: ' . trim($splitLine[2]) . '&#10&#10' . 'ELUCIDATION: ' . trim($splitLine[3]);
 //        if ($line_num == 14) {
 //        }
     }
-    $toolTipTermArray["not_defined"] = "Definition not defined in ontology";
+    $toolTipTermArray["not_defined"] = "DEFINITION: Definition not defined in ontology." . "&#10&#10" . "ELUCIDATION: Elucidation not defined in ontology.";
 
     $defaultRunLength = 150;
 
@@ -177,7 +176,7 @@ function get_default_param_structure() {
 
     $pname = get_time_step_unit_text();
     $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 'The time unit such as “hours” or “days” for each time step of a simulation.  Time step unit is always used with time step value.', 0, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_time_step_unit_text()]], 0, ++$left, ++$left, true, false));
 
     $pname = get_time_step_value_text();
     $pvalue = '1';
@@ -191,28 +190,36 @@ function get_default_param_structure() {
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
-    $pname = 'Population Location';
-    $pvalue = '42003';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Population Location']], 0, ++$left, ++$left, true, false));
+    $basePath = 'Population Location'; //create base folder entry
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', $toolTipTermArray[$apolloUriTermMap['Population Location']], 0, ++$left, $left + 5, false, false));
+    $basePath = deleteSpace($basePath);
 
-    $basePath = 'Initial Compartment Sizes'; //create base folder entry
+    $pname = 'State';
+    $pvalue = '';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+
+    $pname = 'County';
+    $pvalue = '';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
+
+    $basePath = 'Initial Compartment Fractions'; //create base folder entry
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', '', 0, ++$left, $left + 9, false, false));
     $basePath = deleteSpace($basePath);
 
     $pname = 'Susceptible';
-    $pvalue = '1155854';
+    $pvalue = '0.94859';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Susceptible']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Exposed';
-    $pvalue = '6550';
+    $pvalue = '0.00538';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Exposed']], 1, ++$left, ++$left, true, false));
-    
+
     $pname = 'Infectious';
-    $pvalue = '7350';
+    $pvalue = '0.00603';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Infectious']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Recovered';
-    $pvalue = '48740';
+    $pvalue = '0.04';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Recovered']], 1, ++$left, ++$left, true, false));
 
 
@@ -266,7 +273,7 @@ function get_default_param_structure() {
         $pvalue[] = 2000.0;
     }
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'simulator/antiviral_supply_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Antiviral Supply Schedule']], 1, ++$left, ++$left, true, false));
+            'simulation/control_measures/antiviral_supply_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Antiviral Supply Schedule']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Antiviral Administration Schedule';
     $pvalue = array();
@@ -274,7 +281,7 @@ function get_default_param_structure() {
         $pvalue[] = 2000.0;
     }
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'simulator/antiviral_admin_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Antiviral Administration Schedule']], 1, ++$left, ++$left, true, false));
+            'simulation/control_measures/antiviral_admin_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Antiviral Administration Schedule']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Antiviral Treatment Efficacy';
     $pvalue = '0.7';
@@ -335,7 +342,7 @@ function get_default_param_structure() {
     }
 
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'simulator/vaccination_supply_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Vaccination Supply Schedule']], 1, ++$left, ++$left, true, false));
+            'simulation/control_measures/vaccination_supply_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Vaccination Supply Schedule']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Vaccination Administration Schedule';
     $pvalue = array();
@@ -343,7 +350,7 @@ function get_default_param_structure() {
         $pvalue[] = 5000.0;
     }
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'simulator/vaccination_admin_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Vaccination Administration Schedule']], 1, ++$left, ++$left, true, false));
+            'simulation/control_measures/vaccination_admin_schedule.html', json_encode($pvalue), $toolTipTermArray[$apolloUriTermMap['Vaccination Administration Schedule']], 1, ++$left, ++$left, true, false));
 
     $pname = 'Vaccine Efficacy';
     $pvalue = '0.7';
@@ -373,7 +380,7 @@ function get_default_param_structure() {
 
     $pname = 'Control Measure Response Delay';
     $pvalue = '2';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '',  $toolTipTermArray[$apolloUriTermMap['Control Measure Response Delay']], 2, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Control Measure Response Delay']], 2, ++$left, ++$left, true, false));
 
     $pname = 'School Closure Target Facilities';
     $pvalue = '';
@@ -409,7 +416,7 @@ function get_default_param_structure() {
 
     $pname = 'Control Measure Response Delay';
     $pvalue = '2';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '',  $toolTipTermArray[$apolloUriTermMap['Control Measure Response Delay']], 2, ++$left, ++$left, true, false));
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Control Measure Response Delay']], 2, ++$left, ++$left, true, false));
 
     $pname = 'School Closure Target Facilities';
     $pvalue = '';
