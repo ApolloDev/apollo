@@ -259,7 +259,8 @@ var vaccSupplySchedule = new function(){
                 name : 'Non-Cumulative'
             }, {
                 id : 'cumulative',
-                name : 'Cumulative'
+                name : 'Cumulative',
+                visible : false
             }
             ]
         });

@@ -78,8 +78,7 @@
 
 
         <?php
-        define('AROOT', getcwd());
-        require_once AROOT . '/apollo/apollo.inc';
+        require_once __DIR__ . '/util/apollo.inc';
 //        require_once ROOT . '/chrome/ChromePhp.php';
 
         $requiredParameters = array('requester', 'password', 'developer', 'name', 'version', 'url');

@@ -25,6 +25,20 @@
 Index page for the Apollo Test Client
 @author Yang Hu <yah14@pitt.edu>
 -->
+
+<?php
+
+//require_once AROOT . '/simulation/population/state_county_data.php';
+//
+//$state_county_data = new state_county_data();
+//$state_county_data->initializeStateCountyData();
+
+//print $state_county_data->getJSONCountyListForState(42);
+
+//    echo $_SERVER['REMOTE_ADDR']; 
+?>  
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -98,7 +112,7 @@ Index page for the Apollo Test Client
 
             </div>
         </div>
-
+        
         <div id="main">
 
             <div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
@@ -133,10 +147,10 @@ Index page for the Apollo Test Client
                         <br>
                     </div>
 
-                    <div id="model-div" class="drop-box-div" style="width: 250px">
+                    <div id="model-div" class="drop-box-div" style="width: 350px">
                         <div style="text-align: left">Epidemic Simulators:</div>
                         <div style="text-align: left">
-                            <select id="model-combo" style="width: 280px;" size="4" multiple="multiple" disabled>
+                            <select id="model-combo" style="width: 325px;" size="4" multiple="multiple" disabled>
                                 <option value="select">Please select a disease...</option>
                             </select>
                         </div>
@@ -189,11 +203,17 @@ Index page for the Apollo Test Client
                         specific date of September 12, 2009.<br /><br />
 
                         Use the checkboxes in the "Control Measures Section" of the configuration panel to select control measures to be included 
-						in each simulation (Note: not all control measures are supported by each simulator. If a simulator does not
-						support a selected control measure, the control measure will not be used by that simulator.)<br /><br />
+                        in each simulation (Note: not all control measures are supported by each simulator. If a simulator does not
+                        support a selected control measure, the control measure will not be used by that simulator.)<br /><br />
 
                         The source for the terms in the simulator configuration panel is the Apollo-SV ontology. Hover the
-                        mouse pointer over a term to see its description in the ontology.<br /><br /> 
+                        mouse pointer over a term to see its definition and elucidation in the ontology.<br /><br /> 
+                        
+                        Note: Currently, the SEUA only supports running the FluTE simulator for Los Angeles County, California. 
+                        If any population location other than Los Angeles County is specified, a default 2000 person population will be used by the 
+                        FluTE simulator. GAIA visualizations of FluTE simulations in Los Angeles County will be available shortly. 
+                        The expected run time for a non-cached run of FluTE for Los Angeles County is 90 minutes. <br /><br />
+                        
 
                     </div>
                 </div>
@@ -202,7 +222,7 @@ Index page for the Apollo Test Client
 
             <div class="ui-layout-south">
                 <div>
-                    <form id="apollo-form" action="apollo_exec.php" method="post"
+                    <form id="apollo-form" action="simulation/apollo_exec.php" method="post"
                           style="padding: 10px;">
                         <button id="create" style="font-size: 16px">Run Epidemic Simulator(s)</button>
                     </form>
