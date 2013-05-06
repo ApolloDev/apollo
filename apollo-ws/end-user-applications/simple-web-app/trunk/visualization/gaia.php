@@ -1,5 +1,4 @@
 <?php
-define('AROOT', getcwd());
 $modelIndex = urldecode($_GET['index']);
 ?>
 <script type="text/javascript" src="js/array.js"></script>
