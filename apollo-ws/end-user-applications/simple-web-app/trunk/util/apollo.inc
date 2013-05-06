@@ -1,13 +1,8 @@
 <?php
 
-require_once AROOT . '/simulator/exec.inc';
-//require_once AROOT . '/simulator/compartment/exec.inc';
-//require_once AROOT . '/models/agent_based/exec.inc';
+require_once __DIR__ . '/../simulation/exec_simulation.inc';
 
-require_once AROOT . '/simulator/default_param.inc';
-
-//require_once AROOT . '/simulator/compartment/default_param.inc';
-//require_once AROOT . '/models/agent_based/default_param.inc';
+require_once __DIR__ . '/../simulation/default_param.inc';
 
 class apollo {
 
