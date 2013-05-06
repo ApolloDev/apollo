@@ -1,4 +1,5 @@
 <?php
+
 /*
 
     Copyright (C) 2011 University of Pittsburgh
@@ -24,23 +25,20 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-//namespace models;
 
-/**
- * Return the value from the $obj using the according $path
- * @param unknown_type $obj
- * the object we are going retrieve the value
- *
- * @param unknown_type $path
- * the value path inside the object
- */
-function get_value($obj, $pathStr) {
-	$paths = explode('.', $pathStr);
+require_once __DIR__ . '/../util/apollo.inc';
 
-	foreach ($paths as $path){
-		$obj = $obj->$path;
-	}
+//$modelType = $_GET['model'];
+//$snomed = $_GET['snomed'];
 
-	return $obj;
+try {
+
+	$apollo = new apollo();
+
+	$param_struct = $apollo->parameters();
+
+	echo json_encode($param_struct);
+}catch (Exception $e){
+	echo json_encode($e->getMessage());
 }
 ?>
