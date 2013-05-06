@@ -89,7 +89,7 @@ html,body {
     text-align: center;
 }
 
-.Color_Red { background:#99CCFF; 
+.Color_Blue { background:#99CCFF; 
              font-style: normal}
 
 .ui-widget-content {
@@ -132,3 +132,5 @@ html,body {
 .mceStatusbar {
     display: none;
 }
+
+*:focus {outline: none;}
