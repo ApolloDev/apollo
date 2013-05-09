@@ -91,13 +91,13 @@
         <rdfs:label>has curation status</rdfs:label>
         <rdfs:label xml:lang="en">has curation status</rdfs:label>
     </AnnotationProperty>
-    <AnnotationProperty rdf:about="&obo;IAO_0000232">
-        <rdfs:label>curator note</rdfs:label>
-        <rdfs:label xml:lang="en">curator note</rdfs:label>
-    </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000119">
         <rdfs:label>definition source</rdfs:label>
         <rdfs:label xml:lang="en">definition source</rdfs:label>
+    </AnnotationProperty>
+    <AnnotationProperty rdf:about="&obo;IAO_0000232">
+        <rdfs:label>curator note</rdfs:label>
+        <rdfs:label xml:lang="en">curator note</rdfs:label>
     </AnnotationProperty>
     <AnnotationProperty rdf:about="&obo;IAO_0000117">
         <rdfs:label>definition editor</rdfs:label>
@@ -178,14 +178,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:range>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
-                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
-                </unionOf>
-            </Class>
-        </rdfs:range>
         <rdfs:domain>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +186,14 @@
                 </unionOf>
             </Class>
         </rdfs:domain>
+        <rdfs:range>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
+                    <rdf:Description rdf:about="&span;ProcessualEntity"/>
+                </unionOf>
+            </Class>
+        </rdfs:range>
     </ObjectProperty>
     
 
@@ -500,18 +500,18 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
             <rdf:Description/>
-        </oboInOwl:hasDefinition>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
             <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -527,15 +527,15 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1528,7 +1528,7 @@ It is worth noting that there are control measures such as closing schools that 
 
     <Class rdf:about="&obo;APOLLO_SV_00000036">
         <rdfs:label xml:lang="en">normal distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">A continuous probability distribution in which the parameter μ is the mean or expectation of the distribution and the parameter σ is its standard deviation</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">normal distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2713,7 +2713,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000076">
         <rdfs:label xml:lang="en">μ</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">the mean or expectation of a distribution</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">μ</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2724,7 +2724,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000077">
         <rdfs:label xml:lang="en">σ</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">standard deviation</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">σ</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2735,7 +2735,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000078">
         <rdfs:label xml:lang="en">beta distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">A continuous probability distribution in which the parameter μ is the mean or expectation of the distribution and the parameter σ is its standard deviation</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">beta distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2746,7 +2746,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000079">
         <rdfs:label xml:lang="en">log normal distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">a continuous probability distribution over variable X whose parameters denoted μ and σ are, respectively, the mean and standard deviation of the variable’s natural logarithm</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">log normal distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2757,7 +2757,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000080">
         <rdfs:label xml:lang="en">uniform distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">uniform distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2768,7 +2768,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000081">
         <rdfs:label xml:lang="en">triangular distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">a continuous probability distribution with lower limit a, upper limit b and mode c, where a &lt; b and a &lt;= c &lt;= b.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">triangular distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2779,7 +2779,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000082">
         <rdfs:label xml:lang="en">Bayesian network</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Bayesian network</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a discrete probability distribution</obo:IAO_0000600>
     </Class>
@@ -2790,7 +2790,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000083">
         <rdfs:label xml:lang="en">temporal Bayesian network</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">a discrete probability distribution that conditions on time</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">temporal Bayesian network</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2854,7 +2854,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000091">
         <rdfs:label>immune</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">an organism that has the property of being immune to a specific disease agent</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">immune</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2865,7 +2865,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000092">
         <rdfs:label>95% confidence interval</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">95% confidence interval</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a type of interval estimate of a population parameter used to indicate the reliability of an estimate.  How frequently the observed interval contains the parameter is determined by the confidence level or confidence coefficient, in this type the confidence level is 95%</obo:IAO_0000600>
     </Class>
@@ -2876,7 +2876,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000093">
         <rdfs:label>Bayesian credible interval</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Baysesian credible interval</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a type of interval estimate of a population parameter that has the property that the true value of the estimated populatin parameter has a (specified) particular probability of being in the confidence interval given the data on which the estimate is derived.</obo:IAO_0000600>
     </Class>
@@ -2887,7 +2887,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000094">
         <rdfs:label>basic reproduction number</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">basic reproduction number</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">the number of cases one case generates on average over the course of its infectious period</obo:IAO_0000600>
     </Class>
@@ -2898,7 +2898,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000095">
         <rdfs:label>discrete probability distribution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">a probability distribution over a discrete random variable</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">discrete probability distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -2909,7 +2909,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000096">
         <rdfs:label>units</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">The increments of measurement for a measurable thing</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">units</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3048,15 +3048,6 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000118 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000118">
-        <rdfs:label xml:lang="en">vaccination</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000119 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000119">
@@ -3090,7 +3081,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000121">
         <rdfs:label xml:lang="en">species</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">an interbreeding population</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">species</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3163,7 +3154,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000127">
         <rdfs:label xml:lang="en">control measure target populations and prioritization</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000071"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">A simulated population that is the target of a control measure and its priority under triage conditions</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure target population and prioritization</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3358,7 +3349,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000147">
         <rdfs:label xml:lang="en">inter-personal contact probability</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <obo:IAO_0000600 xml:lang="en">Transmission parameter</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">inter-personal contact probability</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3400,6 +3391,15 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000033"/>
         <obo:IAO_0000600 xml:lang="en">a fraction of vaccination of individuals in a target population at which a vaccination program stops vaccinating that target population</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination reactive end point fraction</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00001008">
+        <rdfs:label xml:lang="en">TODO</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
     </Class>
     
 
@@ -3603,13 +3603,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
