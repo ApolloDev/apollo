@@ -485,7 +485,24 @@ class LonLat(Wrapper):
     def __str__(self):
         return 'lonlat %f %f %g %d %g'%(self.longitude,self.latitude,\
                                         self.value,self.styleID,self.time)
-        
+
+def FIPSToUSFips(fipsStr):
+    fipsSymb = ["st","ct","tr","bl"]
+    fipsList = []
+    fipsList.append(fipsStr[0:2])
+    if len(fipsStr) > 2:  fipsList.append(fipsStr[2:5])
+    if len(fipsStr) > 5:
+	tr = fipsStr[5:11]
+	if tr[4:] == "00": tr = tr[:4]
+	fipsList.append(fipsStr[tr])
+    if len(fipsStr) > 11:
+	fipsList.append(fipsStr[11:12])
+
+    returnString = ""
+    for iFips in range(0,len(fipsList)):
+	returnString = "%s%s."%(fipsSymp[iFips],fipsList[iFips])
+    return returnString[:-1]
+		       
 class USFips(Wrapper):
     def __init__(self,fipsString_=None,value_=0.0,time_=Constants.GAIA_DEFAULT_TIME_SEQ,
                  styleID_=Constants.GAIA_DEFAULT_STYLE):
