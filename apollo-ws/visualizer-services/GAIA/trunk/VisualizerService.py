@@ -22,7 +22,7 @@ from VisualizerService_services_server import VisualizerService
 from ZSI.ServiceContainer import AsServer
 from ApolloFactory import *
 from apollo import ApolloSimulatorOutput
-from gaia import GAIA,ConfInfo,PlotInfo,Constants,computeBoundaries,computeColors
+from gaia import GAIA,ConfInfo,PlotInfo,Constants,computeBoundaries,computeColors,FIPSToUSFips
 import random
 import time
 import shutil
@@ -77,26 +77,30 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 	countyList = []
         with open(gaiaFileName,"wb") as f:
             for pop in timeSeriesOutput.keys():
-		st = str(pop)[0:2]
-                ct = str(pop)[2:5]
-		if (st,ct) not in countyList:
-		    countyList.append((st,ct))
-                tr = str(pop)[5:11]
-                if tr[4:] == "00":
-                    tr = tr[:4]
-                bg = str(pop)[11:12]
-
+		##st = str(pop)[0:2]
+##                ct = str(pop)[2:5]
+##		if (st,ct) not in countyList:
+##		    countyList.append((st,ct))
+##                tr = str(pop)[5:11]
+##                if tr[4:] == "00":
+##                    tr = tr[:4]
+##                bg = str(pop)[11:12]
+		
+		if str(pop)[0:5] not in countyList:
+		    countList.append(str(pop)[0:5])
+		    
+		fipsString = FIPSToUSFips(str(pop))
                 tcount = 1
                 for count in timeSeriesOutput[pop]:
 		    ### THIS IS A HACK because FRED at the moment
 		    ### IS overcompensating on Day 0
 		    if tcount == 1:
 			if count != 0:
-				f.write("USFIPS st%s.ct%s.tr%s.bl%s %d %d:1\n"\
-                               	 	%(st,ct,tr,bg,1,tcount))
+				f.write("USFIPS %s %d %d:1\n"\
+                               	 	%(fipsString,1,tcount))
                     elif count != 0:
-                        f.write("USFIPS st%s.ct%s.tr%s.bl%s %d %d:1\n"\
-                                %(st,ct,tr,bg,count,tcount))
+                        f.write("USFIPS %s %d %d:1\n"\
+                                %(fipsString,count,tcount))
                     tcount += 1
 
                 if tcount > maxTCount: maxTCount = tcount
@@ -104,8 +108,8 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
             for i in range(0,maxTCount):    #if len(pop) > 12:
                 #    print "BigPop: " + pop
 
-		for state,county in countyList:
-		    f.write("USFIPS st%s.ct%s.tr*.bl* -1 %d:-1\n"%(state,county,i))
+		for stct in countyList:
+		    f.write("USFIPS st%s.ct%s.tr*.bl* -1 %d:-1\n"%(st[0:2],ct[2:5],i))
 
         plotInfo = PlotInfo(input_filename_ = gaiaFileName,
                             output_filename_ = gaiaOutputFileName,
@@ -133,8 +137,6 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 	sys.stdout.flush()
 	with open(statusFile,"wb") as f:
 		f.write("Completed")
-
-
 
 
 class GaiaWebService(VisualizerService):
