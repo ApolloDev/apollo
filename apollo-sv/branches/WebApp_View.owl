@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY obo "http://purl.obolibrary.org/obo/" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://obolibrary.org/obo/apollo_sv/views/WebApp_Apollo_SV.owl#"
+     xml:base="http://obolibrary.org/obo/apollo_sv/views/WebApp_Apollo_SV.owl"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://obolibrary.org/obo/apollo_sv/views/WebApp_Apollo_SV.owl">
+        <owl:imports rdf:resource="&obo;apollo_sv.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000012 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000012">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001001"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000014 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000014">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001001"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000015 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000015">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001001"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000016 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000016">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001004"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000017 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000017">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001004"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000018 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000018">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000019 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000019">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000020 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000020">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000021 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000021">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000025 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000025">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000043 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000043">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001004"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000045 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000045">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001004"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000046 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000046">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000048 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000048">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000051 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000051">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000052 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000052">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000071 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000071">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001002"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000084 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000084">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000133 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000133">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000139 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000139">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001000 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001000">
+        <rdfs:label xml:lang="en">WebAppView</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001001 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001001">
+        <rdfs:label xml:lang="en">Simulator Time Specification Section</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001002 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001002">
+        <rdfs:label xml:lang="en">Simulated Population Section</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001003 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001003">
+        <rdfs:label xml:lang="en">Initial Compartment Fractions</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001002"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001004 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001004">
+        <rdfs:label xml:lang="en">Disease Section</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001005 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001005">
+        <rdfs:label xml:lang="en">Control Measure Section</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001006 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001006">
+        <rdfs:label xml:lang="en">Antiviral Control Measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001005"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001007 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001007">
+        <rdfs:label xml:lang="en">Vaccine Control Measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001005"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OGMS_0000031 -->
+
+    <rdf:Description rdf:about="&obo;OGMS_0000031">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001004"/>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+
