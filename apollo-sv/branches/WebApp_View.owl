@@ -194,28 +194,28 @@
 
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000084 -->
 
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000084">
+    <owl:Class rdf:about="&obo;APOLLO_SV_00000084">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
-    </rdf:Description>
+    </owl:Class>
     
 
 
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000133 -->
 
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000133">
+    <owl:Class rdf:about="&obo;APOLLO_SV_00000133">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
-    </rdf:Description>
+    </owl:Class>
     
 
 
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000139 -->
 
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000139">
+    <owl:Class rdf:about="&obo;APOLLO_SV_00000139">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
-    </rdf:Description>
+    </owl:Class>
     
 
 
