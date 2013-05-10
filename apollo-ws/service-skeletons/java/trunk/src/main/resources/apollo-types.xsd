@@ -342,10 +342,11 @@
 
 	<complexType name="SimulatedPopulation">
 		<sequence>
-			<element name="populationLocation" type="token" maxOccurs="1"
-				minOccurs="1">
+			<element name="populationLocation" type="tns:INCITS31"
+				maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000039">
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000039">
 					</documentation>
 				</annotation>
 			</element>
@@ -1224,4 +1225,6 @@
     		</extension>
     	</complexContent>
     </complexType>
+
+
 </schema>
