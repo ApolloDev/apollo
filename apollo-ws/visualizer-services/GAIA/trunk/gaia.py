@@ -409,7 +409,7 @@ class PlotInfo:
         return xmlString
 
 class ConfInfo:
-    def __init__(self,serverURL_="gaia.psc.edu",serverPort_="13501",logInfo_=None,debug_=False):
+    def __init__(self,serverURL_="gaia.psc.edu",serverPort_="13500",logInfo_=None,debug_=False):
         self.serverURL = serverURL_
         self.serverPort = serverPort_
         self.logInfo = logInfo_
@@ -494,13 +494,13 @@ def FIPSToUSFips(fipsStr):
     if len(fipsStr) > 5:
 	tr = fipsStr[5:11]
 	if tr[4:] == "00": tr = tr[:4]
-	fipsList.append(fipsStr[tr])
+	fipsList.append(tr)
     if len(fipsStr) > 11:
 	fipsList.append(fipsStr[11:12])
 
     returnString = ""
     for iFips in range(0,len(fipsList)):
-	returnString = "%s%s."%(fipsSymp[iFips],fipsList[iFips])
+	returnString = "%s%s."%(fipsSymb[iFips],fipsList[iFips])
     return returnString[:-1]
 		       
 class USFips(Wrapper):
