@@ -36,16 +36,16 @@ class ApolloSimulatorOutput:
     def getNewlyInfectedTimeSeriesForBlocks(self):
 	tsDict = {}
 	maxTime = self.getMaxDayfromTimeSeriesForRunID()
-  
+        print "Max Time = " + str(maxTime)  
 	SQLStatement = 'select substring(p.label,18) as incits, t.time_step, t.pop_count '\
 		       + 'from time_series t, simulated_population p '\
 		       + 'where t.run_id = %d and t.population_id = p.id and p.label like '%(self._dbRunIndex)\
-		       + '"newly exposed in %%" and length(p.label) > 22'
+		       + '"newly exposed in %%" and length(p.label) > 6'
 	print SQLStatement
 	results = self.apolloDB.query(SQLStatement)
 	for row in results:
 	    if tsDict.has_key(row['incits']) is False:
-		tsDict[row['incits']] = [0 for x in range(0,maxTime)]
+		tsDict[row['incits']] = [0 for x in range(0,maxTime+1)]
 	    tsDict[row['incits']][int(row['time_step'])] = int(row['pop_count'])
 
 	return tsDict
