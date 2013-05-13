@@ -500,7 +500,7 @@ def FIPSToUSFips(fipsStr):
 
     returnString = ""
     for iFips in range(0,len(fipsList)):
-	returnString = "%s%s."%(fipsSymb[iFips],fipsList[iFips])
+	returnString += "%s%s."%(fipsSymb[iFips],fipsList[iFips])
     return returnString[:-1]
 		       
 class USFips(Wrapper):
