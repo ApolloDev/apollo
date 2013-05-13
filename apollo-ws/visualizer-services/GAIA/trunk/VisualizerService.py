@@ -87,8 +87,9 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
 ##                bg = str(pop)[11:12]
 		
 		if str(pop)[0:5] not in countyList:
-		    countList.append(str(pop)[0:5])
-		    
+		    countyList.append(str(pop)[0:5])
+		
+		print "pop str = " + str(pop)    
 		fipsString = FIPSToUSFips(str(pop))
                 tcount = 1
                 for count in timeSeriesOutput[pop]:
@@ -109,7 +110,7 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
                 #    print "BigPop: " + pop
 
 		for stct in countyList:
-		    f.write("USFIPS st%s.ct%s.tr*.bl* -1 %d:-1\n"%(st[0:2],ct[2:5],i))
+		    f.write("USFIPS st%s.ct%s.tr* -1 %d:-1\n"%(stct[0:2],stct[2:5],i))
 
         plotInfo = PlotInfo(input_filename_ = gaiaFileName,
                             output_filename_ = gaiaOutputFileName,
