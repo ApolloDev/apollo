@@ -178,14 +178,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -194,6 +186,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -506,12 +506,12 @@
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -1481,6 +1481,12 @@ It is worth noting that there are control measures such as closing schools that 
 
     <Class rdf:about="&obo;APOLLO_SV_00000032">
         <rdfs:label xml:lang="en">count</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000033"/>
+            </Restriction>
+        </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <obo:IAO_0000115 xml:lang="en">A measurement datum that is the output of counting.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
@@ -1492,6 +1498,12 @@ It is worth noting that there are control measures such as closing schools that 
 
     <Class rdf:about="&obo;APOLLO_SV_00000033">
         <rdfs:label xml:lang="en">counting</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;OBI_0000299"/>
+                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000032"/>
+            </Restriction>
+        </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
@@ -2328,7 +2340,7 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
 AND (more importantly) I did not re-use any of the ChEBI hierarchy which, even in the BFO version is a mess.
 Maybe we need to discuss this.
 </rdfs:comment>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">anitviral control measure</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral control measure</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2624,7 +2636,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&obo;OBI_0100026"/>
                                     <Restriction>
-                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                        <onProperty rdf:resource="&ro;bearer_of"/>
                                         <someValuesFrom rdf:resource="&obo;IDO_0000468"/>
                                     </Restriction>
                                 </intersectionOf>
@@ -2846,6 +2858,225 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000086">
         <rdfs:label xml:lang="en">epidemic control measure plan specification</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000087 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000087">
+        <rdfs:label xml:lang="en">count of susceptible population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000033"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <unionOf rdf:parseType="Collection">
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;has_part"/>
+                                                        <allValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&ro;bearer_of"/>
+                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000467"/>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </allValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <Class>
+                                                        <intersectionOf rdf:parseType="Collection">
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                                                                <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
+                                                            </Restriction>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                                <allValuesFrom>
+                                                                    <Class>
+                                                                        <intersectionOf rdf:parseType="Collection">
+                                                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                            <Restriction>
+                                                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                                                <someValuesFrom rdf:resource="&obo;IDO_0000468"/>
+                                                                            </Restriction>
+                                                                        </intersectionOf>
+                                                                    </Class>
+                                                                </allValuesFrom>
+                                                            </Restriction>
+                                                        </intersectionOf>
+                                                    </Class>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </unionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <unionOf rdf:parseType="Collection">
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <allValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;bearer_of"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000467"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </allValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <Restriction>
+                                                <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                                                <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
+                                            </Restriction>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                <allValuesFrom>
+                                                    <Class>
+                                                        <intersectionOf rdf:parseType="Collection">
+                                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                                <someValuesFrom rdf:resource="&obo;IDO_0000468"/>
+                                                            </Restriction>
+                                                        </intersectionOf>
+                                                    </Class>
+                                                </allValuesFrom>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </unionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">The count of individuals in a susceptible population (empirical or virtual).</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">susceptible population count</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000088 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000088">
+        <rdfs:label xml:lang="en">count of exposed population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000033"/>
+                            <Class>
+                                <unionOf rdf:parseType="Collection">
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000031"/>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                                                    </Restriction>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;has_part"/>
+                                                        <allValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000468"/>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </allValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </intersectionOf>
+                                    </Class>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&snap;ObjectAggregate"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;has_part"/>
+                                                        <allValuesFrom>
+                                                            <Class>
+                                                                <intersectionOf rdf:parseType="Collection">
+                                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                                    <Restriction>
+                                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                                        <someValuesFrom rdf:resource="&obo;IDO_0000467"/>
+                                                                    </Restriction>
+                                                                </intersectionOf>
+                                                            </Class>
+                                                        </allValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </unionOf>
+                            </Class>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <obo:IAO_0000115>The count of individuals in an exposed population (empirical or virtual).</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">exposed population count</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3603,13 +3834,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
