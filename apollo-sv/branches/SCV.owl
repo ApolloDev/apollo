@@ -21,7 +21,7 @@
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <owl:Ontology rdf:about="http://obolibrary.org/obo/apollo_sv/views/SCV.owl">
         <dc:creator>Mathias Brochhausen</dc:creator>
-        <dc:title xml:lang="en">Simulator Configuration View</dc:title>
+        <dc:title xml:lang="en">Simulator Configuration View (SCV)</dc:title>
         <rdfs:comment xml:lang="en">This OWL file provides a specific view of the Apollo_SV OWL file. It is not meant for reasoning. The view presented here is the view for simulator configuration data input.</rdfs:comment>
         <owl:imports rdf:resource="&obo;apollo_sv.owl"/>
     </owl:Ontology>
@@ -227,7 +227,7 @@
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001000 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00001000">
-        <rdfs:label xml:lang="en">WebAppView</rdfs:label>
+        <rdfs:label xml:lang="en">Simulator Configuration View</rdfs:label>
     </owl:Class>
     
 
