@@ -19,7 +19,7 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <owl:Ontology rdf:about="http://obolibrary.org/obo/apollo_sv/views/SCV.owl">
+    <owl:Ontology rdf:about="&obo;apollo_sv/views/SCV.owl">
         <dc:creator>Mathias Brochhausen</dc:creator>
         <dc:title xml:lang="en">Simulator Configuration View (SCV)</dc:title>
         <rdfs:comment xml:lang="en">This OWL file provides a specific view of the Apollo_SV OWL file. It is not meant for reasoning. The view presented here is the view for simulator configuration data input.</rdfs:comment>
