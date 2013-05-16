@@ -101,38 +101,6 @@
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000018 -->
-
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000018">
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
-    </rdf:Description>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000019 -->
-
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000019">
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
-    </rdf:Description>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000020 -->
-
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000020">
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
-    </rdf:Description>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000021 -->
-
-    <rdf:Description rdf:about="&obo;APOLLO_SV_00000021">
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
-    </rdf:Description>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000025 -->
 
     <rdf:Description rdf:about="&obo;APOLLO_SV_00000025">
@@ -203,6 +171,38 @@
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
     </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000087 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000087">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000088 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000088">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000098 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000098">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000099 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000099">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001003"/>
+    </rdf:Description>
     
 
 
