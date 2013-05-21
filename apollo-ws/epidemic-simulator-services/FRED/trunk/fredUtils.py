@@ -610,7 +610,7 @@ class FredInputFileSet:
 	    self.fileList.append(self.fileNames['paramsFile'])
 	    f.write('#FRED PARAM FILE\n')
 	    f.write('days = %d\n'%self.cfg._simulatorTimeSpecification._runLength)
-	    f.write('symp[0] = %g\n'%self.cfg._disease._asymptomaticInfectionFraction)
+	    f.write('symp[0] = %g\n'%(1.0-self.cfg._disease._asymptomaticInfectionFraction))
 	    f.write('R0 = %g\n'%self.cfg._disease._reproductionNumber)
 	    f.write('primary_cases_file[0] = fred_initial_population_0.txt\n')
 	    f.write('residual_immunity_ages[0] = 2 0 100\n')
