@@ -11,7 +11,9 @@
 ]>
 
 
-<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/"
+<rdf:RDF xmlns="&obo;apollo_sv/views/SCV.owl#"
+     xml:base="&obo;apollo_sv/views/SCV.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:obo="http://purl.obolibrary.org/obo/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
