@@ -1,5 +1,6 @@
 <?php
 $modelIndex = urldecode($_GET['index']);
+$location = urldecode($_GET['location']);
 ?>
 <script type="text/javascript" src="js/array.js"></script>
 
@@ -11,14 +12,14 @@ $modelIndex = urldecode($_GET['index']);
         var url = webservice_result.gaia;
         
         console.log(url);
-        document.getElementById("gaia-div-<?php print $modelIndex; ?>").innerHTML="<video width=70% controls> <source src='" + url + "' type=video/ogg></video>";
+        document.getElementById("gaia-div-<?php print $modelIndex; ?>").innerHTML="<video width=70% controls autoplay loop> <source src='" + url + "' type=video/ogg></video>";
         
     }catch (err){
         alert(err);
     }
     
 </script>
-<div style="text-align: center; font-family: Segoe UI, Arial, sans-serif; font-size: 25px">GAIA Epidemic Visualization of Influenza in 42003</div>
+<div style="text-align: center; font-family: Segoe UI, Arial, sans-serif; font-size: 25px">GAIA Epidemic Visualization of Influenza in <?php print $location ?></div>
 
 <div id="gaia-div-<?php print $modelIndex; ?>">
 
