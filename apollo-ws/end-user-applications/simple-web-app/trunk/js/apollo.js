@@ -245,7 +245,7 @@ function loadParamGrid(){
                                         
                                         // then update population if neccesary
                                         var countyVal = $("#11_value").val();
-//                                        changeDiseaseStateValues(countyVal)
+                                    //                                        changeDiseaseStateValues(countyVal)
                                     } else {
                                         clearCountyComboBoxValues();
                                         $("#11_value").attr('disabled', true);
@@ -276,7 +276,7 @@ function loadParamGrid(){
                             fn: function(e) {
  
                                 var countyVal = $("#11_value").val();
-//                                changeDiseaseStateValues(countyVal);
+                            //                                changeDiseaseStateValues(countyVal);
                             }
                         }
                         ]
@@ -525,7 +525,7 @@ function loadStateComboBoxValues() {
             box.empty();
             jasonObj = $.parseJSON(jasonObj);
             for (var v in jasonObj) {
-                if (v == 'Pennsylvania') {
+                if (v == 'California') {
                     box.append($("<option selected></option>").attr("value", jasonObj[v]).text(v)); 
                 } else {
                     box.append($("<option></option>").attr("value", jasonObj[v]).text(v)); 
@@ -579,7 +579,7 @@ function changeCountyComboBoxValues(jasonObj, state) {
     jasonObj = $.parseJSON(jasonObj);
     for (var v in jasonObj) {
         if (v != state + "000") {
-            if (v == "42003") {
+            if (v == "06037") {
                 box.append($("<option selected></option>").attr("value", v).text(jasonObj[v])); 
             } else {
                 box.append($("<option></option>").attr("value", v).text(jasonObj[v])); 
@@ -869,7 +869,7 @@ jQuery(document).ready(function(){
                 var name = jasonObj.data['visualizerName'];
                 var ver = jasonObj.data['visualizerVersion'];
 
-                waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName);
+                waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName, location);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if (textStatus == 'timeout') {
@@ -885,7 +885,7 @@ jQuery(document).ready(function(){
         });
     }
     
-    function waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName) {
+    function waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName, location) {
         
         $.ajax({
             type: "GET",
@@ -907,7 +907,7 @@ jQuery(document).ready(function(){
                 if (status != 'completed') {
                     setTimeout(
                         function() {
-                            waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName)
+                            waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName, location)
                         }, /* Request next message */
                         5000 /* ..after 1 seconds */
                         );
@@ -937,7 +937,7 @@ jQuery(document).ready(function(){
                     }
 
                     // need an index which is unique to the run and the visualizer
-                    var index = runId.toString + "v" + vizName;
+                    var index = runId.toString() + "v" + vizName;
                     dataExchange.model_urls[index] = encUrls;
 
                     // get run number
@@ -968,23 +968,26 @@ jQuery(document).ready(function(){
 
                     console.log('looping over urls');
                     for (key in urls) {
-
-
+                        
                         if (key == 'Disease states') {
-                            if($(resultID).html() != null ) {
-                                //select the tab
-                                maintab.tabs('select', resultID);
-                                //clear current tab content
-                                $(resultID).empty();
-                            } else {
-                                //create the tab
-                                maintab.tabs('add', resultID, simName + ' run ' +  diseaseStatesRunNumber + ': Disease states over time');
-                            }
+                            
+                            if (simName != 'FluTE') { // flute doesn't support disease state state charts right now
+                            
+                                if($(resultID).html() != null ) {
+                                    //select the tab
+                                    maintab.tabs('select', resultID);
+                                    //clear current tab content
+                                    $(resultID).empty();
+                                } else {
+                                    //create the tab
+                                    maintab.tabs('add', resultID, simName + ' run ' +  diseaseStatesRunNumber + ': Disease states over time');
+                                }
                     
-                            console.log("requesting disease states page");
-                            //load the tab
-//                            console.log(encodeURIComponent(runId));
-                            $(resultID, "#tabs").load('visualization/disease_states.php?index=' + encodeURIComponent(index));
+                                console.log("requesting disease states page");
+                                //load the tab
+                                //                            console.log(encodeURIComponent(runId));
+                                $(resultID, "#tabs").load('visualization/disease_states.php?index=' + encodeURIComponent(index));
+                            }
                         } else if (key == 'Incidence') {
                             if ($(incidenceID).html() != null) {
                                 // select the tab
@@ -1015,7 +1018,7 @@ jQuery(document).ready(function(){
                             $(combinedIncidenceID, "#tabs").load('visualization/incidence.php?index=' + encodeURIComponent(index));
                         }
                     
-                        if (simName == 'FRED' && key.indexOf('GAIA') !== -1) {
+                        if ((simName == 'FRED' || simName == 'FluTE') && key.indexOf('GAIA') !== -1) {
                             if($(gaiaID).html() != null ) {
                                 //select the tab
                                 maintab.tabs('select', gaiaID);
@@ -1030,7 +1033,7 @@ jQuery(document).ready(function(){
                             console.log(runId);
                             console.log(encodeURIComponent(runId));
                             //load the tab
-                            $(gaiaID, "#tabs").load('visualization/gaia.php?index=' + encodeURIComponent(index));
+                            $(gaiaID, "#tabs").load('visualization/gaia.php?index=' + encodeURIComponent(index) + '&location=' + location);
                         }
                  
                     }
@@ -1103,13 +1106,17 @@ jQuery(document).ready(function(){
                    
                     getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber); 
 
-                    if (simName != 'FluTE') {
-                        startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0', location);
-                    } else {
-                        loadFluteResultsFile(runId);
+                    // flute will only return an incidence chart
+                    startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0', location);
+
+                    if (simName == 'FluTE') {
+                        console.log('loading flute results file');
+                        loadFluteResultsFile(runId); 
                     }
 
-                    if (simName == 'FRED') {
+                    console.log('starting gaia');
+                    if (simName == 'FRED' || simName == 'FluTE') {
+                        console.log('starting gaia with flute');
                         if (runId.indexOf(";") !== -1) {
                             var runIds = runId.split(";");
                             var runNumbers = runNumber.split(" and ");
@@ -1119,17 +1126,16 @@ jQuery(document).ready(function(){
                             startVisualization(runId, simName, runNumber, 'PSC', 'GAIA', '1.0', location);
                         }
                     }
-                    //                    waitForVisualizations();
                                     
                     console.log(finishedSimulators + "  " + numSimulators);
                     if (finishedSimulators == numSimulators && numberOfVisualizations == 0) {
                         $('#create').button( "option", "disabled", false );
                     }
                      
-                // not using the combined incidence charts right now
-                //                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
-                //                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0');
-                //                    }
+               
+                    if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
+                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0', location);
+                    }
                  
                 }
             },
@@ -1315,10 +1321,9 @@ jQuery(document).ready(function(){
             var allRunIds = '';
             var allRunNums = '';
             
-            // not using combined incidence chart right now
-            //            if (numSimulators > 1) {
-            //                numberOfVisualizations += 1; // one for the combined incidence
-            //            }
+            if (numSimulators > 1) {
+                numberOfVisualizations += 1; // one for the combined incidence
+            }
 
             for (var i = 0; i < numSimulators; i++) {
 
@@ -1344,16 +1349,18 @@ jQuery(document).ready(function(){
                 
                
                 
-                if (simName != 'FluTE') { // flute has no visualizations and shouldn't be in the combined variables
+                // flute can create an incidence chart now, but not disease states
+                //                if (simName != 'FluTE') { // flute has no visualizations and shouldn't be in the combined variables
                     
-                    allRunIds += ':' + runId;
-                    allRunNums += ' and ' + runNumber;
-                    numberOfVisualizations += 1;
-                }
+                allRunIds += ':' + runId;
+                allRunNums += ' and ' + runNumber;
+                numberOfVisualizations += 1;
+                //                }
                 
                 var location = simulatorObj['location'];
+                console.log(location);
                 // not running gaia yet
-                if (simName == 'FRED') {
+                if (simName == 'FRED' || simName == 'FluTE') {
                     if (runId.indexOf(";") !== -1) {
                         numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
                     } else {
