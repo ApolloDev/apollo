@@ -63,6 +63,16 @@ class location_data {
         
         echo json_encode($this->stateOtherLocationsList);
     }
+    
+    function getStateList() {
+        
+        return $this->stateList;
+    }
+    
+    function getCountyData() {
+        
+        return $this->stateCountyLists;
+    }
 }
 
 ?>
