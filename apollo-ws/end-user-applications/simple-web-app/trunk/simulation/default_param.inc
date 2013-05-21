@@ -116,7 +116,7 @@ function get_default_param_structure() {
     }
     $toolTipTermArray["not_defined"] = "DEFINITION: Definition not defined in ontology." . "&#10&#10" . "ELUCIDATION: Elucidation not defined in ontology.";
 
-    $defaultRunLength = 150;
+    $defaultRunLength = 90;
 
 //    ChromePhp::log($apolloUriTermMap['Reproduction Number']);
 //    ChromePhp::log($toolTipTermArray['<http://purl.obolibrary.org/obo/APOLLO_SV_00000043>']);
@@ -202,7 +202,7 @@ function get_default_param_structure() {
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
-    $basePath = 'Initial Compartment Fractions'; //create base folder entry
+    $basePath = 'Initial Population Disease State Fractions'; //create base folder entry
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', '', 0, ++$left, $left + 9, false, false));
     $basePath = deleteSpace($basePath);
 
@@ -232,7 +232,7 @@ function get_default_param_structure() {
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Disease Name']], 0, ++$left, ++$left, true, false));
 
     $pname = 'Infectious Period';
-    $pvalue = '4.0';
+    $pvalue = '6.0';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Infectious Period']], 0, ++$left, ++$left, true, false));
 
     $pname = 'Latent Period';
@@ -244,7 +244,7 @@ function get_default_param_structure() {
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Reproduction Number']], 0, ++$left, ++$left, true, false));
 
     $pname = 'Asymptomatic Infection Fraction';
-    $pvalue = '0.5';
+    $pvalue = '0.33';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Asymptomatic Infection Fraction']], 0, ++$left, ++$left, true, false));
 
     $pname = $sectionParagraph . '--- Control Measures Section ---</p>';
