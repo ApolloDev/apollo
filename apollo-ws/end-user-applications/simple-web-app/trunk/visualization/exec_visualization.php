@@ -6,7 +6,7 @@
  */
 
 require_once __DIR__ . '/../util/apollo.inc';
-//require_once AROOT . '/ChromePhp/ChromePhp.php';
+//require_once __DIR__ . '/../chromephp/ChromePhp.php';
 $ret = new Response();
 
 $apollo = new apollo();
@@ -16,6 +16,7 @@ $runId = $_GET ['runId'];
 $vizDev = $_GET['vizDev'];
 $vizName = $_GET['vizName'];
 $vizVer = $_GET['vizVer'];
+$location = $_GET['location']; // this location isn't currently used by any visualizers
 //$location = $_GET['location'];
 
 //ChromePhp::log($vizDev);
@@ -40,9 +41,11 @@ $VisualizerConfiguration->authentication = $Authentication;
 // visualization options
 $VisualizationOptions = new stdClass();
 $VisualizationOptions->runId = $runId;
-$VisualizationOptions->location = '42003';
+$VisualizationOptions->location = $location;
 $VisualizationOptions->outputFormat = 'ogg';
 $VisualizerConfiguration->visualizationOptions = $VisualizationOptions;
+
+//ChromePhp::log($VisualizerConfiguration);
 
 // if runId is a list (separated by ;), the first runId is no vaccination,
 // and the second is vaccination
