@@ -206,6 +206,15 @@
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000101 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000101">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+    </rdf:Description>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000133 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00000133">
@@ -235,7 +244,7 @@
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001001 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00001001">
-        <rdfs:label xml:lang="en">Simulator Time Specification Section</rdfs:label>
+        <rdfs:label xml:lang="en">1. Simulator Time Specification Section</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
     </owl:Class>
     
@@ -244,7 +253,7 @@
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001002 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00001002">
-        <rdfs:label xml:lang="en">Simulated Population Section</rdfs:label>
+        <rdfs:label xml:lang="en">2. Simulated Population Section</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
     </owl:Class>
     
@@ -262,7 +271,7 @@
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001004 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00001004">
-        <rdfs:label xml:lang="en">Disease Section</rdfs:label>
+        <rdfs:label xml:lang="en">3. Disease Section</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
     </owl:Class>
     
@@ -271,7 +280,7 @@
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001005 -->
 
     <owl:Class rdf:about="&obo;APOLLO_SV_00001005">
-        <rdfs:label xml:lang="en">Control Measure Section</rdfs:label>
+        <rdfs:label xml:lang="en">4. Control Measure Section</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001000"/>
     </owl:Class>
     
