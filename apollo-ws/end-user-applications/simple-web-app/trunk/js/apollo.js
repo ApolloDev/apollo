@@ -726,6 +726,15 @@ jQuery(document).ready(function(){
         south__closable : false,
         west__onresize: function (pane, $Pane) {
             $(dataExchange.gridId).setGridWidth($('#model-selection-div').innerWidth());
+        },
+        south__onresize: function (pane, $Pane) {
+            // the following will resize the status area
+            var height = $('#south-div').innerHeight();
+            console.log(height);
+            var ifrheight = height - 130;
+            var tblheight = height - 130;
+            $('#statustextarea'+'_ifr').css('height', ifrheight + 'px');
+            $('#statustextarea'+'_tbl').css('height', tblheight + 'px');
         }
     });
     //$.jgrid.defaults = $.extend($.jgrid.defaults,{loadui:"enable"});
@@ -1114,8 +1123,8 @@ jQuery(document).ready(function(){
                         loadFluteResultsFile(runId); 
                     }
 
-                    console.log('starting gaia');
-                    if (simName == 'FRED' || simName == 'FluTE') {
+                    // flute only produces output by region for LA county
+                    if (simName == 'FRED' || (simName == 'FluTE' && location == '06037')) {
                         console.log('starting gaia with flute');
                         if (runId.indexOf(";") !== -1) {
                             var runIds = runId.split(";");
@@ -1359,8 +1368,8 @@ jQuery(document).ready(function(){
                 
                 var location = simulatorObj['location'];
                 console.log(location);
-                // not running gaia yet
-                if (simName == 'FRED' || simName == 'FluTE') {
+                // flute can only store regional data for LA county
+                if (simName == 'FRED' || (simName == 'FluTE' && location == '06037')) {
                     if (runId.indexOf(";") !== -1) {
                         numberOfVisualizations += 2; // two for gaia (one with control measure, one without)
                     } else {
