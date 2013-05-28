@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS population_axis;
 DROP TABLE IF EXISTS simulated_population_axis_value;
 DROP TABLE IF EXISTS time_series;
 DROP TABLE IF EXISTS visualizer_output;
+DROP TABLE IF EXISTS apollo_service_simulator_run_cache;
+DROP TABLE IF EXISTS apollo_service_visualizer_cache_results;
+DROP TABLE IF EXISTS apollo_service_visualizer_cache;
 
 CREATE TABLE run (
   id    INT(8) NOT NULL AUTO_INCREMENT,
