@@ -13,6 +13,27 @@ CREATE TABLE run (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE apollo_service_simulator_run_cache (
+  id    INT(8) NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255),
+  md5HashOfSimulatorConfiguration CHAR(32),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE apollo_service_visualizer_cache (
+  cache_id    INT(8) NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255),
+  md5HashOfConfiguration CHAR(32),
+  PRIMARY KEY (cache_id)
+);
+
+CREATE TABLE apollo_service_visualizer_cache_results (
+  id    INT(8) NOT NULL AUTO_INCREMENT,
+  cache_id INT(8) NOT NULL REFERENCES apollo_service_visualizer_cache(cache_id),
+  url TEXT,
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE visualizer_output (
   id INT(8) NOT NULL AUTO_INCREMENT,
   simulatorRunId INT(8) NOT NULL REFERENCES run (id),
