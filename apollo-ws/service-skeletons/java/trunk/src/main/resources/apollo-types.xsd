@@ -211,6 +211,19 @@
 			</extension>
 		</complexContent>
 	</complexType>
+	
+		<complexType name="Vaccination">
+		<complexContent>
+			<extension base="tns:Treatment">
+				<sequence>
+					<element name="description" type="token"
+						maxOccurs="1" minOccurs="1"/>
+					
+					<element name="vaccine" type="tns:Vaccine" maxOccurs="1" minOccurs="1"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
 	<complexType name="VaccinationControlMeasure">
 		<complexContent>
@@ -519,7 +532,7 @@
 			<element name="description" type="token" maxOccurs="1"
 				minOccurs="1"/>
 			
-			<element name="vaccineId" type="token" maxOccurs="1"
+			<element name="vaccineIdentifier" type="token" maxOccurs="1"
 				minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000117"/>
@@ -592,18 +605,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="Vaccination">
-		<complexContent>
-			<extension base="tns:Treatment">
-				<sequence>
-					<element name="description" type="token"
-						maxOccurs="1" minOccurs="1"/>
-					
-					<element name="vaccine" type="tns:Vaccine" maxOccurs="1" minOccurs="1"/>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
+
 
 	<complexType name="AntiviralTreatment">
 		<complexContent>
@@ -1186,9 +1188,6 @@
     			type="positiveInteger" maxOccurs="1" minOccurs="1"/>
     		
             <element name="treatmentContraindications" type="tns:TreatmentContraindication" maxOccurs="unbounded" minOccurs="0"/>
-            <element name="treatmentEfficacies"
-    			type="tns:TreatmentEfficacy" maxOccurs="unbounded"
-    			minOccurs="0"/>
     		
     	</sequence>
     </complexType>
@@ -1288,11 +1287,11 @@
 			<extension base="tns:TreatmentEfficacy">
 				<sequence>
 
-					<element name="vaccineID" type="token" maxOccurs="1"
-						minOccurs="1" />
+					<element name="vaccineIdentifier" type="token"
+						maxOccurs="1" minOccurs="1" />
 
-					<element name="speciesID" type="token" maxOccurs="1"
-						minOccurs="1" />
+					<element name="strainIdentifier" type="token"
+						maxOccurs="1" minOccurs="1" />
 
 					<element name="forVaccinationPreventableOutcome"
 						type="tns:VaccinationPreventableOutcome" maxOccurs="1"
@@ -1395,24 +1394,10 @@
     				<element name="vaccinationEfficacybyAge"
     					type="tns:AgeGroupEfficacy" maxOccurs="unbounded" minOccurs="0">
     				</element>
-                    <element name="timeIntervalLabels" type="tns:TimeAxisCategoryLabels" maxOccurs="unbounded" minOccurs="0">
-    				</element>
-                    <element
-    					name="vaccinationEfficacybyTimeSinceInitialDose"
-    					type="tns:Probability" maxOccurs="unbounded" minOccurs="0">
-    				</element>
-    				<element
-    					name="vaccinationEfficacybyTimeSinceBooster1"
-    					type="tns:Probability" maxOccurs="unbounded" minOccurs="0">
-    				</element>
-    				<element
-    					name="vaccinationEfficacybyTimeSinceBooster2"
-    					type="tns:Probability" maxOccurs="unbounded" minOccurs="0">
-    				</element>
-    				<element
-    					name="vaccinationEfficacybyTimeSinceBooster3"
-    					type="tns:Probability" maxOccurs="unbounded" minOccurs="0">
-    				</element>
+                    <element name="vaccinationEfficaciesByTimeSinceMostRecentDose"
+                    	type="tns:VaccinationEfficacyByTimeSinceDose"
+                    	maxOccurs="unbounded" minOccurs="0">
+                    </element>
     			</sequence>
     		</extension>
     	</complexContent>
@@ -1444,6 +1429,21 @@
     		<element name="description" type="string"></element>
     		<element name="locationsIncluded" type="tns:INCITS31" maxOccurs="unbounded" minOccurs="1"></element>
     		<element name="locationsExcluded" type="tns:INCITS31" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="VaccinationEfficacyByTimeSinceDose">
+    	<sequence>
+    		<element name="numberOfDosesAdministered"
+    			type="positiveInteger" maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="timeIntervalLabelDefinitions"
+    			type="tns:TimeAxisCategoryLabels" maxOccurs="unbounded"
+    			minOccurs="1">
+    		</element>
+    		<element name="vaccinationEfficacyByTimeSinceMostRecentDose"
+    			type="tns:Probability" maxOccurs="unbounded" minOccurs="1">
+    		</element>
     	</sequence>
     </complexType>
 </schema>
