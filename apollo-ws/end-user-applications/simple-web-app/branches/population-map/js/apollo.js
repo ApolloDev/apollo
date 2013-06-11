@@ -80,6 +80,11 @@ function clearParamGrid(){
     //show the model selection img
     $('#select-img').show();
 }
+    
+function addZero(n) {
+        
+    return n<10? '0'+n:''+n;
+}
 
 var isRowEditable = function(id) {
     
@@ -209,7 +214,7 @@ function loadParamGrid(){
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
-                        value: "day:day;hour:hour;millisecond:millisecond;minute:minute;month:month;second:second;year:year",
+                        value: "loading:Loading...",
                         dataInit: function(elem) {
                             $(elem).width(75);  // set the width which you need
                         }
@@ -302,7 +307,6 @@ function loadParamGrid(){
                             fn: function(e) {
  
                                 var scheme = $("#37_value").val();
-                                console.log(scheme);
                                 if (scheme == 'tpp') {
                                     var vaccDescriptionId = '#vacc-description';
                                     if ($(vaccDescriptionId).html() != null) {
@@ -328,11 +332,25 @@ function loadParamGrid(){
                     cm.editoptions = null;
                 }
                 
-                if (i==48 || i ==57) { // SCHOOL CLOSURE TARGET FACILITIES
+                if (i==48) { // SCHOOL CLOSURE TARGET FACILITIES
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
                         value: "all:All;individual:Individual",
+                        dataInit: function(elem) {
+                            $(elem).width(75);  // set the width which you need
+                        }
+                    };
+                    paramGrid.jqGrid('editRow', i);
+                    cm.edittype = 'text';
+                    cm.editoptions = null;
+                }
+                
+                if (i ==57) { // SCHOOL CLOSURE TARGET FACILITIES
+                    var cm = paramGrid.jqGrid('getColProp','value');
+                    cm.edittype = 'select';
+                    cm.editoptions = {
+                        value: "all:All",
                         dataInit: function(elem) {
                             $(elem).width(75);  // set the width which you need
                         }
@@ -383,6 +401,7 @@ function loadParamGrid(){
                 }
             }
             
+            loadTimeStepUnitValues();
             loadStateComboBoxValues();
             
             var stateVal = $("#10_value").val();
@@ -392,7 +411,6 @@ function loadParamGrid(){
             
             // open trees
             var rows = paramGrid.jqGrid('getRootNodes');
-            console.log(rows.length);
             for (var i = 0; i < rows.length; i++){
                 if (i == 8 || i == 9) {
                     paramGrid.jqGrid('expandNode', rows[i]);
@@ -508,6 +526,20 @@ function loadParamGrid(){
 //    paramGrid.jqGrid('setCell',16,'value', Math.round((pop * 0.04)).toString(), '');
 //}
 
+function loadTimeStepUnitValues() {
+    var box = $("#5_value");
+    box.empty();
+
+    box.append($("<option selected></option>").attr("value", "day").text("day")); 
+    box.append($("<option disabled></option>").attr("value", "hour").text("hour"));
+    box.append($("<option disabled></option>").attr("value", "millisecond").text("millisecond"));
+    box.append($("<option disabled></option>").attr("value", "minute").text("minute"));
+    box.append($("<option disabled></option>").attr("value", "month").text("month"));
+    box.append($("<option disabled></option>").attr("value", "second").text("second"));
+    box.append($("<option disabled></option>").attr("value", "year").text("year"));
+            
+}
+
 function loadStateComboBoxValues() {
     
     var returnString = "select:Select State;";
@@ -619,9 +651,21 @@ function createOrSelectInsturctionTab(){
         //select the tab
         maintab.tabs('select', insId);
     } else {	
-        maintab.tabs('add', insId, 'Help');
+        maintab.tabs('add', insId, 'About');
         //load the ins tab
-        $(insId, "#tabs").load('instructions.html');
+        $(insId, "#tabs").load('about.html');
+    }
+  
+}
+
+function createOrSelectPopulationTab() {
+      
+    var st = "#population";
+    if($(st).html() != null) {
+        maintab.tabs('select',st);
+    } else {
+        maintab.tabs('add', st, "Population Initialization");
+        $(st,"#tabs").load("simulation/population/population_tree.php");
     }
 }
 
@@ -639,6 +683,31 @@ function bottomBlankFix(){
     $(window).trigger('resize');
 }
 
+function addmsg(msg){
+
+    var date = new Date();
+    msg = addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + ': ' + msg;
+
+    if (firstLinePrinted) {
+        firstLinePrinted = false;
+    } else {
+        msg = '<br>' + msg;
+    }
+        
+    msg = msg + '<span id="caret_pos_holder"></span>';
+        
+    // the span helps set the caret position to the end
+    tinyMCE.get('statustextarea').selection.select(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //select the span
+    tinyMCE.get('statustextarea').dom.remove(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //remove the span
+       
+    tinyMCE.get('statustextarea').selection.setContent(msg);
+    //        var height = document.getElementById('statustextarea' + '_ifr').scrollHeight;
+    //        console.log(height);
+    tinyMCE.get('statustextarea').getWin().scrollTo(0, 1000000);
+
+
+}
+
 function loadRegisteredModels(){
     $.ajax({
         type: "GET",
@@ -646,12 +715,18 @@ function loadRegisteredModels(){
 
         async: true, /* If set to non-async, browser shows page as "Loading.."*/
         cache: false,
-        timeout:50000, /* Timeout in ms */
+        timeout:15000, /* Timeout in ms */
 
         success: function(jasonObj, statusText){ /* called when request to barge.php completes */
 
             //            alert(jasonObj);
             jasonObj = $.parseJSON(jasonObj);
+            if (jasonObj.exception != null) {
+                addmsg("<b> ERROR: </b>" + "Could not get registered simulators from Apollo service. Error was: " 
+                    + jasonObj.exception);
+                return;
+            }
+            
             
             var model = $('#model-combo');
             model.val('UNDEF');
@@ -674,10 +749,10 @@ function loadRegisteredModels(){
             
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            addmsg(textStatus + " (" + errorThrown + ")");
+            addmsg("<b> ERROR: </b>" + "Call to get registered models timed out. Trying again in 5 seconds...");
             setTimeout(
-                poll, /* Try again after.. */
-                15000); /* milliseconds (15seconds) */
+                loadRegisteredModels(), /* Try again after.. */
+                5000); /* milliseconds (5seconds) */
         }
     });
 }
@@ -730,7 +805,6 @@ jQuery(document).ready(function(){
         south__onresize: function (pane, $Pane) {
             // the following will resize the status area
             var height = $('#south-div').innerHeight();
-            console.log(height);
             var ifrheight = height - 130;
             var tblheight = height - 130;
             $('#statustextarea'+'_ifr').css('height', ifrheight + 'px');
@@ -782,32 +856,6 @@ jQuery(document).ready(function(){
         }
     };
     
-    function addmsg(msg){
-        
-        if (firstLinePrinted) {
-            firstLinePrinted = false;
-        } else {
-            msg = '<br>' + msg;
-        }
-        
-        msg = msg + '<span id="caret_pos_holder"></span>';
-        
-        // the span helps set the caret position to the end
-        tinyMCE.get('statustextarea').selection.select(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //select the span
-        tinyMCE.get('statustextarea').dom.remove(tinyMCE.get('statustextarea').dom.select('span#caret_pos_holder')[0]); //remove the span
-       
-        tinyMCE.get('statustextarea').selection.setContent(msg);
-        //        var height = document.getElementById('statustextarea' + '_ifr').scrollHeight;
-        //        console.log(height);
-        tinyMCE.get('statustextarea').getWin().scrollTo(0, 1000000);
-
-
-    }
-    
-    function addZero(n) {
-        
-        return n<10? '0'+n:''+n;
-    }
     function getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber) {
                 
         var tabid;
@@ -822,7 +870,6 @@ jQuery(document).ready(function(){
  
         }
         tabid = tabid.replace(/\./g, "-"); // can't use periods
-        console.log('tabid: ' + tabid);
                     
         if($(tabid).html() != null ) {
             //select the tab
@@ -842,9 +889,7 @@ jQuery(document).ready(function(){
     
     function loadFluteResultsFile(runId) {
         
-        console.log(runId);
         var md5RunId = calcMD5(runId);
-        console.log(md5RunId);
         var tabid = "#flute-result-file"; // tab ids can't use commas
         
         if($(tabid).html() != null ) {
@@ -873,18 +918,21 @@ jQuery(document).ready(function(){
             success: function(jasonObj, statusText){ /* called when request to barge.php completes */
                 jasonObj = $.parseJSON(jasonObj);
                 
+                var exception = jasonObj.exception;
+                //                if (exception != null) {
+                
                 var urls = jasonObj.data['urls'];
                 var dev = jasonObj.data['visualizerDeveloper'];
                 var name = jasonObj.data['visualizerName'];
                 var ver = jasonObj.data['visualizerVersion'];
+                runId = jasonObj.data['runId'];
 
                 waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName, location);
+
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if (textStatus == 'timeout') {
-                    var date = new Date();
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
-                        + " <b> ERROR: </b>" + "Could not call run on " + vizName + ", please run epidemic simulator again.");
+                    addmsg("<b> ERROR: </b>" + "Could not call run on " + vizName + ", please run epidemic simulator again.");
                 //                }
                 //                                setTimeout(
                 //                                    poll, /* Try again after.. */
@@ -909,9 +957,8 @@ jQuery(document).ready(function(){
                 //                alert(jasonObj);
                 var status = jasonObj.data['status_normal'];
                 var message = jasonObj.data['message_normal'];
-                var date = new Date();
                 
-                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + runId  + " </i><b>VISUALIZER STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                addmsg("<b> VISUALIZER: </b><i>" + vizName + " </i><b>RUN ID: </b><i>" + runId  + " </i><b>VISUALIZER STATUS: </b><i>" + status  + " </i><b>MESSAGE: </b><i>" + message + "</i>"); /* Add response to a .msg div (with the "new" class)*/
 
                 if (status != 'completed') {
                     setTimeout(
@@ -921,10 +968,9 @@ jQuery(document).ready(function(){
                         5000 /* ..after 1 seconds */
                         );
                 } else {
-                    
+
                     numberOfVisualizationsFinished += 1;
                     var urlList = new Object();
-                    
                     for (var key in urls) {
                         
                         if (key == 'Disease states') {
@@ -938,7 +984,6 @@ jQuery(document).ready(function(){
                     }
                     
                     var encUrls = JSON.stringify(urlList);
-                    console.log('url list: ' + encUrls);
 
                     if (numberOfVisualizationsFinished == numberOfVisualizations) { // enable the button when the last visualization finishes
                         //enable the button
@@ -975,7 +1020,6 @@ jQuery(document).ready(function(){
                     var combinedIncidenceID = "#combined-incidence" + "-" + combinedRunNumber.replace(/ and /g, "");
                     combinedIncidenceID = combinedIncidenceID.replace(/\./g, "-"); // can't use periods
 
-                    console.log('looping over urls');
                     for (key in urls) {
                         
                         if (key == 'Disease states') {
@@ -992,7 +1036,6 @@ jQuery(document).ready(function(){
                                     maintab.tabs('add', resultID, simName + ' run ' +  diseaseStatesRunNumber + ': Disease states over time');
                                 }
                     
-                                console.log("requesting disease states page");
                                 //load the tab
                                 //                            console.log(encodeURIComponent(runId));
                                 $(resultID, "#tabs").load('visualization/disease_states.php?index=' + encodeURIComponent(index));
@@ -1035,12 +1078,9 @@ jQuery(document).ready(function(){
                                 $(gaiaID).empty();
                             } else {
                                 //create the tab
-                                console.log('creating tab');
                                 maintab.tabs('add', gaiaID, simName + ' ' + runNumber + ': GAIA Visualization for Simulation');
                             }
-                                       
-                            console.log(runId);
-                            console.log(encodeURIComponent(runId));
+
                             //load the tab
                             $(gaiaID, "#tabs").load('visualization/gaia.php?index=' + encodeURIComponent(index) + '&location=' + location);
                         }
@@ -1050,9 +1090,7 @@ jQuery(document).ready(function(){
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if (textStatus == 'timeout') {
-                    var date = new Date();
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
-                        + "<b> ERROR: </b>" + "Could not call getStatus on " + vizName + ", retrying in 5 seconds.");
+                    addmsg("<b> ERROR: </b>" + "Could not call getStatus on " + vizName + ", retrying in 5 seconds.");
                     setTimeout(
                         function() {
                             waitForVisualizations(runId, dev, name, ver, urls, simName, runNumber, vizName)
@@ -1090,17 +1128,14 @@ jQuery(document).ready(function(){
                 var message_norm = jasonObj.data['message_normal'];
                 var message_novacc = jasonObj.data['message_novacc'];
                 
-           
-                
-                var date = new Date();
                 
                 if (status_novacc == 'null') {
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>RUN ID: </b><i>" + runId +  " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                    addmsg("<b> SIMULATOR: </b><i>" + simName + "</i>" + " <b>RUN ID: </b><i>" + runId +  " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
                 } else {
                     var noVaccId = runId.split(";")[0];
                     var vaccId = runId.split(";")[1];
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + noVaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) + "<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + vaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_novacc  + " </i><b>MESSAGE: </b><i>" + message_novacc + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                    addmsg("<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + noVaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_norm  + " </i><b>MESSAGE: </b><i>" + message_norm + "</i>"); /* Add response to a .msg div (with the "new" class)*/
+                    addmsg("<b> SIMULATOR: </b><i>" + simName + " </i><b>RUN ID: </b><i>" + vaccId + " </i><b>SIMULATOR STATUS: </b><i>" + status_novacc  + " </i><b>MESSAGE: </b><i>" + message_novacc + "</i>"); /* Add response to a .msg div (with the "new" class)*/
                 }
                 
                 if (status_norm != 'completed' || (status_novacc != 'null' && status_novacc != 'completed')) {
@@ -1116,16 +1151,14 @@ jQuery(document).ready(function(){
                     getConfigurationFileForRun(runId, simName, simDev, simVer, runNumber); 
 
                     // flute will only return an incidence chart
-                    startVisualization(runId, simName, runNumber, 'nick', 'viztest', '1.0', location);
+                    startVisualization(runId, simName, runNumber, 'nick', 'Image Visualizer', '1.0', location);
 
                     if (simName == 'FluTE') {
-                        console.log('loading flute results file');
                         loadFluteResultsFile(runId); 
                     }
 
                     // flute only produces output by region for LA county
                     if (simName == 'FRED' || (simName == 'FluTE' && location == '06037')) {
-                        console.log('starting gaia with flute');
                         if (runId.indexOf(";") !== -1) {
                             var runIds = runId.split(";");
                             var runNumbers = runNumber.split(" and ");
@@ -1136,7 +1169,6 @@ jQuery(document).ready(function(){
                         }
                     }
                                     
-                    console.log(finishedSimulators + "  " + numSimulators);
                     if (finishedSimulators == numSimulators && numberOfVisualizations == 0) {
                         $('#create').button( "option", "disabled", false );
                     }
@@ -1151,9 +1183,7 @@ jQuery(document).ready(function(){
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 //                addmsg(textStatus);
                 if (textStatus == 'timeout') {
-                    var date = new Date();
-                    addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
-                        + "<b> Error: </b>" + "Could not call getStatus on " + simName + ", retrying in 5 seconds.");
+                    addmsg("<b> Error: </b>" + "Could not call getStatus on " + simName + ", retrying in 5 seconds.");
                     setTimeout(
                         function() {
                             waitForSimulationsAndStartVisualizations(obj, runNumber)
@@ -1179,6 +1209,7 @@ jQuery(document).ready(function(){
 
         beforeSubmit : function(formData, jqForm, options) {
             //put the parameters value here
+            
             try{
                 var simulatorArray;
     
@@ -1231,6 +1262,7 @@ jQuery(document).ready(function(){
                 rowData[44]['value'] = useSchoolReactiveCm;
                 rowData[53]['value'] = useSchoolFixedCm;
                 rowData[56]['value'] = scFixedTargetFacilities;
+                rowData[59]['value'] = storedFractionsForAllRegionsJson;
                 
                 // replace the rows with the same parameter name with an adjusted one
                 rowData[24]['pname'] = 'Antiviral Control Measure Compliance';
@@ -1252,6 +1284,7 @@ jQuery(document).ready(function(){
                 rowData[56]['pname'] = 'School Closure Fixed Target Facilities';
                 rowData[57]['pname'] = 'School Closure Fixed Duration';
                 rowData[58]['pname'] = 'School Closure Fixed Start Time';
+                rowData[59]['pname'] = 'PopulationInitialization';
                 
                 var exportData = JSON.stringify(rowData);
                 var snomed = $('#snomed-ct-combo').val();
@@ -1295,12 +1328,14 @@ jQuery(document).ready(function(){
 
                 // set the waiting feedback
                 $('#create').button( "option", "disabled", true );
-                $(dataExchange.statusBar).html('Waiting for the server response..');
+                //                $(dataExchange.statusBar).html('Waiting for the server response..');
+
+                addmsg("Sending simulator requests to the Apollo service...");
 
                 return true;
             }catch (err){
                 // set the error message
-                addmsg('<b>ERROR: </b>' + err);
+                addmsg("<b> ERROR: </b> There was an error getting the data to submit to the Apollo service: " + err);
                 return false;
             }
 
@@ -1311,19 +1346,28 @@ jQuery(document).ready(function(){
         // invoke when the server response
         // has been received;
         success : function(jasonObj, statusText) {
+
             if (statusText != 'success') {// web server error
-                $(dataExchange.statusBar).html('Server error: ' + statusText);
+                addmsg("<b> ERROR: </b> There was an error submitting the data to the Apollo service; returned status was " + statusText);
                 return;
+            } else {           
+                addmsg("The simulator requests were successfully submitted to the Apollo service.");
+            }
+            
+            // handle apollo service exceptions here
+            // these simulators won't be contained in the run IDs list
+            for (var simulator in jasonObj.data.failedSimulators) {
+                addmsg("<b> APOLLO SERVICE ERROR: </b>" + "Could not call run simulation for simulator " + simulator 
+                    + "; error message was: " + jasonObj.data.failedSimulators[simulator]);
             }
 
-            console.log(jasonObj);
-            // web service error
-            if (jasonObj.exception != null) {
-                $(dataExchange.statusBar).html('Web service error: ' + jasonObj.exception);
-                return;
-            }
 
-            numSimulators = jasonObj.data.length;
+            numSimulators = jasonObj.data.runIds.length;
+            if (numSimulators == 0) {
+                $('#create').button( "option", "disabled", false ); // reset the button
+                return; // there were no simulators to run (all calls to runSimulation failed)
+            }
+            
             finishedSimulators = 0;
             numberOfVisualizations = 0;
             numberOfVisualizationsFinished = 0;
@@ -1336,7 +1380,7 @@ jQuery(document).ready(function(){
 
             for (var i = 0; i < numSimulators; i++) {
 
-                var simulatorObj = jasonObj.data[i];
+                var simulatorObj = jasonObj.data.runIds[i];
                 
                 var runId = simulatorObj['runId'];
                 
@@ -1353,7 +1397,6 @@ jQuery(document).ready(function(){
                 }
                        
                
-                console.log(runId);
                 var simName = simulatorObj['simulatorName'];
                 
                
@@ -1367,7 +1410,6 @@ jQuery(document).ready(function(){
                 //                }
                 
                 var location = simulatorObj['location'];
-                console.log(location);
                 // flute can only store regional data for LA county
                 if (simName == 'FRED' || (simName == 'FluTE' && location == '06037')) {
                     if (runId.indexOf(";") !== -1) {
@@ -1377,7 +1419,6 @@ jQuery(document).ready(function(){
                     }
                 }
 
-                console.log('number of visualizations: ' + numberOfVisualizations);
                 waitForSimulationsAndStartVisualizations(simulatorObj, runNumber, location);
             }
 
@@ -1387,9 +1428,7 @@ jQuery(document).ready(function(){
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
             if (textStatus == 'timeout') { 
-                var date = new Date();
-                addmsg(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()) 
-                    + " <b> ERROR: </b>" + "Could not call run for simulators, please run epidemic simulators again.");
+                addmsg("<b> ERROR: </b>" + "Could not call run for simulators, please run epidemic simulators again.");
             //                setTimeout(
             //                    poll, /* Try again after.. */
             //                    15000); /* milliseconds (15seconds) */
