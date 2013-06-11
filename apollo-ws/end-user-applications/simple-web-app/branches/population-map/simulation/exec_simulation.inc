@@ -27,9 +27,7 @@
  */
 require_once __DIR__ . '/../util/type.inc';
 require_once __DIR__ . '/../util/apollo.inc';
-//require_once AROOT . '/chromephp/ChromePhp.php';
-
-//require_once AROOT . '/simulator/constant.inc';
+//require_once __DIR__ . '/../chromephp/ChromePhp.php';
 
 abstract class ControlMeasure {
 
@@ -94,6 +92,11 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
 //    $totalPopulation = floatval($params['Susceptible']) + floatval($params['Exposed']) + floatval($params['Infectious']) + floatval($params['Recovered']);
+    
+//    $populationInitialization = json_decode($params['PopulationInitialization']);
+    
+//    ChromePhp::log($populationInitialization->usFractions->susceptible);
+    
     $SimulatedPopulation = new stdClass();
     
     $popLocation = $params['PopulationLocation'];
@@ -140,7 +143,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    }
 
     $useAntiviralControlMeasure = $params['AntiviralControlMeasure'];
-    $useVaccinationControlMeasure = $params['VaccineControlMeasure'];
+    $useVaccinationControlMeasure = $params['VaccinationControlMeasure'];
     $useSchoolClosure = $params['SchoolClosureControlMeasure'];
     $useSchoolReactiveCm = $params['SchoolClosureReactiveTriggerControlMeasure'];
     $useSchoolFixedCm = $params['SchoolClosureFixedStartTimeControlMeasure'];
@@ -568,6 +571,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
 //
     $runId = $apolloResponse->runId;
+//    $runId = 'temp';
 //    }
 
     $ret['runId'] = $runId;
