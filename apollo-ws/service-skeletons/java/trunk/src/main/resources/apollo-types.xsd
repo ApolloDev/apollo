@@ -1264,7 +1264,7 @@
 				minOccurs="1" />
 
 			<element name="dataSets" type="string" maxOccurs="unbounded"
-				minOccurs="0" />
+				minOccurs="1" />
 
 			<element name="references" type="string" maxOccurs="unbounded"
 				minOccurs="1" />
@@ -1325,7 +1325,6 @@
 						type="tns:VaccinationEfficacyStudy" maxOccurs="unbounded"
 						minOccurs="1">
 					</element>
-					<element name="inferredEfficacy" type="tns:ConditionalProbabilityTable" maxOccurs="unbounded" minOccurs="1"></element>
 					<element name="vaccinationEfficacyModel"
 						type="tns:BayesianNetworkDistribution" maxOccurs="1"
 						minOccurs="0" />
