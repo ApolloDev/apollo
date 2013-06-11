@@ -1,0 +1,136 @@
+/*
+
+    Copyright (C) 2011 University of Pittsburgh
+
+    This file is part of Apollo.
+
+    Apollo is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of
+    the License, or (at your option) any later version.
+
+    Apollo is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Apollo.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+/**
+ *
+ * @author Yang Hu <yah14@pitt.edu>
+*/
+
+html,body {
+    margin: 0; /* Remove body margin/padding */
+    padding: 0;
+    overflow : hidden; /* Remove scroll bars on browser window */
+    font-size: 12px;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    overflow: hidden;
+}
+
+/*Splitter style */
+#LeftPane { /* optional, initial splitbar position */
+    overflow: auto;
+}
+
+/*
+ * Right-side element of the splitter.
+*/
+#RightPane {
+    padding: 2px;
+    overflow: auto;
+}
+
+.ui-tabs-nav li {
+    position: relative;
+}
+
+.ui-tabs-selected a span {
+    padding-right: 10px;
+}
+
+.ui-tabs-close {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    z-index: 800;
+    width: 16px;
+    height: 14px;
+    font-size: 10px;
+    font-style: normal;
+    cursor: pointer;
+}
+
+.ui-tabs-selected .ui-tabs-close {
+    display: block;
+}
+
+.ui-layout-west .ui-jqgrid tr.jqgrow td {
+    border-bottom: 0px none;
+}
+
+.ui-datepicker {
+    z-index: 1200;
+    display: none;
+}
+
+.drop-box-div {
+    font-family: Segoe UI, Arial, sans-serif;
+    /*	padding: 2px;*/
+    /*	width: 180px;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.Color_Blue { background:#99CCFF; 
+             font-style: normal}
+
+.ui-widget-content {
+
+    font-family: Segoe UI, Arial, sans-serif
+}
+
+.ui-widget-header {
+
+    font-size: 14px
+}
+
+.ui-layout-south {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+
+}
+
+.ui-jqgrid .ui-jqgrid-btable
+{
+    table-layout: auto;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #dfeffc}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected {  background: #ffffff}
+
+.ui-state-default {border: 1px solid #99cccc;}
+
+/*.ui-widget-content {
+    border: none;
+}*/
+
+.mceToolbar {
+    display: none;
+}
+
+.mceStatusbar {
+    display: none;
+}
+
+*:focus {outline: none;}
