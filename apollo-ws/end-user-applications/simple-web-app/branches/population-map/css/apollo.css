@@ -33,6 +33,16 @@ html,body {
     overflow: hidden;
 }
 
+.apollo-table {
+    border-collapse: collapse;
+    font-size: 16px;
+}
+.apollo-table-td {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 5px;
+}
+
 /*Splitter style */
 #LeftPane { /* optional, initial splitbar position */
     overflow: auto;
@@ -90,7 +100,7 @@ html,body {
 }
 
 .Color_Blue { background:#99CCFF; 
-             font-style: normal}
+              font-style: normal}
 
 .ui-widget-content {
 
@@ -134,3 +144,14 @@ html,body {
 }
 
 *:focus {outline: none;}
+
+.box_rotate {
+    -moz-transform: rotate(-90deg);  /* FF3.5+ */
+    -o-transform: rotate(-90deg);  /* Opera 10.5 */
+    -webkit-transform: rotate(-90deg);  /* Saf3.1+, Chrome */
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+    writing-mode: tb-rl;
+    filter: flipv fliph;
+    white-space: nowrap;
+}
