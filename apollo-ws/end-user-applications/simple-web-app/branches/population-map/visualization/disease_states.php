@@ -33,11 +33,9 @@ $modelIndex = urldecode($_GET['index']);
 <script type="text/javascript">
     try{
 
-    console.log('disease states index: <?php print $modelIndex; ?>');
         var webservice_result = $.parseJSON(dataExchange.model_urls['<?php print $modelIndex; ?>']);
 
         var url = webservice_result.disease_states;
-        console.log('url: ' + url);
         document.getElementById("epi-curve-dis-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=95% />";
         //        //chart data
         //        var data = new Array();
