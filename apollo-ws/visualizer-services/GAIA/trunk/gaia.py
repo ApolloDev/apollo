@@ -488,6 +488,7 @@ class LonLat(Wrapper):
 
 def FIPSToUSFips(fipsStr):
     fipsSymb = ["st","ct","tr","bl"]
+    print "Fips = " + fipsStr
     fipsList = []
     fipsList.append(fipsStr[0:2])
     if len(fipsStr) > 2:  fipsList.append(fipsStr[2:5])
