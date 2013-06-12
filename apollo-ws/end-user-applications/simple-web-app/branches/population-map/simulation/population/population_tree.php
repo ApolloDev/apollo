@@ -4,7 +4,6 @@
         <link rel="stylesheet" href="css/map.css"/>
         <script src="js/leaflet.js"></script>
         <script type="text/javascript" src="js/mapseir.js"></script>
-        <script type="text/javascript" src="js/jquery-2.0.2.min.js"></script>
     </head>
     <body>
 
