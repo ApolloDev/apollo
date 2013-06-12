@@ -9,19 +9,27 @@ _simulatedPopulationAxisValueTable = "simulated_population_axis_value"
 _timeSeriesTable = "time_series"
 
 class ApolloSimulatorOutput:
-    def __init__(self,runID_):
+    def __init__(self,runID_,logger_=None):
 	self.runID = runID_
-	print "RunID = " + str(self.runID)
+        self.logger = logger_
 	### here are the structures used to define the total output of an Apollo data unit
 
 	### Initiate the database
-	self.apolloDB = ApolloDB()
-	self.apolloDB.connect()
-
+        try:
+            self.apolloDB = ApolloDB(logger_=self.logger)
+            self.apolloDB.connect()
+        except:
+            raise
+        print "HERE JACKASS"
+        
 	### Get the ID from the database for this runID
 	SQLStatement = 'SELECT * from '+_runTable+' WHERE label = "' + self.runID + '"'
-	self._dbRunIndex = self.apolloDB.query(SQLStatement)[0]['id']
-	print str(self._dbRunIndex)
+        try:
+            self._dbRunIndex = self.apolloDB.query(SQLStatement)[0]['id']
+            print "DBIndex = " + str(self._dbRunIndex)
+        except:
+            self.logger.update('DB_NOID_FOUND')
+            raise
 
     def printSimulatedPopulations(self):
 	print "Simulated Populations for run: " + str(self.runID)
@@ -35,23 +43,30 @@ class ApolloSimulatorOutput:
     
     def getNewlyInfectedTimeSeriesForBlocks(self):
 	tsDict = {}
-	maxTime = self.getMaxDayfromTimeSeriesForRunID()
-        print "Max Time = " + str(maxTime)  
+	maxTime = self.getMaxDayfromTimeSeriesForRunID() 
 	SQLStatement = 'select substring(p.label,18) as incits, t.time_step, t.pop_count '\
 		       + 'from time_series t, simulated_population p '\
 		       + 'where t.run_id = %d and t.population_id = p.id and p.label like '%(self._dbRunIndex)\
-		       + '"newly exposed in %%" and length(p.label) > 6'
-	print SQLStatement
-	results = self.apolloDB.query(SQLStatement)
+		       + '"newly exposed in %%" and length(substring(p.label,18)) > 6'
+        
+        try:
+            results = self.apolloDB.query(SQLStatement)
+        except:
+            self.logger.update('DB_POP_FAILED')
+            raise
+        
+        if len(results) == 0:
+            self.logger.update('DB_POP_ZERO')
+            raise
+        
 	for row in results:
 	    if tsDict.has_key(row['incits']) is False:
 		tsDict[row['incits']] = [0 for x in range(0,maxTime+1)]
 	    tsDict[row['incits']][int(row['time_step'])] = int(row['pop_count'])
-
 	return tsDict
 	
     def getNewlyInfectedTimeSeriesWithinLocation(self,location):
-	### STB. This fucntion is deprecated
+	### STB. This function is deprecated
 	tsDict = {}
 	fipsTranslate = {}
 	### get the populationAxis value for "location"
@@ -86,7 +101,7 @@ class ApolloSimulatorOutput:
 class ApolloDB:
     
     def __init__(self,host_="warhol-fred.psc.edu",
-		 user_="apolloext",dbname_="apollo"):
+		 user_="apolloext",dbname_="apollo",logger_=None):
 
 	self._host = host_
 	self._user = user_
@@ -95,6 +110,7 @@ class ApolloDB:
 	self._DictCursor = None
 	self._RegularCursor = None
 	self.populationAxis = None
+        self.logger = logger_
 
 
     def connect(self):
@@ -106,9 +122,12 @@ class ApolloDB:
 					    user=self._user,
 					    db=self._dbname)
 	    self._conn.autocommit(True)
+            self.logger.update('DB_CONNECT_SUCCESS')
 	except MySQLdb.Error, e:
 	    print "Problem connecting to Apollo database: %d %s"%(e.args[0],e.args[1])
-            sys.exit(1)
+            self.logger.update('DB_CONNECT_FAILED')
+            raise
+            
 	
 	self._cursor = self._conn.cursor(MySQLdb.cursors.DictCursor)
 	self.populationAxis = self._populationAxis()
@@ -124,13 +143,13 @@ class ApolloDB:
 	if self._conn is None:
 	    raise RuntimeError("A connection to the Apollo database "\
 			       "has not been made before queury is made")
-	try:
-	    #print "Executiing " + SQLString
+    
+        try:
             self._cursor.execute(SQLString)
-	    #self._conn.commit()
-        except MySQLdb.Error, e:
-            print "Error in Query %s to Apollo: %d: %s"%(SQLString,e.args[0],e.args[1])
-            sys.exit(1)
+        except:
+            self.logger.update('DB_QUERY_FAILED',message=SQLString)
+            raise
+        
         rows = self._cursor.fetchall()
 	
         return rows
