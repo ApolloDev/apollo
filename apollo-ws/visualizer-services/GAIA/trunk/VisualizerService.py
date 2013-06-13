@@ -67,7 +67,6 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
         timeSeriesOutput = \
                          apolloSimOutput. getNewlyInfectedTimeSeriesForBlocks()
     except:
-        print "FUCK"
         return
     time2 = time.time()
     
@@ -97,7 +96,7 @@ def ApolloToGaia(vc,gaiaFileName,gaiaOutputFileName,gaiaStyleFileName,statusFile
                     countyList.append(str(pop)[0:5])
 
                 fipsString = FIPSToUSFips(str(pop))
-                print "pop = " + str(pop) + " fipstring = " + fipsString
+		print "pop = " + str(pop) + " fipstring = " + fipsString
                 tcount = 1
                 for count in timeSeriesOutput[pop]:
                     ### THIS IS A HACK because FRED at the moment
@@ -171,7 +170,7 @@ class GaiaWebService(VisualizerService):
         forLogMoniker = vc._visualizationOptions._runId
         ### Check to see if this request is already running, and if so, 
         if self.LogDict.has_key(forLogMoniker):
-            if self.LogDict[forLogMoniker].pollStatusType() != 'RUN':
+            if self.LogDict[forLogMoniker].pollStatusType() != 'RUNNING':
                 pass
             else:
                 previousStatus = self.LogDict[forLogMoniker].pollStatus()
@@ -226,28 +225,12 @@ class GaiaWebService(VisualizerService):
         response = VisualizerService.soap_getRunStatus(self, ps, **kw)
 
         print "The client requests the status of run " + self.request._runId
-        #statusFile = gaiaConf.statusDirectory + "/" +self.request._runId + ".status"
-        #with open(statusFile,"rb") as f:
-        #    status = f.readline()
         currentStatus = self.LogDict[self.request._runId].pollStatus()
+        currentType = self.LogDict[self.request._runId].pollStatusType()
         response._runStatus = self.factory.new_RunStatus()
-        #print "Checking File " + statusFile
-        #print "Got Status " + status
-        response._runStatus._status = currentStatus[0]
-        response._runStatus._message = currentStatus[1]
+        response._runStatus._status = currentType
+        response._runStatus._message = str(currentStatus[0]) + ": " +str(currentStatus[1])
         
-        #if status == "Running":
-        #    response._runStatus._status = "running"
-        #    response._runStatus._message = "GAIA Webservice is creating the visualization"
-        #elif status == "GaiaFailed":
-        #    response._runStatus._status = "failed"
-        #    response._runStatus._message = "GAIA Server has returned a failed response"
-        #elif status == "Completed":
-        #    response._runStatus._status = "completed"
-        #    response._runStatus._message = "GAIA Webservice has finished creating the visualization"
-   #     response._runStatus = self.factory.new_RunStatus()
-   #     response._runStatus._status = "WAITING"
-   #     response._runStatus._message = "method not implemented"
         return response
         
 #run a webserver on 8087
