@@ -48,26 +48,26 @@ ServiceDescriptions = {
     }
 
 ServiceTypes = {
-    ServiceCodes['STARTED']:'RUNNING',
-    ServiceCodes['CALLRECV']:'RUNNING',
-    ServiceCodes['RUNNING']:'RUNNING',
-    ServiceCodes['DB_ERROR']:'FAIL',
-    ServiceCodes['UNKNOWN']:'RUNNING',
-    ServiceCodes['COMPLETED']:'COMPLETED',
-    ServiceCodes['DB_SUCCESS']:'RUNNING',
-    ServiceCodes['DB_NOID_FOUND']:'FAILED',
-    ServiceCodes['DB_CONNECT_SUCCESS']:'RUNNING',
-    ServiceCodes['DB_CONNECT_FAILED']:'FAILED',
-    ServiceCodes['DUPLICATE_ID']:'RUNNING',
-    ServiceCodes['DB_POP_FAILED']:'FAILED',
-    ServiceCodes['DB_POP_ZERO']:'FAILED',
-    ServiceCodes['DB_QUERY_FAILED']:'FAILED',
-    ServiceCodes['GAIA_FILE_CREATION_FAILED']:'FAILED',
-    ServiceCodes['GAIA_FILE_CREATION_COMPLETE']:'RUNNING',
-    ServiceCodes['CALLING_GAIA']:'RUNNING',
-    ServiceCodes['GAIA_FAILED']:'FAILED',
-    ServiceCodes['GAIA_SUCCESS']:'RUNNING',
-    ServiceCodes['FILE_MOVE_FAILED']:'FAILED'
+    ServiceCodes['STARTED']:'running',
+    ServiceCodes['CALLRECV']:'running',
+    ServiceCodes['RUNNING']:'running',
+    ServiceCodes['DB_ERROR']:'failed',
+    ServiceCodes['UNKNOWN']:'running',
+    ServiceCodes['COMPLETED']:'completed',
+    ServiceCodes['DB_SUCCESS']:'running',
+    ServiceCodes['DB_NOID_FOUND']:'failed',
+    ServiceCodes['DB_CONNECT_SUCCESS']:'running',
+    ServiceCodes['DB_CONNECT_FAILED']:'failed',
+    ServiceCodes['DUPLICATE_ID']:'running',
+    ServiceCodes['DB_POP_FAILED']:'failed',
+    ServiceCodes['DB_POP_ZERO']:'failed',
+    ServiceCodes['DB_QUERY_FAILED']:'failed',
+    ServiceCodes['GAIA_FILE_CREATION_FAILED']:'failed',
+    ServiceCodes['GAIA_FILE_CREATION_COMPLETE']:'running',
+    ServiceCodes['CALLING_GAIA']:'running',
+    ServiceCodes['GAIA_FAILED']:'failed',
+    ServiceCodes['GAIA_SUCCESS']:'running',
+    ServiceCodes['FILE_MOVE_FAILED']:'failed'
     }
 class Log:
     def __init__(self, logFileName_=None,logLevel_ = "Normal", buffered_=False,append_=False):
