@@ -26,7 +26,6 @@ class ApolloSimulatorOutput:
 	SQLStatement = 'SELECT * from '+_runTable+' WHERE label = "' + self.runID + '"'
         try:
             self._dbRunIndex = self.apolloDB.query(SQLStatement)[0]['id']
-            print "DBIndex = " + str(self._dbRunIndex)
         except:
             self.logger.update('DB_NOID_FOUND')
             raise
