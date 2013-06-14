@@ -9,16 +9,19 @@
 
         <table cellpadding="12">
             <tr>
-                <td style="width: 350px; background-color: #E0F0FF; border: 1px solid #B8B8B8">
-                    <button id="store-fractions" onclick="storeSelectedRegionFractions();" style="width: 250px; height: 40px; font-size: 12px; border: 1px solid #99cccc">
-                        <span class="ui-button-text">Store fractions for selected regions</span>
-                    </button>
+                <td style="width: 500px; background-color: #E0F0FF; border: 1px solid #B8B8B8; text-align: left">
+                    <div style="overflow:auto;height:700px;">
 
-                    <ul id="population-tree" class="treeview">
+                        <button id="store-fractions" onclick="storeSelectedRegionFractions();" style="width: 250px; height: 40px; font-size: 12px; border: 1px solid #99cccc">
+                            <span class="ui-button-text">Store fractions for selected regions</span>
+                        </button>
 
-                    </ul>
+                        <ul id="population-tree" class="treeview" style="text-align: left; padding: 0px">
+
+                        </ul>
+                    </div>
                 </td>
-                <td style="vertical-align: top; width: 710px">
+                <td style="vertical-align: top">
                     <h2>Population Initialization</h2>
                     Use the tree on the left to specify how the simulated population will be initialized by selecting locations and 
                     initial disease fractions. 
@@ -32,11 +35,11 @@
                     United States, and everywhere except the state of Alabama will have an initial infected fraction of 0.1. In Alabama,
                     everywhere except Baldwin county will have an initial infected fraction of 0.05. In Baldwin county, the initial infected
                     fraction will be 0.2.
-                <div id="map"></div>
-                
+                    <div id="map"></div>
+
                 </td>
-                
-                
+
+
             </tr>
         </table>
         <!--        <a href="javascript:ddtreemenu.flatten('population-tree', 'expand')">Expand All</a> | <a href="javascript:ddtreemenu.flatten('population-tree', 'contact')">Contact All</a>-->
