@@ -54,9 +54,7 @@ Index page for the Apollo Test Client
         <!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
 
         <!-- Highchart -->
-        <script type="text/javascript" src="js/highcharts.js"></script>
 <!--        <script type="text/javascript" src="js/highstock.js"></script>-->
-        <script type="text/javascript" src="js/modules/exporting.js"></script>
         <script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
         <script type="text/javascript" src="js/simpletreemenu.js">
         
@@ -77,6 +75,7 @@ Index page for the Apollo Test Client
             });
 
         </script>
+        <script type="text/javascript" src="js/bigdecimal.js"></script>
 
         <!--Misc -->
         <script type="text/javascript" src="js/debug-helper.js"></script>
