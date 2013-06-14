@@ -214,6 +214,26 @@ function refreshLayerData() {
 //storedFractionsForAllRegions.countyFractions[42003].infected = 20;
 //storedFractionsForAllRegions.countyFractions[42003].infectious = 5;
 //storedFractionsForAllRegions.countyFractions[42003].immune = 5;
+
+function setDataFeaturesValues(data, i, susceptible, infected, infectious, immune) {
+    // get big decimal versions of the values
+    var susceptibleBigD = (new BigDecimal("100.0")).multiply(new BigDecimal(susceptible));
+    var infectedBigD = (new BigDecimal("100.0")).multiply(new BigDecimal(infected));
+    var infectiousBigD = (new BigDecimal("100.0")).multiply(new BigDecimal(infectious));
+    var immuneBigD = (new BigDecimal("100.0")).multiply(new BigDecimal(immune));
+    // set the scales of the big decimals
+    susceptibleBigD = susceptibleBigD.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+    infectedBigD.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+    infectedBigD.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+    infectiousBigD.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+    immuneBigD.setScale(5, BigDecimal.ROUND_HALF_EVEN);
+    // set the data features values
+    data.features[i].properties.S = susceptibleBigD.floatValue();
+    data.features[i].properties.E = infectedBigD.floatValue();
+    data.features[i].properties.I = infectiousBigD.floatValue();
+    data.features[i].properties.R = immuneBigD.floatValue();
+}
+
 function refreshMapData(regionalSEIR) {
     $.getJSON('geojson/world.json',function (data) {
         // format the properties
@@ -226,10 +246,11 @@ function refreshMapData(regionalSEIR) {
                 data.features[i].properties = {};
                 data.features[i].properties.name = name;
                 data.features[i].properties.fips = fips;
-                data.features[i].properties.S = 100 * regionalSEIR.usFractions.susceptible;
-                data.features[i].properties.E = 100 * regionalSEIR.usFractions.infected;
-                data.features[i].properties.I = 100 * regionalSEIR.usFractions.infectious;
-                data.features[i].properties.R = 100 * regionalSEIR.usFractions.immune;
+                setDataFeaturesValues(data, i, 
+                    regionalSEIR.usFractions.susceptible,
+                    regionalSEIR.usFractions.infected,
+                    regionalSEIR.usFractions.infectious,
+                    regionalSEIR.usFractions.immune);
             }
         }
 
@@ -264,15 +285,17 @@ function refreshMapData(regionalSEIR) {
                     }
                 }
                 if (defaultSEIR) {
-                    data.features[i].properties.S = 100 * regionalSEIR.usFractions.susceptible;
-                    data.features[i].properties.E = 100 * regionalSEIR.usFractions.infected;
-                    data.features[i].properties.I = 100 * regionalSEIR.usFractions.infectious;
-                    data.features[i].properties.R = 100 * regionalSEIR.usFractions.immune;
+                    setDataFeaturesValues(data, i, 
+                        regionalSEIR.usFractions.susceptible,
+                        regionalSEIR.usFractions.infected,
+                        regionalSEIR.usFractions.infectious,
+                        regionalSEIR.usFractions.immune);
                 } else {
-                    data.features[i].properties.S = 100 * regionalSEIR.stateFractions[j].susceptible;
-                    data.features[i].properties.E = 100 * regionalSEIR.stateFractions[j].infected;
-                    data.features[i].properties.I = 100 * regionalSEIR.stateFractions[j].infectious;
-                    data.features[i].properties.R = 100 * regionalSEIR.stateFractions[j].immune;
+                    setDataFeaturesValues(data, i, 
+                        regionalSEIR.stateFractions[j].susceptible,
+                        regionalSEIR.stateFractions[j].infected,
+                        regionalSEIR.stateFractions[j].infectious,
+                        regionalSEIR.stateFractions[j].immune);
                 }
             }
         }
@@ -318,21 +341,24 @@ function refreshMapData(regionalSEIR) {
                     }
                     if (defaultSEIR) {
                         if (typeof(regionalSEIR.stateFractions[stateFIPS]) != "undefined") {
-                            data.features[i].properties.S = 100 * regionalSEIR.stateFractions[stateFIPS].susceptible;
-                            data.features[i].properties.E = 100 * regionalSEIR.stateFractions[stateFIPS].infected;
-                            data.features[i].properties.I = 100 * regionalSEIR.stateFractions[stateFIPS].infectious;
-                            data.features[i].properties.R = 100 * regionalSEIR.stateFractions[stateFIPS].immune;
+                            setDataFeaturesValues(data, i, 
+                                regionalSEIR.stateFractions[stateFIPS].susceptible,
+                                regionalSEIR.stateFractions[stateFIPS].infected,
+                                regionalSEIR.stateFractions[stateFIPS].infectious,
+                                regionalSEIR.stateFractions[stateFIPS].immune);
                         } else {
-                            data.features[i].properties.S = 100 * regionalSEIR.usFractions.susceptible;
-                            data.features[i].properties.E = 100 * regionalSEIR.usFractions.infected;
-                            data.features[i].properties.I = 100 * regionalSEIR.usFractions.infectious;
-                            data.features[i].properties.R = 100 * regionalSEIR.usFractions.immune;
+                            setDataFeaturesValues(data, i, 
+                                regionalSEIR.usFractions.susceptible,
+                                regionalSEIR.usFractions.infected,
+                                regionalSEIR.usFractions.infectious,
+                                regionalSEIR.usFractions.immune);
                         }
                     } else {
-                        data.features[i].properties.S = 100 * regionalSEIR.countyFractions[j].susceptible;
-                        data.features[i].properties.E = 100 * regionalSEIR.countyFractions[j].infected;
-                        data.features[i].properties.I = 100 * regionalSEIR.countyFractions[j].infectious;
-                        data.features[i].properties.R = 100 * regionalSEIR.countyFractions[j].immune;
+                        setDataFeaturesValues(data, i, 
+                            regionalSEIR.countyFractions[j].susceptible,
+                            regionalSEIR.countyFractions[j].infected,
+                            regionalSEIR.countyFractions[j].infectious,
+                            regionalSEIR.countyFractions[j].immune);
 
                     }
                 }
@@ -346,7 +372,6 @@ function refreshMapData(regionalSEIR) {
 
         });
     }
-}
-;
+};
 
 //refreshMapData(storedFractionsForAllRegions);
