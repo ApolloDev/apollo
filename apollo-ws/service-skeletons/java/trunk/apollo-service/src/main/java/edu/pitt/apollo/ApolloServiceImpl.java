@@ -14,12 +14,18 @@
  */
 package edu.pitt.apollo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -28,16 +34,24 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
 
-import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
 import edu.pitt.apollo.service.simulatorservice.SimulatorService;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationService;
 import edu.pitt.apollo.service.syntheticpopulationservice.SyntheticPopulationServiceEI;
+
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+
+import edu.pitt.apollo.service.apolloservice.ApolloServiceEI;
 import edu.pitt.apollo.service.visualizerservice.VisualizerService;
 import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
 import edu.pitt.apollo.types.ApolloSoftwareType;
@@ -54,16 +68,6 @@ import edu.pitt.apollo.types.SyntheticPopulationConfiguration;
 import edu.pitt.apollo.types.SyntheticPopulationResult;
 import edu.pitt.apollo.types.VisualizerConfiguration;
 import edu.pitt.apollo.types.VisualizerResult;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Scanner;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService", endpointInterface = "edu.pitt.apollo.service.apolloservice.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
@@ -73,6 +77,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
 //    private static final String FLUTE_FILE_DIR = "flute_files";
     private static String APOLLO_DIR = "";
+    private static ObjectContainer db4o;
 
     public ByteArrayOutputStream getJSONBytes(Object obj) {
         try {
@@ -341,6 +346,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
             System.out.println("Apollo Service is running simulator with URL " + url);
             runId = port.run(simulatorConfiguration);
+            db4o.store(simulatorConfiguration);
             System.out.println("Returned run ID is + " + runId);
 
 //            if (cacheFilePath != null) {
@@ -884,6 +890,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
             System.out.println("APOLLO_DIR environment variable not found!");
             APOLLO_DIR = "";
         }
+        
+        db4o = Db4oEmbedded.openFile(
+				Db4oEmbedded.newConfiguration(), APOLLO_DIR + "/db4o_db");
+		
+
 
 
 //        try {
@@ -903,6 +914,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //            fluteFileDir.mkdirs();
 //        }
 
+    }
+    
+    @Override
+    protected void finalize() throws Throwable {
+    	// TODO Auto-generated method stub
+    	super.finalize();
+    	db4o.close();
     }
  
 }
