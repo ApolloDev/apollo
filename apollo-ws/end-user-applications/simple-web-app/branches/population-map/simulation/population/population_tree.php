@@ -1,9 +1,5 @@
 <html><head><title>Population Initialization</title>
 
-        <link rel="stylesheet" href="css/leaflet.css"/>
-        <link rel="stylesheet" href="css/map.css"/>
-        <script src="js/leaflet.js"></script>
-        <script type="text/javascript" src="js/mapseir.js"></script>
     </head>
     <body>
 
@@ -65,6 +61,12 @@
             
             //        ddtreemenu.expandSubTree("population-tree", document.getElementById("01003"));
 
+        </script>
+
+        <script type="text/javascript" src="js/mapseir.js"></script>
+
+        <script type="text/javascript">
+            loadStoredFractionsInMap();
         </script>
 
     </body>
