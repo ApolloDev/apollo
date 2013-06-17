@@ -118,6 +118,15 @@ public class DbUtils {
         return runId;
     }
 
+    public static void deleteFromRunCache(String md5HashOfSimulatorConfiguration) throws ClassNotFoundException, SQLException {
+
+        String query = "DELETE FROM apollo_service_simulator_run_cache WHERE MD5HASHOFSIMULATORCONFIGURATION = '"
+                + md5HashOfSimulatorConfiguration + "'";
+
+        PreparedStatement pstmt = getConn().prepareStatement(query);
+        pstmt.execute();
+    }
+
     public static String insertIntoVisualizerCache(String runId, String md5HashOfVisualizerConfiguration) throws SQLException, ClassNotFoundException {
 
         String query = "INSERT INTO apollo_service_visualizer_cache (LABEL, MD5HASHOFCONFIGURATION) "
@@ -196,5 +205,26 @@ public class DbUtils {
         }
 
         return vizResult;
+    }
+
+    public static void deleteFromVisualizerCache(String md5HashOfVisualizerConfiguration) throws ClassNotFoundException, SQLException {
+
+        String query = "SELECT CACHE_ID FROM apollo_service_visualizer_cache WHERE MD5HASHOFCONFIGURATION = '"
+                + md5HashOfVisualizerConfiguration + "'";
+        PreparedStatement pstmt = getConn().prepareStatement(query);
+        ResultSet rs = pstmt.executeQuery();
+
+        String cacheId = null;
+        while (rs.next()) {
+            cacheId = rs.getString("CACHE_ID");
+        }
+        
+        query = "DELETE FROM apollo_service_visualizer_cache_results WHERE CACHE_ID = " + cacheId;
+        pstmt = getConn().prepareStatement(query);
+        pstmt.execute();
+        
+        query = "DELETE FROM apollo_service_visualizer_cache WHERE MD5HASHOFCONFIGURATION = '" + md5HashOfVisualizerConfiguration + "'";
+        pstmt = getConn().prepareStatement(query);
+        pstmt.execute();
     }
 }
