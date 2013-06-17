@@ -76,6 +76,7 @@ Index page for the Apollo Test Client
 
         </script>
         <script type="text/javascript" src="js/bigdecimal.js"></script>
+        <script src="js/leaflet.js"></script>
 
         <!--Misc -->
         <script type="text/javascript" src="js/debug-helper.js"></script>
@@ -98,7 +99,8 @@ Index page for the Apollo Test Client
               href="css/apollo.css" />
         <link rel="stylesheet" type="text/css" media="screen"
               href="css/simpletree.css" />
-
+        <link rel="stylesheet" href="css/leaflet.css"/>
+        <link rel="stylesheet" href="css/map.css"/>
     </head>
     <body>
 
