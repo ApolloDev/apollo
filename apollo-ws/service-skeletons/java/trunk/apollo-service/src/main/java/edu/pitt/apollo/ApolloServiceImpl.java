@@ -187,7 +187,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //
 //        return filePath;
 //    }
-
     public String checkRunIdCache(String md5Hash, String filepath) {
 
         try {
@@ -282,7 +281,19 @@ class ApolloServiceImpl implements ApolloServiceEI {
         try {
             runId = DbUtils.checkRunCache(simConfigHash);
             if (runId != null) {
-                return runId;
+
+                // check the status of the run
+                RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+                rasid.setRunId(runId);
+                rasid.setSoftwareId(simulatorConfiguration.getSimulatorIdentification());
+                RunStatus status = getRunStatus(rasid);
+                RunStatusEnum statusEnum = status.getStatus();
+
+                if (statusEnum.equals(RunStatusEnum.FAILED)) {
+                    DbUtils.deleteFromRunCache(simConfigHash);
+                } else {
+                    return runId;
+                }
             }
         } catch (ClassNotFoundException ex) {
             runId = RunUtils.getErrorRunId();
@@ -434,7 +445,21 @@ class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = DbUtils.checkVisualizerCache(visConfigHash);
             if (result != null) {
-                return result;
+
+                // check the status of the run
+                runId = result.getRunId();
+                RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+                rasid.setRunId(runId);
+                rasid.setSoftwareId(visualizerConfiguration.getVisualizerIdentification());
+                RunStatus status = getRunStatus(rasid);
+                RunStatusEnum statusEnum = status.getStatus();
+
+                if (statusEnum.equals(RunStatusEnum.FAILED)) {
+                    DbUtils.deleteFromVisualizerCache(visConfigHash);
+                } else {
+                    return result;
+                }
+
             }
         } catch (ClassNotFoundException ex) {
             runId = RunUtils.getErrorRunId();
@@ -812,7 +837,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //        flutePs.close();
 //        fredPs.close();
 //    }
-
 //    private static void createVisualizerCacheFiles() {
 //
 //        System.out.println("Creating visualization cache files...");
@@ -836,7 +860,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //            }
 //        }
 //    }
-
     public static String getRegistryFilename() {
         return APOLLO_DIR + REGISTRY_FILENAME;
     }
@@ -881,4 +904,5 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //        }
 
     }
+ 
 }
