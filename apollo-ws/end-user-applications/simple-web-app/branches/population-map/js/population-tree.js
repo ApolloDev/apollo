@@ -234,25 +234,32 @@ function checkFractionValue(regionId, regionName, diseaseState, print) {
     // the value is a number between 0 and 1; parseFloat works fine
     // and won't give an error if the value is not a number
     var value = parseFloat($("#" + diseaseState + "-" + regionId).val());
-    if (!isFraction(value)) {
+    if (!isNumber(value) || !isFraction(value)) {
         if (print) {
-            addmsg("<b>WARNING:</b> The value entered for the " + diseaseState + " fraction for region <i>" + regionName + "</i> is not a valid fraction between 0 and 1.")
+            addmsg("<b>ERROR:</b> The value entered for the " + diseaseState + " fraction for region <i>" + regionName + "</i> is not a valid fraction between 0 and 1.")
         }
         changeFractionErrorColors(regionId, 'red', 'red');
-        return false;
+        
+        if (!isNumber(value)) {
+            return 'not_number';
+        }
+        if (!isFraction(value)) {
+            return 'not_fraction';
+        }
     }
     
     return true;
 }
 
-
-function isFraction(n) {
-    var isNumber = !isNaN(parseFloat(n)) && isFinite(n);
-    return (isNumber && (n <= 1.0 && n >= 0.0));
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function checkFractionSums(regionId, regionName, print) {
-    
+function isFraction(n) {
+    return (n <= 1.0 && n >= 0.0);
+}
+
+function displayFractionSum(regionId) {
     var susceptible = new BigDecimal($("#susceptible-" + regionId).val());
     var infected = new BigDecimal($("#infected-" + regionId).val());
     var infectious = new BigDecimal($("#infectious-" + regionId).val());
@@ -260,6 +267,12 @@ function checkFractionSums(regionId, regionName, print) {
     var sum = susceptible.add(infected.add(infectious.add(immune))).floatValue();
     // update sum of fractions
     setFractionSumTextValue(regionId, sum);
+    return sum;
+}
+
+function checkFractionSums(regionId, regionName, print) {
+    
+    var sum = displayFractionSum(regionId);
 
     if (sum != 1.0) {
         if (print) {
@@ -279,22 +292,46 @@ function setFractionSumTextValue(regionId, value) {
 function checkFractions(regionId, regionName, print) {
     
     
-    if (!checkFractionValue(regionId, regionName, 'susceptible', print)) {
-        setFractionSumTextValue(regionId, "NaN");
+    var fraction = checkFractionValue(regionId, regionName, 'susceptible', print);
+    if (fraction == 'not_fraction' || fraction == 'not_number') {
+        if (fraction == 'not_number') {
+            setFractionSumTextValue(regionId, "NaN");
+        } else if (fraction == 'not_fraction') {
+            displayFractionSum(regionId);
+        }
         return false;
     }
-    if (!checkFractionValue(regionId, regionName, 'infected', print)) {
-        setFractionSumTextValue(regionId, "NaN");
+    
+    fraction = checkFractionValue(regionId, regionName, 'infected', print);
+    if (fraction == 'not_fraction' || fraction == 'not_number') {
+        if (fraction == 'not_number') {
+            setFractionSumTextValue(regionId, "NaN");
+        } else if (fraction == 'not_fraction') {
+            displayFractionSum(regionId);
+        }
         return false;
     }
-    if (!checkFractionValue(regionId, regionName, 'infectious', print)) {
-        setFractionSumTextValue(regionId, "NaN");
+    
+    fraction = checkFractionValue(regionId, regionName, 'infectious', print);
+    if (fraction == 'not_fraction' || fraction == 'not_number') {
+        if (fraction == 'not_number') {
+            setFractionSumTextValue(regionId, "NaN");
+        } else if (fraction == 'not_fraction') {
+            displayFractionSum(regionId);
+        }
         return false;
     }
-    if (!checkFractionValue(regionId, regionName, 'immune', print)) {
-        setFractionSumTextValue(regionId, "NaN");
+    
+    fraction = checkFractionValue(regionId, regionName, 'immune', print);
+    if (fraction == 'not_fraction' || fraction == 'not_number') {
+        if (fraction == 'not_number') {
+            setFractionSumTextValue(regionId, "NaN");
+        } else if (fraction == 'not_fraction') {
+            displayFractionSum(regionId);
+        }
         return false;
     }
+    
     if (!checkFractionSums(regionId, regionName, print)) {
         return false;
     }
@@ -397,7 +434,7 @@ function storeSelectedRegionFractions() {
         refreshMapData(storedFractionsForAllRegions);
         addmsg('Initial population fractions for selected regions were stored successfully.');
     } else {
-        addmsg('<b>WARNING:</b> Initial population fractions for selected regions were NOT stored successfully.');
+        addmsg('<b>ERROR:</b> Initial population fractions for selected regions were NOT stored successfully.');
     }
 
 }
@@ -461,6 +498,9 @@ function restoreSelectedFractions() {
         $("#immune-US").val(immune);
     }
     
+}
+
+function loadStoredFractionsInMap() {
     refreshMapData(storedFractionsForAllRegions);
 }
 
