@@ -86,27 +86,30 @@ function addZero(n) {
     return n<10? '0'+n:''+n;
 }
 
+// these are measures from 0
 var isRowEditable = function(id) {
     
-    if (id == 0 || id == 3 || id == 7 || id == 8 || id == 9 || id == 10 || id == 16 || id == 22 || id == 59) {
+    if (id == 0 || id == 3 || id == 7 || id == 9 || id == 10 || id == 15 || id == 15 || id == 52) {
         return false
     } else {
         return true;
     }
 }
 
+// these are measures from 0
 var isRowBlue = function(id) {
     
-    if (id == 0 || id == 3 || id == 7 || id == 16 || id == 22) {
+    if (id == 0 || id == 3 || id == 7 || id == 9 || id == 15) {
         return true;
     } else {
         return false;
     }
 }
 
+// these are measured starting at 1
 var isRowTree = function(id) {
     
-    if (id == 24 || id == 34 || id == 44 || id == 45 || id == 54) {
+    if (id == 17 || id == 27 || id == 37 || id == 38 || id == 47) {
         return true;
     } else {
         return false;
@@ -224,75 +227,75 @@ function loadParamGrid(){
                     cm.editoptions = null;
                 }
                 
-                if (i == 10) { // POPULATION LOCATION STATE
-                    
-                    var cm = paramGrid.jqGrid('getColProp','value');
-                    cm.edittype = 'select';
-                    cm.editoptions = {
-                        value: "loading:Loading...",
-                        dataInit: function(elem) {
-                            $(elem).width(120);  // set the width which you need
-                        },
-                        dataEvents:
-                        [
-                        {
-                            type: 'change',
-                            fn: function(e) {
- 
-                                var stateVal = $("#10_value").val();
-                                if (stateVal != 'select') {
-                                    
-                                    removeSelectStateItem();
-                                    if (!checkStateOtherLocationValue(stateVal)) {
-                                        var countyList = getCountyComboBoxValues(stateVal);
-                                        changeCountyComboBoxValues(countyList, stateVal);
-                                        $("#11_value").attr('disabled', false);
-                                        
-                                        // then update population if neccesary
-                                        var countyVal = $("#11_value").val();
-                                    //                                        changeDiseaseStateValues(countyVal)
-                                    } else {
-                                        clearCountyComboBoxValues();
-                                        $("#11_value").attr('disabled', true);
-                                    }
-                                }
-                            }
-                        }
-                        ]
-                    };
-                    paramGrid.jqGrid('editRow', i);
-                    cm.edittype = 'text';
-                    cm.editoptions = null;  
-                }
+//                if (i == 10) { // POPULATION LOCATION STATE
+//                    
+//                    var cm = paramGrid.jqGrid('getColProp','value');
+//                    cm.edittype = 'select';
+//                    cm.editoptions = {
+//                        value: "loading:Loading...",
+//                        dataInit: function(elem) {
+//                            $(elem).width(120);  // set the width which you need
+//                        },
+//                        dataEvents:
+//                        [
+//                        {
+//                            type: 'change',
+//                            fn: function(e) {
+// 
+//                                var stateVal = $("#10_value").val();
+//                                if (stateVal != 'select') {
+//                                    
+//                                    removeSelectStateItem();
+//                                    if (!checkStateOtherLocationValue(stateVal)) {
+//                                        var countyList = getCountyComboBoxValues(stateVal);
+//                                        changeCountyComboBoxValues(countyList, stateVal);
+//                                        $("#11_value").attr('disabled', false);
+//                                        
+//                                        // then update population if neccesary
+//                                        var countyVal = $("#11_value").val();
+//                                    //                                        changeDiseaseStateValues(countyVal)
+//                                    } else {
+//                                        clearCountyComboBoxValues();
+//                                        $("#11_value").attr('disabled', true);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        ]
+//                    };
+//                    paramGrid.jqGrid('editRow', i);
+//                    cm.edittype = 'text';
+//                    cm.editoptions = null;  
+//                }
                 
-                if (i == 11) { // POPULATION LOCATION COUNTY
-                    
-                    var cm = paramGrid.jqGrid('getColProp','value');
-                    cm.edittype = 'select';
-                    cm.editoptions = {
-                        value: "loading:Loading...",
-                        dataInit: function(elem) {
-                            $(elem).width(120);  // set the width which you need
-                        },
-                        dataEvents:
-                        [
-                        {
-                            type: 'change',
-                            fn: function(e) {
- 
-                                var countyVal = $("#11_value").val();
-                            //                                changeDiseaseStateValues(countyVal);
-                            }
-                        }
-                        ]
-                       
-                    };
-                    paramGrid.jqGrid('editRow', i);
-                    cm.edittype = 'text';
-                    cm.editoptions = null;  
-                }
+//                if (i == 11) { // POPULATION LOCATION COUNTY
+//                    
+//                    var cm = paramGrid.jqGrid('getColProp','value');
+//                    cm.edittype = 'select';
+//                    cm.editoptions = {
+//                        value: "loading:Loading...",
+//                        dataInit: function(elem) {
+//                            $(elem).width(120);  // set the width which you need
+//                        },
+//                        dataEvents:
+//                        [
+//                        {
+//                            type: 'change',
+//                            fn: function(e) {
+// 
+//                                var countyVal = $("#11_value").val();
+//                            //                                changeDiseaseStateValues(countyVal);
+//                            }
+//                        }
+//                        ]
+//                       
+//                    };
+//                    paramGrid.jqGrid('editRow', i);
+//                    cm.edittype = 'text';
+//                    cm.editoptions = null;  
+//                }
                 
-                if (i==37) { // VACCINATION NAMED PRIORITIZATION SCHEME
+                if (i==30) { // VACCINATION NAMED PRIORITIZATION SCHEME
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
@@ -306,7 +309,7 @@ function loadParamGrid(){
                             type: 'change',
                             fn: function(e) {
  
-                                var scheme = $("#37_value").val();
+                                var scheme = $("#30_value").val();
                                 if (scheme == 'tpp') {
                                     var vaccDescriptionId = '#vacc-description';
                                     if ($(vaccDescriptionId).html() != null) {
@@ -332,7 +335,7 @@ function loadParamGrid(){
                     cm.editoptions = null;
                 }
                 
-                if (i==48) { // SCHOOL CLOSURE TARGET FACILITIES
+                if (i==41) { // SCHOOL CLOSURE TARGET FACILITIES
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
@@ -346,7 +349,7 @@ function loadParamGrid(){
                     cm.editoptions = null;
                 }
                 
-                if (i ==57) { // SCHOOL CLOSURE TARGET FACILITIES
+                if (i ==50) { // SCHOOL CLOSURE TARGET FACILITIES
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'select';
                     cm.editoptions = {
@@ -361,7 +364,7 @@ function loadParamGrid(){
                 }
                 
                 
-                if (i == 24 || i == 34 || i ==44) {
+                if (i == 17 || i == 27 || i ==37) {
                     var cm = paramGrid.jqGrid('getColProp','value');
                     cm.edittype = 'checkbox';
                     cm.editoptions = {
@@ -373,10 +376,10 @@ function loadParamGrid(){
                     cm.editoptions = null;
                 }
                 
-                if (i == 45 || i == 54) {
+                if (i == 38 || i == 47) {
                     
                     var customElement;
-                    if (i == 43) {
+                    if (i == 36) {
                         customElement = createRadioButtonChecked;
                     } else {
                         customElement = createRadioButton;
@@ -402,21 +405,20 @@ function loadParamGrid(){
             }
             
             loadTimeStepUnitValues();
-            loadStateComboBoxValues();
+//            loadStateComboBoxValues();
             
-            var stateVal = $("#10_value").val();
-            var countyList = getCountyComboBoxValues(stateVal);
-            changeCountyComboBoxValues(countyList, stateVal);
-            $("#11_value").attr('disabled', false);
+//            var stateVal = $("#10_value").val();
+//            var countyList = getCountyComboBoxValues(stateVal);
+//            changeCountyComboBoxValues(countyList, stateVal);
             
             // open trees
             var rows = paramGrid.jqGrid('getRootNodes');
-            for (var i = 0; i < rows.length; i++){
-                if (i == 8 || i == 9) {
-                    paramGrid.jqGrid('expandNode', rows[i]);
-                    paramGrid.jqGrid('expandRow', rows[i]);
-                }
-            }
+//            for (var i = 0; i < rows.length; i++){
+//                if (i == 8 || i == 9) {
+//                    paramGrid.jqGrid('expandNode', rows[i]);
+//                    paramGrid.jqGrid('expandRow', rows[i]);
+//                }
+//            }
             
             
         },
@@ -540,106 +542,106 @@ function loadTimeStepUnitValues() {
             
 }
 
-function loadStateComboBoxValues() {
-    
-    var returnString = "select:Select State;";
-    $.ajax({
-        type: "GET",
-        url: "simulation/population/location_data_request.php?requestType=states",
+//function loadStateComboBoxValues() {
+//    
+//    var returnString = "select:Select State;";
+//    $.ajax({
+//        type: "GET",
+//        url: "simulation/population/location_data_request.php?requestType=states",
+//
+//        async: false, /* If set to non-async, browser shows page as "Loading.."*/
+//        cache: false,
+//        timeout:50000, /* Timeout in ms */
+//
+//        success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+//
+//            var box = $("#10_value");
+//            box.empty();
+//            jasonObj = $.parseJSON(jasonObj);
+//            for (var v in jasonObj) {
+//                if (v == 'California') {
+//                    box.append($("<option selected></option>").attr("value", jasonObj[v]).text(v)); 
+//                } else {
+//                    box.append($("<option></option>").attr("value", jasonObj[v]).text(v)); 
+//                }
+//            }
+//            
+//            for (var v in jasonObj) {
+//                returnString = returnString + jasonObj[v] + ":" + v + ";";
+//            }       
+//        },
+//        error: function(XMLHttpRequest, textStatus, errorThrown){
+//            addmsg(textStatus + " (" + errorThrown + ")");
+//            setTimeout(
+//                poll, /* Try again after.. */
+//                15000); /* milliseconds (15seconds) */
+//        }
+//    });
+//}
 
-        async: false, /* If set to non-async, browser shows page as "Loading.."*/
-        cache: false,
-        timeout:50000, /* Timeout in ms */
+//function getCountyComboBoxValues(state) {
+//    
+//    var returnString;
+//    $.ajax({
+//        type: "GET",
+//        url: "simulation/population/location_data_request.php?requestType=counties&state=" + state,
+//
+//        async: false, /* If set to non-async, browser shows page as "Loading.."*/
+//        cache: false,
+//        timeout:50000, /* Timeout in ms */
+//
+//        success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+//
+//            returnString = jasonObj;
+//            
+//        },
+//        error: function(XMLHttpRequest, textStatus, errorThrown){
+//            addmsg(textStatus + " (" + errorThrown + ")");
+//            setTimeout(
+//                poll, /* Try again after.. */
+//                15000); /* milliseconds (15seconds) */
+//        }
+//    });
+//    
+//    return returnString;
+//}
 
-        success: function(jasonObj, statusText){ /* called when request to barge.php completes */
+//function changeCountyComboBoxValues(jasonObj, state) {
+//        
+//    var box = $("#11_value");
+//    box.empty();
+//    jasonObj = $.parseJSON(jasonObj);
+//    for (var v in jasonObj) {
+//        if (v != state + "000") {
+//            if (v == "06037") {
+//                box.append($("<option selected></option>").attr("value", v).text(jasonObj[v])); 
+//            } else {
+//                box.append($("<option></option>").attr("value", v).text(jasonObj[v])); 
+//            }
+//        }
+//        
+//    }
+//}
 
-            var box = $("#10_value");
-            box.empty();
-            jasonObj = $.parseJSON(jasonObj);
-            for (var v in jasonObj) {
-                if (v == 'California') {
-                    box.append($("<option selected></option>").attr("value", jasonObj[v]).text(v)); 
-                } else {
-                    box.append($("<option></option>").attr("value", jasonObj[v]).text(v)); 
-                }
-            }
-            
-            for (var v in jasonObj) {
-                returnString = returnString + jasonObj[v] + ":" + v + ";";
-            }       
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            addmsg(textStatus + " (" + errorThrown + ")");
-            setTimeout(
-                poll, /* Try again after.. */
-                15000); /* milliseconds (15seconds) */
-        }
-    });
-}
+//function removeSelectStateItem() {
+//    
+//    $("#10_value option[value='select']").remove();
+//}
 
-function getCountyComboBoxValues(state) {
-    
-    var returnString;
-    $.ajax({
-        type: "GET",
-        url: "simulation/population/location_data_request.php?requestType=counties&state=" + state,
+//function clearCountyComboBoxValues() {
+//    var box = $("#11_value");
+//    box.empty();
+//    box.append($("<option></option>").attr("value", "select").text("Select"));
+//}
 
-        async: false, /* If set to non-async, browser shows page as "Loading.."*/
-        cache: false,
-        timeout:50000, /* Timeout in ms */
-
-        success: function(jasonObj, statusText){ /* called when request to barge.php completes */
-
-            returnString = jasonObj;
-            
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            addmsg(textStatus + " (" + errorThrown + ")");
-            setTimeout(
-                poll, /* Try again after.. */
-                15000); /* milliseconds (15seconds) */
-        }
-    });
-    
-    return returnString;
-}
-
-function changeCountyComboBoxValues(jasonObj, state) {
-        
-    var box = $("#11_value");
-    box.empty();
-    jasonObj = $.parseJSON(jasonObj);
-    for (var v in jasonObj) {
-        if (v != state + "000") {
-            if (v == "06037") {
-                box.append($("<option selected></option>").attr("value", v).text(jasonObj[v])); 
-            } else {
-                box.append($("<option></option>").attr("value", v).text(jasonObj[v])); 
-            }
-        }
-        
-    }
-}
-
-function removeSelectStateItem() {
-    
-    $("#10_value option[value='select']").remove();
-}
-
-function clearCountyComboBoxValues() {
-    var box = $("#11_value");
-    box.empty();
-    box.append($("<option></option>").attr("value", "select").text("Select"));
-}
-
-function checkStateOtherLocationValue(value) {
-    
-    if (value == '42660') {
-        return true;
-    } else {
-        return false;
-    }
-}
+//function checkStateOtherLocationValue(value) {
+//    
+//    if (value == '42660') {
+//        return true;
+//    } else {
+//        return false;
+//    }
+//}
 
 function createOrSelectInsturctionTab(){
     //add instruction tab
@@ -658,16 +660,16 @@ function createOrSelectInsturctionTab(){
   
 }
 
-function createOrSelectPopulationTab() {
-      
-    var st = "#population";
-    if($(st).html() != null) {
-        maintab.tabs('select',st);
-    } else {
-        maintab.tabs('add', st, "Population Initialization");
-        $(st,"#tabs").load("simulation/population/population_tree.php");
-    }
-}
+//function createOrSelectPopulationTab() {
+//      
+//    var st = "#population";
+//    if($(st).html() != null) {
+//        maintab.tabs('select',st);
+//    } else {
+//        maintab.tabs('add', st, "Population Initialization");
+//        $(st,"#tabs").load("simulation/population/population_tree.php");
+//    }
+//}
 
 function adjustMainDivSize(){
     var topHeight = $("#top").height();
@@ -1223,68 +1225,68 @@ jQuery(document).ready(function(){
                 clearTabs();
                 // get the current tree grid data
                 var grid = $(dataExchange.gridId);
-                    
+                
                 var rowData = grid.getRowData(); 
                 var timeStepUnit = $("#5_value").val(); // get the time step unit from the select
                 
                 // check population location
-                var selectedState = $("#10_value").val();
-                var selectedCounty = $("#11_value").val();
-                var selectedLocation;
-                if (selectedState == 'select') { // no state selected
-                    addmsg('<b>ERROR: </b>' + "No state selected for the population location");
-                    return false;
-                } else if (checkStateOtherLocationValue(selectedState)) { // other location selected
-                    selectedLocation = selectedState;
-                } else if (selectedCounty == "select") { // state selected but no county selected
-                    addmsg('<b>ERROR: </b>' + "No county selected for the population location");
-                    return false;
-                } else {
-                    selectedLocation = selectedCounty;
-                }
+//                var selectedState = $("#10_value").val();
+//                var selectedCounty = $("#11_value").val();
+//                var selectedLocation;
+//                if (selectedState == 'select') { // no state selected
+//                    addmsg('<b>ERROR: </b>' + "No state selected for the population location");
+//                    return false;
+//                } else if (checkStateOtherLocationValue(selectedState)) { // other location selected
+//                    selectedLocation = selectedState;
+//                } else if (selectedCounty == "select") { // state selected but no county selected
+//                    addmsg('<b>ERROR: </b>' + "No county selected for the population location");
+//                    return false;
+//                } else {
+//                    selectedLocation = selectedCounty;
+//                }
                 
-                var vaccNamedPriScheme = $("#37_value").val();
-                var useAvControlMeasure = $("#24_value").is(':checked');
-                var useVaccControlMeasure = $("#34_value").is(':checked');
-                var useSchoolClosure = $("#44_value").is(':checked');
-                var scReactiveTargetFacilities = $("#48_value").val();
-                var useSchoolReactiveCm = $("#45_value").is(':checked');
-                var useSchoolFixedCm = $("#54_value").is(':checked');
-                var scFixedTargetFacilities = $("#57_value").val();
+                var vaccNamedPriScheme = $("#30_value").val();
+                var useAvControlMeasure = $("#17_value").is(':checked');
+                var useVaccControlMeasure = $("#27_value").is(':checked');
+                var useSchoolClosure = $("#37_value").is(':checked');
+                var scReactiveTargetFacilities = $("#41_value").val();
+                var useSchoolReactiveCm = $("#38_value").is(':checked');
+                var useSchoolFixedCm = $("#47_value").is(':checked');
+                var scFixedTargetFacilities = $("#50_value").val();
 
                 rowData[4]['value'] = timeStepUnit; // set the time step unit to store the value instead of html
-                rowData[8]['value'] = selectedLocation; // population location
-                rowData[23]['value'] = useAvControlMeasure;
-                rowData[33]['value'] = useVaccControlMeasure;
-                rowData[36]['value'] = vaccNamedPriScheme;
-                rowData[43]['value'] = useSchoolClosure;
-                rowData[47]['value'] = scReactiveTargetFacilities;
-                rowData[44]['value'] = useSchoolReactiveCm;
-                rowData[53]['value'] = useSchoolFixedCm;
-                rowData[56]['value'] = scFixedTargetFacilities;
-                rowData[59]['value'] = storedFractionsForAllRegionsJson;
+//                rowData[8]['value'] = selectedLocation; // population location
+                rowData[16]['value'] = useAvControlMeasure;
+                rowData[26]['value'] = useVaccControlMeasure;
+                rowData[29]['value'] = vaccNamedPriScheme;
+                rowData[36]['value'] = useSchoolClosure;
+                rowData[40]['value'] = scReactiveTargetFacilities;
+                rowData[37]['value'] = useSchoolReactiveCm;
+                rowData[47]['value'] = useSchoolFixedCm;
+                rowData[49]['value'] = scFixedTargetFacilities;
+                rowData[52]['value'] = storedFractionsForAllRegionsJson;
                 
                 // replace the rows with the same parameter name with an adjusted one
-                rowData[24]['pname'] = 'Antiviral Control Measure Compliance';
-                rowData[25]['pname'] = 'Antiviral Treatment Response Delay';
-                rowData[26]['pname'] = 'Antiviral Treatment Fixed Start Time'
+                rowData[17]['pname'] = 'Antiviral Control Measure Compliance';
+                rowData[18]['pname'] = 'Antiviral Treatment Response Delay';
+                rowData[19]['pname'] = 'Antiviral Treatment Fixed Start Time'
                    
-                rowData[34]['pname'] = 'Vaccination Control Measure Compliance';
-                rowData[35]['pname'] = 'Vaccination Response Delay';
-                rowData[36]['pname'] = 'Vaccination Named Prioritization Scheme';
-                rowData[37]['pname'] = 'Vaccination Fixed Start Time';
+                rowData[27]['pname'] = 'Vaccination Control Measure Compliance';
+                rowData[28]['pname'] = 'Vaccination Response Delay';
+                rowData[29]['pname'] = 'Vaccination Named Prioritization Scheme';
+                rowData[30]['pname'] = 'Vaccination Fixed Start Time';
                 
-                rowData[45]['pname'] = 'School Closure Reactive Compliance';
-                rowData[46]['pname'] = 'School Closure Reactive Response Delay';
-                rowData[47]['pname'] = 'School Closure Reactive Target Facilities';
-                rowData[48]['pname'] = 'School Closure Reactive Duration';
+                rowData[38]['pname'] = 'School Closure Reactive Compliance';
+                rowData[39]['pname'] = 'School Closure Reactive Response Delay';
+                rowData[40]['pname'] = 'School Closure Reactive Target Facilities';
+                rowData[41]['pname'] = 'School Closure Reactive Duration';
                 
-                rowData[54]['pname'] = 'School Closure Fixed Compliance';
-                rowData[55]['pname'] = 'School Closure Fixed Response Delay';
-                rowData[56]['pname'] = 'School Closure Fixed Target Facilities';
-                rowData[57]['pname'] = 'School Closure Fixed Duration';
-                rowData[58]['pname'] = 'School Closure Fixed Start Time';
-                rowData[59]['pname'] = 'PopulationInitialization';
+                rowData[47]['pname'] = 'School Closure Fixed Compliance';
+                rowData[48]['pname'] = 'School Closure Fixed Response Delay';
+                rowData[49]['pname'] = 'School Closure Fixed Target Facilities';
+                rowData[50]['pname'] = 'School Closure Fixed Duration';
+                rowData[51]['pname'] = 'School Closure Fixed Start Time';
+                rowData[52]['pname'] = 'PopulationInitialization';
                 
                 var exportData = JSON.stringify(rowData);
                 var snomed = $('#snomed-ct-combo').val();
