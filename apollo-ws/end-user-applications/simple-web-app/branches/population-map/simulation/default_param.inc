@@ -190,38 +190,9 @@ function get_default_param_structure() {
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
-    $basePath = 'Population Location'; //create base folder entry
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', $toolTipTermArray[$apolloUriTermMap['Population Location']], 0, ++$left, $left + 5, false, false));
-    $basePath = deleteSpace($basePath);
-
-    $pname = 'State';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
-
-    $pname = 'County';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
-
-    $basePath = 'Initial Population Disease State Fractions'; //create base folder entry
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', '', 0, ++$left, $left + 9, false, false));
-    $basePath = deleteSpace($basePath);
-
-    $pname = 'Susceptible';
-    $pvalue = '0.94859';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Susceptible']], 1, ++$left, ++$left, true, false));
-
-    $pname = 'Exposed';
-    $pvalue = '0.00538';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Exposed']], 1, ++$left, ++$left, true, false));
-
-    $pname = 'Infectious';
-    $pvalue = '0.00603';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Infectious']], 1, ++$left, ++$left, true, false));
-
-    $pname = 'Recovered';
-    $pvalue = '0.04';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Recovered']], 1, ++$left, ++$left, true, false));
-
+    $pname = 'Population Initialization';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
+            'simulation/population/population_tree.php', "", "", 1, ++$left, ++$left, true, false));
 
     $pname = $sectionParagraph . '--- Disease ---</p>';
     $pvalue = '';
