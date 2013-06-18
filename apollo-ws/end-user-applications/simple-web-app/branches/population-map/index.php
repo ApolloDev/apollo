@@ -52,7 +52,7 @@ Index page for the Apollo Test Client
         <script src="js/grid.locale-en.js" type="text/javascript"></script>
         <script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <!-- script src="js/jquery.jqGrid.js" type="text/javascript"></script -->
-
+<script type="text/javascript" src="js/highcharts.js"></script>
         <!-- Highchart -->
 <!--        <script type="text/javascript" src="js/highstock.js"></script>-->
         <script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
@@ -112,11 +112,13 @@ Index page for the Apollo Test Client
             <div id="nav" style="font-family: Segoe UI Light, Arial, sans-serif; padding-right: 20px">
                 <ul class="nav">
                     <li><a id="instruction-link" href="javascript:createOrSelectInsturctionTab();">About</a></li>
-                    <li><a href="http://code.google.com/p/apollo">Project Homepage</a></li>
+                    <li><a href="http://code.google.com/p/apollo" target="_blank">Project Homepage</a></li>
                     <li><a 
-                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl">WSDL</a></li>
+                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl"
+                            target="_blank">WSDL</a></li>
                     <li><a 
-                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?xsd=apollo-types.xsd">Schema</a></li>
+                            href="http://research.rods.pitt.edu/apolloservice/services/apolloservice?xsd=apollo-types.xsd"
+                            target="_blank">Schema</a></li>
                 </ul>
 
             </div>
@@ -205,9 +207,6 @@ Index page for the Apollo Test Client
                         <li><a href="#tabs-1">Welcome</a></li>
                     </ul>
                     <div id="tabs-1">
-
-                        <div onClick="createOrSelectPopulationTab();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/></div>
-
                         <h1>Welcome to the Simple End-user Apollo App! </h1>
                         <h2>Usage:</h2>
                         <h3>Quick start guide</h3>
