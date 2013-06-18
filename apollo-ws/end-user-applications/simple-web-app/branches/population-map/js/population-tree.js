@@ -395,6 +395,7 @@ function storeUsFractions() {
 function storeSelectedRegionFractions() {
     
     var errors = false;
+    storedSelectedCountyFractions = {};
     for (var id in storedSelectedCountyLocations) {
         var countyId = storedSelectedCountyLocations[id];
         var countyName = countyNameMap[countyId];
@@ -406,6 +407,7 @@ function storeSelectedRegionFractions() {
         }
     }
     
+    storedSelectedStateFractions = {};
     for (var id in storedSelectedStateLocations) {
         var stateId = storedSelectedStateLocations[id];
         var stateName = stateNameMap[stateId];
