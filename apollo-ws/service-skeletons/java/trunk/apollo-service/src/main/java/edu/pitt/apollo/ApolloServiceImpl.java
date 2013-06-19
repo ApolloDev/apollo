@@ -1068,14 +1068,30 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				return true;
 			}
 		});
-		
+
 		List<Disease> result = new ArrayList<Disease>(dbResult.size());
 		for (Disease d : dbResult) {
-			result.add(d);
+
+			// let's not return duplicates...
+			boolean duplicate = false;
+			for (Disease resultD : result) {
+				if (resultD.getDiseaseName().equals(d.getDiseaseName())
+						&& ((Double) resultD.getInfectiousPeriod())
+								.equals((Double) d.getInfectiousPeriod())
+						&& ((Double) resultD.getLatentPeriod())
+								.equals((Double) d.getLatentPeriod())
+						&& ((Double) resultD.getReproductionNumber())
+								.equals((Double) d.getReproductionNumber())
+						&& ((Double) resultD.getAsymptomaticInfectionFraction())
+								.equals((Double) d
+										.getAsymptomaticInfectionFraction())) {
+					duplicate = true;
+					break;
+				}
+			}
+			if (!duplicate)
+				result.add(d);
 		}
 		return result;
-		
-
 	}
-
 }
