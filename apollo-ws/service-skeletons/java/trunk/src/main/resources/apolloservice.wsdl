@@ -142,6 +142,34 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="queryForDiseaseConfiguration">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="diseaseName"
+							type="xsd:token" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="infectiousPeriod"
+							type="xsd:double" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="latentPeriod"
+							type="xsd:double" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="reproductionNumber"
+							type="xsd:double" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="asymptomaticInfectionFraction"
+							type="xsd:double" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="queryForDiseaseConfigurationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="diseases" type="apollo:Disease" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runSimulationRequest">
@@ -198,6 +226,12 @@
 	<wsdl:message name="getConfigurationFileForRunResponse">
 		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="queryForDiseaseConfigurationRequest">
+		<wsdl:part name="parameters" element="tns:queryForDiseaseConfiguration"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="queryForDiseaseConfigurationResponse">
+		<wsdl:part name="parameters" element="tns:queryForDiseaseConfigurationResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
@@ -235,6 +269,10 @@
 		<wsdl:operation name="getConfigurationFileForRun">
 			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
 			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryForDiseaseConfiguration">
+			<wsdl:input message="tns:queryForDiseaseConfigurationRequest"></wsdl:input>
+			<wsdl:output message="tns:queryForDiseaseConfigurationResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
@@ -324,6 +362,16 @@
 		<wsdl:operation name="getConfigurationFileForRun">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/apolloservice/getConfigurationFileForRun" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryForDiseaseConfiguration">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/queryForDiseaseConfiguration" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
