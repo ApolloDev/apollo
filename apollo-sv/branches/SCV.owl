@@ -211,6 +211,41 @@
     <rdf:Description rdf:about="&obo;APOLLO_SV_00000101">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001011"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000112 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000112">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001011"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000124 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000124">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001011"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000130 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000130">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000131 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000131">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
     </rdf:Description>
     
 
@@ -220,7 +255,25 @@
     <owl:Class rdf:about="&obo;APOLLO_SV_00000133">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001011"/>
     </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000134 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000134">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000135 -->
+
+    <rdf:Description rdf:about="&obo;APOLLO_SV_00000135">
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+    </rdf:Description>
     
 
 
@@ -229,6 +282,8 @@
     <owl:Class rdf:about="&obo;APOLLO_SV_00000139">
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001006"/>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001007"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001010"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001011"/>
     </owl:Class>
     
 
@@ -300,6 +355,33 @@
     <owl:Class rdf:about="&obo;APOLLO_SV_00001007">
         <rdfs:label xml:lang="en">Vaccine Control Measure</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001005"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001009 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001009">
+        <rdfs:label xml:lang="en">School Closure Control Measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001005"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001010 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001010">
+        <rdfs:label xml:lang="en">School Closure Reactive Trigger Control Measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001009"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001011 -->
+
+    <owl:Class rdf:about="&obo;APOLLO_SV_00001011">
+        <rdfs:label xml:lang="en">School Closure Fixed Start Time Control Measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001009"/>
     </owl:Class>
     
 
