@@ -217,9 +217,11 @@
 			<extension base="tns:Treatment">
 				<sequence>
 					<element name="description" type="token"
-						maxOccurs="1" minOccurs="1"/>
-					
-					<element name="vaccine" type="tns:Vaccine" maxOccurs="1" minOccurs="1"/>
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="vaccine" type="tns:Vaccine"
+						maxOccurs="1" minOccurs="1" />
+					<element name="vaccinationEfficacies" type="tns:VaccinationEfficacy" maxOccurs="unbounded" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -263,9 +265,9 @@
 	</complexType>
 
 
-	<complexType name="Disease">
+	<complexType name="PathogenicOrganism">
 		<sequence>
-			<element name="diseaseName" type="token" maxOccurs="1"
+			<element name="strainName" type="token" maxOccurs="1"
 				minOccurs="1">
 				<annotation>
 					<documentation source="none"/>
@@ -435,7 +437,7 @@
 					
 				</annotation>
 			</element>
-			<element name="disease" type="tns:Disease" maxOccurs="1"
+			<element name="disease" type="tns:PathogenicOrganism" maxOccurs="1"
 				minOccurs="1">
 				<annotation>
 					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000042"/>
