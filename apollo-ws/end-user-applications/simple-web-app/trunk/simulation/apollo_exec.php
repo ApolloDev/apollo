@@ -26,9 +26,9 @@
  *
  * @author Yang Hu <yah14@pitt.edu>
  */
-
 require_once __DIR__ . '/../util/apollo.inc';
 require_once __DIR__ . '/../util/misc.inc';
+//require_once __DIR__ . '/../chromephp/ChromePhp.php';
 
 $ret = new Response();
 
@@ -39,11 +39,11 @@ try {
 //    $modelType = $_POST ['ModelType'];
     //jurisdiction
 //    $jurisdiction = $_POST['Jurisdiction'];
-    
+
     $simulatorDevArray = explode(",", $_POST['simulatorDeveloper']);
     $simulatorNameArray = explode(",", $_POST['simulatorName']);
     $simulatorVerArray = explode(",", $_POST['simulatorVersion']);
-    
+
     //model parameters
     $rawParams = json_decode($_POST ['Parameters']);
 
@@ -68,31 +68,38 @@ try {
         } else {//if its a complex object
             $params[deleteSpace($rawParam->pname)] = json_decode($rawParam->extra);
         }
-        
+
 //        ChromePhp::log(deleteSpace($rawParam->pname));
     }
-    
+
 //    $params['VaccineEfficacy']);
 //    ChromePhp::log($params['VaccineControlMeasureCompliance']);
-    
+
     $apollo = new apollo();
-    
+
     $runIds = array();
+    $failedSimulators = array();
     // execute in loop
     for ($i = 0; $i < count($simulatorDevArray); $i++) {
         $simulatorDev = $simulatorDevArray[$i];
         $simulatorName = $simulatorNameArray[$i];
         $simulatorVer = $simulatorVerArray[$i];
-        
-        $runIds[] = $apollo->exec($params, $simulatorDev, $simulatorName, $simulatorVer);
+
+        try {
+            $runIds[] = $apollo->exec($params, $simulatorDev, $simulatorName, $simulatorVer);
+        } catch (Exception $e) {
+            $failedSimulators[$simulatorName] = $e->getMessage();
+        }
     }
-    
-    
-    $ret->data = $runIds;
-//    $ret->startDate = $params['StartDate'];
+
+    $result['runIds'] = $runIds;
+    $result['failedSimulators'] = $failedSimulators;
+    $ret->data = $result;
 } catch (Exception $e) {
     $ret->exception = $e->getMessage();
 }
+
+//ChromePhp::log($ret);
 
 echo json_encode($ret);
 ?>
