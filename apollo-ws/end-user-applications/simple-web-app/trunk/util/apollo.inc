@@ -45,7 +45,8 @@ class apollo {
 //	private $wsdl = 'http://research.rods.pitt.edu/ApolloModelService/services/ServiceManagerPort?wsdl';
 //	private $wsdl = 'http://130.49.206.36:8080/ApolloModelService/services/ServiceManagerPort?wsdl';
 //        private $wsdl = 'http://research3.rods.pitt.edu:9001/SeirEpiModelService/services/seirepimodelsimulator?wsdl';
-    private $wsdl = 'http://localhost:8080/apolloservice/services/apolloservice?wsdl';
+//    private $wsdl = 'http://localhost:8080/apolloservice/services/apolloservice?wsdl';
+    private $wsdl = 'http://research.rods.pitt.edu/apolloservice/services/apolloservice?wsdl';
 //	private $snomedDB = array();
 }
 
