@@ -156,51 +156,9 @@ function get_default_param_structure() {
 //    $pvalue = '2.0.1';
 //    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', 0, ++$left, ++$left, true, false));
 
-    $pname = $sectionParagraph . '--- Authentication Section ---</p>';
+    $pname = $sectionParagraph . '--- Simulated Population ---</p>';
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
-
-    $pname = 'Requester ID';
-    $pvalue = 'UpittUser';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
-
-
-    $pname = 'Requester Password';
-    $pvalue = 'UpittPassword';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
-
-    $pname = $sectionParagraph . '--- Simulator Time Specification Section ---</p>';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
-
-
-    $pname = get_time_step_unit_text();
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_time_step_unit_text()]], 0, ++$left, ++$left, true, false));
-
-    $pname = get_time_step_value_text();
-    $pvalue = '1';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_time_step_value_text()]], 0, ++$left, ++$left, true, false));
-
-    $pname = get_run_length_text();
-    $pvalue = $defaultRunLength;
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_run_length_text()]], 0, ++$left, ++$left, true, false));
-
-    $pname = $sectionParagraph . '--- Simulated Population Section ---</p>';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
-
-    $basePath = 'Population Location'; //create base folder entry
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', $toolTipTermArray[$apolloUriTermMap['Population Location']], 0, ++$left, $left + 5, false, false));
-    $basePath = deleteSpace($basePath);
-
-    $pname = 'State';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
-
-    $pname = 'County';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 1, ++$left, ++$left, true, false));
 
     $basePath = 'Initial Population Disease State Fractions'; //create base folder entry
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, '', '', '', '', 0, ++$left, $left + 9, false, false));
@@ -223,11 +181,10 @@ function get_default_param_structure() {
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Recovered']], 1, ++$left, ++$left, true, false));
 
 
-    $pname = $sectionParagraph . '--- Disease Section ---</p>';
-    $pvalue = '';
-    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
+    $pname = $sectionParagraph . '--- Strain ---</p>';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(), '', "", "", 1, ++$left, ++$left, true, false));
 
-    $pname = 'Disease Name';
+    $pname = 'Name';
     $pvalue = 'Influenza';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Disease Name']], 0, ++$left, ++$left, true, false));
 
@@ -247,7 +204,7 @@ function get_default_param_structure() {
     $pvalue = '0.33';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Asymptomatic Infection Fraction']], 0, ++$left, ++$left, true, false));
 
-    $pname = $sectionParagraph . '--- Control Measures Section ---</p>';
+    $pname = $sectionParagraph . '--- Control Measures ---</p>';
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
@@ -299,13 +256,13 @@ function get_default_param_structure() {
     $pname = 'Target Populations and Prioritization';
     $pvalue = '';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, get_edit_hint_text(),
-            'simulator/av_target_priority_pop.html', $pvalue, $toolTipTermArray[$apolloUriTermMap['Target Populations and Prioritization']], 1, ++$left, ++$left, true, false));
+            'simulation/control_measures/av_target_priority_pop.html', $pvalue, $toolTipTermArray[$apolloUriTermMap['Target Populations and Prioritization']], 1, ++$left, ++$left, true, false));
 
 //    $pname = $sectionParagraph . '--- Vaccination Control Measure Section ---</p>';
 //    $pvalue = '';
 //    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
 
-    $basePath = 'Vaccine Control Measure'; //create base folder entry
+    $basePath = 'Vaccination Control Measure'; //create base folder entry
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $basePath, 0.0, '', '', '', 0, ++$left, $left + 19, false, false));
     $basePath = deleteSpace($basePath);
 
@@ -429,6 +386,23 @@ function get_default_param_structure() {
     $pname = 'Fixed Start Time';
     $pvalue = '0';
     $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap['Fixed Start Time']], 2, ++$left, ++$left, true, false));
+
+    $pname = $sectionParagraph . '--- Simulator Time Specification ---</p>';
+    $pvalue = '';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', '', 0, ++$left, ++$left, true, false));
+
+
+    $pname = get_time_step_unit_text();
+    $pvalue = '';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_time_step_unit_text()]], 0, ++$left, ++$left, true, false));
+
+    $pname = get_time_step_value_text();
+    $pvalue = '1';
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_time_step_value_text()]], 0, ++$left, ++$left, true, false));
+
+    $pname = get_run_length_text();
+    $pvalue = $defaultRunLength;
+    $PARAMS->rows [] = array('id' => ++$rowid, 'cell' => array($rowid + 1, $pname, $pvalue, '', '', $toolTipTermArray[$apolloUriTermMap[get_run_length_text()]], 0, ++$left, ++$left, true, false));
 
 
     // extra row to help fix hidden scroll bar on OSX
