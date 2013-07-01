@@ -35,11 +35,9 @@
 <script type="text/javascript">
     try{
         
-         console.log('incidence index: <?php print $modelIndex; ?>');
         var webservice_result = $.parseJSON(dataExchange.model_urls['<?php print $modelIndex; ?>']);
 
         var url = webservice_result.incidence;
-        console.log('incidence url: ' + url);
 
         document.getElementById("epi-curve-inc-<?php print $modelIndex; ?>").innerHTML="<img src='" + url + "' alt='' width=95% />";
 

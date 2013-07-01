@@ -27,9 +27,7 @@
  */
 require_once __DIR__ . '/../util/type.inc';
 require_once __DIR__ . '/../util/apollo.inc';
-//require_once AROOT . '/chromephp/ChromePhp.php';
-
-//require_once AROOT . '/simulator/constant.inc';
+//require_once __DIR__ . '/../chromephp/ChromePhp.php';
 
 abstract class ControlMeasure {
 
@@ -70,6 +68,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration = new stdClass();
 
 
+//    ChromePhp::log($params);
 
     // simulator identification
     $SoftwareIdentification = new stdClass();
@@ -82,8 +81,10 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    ChromePhp::log($SimulatorIdentification->simulatorDeveloper);
     // authentication
     $Authentication = new stdClass();
-    $Authentication->requesterId = $params['RequesterID'];
-    $Authentication->requesterPassword = $params['RequesterPassword'];
+//    $Authentication->requesterId = $params['RequesterID'];
+    $Authentication->requesterId = "UpittUser";
+//    $Authentication->requesterPassword = $params['RequesterPassword'];
+    $Authentication->requesterPassword = "UpittPassword";
     $SimulatorConfiguration->authentication = $Authentication;
     // simulator time specification
     $SimulatorTimeSpecification = new stdClass();
@@ -94,6 +95,11 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //      ChromePhp::log($SimulatorTimeSpecification->timeStepUnit);
     // population initialization
 //    $totalPopulation = floatval($params['Susceptible']) + floatval($params['Exposed']) + floatval($params['Infectious']) + floatval($params['Recovered']);
+    
+//    $populationInitialization = json_decode($params['PopulationInitialization']);
+    
+//    ChromePhp::log($populationInitialization->usFractions->susceptible);
+    
     $SimulatedPopulation = new stdClass();
     
     $popLocation = $params['PopulationLocation'];
@@ -125,7 +131,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $SimulatorConfiguration->populationInitialization = $SimulatedPopulation;
     // disease
     $Disease = new stdClass();
-    $Disease->diseaseName = $params['DiseaseName'];
+    $Disease->diseaseName = $params['Name'];
     $Disease->infectiousPeriod = $params['InfectiousPeriod'];
     $Disease->latentPeriod = $params['LatentPeriod'];
     $Disease->reproductionNumber = $params['ReproductionNumber'];
@@ -140,7 +146,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
 //    }
 
     $useAntiviralControlMeasure = $params['AntiviralControlMeasure'];
-    $useVaccinationControlMeasure = $params['VaccineControlMeasure'];
+    $useVaccinationControlMeasure = $params['VaccinationControlMeasure'];
     $useSchoolClosure = $params['SchoolClosureControlMeasure'];
     $useSchoolReactiveCm = $params['SchoolClosureReactiveTriggerControlMeasure'];
     $useSchoolFixedCm = $params['SchoolClosureFixedStartTimeControlMeasure'];
@@ -568,6 +574,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $apolloResponse = $client->runSimulation(array('simulatorConfiguration' => $SimulatorConfiguration));
 //
     $runId = $apolloResponse->runId;
+//    $runId = 'temp';
 //    }
 
     $ret['runId'] = $runId;
@@ -576,6 +583,7 @@ function exec_simulator($params, $simulatorDev, $simulatorName, $simulatorVer) {
     $ret['simulatorVersion'] = $SoftwareIdentification->softwareVersion;
     $ret['location'] = $SimulatedPopulation->populationLocation;
 
+//    ChromePhp::log($ret);
     return $ret;
 }
 
