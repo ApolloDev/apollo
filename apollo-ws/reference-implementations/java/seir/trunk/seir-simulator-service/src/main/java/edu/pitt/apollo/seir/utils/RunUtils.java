@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class RunUtils {
 
@@ -190,6 +191,11 @@ public class RunUtils {
         } catch (NoSuchAlgorithmException ex) {
             return null;
         }
+    }
+
+    public static String getMd5HashFromString(String string) {
+
+        return DigestUtils.md5Hex(string);
     }
 
     public static void main(String args[]) throws IOException {
