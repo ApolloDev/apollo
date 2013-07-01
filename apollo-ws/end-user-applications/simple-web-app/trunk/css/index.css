@@ -123,6 +123,14 @@ ul.nav li a:hover {
     font-size: 22px;
 }
 
+a, a:link, a:visited {
+    color:#0066CC !important;
+}
+
+a:hover {
+    color:#000066 !important;
+}
+
 #header a:link, #header a:active, #header a:visited, #header a:hover {
     border:medium none;
     color:#0066CC;
