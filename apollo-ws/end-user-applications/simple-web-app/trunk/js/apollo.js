@@ -1476,7 +1476,7 @@ jQuery(document).ready(function(){
                      
                
                     if (numSimulators > 1 && finishedSimulators == numSimulators) { // now all simulators have finished
-                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'viztest', '1.0', location);
+                        startVisualization(combinedRunId, 'All simulators', numSimulators + 1, 'nick', 'Image Visualizer', '1.0', location);
                     }
                  
                 }
