@@ -73,7 +73,7 @@ try {
     echo json_encode($ret);
 } catch (Exception $e) {
     $statText['status'] = 'UNKNOWN';
-    $statText['message'] = 'Unable to get run status from the simulator web service';
+    $statText['message'] = 'Unable to get run status from the simulator web service. Error message was: ' + $e->getMessage();
 
     $ret->data = $statText;
     echo json_encode($ret);
