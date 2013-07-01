@@ -10,25 +10,22 @@ $ret = new Response();
 
 $apollo = new apollo();
 
-try {
-    $client = new SoapClient($apollo->getWSDL(), array('trace' => true));
 
-    $parameters = new stdClass();
-    $parameters->diseaseName = null;
-    $parameters->infectiousPeriod = null;
-    $parameters->latentPeriod = null;
-    $parameters->reproductionNumber = null;
-    $parameters->asymptomaticInfectionFraction = null;
+$client = new SoapClient($apollo->getWSDL(), array('trace' => true));
 
-    $apolloResponse = $client->queryForDiseaseConfiguration(array('parameters' => $parameters));
-    $diseaseList = null;
-    $test = (array) $apolloResponse;
+$parameters = new stdClass();
+$parameters->diseaseName = null;
+$parameters->infectiousPeriod = null;
+$parameters->latentPeriod = null;
+$parameters->reproductionNumber = null;
+$parameters->asymptomaticInfectionFraction = null;
 
-    if (!empty($test)) {
-        $diseaseList = $apolloResponse->diseases;
-    }
-} catch (Exception $e) {
-    $ret->exception = $e;
+$apolloResponse = $client->queryForDiseaseConfiguration(array('parameters' => $parameters));
+$diseaseList = null;
+$test = (array) $apolloResponse;
+
+if (!empty($test)) {
+    $diseaseList = $apolloResponse->diseases;
 }
 ?>
 
