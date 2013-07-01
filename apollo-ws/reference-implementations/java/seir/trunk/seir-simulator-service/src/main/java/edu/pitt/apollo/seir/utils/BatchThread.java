@@ -83,9 +83,8 @@ public class BatchThread extends Thread {
 
                 // previously the following was done in the SeirSimulatorServiceImpl run method
 
-                ByteArrayOutputStream baos = SeirSimulatorServiceImpl.getJSONBytes(sc);
-                String simConfigJson = baos.toString();
-                String simConfigHash = RunUtils.getMd5HashFromBytes(baos.toByteArray());
+                String simConfigJson = SeirSimulatorServiceImpl.getJSONString(sc);
+                String simConfigHash = RunUtils.getMd5HashFromString(simConfigJson);
 
                 SoftwareIdentification sid = sc.getSimulatorIdentification();
                 RunIdProperties runIdProps = SeirSimulatorServiceImpl.getOrAddRunId(simConfigHash, sid);
@@ -100,15 +99,35 @@ public class BatchThread extends Thread {
                 while (!addedSimulatorToQueue) { // only enter this loop if the run could not be added
 
                     // keep trying to add the simulator thread to the queue until it is added
+                    System.out.println("Waiting to add simulator thread to queue...");
                     Thread.sleep(1000); // sleep for 1 seconds
                     addedSimulatorToQueue = SeirSimulatorServiceImpl.addSimulatorThread(worker);
                 }
 
                 allRunIds.add(runId);
             }
+            
+            System.out.println("All run IDs size: " + allRunIds.size());
 
             // wait until all runs have finished
             while (!(finishedRunIDs.size() == allRunIds.size())) {
+
+                if (finishedRunIDs.size() > allRunIds.size()) {
+                    System.err.println("The number of finished run IDs in the batch is greater than the total number of run IDs!");
+                    try {
+                        RunUtils.setError(batchRunIdMd5Hash,
+                                "The number of finished run IDs in the batch is greater than the total number of run IDs!");
+
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                    ps.flush();
+                    ps.close();
+                    return;
+                }
+
                 BatchThread.sleep(5000);
                 // if at least one run is not done, allRunsDone will be false
                 for (int i = 0; i < allRunIds.size(); i++) {
@@ -122,7 +141,7 @@ public class BatchThread extends Thread {
                     RunStatusEnum status = runStatus.getStatus();
                     String message = runStatus.getMessage();
 //                    RunStatusEnum status = RunStatusEnum.COMPLETED;
-//                    String message = "Run is complete";
+                    System.out.println("SEIR run with ID " + simulatorRunId + " has status " + status);
                     if (!(status == RunStatusEnum.RUNNING || (status == RunStatusEnum.FAILED && message.equalsIgnoreCase("unknown run")))) {
                         finishedRunIDs.add(simulatorRunId);
 
