@@ -58,14 +58,6 @@ Index page for the Apollo Test Client
 <!--        <script type="text/javascript" src="js/highstock.js"></script>-->
         <script type="text/javascript" src="js/modules/exporting.js"></script>
         <script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
-        <script type="text/javascript" src="js/simpletreemenu.js">
-        
-            /***********************************************
-             * Simple Tree Menu- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
-             * This notice MUST stay intact for legal use
-             * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
-             ***********************************************/
-        </script>
 
         <script language="javascript" type="text/javascript">
             tinyMCE.init({
@@ -84,7 +76,6 @@ Index page for the Apollo Test Client
 
         <!-- Base -->
         <script type="text/javascript" src="js/apollo.js"></script>
-        <script type="text/javascript" src="js/population-tree.js"></script>
         <script type="text/javascript" src="js/md5.js"></script>
 
         <!-- My Style -->
@@ -97,8 +88,6 @@ Index page for the Apollo Test Client
               href="themes/ui.multiselect.css" />
         <link rel="stylesheet" type="text/css" media="screen"
               href="css/apollo.css" />
-        <link rel="stylesheet" type="text/css" media="screen"
-              href="css/simpletree.css" />
 
     </head>
     <body>
