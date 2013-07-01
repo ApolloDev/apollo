@@ -16,8 +16,11 @@ package edu.pitt.apollo.simulatorclient;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import edu.pitt.apollo.service.simulatorservice.SimulatorService;
+import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.AntiviralTreatment;
 import edu.pitt.apollo.types.AntiviralTreatmentControlMeasure;
+import edu.pitt.apollo.types.ApolloSoftwareType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,6 +43,8 @@ import edu.pitt.apollo.types.ControlMeasures;
 import edu.pitt.apollo.types.Disease;
 import edu.pitt.apollo.types.FixedStartTimeControlMeasure;
 import edu.pitt.apollo.types.PopulationDiseaseState;
+import edu.pitt.apollo.types.RunStatus;
+import edu.pitt.apollo.types.RunStatusEnum;
 import edu.pitt.apollo.types.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.SimulatedPopulation;
 import edu.pitt.apollo.types.SimulatorConfiguration;
@@ -49,15 +54,16 @@ import edu.pitt.apollo.types.TimeStepUnit;
 import edu.pitt.apollo.types.TreatmentEfficacyOverTime;
 import edu.pitt.apollo.types.Vaccination;
 import edu.pitt.apollo.types.VaccinationControlMeasure;
+import java.net.URL;
 
 public class WSClient {
 
     public static void main(String[] args) throws JsonGenerationException,
-            JsonMappingException, IOException {
-        // SimulatorService service = new SimulatorService(
-        // new URL(
-        // "http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl"));
-        // SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
+            JsonMappingException, IOException, InterruptedException {
+        SimulatorService service = new SimulatorService(
+                new URL(
+                "http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl"));
+        SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
 
         ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
 
@@ -68,14 +74,15 @@ public class WSClient {
 
         // ServiceRecord sr = new ServiceRecord();
         SoftwareIdentification si = new SoftwareIdentification();
-        si.setSoftwareDeveloper("UPitt,PSC,CMU");
-        si.setSoftwareName("FRED");
-        si.setSoftwareVersion("2.0.1");
+        si.setSoftwareDeveloper("UPitt");
+        si.setSoftwareName("SEIR");
+        si.setSoftwareVersion("1.2");
+        si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
         // si.set
         // sr.setSoftwareIdentification(si);
 
         srr.setSoftwareIdentification(si);
-        srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
+        srr.setUrl("http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl");
         // srr.setUrl("http://localhost:8087/fred?wsdl");
 
         Holder<Boolean> success = new Holder<Boolean>();
@@ -86,13 +93,13 @@ public class WSClient {
         SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
 
         simulatorConfiguration.setAuthentication(auth);
-        
+
         ControlMeasures controlMeasures = new ControlMeasures();
         List<FixedStartTimeControlMeasure> fixedStartControlMeasures = controlMeasures.getFixedStartTimeControlMeasures();
         FixedStartTimeControlMeasure avControlMeasure = new FixedStartTimeControlMeasure();
         simulatorConfiguration.setControlMeasures(controlMeasures);
-        
-        
+
+
 //        simulatorConfiguration.set
         AntiviralTreatmentControlMeasure acm = new AntiviralTreatmentControlMeasure();
         TreatmentEfficacyOverTime avEfficacy = new TreatmentEfficacyOverTime();
@@ -104,7 +111,7 @@ public class WSClient {
         acm.setDescription("antiviral");
         avControlMeasure.setControlMeasure(acm);
         fixedStartControlMeasures.add(avControlMeasure);
-        
+
         simulatorConfiguration.setSimulatorIdentification(si);
 
         simulatorConfiguration.setDisease(new Disease());
@@ -113,7 +120,7 @@ public class WSClient {
         disease.setDiseaseName("Influenza");
         disease.setInfectiousPeriod(3.2);
         disease.setLatentPeriod(2.0);
-        disease.setReproductionNumber(1.7);
+
 
         simulatorConfiguration.setPopulationInitialization(new SimulatedPopulation());
         SimulatedPopulation sp = simulatorConfiguration.getPopulationInitialization();
@@ -139,7 +146,7 @@ public class WSClient {
 
         simulatorConfiguration.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
         SimulatorTimeSpecification stc = simulatorConfiguration.getSimulatorTimeSpecification();
-        stc.setRunLength(new BigInteger("30"));
+        stc.setRunLength(new BigInteger("365"));
         stc.setTimeStepUnit(TimeStepUnit.DAY);
         stc.setTimeStepValue(1d);
 
@@ -153,15 +160,15 @@ public class WSClient {
         vcm.setVaccination(vaccTreatment);
         vcm.setDescription("vaccination");
         vaccControlMeasure.setControlMeasure(vcm);
-        
+
         fixedStartControlMeasures.add(vaccControlMeasure);
-        
+
         List<Integer> avSupply = acm.getAntiviralSupplySchedule();
         List<BigInteger> avAdmin = acm.getAntiviralTreatmentAdministrationCapacity();
         List<Integer> vaccSupply = vcm.getVaccineSupplySchedule();
         List<BigInteger> vaccAdmin = vcm.getVaccinationAdministrationCapacity();
-        
-        for (int i = 0; i < 30; i++) {
+
+        for (int i = 0; i < 365; i++) {
             vaccAdmin.add(new BigInteger("0"));
             vaccSupply.add(0);
             avAdmin.add(new BigInteger("0"));
@@ -171,17 +178,17 @@ public class WSClient {
 //        XStream x = new XStream(new DomDriver());
 //      
 //        System.out.println(x.toXML(simulatorConfiguration));
-        
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        FileOutputStream out = new FileOutputStream(new File(
-                "test.json"));
-        for (int i = 0; i < 1; i++) {
-            simulatorConfiguration.getSimulatorIdentification().setSoftwareDeveloper(String.valueOf(i));
-            mapper.writeValue(out, simulatorConfiguration);
-        }
-        out.close();
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//        FileOutputStream out = new FileOutputStream(new File(
+//                "test_3.json"));
+//        for (int i = 0; i < 10; i++) {
+//            simulatorConfiguration.getSimulatorIdentification().setSoftwareDeveloper(String.valueOf(i));
+//            mapper.writeValue(out, simulatorConfiguration);
+//        }
+//        out.close();
 
 //        FileInputStream fis = new FileInputStream(new File("test.json"));
 //        for (Iterator it = new ObjectMapper().readValues(
@@ -191,19 +198,25 @@ public class WSClient {
 //        }
 //        fis.close();
 
-        // //String runId = port.runSimulation(simulatorConfiguration);
-        // System.out.println("Simulator returned runId: " + runId );
-        // // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
-        // // RunStatus rs = port.getRunStatus(runId, sr);
-        // while (rs.getStatus() != RunStatusEnum.COMPLETED) {
-        // System.out.println("Status is " + rs.getStatus());
-        // System.out.println("Message is " + rs.getMessage());
-        // System.out.println("\n");
-        // Thread.sleep(500);
-        // rs = port.getRunStatus(runId, sr);
-        // }
-        // System.out.println("Status is " + rs.getStatus());
-        // System.out.println("Message is " + rs.getMessage());
 
+        for (int i = 1; i <= 40; i++) {
+
+            disease.setReproductionNumber(1.7 + i/40);
+
+            String runId = port.run(simulatorConfiguration);
+            System.out.println("Simulator returned runId: " + runId);
+            // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
+            RunStatus rs = port.getRunStatus(runId);
+            while (rs.getStatus() != RunStatusEnum.COMPLETED) {
+                System.out.println("Status is " + rs.getStatus());
+                System.out.println("Message is " + rs.getMessage());
+                System.out.println("\n");
+                Thread.sleep(1000);
+                rs = port.getRunStatus(runId);
+            }
+            System.out.println("Status is " + rs.getStatus());
+            System.out.println("Message is " + rs.getMessage());
+
+        }
     }
 }
