@@ -1516,7 +1516,7 @@ jQuery(document).ready(function(){
     
                 if ($('#model-combo').val() == null) {
                     addmsg('<b>ERROR:</b> No epidemic simulator is selected');
-                    return;
+                    return false;
                 } else {
                     simulatorArray = $('#model-combo').val().toString().split(",");
                 }
