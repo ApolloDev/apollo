@@ -11,95 +11,77 @@ $ret = new Response();
 
 $apollo = new apollo();
 
-$client = new SoapClient($apollo->getWSDL(), array('trace' => true));
-$runId = $_GET ['runId'];
-$vizDev = $_GET['vizDev'];
-$vizName = $_GET['vizName'];
-$vizVer = $_GET['vizVer'];
-$location = $_GET['location']; // this location isn't currently used by any visualizers
+try {
+    $client = new SoapClient($apollo->getWSDL(), array('trace' => true));
+    $runId = $_GET ['runId'];
+    $vizDev = $_GET['vizDev'];
+    $vizName = $_GET['vizName'];
+    $vizVer = $_GET['vizVer'];
+    $location = $_GET['location']; // this location isn't currently used by any visualizers
 //$location = $_GET['location'];
-
 //ChromePhp::log($vizDev);
 //ChromePhp::log($vizName);
 //ChromePhp::log($vizVer);
 // run visualizer
-$VisualizerConfiguration = new stdClass();
+    $VisualizerConfiguration = new stdClass();
 // authentication
-$Authentication = new stdClass();
-$Authentication->requesterId = '';
-$Authentication->requesterPassword = '';
-$VisualizerConfiguration->authentication = $Authentication;
+    $Authentication = new stdClass();
+    $Authentication->requesterId = '';
+    $Authentication->requesterPassword = '';
+    $VisualizerConfiguration->authentication = $Authentication;
 // visualizer identification
-$SoftwareIdentification = new stdClass();
-$SoftwareIdentification->softwareDeveloper = $vizDev;
-$SoftwareIdentification->softwareName = $vizName;
-$SoftwareIdentification->softwareVersion = $vizVer;
-$SoftwareIdentification->softwareType = 'visualizer'; // since we are calling a visualizer here
-$VisualizerConfiguration->visualizerIdentification = $SoftwareIdentification;
+    $SoftwareIdentification = new stdClass();
+    $SoftwareIdentification->softwareDeveloper = $vizDev;
+    $SoftwareIdentification->softwareName = $vizName;
+    $SoftwareIdentification->softwareVersion = $vizVer;
+    $SoftwareIdentification->softwareType = 'visualizer'; // since we are calling a visualizer here
+    $VisualizerConfiguration->visualizerIdentification = $SoftwareIdentification;
 // authentication
-$VisualizerConfiguration->authentication = $Authentication;
+    $VisualizerConfiguration->authentication = $Authentication;
 // visualization options
-$VisualizationOptions = new stdClass();
-$VisualizationOptions->runId = $runId;
-$VisualizationOptions->location = $location;
-$VisualizationOptions->outputFormat = 'ogg';
-$VisualizerConfiguration->visualizationOptions = $VisualizationOptions;
+    $VisualizationOptions = new stdClass();
+    $VisualizationOptions->runId = $runId;
+    $VisualizationOptions->location = $location;
+    $VisualizationOptions->outputFormat = 'ogg';
+    $VisualizerConfiguration->visualizationOptions = $VisualizationOptions;
 
 //ChromePhp::log($VisualizerConfiguration);
 
-// if runId is a list (separated by ;), the first runId is no vaccination,
-// and the second is vaccination
-// run the visualizer
-//if ($vizName != 'GAIA') {
+
     $apolloResponse = $client->runVisualization(array('visualizerConfiguration' => $VisualizerConfiguration));
-//}
 
-$UrlOutputResourceList = null;
+    $UrlOutputResourceList = null;
 
+    if (property_exists($apolloResponse->visualizerResult, "visualizerOutputResource")) {
+        $UrlOutputResourceList = $apolloResponse->visualizerResult->visualizerOutputResource;
+        $diseaseStatesURL = '';
+        $incidenceURL = '';
 
-//if ($vizName != 'GAIA') {
-//ChromePhp::log($apolloResponse);
-    $UrlOutputResourceList = $apolloResponse->visualizerResult->visualizerOutputResource;
-    $diseaseStatesURL = '';
-    $incidenceURL = '';
-//} else {
-//    $diseaseStatesURL = '';
-//    $incidenceURL = '';
-//}
+        $urls = array();
 
-$urls = array();
+        if (strpos($runId, ':') !== false || $vizName == 'GAIA') {
+            $urls[$UrlOutputResourceList->description] = $UrlOutputResourceList->URL;
+        } else {
 
-if (strpos($runId, ':') !== false || $vizName == 'GAIA') {
-//    if ($vizName == 'GAIA') {
-//        $urls['GAIA animation of Allegheny County'] = 'http://warhol-fred.psc.edu/GAIA/gaia.output.1363297461.ogg';
-//    } else {
-        $urls[$UrlOutputResourceList->description] = $UrlOutputResourceList->URL;
-//    }
-//    $urls[$VisualizerOutputResourceList->description] = 'http://warhol-fred.psc.edu/GAIA/gaia.output.1363279966.ogg';
-} else {
+            foreach ($UrlOutputResourceList as $visOutResource) {
+                $urls[$visOutResource->description] = $visOutResource->URL;
+            }
+        }
 
-    foreach ($UrlOutputResourceList as $visOutResource) {
-
-//    ChromePhp::log(json_encode($visOutResource));
-        $urls[$visOutResource->description] = $visOutResource->URL;
-
-//        if ($visOutResource->description == 'Disease states') {
-//            $diseaseStatesURL = $visOutResource->URL;
-//        } else if ($visOutResource->description == 'Incidence') {
-//            $incidenceURL = $visOutResource->URL;
-//        }
+        $result['urls'] = $urls;
+        $result['runId'] = $runId;
+    } else {
+        $result['urls'] = array();
+        $result['runId'] = $apolloResponse->visualizerResult->runId;
     }
+    $result['visualizerDeveloper'] = $SoftwareIdentification->softwareDeveloper;
+    $result['visualizerName'] = $SoftwareIdentification->softwareName;
+    $result['visualizerVersion'] = $SoftwareIdentification->softwareVersion;
+
+    $ret->data = $result;
+} catch (Exception $e) {
+    $ret->exception = $e;
 }
-
-$result['urls'] = $urls;
-$result['runId'] = $runId;
-$result['visualizerDeveloper'] = $SoftwareIdentification->softwareDeveloper;
-$result['visualizerName'] = $SoftwareIdentification->softwareName;
-$result['visualizerVersion'] = $SoftwareIdentification->softwareVersion;
-//$result['disease_states_url'] = $diseaseStatesURL;
-//$result['incidence_url'] = $incidenceURL;
-
-$ret->data = $result;
 
 echo json_encode($ret);
 ?>
