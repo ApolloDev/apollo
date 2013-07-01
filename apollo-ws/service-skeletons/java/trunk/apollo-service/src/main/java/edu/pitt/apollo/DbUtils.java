@@ -47,7 +47,7 @@ public class DbUtils {
             dbcon = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             throw new SQLException("Error getting connection to database: "
-                    + password + " using username " + user
+                    + url + " using username " + user
                     + ".   Specific error was:\n" + e.getMessage());
         }
     }
