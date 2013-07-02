@@ -379,6 +379,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 					+ url);
 			runId = port.run(simulatorConfiguration);
 			db4o.store(simulatorConfiguration);
+                        db4o.commit();
 			System.out.println("Returned run ID is + " + runId);
 
 			// if (cacheFilePath != null) {
