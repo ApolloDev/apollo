@@ -17,6 +17,7 @@ package edu.pitt.apollo.simulatorclient;
 
 import java.net.MalformedURLException;
 
+
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
 /*		
