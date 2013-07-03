@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>apollo-service</artifactId>
 	<name>-- ApolloService Web Service Provider</name>
@@ -39,17 +39,17 @@
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>simulator-service-client</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>visualizer-service-client</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>syntheticpopulation-service-client</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
