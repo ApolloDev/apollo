@@ -21,12 +21,13 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import edu.pitt.apollo.types.UrlOutputResource;
-import edu.pitt.apollo.types.VisualizerConfiguration;
-import edu.pitt.apollo.types.VisualizerResult;
+import edu.pitt.apollo.service.visualizerservice._07._03._2013.VisualizerServiceEI;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.UrlOutputResource;
+import edu.pitt.apollo.types._07._03._2013.VisualizerConfiguration;
+import edu.pitt.apollo.types._07._03._2013.VisualizerResult;
+
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;

@@ -15,13 +15,15 @@
 
 package edu.pitt.apollo.visualizerclient;
 
-import edu.pitt.apollo.service.visualizerservice.VisualizerService;
-import edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI;
-import edu.pitt.apollo.types.RunStatus;
+
+
+import edu.pitt.apollo.service.visualizerservice._07._03._2013.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice._07._03._2013.VisualizerServiceV13;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
 
 public class WSClient {
 	public static void main(String[] args) {
-		VisualizerService service = new VisualizerService();
+		VisualizerServiceV13 service = new VisualizerServiceV13();
 		VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
 
 		RunStatus rs = port.getRunStatus("test");
