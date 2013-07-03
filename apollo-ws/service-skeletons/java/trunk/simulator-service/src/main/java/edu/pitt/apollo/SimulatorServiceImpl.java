@@ -24,13 +24,15 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
-import edu.pitt.apollo.types.BatchRunResult;
-import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SupportedPopulationLocation;
+import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI;
+import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
+import edu.pitt.apollo.types._07._03._2013.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.SupportedPopulationLocation;
+
+
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 class SimulatorServiceImpl implements SimulatorServiceEI {

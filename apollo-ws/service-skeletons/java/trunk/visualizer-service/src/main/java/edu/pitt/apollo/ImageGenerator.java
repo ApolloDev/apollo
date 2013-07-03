@@ -1,6 +1,7 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.container.ImageSeriesContainer;
+import edu.pitt.apollo.types._07._03._2013.UrlOutputResource;
 import edu.pitt.apollo.utilities.DatabaseUtility;
 import edu.pitt.apollo.utilities.VisualizerChartUtility;
 import java.io.File;
@@ -8,7 +9,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
-import edu.pitt.apollo.types.UrlOutputResource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
