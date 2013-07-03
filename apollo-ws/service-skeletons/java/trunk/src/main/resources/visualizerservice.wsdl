@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/visualizerservice/"
+	xmlns:tns="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="VisualizerService" targetNamespace="http://service.apollo.pitt.edu/visualizerservice/">
+	name="VisualizerService_v1.3" targetNamespace="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/">
 	<wsdl:types>
-		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/visualizerservice/"
-			xmlns:apollo="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/"
+			xmlns:apollo="http://types.apollo.pitt.edu/07/03/2013/">
+			<xsd:import schemaLocation="apollo-types_1.3.xsd" namespace="http://types.apollo.pitt.edu/07/03/2013/">
 			</xsd:import>
 			<xsd:element name="run">
 				<xsd:complexType>
@@ -84,12 +84,14 @@
 			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="VisualizerServiceBinding" type="tns:VisualizerServiceEI">
+
+	<wsdl:binding name="VisualizerServiceBinding"
+		type="tns:VisualizerServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="run">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/visualizerservice/run" />
+				soapAction="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/run" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -99,7 +101,17 @@
 		</wsdl:operation>
 		<wsdl:operation name="getRunStatus">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/visualizerservice/getRunStatus" />
+				soapAction="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/getRunStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getConfigurationFileForRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/visualizerservice/07/03/2013/getConfigurationFileForRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -108,10 +120,11 @@
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
-	<wsdl:service name="VisualizerService">
+	<wsdl:service name="VisualizerService_v1.3">
 		<wsdl:port binding="tns:VisualizerServiceBinding" name="VisualizerServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/visualizerservice/services/visualizerservice" />
+				location="http://localhost:8080/visualizerservice13/services/visualizerservice" />
 		</wsdl:port>
+		
 	</wsdl:service>
 </wsdl:definitions>

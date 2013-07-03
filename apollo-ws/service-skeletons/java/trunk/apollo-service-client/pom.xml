@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>apollo-service-client</artifactId>
 	<name>-- ApolloService SOAP Client</name>
@@ -19,7 +19,7 @@
 			<!-- Classifier below used with Maven Assembly Plugin to specify subset 
 				of above artifact needed. -->
 			<classifier>jaxws</classifier>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
