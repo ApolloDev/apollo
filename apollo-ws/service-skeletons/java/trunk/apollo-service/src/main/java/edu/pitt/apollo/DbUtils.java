@@ -1,7 +1,7 @@
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.types.UrlOutputResource;
-import edu.pitt.apollo.types.VisualizerResult;
+//import edu.pitt.apollo.types.UrlOutputResource;
+//import edu.pitt.apollo.types.VisualizerResult;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import edu.pitt.apollo.types._07._03._2013.UrlOutputResource;
+import edu.pitt.apollo.types._07._03._2013.VisualizerResult;
 
 /**
  *
