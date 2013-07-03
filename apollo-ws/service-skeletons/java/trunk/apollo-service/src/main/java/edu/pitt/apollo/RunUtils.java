@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class RunUtils {
+	
 	public static String getErrorRunId() {
 		return ApolloServiceImpl.getRunErrorPrefix()
 				+ Long.toString(System.currentTimeMillis());

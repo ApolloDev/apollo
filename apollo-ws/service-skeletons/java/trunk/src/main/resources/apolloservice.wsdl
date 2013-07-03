@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ApolloService"
-	targetNamespace="http://service.apollo.pitt.edu/apolloservice/">
+	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/07/03/2013/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ApolloService_v1.3"
+	targetNamespace="http://service.apollo.pitt.edu/apolloservice/07/03/2013/">
 	<wsdl:types>
-		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/"
-			xmlns:apollo="http://types.apollo.pitt.edu/">
-			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/07/03/2013/"
+			xmlns:apollo="http://types.apollo.pitt.edu/07/03/2013/">
+			<xsd:import schemaLocation="apollo-types_1.3.xsd" namespace="http://types.apollo.pitt.edu/07/03/2013/">
 			</xsd:import>
 			<xsd:element name="runSimulation">
 				<xsd:complexType>
@@ -166,7 +166,106 @@
 			<xsd:element name="queryForDiseaseConfigurationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="diseases" type="apollo:Disease" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+						<xsd:element name="diseases"
+							type="apollo:InfectiousDisease" maxOccurs="unbounded"
+							minOccurs="0">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getItemsReadyToBeIndexed">
+				<xsd:complexType>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getItemsReadyToBeIndexedResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getUuidsForLibraryItemsCreatedSinceDateTime">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="creationDateTime" type="xsd:dateTime" maxOccurs="1" minOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getUuidsForLibraryItemsCreatedSinceDateTimeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="uuids" type="xsd:token" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItem">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="uuid" type="xsd:token"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="curatedLibraryItemContainer" type="apollo:CuratedLibraryItemContainer"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemsGivenType">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="type" type="xsd:token"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemsGivenTypeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="curatedLibraryItemContainer" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getUuidsForLibraryItemsGivenType">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="type" type="xsd:token"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getUuidsForLibraryItemsGivenTypeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="uuids" type="xsd:token"
+							maxOccurs="unbounded" minOccurs="0">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addLibraryItem">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="apolloIndexableItem"
+							type="apollo:ApolloIndexableItem">
+						</xsd:element>
+						<xsd:element name="itemDescription"
+							type="xsd:string">
+						</xsd:element>
+						<xsd:element name="itemSource"
+							type="xsd:string">
+						</xsd:element>
+						<xsd:element name="itemType" type="xsd:token">
+						</xsd:element>
+						<xsd:element name="itemIndexingLabels"
+							type="xsd:token" maxOccurs="unbounded" minOccurs="0">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addLibraryItemResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="uuid" type="xsd:token" maxOccurs="1" minOccurs="0"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -232,6 +331,48 @@
 	<wsdl:message name="queryForDiseaseConfigurationResponse">
 		<wsdl:part name="parameters" element="tns:queryForDiseaseConfigurationResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getItemsReadyToBeIndexedRequest">
+		<wsdl:part name="parameters" element="tns:getItemsReadyToBeIndexed"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getItemsReadyToBeIndexedResponse">
+		<wsdl:part name="parameters" element="tns:getItemsReadyToBeIndexedResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTImeRequest">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTIme"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTImeResponse">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTImeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTimeRequest">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTime"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTimeResponse">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemRequest">
+		<wsdl:part name="parameters" element="tns:getLibraryItem"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemResponse">
+		<wsdl:part name="parameters" element="tns:getLibraryItemResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemsGivenTypeRequest">
+		<wsdl:part name="parameters" element="tns:getLibraryItemsGivenType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemsGivenTypeResponse">
+		<wsdl:part name="parameters" element="tns:getLibraryItemsGivenTypeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsGivenTypeRequest">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsGivenType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUuidsForLibraryItemsGivenTypeResponse">
+		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addLibraryItemRequest">
+		<wsdl:part name="parameters" element="tns:addLibraryItem"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addLibraryItemResponse">
+		<wsdl:part name="parameters" element="tns:addLibraryItemResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
@@ -270,58 +411,30 @@
 			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
 			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="queryForDiseaseConfiguration">
-			<wsdl:input message="tns:queryForDiseaseConfigurationRequest"></wsdl:input>
-			<wsdl:output message="tns:queryForDiseaseConfigurationResponse"></wsdl:output>
+		<wsdl:operation name="getUuidsForLibraryItemsCreatedSinceDateTime">
+			<wsdl:input message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeRequest"></wsdl:input>
+			<wsdl:output message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLibraryItem">
+			<wsdl:input message="tns:getLibraryItemRequest"></wsdl:input>
+			<wsdl:output message="tns:getLibraryItemResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getUuidsForLibraryItemsGivenType">
+			<wsdl:input message="tns:getUuidsForLibraryItemsGivenTypeRequest"></wsdl:input>
+			<wsdl:output message="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addLibraryItem">
+			<wsdl:input message="tns:addLibraryItemRequest"></wsdl:input>
+			<wsdl:output message="tns:addLibraryItemResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
 		type="tns:ApolloServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
-		<wsdl:operation name="getRunStatus">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/getRunStatus" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="registerService">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/registerService" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="unRegisterService">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/unRegisterService" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getRegisteredServices">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/getRegisteredServices" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
 		<wsdl:operation name="runSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/runSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/runSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -331,7 +444,47 @@
 		</wsdl:operation>
 		<wsdl:operation name="runVisualization">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/runVisualization" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/runVisualization" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRunStatus">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getRunStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="registerService">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/registerService" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="unRegisterService">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/unRegisterService" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRegisteredServices">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getRegisteredServices" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -341,7 +494,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="batchRunSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/batchRunSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/batchRunSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -351,7 +504,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="generateSyntheticPopulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/generateSyntheticPopulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/generateSyntheticPopulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -361,7 +514,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getConfigurationFileForRun">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/getConfigurationFileForRun" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getConfigurationFileForRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -369,9 +522,30 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="queryForDiseaseConfiguration">
+		<wsdl:operation
+			name="getUuidsForLibraryItemsCreatedSinceDateTime">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/queryForDiseaseConfiguration" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getUuidsForLibraryItemsCreatedSinceDateTime" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLibraryItem">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getUuidsForLibraryItemsGivenType">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/getUuidsForLibraryItemsGivenType" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -380,10 +554,10 @@
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
-	<wsdl:service name="ApolloService">
+	<wsdl:service name="ApolloService_v1.3">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/apolloservice/services/apolloservice" />
+				location="http://localhost:8080/apolloservice13/services/apolloservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
