@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/simulatorservice/"
+	xmlns:tns="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="SimulatorService" targetNamespace="http://service.apollo.pitt.edu/simulatorservice/">
+	name="SimulatorService_v1.3" targetNamespace="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/">
 	<wsdl:types>
-		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/simulatorservice/"
-			xmlns:apollo="http://types.apollo.pitt.edu/">
+		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/"
+			xmlns:apollo="http://types.apollo.pitt.edu/07/03/2013/">
 
-			<xsd:import schemaLocation="apollo-types.xsd" namespace="http://types.apollo.pitt.edu/">
+			<xsd:import schemaLocation="apollo-types_1.3.xsd" namespace="http://types.apollo.pitt.edu/07/03/2013/">
 			</xsd:import>
 			<xsd:element name="run">
 				<xsd:complexType>
@@ -140,7 +140,7 @@
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="run">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/run" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/run" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -150,7 +150,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getRunStatus">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/getRunStatus" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getRunStatus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -160,7 +160,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getSupportedLocations">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/getSupportedLocations" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getSupportedLocations" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -170,7 +170,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="batchRun">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/batchRun" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/batchRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -180,7 +180,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getConfigurationFileForRun">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getConfigurationFileForRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -189,10 +189,10 @@
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
-	<wsdl:service name="SimulatorService">
+	<wsdl:service name="SimulatorService_v1.3">
 		<wsdl:port binding="tns:SimulatorServiceBinding" name="SimulatorServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/simulatorservice/services/simulatorservice" />
+				location="http://localhost:8080/simulatorservice13/services/simulatorservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

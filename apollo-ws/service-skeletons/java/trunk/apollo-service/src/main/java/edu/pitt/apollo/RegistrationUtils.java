@@ -11,13 +11,19 @@ import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.pitt.apollo.types.Authentication;
-import edu.pitt.apollo.types.ServiceRecord;
-import edu.pitt.apollo.types.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.SoftwareIdentification;
+import edu.pitt.apollo.types._07._03._2013.Authentication;
+import edu.pitt.apollo.types._07._03._2013.ServiceRecord;
+import edu.pitt.apollo.types._07._03._2013.ServiceRegistrationRecord;
+import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
+
+//import edu.pitt.apollo.types.Authentication;
+//import edu.pitt.apollo.types.ServiceRecord;
+//import edu.pitt.apollo.types.ServiceRegistrationRecord;
+//import edu.pitt.apollo.types.SoftwareIdentification;
 
 @SuppressWarnings("unchecked")
 public class RegistrationUtils {
+	
 	public synchronized static List<ServiceRegistrationRecord> getServiceRegistrationRecords()
 			throws IOException {
 		XStream xstream = new XStream();
@@ -161,4 +167,5 @@ public class RegistrationUtils {
 
 		return srr1.getUrl().equalsIgnoreCase(srr2.getUrl());
 	}
+	
 }
