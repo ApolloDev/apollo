@@ -578,15 +578,15 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -633,6 +633,13 @@
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </ObjectProperty>
     
 
@@ -666,6 +673,13 @@
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     
 
@@ -686,6 +700,13 @@
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     
 
@@ -693,6 +714,13 @@
     <!-- http://www.obofoundry.org/ro/ro.owl#proper_part_of -->
 
     <ObjectProperty rdf:about="&ro;proper_part_of">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -3210,7 +3238,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
                                     <Restriction>
-                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <onProperty rdf:resource="&ro;has_proper_part"/>
                                         <allValuesFrom>
                                             <Class>
                                                 <intersectionOf rdf:parseType="Collection">
@@ -3246,7 +3274,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                 <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
                                             </Restriction>
                                             <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                <onProperty rdf:resource="&ro;has_proper_part"/>
                                                 <allValuesFrom>
                                                     <Class>
                                                         <intersectionOf rdf:parseType="Collection">
@@ -3309,7 +3337,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
                                     <Restriction>
-                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <onProperty rdf:resource="&ro;has_proper_part"/>
                                         <allValuesFrom>
                                             <Class>
                                                 <unionOf rdf:parseType="Collection">
@@ -3535,7 +3563,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                         <intersectionOf rdf:parseType="Collection">
                                             <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
                                             <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                <onProperty rdf:resource="&ro;has_proper_part"/>
                                                 <allValuesFrom>
                                                     <Class>
                                                         <intersectionOf rdf:parseType="Collection">
@@ -3549,7 +3577,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                                 </intersectionOf>
                                                             </Class>
                                                             <Restriction>
-                                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
                                                                 <someValuesFrom rdf:resource="&obo;IDO_0000458"/>
                                                             </Restriction>
                                                         </intersectionOf>
@@ -3565,7 +3593,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                 <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
                                             </Restriction>
                                             <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                <onProperty rdf:resource="&ro;has_proper_part"/>
                                                 <allValuesFrom>
                                                     <Class>
                                                         <intersectionOf rdf:parseType="Collection">
@@ -3579,7 +3607,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                                 </intersectionOf>
                                                             </Class>
                                                             <Restriction>
-                                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
                                                                 <someValuesFrom rdf:resource="&obo;IDO_0000458"/>
                                                             </Restriction>
                                                         </intersectionOf>
@@ -3714,7 +3742,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
                                     <Restriction>
-                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <onProperty rdf:resource="&ro;has_proper_part"/>
                                         <allValuesFrom>
                                             <Class>
                                                 <intersectionOf rdf:parseType="Collection">
@@ -3750,7 +3778,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                 <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
                                             </Restriction>
                                             <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
+                                                <onProperty rdf:resource="&ro;has_proper_part"/>
                                                 <allValuesFrom>
                                                     <Class>
                                                         <intersectionOf rdf:parseType="Collection">
@@ -4708,13 +4736,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -6752,13 +6780,20 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000594">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000595">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000101">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000595">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;integral_part_of">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -6782,11 +6817,11 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000313">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000590">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000310">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000590">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000311">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -6810,6 +6845,13 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;transformation_of">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -6845,6 +6887,9 @@ for now.</obo:IAO_0000116>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000184">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
@@ -6870,6 +6915,9 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000302">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000303">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;improper_part_of">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -6878,9 +6926,13 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000303">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000304">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -6910,9 +6962,6 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000572">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;has_agent">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -6921,6 +6970,16 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000574">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -6943,6 +7002,9 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&dc;date">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000078">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;located_in">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -6951,9 +7013,13 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000078">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000006">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
@@ -6968,6 +7034,13 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -6991,20 +7064,20 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;iao/dev/iao.owl">
         <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000401">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000088">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000401">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000400">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000122">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000403">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000122">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000402">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
@@ -7027,14 +7100,14 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000012">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000013">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    <rdf:Description rdf:about="&dc;identifier">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
         <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;identifier">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    <rdf:Description rdf:about="&obo;IAO_0000013">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;OBI_0000066">
         <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
@@ -7048,11 +7121,11 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&UO;UO_0000002">
         <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;subject">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000414">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;subject">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000097">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
@@ -7088,27 +7161,6 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000419">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000128">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000121"/>
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000415">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000318">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000319">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;derives_from">
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -7117,16 +7169,54 @@ for now.</obo:IAO_0000116>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
+    <rdf:Description rdf:about="&obo;IAO_0000419">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000128">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000121"/>
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000318">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000415">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000418">
+    <rdf:Description rdf:about="&ro;derives_from">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000317">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000326">
@@ -7184,17 +7274,17 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000038">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000327">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000132">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000328">
+    <rdf:Description rdf:about="&obo;IAO_0000327">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000429">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000328">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000329">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -7220,6 +7310,13 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;relation">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -7228,5 +7325,5 @@ for now.</obo:IAO_0000116>
 
 
 
-<!-- Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.5.1928) http://owlapi.sourceforge.net -->
 
