@@ -20,8 +20,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +35,15 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -46,6 +55,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.config.ConfigScope;
+import com.db4o.config.EmbeddedConfiguration;
+import com.db4o.ext.Db4oUUID;
 
 import edu.pitt.apollo.service.apolloservice._07._03._2013.ApolloServiceEI;
 import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI;
@@ -58,10 +71,14 @@ import edu.pitt.apollo.types._07._03._2013.ApolloIndexableItem;
 import edu.pitt.apollo.types._07._03._2013.ApolloSoftwareType;
 import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
 import edu.pitt.apollo.types._07._03._2013.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.CuratedLibraryItem;
 import edu.pitt.apollo.types._07._03._2013.CuratedLibraryItemContainer;
+import edu.pitt.apollo.types._07._03._2013.FixedStartTime;
 import edu.pitt.apollo.types._07._03._2013.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types._07._03._2013.RunStatus;
 import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.SchoolClosureControlMeasure;
+import edu.pitt.apollo.types._07._03._2013.SchoolClosureTargetFacilities;
 import edu.pitt.apollo.types._07._03._2013.ServiceRecord;
 import edu.pitt.apollo.types._07._03._2013.ServiceRegistrationRecord;
 import edu.pitt.apollo.types._07._03._2013.ServiceRegistrationResult;
@@ -71,11 +88,8 @@ import edu.pitt.apollo.types._07._03._2013.SyntheticPopulationResult;
 import edu.pitt.apollo.types._07._03._2013.VisualizerConfiguration;
 import edu.pitt.apollo.types._07._03._2013.VisualizerResult;
 
-
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService", endpointInterface = "edu.pitt.apollo.service.apolloservice.ApolloServiceEI")
-
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v1.3", endpointInterface = "edu.pitt.apollo.service.apolloservice._07._03._2013.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
-
 
 	@Override
 	@WebResult(name = "uuids", targetNamespace = "")
@@ -84,8 +98,21 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetUuidsForLibraryItemsGivenTypeResponse")
 	public List<String> getUuidsForLibraryItemsGivenType(
 			@WebParam(name = "type", targetNamespace = "") String type) {
-		// TODO Auto-generated method stub
-		return null;
+
+		// Class<?> c = Class.forName(type);
+		// Object o = c.newInstance();
+		List<String> resultList = new ArrayList<String>();
+
+		CuratedLibraryItem cli = new CuratedLibraryItem();
+		final ObjectSet<CuratedLibraryItem> allItems = db4o.queryByExample(cli);
+
+		for (CuratedLibraryItem item : allItems) {
+			if (item.getItemType().equals(type)) {
+				resultList.add(item.getItemUuid());
+			}
+		}
+		return resultList;
+
 	}
 
 	@Override
@@ -95,23 +122,20 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
 	public List<String> getUuidsForLibraryItemsCreatedSinceDateTime(
 			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> resultList = new ArrayList<String>();
+
+		CuratedLibraryItem cli = new CuratedLibraryItem();
+		final ObjectSet<CuratedLibraryItem> allItems = db4o.queryByExample(cli);
+
+		for (CuratedLibraryItem item : allItems) {
+			int c = item.getItemCreationTime().compare(creationDateTime);
+			if ((c == DatatypeConstants.EQUAL)
+					|| (c == DatatypeConstants.GREATER)) {
+				resultList.add(item.getItemUuid());
+			}
+		}
+		return resultList;
 	}
-
-
-	@Override
-	@WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
-	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem")
-	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItemResponse")
-	public CuratedLibraryItemContainer getLibraryItem(
-			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 
 	private static final String REGISTRY_FILENAME = "registered_services.xml";
 	private static final String ERROR_FILENAME = "run_errors.txt";
@@ -141,6 +165,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 		return DigestUtils.md5Hex(string);
 	}
+
 	public synchronized void cacheRunId(String runId, String md5Hash,
 			String filepath) {
 
@@ -199,7 +224,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			}
 		}
 	}
-
 
 	public String checkRunIdCache(String md5Hash, String filepath) {
 
@@ -281,18 +305,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		String simulatorName = simulatorConfiguration
 				.getSimulatorIdentification().getSoftwareName();
 
-		// String cacheFilePath = getRunIdCacheFilePath(simulatorName);
-		// String cachedRunId;
-		//
-		// if (cacheFilePath != null) {
-		// cachedRunId = checkRunIdCache(simConfigHash, cacheFilePath);
-		// if (cachedRunId != null) {
-		// System.out.println("Run was cached in Apollo Service. Run ID is " +
-		// cachedRunId);
-		// return cachedRunId;
-		// }
-		// }
-
 		// check for cached result
 		try {
 			runId = DbUtils.checkRunCache(simConfigHash);
@@ -363,8 +375,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			System.out.println("Apollo Service is running simulator with URL "
 					+ url);
 			runId = port.run(simulatorConfiguration);
-			db4o.store(simulatorConfiguration);
-                        db4o.commit();
+			// db4o.store(simulatorConfiguration);
+			// db4o.commit();
 			System.out.println("Returned run ID is + " + runId);
 
 			// if (cacheFilePath != null) {
@@ -677,13 +689,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 		String simName = runAndSoftwareIdentification.getSoftwareId()
 				.getSoftwareName();
-		// if (simName.equalsIgnoreCase("flute")) {
-		// String runId = runAndSoftwareIdentification.getRunId();
-		// String text = readFluteConfigFile(runId);
-		//
-		// return text;
-		// } else {
-
 		try {
 			ServiceRecord serviceRecord = RegistrationUtils
 					.getServiceRecordForSoftwareId(runAndSoftwareIdentification
@@ -721,7 +726,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		} catch (IOException e) {
 			return "General error occurred on server.";
 		}
-		// }
 
 	}
 
@@ -852,92 +856,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		}
 	}
 
-	// private static void createRunCacheFiles() throws SQLException,
-	// ClassNotFoundException, IOException {
-	//
-	// System.out.println("Creating run cache files...");
-	// Map<String, String> storedRunIds = DbUtils.getStoredRuns();
-	//
-	// File seirRunCacheFile = new File(APOLLO_DIR + File.separator +
-	// RUN_CACHE_DIR_NAME + File.separator + "SEIR" + File.separator +
-	// "seir_run_cache.txt");
-	// if (!seirRunCacheFile.exists()) {
-	// seirRunCacheFile.getParentFile().mkdirs();
-	// seirRunCacheFile.createNewFile();
-	// }
-	//
-	// File fluteRunCacheFile = new File(APOLLO_DIR + File.separator +
-	// RUN_CACHE_DIR_NAME + File.separator + "FLUTE" + File.separator +
-	// "flute_run_cache.txt");
-	// if (!fluteRunCacheFile.exists()) {
-	// fluteRunCacheFile.getParentFile().mkdirs();
-	// fluteRunCacheFile.createNewFile();
-	// }
-	//
-	// File fredRunCacheFile = new File(APOLLO_DIR + File.separator +
-	// RUN_CACHE_DIR_NAME + File.separator + "FRED" + File.separator +
-	// "fred_run_cache.txt");
-	// if (!fredRunCacheFile.exists()) {
-	// fredRunCacheFile.getParentFile().mkdirs();
-	// fredRunCacheFile.createNewFile();
-	// }
-	//
-	//
-	// PrintStream seirPs = new PrintStream(seirRunCacheFile);
-	// PrintStream flutePs = new PrintStream(fluteRunCacheFile);
-	// PrintStream fredPs = new PrintStream(fredRunCacheFile);
-	// for (String runId : storedRunIds.keySet()) {
-	//
-	// String hash = storedRunIds.get(runId);
-	// if (hash == null | hash.trim().equals("")) {
-	// continue; // skip the runs which do not have a sim config hash since we
-	// can't get to them from the sim config
-	// }
-	//
-	// if (runId.contains("SEIR")) {
-	// seirPs.println(runId + "\t" + hash);
-	// seirPs.flush();
-	// } else if (runId.contains("FRED")) {
-	// fredPs.println(runId + "\t" + hash);
-	// fredPs.flush();
-	// } else if (runId.contains("FluTE")) {
-	// flutePs.println(runId + "\t" + hash);
-	// flutePs.flush();
-	// }
-	//
-	// }
-	//
-	// seirPs.close();
-	// flutePs.close();
-	// fredPs.close();
-	// }
-	// private static void createVisualizerCacheFiles() {
-	//
-	// System.out.println("Creating visualization cache files...");
-	// File gaiaVisCacheFile = new File(APOLLO_DIR + File.separator +
-	// VIS_CACHE_DIR_NAME + File.separator + "GAIA" + File.separator +
-	// "gaia_vis_cache.txt");
-	// if (!gaiaVisCacheFile.exists()) {
-	// gaiaVisCacheFile.getParentFile().mkdirs();;
-	// try {
-	// gaiaVisCacheFile.createNewFile();
-	// } catch (IOException ex) {
-	// System.err.println("Could not create vis cache file");
-	// }
-	// }
-	//
-	// File imageVisualizationsFile = new File(APOLLO_DIR + File.separator +
-	// VIS_CACHE_DIR_NAME + File.separator + "IMAGES" + File.separator +
-	// "images_vis_cache.txt");
-	// if (!imageVisualizationsFile.exists()) {
-	// imageVisualizationsFile.getParentFile().mkdirs();
-	// try {
-	// imageVisualizationsFile.createNewFile();
-	// } catch (IOException ex) {
-	// System.err.println("Could not create vis cache file");
-	// }
-	// }
-	// }
 	public static String getRegistryFilename() {
 		return APOLLO_DIR + REGISTRY_FILENAME;
 	}
@@ -950,50 +868,33 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return RUN_ERROR_PREFIX;
 	}
 
-	static {
-		Map<String, String> env = System.getenv();
-		APOLLO_DIR = env.get("APOLLO_WORK_DIR");
-		if (APOLLO_DIR != null) {
-			if (!APOLLO_DIR.endsWith(File.separator)) {
-				APOLLO_DIR += File.separator;
-			}
-			System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
-		} else {
-			System.out.println("APOLLO_DIR environment variable not found!");
-			APOLLO_DIR = "";
-		}
-
-		db4o = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(),
-				APOLLO_DIR + "/db4o_db");
-
-		// try {
-		// createRunCacheFiles();
-		// } catch (ClassNotFoundException ex) {
-		// System.err.println("Could not create run cache file: ClassNotFoundException - "
-		// + ex.getMessage());
-		// } catch (SQLException ex) {
-		// System.err.println("Could not create run cache file: SQLException - "
-		// + ex.getMessage());
-		// } catch (IOException ex) {
-		// System.err.println("Could not create run cache file: IOException - "
-		// + ex.getMessage());
-		// }
-		//
-		// createVisualizerCacheFiles();
-
-		// File fluteFileDir = new File(APOLLO_DIR + File.separator +
-		// FLUTE_FILE_DIR);
-		// if (!fluteFileDir.exists()) {
-		// fluteFileDir.mkdirs();
-		// }
-
-	}
-
 	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
-		db4o.close();
+	@WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
+	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem")
+	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItemResponse")
+	public CuratedLibraryItemContainer getLibraryItem(
+			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
+		long longPart = Long.valueOf(uuid.split(" ")[1]);
+		String sig = uuid.split(" ")[0];
+		byte[] signaturePart = new byte[sig.length()];
+		for (int i = 0; i < sig.length(); i++) {
+			signaturePart[i] = (byte) sig.charAt(i);
+		}
+		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+		Object o = db4o.ext().getByUUID(db4oUuid);
+
+		CuratedLibraryItemContainer result = new CuratedLibraryItemContainer();
+		result.setApolloIndexableItem((ApolloIndexableItem) o);
+		CuratedLibraryItem cli = new CuratedLibraryItem();
+		cli.setItemUuid(uuid);
+		ObjectSet<Object> r = db4o.queryByExample(cli);
+		CuratedLibraryItem item = (CuratedLibraryItem) r.get(0);
+		db4o.activate(item, 100);
+		db4o.activate(o, 100);
+
+		result.setCuratedLibraryItem(item);
+		return result;
 	}
 
 	@Override
@@ -1007,10 +908,108 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
 			@WebParam(name = "itemType", targetNamespace = "") String itemType,
 			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String apolloUuid = "";
+		db4o.store(apolloIndexableItem);
+		db4o.commit();
+		Db4oUUID uuid = db4o.ext().getObjectInfo(apolloIndexableItem).getUUID();
+
+		for (int i = 0; i < uuid.getSignaturePart().length; i++) {
+			apolloUuid += (char) uuid.getSignaturePart()[i];
+		}
+		apolloUuid += " " + uuid.getLongPart();
+
+		// Db4oUUId u = new Db4oUUID(longPart_, signaturePart_)
+		System.out.println("uuid is " + apolloUuid);
+
+		GregorianCalendar c = new GregorianCalendar();
+		XMLGregorianCalendar date;
+		try {
+			date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+
+			CuratedLibraryItem cli = new CuratedLibraryItem();
+			cli.setItemCreationTime(date);
+			cli.setItemDescription(itemDescription);
+			cli.setItemSource(itemSource);
+			cli.setItemType(itemType);
+			cli.setItemUuid(apolloUuid);
+			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
+			db4o.store(cli);
+			db4o.commit();
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return apolloUuid;
+
+	}
+
+	public static void main(String args[])
+			throws DatatypeConfigurationException {
+		ApolloServiceImpl apollo = new ApolloServiceImpl();
+		SchoolClosureControlMeasure scm = new SchoolClosureControlMeasure();
+		FixedStartTime fst = new FixedStartTime();
+		fst.setStartTime(new BigInteger("0"));
+		fst.setStopTime(new BigInteger("100"));
+		scm.setControlMeasureStartTime(fst);
+		scm.setControlMeasureCompliance(0.7);
+		scm.setControlMeasureNamedPrioritizationScheme("Close em all");
+		scm.setControlMeasureReactiveEndPointFraction(0.32);
+		scm.setControlMeasureResponseDelay(3d);
+		scm.setDescription("Throw this junk away we are just using this for testing.");
+		scm.setSchoolClosureDuration(new BigInteger("35"));
+		scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.ALL);
+		List<String> indexingValues = new ArrayList<String>();
+		indexingValues.add("Nigeria");
+		indexingValues.add("Faket");
+		indexingValues.add("SchoolClosureControlMeasure");
+		indexingValues.add("2013");
+
+		String uuid = apollo.addLibraryItem(scm, scm.getDescription(),
+				"Made up by John Levander", "SchoolClosureControlMeasure",
+				indexingValues);
+
+		CuratedLibraryItemContainer clic = apollo.getLibraryItem(uuid);
+		System.out.println(clic.getCuratedLibraryItem().getItemCreationTime()
+				.toString());
+		GregorianCalendar c = new GregorianCalendar();
+		// c.add(Calendar.YEAR, -1);
+		XMLGregorianCalendar date;
+
+		date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		List<String> l = apollo
+				.getUuidsForLibraryItemsCreatedSinceDateTime(date);
+		System.out.println(l);
+
+		l = apollo
+				.getUuidsForLibraryItemsGivenType("SchoolClosureControlMeasure");
+		System.out.println(l);
+
 	}
 
 
+	static {
+		Map<String, String> env = System.getenv();
+		APOLLO_DIR = env.get("APOLLO_WORK_DIR");
+		if (APOLLO_DIR != null) {
+			if (!APOLLO_DIR.endsWith(File.separator)) {
+				APOLLO_DIR += File.separator;
+			}
+			System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
+		} else {
+			System.out.println("APOLLO_DIR environment variable not found!");
+			APOLLO_DIR = "";
+		}
+		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
+		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
+		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/db4o_db_13");
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
+		db4o.close();
+	}
 
 }
