@@ -553,7 +553,18 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="addLibraryItem">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/07/03/2013/addLibraryItem" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
+
 	<wsdl:service name="ApolloService_v1.3">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
