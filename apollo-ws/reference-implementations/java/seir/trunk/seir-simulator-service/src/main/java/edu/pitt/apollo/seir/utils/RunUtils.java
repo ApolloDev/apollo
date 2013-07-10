@@ -1,24 +1,24 @@
 package edu.pitt.apollo.seir.utils;
 
-import edu.pitt.apollo.SeirSimulatorServiceImpl;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import edu.pitt.apollo.SeirSimulatorServiceImpl;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+
 public class RunUtils {
 
 //    public static String WORK_DIR = "/Users/jdl50/apollo/work/";
-    public static String WORK_DIR = "/home/jdl/Public/";
+    public static String WORK_DIR = "/home/jdl/Public/1.3/";
 
     public static synchronized String getNextId() throws IOException {
 
