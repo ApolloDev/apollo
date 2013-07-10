@@ -6,7 +6,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>seir-core</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
     <artifactId>seir-simulator-service</artifactId>
     <name>-- SEIR SimulatorService Web Service Provider</name>
