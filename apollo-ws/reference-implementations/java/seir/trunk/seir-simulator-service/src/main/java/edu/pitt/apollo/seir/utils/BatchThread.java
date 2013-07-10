@@ -11,12 +11,14 @@ import java.util.Iterator;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import edu.pitt.apollo.types.SimulatorConfiguration;
+
 import edu.pitt.apollo.SeirSimulatorServiceImpl;
-import edu.pitt.apollo.types.BatchRunResult;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import edu.pitt.apollo.types.SoftwareIdentification;
+import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
