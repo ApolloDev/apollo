@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.sql.SQLException;
 
 import edu.pitt.apollo.SeirSimulatorServiceImpl;
-import edu.pitt.apollo.types.SimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
 import edu.pitt.rods.apollo.InvalidSimulatorConfigurationException;
 import edu.pitt.rods.apollo.SeirModelAdapter.SeirModelAdapter;
 
