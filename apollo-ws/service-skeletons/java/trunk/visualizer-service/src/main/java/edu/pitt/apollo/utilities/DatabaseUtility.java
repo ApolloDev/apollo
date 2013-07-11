@@ -84,6 +84,27 @@ public class DatabaseUtility {
             System.err.println("IO exception closing input stream");
         }
 
+
+        // get the seir time series query
+        StringBuilder timeSeriesQuery2 = new StringBuilder();
+        queryInput = DatabaseUtility.class.getResourceAsStream("/time_series_query_2.sql");
+        // bcd query
+        scanner = new Scanner(queryInput);
+
+        while (scanner.hasNextLine()) {
+            timeSeriesQuery2.append(" ").append(scanner.nextLine());
+        }
+        timeSeriesQuery2.deleteCharAt(0); // remove first space
+        scanner.close();
+
+        try {
+            queryInput.close();
+        } catch (IOException ex) {
+            System.err.println("IO exception closing input stream");
+        }
+
+        StringBuilder queryToUse = timeSeriesQuery;
+
         for (String runId : runIds) {
 
             List[] timeSeries = new List[4];
@@ -101,10 +122,16 @@ public class DatabaseUtility {
                 if (getDiseaseStatesData && !runId.toLowerCase().contains("flute")) { // can't make a disease states chart for flute
                     // get the SEIR data
                     for (int i = 0; i < 4; i++) {
-                        statement = connect.prepareStatement(timeSeriesQuery.toString());
+                        statement = connect.prepareStatement(queryToUse.toString());
                         statement.setString(2, Integer.toString(id));
                         statement.setString(1, seirTimeSeriesNames[i]);
                         resultSet = statement.executeQuery();
+                        if (!resultSet.isBeforeFirst()) {
+                            i--;
+                            queryToUse = timeSeriesQuery2;
+                            continue;
+                        }
+
                         int numRows = 0;
 
                         ArrayList<Double> compartmentCount = new ArrayList<Double>();
@@ -143,11 +170,21 @@ public class DatabaseUtility {
 
                 System.out.println("Retrieving incidence data from database");
                 if (getIncidenceData) {
+                    queryToUse = timeSeriesQuery;
                     // get the incidence series
-                    statement = connect.prepareStatement(timeSeriesQuery.toString());
+                    statement = connect.prepareStatement(queryToUse.toString());
                     statement.setString(2, Integer.toString(id));
                     statement.setString(1, "newly exposed");
                     resultSet = statement.executeQuery();
+
+                    if (!resultSet.isBeforeFirst()) {
+                        queryToUse = timeSeriesQuery2;
+                        statement = connect.prepareStatement(queryToUse.toString());
+                        statement.setString(2, Integer.toString(id));
+                        statement.setString(1, "newly exposed");
+                        resultSet = statement.executeQuery();
+                    }
+
 
                     ArrayList<Double> compartmentCount = new ArrayList<Double>();
                     int numRows = 0;
@@ -171,7 +208,7 @@ public class DatabaseUtility {
             }
 
         }
-        
+
         container.setSeirSeriesContainer(seirContainer);
         container.setIncidenceSeriesContainer(incidenceContainer);
 
@@ -199,7 +236,6 @@ public class DatabaseUtility {
         }
 
     }
-
 //    public static void main(String[] args) {
 //
 //        String runId = "UPitt,PSC,CMU_FRED_2.0.1_230616";
