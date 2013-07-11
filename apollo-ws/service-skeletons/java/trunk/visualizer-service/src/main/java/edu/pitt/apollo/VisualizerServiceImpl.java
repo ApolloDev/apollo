@@ -35,203 +35,214 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/",
-portName = "VisualizerServiceEndpoint",
-serviceName = "VisualizerService",
-endpointInterface = "edu.pitt.apollo.service.visualizerservice.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3", endpointInterface = "edu.pitt.apollo.service.visualizerservice._07._03_.2013.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
-    @Override
-    @WebResult(name = "runStatus", targetNamespace = "")
-    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetRunStatus")
-    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/getRunStatus")
-    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetRunStatusResponse")
-    public RunStatus getRunStatus(
-            @WebParam(name = "runId", targetNamespace = "") String runId) {
-        RunStatus rs = new RunStatus();
+	@Override
+	@WebResult(name = "visualizerResult", targetNamespace = "")
+	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.Run")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/run")
+	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.RunResponse")
+	public VisualizerResult run(
+			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
+		String runIdString = visualizerConfiguration.getVisualizationOptions()
+				.getRunId();
+		List<String> runIds;
+		Map<String, String> runIdSeriesLabel = new HashMap<String, String>();
+		boolean multiSimulatorChart;
+		boolean multiVaccChart;
+		runIds = new ArrayList<String>();
+		if (runIdString.contains(":")) {
+			// multi simulator
+			multiSimulatorChart = true;
+			if (runIdString.contains(";")) {
+				// vacc and no vacc runs
+				multiVaccChart = true;
+				String[] simRunIds = runIdString.split(":");
+				for (String simRunId : simRunIds) {
+					String[] vaccStratRunIds = simRunId.split(";");
+					for (int i = 0; i < 2; i++) {
+						String id = vaccStratRunIds[i];
+						runIds.add(id);
+						switch (i) {
+						case 0:
+							runIdSeriesLabel
+									.put(id, id + "_no_control_measure");
+							break;
+						case 1:
+							runIdSeriesLabel.put(id, id + "_control_measure");
+							break;
+						}
+					}
+				}
+			} else {
+				// only no vacc run
+				multiVaccChart = false;
+				String[] simRunIds = runIdString.split(":");
+				for (String simRunId : simRunIds) {
+					runIds.add(simRunId);
+					runIdSeriesLabel.put(simRunId, simRunId);
+				}
+			}
+		} else {
+			// single simulator
+			multiSimulatorChart = false;
+			if (runIdString.contains(";")) {
+				// vacc and no vacc runs
+				multiVaccChart = true;
+				String[] vaccStratRunIds = runIdString.split(";");
+				for (int i = 0; i < 2; i++) {
+					runIds.add(vaccStratRunIds[i]);
+					switch (i) {
+					case 0:
+						runIdSeriesLabel.put(vaccStratRunIds[i],
+								"No Vaccination");
+						break;
+					case 1:
+						runIdSeriesLabel.put(vaccStratRunIds[i], "Vaccination");
+						break;
+					}
+				}
+			} else {
+				// only no vacc run
+				multiVaccChart = false;
+				runIds.add(runIdString);
+				runIdSeriesLabel.put(runIdString, "No control measure");
 
-        String runIdString = runId;
-        List<String> runIds;
-        runIds = new ArrayList<String>();
-        boolean multiSimulatorChart;
-        boolean multiVaccChart;
-        if (runIdString.contains(":")) {
-            // multi simulator
-            multiSimulatorChart = true;
-            if (runIdString.contains(";")) {
-                // vacc and no vacc runs
-                multiVaccChart = true;
-                String[] simRunIds = runIdString.split(":");
-                for (String simRunId : simRunIds) {
-                    String[] vaccStratRunIds = simRunId.split(";");
-                    for (int i = 0; i < 2; i++) {
-                        String id = vaccStratRunIds[i];
-                        runIds.add(id);
-                    }
-                }
-            } else {
-                // only no vacc run
-                multiVaccChart = false;
-                String[] simRunIds = runIdString.split(":");
-                for (String simRunId : simRunIds) {
-                    runIds.add(simRunId);
-                }
-            }
-        } else {
-            // single simulator 
-            multiSimulatorChart = false;
-            if (runIdString.contains(";")) {
-                // vacc and no vacc runs
-                multiVaccChart = true;
-                String[] vaccStratRunIds = runIdString.split(";");
-                for (int i = 0; i < 2; i++) {
-                    runIds.add(vaccStratRunIds[i]);
-                }
-            } else {
-                // only no vacc run
-                multiVaccChart = false;
-                runIds.add(runIdString);
+			}
+		}
 
-            }
-        }
-//        rs.setMessage("it worked");
-//        rs.setStatus(RunStatusEnum.COMPLETED);
+		// System.out.println("multi vacc chart: " + multiVaccChart +
+		// "   multi sim chart: " + multiSimulatorChart);
+		// System.out.println("run ids size: " + runIds.size());
+		// System.out.println("run ids 0: " + runIds.get(0));
 
-//        // find the run directory
-        ImageGenerator ig = null;
-        try {
-            ig = new ImageGenerator(runIds, multiVaccChart, multiSimulatorChart);
-        } catch (NoSuchAlgorithmException ex) {
-            System.err.println("Exception creatingImageGenerator: " + ex.getMessage());
-        }
+		VisualizerResult result = new VisualizerResult();
+		result.setRunId(visualizerConfiguration.getVisualizationOptions()
+				.getRunId()); // use the same runId as in the request
 
-        String runDirectory = ig.getRunDirectory();
-        String finishedFilePath = runDirectory + File.separator + ImageGeneratorRunnable.FINISHED_FILE;
-        File finishedFile = new File(finishedFilePath);
-        if (finishedFile.exists()) {
-            rs.setMessage("Run with ID " + runId + " is completed");
-            rs.setStatus(RunStatusEnum.COMPLETED);
-        } else {
-            // check started file
-            String startedFilePath = runDirectory + File.separator + ImageGeneratorRunnable.STARTED_FILE;
-            File startedFile = new File(startedFilePath);
-            if (startedFile.exists()) {
-                rs.setMessage("Still running with run ID " + runId);
-                rs.setStatus(RunStatusEnum.RUNNING);
-            } else {
-                System.out.println("finished file path: " + finishedFile.getAbsolutePath());
-                rs.setMessage("Run with ID " + runId + " has not been requested yet");
-                rs.setStatus(RunStatusEnum.FAILED);
-            }
-        }
-        return rs;
-    }
+		ImageGenerator ig = null;
 
-    @Override
-    @WebResult(name = "visualizerResult", targetNamespace = "")
-    @RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.Run")
-    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/run")
-    @ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.RunResponse")
-    public VisualizerResult run(
-            @WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
-        String runIdString = visualizerConfiguration.getVisualizationOptions().getRunId();
-        List<String> runIds;
-        Map<String, String> runIdSeriesLabel = new HashMap<String, String>();
-        boolean multiSimulatorChart;
-        boolean multiVaccChart;
-        runIds = new ArrayList<String>();
-        if (runIdString.contains(":")) {
-            // multi simulator
-            multiSimulatorChart = true;
-            if (runIdString.contains(";")) {
-                // vacc and no vacc runs
-                multiVaccChart = true;
-                String[] simRunIds = runIdString.split(":");
-                for (String simRunId : simRunIds) {
-                    String[] vaccStratRunIds = simRunId.split(";");
-                    for (int i = 0; i < 2; i++) {
-                        String id = vaccStratRunIds[i];
-                        runIds.add(id);
-                        switch (i) {
-                            case 0:
-                                runIdSeriesLabel.put(id, id + "_no_control_measure");
-                                break;
-                            case 1:
-                                runIdSeriesLabel.put(id, id + "_control_measure");
-                                break;
-                        }
-                    }
-                }
-            } else {
-                // only no vacc run
-                multiVaccChart = false;
-                String[] simRunIds = runIdString.split(":");
-                for (String simRunId : simRunIds) {
-                    runIds.add(simRunId);
-                    runIdSeriesLabel.put(simRunId, simRunId);
-                }
-            }
-        } else {
-            // single simulator 
-            multiSimulatorChart = false;
-            if (runIdString.contains(";")) {
-                // vacc and no vacc runs
-                multiVaccChart = true;
-                String[] vaccStratRunIds = runIdString.split(";");
-                for (int i = 0; i < 2; i++) {
-                    runIds.add(vaccStratRunIds[i]);
-                    switch (i) {
-                        case 0:
-                            runIdSeriesLabel.put(vaccStratRunIds[i], "No Vaccination");
-                            break;
-                        case 1:
-                            runIdSeriesLabel.put(vaccStratRunIds[i], "Vaccination");
-                            break;
-                    }
-                }
-            } else {
-                // only no vacc run
-                multiVaccChart = false;
-                runIds.add(runIdString);
-                runIdSeriesLabel.put(runIdString, "No control measure");
+		List<UrlOutputResource> outputResource = result
+				.getVisualizerOutputResource();
 
-            }
-        }
+		try {
+			ig = new ImageGenerator(runIds, outputResource, runIdSeriesLabel,
+					multiVaccChart, multiSimulatorChart);
+		} catch (NoSuchAlgorithmException ex) {
+			System.err.println("Exception: " + ex.getMessage());
+		}
 
-//        System.out.println("multi vacc chart: " + multiVaccChart + "   multi sim chart: " + multiSimulatorChart);
-//        System.out.println("run ids size: " + runIds.size());
-//        System.out.println("run ids 0: " + runIds.get(0));
+		// now the image URLs have been set, so start a thread to generate the
+		// images
+		ImageGeneratorRunnable igRunnable = new ImageGeneratorRunnable();
+		igRunnable.setImageGenerator(ig);
+		Thread thread = new Thread(igRunnable);
+		thread.start();
 
-        VisualizerResult result = new VisualizerResult();
-        result.setRunId(visualizerConfiguration.getVisualizationOptions().getRunId()); // use the same runId as in the request
+		return result;
+	}
 
-        ImageGenerator ig = null;
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.GetConfigurationFileForRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/getConfigurationFileForRun")
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        List<UrlOutputResource> outputResource = result.getVisualizerOutputResource();
+	@Override
+	@WebResult(name = "runStatus", targetNamespace = "")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", className = "edu.pitt.apollo.service.visualizerservice._07._03._2013.GetRunStatusResponse")
+	public RunStatus getRunStatus(
+			@WebParam(name = "runId", targetNamespace = "") String runId) {
+		RunStatus rs = new RunStatus();
 
-        try {
-            ig = new ImageGenerator(runIds, outputResource, runIdSeriesLabel, multiVaccChart, multiSimulatorChart);
-        } catch (NoSuchAlgorithmException ex) {
-            System.err.println("Exception: " + ex.getMessage());
-        }
+		String runIdString = runId;
+		List<String> runIds;
+		runIds = new ArrayList<String>();
+		boolean multiSimulatorChart;
+		boolean multiVaccChart;
+		if (runIdString.contains(":")) {
+			// multi simulator
+			multiSimulatorChart = true;
+			if (runIdString.contains(";")) {
+				// vacc and no vacc runs
+				multiVaccChart = true;
+				String[] simRunIds = runIdString.split(":");
+				for (String simRunId : simRunIds) {
+					String[] vaccStratRunIds = simRunId.split(";");
+					for (int i = 0; i < 2; i++) {
+						String id = vaccStratRunIds[i];
+						runIds.add(id);
+					}
+				}
+			} else {
+				// only no vacc run
+				multiVaccChart = false;
+				String[] simRunIds = runIdString.split(":");
+				for (String simRunId : simRunIds) {
+					runIds.add(simRunId);
+				}
+			}
+		} else {
+			// single simulator
+			multiSimulatorChart = false;
+			if (runIdString.contains(";")) {
+				// vacc and no vacc runs
+				multiVaccChart = true;
+				String[] vaccStratRunIds = runIdString.split(";");
+				for (int i = 0; i < 2; i++) {
+					runIds.add(vaccStratRunIds[i]);
+				}
+			} else {
+				// only no vacc run
+				multiVaccChart = false;
+				runIds.add(runIdString);
 
-        // now the image URLs have been set, so start a thread to generate the images
-        ImageGeneratorRunnable igRunnable = new ImageGeneratorRunnable();
-        igRunnable.setImageGenerator(ig);
-        Thread thread = new Thread(igRunnable);
-        thread.start();
+			}
+		}
+		// rs.setMessage("it worked");
+		// rs.setStatus(RunStatusEnum.COMPLETED);
 
-        return result;
-    }
+		// // find the run directory
+		ImageGenerator ig = null;
+		try {
+			ig = new ImageGenerator(runIds, multiVaccChart, multiSimulatorChart);
+		} catch (NoSuchAlgorithmException ex) {
+			System.err.println("Exception creatingImageGenerator: "
+					+ ex.getMessage());
+		}
 
-    @Override
-    @WebResult(name = "configurationFile", targetNamespace = "")
-    @RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetConfigurationFileForRun")
-    @WebMethod
-    @ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/", className = "edu.pitt.apollo.service.visualizerservice.GetConfigurationFileForRunResponse")
-    public String getConfigurationFileForRun(
-            @WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+		String runDirectory = ig.getRunDirectory();
+		String finishedFilePath = runDirectory + File.separator
+				+ ImageGeneratorRunnable.FINISHED_FILE;
+		File finishedFile = new File(finishedFilePath);
+		if (finishedFile.exists()) {
+			rs.setMessage("Run with ID " + runId + " is completed");
+			rs.setStatus(RunStatusEnum.COMPLETED);
+		} else {
+			// check started file
+			String startedFilePath = runDirectory + File.separator
+					+ ImageGeneratorRunnable.STARTED_FILE;
+			File startedFile = new File(startedFilePath);
+			if (startedFile.exists()) {
+				rs.setMessage("Still running with run ID " + runId);
+				rs.setStatus(RunStatusEnum.RUNNING);
+			} else {
+				System.out.println("finished file path: "
+						+ finishedFile.getAbsolutePath());
+				rs.setMessage("Run with ID " + runId
+						+ " has not been requested yet");
+				rs.setStatus(RunStatusEnum.FAILED);
+			}
+		}
+		return rs;
+	}
+
 }
