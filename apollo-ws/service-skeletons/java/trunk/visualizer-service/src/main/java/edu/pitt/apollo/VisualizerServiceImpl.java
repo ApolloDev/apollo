@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3", endpointInterface = "edu.pitt.apollo.service.visualizerservice._07._03_._2013.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/07/03/2013/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3", endpointInterface = "edu.pitt.apollo.service.visualizerservice._07._03._2013.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
 	@Override
