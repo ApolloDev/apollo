@@ -16,20 +16,14 @@ package edu.pitt.apollo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -42,14 +36,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -91,6 +82,45 @@ import edu.pitt.apollo.types._07._03._2013.VisualizerResult;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v1.3", endpointInterface = "edu.pitt.apollo.service.apolloservice._07._03._2013.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
+	private static final String REGISTRY_FILENAME = "registered_services.xml";
+	private static final String ERROR_FILENAME = "run_errors.txt";
+	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
+
+	private static String APOLLO_DIR = "";
+	private static ObjectContainer db4o;
+
+	static String getRegistryFilename() {
+		return APOLLO_DIR + REGISTRY_FILENAME;
+	}
+
+	static String getErrorFilename() {
+		return APOLLO_DIR + ERROR_FILENAME;
+	}
+
+	static String getRunErrorPrefix() {
+		return RUN_ERROR_PREFIX;
+	}
+
+	private ByteArrayOutputStream getJSONBytes(Object obj) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			mapper.writeValue(baos, obj);
+
+			return baos;
+		} catch (IOException ex) {
+			System.err
+					.println("IO Exception JSON encoding and getting bytes from SimulatorConfiguration");
+			return null;
+		}
+	}
+
+	private static String getMd5HashFromString(String string) {
+		return DigestUtils.md5Hex(string);
+	}
+
 	@Override
 	@WebResult(name = "uuids", targetNamespace = "")
 	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetUuidsForLibraryItemsGivenType")
@@ -98,9 +128,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetUuidsForLibraryItemsGivenTypeResponse")
 	public List<String> getUuidsForLibraryItemsGivenType(
 			@WebParam(name = "type", targetNamespace = "") String type) {
-
-		// Class<?> c = Class.forName(type);
-		// Object o = c.newInstance();
 		List<String> resultList = new ArrayList<String>();
 
 		CuratedLibraryItem cli = new CuratedLibraryItem();
@@ -112,7 +139,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			}
 		}
 		return resultList;
-
 	}
 
 	@Override
@@ -137,288 +163,135 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return resultList;
 	}
 
-	private static final String REGISTRY_FILENAME = "registered_services.xml";
-	private static final String ERROR_FILENAME = "run_errors.txt";
-	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
-	// private static final String FLUTE_FILE_DIR = "flute_files";
-	private static String APOLLO_DIR = "";
-	private static ObjectContainer db4o;
-
-	public ByteArrayOutputStream getJSONBytes(Object obj) {
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, obj);
-
-			return baos;
-		} catch (IOException ex) {
-			System.err
-					.println("IO Exception JSON encoding and getting bytes from SimulatorConfiguration");
-			return null;
+	@Override
+	@WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
+	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem")
+	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItemResponse")
+	public CuratedLibraryItemContainer getLibraryItem(
+			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
+		long longPart = Long.valueOf(uuid.split(" ")[1]);
+		String sig = uuid.split(" ")[0];
+		byte[] signaturePart = new byte[sig.length()];
+		for (int i = 0; i < sig.length(); i++) {
+			signaturePart[i] = (byte) sig.charAt(i);
 		}
-	}
+		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+		Object o = db4o.ext().getByUUID(db4oUuid);
 
-	public static String getMd5HashFromString(String string) {
+		CuratedLibraryItemContainer result = new CuratedLibraryItemContainer();
+		result.setApolloIndexableItem((ApolloIndexableItem) o);
+		CuratedLibraryItem cli = new CuratedLibraryItem();
+		cli.setItemUuid(uuid);
+		ObjectSet<Object> r = db4o.queryByExample(cli);
+		CuratedLibraryItem item = (CuratedLibraryItem) r.get(0);
+		db4o.activate(item, 100);
+		db4o.activate(o, 100);
 
-		return DigestUtils.md5Hex(string);
-	}
-
-	public synchronized void cacheRunId(String runId, String md5Hash,
-			String filepath) {
-
-		if (checkRunIdCache(md5Hash, filepath) == null) { // make sure that the
-															// cache was not
-															// updated since
-															// this method was
-															// called
-
-			try {
-				File runCacheFile = new File(filepath);
-				PrintStream ps = new PrintStream(new FileOutputStream(
-						runCacheFile, true));
-
-				ps.println(runId + "\t" + md5Hash);
-				ps.flush();
-				ps.close();
-			} catch (FileNotFoundException ex) {
-				System.err
-						.println("Could not find run cache file. Cannot cache the current run");
-			}
-
-		}
-	}
-
-	public synchronized void cacheVisualizerResult(String runId,
-			String md5Hash, VisualizerResult result, String filepath) {
-
-		if (checkVisualizerCache(md5Hash, filepath) == null) { // make sure the
-																// cache was not
-																// updated since
-																// this method
-																// was called
-			try {
-
-				FileOutputStream fout = new FileOutputStream(
-						new File(filepath), true);
-
-				fout.write((runId + "\t" + md5Hash + "\t").getBytes());
-
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-				mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-				mapper.writeValue(fout, result);
-
-				fout.write(("\n").getBytes());
-				fout.flush();
-				fout.close();
-
-			} catch (FileNotFoundException ex) {
-				System.err
-						.println("Could not find run cache file. Cannot cache the current run");
-			} catch (IOException ex) {
-				System.err
-						.println("Could not write the visualizer result to file. Cannot cache the current visualizer run");
-			}
-		}
-	}
-
-	public String checkRunIdCache(String md5Hash, String filepath) {
-
-		try {
-			File runCache = new File(filepath);
-			Scanner scanner = new Scanner(runCache);
-
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				if (line.contains("\t")) {
-					String[] array = line.split("\t");
-					if (array.length > 1) {
-
-						String runId = array[0];
-						String hash = array[1];
-
-						if (hash.equals(md5Hash)) {
-							return runId;
-						}
-					}
-				}
-			}
-
-			return null;
-
-		} catch (FileNotFoundException ex) {
-			System.err.println("Can not find run cache file.");
-			return null;
-		}
-	}
-
-	public VisualizerResult checkVisualizerCache(String md5Hash, String filepath) {
-		try {
-			File runCache = new File(filepath);
-			Scanner scanner = new Scanner(runCache);
-
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				String[] array = line.split("\t");
-
-				String runId = array[0];
-				String hash = array[1];
-				String json = array[2];
-
-				if (hash.equals(md5Hash)) {
-					ObjectMapper mapper = new ObjectMapper();
-					mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-					Iterator it = mapper.readValues(
-							new JsonFactory().createJsonParser(json),
-							VisualizerResult.class);
-
-					VisualizerResult vr = (VisualizerResult) it.next();
-					return vr;
-				}
-			}
-
-			return null;
-
-		} catch (FileNotFoundException ex) {
-			System.err.println("Can not find run cache file.");
-			return null;
-		} catch (IOException ex) {
-			System.err.println("Could not create iterator");
-			return null;
-		}
+		result.setCuratedLibraryItem(item);
+		return result;
 	}
 
 	@Override
-	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulation")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunSimulationResponse")
-	public String runSimulation(
-			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
-		// this method must return a runId, even if there is an error
-		String runId;
-		ByteArrayOutputStream baos = getJSONBytes(simulatorConfiguration);
-		String simConfigHash = getMd5HashFromString(baos.toString());
-		String simulatorName = simulatorConfiguration
-				.getSimulatorIdentification().getSoftwareName();
+	@WebResult(name = "uuid", targetNamespace = "")
+	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.AddLibraryItem")
+	@WebMethod
+	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.AddLibraryItemResponse")
+	public String addLibraryItem(
+			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
+			@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
+			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
+			@WebParam(name = "itemType", targetNamespace = "") String itemType,
+			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
 
-		// check for cached result
-		try {
-			runId = DbUtils.checkRunCache(simConfigHash);
-			if (runId != null) {
+		String apolloUuid = "";
+		db4o.store(apolloIndexableItem);
+		db4o.commit();
+		Db4oUUID uuid = db4o.ext().getObjectInfo(apolloIndexableItem).getUUID();
 
-				// check the status of the run
-				RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
-				rasid.setRunId(runId);
-				rasid.setSoftwareId(simulatorConfiguration
-						.getSimulatorIdentification());
-				RunStatus status = getRunStatus(rasid);
-				RunStatusEnum statusEnum = status.getStatus();
-
-				if (statusEnum.equals(RunStatusEnum.FAILED)) {
-					DbUtils.deleteFromRunCache(simConfigHash);
-				} else {
-					return runId;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			runId = RunUtils.getErrorRunId();
-			RunUtils.reportError(runId,
-					"Problem with SimulatorService: ClassNotFoundException: "
-							+ ex.getMessage());
-			ex.printStackTrace();
-			return runId;
-		} catch (SQLException ex) {
-			runId = RunUtils.getErrorRunId();
-			RunUtils.reportError(
-					runId,
-					"Problem with SimulatorService: SQLException: "
-							+ ex.getMessage());
-			ex.printStackTrace();
-			return runId;
+		for (int i = 0; i < uuid.getSignaturePart().length; i++) {
+			apolloUuid += (char) uuid.getSignaturePart()[i];
 		}
+		apolloUuid += " " + uuid.getLongPart();
 
+		// Db4oUUId u = new Db4oUUID(longPart_, signaturePart_)
+		System.out.println("uuid is " + apolloUuid);
+
+		GregorianCalendar c = new GregorianCalendar();
+		XMLGregorianCalendar date;
 		try {
-			URL url = null;
-			try {
-				// get the webservice WSDL URL for supplied
-				// SimulatorIdentification
-				url = RegistrationUtils
-						.getUrlForSoftwareIdentification(simulatorConfiguration
-								.getSimulatorIdentification());
-				System.out.println("URL resturned: " + url.toString());
-				if (url == null) {
-					runId = RunUtils.getErrorRunId();
-					RunUtils.reportError(runId, "Service not registered.");
-					return runId;
-				}
-			} catch (IOException e) {
-				runId = RunUtils.getErrorRunId();
-				RunUtils.reportError(runId, "Error reading registry.");
-				return runId;
-			}
-			// run the simulator
-			SimulatorServiceV13 ss = new SimulatorServiceV13(url);
-			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+			date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 
-			// disable chunking for ZSI
-			Client client = ClientProxy.getClient(port);
-			HTTPConduit http = (HTTPConduit) client.getConduit();
-			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-			httpClientPolicy.setConnectionTimeout(36000);
-			httpClientPolicy.setAllowChunking(false);
-			http.setClient(httpClientPolicy);
-
-			System.out.println("Apollo Service is running simulator with URL "
-					+ url);
-			runId = port.run(simulatorConfiguration);
-			// db4o.store(simulatorConfiguration);
-			// db4o.commit();
-			System.out.println("Returned run ID is + " + runId);
-
-			// if (cacheFilePath != null) {
-			// cacheRunId(runId, simConfigHash, cacheFilePath);
-			// } else {
-			// System.out.println("Warning: the requested simulator has no associated cache file. This run will not be cached.");
-			// }
-			// cache the run
-			try {
-				DbUtils.insertIntoRunCache(runId, simConfigHash);
-			} catch (ClassNotFoundException ex) {
-				runId = RunUtils.getErrorRunId();
-				RunUtils.reportError(runId,
-						"Problem with SimulatorService: ClassNotFoundException: "
-								+ ex.getMessage());
-				ex.printStackTrace();
-			} catch (SQLException ex) {
-				runId = RunUtils.getErrorRunId();
-				RunUtils.reportError(
-						runId,
-						"Problem with SimulatorService: SQLException: "
-								+ ex.getMessage());
-				ex.printStackTrace();
-				return runId;
-			}
-
-			return runId;
-		} catch (Exception e) {
-			runId = RunUtils.getErrorRunId();
-			RunUtils.reportError(runId,
-					"Problem with SimulatorService:" + e.getMessage());
+			CuratedLibraryItem cli = new CuratedLibraryItem();
+			cli.setItemCreationTime(date);
+			cli.setItemDescription(itemDescription);
+			cli.setItemSource(itemSource);
+			cli.setItemType(itemType);
+			cli.setItemUuid(apolloUuid);
+			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
+			db4o.store(cli);
+			db4o.commit();
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return runId;
 		}
+		return apolloUuid;
 
+	}
+
+	@Override
+	@WebResult(name = "configurationFile", targetNamespace = "")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetConfigurationFileForRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getConfigurationFileForRun")
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetConfigurationFileForRunResponse")
+	public String getConfigurationFileForRun(
+			@WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
+		String simName = runAndSoftwareIdentification.getSoftwareId()
+				.getSoftwareName();
+		try {
+			ServiceRecord serviceRecord = RegistrationUtils
+					.getServiceRecordForSoftwareId(runAndSoftwareIdentification
+							.getSoftwareId());
+
+			URL url = new URL(serviceRecord.getUrl());
+
+			// get the webservice WSDL URL for supplied
+			// SimulatorIdentification
+			if (serviceRecord.getSoftwareIdentification().getSoftwareType() == ApolloSoftwareType.SIMULATOR) {
+				SimulatorServiceV13 ss = new SimulatorServiceV13(url);
+				SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
+				return port
+						.getConfigurationFileForRun(runAndSoftwareIdentification
+								.getRunId());
+			} else if (serviceRecord.getSoftwareIdentification()
+					.getSoftwareType() == ApolloSoftwareType.VISUALIZER) {
+				VisualizerServiceV13 ss = new VisualizerServiceV13(url);
+				VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
+				return port
+						.getConfigurationFileForRun(runAndSoftwareIdentification
+								.getRunId());
+			} else if (serviceRecord.getSoftwareIdentification()
+					.getSoftwareType() == ApolloSoftwareType.SYNTHETIC_POPULATION_GENERATOR) {
+				SyntheticPopulationServiceV13 ss = new SyntheticPopulationServiceV13(
+						url);
+				SyntheticPopulationServiceEI port = ss
+						.getSyntheticPopulationServiceEndpoint();
+				return port
+						.getConfigurationFileForRun(runAndSoftwareIdentification
+								.getRunId());
+			} else {
+				return "getConfigurationFile() not implemented for this service type.";
+			}
+		} catch (IOException e) {
+			return "General error occurred on server.";
+		}
 	}
 
 	@Override
 	@WebResult(name = "batchRunSimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.BatchRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/batchRun")
-	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.BatchRunResponse")
+	@RequestWrapper(localName = "batchRunSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.BatchRunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/batchRunSimulation")
+	@ResponseWrapper(localName = "batchRunSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.BatchRunSimulationResponse")
 	public BatchRunResult batchRunSimulation(
 			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
 		BatchRunResult bsr = new BatchRunResult();
@@ -464,21 +337,146 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			bsr.setRunId(runId);
 			return bsr;
 		}
+
+	}
+
+	@Override
+	@WebResult(name = "syntheticPopulationResult", targetNamespace = "")
+	@RequestWrapper(localName = "generateSyntheticPopulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GenerateSyntheticPopulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/generateSyntheticPopulation")
+	@ResponseWrapper(localName = "generateSyntheticPopulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GenerateSyntheticPopulationResponse")
+	public SyntheticPopulationResult generateSyntheticPopulation(
+			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "serviceRegistrationResult", targetNamespace = "")
+	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.UnRegisterService")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/unRegisterService")
+	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.UnRegisterServiceResponse")
+	public ServiceRegistrationResult unRegisterService(
+			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+
+		List<ServiceRegistrationRecord> records;
+		try {
+			// get the entire list of current service registration records
+			records = RegistrationUtils.getServiceRegistrationRecords();
+
+			for (ServiceRegistrationRecord record : records) {
+				// for each record currently in the registry, see if we can find
+				// a record with a ServiceIdentification that is equal to one
+				// that the user is trying to unregister
+				if (RegistrationUtils.softwareIdentificationEqual(
+						record.getSoftwareIdentification(),
+						serviceRegistrationRecord.getSoftwareIdentification())) {
+					// found the service the user wants to unregister, now check
+					// that the username and password supplied with this request
+					// match the username and password sent with the
+					// registration request
+					if (RegistrationUtils.authenticationEqual(
+							record.getAuthentication(),
+							serviceRegistrationRecord.getAuthentication())) {
+						try {
+							// the username/password match, so remove the record
+							// from the registry
+							RegistrationUtils
+									.removeServiceRegistrationRecord(serviceRegistrationRecord);
+						} catch (IOException e) {
+							// there was en error removing the record, report
+							// this error to the caller
+							result.setMessage("Error Unregistering Service: "
+									+ e.getMessage());
+							result.setActionSuccessful(false);
+							return result;
+						}
+						// removal succeeded
+						result.setMessage("unregistration Successful!");
+						result.setActionSuccessful(true);
+						return result;
+					} else {
+						// username/passwords do not match
+						result.setMessage("Error Unregistering Service: Username/Password does not match orignial ServiceRegistrationRecord!");
+						result.setActionSuccessful(false);
+						return result;
+					}
+				}
+			}
+			// couldn't find matching ServiceRecords
+			result.setMessage("Error Unregistering Service: Service not registered at this registry.");
+			result.setActionSuccessful(false);
+			return result;
+		} catch (IOException e) {
+			result.setMessage("Error Unregistering Service: Error reading registry!");
+			result.setActionSuccessful(false);
+			return result;
+		}
+
+	}
+
+	@Override
+	@WebResult(name = "serviceRegistrationResult", targetNamespace = "")
+	@RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RegisterService")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/registerService")
+	@ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RegisterServiceResponse")
+	public ServiceRegistrationResult registerService(
+			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+
+		List<ServiceRegistrationRecord> records;
+		try {
+
+			records = RegistrationUtils.getServiceRegistrationRecords();
+
+			for (ServiceRegistrationRecord record : records) {
+				if (RegistrationUtils.softwareIdentificationEqual(
+						record.getSoftwareIdentification(),
+						serviceRegistrationRecord.getSoftwareIdentification())) {
+					result.setMessage("Service is already registered.  Please unRegisterService to make changes to the existing ServiceRecord.");
+					result.setActionSuccessful(false);
+					return result;
+				}
+
+				if (RegistrationUtils.serviceUrlEqual(record,
+						serviceRegistrationRecord)) {
+					result.setMessage("URL is already registered.");
+					result.setActionSuccessful(false);
+					return result;
+				}
+			}
+
+			// if we are here, it looks like a valid registration
+			try {
+				RegistrationUtils
+						.addServiceRegistrationRecord(serviceRegistrationRecord);
+				result.setMessage("Service Registration Successful!");
+				result.setActionSuccessful(true);
+			} catch (IOException e) {
+				result.setMessage("Error registering service: "
+						+ e.getMessage());
+				result.setActionSuccessful(false);
+			}
+
+		} catch (IOException e) {
+			result.setMessage("Error reading registry!");
+			result.setActionSuccessful(false);
+		}
+		return result;
+
 	}
 
 	@Override
 	@WebResult(name = "visualizerResult", targetNamespace = "")
-	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualization")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/runVisualization")
-	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RunVisualizationResponse")
+	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RunVisualization")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/runVisualization")
+	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RunVisualizationResponse")
 	public VisualizerResult runVisualization(
 			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
-
 		String runId;
 		ByteArrayOutputStream baos = getJSONBytes(visualizerConfiguration);
 		String visConfigHash = getMd5HashFromString(baos.toString());
-		String visName = visualizerConfiguration.getVisualizerIdentification()
-				.getSoftwareName();
 		VisualizerResult result;
 
 		// check the cache
@@ -595,38 +593,29 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			e.printStackTrace();
 			return visualizerResult;
 		}
-		// }
 
 	}
 
 	@Override
-	@WebResult(name = "syntheticPopulationResult", targetNamespace = "")
-	@RequestWrapper(localName = "generateSyntheticPopulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GenerateSyntheticPopulation")
-	@WebMethod
-	@ResponseWrapper(localName = "generateSyntheticPopulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GenerateSyntheticPopulationResponse")
-	public SyntheticPopulationResult generateSyntheticPopulation(
-			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
-		// TODO Auto-generated method stub
-		return null;
+	@WebResult(name = "serviceRecords", targetNamespace = "")
+	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetRegisteredServices")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getRegisteredServices")
+	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetRegisteredServicesResponse")
+	public List<ServiceRecord> getRegisteredServices() {
+		try {
+			return RegistrationUtils.getRegisteredSoftware();
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRunStatusResponse")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetRunStatusResponse")
 	public RunStatus getRunStatus(
 			@WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
-
-		// if
-		// (runAndSoftwareIdentification.getSoftwareId().getSoftwareName().equalsIgnoreCase("flute"))
-		// {
-		// RunStatus rs = new RunStatus();
-		// rs.setMessage("The run is completed");
-		// rs.setStatus(RunStatusEnum.COMPLETED);
-		// return rs;
-		// }
-
 		if (runAndSoftwareIdentification.getRunId()
 				.startsWith(RUN_ERROR_PREFIX)) {
 			RunStatus rs = new RunStatus();
@@ -680,267 +669,114 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
-	@WebResult(name = "configurationFile", targetNamespace = "")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetConfigurationFileForRun")
-	@WebMethod
-	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetConfigurationFileForRunResponse")
-	public String getConfigurationFileForRun(
-			@WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
-
-		String simName = runAndSoftwareIdentification.getSoftwareId()
-				.getSoftwareName();
+	@WebResult(name = "runId", targetNamespace = "")
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.RunSimulationResponse")
+	public String runSimulation(
+			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
+		// this method must return a runId, even if there is an error
+		String runId;
+		ByteArrayOutputStream baos = getJSONBytes(simulatorConfiguration);
+		String simConfigHash = getMd5HashFromString(baos.toString());
+		// check for cached result
 		try {
-			ServiceRecord serviceRecord = RegistrationUtils
-					.getServiceRecordForSoftwareId(runAndSoftwareIdentification
-							.getSoftwareId());
+			runId = DbUtils.checkRunCache(simConfigHash);
+			if (runId != null) {
 
-			URL url = new URL(serviceRecord.getUrl());
+				// check the status of the run
+				RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+				rasid.setRunId(runId);
+				rasid.setSoftwareId(simulatorConfiguration
+						.getSimulatorIdentification());
+				RunStatus status = getRunStatus(rasid);
+				RunStatusEnum statusEnum = status.getStatus();
 
-			// get the webservice WSDL URL for supplied
-			// SimulatorIdentification
-			if (serviceRecord.getSoftwareIdentification().getSoftwareType() == ApolloSoftwareType.SIMULATOR) {
-				SimulatorServiceV13 ss = new SimulatorServiceV13(url);
-				SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
-				return port
-						.getConfigurationFileForRun(runAndSoftwareIdentification
-								.getRunId());
-			} else if (serviceRecord.getSoftwareIdentification()
-					.getSoftwareType() == ApolloSoftwareType.VISUALIZER) {
-				VisualizerServiceV13 ss = new VisualizerServiceV13(url);
-				VisualizerServiceEI port = ss.getVisualizerServiceEndpoint();
-				return port
-						.getConfigurationFileForRun(runAndSoftwareIdentification
-								.getRunId());
-			} else if (serviceRecord.getSoftwareIdentification()
-					.getSoftwareType() == ApolloSoftwareType.SYNTHETIC_POPULATION_GENERATOR) {
-				SyntheticPopulationServiceV13 ss = new SyntheticPopulationServiceV13(
-						url);
-				SyntheticPopulationServiceEI port = ss
-						.getSyntheticPopulationServiceEndpoint();
-				return port
-						.getConfigurationFileForRun(runAndSoftwareIdentification
-								.getRunId());
-			} else {
-				return "getConfigurationFile() not implemented for this service type.";
+				if (statusEnum.equals(RunStatusEnum.FAILED)) {
+					DbUtils.deleteFromRunCache(simConfigHash);
+				} else {
+					return runId;
+				}
 			}
-		} catch (IOException e) {
-			return "General error occurred on server.";
+		} catch (ClassNotFoundException ex) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService: ClassNotFoundException: "
+							+ ex.getMessage());
+			ex.printStackTrace();
+			return runId;
+		} catch (SQLException ex) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(
+					runId,
+					"Problem with SimulatorService: SQLException: "
+							+ ex.getMessage());
+			ex.printStackTrace();
+			return runId;
 		}
 
-	}
-
-	@Override
-	@WebResult(name = "serviceRegistrationResult", targetNamespace = "")
-	@RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RegisterService")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/registerService")
-	@ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.RegisterServiceResponse")
-	public ServiceRegistrationResult registerService(
-			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
-		ServiceRegistrationResult result = new ServiceRegistrationResult();
-
-		List<ServiceRegistrationRecord> records;
 		try {
-
-			records = RegistrationUtils.getServiceRegistrationRecords();
-
-			for (ServiceRegistrationRecord record : records) {
-				if (RegistrationUtils.softwareIdentificationEqual(
-						record.getSoftwareIdentification(),
-						serviceRegistrationRecord.getSoftwareIdentification())) {
-					result.setMessage("Service is already registered.  Please unRegisterService to make changes to the existing ServiceRecord.");
-					result.setActionSuccessful(false);
-					return result;
-				}
-
-				if (RegistrationUtils.serviceUrlEqual(record,
-						serviceRegistrationRecord)) {
-					result.setMessage("URL is already registered.");
-					result.setActionSuccessful(false);
-					return result;
-				}
-			}
-
-			// if we are here, it looks like a valid registration
+			URL url = null;
 			try {
-				RegistrationUtils
-						.addServiceRegistrationRecord(serviceRegistrationRecord);
-				result.setMessage("Service Registration Successful!");
-				result.setActionSuccessful(true);
-			} catch (IOException e) {
-				result.setMessage("Error registering service: "
-						+ e.getMessage());
-				result.setActionSuccessful(false);
-			}
-
-		} catch (IOException e) {
-			result.setMessage("Error reading registry!");
-			result.setActionSuccessful(false);
-		}
-		return result;
-	}
-
-	@Override
-	@WebResult(name = "serviceRegistrationResult", targetNamespace = "")
-	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterService")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/unRegisterService")
-	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.UnRegisterServiceResponse")
-	public ServiceRegistrationResult unRegisterService(
-			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
-		ServiceRegistrationResult result = new ServiceRegistrationResult();
-
-		List<ServiceRegistrationRecord> records;
-		try {
-			// get the entire list of current service registration records
-			records = RegistrationUtils.getServiceRegistrationRecords();
-
-			for (ServiceRegistrationRecord record : records) {
-				// for each record currently in the registry, see if we can find
-				// a record with a ServiceIdentification that is equal to one
-				// that the user is trying to unregister
-				if (RegistrationUtils.softwareIdentificationEqual(
-						record.getSoftwareIdentification(),
-						serviceRegistrationRecord.getSoftwareIdentification())) {
-					// found the service the user wants to unregister, now check
-					// that the username and password supplied with this request
-					// match the username and password sent with the
-					// registration request
-					if (RegistrationUtils.authenticationEqual(
-							record.getAuthentication(),
-							serviceRegistrationRecord.getAuthentication())) {
-						try {
-							// the username/password match, so remove the record
-							// from the registry
-							RegistrationUtils
-									.removeServiceRegistrationRecord(serviceRegistrationRecord);
-						} catch (IOException e) {
-							// there was en error removing the record, report
-							// this error to the caller
-							result.setMessage("Error Unregistering Service: "
-									+ e.getMessage());
-							result.setActionSuccessful(false);
-							return result;
-						}
-						// removal succeeded
-						result.setMessage("unregistration Successful!");
-						result.setActionSuccessful(true);
-						return result;
-					} else {
-						// username/passwords do not match
-						result.setMessage("Error Unregistering Service: Username/Password does not match orignial ServiceRegistrationRecord!");
-						result.setActionSuccessful(false);
-						return result;
-					}
+				// get the webservice WSDL URL for supplied
+				// SimulatorIdentification
+				url = RegistrationUtils
+						.getUrlForSoftwareIdentification(simulatorConfiguration
+								.getSimulatorIdentification());
+				System.out.println("URL resturned: " + url.toString());
+				if (url == null) {
+					runId = RunUtils.getErrorRunId();
+					RunUtils.reportError(runId, "Service not registered.");
+					return runId;
 				}
+			} catch (IOException e) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId, "Error reading registry.");
+				return runId;
 			}
-			// couldn't find matching ServiceRecords
-			result.setMessage("Error Unregistering Service: Service not registered at this registry.");
-			result.setActionSuccessful(false);
-			return result;
-		} catch (IOException e) {
-			result.setMessage("Error Unregistering Service: Error reading registry!");
-			result.setActionSuccessful(false);
-			return result;
-		}
-	}
+			// run the simulator
+			SimulatorServiceV13 ss = new SimulatorServiceV13(url);
+			SimulatorServiceEI port = ss.getSimulatorServiceEndpoint();
 
-	@Override
-	@WebResult(name = "serviceRecords", targetNamespace = "")
-	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServices")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/getRegisteredServices")
-	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/", className = "edu.pitt.apollo.service.apolloservice.GetRegisteredServicesResponse")
-	public List<ServiceRecord> getRegisteredServices() {
-		try {
-			return RegistrationUtils.getRegisteredSoftware();
-		} catch (IOException e) {
-			return null;
-		}
-	}
+			// disable chunking for ZSI
+			Client client = ClientProxy.getClient(port);
+			HTTPConduit http = (HTTPConduit) client.getConduit();
+			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+			httpClientPolicy.setConnectionTimeout(36000);
+			httpClientPolicy.setAllowChunking(false);
+			http.setClient(httpClientPolicy);
 
-	public static String getRegistryFilename() {
-		return APOLLO_DIR + REGISTRY_FILENAME;
-	}
+			System.out.println("Apollo Service is running simulator with URL "
+					+ url);
+			runId = port.run(simulatorConfiguration);
+			System.out.println("Returned run ID is + " + runId);
 
-	public static String getErrorFilename() {
-		return APOLLO_DIR + ERROR_FILENAME;
-	}
+			try {
+				DbUtils.insertIntoRunCache(runId, simConfigHash);
+			} catch (ClassNotFoundException ex) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(runId,
+						"Problem with SimulatorService: ClassNotFoundException: "
+								+ ex.getMessage());
+				ex.printStackTrace();
+			} catch (SQLException ex) {
+				runId = RunUtils.getErrorRunId();
+				RunUtils.reportError(
+						runId,
+						"Problem with SimulatorService: SQLException: "
+								+ ex.getMessage());
+				ex.printStackTrace();
+				return runId;
+			}
 
-	public static String getRunErrorPrefix() {
-		return RUN_ERROR_PREFIX;
-	}
-
-	@Override
-	@WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
-	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem")
-	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.GetLibraryItemResponse")
-	public CuratedLibraryItemContainer getLibraryItem(
-			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
-		long longPart = Long.valueOf(uuid.split(" ")[1]);
-		String sig = uuid.split(" ")[0];
-		byte[] signaturePart = new byte[sig.length()];
-		for (int i = 0; i < sig.length(); i++) {
-			signaturePart[i] = (byte) sig.charAt(i);
-		}
-		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-		Object o = db4o.ext().getByUUID(db4oUuid);
-
-		CuratedLibraryItemContainer result = new CuratedLibraryItemContainer();
-		result.setApolloIndexableItem((ApolloIndexableItem) o);
-		CuratedLibraryItem cli = new CuratedLibraryItem();
-		cli.setItemUuid(uuid);
-		ObjectSet<Object> r = db4o.queryByExample(cli);
-		CuratedLibraryItem item = (CuratedLibraryItem) r.get(0);
-		db4o.activate(item, 100);
-		db4o.activate(o, 100);
-
-		result.setCuratedLibraryItem(item);
-		return result;
-	}
-
-	@Override
-	@WebResult(name = "uuid", targetNamespace = "")
-	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.AddLibraryItem")
-	@WebMethod
-	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/", className = "edu.pitt.apollo.service.apolloservice._07._03._2013.AddLibraryItemResponse")
-	public String addLibraryItem(
-			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
-			@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
-			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
-			@WebParam(name = "itemType", targetNamespace = "") String itemType,
-			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
-
-		String apolloUuid = "";
-		db4o.store(apolloIndexableItem);
-		db4o.commit();
-		Db4oUUID uuid = db4o.ext().getObjectInfo(apolloIndexableItem).getUUID();
-
-		for (int i = 0; i < uuid.getSignaturePart().length; i++) {
-			apolloUuid += (char) uuid.getSignaturePart()[i];
-		}
-		apolloUuid += " " + uuid.getLongPart();
-
-		// Db4oUUId u = new Db4oUUID(longPart_, signaturePart_)
-		System.out.println("uuid is " + apolloUuid);
-
-		GregorianCalendar c = new GregorianCalendar();
-		XMLGregorianCalendar date;
-		try {
-			date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
-			CuratedLibraryItem cli = new CuratedLibraryItem();
-			cli.setItemCreationTime(date);
-			cli.setItemDescription(itemDescription);
-			cli.setItemSource(itemSource);
-			cli.setItemType(itemType);
-			cli.setItemUuid(apolloUuid);
-			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
-			db4o.store(cli);
-			db4o.commit();
-		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
+			return runId;
+		} catch (Exception e) {
+			runId = RunUtils.getErrorRunId();
+			RunUtils.reportError(runId,
+					"Problem with SimulatorService:" + e.getMessage());
 			e.printStackTrace();
+			return runId;
 		}
-		return apolloUuid;
 
 	}
 
@@ -956,7 +792,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		scm.setControlMeasureNamedPrioritizationScheme("Close em all");
 		scm.setControlMeasureReactiveEndPointFraction(0.32);
 		scm.setControlMeasureResponseDelay(3d);
-		scm.setDescription("Throw this junk away we are just using this for testing.");
+		scm.setDescription("Test.");
 		scm.setSchoolClosureDuration(new BigInteger("35"));
 		scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.ALL);
 		List<String> indexingValues = new ArrayList<String>();
@@ -987,7 +823,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	}
 
-
 	static {
 		Map<String, String> env = System.getenv();
 		APOLLO_DIR = env.get("APOLLO_WORK_DIR");
@@ -1007,7 +842,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
 		super.finalize();
 		db4o.close();
 	}
