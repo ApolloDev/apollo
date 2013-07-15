@@ -28,6 +28,10 @@
       <module>apollo-service-war</module>
 	  <module>apollo-service-client</module>
 
+	  <module>library-service</module>
+      <module>library-service-war</module>
+	  <module>library-service-client</module>
+	  
 	  <module>simulator-service</module>
 	  <module>simulator-service-war</module>
       <module>simulator-service-client</module>
