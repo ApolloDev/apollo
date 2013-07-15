@@ -42,6 +42,54 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v1.3", endpointInterface = "edu.pitt.apollo.service.libraryservice._07._03._2013.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
+	@Override
+	@WebResult(name = "uuid", targetNamespace = "")
+	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.AddLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/addLibraryItem")
+	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.AddLibraryItemResponse")
+	public String addLibraryItem(
+			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
+			@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
+			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
+			@WebParam(name = "itemType", targetNamespace = "") String itemType,
+			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
+	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getLibraryItem")
+	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetLibraryItemResponse")
+	public CuratedLibraryItemContainer getLibraryItem(
+			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "uuids", targetNamespace = "")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetUuidsForLibraryItemsCreatedSinceDateTime")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getUuidsForLibraryItemsCreatedSinceDateTime")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
+	public List<String> getUuidsForLibraryItemsCreatedSinceDateTime(
+			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "uuids", targetNamespace = "")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetUuidsForLibraryItemsGivenType")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/07/03/2013/getUuidsForLibraryItemsGivenType")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/07/03/2013/", className = "edu.pitt.apollo.service.libraryservice._07._03._2013.GetUuidsForLibraryItemsGivenTypeResponse")
+	public List<String> getUuidsForLibraryItemsGivenType(
+			@WebParam(name = "type", targetNamespace = "") String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 //    private static ObjectContainer db4o;
 //
 //    @Override
