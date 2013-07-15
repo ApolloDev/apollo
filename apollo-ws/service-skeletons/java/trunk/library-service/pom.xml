@@ -1,4 +1,3 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -8,17 +7,17 @@
 		<artifactId>apollo-ws</artifactId>
 		<version>1.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>apollo-service</artifactId>
-	<name>-- ApolloService Web Service Provider</name>
+	<artifactId>library-service</artifactId>
+	<name>-- LibraryService Web Service Provider</name>
 	<packaging>bundle</packaging>
-
-	<repositories>
+	
+		<repositories>
 		<repository>
 			<id>source.db4o</id>
 			<url>http://source.db4o.com/maven/</url>
 		</repository>
 	</repositories>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -26,78 +25,15 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		
+				<dependency>
 			<groupId>com.db4o</groupId>
 			<artifactId>db4o-core-java5</artifactId>
 			<version>8.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.4.4</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>simulator-service-client</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>library-service-client</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>visualizer-service-client</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>syntheticpopulation-service-client</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.12</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.7</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.12</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jvnet.hyperjaxb3</groupId>
-			<artifactId>hyperjaxb3-ejb-runtime</artifactId>
-			<version>0.5.6</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.4.4</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
+	
+
 
 	<build>
 		<plugins>
@@ -161,7 +97,7 @@
 			</plugins>
 		</pluginManagement>
 		<!-- Name of the generated WAR file -->
-		<finalName>apollo-service</finalName>
+		<finalName>library-service</finalName>
 	</build>
 
 	<profiles>
@@ -186,9 +122,9 @@
 									<wsdlOptions>
 										<wsdlOption>
 											<wsdl>
-												${basedir}/../src/main/resources/apolloservice.wsdl
+												${basedir}/../src/main/resources/libraryservice.wsdl
 											</wsdl>
-											<wsdlLocation>classpath:apolloservice.wsdl</wsdlLocation>
+											<wsdlLocation>classpath:libraryservice.wsdl</wsdlLocation>
 										</wsdlOption>
 									</wsdlOptions>
 								</configuration>
