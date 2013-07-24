@@ -51,8 +51,8 @@ import edu.pitt.apollo.types._07._03._2013.VaccinationEfficacyForSimulatorConfig
 import edu.pitt.apollo.types._07._03._2013.VaccinationPreventableOutcome;
 
 public class WSClient {
-	//public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3/services/apolloservice?wsdl";
+//	public static final String WSDL_LOC = "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
 
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice1.3/services/apolloservice?wsdl";
@@ -94,6 +94,9 @@ public class WSClient {
 		
 	}
 	
+	
+	
+	
 	public static String addSmallpox(ApolloServiceEI port) {
 		InfectiousDisease id = new InfectiousDisease();
 		id.setAsymptomaticInfectionFraction(0.5d);
@@ -128,6 +131,10 @@ public class WSClient {
 				"InfectiousDisease", itemIndexingLabels);
 
 	}
+	
+	
+	
+	
 	
 	public static String addRubella(ApolloServiceEI port) {
 		InfectiousDisease id = new InfectiousDisease();
@@ -472,16 +479,16 @@ public class WSClient {
 		vacc.setSpeciesOfTreatedOrganisms("human");
 		vacc.getTreatmentContraindications();
 
-		Treatment t = new Treatment();
-		t.setDescription("A vaccination for H1N1.");
-		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
-		t.setSpeciesOfTreatedOrganisms("human");
-		t.getTreatmentContraindications();
+//		Treatment t = new Treatment();
+//		t.setDescription("A vaccination for H1N1.");
+//		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
+//		t.setSpeciesOfTreatedOrganisms("human");
+//		t.getTreatmentContraindications();
 
 		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
 		vesc.setStrainIdentifier("H1N1");
 		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
-		vesc.setTreatment(t);
+		vesc.setTreatment(vacc);
 		vesc.setVaccineIdentifier("Influenza A (H1N1) 2009 Monovalent Vaccine");
 		vesc.setAverageVaccinationEfficacy(0.7);
 		vesc.setDescription("The vaccination efficacy for the Influenza A (H1N1) 2009 Monovalent Vaccine");
@@ -616,52 +623,52 @@ public class WSClient {
 		ApolloServiceV13 service = new ApolloServiceV13(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
-		 addAcVcm(port);
-		 addAcAvt(port);
-		 addAllSccm(port);
-		 addIndividualSccm(port);
-		 addH1N1(port);
-		 addH3N2(port);
-		 addH5N1(port);
-		 addH7N7(port);
-		 addH7N9(port);
-		 addDiptheria(port);
-		 addMeningitidis(port);
-		 addRubella(port);
-		 addSARS(port);
-		 addSmallpox(port);
+//		 addAcVcm(port);
+//		 addAcAvt(port);
+//		 addAllSccm(port);
+//		 addIndividualSccm(port);
+//		 addH1N1(port);
+//		 addH3N2(port);
+//		 addH5N1(port);
+//		 addH7N7(port);
+//		 addH7N9(port);
+//		 addDiptheria(port);
+//		 addMeningitidis(port);
+//		 addRubella(port);
+//		 addSARS(port);
+//		 addSmallpox(port);
 		 		 
-//		GregorianCalendar c = new GregorianCalendar();
-//		c.add(Calendar.YEAR, -1);
-//		XMLGregorianCalendar date;
-//
-//		date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-//		List<String> l = port.getUuidsForLibraryItemsCreatedSinceDateTime(date);
-//		for (int i = 0; i < l.size(); i++) {
-//			CuratedLibraryItemContainer item = port.getLibraryItem(l.get(i));
-//			System.out
-//					.printf("Item %d:\n\tUUID: %s\n\tType: %s\n\tDescription: %s\n\tSource: %s\n",
-//							i + 1, item.getCuratedLibraryItem().getItemUuid(),
-//							item.getCuratedLibraryItem().getItemType(), item
-//									.getCuratedLibraryItem()
-//									.getItemDescription(), item
-//									.getCuratedLibraryItem().getItemSource());
-//			System.out.print("\tIndexing labels: ");
-//			for (int j = 0; j < item.getCuratedLibraryItem()
-//					.getItemIndexingLabels().size(); j++) {
-//				System.out.print(item.getCuratedLibraryItem()
-//						.getItemIndexingLabels().get(j));
-//				if (j < item.getCuratedLibraryItem().getItemIndexingLabels()
-//						.size() - 1) {
-//					System.out.print(", ");
-//				}
-//				if (j > 0 && j % 4 == 0) {
-//					System.out.print("\n                         ");
-//				}
-//			}
-//			System.out.println();
-//
-//		}
+		GregorianCalendar c = new GregorianCalendar();
+		c.add(Calendar.YEAR, -1);
+		XMLGregorianCalendar date;
+
+		date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		List<String> l = port.getUuidsForLibraryItemsCreatedSinceDateTime(date);
+		for (int i = 0; i < l.size(); i++) {
+			CuratedLibraryItemContainer item = port.getLibraryItem(l.get(i));
+			System.out
+					.printf("Item %d:\n\tUUID: %s\n\tType: %s\n\tDescription: %s\n\tSource: %s\n",
+							i + 1, item.getCuratedLibraryItem().getItemUuid(),
+							item.getCuratedLibraryItem().getItemType(), item
+									.getCuratedLibraryItem()
+									.getItemDescription(), item
+									.getCuratedLibraryItem().getItemSource());
+			System.out.print("\tIndexing labels: ");
+			for (int j = 0; j < item.getCuratedLibraryItem()
+					.getItemIndexingLabels().size(); j++) {
+				System.out.print(item.getCuratedLibraryItem()
+						.getItemIndexingLabels().get(j));
+				if (j < item.getCuratedLibraryItem().getItemIndexingLabels()
+						.size() - 1) {
+					System.out.print(", ");
+				}
+				if (j > 0 && j % 4 == 0) {
+					System.out.print("\n                         ");
+				}
+			}
+			System.out.println();
+
+		}
 
 		// // add
 		// System.out.println(uuid);
