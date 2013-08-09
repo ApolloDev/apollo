@@ -18,6 +18,11 @@ The linux binaries that were provided for the C++ code were not appropriate for 
 1. Go to directory src/
 2. I found a bug in the source file "SynthpPopul/Util.cpp" in the function DataIn::ReadDataBlock(unsigned int id).  The variable id_ was declared as a char, and it needs to be defined as an int on line 500.
 3. Sim requires libodbc, so I had to download and install unixODBC, which is available at http://www.unixodbc.org/.
+4. Alter compile.sh in Sim so that it was compatible with the mpi on Blacklights MPI << insert line>>
+
+*GetAdminUnits*
+1. There is a known issue on Blacklight because of the nature of the machine that requires one to limit the number of garbage collection threads to 1 per core.  This is done by adding the flag -XX:ParallelGCThreads=<numberofCores> in get_admin_units.sh.
+
 
 
 
