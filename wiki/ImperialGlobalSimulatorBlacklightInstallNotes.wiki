@@ -1,0 +1,29 @@
+This page describes the procedure for installing Imperial's Global Simulator on Blacklight
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+*Downloading*
+The software is available for download at http://sourceforge.net/projects/globalepidemics/
+
+All of the script files had DOS "^M" in them, so I had to run everything through "fromdos" to put them appropriately in linux format.
+
+*Compiling*
+The linux binaries that were provided for the C++ code were not appropriate for Blacklight, as was the MPI version that was used to compile them. So I had to recompile.
+
+1. Go to directory src/
+2. I found a bug in the source file "SynthpPopul/Util.cpp" in the function DataIn::ReadDataBlock(unsigned int id).  The variable id_ was declared as a char, and it needs to be defined as an int on line 500.
+3. Sim requires libodbc, so I had to download and install unixODBC, which is available at http://www.unixodbc.org/.
+
+
+
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
