@@ -26,7 +26,9 @@ The linux binaries that were provided for the C++ code were not appropriate for 
 
 *SynthPopulation*
 1. The scripts in the bin-linux/SynthPopul/scripts directory were windows specific, and fromdos needed to be used to remove the "^M" control characters.
-2. The current scripts in order to use PBS, submit about 300 jobs individually to the queue to create a synthetic population for each country independently.  This wouldn't make blacklight a happy machine.  To batch this process into one submission, I altered genterate_synth_pop.sh to run 8 at a time in the backgound, and when those finish, move on to the next set.  
+2. The current scripts in order to use PBS, submit about 300 jobs individually to the queue to create a synthetic population for each country independently.  This wouldn't make blacklight a happy machine.  To batch this process into one submission, I altered genterate_synth_pop.sh to run 8 at a time in the backgound, and when those finish, move on to the next set. Here is the beginning of the script for reference:
+
+ 
 
 
 
