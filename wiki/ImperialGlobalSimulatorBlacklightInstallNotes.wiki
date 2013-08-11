@@ -21,7 +21,12 @@ The linux binaries that were provided for the C++ code were not appropriate for 
 4. Alter compile.sh in Sim so that it was compatible with the mpi on Blacklights MPI << insert line>>
 
 *GetAdminUnits*
-1. There is a known issue on Blacklight because of the nature of the machine that requires one to limit the number of garbage collection threads to 1 per core.  This is done by adding the flag -XX:ParallelGCThreads=<numberofCores> in get_admin_units.sh.
+1. There is a known issue on Blacklight because of the nature of the machine that requires one to limit the number of garbage collection threads to 1 per core.  This is done by adding the flag -XX:ParallelGCThreads=numberofCores in get_admin_units.sh.
+2. This took about 7 hours to complete on blacklight, it could be made faster by parallelizing it, but since the code resided in java, I chose to bite the bullet on time.
+
+*SynthPopulation*
+1. The scripts in the bin-linux/SynthPopul/scripts directory were windows specific, and fromdos needed to be used to remove the "^M" control characters.
+2. The current scripts in order to use PBS, submit about 300 jobs individually to the queue to create a synthetic population for each country independently.  This wouldn't make blacklight a happy machine.  To batch this process into one submission, I altered genterate_synth_pop.sh to run 8 at a time in the backgound, and when those finish, move on to the next set.  
 
 
 
