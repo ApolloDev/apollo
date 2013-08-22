@@ -34,7 +34,11 @@
             <scope>test</scope>
         </dependency>
 
-		
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>TimLantBatchRunCreator</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
                 
         <dependency>
@@ -55,7 +59,11 @@
             <version>1.7.5</version>
         </dependency>  
             
-		
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.49</version>
+        </dependency>
 <!--		<dependency>
 			<groupId>edu.pitt.rods</groupId>
 			<artifactId>seir-jni</artifactId>
