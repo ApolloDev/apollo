@@ -83,16 +83,17 @@ public class BatchThread extends Thread {
 
                 // previously the following was done in the SeirSimulatorServiceImpl run method
 
-                ByteArrayOutputStream baos = FluteSimulatorServiceImpl.getJSONBytes(sc);
-                String simConfigJson = baos.toString();
-                String simConfigHash = RunUtils.getMd5HashFromBytes(baos.toByteArray());
+
+                String simConfigJson = FluteSimulatorServiceImpl.getJSONString(sc);
+                String simConfigHash = RunUtils.getMd5HashFromString(simConfigJson);
 
                 SoftwareIdentification sid = sc.getSimulatorIdentification();
                 RunIdProperties runIdProps = FluteSimulatorServiceImpl.getOrAddRunId(simConfigHash, sid);
                 String runId = runIdProps.getRunId();
+                String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
 
                 // this should never store anything to the database
-                Thread worker = new SimulatorThread(sc, simConfigHash, runId,
+                Thread worker = new SimulatorThread(sc, simConfigHash, runId, runIdHash,
                         simConfigJson, true, true, false);
 
                 // need to wait until the simulator queue has a spot to run the simulator
