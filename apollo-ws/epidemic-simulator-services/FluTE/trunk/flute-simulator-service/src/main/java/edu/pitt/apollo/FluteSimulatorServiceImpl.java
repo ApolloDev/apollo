@@ -18,8 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import edu.pitt.apollo.flute.utils.FileUtils;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -29,9 +29,11 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.flute.utils.BatchThread;
+import edu.pitt.apollo.flute.utils.QueueThread;
 import edu.pitt.apollo.flute.utils.RunIdProperties;
+import edu.pitt.apollo.flute.utils.RunIdStoreThread;
 import edu.pitt.apollo.flute.utils.RunUtils;
+import edu.pitt.apollo.flute.utils.SimulatorThread;
 import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.BatchRunResult;
 import edu.pitt.apollo.types.BatchRunSimulatorConfiguration;
@@ -41,9 +43,9 @@ import edu.pitt.apollo.types.SimulatorConfiguration;
 import edu.pitt.apollo.types.SoftwareIdentification;
 import edu.pitt.apollo.types.SupportedPopulationLocation;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -51,394 +53,308 @@ import org.codehaus.jackson.map.ObjectMapper;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
-	// queue for simulator threads
-	private static final int MAX_NUM_SIMULATOR_THREADS = 100;
-	private static final int MAX_QUEUE_SIZE = 200;
-	private static int currentRunIdNumber;
-	private static int numRunningSimulatorThreads;
-	private static Thread storeThread;
-	private static Queue<Thread> simulatorThreadQueue;
-	private static List<String> queuedThreads = new ArrayList<String>();
-	// executor for the simulator threads
-	// private static ExecutorService simulatorExecutor =
-	// Executors.newFixedThreadPool(5);
-	// private static ExecutorService batchExecutor =
-	// Executors.newFixedThreadPool(1);
-	// this map will associate the md5 sim config hash with a runID string more
-	// easily readable
-	private static Map<String, String> md5RunIdMap;
+    // queue for simulator threads
+    private static final int MAX_NUM_SIMULATOR_THREADS = 10; // note that each sinulator thread requires a seperate connection to the flute server
+    private static final int MAX_QUEUE_SIZE = 200;
+    private static int currentRunIdNumber;
+    private static int numRunningSimulatorThreads;
+    private static Thread storeThread;
+    private static Queue<Thread> simulatorThreadQueue;
+    private static List<String> queuedThreads = new ArrayList<String>();
+    // executor for the simulator threads
+    // private static ExecutorService simulatorExecutor =
+    // Executors.newFixedThreadPool(5);
+    // private static ExecutorService batchExecutor =
+    // Executors.newFixedThreadPool(1);
+    // this map will associate the md5 sim config hash with a runID string more
+    // easily readable
 
-	static {
+    static {
 //		// create and load the runID map
+
+        // initialize simulator thread queue
+        simulatorThreadQueue = new LinkedList<Thread>();
+        numRunningSimulatorThreads = 0;
+
+        try {
+            currentRunIdNumber = Integer.parseInt(RunUtils.getNextId());
+            storeThread = new RunIdStoreThread(false);
+            storeThread.start();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            public void run() {
+
+                try {
+                    RunUtils.writeCurrentId(currentRunIdNumber);
+                } catch (IOException ex) {
+                    System.err.println("IO exception writing current ID to file");
+                }
+            }
+        }));
+    }
+
+    @Override
+    @WebResult(name = "runStatus", targetNamespace = "")
+    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatus")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/getRunStatus")
+    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatusResponse")
+    public RunStatus getRunStatus(
+            @WebParam(name = "runId", targetNamespace = "") String runId) {
+        try {
+            // System.out.println("Getting run status for run id " + runId);
+            return RunUtils.getStatus(runId);
+        } catch (IOException e) {
+            RunStatus rs = new RunStatus();
+            rs.setMessage("Error getting runStatus from web service, error is: "
+                    + e.getMessage());
+            rs.setStatus(RunStatusEnum.FAILED);
+            return rs;
+        }
+    }
+
+    @Override
+    @WebResult(name = "supportedPopluationLocations", targetNamespace = "")
+    @RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetSupportedLocations")
+    @WebMethod
+    @ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetSupportedLocationsResponse")
+    public List<SupportedPopulationLocation> getSupportedLocations() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @WebResult(name = "runId", targetNamespace = "")
+    @RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.Run")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/run")
+    @ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.RunResponse")
+    public String run(
+            @WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
+
+        // get simulator config JSON
+        String simConfigJson = getJSONString(simulatorConfiguration);
+
+        // hash the JSON
+//        String simConfigHash = RunUtils.getMd5HashFromBytes(baos.toByteArray());
+        String simConfigHash = RunUtils.getMd5HashFromString(simConfigJson);
+
+        // get a run ID
+        SoftwareIdentification sid = simulatorConfiguration.getSimulatorIdentification();
+        RunIdProperties runIdProps = getOrAddRunId(simConfigHash, sid);
+        String runId = runIdProps.getRunId();
+        // hash the run ID to avoid issues with certain characters
+//        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        String runIdHash = RunUtils.getMd5HashFromString(runId);
+
+        // add the runId hash to the queued threads
+        queuedThreads.add(runIdHash);
+
+        Thread worker = new SimulatorThread(simulatorConfiguration,
+                simConfigHash, runId, runIdHash, simConfigJson,
+                !runIdProps.isRunIdInDatabase(), false, true);
+        QueueThread queueThread = new QueueThread(worker);
+        queueThread.start();
+
+        return runId;
+    }
+
+    @Override
+    @WebResult(name = "batchRun", targetNamespace = "")
+    @RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
+    @ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
+    public BatchRunResult batchRun(
+            @WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+
+//        SoftwareIdentification sid = batchRunSimulatorConfiguration.getSoftwareIdentification();
 //
-//		try {
-//			md5RunIdMap = DbUtils.getStoredRunHashes();
-//		} catch (SQLException e) {
-//			System.err
-//					.println("Fatal Error enountered retrieving stored run hashes. Specific error message was:\n"
-//							+ e.getMessage());
-//			e.printStackTrace();
-//			System.exit(-1);
-//		} catch (ClassNotFoundException e) {
-//			System.err
-//					.println("Fatal Error enountered retrieving stored run hashes. Specific error message was:\n"
-//							+ e.getMessage());
-//			e.printStackTrace();
-//			System.exit(-1);
-//		}
-//		// initialize simulator thread queue
-//		simulatorThreadQueue = new LinkedList<Thread>();
-//		numRunningSimulatorThreads = 0;
+//        String runId = "-1";
+//        // try {
+//        runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName() + "_"
+//                + sid.getSoftwareVersion() + "_" + incrementRunId();
 //
-//		try {
-//			currentRunIdNumber = Integer.parseInt(RunUtils.getNextId());
-//			storeThread = new RunIdStoreThread(false);
-//			storeThread.start();
-//		} catch (IOException ex) {
-//			ex.printStackTrace();
-//		}
+//        String md5RunIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
 //
-//		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+//        BatchRunResult result = new BatchRunResult();
 //
-//			public void run() {
-//				// what you want to do
-//				try {
-//					RunUtils.writeCurrentId(currentRunIdNumber);
-//				} catch (IOException ex) {
-//					System.err
-//							.println("IO exception writing current ID to file");
-//				}
-//			}
-//		}));
+//        result.setCompletedFile("https://betaweb.rods.pitt.edu/jdl50_web_dav-source/"
+//                + md5RunIdHash + "_results.txt");
+//        // result.setErrorFile(md5RunIdHash + "_errors.txt");
+//        result.setRunId(runId);
+//
+//        BatchThread bt = new BatchThread(
+//                batchRunSimulatorConfiguration.getBatchConfigurationFile(),
+//                result, runId, md5RunIdHash);
+//        bt.start();
+//        // bt.run();
+//
+//        System.out.println("RunId is :" + runId);
+//
+//        return result;
+        // } catch (IOException e1) {
+        return null;
+        // }
+    }
 
-	}
+    @Override
+    @WebResult(name = "getConfigurationFileForRun", targetNamespace = "")
+    @RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigrationFileForRun")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun")
+    @ResponseWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigrationFileForRunResponse")
+    public String getConfigurationFileForRun(String runId) {
 
-	@Override
-	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetRunStatusResponse")
-	public RunStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "") String runId) {
-		try {
-			// System.out.println("Getting run status for run id " + runId);
-			return RunUtils.getStatus(runId);
-		} catch (IOException e) {
-			RunStatus rs = new RunStatus();
-			rs.setMessage("Error getting runStatus from web service, error is: "
-					+ e.getMessage());
-			rs.setStatus(RunStatusEnum.FAILED);
-			return rs;
-		}
-	}
+//        String[] splitRunId = runId.split("::");
+//        String runIdPart = splitRunId[0];
+//        String configFileType = splitRunId[1];
+//        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        String runIdHash = RunUtils.getMd5HashFromString(runId);
+        String configText = null;
+        try {
+            configText = FileUtils.loadConfigurationFile(runIdHash);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
 
-	@Override
-	@WebResult(name = "supportedPopluationLocations", targetNamespace = "")
-	@RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetSupportedLocations")
-	@WebMethod
-	@ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetSupportedLocationsResponse")
-	public List<SupportedPopulationLocation> getSupportedLocations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        return configText;
+    }
 
-	@Override
-	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.Run")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/run")
-	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.RunResponse")
-	public String run(
-			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
-/*		try {
+    // public static void shutdownAll() {
+    // simulatorExecutor.shutdown();
+    // batchExecutor.shutdown();
+    // }
+    private static synchronized void addRunToQueuedList(String md5Hash) {
+        if (!queuedThreads.contains(md5Hash)) { // only need to add it if it is
+            // not already in the list
+            queuedThreads.add(md5Hash);
+        }
+    }
 
-			System.out.println("Starting the SEIR run");
+    public static synchronized void removeRunFromQueuedList(String md5Hash) {
+        queuedThreads.remove(md5Hash);
+    }
 
-			// check to see if the user would be happy with a cached result
-			// if so, check to see if there is a cached run by:
-			// md5 hashing the sc
-			// querying gthe database for the sc
-			// String runId = DbUtils.isRunCached(simulatorConfiguration);
-			// if run is cached return the old run id for that run and exit
+    public static synchronized boolean isRunQueued(String md5Hash) {
+        return queuedThreads.contains(md5Hash);
+    }
 
-			// if the run is not cached, or the user doesn't want a cache, then
-			// just run
+    public static synchronized void simulatorRunFinished() {
+        numRunningSimulatorThreads--;
+    }
 
-			ByteArrayOutputStream baos = getJSONBytes(simulatorConfiguration);
-			String simConfigJson = baos.toString();
-			String simConfigHash = RunUtils.getMd5HashFromBytes(baos
-					.toByteArray());
+    public static synchronized int incrementRunId() {
 
-			SoftwareIdentification sid = simulatorConfiguration
-					.getSimulatorIdentification();
-			RunIdProperties runIdProps = getOrAddRunId(simConfigHash, sid);
-			String runId = runIdProps.getRunId();
-			String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        currentRunIdNumber++;
+        return currentRunIdNumber;
+    }
 
-			queuedThreads.add(runIdHash);
+    public static synchronized int getCurrentRunId() {
+        return currentRunIdNumber;
+    }
 
-			Thread worker = new SimulatorThread(simulatorConfiguration,
-					simConfigHash, runId, simConfigJson,
-					!runIdProps.isRunIdInDatabase(), false, true);
-			QueueThread queueThread = new QueueThread(worker);
-			System.out.println("starting queued thread");
-			queueThread.start();
+    public static synchronized boolean addSimulatorThread(Thread runnable) {
 
-			return runId;
+        if (simulatorThreadQueue.size() < MAX_QUEUE_SIZE) {
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		return "blah.";
+            simulatorThreadQueue.add(runnable);
+            runSimulatorThreads(); // try to run a new thread
 
-	}
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	// static {
-	// try {
-	// // System.loadLibrary("seir2jni");
-	// System.out.println("Loaded seirjni in Apollo!");
-	// } catch (Exception e) {
-	// System.out.println("Error loading SEIR JNI: " + e.getMessage());
-	// }
-	// }
-	@Override
-	@WebResult(name = "batchRun", targetNamespace = "")
-	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
-	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
-	public BatchRunResult batchRun(
-			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+    public static synchronized void runSimulatorThreads() {
+        // start as many runs as possible
+        while (numRunningSimulatorThreads < MAX_NUM_SIMULATOR_THREADS && simulatorThreadQueue.size() > 0) {
 
-		// for (String hash : md5RunIdMap.keySet()) {
-		// System.out.println(hash + "   " + md5RunIdMap.get(hash));
-		// }
+            Thread thread = simulatorThreadQueue.poll();
+            numRunningSimulatorThreads++;
+            thread.start();
+        }
+    }
 
-		SoftwareIdentification sid = batchRunSimulatorConfiguration
-				.getSoftwareIdentification();
+    public static String formatJSONString(String jsonString) {
 
-		String runId = "-1";
-		// try {
-		runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName() + "_"
-				+ sid.getSoftwareVersion() + "_" + incrementRunId();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(jsonString);
+        String prettyJsonString = gson.toJson(je);
+        return prettyJsonString;
+    }
 
-		String md5RunIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+//    public static ByteArrayOutputStream getJSONBytes(
+//            SimulatorConfiguration simConfig) {
+//        try {
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//            mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            mapper.writeValue(baos, simConfig);
+//
+//            return baos;
+//        } catch (IOException ex) {
+//            System.err.println("IO Exception JSON encoding and getting string from SimulatorConfiguration");
+//            return null;
+//        }
+//    }
+    public static String getJSONString(SimulatorConfiguration simConfig) {
+        try {
 
-		BatchRunResult result = new BatchRunResult();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+            mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mapper.writeValue(baos, simConfig);
 
-		result.setCompletedFile("https://betaweb.rods.pitt.edu/jdl50_web_dav-source/"
-				+ md5RunIdHash + "_results.txt");
-		// result.setErrorFile(md5RunIdHash + "_errors.txt");
-		result.setRunId(runId);
+            return baos.toString();
+        } catch (IOException ex) {
+            System.err.println("IO Exception JSON encoding and getting bytes from SimulatorConfiguration");
+            return null;
+        }
+    }
 
-		BatchThread bt = new BatchThread(
-				batchRunSimulatorConfiguration.getBatchConfigurationFile(),
-				result, runId, md5RunIdHash);
-		bt.start();
-		// bt.run();
+    public static synchronized RunIdProperties getOrAddRunId(String simConfigHash, SoftwareIdentification sid) {
 
-		System.out.println("RunId is :" + runId);
+        // not using a cache anymore since that is done in apollo service
+        RunIdProperties runIdProps = new RunIdProperties();
+        String newRunId = sid.getSoftwareDeveloper() + "_"
+                + sid.getSoftwareName() + "_" + sid.getSoftwareVersion()
+                + "_" + incrementRunId();
 
-		return result;
-		// } catch (IOException e1) {
-		// return null;
-		// }
-	}
+        runIdProps.setRunId(newRunId);
+        runIdProps.setRunIdInDatabase(false);
+        return runIdProps;
 
-	@Override
-	@WebResult(name = "getConfigurationFileForRun", targetNamespace = "")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigrationFileForRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/getConfigurationFileForRun")
-	@ResponseWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigrationFileForRunResponse")
-	public String getConfigurationFileForRun(String runId) {
-		
-		String json = "There was an error retreving the file.  Specific error was:\n";
-//		try {
-//			json = DbUtils.getConfigurationFileJson(runId);
-//		} catch (SQLException e) {
-//			json += e.getMessage();
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			json += e.getMessage();
-//			e.printStackTrace();
-//		}
-		String formattedJson = formatJSONString(json);
+    }
 
-		return formattedJson;
-	}
+    public static void main(String[] args) {
 
-	// public static void shutdownAll() {
-	// simulatorExecutor.shutdown();
-	// batchExecutor.shutdown();
-	// }
+        long startTime = System.currentTimeMillis();
+        FluteSimulatorServiceImpl s = new FluteSimulatorServiceImpl();
+        BatchRunSimulatorConfiguration c = new BatchRunSimulatorConfiguration();
+        c.setAcceptCachedResults(true);
+        c.setSoftwareIdentification(new SoftwareIdentification());
+        c.getSoftwareIdentification().setSoftwareDeveloper("DevName");
+        c.getSoftwareIdentification().setSoftwareName("Fake Simulator");
+        c.getSoftwareIdentification().setSoftwareVersion("1.0");
+        c.setBatchConfigurationFile("http://localhost:8080/apollo/test_3.json");
+        BatchRunResult result = s.batchRun(c);
 
-	private static synchronized void addRunToQueuedList(String md5Hash) {
-		if (!queuedThreads.contains(md5Hash)) { // only need to add it if it is
-												// not already in the list
-			queuedThreads.add(md5Hash);
-		}
-	}
+        while (true) {
+            RunStatusEnum t = s.getRunStatus(result.getRunId()).getStatus();
+            if (t == RunStatusEnum.COMPLETED) {
+                System.out.println("Time: "
+                        + (System.currentTimeMillis() - startTime));
+                break;
+            }
+        }
+        // System.out.println(s.getConfigurationFileForRun("0_FRED_2.0.6_3007"));
 
-	public static synchronized void removeRunFromQueuedList(String md5Hash) {
-		queuedThreads.remove(md5Hash);
-	}
-
-	public static synchronized boolean isRunQueued(String md5Hash) {
-		return queuedThreads.contains(md5Hash);
-	}
-
-	public static synchronized void simulatorRunFinished() {
-		numRunningSimulatorThreads--;
-	}
-
-	public static synchronized int incrementRunId() {
-
-		currentRunIdNumber++;
-		return currentRunIdNumber;
-	}
-
-	public static synchronized int getCurrentRunId() {
-		return currentRunIdNumber;
-	}
-
-	public static synchronized boolean addSimulatorThread(Thread runnable) {
-
-		// System.out.println(System.currentTimeMillis() +
-		// "     num threads running: " + numRunningSimulatorThreads + "    " +
-		// "queue size: " + simulatorThreadQueue.size());
-
-		if (simulatorThreadQueue.size() < MAX_QUEUE_SIZE) {
-			simulatorThreadQueue.add(runnable);
-			// if (simulatorThreadQueue.size() == MAX_QUEUE_SIZE) {
-			// System.out.println("running sim thread");
-			runSimulatorThreads(); // try to run a new thread
-			// }
-
-			// System.out.println(System.currentTimeMillis() +
-			// "     queue size: " + simulatorThreadQueue.size());
-			// System.out.flush();
-			return true;
-		} else {
-			// System.out.println(System.currentTimeMillis() +
-			// "     queue size: " + simulatorThreadQueue.size());
-			return false;
-		}
-	}
-
-	public static synchronized void runSimulatorThreads() {
-		// start as many runs as possible
-		while (numRunningSimulatorThreads < MAX_NUM_SIMULATOR_THREADS
-				&& simulatorThreadQueue.size() > 0) {
-			// if (simulatorThreadQueue.size() > 0 && numRunningSimulatorThreads
-			// < MAX_NUM_SIMULATOR_THREADS) {
-			Thread thread = simulatorThreadQueue.poll();
-			numRunningSimulatorThreads++;
-			// System.out.println("starting run");
-			thread.start();
-			// }
-		}
-
-		// System.out.println("num threads running: " +
-		// numRunningSimulatorThreads + "    " + "queue size: " +
-		// simulatorThreadQueue.size());
-	}
-
-	public static String formatJSONString(String jsonString) {
-
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		JsonParser jp = new JsonParser();
-		JsonElement je = jp.parse(jsonString);
-		String prettyJsonString = gson.toJson(je);
-		return prettyJsonString;
-	}
-
-	public static ByteArrayOutputStream getJSONBytes(
-			SimulatorConfiguration simConfig) {
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, simConfig);
-
-			return baos;
-		} catch (IOException ex) {
-			System.err
-					.println("IO Exception JSON encoding and getting string from SimulatorConfiguration");
-			return null;
-		}
-	}
-
-	public static String getJSONString(SimulatorConfiguration simConfig) {
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			// mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, simConfig);
-
-			return baos.toString();
-		} catch (IOException ex) {
-			System.err
-					.println("IO Exception JSON encoding and getting bytes from SimulatorConfiguration");
-			return null;
-		}
-	}
-
-	public static synchronized RunIdProperties getOrAddRunId(
-			String simConfigHash, SoftwareIdentification sid) {
-
-		// first check if the map contains the sim config
-		RunIdProperties runIdProps = new RunIdProperties();
-		if (md5RunIdMap == null) {
-			System.err.println("MD5RunIdMap is null");
-			return null;
-		} else if (md5RunIdMap.containsKey(simConfigHash)) {
-			runIdProps.setRunId(md5RunIdMap.get(simConfigHash));
-			runIdProps.setRunIdInDatabase(true);
-			return runIdProps;
-		} else {
-			// try {
-			String newRunId = sid.getSoftwareDeveloper() + "_"
-					+ sid.getSoftwareName() + "_" + sid.getSoftwareVersion()
-					+ "_" + incrementRunId();
-			md5RunIdMap.put(simConfigHash, newRunId);
-			runIdProps.setRunId(newRunId);
-			runIdProps.setRunIdInDatabase(false);
-			return runIdProps;
-			// } catch (IOException ex) {
-			// System.err.println("IO exception getting next run ID from RunUtils");
-			// return null;
-			// }
-		}
-
-	}
-
-	public static void main(String[] args) {
-
-		long startTime = System.currentTimeMillis();
-		FluteSimulatorServiceImpl s = new FluteSimulatorServiceImpl();
-		BatchRunSimulatorConfiguration c = new BatchRunSimulatorConfiguration();
-		c.setAcceptCachedResults(true);
-		c.setSoftwareIdentification(new SoftwareIdentification());
-		c.getSoftwareIdentification().setSoftwareDeveloper("DevName");
-		c.getSoftwareIdentification().setSoftwareName("Fake Simulator");
-		c.getSoftwareIdentification().setSoftwareVersion("1.0");
-		c.setBatchConfigurationFile("http://localhost:8080/apollo/test_3.json");
-		BatchRunResult result = s.batchRun(c);
-
-		while (true) {
-			RunStatusEnum t = s.getRunStatus(result.getRunId()).getStatus();
-			if (t == RunStatusEnum.COMPLETED) {
-				System.out.println("Time: "
-						+ (System.currentTimeMillis() - startTime));
-				break;
-			}
-		}
-		// System.out.println(s.getConfigurationFileForRun("0_FRED_2.0.6_3007"));
-
-		System.exit(0);
-	}
+        System.exit(0);
+    }
 }
