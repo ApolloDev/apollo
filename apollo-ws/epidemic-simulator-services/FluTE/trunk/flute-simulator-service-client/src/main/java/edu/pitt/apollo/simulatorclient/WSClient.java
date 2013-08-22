@@ -16,8 +16,13 @@ package edu.pitt.apollo.simulatorclient;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import edu.pitt.apollo.seirepidemicmodeljava.SeirModel;
+import edu.pitt.apollo.service.simulatorservice.SimulatorService;
+import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
 import edu.pitt.apollo.types.AntiviralTreatment;
 import edu.pitt.apollo.types.AntiviralTreatmentControlMeasure;
+import edu.pitt.apollo.types.ApolloSoftwareType;
+import edu.pitt.rods.apollo.InvalidSimulatorConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,6 +43,7 @@ import edu.pitt.apollo.types.Authentication;
 import edu.pitt.apollo.types.ControlMeasure;
 import edu.pitt.apollo.types.ControlMeasures;
 import edu.pitt.apollo.types.Disease;
+import edu.pitt.apollo.types.FixedStartTime;
 import edu.pitt.apollo.types.FixedStartTimeControlMeasure;
 import edu.pitt.apollo.types.PopulationDiseaseState;
 import edu.pitt.apollo.types.ServiceRegistrationRecord;
@@ -49,15 +55,17 @@ import edu.pitt.apollo.types.TimeStepUnit;
 import edu.pitt.apollo.types.TreatmentEfficacyOverTime;
 import edu.pitt.apollo.types.Vaccination;
 import edu.pitt.apollo.types.VaccinationControlMeasure;
+import edu.pitt.rods.apollo.SeirModelAdapter.SeirModelAdapter;
+import java.net.URL;
 
 public class WSClient {
 
     public static void main(String[] args) throws JsonGenerationException,
-            JsonMappingException, IOException {
-        // SimulatorService service = new SimulatorService(
-        // new URL(
-        // "http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl"));
-        // SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
+            JsonMappingException, IOException, InvalidSimulatorConfigurationException {
+         SimulatorService service = new SimulatorService(
+         new URL(
+         "http://localhost:8080/flutesimulatorservice/services/flutesimulatorservice?wsdl"));
+         SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
 
         ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
 
@@ -68,9 +76,10 @@ public class WSClient {
 
         // ServiceRecord sr = new ServiceRecord();
         SoftwareIdentification si = new SoftwareIdentification();
-        si.setSoftwareDeveloper("UPitt,PSC,CMU");
-        si.setSoftwareName("FRED");
-        si.setSoftwareVersion("2.0.1");
+        si.setSoftwareDeveloper("UPitt");
+        si.setSoftwareName("SEIR");
+        si.setSoftwareVersion("1.2");
+        si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
         // si.set
         // sr.setSoftwareIdentification(si);
 
@@ -103,6 +112,9 @@ public class WSClient {
         acm.setControlMeasureCompliance(0.0);
         acm.setDescription("antiviral");
         avControlMeasure.setControlMeasure(acm);
+        FixedStartTime time = new FixedStartTime();
+        time.setFixedStartTime(new BigInteger("0"));
+        avControlMeasure.setControlMeasureFixedStartTime(time);
         fixedStartControlMeasures.add(avControlMeasure);
         
         simulatorConfiguration.setSimulatorIdentification(si);
@@ -150,9 +162,16 @@ public class WSClient {
         vaccEfficacy.getEfficacyValues().add(0.0);
         Vaccination vaccTreatment = new Vaccination();
         vaccTreatment.setVaccinationEfficacy(vaccEfficacy);
+        vaccTreatment.setDescription("vacc treatment");
+        vaccTreatment.setNumDosesInVaccinationCourse(new BigInteger("5"));
+        vaccTreatment.setVaccineId("12");
+        vaccTreatment.setHostOrganism("human");
         vcm.setVaccination(vaccTreatment);
         vcm.setDescription("vaccination");
         vaccControlMeasure.setControlMeasure(vcm);
+        time = new FixedStartTime();
+        time.setFixedStartTime(new BigInteger("0"));
+        vaccControlMeasure.setControlMeasureFixedStartTime(time);
         
         fixedStartControlMeasures.add(vaccControlMeasure);
         
@@ -172,16 +191,16 @@ public class WSClient {
 //      
 //        System.out.println(x.toXML(simulatorConfiguration));
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        FileOutputStream out = new FileOutputStream(new File(
-                "test.json"));
-        for (int i = 0; i < 1; i++) {
-            simulatorConfiguration.getSimulatorIdentification().setSoftwareDeveloper(String.valueOf(i));
-            mapper.writeValue(out, simulatorConfiguration);
-        }
-        out.close();
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//        FileOutputStream out = new FileOutputStream(new File(
+//                "test.json"));
+//        for (int i = 0; i < 1; i++) {
+//            simulatorConfiguration.getSimulatorIdentification().setSoftwareDeveloper(String.valueOf(i));
+//            mapper.writeValue(out, simulatorConfiguration);
+//        }
+//        out.close();
 
 //        FileInputStream fis = new FileInputStream(new File("test.json"));
 //        for (Iterator it = new ObjectMapper().readValues(
@@ -191,8 +210,10 @@ public class WSClient {
 //        }
 //        fis.close();
 
-        // //String runId = port.runSimulation(simulatorConfiguration);
-        // System.out.println("Simulator returned runId: " + runId );
+        SeirModelAdapter.validateSimulatorConfiguration(simulatorConfiguration);
+        
+         String runId = port.run(simulatorConfiguration);
+         System.out.println("Simulator returned runId: " + runId );
         // // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
         // // RunStatus rs = port.getRunStatus(runId, sr);
         // while (rs.getStatus() != RunStatusEnum.COMPLETED) {
