@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
@@ -24,9 +25,11 @@ import java.util.Scanner;
  */
 public class SimulatorThread extends Thread {
 
-    private static final String FLUTE_USER = "flute";
-    private static final String FLUTE_PASSWORD = "flute";
-    private static final String FLUTE_HOST = "research3.rods.pitt.edu";
+    static final ResourceBundle SSH_PROPERTIES = ResourceBundle.getBundle("connections");
+    
+    private static final String FLUTE_USER = SSH_PROPERTIES.getString("ssh_user");
+    private static final String FLUTE_PASSWORD = SSH_PROPERTIES.getString("ssh_password");
+    private static final String FLUTE_HOST = SSH_PROPERTIES.getString("ssh_host");
     private static final String FLUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_output_util.sh";
     private static final String FLUTE_EXECUTE_COMMAND = "/home/flute/flute-source-1_15/flute ";
     private static final String FLUTE_RUNS_DIR = "/home/flute/runs/";
