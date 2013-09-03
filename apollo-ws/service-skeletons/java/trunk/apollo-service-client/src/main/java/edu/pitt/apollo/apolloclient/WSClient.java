@@ -86,8 +86,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Severe acute respiratory syndrome (S.A.R.S.)",
-				
+				"The infectious disease of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
 				"Hypothetical SARS added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -126,7 +125,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Smallpox",
+				"The infectious disease of humans caused by Smallpox",
 				"Hypothetical Smallpox virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -163,7 +162,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Rubella",
+				"The infectious disease of humans caused by Rubella",
 				"Hypothetical Rubella virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -196,7 +195,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Rubella",
+				"The infectious disease of humans caused by Diptheria",
 				"Hypothetical Diptheria added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 	}
@@ -227,7 +226,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Meningitis",
+				"The infectious disease of humans caused by Meningitis",
 				"Hypothetical Meningitis added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 	}
@@ -264,7 +263,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Influenza A virus subtype H1N1",
+				"The infectious disease of humans caused by Influenza A virus subtype H1N1",
 				"Hypothetical H1N1 virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -301,7 +300,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Influenza A virus subtype H5N1",
+				"The infectious disease of humans caused by Influenza A virus subtype H5N1",
 				"Hypothetical H5N1 virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -338,7 +337,7 @@ public class WSClient {
 
 		return port.addLibraryItem(
 				id,
-				"Influenza A virus subtype H7N9",
+				"The infectious disease of humans caused by Influenza A virus subtype H7N9",
 				"Hypothetical H7N9 virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -375,7 +374,7 @@ public class WSClient {
 		return port.addLibraryItem(
 				id,
 				
-				"Influenza A virus subtype H3N2",
+				"The infectious disease of humans caused by Influenza A virus subtype H3N2",
 				"Hypothetical H3N2 virus added by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
 
@@ -412,7 +411,7 @@ public class WSClient {
 		return port.addLibraryItem(
 				id,
 				
-				"Influenza A virus subtype H7N7" +
+				"The infectious disease of humans caused by Influenza A virus subtype H7N7" +
 				"",
 				"Hypothetical H7N7 virus aded by John Levander, University of Pittsburgh",
 				"InfectiousDisease", itemIndexingLabels);
@@ -479,16 +478,17 @@ public class WSClient {
 		vacc.setSpeciesOfTreatedOrganisms("human");
 		vacc.getTreatmentContraindications();
 
-//		Treatment t = new Treatment();
-//		t.setDescription("A vaccination for H1N1.");
-//		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
-//		t.setSpeciesOfTreatedOrganisms("human");
-//		t.getTreatmentContraindications();
+		Treatment t = new Treatment();
+		t.setDescription("A vaccination for H1N1.");
+		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
+		t.setSpeciesOfTreatedOrganisms("human");
+		t.getTreatmentContraindications();
 
 		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
 		vesc.setStrainIdentifier("H1N1");
 		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
-		vesc.setTreatment(vacc);
+		//vesc.setTreatment(vacc);
+		vesc.setTreatment(t);
 		vesc.setVaccineIdentifier("Influenza A (H1N1) 2009 Monovalent Vaccine");
 		vesc.setAverageVaccinationEfficacy(0.7);
 		vesc.setDescription("The vaccination efficacy for the Influenza A (H1N1) 2009 Monovalent Vaccine");
@@ -637,7 +637,7 @@ public class WSClient {
 //		 addRubella(port);
 //		 addSARS(port);
 //		 addSmallpox(port);
-		 		 
+//		 		 
 		GregorianCalendar c = new GregorianCalendar();
 		c.add(Calendar.YEAR, -1);
 		XMLGregorianCalendar date;
