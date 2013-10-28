@@ -44,6 +44,15 @@
 			<enumeration value="millisecond" />
 		</restriction>
 	</simpleType>
+	
+	<simpleType name="PlaceType">
+		<restriction base="string">
+			<enumeration value="NurserySchool" />
+			<enumeration value="PrimarySchool" />
+			<enumeration value="SecondarySchool" />
+			<enumeration value="Workplace" />
+		</restriction>
+	</simpleType>
 
 	<simpleType name="RunStatusEnum">
 		<restriction base="string">
@@ -1472,36 +1481,42 @@
 			<element name="hostTaxonID" type="token" maxOccurs="1"
 				minOccurs="1" />
 
-			<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
+			<element name="infectiousPeriod"
+				type="tns:TemporalDiseaseParameter" maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
 
 				</annotation>
 			</element>
 
-			<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
+			<element name="latentPeriod"
+				type="tns:TemporalDiseaseParameter" maxOccurs="1" minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
 
 				</annotation>
 			</element>
 
-			<element name="probabilityNeverSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0">
+            <element name="infectiousnessTemporalProfile" type="tns:TemporalDiseaseParameter" maxOccurs="1" minOccurs="1"></element>
+            <element name="probabilityNeverSymptomatic"
+				type="tns:Probability" maxOccurs="1" minOccurs="0">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
 
 				</annotation>
 			</element>
-			<element name="probabilitySevereGivenSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0" />
+			<element name="probabilitySevereGivenSymptomatic"
+				type="tns:Probability" maxOccurs="1" minOccurs="0" />
 
-			<element name="infectionAcquisition" type="tns:InfectionAcquisition"
-				maxOccurs="unbounded" minOccurs="1">
+            <element name="infectionAcquisition"
+				type="tns:InfectionAcquisition" maxOccurs="unbounded"
+				minOccurs="1">
 				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
+					<documentation
+						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
 
 				</annotation>
 			</element>
@@ -1528,7 +1543,7 @@
 					maxOccurs="1" minOccurs="0" />
 
 			</choice>
-			<choice><element name="reproductionNumber" type="tns:PositiveDouble" maxOccurs="1" minOccurs="1" /><element name="transmissionCoefficient" type="tns:TransmissionCoefficient" maxOccurs="1" minOccurs="1" /></choice>
+			<choice><element name="reproductionNumber" type="tns:PositiveDouble" maxOccurs="1" minOccurs="1" /><element name="transmissionCoefficient" type="tns:ImperialReproductionNumber" maxOccurs="1" minOccurs="1" /></choice>
         </sequence>
 	</complexType>
 
@@ -1542,33 +1557,41 @@
 
 
 
-	<complexType name="TransmissionCoefficient">
+	<complexType name="ImperialReproductionNumber">
 		<sequence>
-            <element name="averageCommunityTransmissionCoefficientDuringSeason" type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+			<element name="averageCommunityImperialReproductionNumber"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
 			</element>
-            <element name="averageHouseholdTransmissionCoefficientDuringSeason" type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+			<element name="averageHouseholdImperialReproductionNumber"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
 			</element>
-            <element name="averagePlaceTransmissionCoefficientsDuringSeason" type="tns:TransmissionCoefficientForPlace" maxOccurs="unbounded" minOccurs="0">
+			<element name="imperialReproductionNumberForPlace"
+				type="tns:ImperialReproductionNumberForPlace" maxOccurs="unbounded"
+				minOccurs="0">
 			</element>
-            <element name="seasonalityFunctionParameters" type="tns:SeasonalityFunctionParameters" maxOccurs="1" minOccurs="1">
+			<element name="seasonalityFunctionParameters"
+				type="tns:SeasonalityFunctionParameters" maxOccurs="1"
+				minOccurs="1">
 			</element>
-            <element name="symptomaticInfectionMultiplier" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="1">
+            <element name="probSymptomaticInfectionClinicallyDetected" type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
+            <element name="symptomaticInfectionMultiplier"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="severeInfectionMultiplier" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="1">
+            <element name="probSevereInfectionClinicallyDetected" type="tns:Probability" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="spatialKernelFunctionParameters" type="tns:SpatialKernelFunctionParameters" maxOccurs="1" minOccurs="1"></element>
+            <element name="severeInfectionMultiplier"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+			</element>
 
 		</sequence>
 	</complexType>
 
-	<complexType name="TransmissionCoefficientForPlace">
+	<complexType name="ImperialReproductionNumberForPlace">
 		<sequence>
-			<element name="placeIdentifier" type="nonNegativeInteger"
+			<element name="placeType" type="tns:PlaceType"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="averageTransmissionCoefficientDuringSeason" type="tns:PositiveDouble" maxOccurs="1"
+			<element name="averageImperialReproductionNumber" type="tns:PositiveDouble" maxOccurs="1"
 				minOccurs="1"></element>
 			<element name="withinGroupTransmissionProbability" type="tns:Probability"
 				maxOccurs="1" minOccurs="1">
@@ -1585,7 +1608,8 @@
 			<element name="severelyInfectedAbsenteeMultiplier" type="tns:PositiveDouble"
 				maxOccurs="1" minOccurs="1">
 			</element>
-		</sequence>
+            <element name="spatialKernelFunctionParameters" type="tns:SpatialKernelFunctionParameters" maxOccurs="1" minOccurs="1"></element>
+        </sequence>
 	</complexType>
 
 	<complexType name="SeasonalityFunctionParameters">
@@ -1597,8 +1621,12 @@
 	</complexType>
 	<complexType name="SpatialKernelFunctionParameters">
 		<sequence>
-			<element name="a" type="double" maxOccurs="1" minOccurs="1"></element>
-			<element name="b" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="type" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="a0" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="a1" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="b0" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="b1" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="c1" type="double" maxOccurs="1" minOccurs="1"></element>
 			<element name="cutoff" type="double" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
