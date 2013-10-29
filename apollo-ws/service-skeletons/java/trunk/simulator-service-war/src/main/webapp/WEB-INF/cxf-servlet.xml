@@ -15,7 +15,7 @@
     <jaxws:endpoint 
         id="simulatorservice"
         implementor="edu.pitt.apollo.SimulatorServiceImpl"
-        wsdlLocation="WEB-INF/wsdl/simulatorservice.wsdl"
+        wsdlLocation="WEB-INF/wsdl/simulatorservice131.wsdl"
         address="/simulatorservice">
     </jaxws:endpoint>
 </beans>
