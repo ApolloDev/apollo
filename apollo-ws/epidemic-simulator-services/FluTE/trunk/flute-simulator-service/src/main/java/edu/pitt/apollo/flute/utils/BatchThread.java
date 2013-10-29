@@ -2,6 +2,12 @@ package edu.pitt.apollo.flute.utils;
 
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
+import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,12 +17,7 @@ import java.util.Iterator;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.FluteSimulatorServiceImpl;
-import edu.pitt.apollo.types.BatchRunResult;
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
-import edu.pitt.apollo.types.SoftwareIdentification;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -90,7 +91,7 @@ public class BatchThread extends Thread {
                 SoftwareIdentification sid = sc.getSimulatorIdentification();
                 RunIdProperties runIdProps = FluteSimulatorServiceImpl.getOrAddRunId(simConfigHash, sid);
                 String runId = runIdProps.getRunId();
-                String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+                String runIdHash = RunUtils.getMd5HashFromString(runId);
 
                 // this should never store anything to the database
                 Thread worker = new SimulatorThread(sc, simConfigHash, runId, runIdHash,
