@@ -21,30 +21,33 @@ import java.net.URL;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 
-import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceV13;
-import edu.pitt.apollo.types._07._03._2013.ApolloSoftwareType;
-import edu.pitt.apollo.types._07._03._2013.Authentication;
-import edu.pitt.apollo.types._07._03._2013.ControlMeasures;
-import edu.pitt.apollo.types._07._03._2013.DiseaseState;
-import edu.pitt.apollo.types._07._03._2013.InfectiousDisease;
-import edu.pitt.apollo.types._07._03._2013.LocationDefinition;
-import edu.pitt.apollo.types._07._03._2013.PopulationDiseaseCensus;
-import edu.pitt.apollo.types._07._03._2013.PopulationDiseaseCensusResult;
-import edu.pitt.apollo.types._07._03._2013.PopulationStrataArray;
-import edu.pitt.apollo.types._07._03._2013.PopulationStrataDefinition;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.SimulatorTimeSpecification;
-import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
-import edu.pitt.apollo.types._07._03._2013.TemporalDiseaseParameter;
-import edu.pitt.apollo.types._07._03._2013.TimeStepUnit;
+import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceV131;
+import edu.pitt.apollo.types._10._28._2013.ApolloSoftwareType;
+import edu.pitt.apollo.types._10._28._2013.Authentication;
+import edu.pitt.apollo.types._10._28._2013.ControlMeasures;
+import edu.pitt.apollo.types._10._28._2013.DiseaseState;
+import edu.pitt.apollo.types._10._28._2013.Infection;
+import edu.pitt.apollo.types._10._28._2013.InfectionAcquisition;
+import edu.pitt.apollo.types._10._28._2013.InfectiousDisease;
+import edu.pitt.apollo.types._10._28._2013.LocationDefinition;
+import edu.pitt.apollo.types._10._28._2013.PathogenTaxonID;
+import edu.pitt.apollo.types._10._28._2013.PopulationDiseaseCensus;
+import edu.pitt.apollo.types._10._28._2013.PopulationDiseaseCensusResult;
+import edu.pitt.apollo.types._10._28._2013.PopulationStrataArray;
+import edu.pitt.apollo.types._10._28._2013.PopulationStrataDefinition;
+import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.SimulatorTimeSpecification;
+import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
+import edu.pitt.apollo.types._10._28._2013.TemporalDiseaseParameter;
+import edu.pitt.apollo.types._10._28._2013.TimeStepUnit;
 
 public class WSClient {
 	public static void main(String[] args) throws JsonGenerationException,
 			JsonMappingException, IOException {
-		SimulatorServiceV13 service = new SimulatorServiceV13(
+		SimulatorServiceV131 service = new SimulatorServiceV131(
 				new URL(
-						"http://localhost:8080/seirsimulatorservice1.3/services/seirsimulatorservice?wsdl"));
+						"http://betaweb.rods.pitt.edu/seirsimulatorservice1.3.1/services/seirsimulatorservice?wsdl"));
 		SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
 
 		//
@@ -59,7 +62,7 @@ public class WSClient {
 		SoftwareIdentification si = new SoftwareIdentification();
 		si.setSoftwareDeveloper("UPitt");
 		si.setSoftwareName("SEIR");
-		si.setSoftwareVersion("1.2");
+		si.setSoftwareVersion("1.3.1");
 		si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
 
 		SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
@@ -77,14 +80,22 @@ public class WSClient {
 		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
 		tdp2.setTimeStepValue(2d);
 
-		InfectiousDisease disease = new InfectiousDisease();
-		disease.setAsymptomaticInfectionFraction(0.5);
-		disease.setHostOrganismName("human");
-		disease.setCausativeOrganismName("Influenza A virus subtype H7N7");
+		Infection disease = new Infection();
+		disease.setProbabilityNeverSymptomatic(0.5);
+		disease.setHostTaxonID("human");
+		disease.setPathogenTaxonID(PathogenTaxonID.INFLUENZA);
 		disease.setInfectiousPeriod(tdp);
 		disease.setLatentPeriod(tdp2);
-		disease.setReproductionNumber(7.8);
-		simulatorConfiguration.setInfectiousDisease(disease);
+		InfectionAcquisition ia = new InfectionAcquisition();
+		ia.setContaminatedMaterialID("unknown");
+		ia.setInfectiousHostTaxonID("unknown");
+		ia.setPathogenTaxonID(PathogenTaxonID.INFLUENZA);
+		ia.setReproductionNumber(7.8);
+		ia.setSusceptibleHostTaxonID("unknown");
+		
+		disease.getInfectionAcquisition().add(ia);
+		
+		simulatorConfiguration.setInfection(disease);
 
 		PopulationDiseaseCensus pdc = new PopulationDiseaseCensus();
 		PopulationDiseaseCensusResult pdcr = new PopulationDiseaseCensusResult();

@@ -1,32 +1,29 @@
 package edu.pitt.apollo.seir.utils;
 
-import com.googlecode.sardine.Sardine;
-import com.googlecode.sardine.SardineFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.googlecode.sardine.Sardine;
+import com.googlecode.sardine.SardineFactory;
 
 import edu.pitt.apollo.SeirSimulatorServiceImpl;
-import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.codehaus.jackson.type.TypeReference;
+import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
 
 public class BatchThread extends Thread {
 
