@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import edu.pitt.apollo.SeirSimulatorServiceImpl;
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
+
 
 public class RunUtils {
 
