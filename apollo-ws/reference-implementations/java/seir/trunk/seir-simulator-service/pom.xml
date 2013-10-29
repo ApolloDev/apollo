@@ -6,7 +6,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>seir-core</artifactId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.3.1-SNAPSHOT</version>
     </parent>
     <artifactId>seir-simulator-service</artifactId>
     <name>-- SEIR SimulatorService Web Service Provider</name>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>edu.pitt.rods</groupId>
             <artifactId>SeirModelAdapter</artifactId>
-            <version>1.3</version>
+            <version>1.3.1</version>
         </dependency>
                 
         <dependency>
@@ -239,9 +239,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-												${basedir}/src/main/resources/simulatorservice.wsdl
+												${basedir}/src/main/resources/simulatorservice131.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:simulatorservice.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:simulatorservice131.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
