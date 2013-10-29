@@ -16,13 +16,12 @@ package edu.pitt.apollo.simulatorclient;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import edu.pitt.apollo.seirepidemicmodeljava.SeirModel;
-import edu.pitt.apollo.service.simulatorservice.SimulatorService;
-import edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI;
-import edu.pitt.apollo.types.AntiviralTreatment;
-import edu.pitt.apollo.types.AntiviralTreatmentControlMeasure;
-import edu.pitt.apollo.types.ApolloSoftwareType;
-import edu.pitt.rods.apollo.InvalidSimulatorConfigurationException;
+import edu.pitt.apollo.types._07._03._2013.ApolloSoftwareType;
+import edu.pitt.apollo.types._07._03._2013.Authentication;
+import edu.pitt.apollo.types._07._03._2013.ControlMeasures;
+import edu.pitt.apollo.types._07._03._2013.ServiceRegistrationRecord;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,153 +38,137 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import edu.pitt.apollo.types.Authentication;
-import edu.pitt.apollo.types.ControlMeasure;
-import edu.pitt.apollo.types.ControlMeasures;
-import edu.pitt.apollo.types.Disease;
-import edu.pitt.apollo.types.FixedStartTime;
-import edu.pitt.apollo.types.FixedStartTimeControlMeasure;
-import edu.pitt.apollo.types.PopulationDiseaseState;
-import edu.pitt.apollo.types.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.SimulatedPopulation;
-import edu.pitt.apollo.types.SimulatorConfiguration;
-import edu.pitt.apollo.types.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.SoftwareIdentification;
-import edu.pitt.apollo.types.TimeStepUnit;
-import edu.pitt.apollo.types.TreatmentEfficacyOverTime;
-import edu.pitt.apollo.types.Vaccination;
-import edu.pitt.apollo.types.VaccinationControlMeasure;
-import edu.pitt.rods.apollo.SeirModelAdapter.SeirModelAdapter;
+
 import java.net.URL;
 
 public class WSClient {
 
-    public static void main(String[] args) throws JsonGenerationException,
-            JsonMappingException, IOException, InvalidSimulatorConfigurationException {
-         SimulatorService service = new SimulatorService(
-         new URL(
-         "http://localhost:8080/flutesimulatorservice/services/flutesimulatorservice?wsdl"));
-         SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
-
-        ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
-
-        Authentication auth = new Authentication();
-        auth.setRequesterId("fake_user");
-        auth.setRequesterPassword("fake_password");
-        srr.setAuthentication(auth);
-
-        // ServiceRecord sr = new ServiceRecord();
-        SoftwareIdentification si = new SoftwareIdentification();
-        si.setSoftwareDeveloper("UPitt");
-        si.setSoftwareName("SEIR");
-        si.setSoftwareVersion("1.2");
-        si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
-        // si.set
-        // sr.setSoftwareIdentification(si);
-
-        srr.setSoftwareIdentification(si);
-        srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
-        // srr.setUrl("http://localhost:8087/fred?wsdl");
-
-        Holder<Boolean> success = new Holder<Boolean>();
-        Holder<String> msg = new Holder<String>();
-        // port.registerService(srr, success, msg);
-        System.out.println(msg.value);
-
-        SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
-
-        simulatorConfiguration.setAuthentication(auth);
+//    public static void main(String[] args) throws JsonGenerationException,
+//            JsonMappingException, IOException, InvalidSimulatorConfigurationException {
+//         SimulatorService service = new SimulatorService(
+//         new URL(
+//         "http://localhost:8080/flutesimulatorservice/services/flutesimulatorservice?wsdl"));
+//         SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
+//
+//        ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
+//
+//        Authentication auth = new Authentication();
+//        auth.setRequesterId("fake_user");
+//        auth.setRequesterPassword("fake_password");
+//        srr.setAuthentication(auth);
+//
+//        // ServiceRecord sr = new ServiceRecord();
+//        SoftwareIdentification si = new SoftwareIdentification();
+//        si.setSoftwareDeveloper("UPitt");
+//        si.setSoftwareName("SEIR");
+//        si.setSoftwareVersion("1.2");
+//        si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
+//        // si.set
+//        // sr.setSoftwareIdentification(si);
+//
+//        srr.setSoftwareIdentification(si);
+//        srr.setUrl("http://warhol-fred.psc.edu:8087/fred?wsdl");
+//        // srr.setUrl("http://localhost:8087/fred?wsdl");
+//
+//        Holder<Boolean> success = new Holder<Boolean>();
+//        Holder<String> msg = new Holder<String>();
+//        // port.registerService(srr, success, msg);
+//        System.out.println(msg.value);
+//
+//        SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
+//
+//        simulatorConfiguration.setAuthentication(auth);
         
-        ControlMeasures controlMeasures = new ControlMeasures();
-        List<FixedStartTimeControlMeasure> fixedStartControlMeasures = controlMeasures.getFixedStartTimeControlMeasures();
-        FixedStartTimeControlMeasure avControlMeasure = new FixedStartTimeControlMeasure();
-        simulatorConfiguration.setControlMeasures(controlMeasures);
-        
-        
-//        simulatorConfiguration.set
-        AntiviralTreatmentControlMeasure acm = new AntiviralTreatmentControlMeasure();
-        TreatmentEfficacyOverTime avEfficacy = new TreatmentEfficacyOverTime();
-        avEfficacy.getEfficacyValues().add(0.0);
-        AntiviralTreatment avTreatment = new AntiviralTreatment();
-        avTreatment.setAntiviralTreatmentEfficacy(avEfficacy);
-        acm.setAntiviralTreatment(avTreatment);
-        acm.setControlMeasureCompliance(0.0);
-        acm.setDescription("antiviral");
-        avControlMeasure.setControlMeasure(acm);
-        FixedStartTime time = new FixedStartTime();
-        time.setFixedStartTime(new BigInteger("0"));
-        avControlMeasure.setControlMeasureFixedStartTime(time);
-        fixedStartControlMeasures.add(avControlMeasure);
-        
-        simulatorConfiguration.setSimulatorIdentification(si);
-
-        simulatorConfiguration.setDisease(new Disease());
-        Disease disease = simulatorConfiguration.getDisease();
-        disease.setAsymptomaticInfectionFraction(0.5);
-        disease.setDiseaseName("Influenza");
-        disease.setInfectiousPeriod(3.2);
-        disease.setLatentPeriod(2.0);
-        disease.setReproductionNumber(1.7);
-
-        simulatorConfiguration.setPopulationInitialization(new SimulatedPopulation());
-        SimulatedPopulation sp = simulatorConfiguration.getPopulationInitialization();
-        sp.setPopulationLocation("42003");
-
-        List<PopulationDiseaseState> ds = sp.getPopulationDiseaseState();
-        PopulationDiseaseState pds = new PopulationDiseaseState();
-        pds.setDiseaseState("susceptible");
-        pds.setFractionOfPopulation(0.94859);
-        ds.add(pds);
-        pds = new PopulationDiseaseState();
-        pds.setDiseaseState("exposed");
-        pds.setFractionOfPopulation(0.00538);
-        ds.add(pds);
-        pds = new PopulationDiseaseState();
-        pds.setDiseaseState("infectious");
-        pds.setFractionOfPopulation(0.00603);
-        ds.add(pds);
-        pds = new PopulationDiseaseState();
-        pds.setDiseaseState("recovered");
-        pds.setFractionOfPopulation(0.04);
-        ds.add(pds);
-
-        simulatorConfiguration.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
-        SimulatorTimeSpecification stc = simulatorConfiguration.getSimulatorTimeSpecification();
-        stc.setRunLength(new BigInteger("30"));
-        stc.setTimeStepUnit(TimeStepUnit.DAY);
-        stc.setTimeStepValue(1d);
-
-        FixedStartTimeControlMeasure vaccControlMeasure = new FixedStartTimeControlMeasure();
-        VaccinationControlMeasure vcm = new VaccinationControlMeasure();
-        vcm.setControlMeasureCompliance(0.0);
-        TreatmentEfficacyOverTime vaccEfficacy = new TreatmentEfficacyOverTime();
-        vaccEfficacy.getEfficacyValues().add(0.0);
-        Vaccination vaccTreatment = new Vaccination();
-        vaccTreatment.setVaccinationEfficacy(vaccEfficacy);
-        vaccTreatment.setDescription("vacc treatment");
-        vaccTreatment.setNumDosesInVaccinationCourse(new BigInteger("5"));
-        vaccTreatment.setVaccineId("12");
-        vaccTreatment.setHostOrganism("human");
-        vcm.setVaccination(vaccTreatment);
-        vcm.setDescription("vaccination");
-        vaccControlMeasure.setControlMeasure(vcm);
-        time = new FixedStartTime();
-        time.setFixedStartTime(new BigInteger("0"));
-        vaccControlMeasure.setControlMeasureFixedStartTime(time);
-        
-        fixedStartControlMeasures.add(vaccControlMeasure);
-        
-        List<Integer> avSupply = acm.getAntiviralSupplySchedule();
-        List<BigInteger> avAdmin = acm.getAntiviralTreatmentAdministrationCapacity();
-        List<Integer> vaccSupply = vcm.getVaccineSupplySchedule();
-        List<BigInteger> vaccAdmin = vcm.getVaccinationAdministrationCapacity();
-        
-        for (int i = 0; i < 30; i++) {
-            vaccAdmin.add(new BigInteger("0"));
-            vaccSupply.add(0);
-            avAdmin.add(new BigInteger("0"));
-            avSupply.add(0);
-        }
+//        ControlMeasures controlMeasures = new ControlMeasures();
+//        List<FixedStartTimeControlMeasure> fixedStartControlMeasures = controlMeasures.getFixedStartTimeControlMeasures();
+//        FixedStartTimeControlMeasure avControlMeasure = new FixedStartTimeControlMeasure();
+//        simulatorConfiguration.setControlMeasures(controlMeasures);
+//        
+//        
+////        simulatorConfiguration.set
+//        AntiviralTreatmentControlMeasure acm = new AntiviralTreatmentControlMeasure();
+//        TreatmentEfficacyOverTime avEfficacy = new TreatmentEfficacyOverTime();
+//        avEfficacy.getEfficacyValues().add(0.0);
+//        AntiviralTreatment avTreatment = new AntiviralTreatment();
+//        avTreatment.setAntiviralTreatmentEfficacy(avEfficacy);
+//        acm.setAntiviralTreatment(avTreatment);
+//        acm.setControlMeasureCompliance(0.0);
+//        acm.setDescription("antiviral");
+//        avControlMeasure.setControlMeasure(acm);
+//        FixedStartTime time = new FixedStartTime();
+//        time.setFixedStartTime(new BigInteger("0"));
+//        avControlMeasure.setControlMeasureFixedStartTime(time);
+//        fixedStartControlMeasures.add(avControlMeasure);
+//        
+//        simulatorConfiguration.setSimulatorIdentification(si);
+//
+//        simulatorConfiguration.setDisease(new Disease());
+//        Disease disease = simulatorConfiguration.getDisease();
+//        disease.setAsymptomaticInfectionFraction(0.5);
+//        disease.setDiseaseName("Influenza");
+//        disease.setInfectiousPeriod(3.2);
+//        disease.setLatentPeriod(2.0);
+//        disease.setReproductionNumber(1.7);
+//
+//        simulatorConfiguration.setPopulationInitialization(new SimulatedPopulation());
+//        SimulatedPopulation sp = simulatorConfiguration.getPopulationInitialization();
+//        sp.setPopulationLocation("42003");
+//
+//        List<PopulationDiseaseState> ds = sp.getPopulationDiseaseState();
+//        PopulationDiseaseState pds = new PopulationDiseaseState();
+//        pds.setDiseaseState("susceptible");
+//        pds.setFractionOfPopulation(0.94859);
+//        ds.add(pds);
+//        pds = new PopulationDiseaseState();
+//        pds.setDiseaseState("exposed");
+//        pds.setFractionOfPopulation(0.00538);
+//        ds.add(pds);
+//        pds = new PopulationDiseaseState();
+//        pds.setDiseaseState("infectious");
+//        pds.setFractionOfPopulation(0.00603);
+//        ds.add(pds);
+//        pds = new PopulationDiseaseState();
+//        pds.setDiseaseState("recovered");
+//        pds.setFractionOfPopulation(0.04);
+//        ds.add(pds);
+//
+//        simulatorConfiguration.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
+//        SimulatorTimeSpecification stc = simulatorConfiguration.getSimulatorTimeSpecification();
+//        stc.setRunLength(new BigInteger("30"));
+//        stc.setTimeStepUnit(TimeStepUnit.DAY);
+//        stc.setTimeStepValue(1d);
+//
+//        FixedStartTimeControlMeasure vaccControlMeasure = new FixedStartTimeControlMeasure();
+//        VaccinationControlMeasure vcm = new VaccinationControlMeasure();
+//        vcm.setControlMeasureCompliance(0.0);
+//        TreatmentEfficacyOverTime vaccEfficacy = new TreatmentEfficacyOverTime();
+//        vaccEfficacy.getEfficacyValues().add(0.0);
+//        Vaccination vaccTreatment = new Vaccination();
+//        vaccTreatment.setVaccinationEfficacy(vaccEfficacy);
+//        vaccTreatment.setDescription("vacc treatment");
+//        vaccTreatment.setNumDosesInVaccinationCourse(new BigInteger("5"));
+//        vaccTreatment.setVaccineId("12");
+//        vaccTreatment.setHostOrganism("human");
+//        vcm.setVaccination(vaccTreatment);
+//        vcm.setDescription("vaccination");
+//        vaccControlMeasure.setControlMeasure(vcm);
+//        time = new FixedStartTime();
+//        time.setFixedStartTime(new BigInteger("0"));
+//        vaccControlMeasure.setControlMeasureFixedStartTime(time);
+//        
+//        fixedStartControlMeasures.add(vaccControlMeasure);
+//        
+//        List<Integer> avSupply = acm.getAntiviralSupplySchedule();
+//        List<BigInteger> avAdmin = acm.getAntiviralTreatmentAdministrationCapacity();
+//        List<Integer> vaccSupply = vcm.getVaccineSupplySchedule();
+//        List<BigInteger> vaccAdmin = vcm.getVaccinationAdministrationCapacity();
+//        
+//        for (int i = 0; i < 30; i++) {
+//            vaccAdmin.add(new BigInteger("0"));
+//            vaccSupply.add(0);
+//            avAdmin.add(new BigInteger("0"));
+//            avSupply.add(0);
+//        }
 
 //        XStream x = new XStream(new DomDriver());
 //      
@@ -210,10 +193,10 @@ public class WSClient {
 //        }
 //        fis.close();
 
-        SeirModelAdapter.validateSimulatorConfiguration(simulatorConfiguration);
+//        SeirModelAdapter.validateSimulatorConfiguration(simulatorConfiguration);
         
-         String runId = port.run(simulatorConfiguration);
-         System.out.println("Simulator returned runId: " + runId );
+//         String runId = port.run(simulatorConfiguration);
+//         System.out.println("Simulator returned runId: " + runId );
         // // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
         // // RunStatus rs = port.getRunStatus(runId, sr);
         // while (rs.getStatus() != RunStatusEnum.COMPLETED) {
@@ -226,5 +209,5 @@ public class WSClient {
         // System.out.println("Status is " + rs.getStatus());
         // System.out.println("Message is " + rs.getMessage());
 
-    }
+//    }
 }
