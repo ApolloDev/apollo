@@ -6,7 +6,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>flute-core</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
     <artifactId>flute-simulator-service-client</artifactId>
     <name>-- FluTE SimulatorService SOAP Client</name>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>apollo-service</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>

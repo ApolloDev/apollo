@@ -1,14 +1,14 @@
 package edu.pitt.apollo.flute.utils;
 
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import edu.pitt.apollo.types.RunStatus;
-import edu.pitt.apollo.types.RunStatusEnum;
 import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -171,21 +171,6 @@ public class RunUtils {
             rs.setStatus(RunStatusEnum.FAILED);
             return rs;
         }
-    }
-
-    public static String getMd5HashFromBytes(byte[] bytes) {
-
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(bytes);
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-        }
-        return null;
     }
     
     public static String getMd5HashFromString(String string) {
