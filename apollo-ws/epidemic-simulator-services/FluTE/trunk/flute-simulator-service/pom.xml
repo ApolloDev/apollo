@@ -6,7 +6,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>flute-core</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
     <artifactId>flute-simulator-service</artifactId>
     <name>-- FluTE SimulatorService Web Service Provider</name>
@@ -34,17 +34,17 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>TimLantBatchRunCreator</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
                 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>ApolloTranslator</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         
         <dependency>
@@ -96,6 +96,18 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>ApolloTranslator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+            
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>translator-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -206,7 +218,7 @@
             </plugins>
         </pluginManagement>
 		<!-- Name of the generated WAR file -->
-        <finalName>flute-simulator-service</finalName>
+        <finalName>flute-simulator-service1.3</finalName>
     </build>
 
     <profiles>
