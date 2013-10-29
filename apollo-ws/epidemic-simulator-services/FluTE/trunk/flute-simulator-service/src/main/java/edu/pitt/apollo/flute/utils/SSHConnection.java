@@ -12,6 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,7 +28,7 @@ import java.io.InputStream;
  */
 public class SSHConnection {
 
-    private static final boolean LOG_OUTPUT = true;
+    private static final Logger LOGGER = Logger.getLogger(SSHConnection.class.getName());
     private JSch jsch = null;
     private Session session = null;
 
@@ -39,59 +43,53 @@ public class SSHConnection {
         session.connect(30000);
     }
 
-    public void executeCommand(String command) throws JSchException, InterruptedException {
+    public String executeCommand(String command) throws JSchException, InterruptedException {
 
         Channel channel = session.openChannel("exec");
         ((ChannelExec) channel).setCommand(command);
 
 
-        if (LOG_OUTPUT) {
-            channel.setInputStream(null);
-            channel.setOutputStream(System.out);
-            ((ChannelExec) channel).setErrStream(System.err);
-        }
+        StringBuilder stBuild = new StringBuilder();
+        channel.setInputStream(null);
 
         channel.connect();
 
-        if (LOG_OUTPUT) {
-            try {
-                InputStream in = channel.getInputStream();
-                byte[] tmp = new byte[1024];
-                while (true) {
-                    while (in.available() > 0) {
-                        int i = in.read(tmp, 0, 1024);
-                        if (i < 0) {
-                            break;
-                        }
-                        System.out.print(new String(tmp, 0, i));
-                    }
-
-                    if (channel.isClosed()) {
-                        System.out.println("exit-status: " + channel.getExitStatus());
+        try {
+            InputStream in = channel.getInputStream();
+            byte[] tmp = new byte[1024];
+            while (true) {
+                while (in.available() > 0) {
+                    int i = in.read(tmp, 0, 1024);
+                    if (i < 0) {
                         break;
                     }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception ee) {
-                    }
+                    String outputLine = new String(tmp, 0, i);
+                    stBuild.append(outputLine);
                 }
-            } catch (IOException ex) {
-                System.err.println("IOException getting output from channel input stream");
-            }
-        } else {
-            while (!channel.isClosed()) {
+
+                if (channel.isClosed()) {
+                    if (channel.getExitStatus() != 0) { // only report the exit status if it is nonzero
+                        LOGGER.log(Level.INFO, "exit-status: " + channel.getExitStatus());
+                    }
+                    break;
+                }
+
                 Thread.sleep(1000);
             }
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "IOException getting output from channel input stream");
         }
 
         channel.disconnect();
+
+        return stBuild.toString();
     }
 
-    public void scpUploadFile(String localFilePath, String newFileName, String remoteDirectory) throws JSchException, 
+    public void scpUploadFile(String localFilePath, String newFileName, String remoteDirectory) throws JSchException,
             SftpException, FileNotFoundException {
 
         // get sftp channel
-        ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
+        ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
         channel.connect();
         // change directory
         channel.cd(remoteDirectory);
@@ -100,20 +98,37 @@ public class SSHConnection {
         // disconnect
         channel.disconnect();
     }
-    
-    public void scpDownloadFile(String remoteDirectory, String remoteFileName, String localFilePath) throws JSchException, 
-            SftpException, FileNotFoundException {
-        
+
+    public void scpUploadFileFromURL(String url, String newFileName, String remoteDirectory)
+            throws SftpException, JSchException, MalformedURLException, IOException {
+        // get sftp channel
         ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
         channel.connect();
-        
+        // change directory
+        channel.cd(remoteDirectory);
+        // upload the file
+        channel.put(new URL(url).openStream(), newFileName);
+        // disconnect
+        channel.disconnect();
+    }
+
+    public void scpDownloadFile(String remoteDirectory, String remoteFileName, String localFilePath) throws JSchException,
+            SftpException, FileNotFoundException {
+
+        ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
+        channel.connect();
+
         channel.cd(remoteDirectory);
         channel.get(remoteFileName, new FileOutputStream(localFilePath));
         channel.disconnect();
     }
 
+    public Session getSession() {
+        return session;
+    }
+
     public void closeConnections() {
-        
+
         if (session != null) {
             session.disconnect();
         }
