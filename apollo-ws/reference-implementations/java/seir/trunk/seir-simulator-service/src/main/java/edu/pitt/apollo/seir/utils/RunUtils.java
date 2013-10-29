@@ -123,7 +123,7 @@ public class RunUtils {
 
     public static String getResultsString(String runId) throws FileNotFoundException {
 
-        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        String runIdHash = RunUtils.getMd5HashFromString(runId);
 
         File file = new File(WORK_DIR + runIdHash + File.separator + "results.txt");
         Scanner scanner = new Scanner(file);
@@ -136,13 +136,13 @@ public class RunUtils {
 
     public static RunStatus getStatus(String runId)
             throws IOException {
-        String dirName = getMd5HashFromBytes(runId.getBytes());
+        String dirName = getMd5HashFromString(runId);
         if (dirName == null) {
             System.err.println("Directory name from run ID hash was null");
             return null;
         }
 
-        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        String runIdHash = RunUtils.getMd5HashFromString(runId);
 
         RunStatus rs = new RunStatus();
         File error = new File(WORK_DIR + dirName + File.separator + "error.txt");
@@ -172,28 +172,28 @@ public class RunUtils {
         }
     }
 
-    public static String getMd5HashFromBytes(byte[] bytes) {
-
-        try {
-            MessageDigest md = null;
-
-            md = MessageDigest.getInstance("MD5");
-
-            md.update(bytes);
-            byte[] digest = md.digest();
-            StringBuilder sb = new StringBuilder();
-
-            for (byte b : digest) {
-                sb.append(Integer.toHexString((int) (b & 0xff)));
-            }
-
-            String md5Hash = sb.toString();
-            return md5Hash;
-
-        } catch (NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
+//    public static String getMd5HashFromBytes(byte[] bytes) {
+//
+//        try {
+//            MessageDigest md = null;
+//
+//            md = MessageDigest.getInstance("MD5");
+//
+//            md.update(bytes);
+//            byte[] digest = md.digest();
+//            StringBuilder sb = new StringBuilder();
+//
+//            for (byte b : digest) {
+//                sb.append(Integer.toHexString((int) (b & 0xff)));
+//            }
+//
+//            String md5Hash = sb.toString();
+//            return md5Hash;
+//
+//        } catch (NoSuchAlgorithmException ex) {
+//            return null;
+//        }
+//    }
 
     public static String getMd5HashFromString(String string) {
 

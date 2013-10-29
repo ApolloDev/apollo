@@ -41,7 +41,7 @@ public class SimulatorThread extends Thread {
     @Override
     public void run() {
 
-        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+        String runIdHash = RunUtils.getMd5HashFromString(runId);
         try {
 
             String directory = RunUtils.setStarted(runIdHash);
