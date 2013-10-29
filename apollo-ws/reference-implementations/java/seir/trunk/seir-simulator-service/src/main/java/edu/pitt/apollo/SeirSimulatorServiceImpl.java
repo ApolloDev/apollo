@@ -135,7 +135,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 		runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName() + "_"
 				+ sid.getSoftwareVersion() + "_" + incrementRunId();
 
-		String md5RunIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+		String md5RunIdHash = RunUtils.getMd5HashFromString(runId);
 
 		BatchRunResult result = new BatchRunResult();
 
@@ -218,7 +218,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 					.getSimulatorIdentification();
 			RunIdProperties runIdProps = getOrAddRunId(simConfigHash, sid);
 			String runId = runIdProps.getRunId();
-			String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
+			String runIdHash = RunUtils.getMd5HashFromString(runId);
 
 			queuedThreads.add(runIdHash);
 
