@@ -15,15 +15,15 @@ import java.util.ResourceBundle;
 public class DbUtils {
 
     static Connection dbcon = null;
-    static final ResourceBundle DATABASE_PROPERTIES = ResourceBundle.getBundle("database");
+    static final ResourceBundle DATABASE_PROPERTIES = ResourceBundle.getBundle("connections");
 
     private static void establishDbConn() throws ClassNotFoundException,
             SQLException {
 
-        String dbClass = DATABASE_PROPERTIES.getString("class");
-        String url = DATABASE_PROPERTIES.getString("url");
-        String user = DATABASE_PROPERTIES.getString("user");
-        String password = DATABASE_PROPERTIES.getString("password");
+        String dbClass = DATABASE_PROPERTIES.getString("db_class");
+        String url = DATABASE_PROPERTIES.getString("db_url");
+        String user = DATABASE_PROPERTIES.getString("db_user");
+        String password = DATABASE_PROPERTIES.getString("db_password");
 
         try {
             if (dbcon != null) {
