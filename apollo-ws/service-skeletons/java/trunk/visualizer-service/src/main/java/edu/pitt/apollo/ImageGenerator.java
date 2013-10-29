@@ -14,6 +14,7 @@ import edu.pitt.apollo.container.ImageSeriesContainer;
 import edu.pitt.apollo.types._10._28._2013.UrlOutputResource;
 import edu.pitt.apollo.utilities.DatabaseUtility;
 import edu.pitt.apollo.utilities.VisualizerChartUtility;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -165,12 +166,13 @@ public class ImageGenerator {
         String id = stBuild.toString();
 
         //Create MessageDigest object for MD5
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        //Update input string in message digest
-        digest.update(id.getBytes(), 0, id.length());
-        //Converts message digest value in base 16 (hex) 
-        md5 = new BigInteger(1, digest.digest()).toString(16);
+//        MessageDigest digest = MessageDigest.getInstance("MD5");
+//        //Update input string in message digest
+//        digest.update(id.getBytes(), 0, id.length());
+//        //Converts message digest value in base 16 (hex) 
+//        md5 = new BigInteger(1, digest.digest()).toString(16);
 
+        md5 = DigestUtils.md5Hex(id);
         return md5;
     }
 
