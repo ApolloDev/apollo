@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import edu.pitt.apollo.types._07._03._2013.UrlOutputResource;
-import edu.pitt.apollo.types._07._03._2013.VisualizerResult;
+import edu.pitt.apollo.types._10._28._2013.UrlOutputResource;
+import edu.pitt.apollo.types._10._28._2013.VisualizerResult;
+
 
 /**
  *
