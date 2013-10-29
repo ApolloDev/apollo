@@ -74,7 +74,8 @@ public class VisualizerChartUtility {
         NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
         xaxis.setTickLabelFont(new Font("Calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
-
+        xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -135,7 +136,8 @@ public class VisualizerChartUtility {
         NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
         xaxis.setTickLabelFont(new Font("Calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
-
+        xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -206,7 +208,8 @@ public class VisualizerChartUtility {
         NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
         xaxis.setTickLabelFont(new Font("calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("calibri", Font.PLAIN, 30));
-
+        xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -319,7 +322,7 @@ public class VisualizerChartUtility {
         for (String runId : filepathMap.keySet()) {
 
             XYDataset dataset = createIncidenceDataset(incidenceContainer, runId);
-            JFreeChart chart = createIncidenceChart(dataset, "Incidence over time", "simulation time step", "");
+            JFreeChart chart = createIncidenceChart(dataset, "Incidence of newly exposed over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
             File imageFile = new File(filepathMap.get(runId));
@@ -344,7 +347,7 @@ public class VisualizerChartUtility {
             Map<String, String> runIdSeriesLabels) {
 
         XYDataset dataset = createCombinedIncidenceDataset(incidenceContainer, runIdSeriesLabels);
-        JFreeChart chart = createCombinedIncidenceChart(dataset, "Incidence over time", "simulation time step", "");
+        JFreeChart chart = createCombinedIncidenceChart(dataset, "Incidence of newly exposed over time", "simulation time step", "");
         BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
         File imageFile = new File(filepath);
