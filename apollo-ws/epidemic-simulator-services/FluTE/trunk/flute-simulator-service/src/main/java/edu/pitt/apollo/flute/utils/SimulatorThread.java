@@ -4,12 +4,19 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import edu.pitt.apollo.FluteSimulatorServiceException;
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
-import edu.pitt.apollo.types.SimulatorConfiguration;
+import edu.pitt.apollo.service.translatorservice._07._03._2013.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice._07._03._2013.TranslatorServiceV13;
+import edu.pitt.apollo.types._07._03._2013.PopulationDiseaseCensusResult;
+import edu.pitt.apollo.types._07._03._2013.RunStatus;
+import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -25,13 +34,15 @@ import java.util.Scanner;
  */
 public class SimulatorThread extends Thread {
 
-    static final ResourceBundle SSH_PROPERTIES = ResourceBundle.getBundle("connections");
-    
-    private static final String FLUTE_USER = SSH_PROPERTIES.getString("ssh_user");
-    private static final String FLUTE_PASSWORD = SSH_PROPERTIES.getString("ssh_password");
-    private static final String FLUTE_HOST = SSH_PROPERTIES.getString("ssh_host");
+    private static final Logger LOGGER = Logger.getLogger(SimulatorThread.class.getName());
+    static final ResourceBundle CONNECTION_PROPERTIES = ResourceBundle.getBundle("connections");
+    private static final String FLUTE_USER = CONNECTION_PROPERTIES.getString("ssh_user");
+    private static final String FLUTE_PASSWORD = CONNECTION_PROPERTIES.getString("ssh_password");
+    private static final String FLUTE_HOST = CONNECTION_PROPERTIES.getString("ssh_host");
+    private static final String TRANSLATOR_SERVICE_WSDL = CONNECTION_PROPERTIES.getString("translator_service_wsdl");
     private static final String FLUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_output_util.sh";
-    private static final String FLUTE_EXECUTE_COMMAND = "/home/flute/flute-source-1_15/flute ";
+    private static final String FLUTE_EXECUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_run_util.sh";
+    private static final String FLUTE_CHECK_EXECUTION_COMMAND = "cd /home/flute; ./check_process.sh";
     private static final String FLUTE_RUNS_DIR = "/home/flute/runs/";
     private String runId;
     private String runIdHash;
@@ -39,8 +50,8 @@ public class SimulatorThread extends Thread {
     private String simConfigHash;
     private String simConfigJson;
     private boolean runSimulator = true;
-    private boolean useFile;
-    private boolean useDatabase;
+//    private boolean useFile;
+//    private boolean useDatabase;
     private SimulatorConfiguration simulatorConfiguration;
 
     public SimulatorThread(SimulatorConfiguration simulatorConfiguration, String simConfigHash,
@@ -53,9 +64,24 @@ public class SimulatorThread extends Thread {
         this.simConfigHash = simConfigHash;
         this.runSimulator = runSimulator;
         this.simConfigJson = simConfigJson;
-        this.useFile = useFile;
-        this.useDatabase = useDatabase;
+//        this.useFile = useFile;
+//        this.useDatabase = useDatabase;
         this.runDirectory = FLUTE_RUNS_DIR + runIdHash;
+    }
+
+    public String getRunId() {
+        return runId;
+    }
+
+    public String getRunIdHash() {
+        return runIdHash;
+    }
+
+    private void finalizeRun() {
+        // this function should be run before the run returns
+        // whether it was succesful or if there was an error
+        FluteSimulatorServiceImpl.simulatorRunFinished();
+        FluteSimulatorServiceImpl.runSimulatorThreads();
     }
 
     @Override
@@ -63,97 +89,190 @@ public class SimulatorThread extends Thread {
 
         try {
 
+            LOGGER.log(Level.INFO, "CREATING STARTED FILE");
+
             String localRunDirectory = RunUtils.setStarted(runIdHash);
+
+            LOGGER.log(Level.INFO, "CREATED STARTED FILE");
             String localResultsFile = localRunDirectory + File.separator + "flute-results.txt";
             if (runSimulator) {
-                // first translate the configuration into the file format used by FluTE
-                // store in the run directory created by RunUtils 
-                FileUtils.createFluteConfigFile(simulatorConfiguration, localRunDirectory);
+//                try {
+                    // first translate the configuration into the file format used by FluTE
+                    // store in the run directory created by RunUtils 
+                LOGGER.log(Level.INFO, "Sending request to translator service...");
 
+                TranslatorServiceV13 service;
+                TranslatorServiceEI port;
+                try {
+                    service = new TranslatorServiceV13(
+                            new URL(TRANSLATOR_SERVICE_WSDL));
+                    port = service.getTranslatorServiceEndpoint();
+                } catch (Exception ex) {
+                    RunUtils.setError(runIdHash, "There was an error creating the translator service: "
+                            + ex.getMessage());
+                    return;
+                }
+                RunStatus status = port.translateSimulatorConfiguration(simulatorConfiguration);
+                if (!status.getStatus().equals(RunStatusEnum.COMPLETED)) {
+                    RunUtils.setError(runIdHash, "Error from translation web service: " + status.getMessage());
+                    return;
+                }
+
+                String fluteConfigFileUrl = status.getMessage() + "/" + FileUtils.FLUTE_CONFIGURATION_FILE_NAME;
+                LOGGER.log(Level.INFO, "Downloading config file from translator URL...");
+                String fluteConfigFile = FileUtils.downloadFile(fluteConfigFileUrl, runIdHash);
+                String fluteVerboseConfigFileUrl = status.getMessage() + "/" + FileUtils.FLUTE_VERBOSE_TRANSLATED_FILE_NAME;
+                FileUtils.downloadFile(new URL(fluteVerboseConfigFileUrl), runIdHash, FileUtils.FLUTE_VERBOSE_LOCAL_FILE_NAME);
+                
+//                    FileUtils.createFluteConfigFile(simulatorConfiguration, localRunDirectory);
+
+                    LOGGER.log(Level.INFO, "CREATED FLUTE CONFIG FILE");
+//                } catch (ApolloTranslatorException ex) {
+//                    LOGGER.log(Level.INFO, "APOLLO TRANSLATOR EXCEPTION");
+//                    RunUtils.setError(runIdHash, "ApolloTranslatorException creating FluTE configuration file: " + ex.getMessage());
+//                    finalizeRun();
+//                    return;
+//                } catch (FileNotFoundException ex) {
+//                    RunUtils.setError(runIdHash, "FileNotFoundException creating FluTE configuration file: " + ex.getMessage());
+//                    finalizeRun();
+//                    return;
+//                } catch (FluteSimulatorServiceException ex) {
+//                    RunUtils.setError(runIdHash, "FluteSimulatorServiceException creating FluTE configuration file: " + ex.getMessage());
+//                    finalizeRun();
+//                    return;
+//                } catch (IllegalAccessException ex) {
+//                    RunUtils.setError(runIdHash, "IllegalAccessException creating FluTE configuration file: " + ex.getMessage());
+//                    finalizeRun();
+//                    return;
+//                } catch (ClassNotFoundException ex) {
+//                    RunUtils.setError(runIdHash, "ClassNotFoundException creating FluTE configuration file: " + ex.getMessage());
+//                    finalizeRun();
+//                    return;
+//                }
                 // connect to flute server
                 try {
+
+                    LOGGER.log(Level.INFO, "Creating connection");
                     SSHConnection connection = new SSHConnection(FLUTE_HOST, FLUTE_USER, FLUTE_PASSWORD);
                     connection.executeCommand(FLUTE_SCRIPT_COMMAND + " " + runIdHash); // creates directory with run ID hash
                     // and makes links to the files used by flute so that it can be run in this directory
 
                     // now scp the configuration file to the directory that was just created
-                    String fluteConfigFile = localRunDirectory + File.separator + "nonverbose-text.txt";
+//                    String fluteConfigFile = localRunDirectory + File.separator + FileUtils.FLUTE_CONFIGURATION_FILE_NAME;
                     String newConfigFileName = "flute-config-" + runIdHash;
 
+                    LOGGER.log(Level.INFO, "Uploading config file...");
                     connection.scpUploadFile(fluteConfigFile, newConfigFileName, runDirectory);
+//                    connection.scpUploadFileFromURL(fluteConfigFile, newConfigFileName, runDirectory);
 
-                    connection.executeCommand("cd /home/flute/runs/" + runIdHash);
-                    connection.executeCommand("cd /home/flute/runs/" + runIdHash + "; "
-                            + FLUTE_EXECUTE_COMMAND + newConfigFileName);
+                    LOGGER.log(Level.INFO, "Executing FluTE...");
+                    String flutePid = connection.executeCommand(FLUTE_EXECUTE_SCRIPT_COMMAND + " " + runIdHash + " " + newConfigFileName).trim();
+
+                    // need to wait until FluTE has finished
+                    String result = connection.executeCommand(FLUTE_CHECK_EXECUTION_COMMAND + " " + flutePid);
+                    while (result.trim().equals("true")) { // this means the process could be sent a message, so it exists
+                        LOGGER.log(Level.INFO, "FluTE PID: " + flutePid);
+                        result = connection.executeCommand(FLUTE_CHECK_EXECUTION_COMMAND + " " + flutePid);
+                        Thread.sleep(2000);
+                    }
 
                     // now download the output file
                     String remoteResultsFile = "Summary0";
 
+                    LOGGER.log(Level.INFO, "Downloading flute-results.txt...");
                     connection.scpDownloadFile(runDirectory, remoteResultsFile, localResultsFile);
 
                     // download the log file (contains num newly infectious and symptomatic by time step and census tract)
                     remoteResultsFile = "Log0";
                     localResultsFile = localRunDirectory + File.separator + "flute-symptomatic-time-series.txt";
+                    LOGGER.log(Level.INFO, "Downloading flute-symptomatic-time-series.txt...");
                     connection.scpDownloadFile(runDirectory, remoteResultsFile, localResultsFile);
 
+                    LOGGER.log(Level.INFO, "Closing connection...");
                     // done with SSH connections, so close them
                     connection.closeConnections();
 
+//                } catch (MalformedURLException ex) {
+//                    ex.printStackTrace();
+//                    RunUtils.setError(runIdHash, "There was a MalformedURLException trying to execute commands over SSH: " + ex.getMessage());
+//                    return; // return without setting finished file
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    RunUtils.setError(runIdHash, "There was a IOException trying to execute commands over SSH: " + ex.getMessage());
+                    finalizeRun();
+                    return; // return without setting finished file
                 } catch (JSchException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "There was a JSchException trying to execute commands over SSH: " + ex.getMessage());
+                    RunUtils.setError(runIdHash, "There was a JSchException trying to execute commands over SSH: " + ex.getMessage());
+                    finalizeRun();
                     return; // return without setting finished file
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "InterruptedException waiting for the JSch channel to become closed: " + ex.getMessage());
+                    RunUtils.setError(runIdHash, "InterruptedException waiting for the JSch channel to become closed: " + ex.getMessage());
+                    finalizeRun();
                     return;
                 } catch (SftpException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "SftpException attempting to upload the FluTE config file to the server: " + ex.getMessage());
+                    RunUtils.setError(runIdHash, "SftpException attempting to upload the FluTE config file to the server: " + ex.getMessage());
+                    finalizeRun();
                     return;
                 }
 
                 // storing the flute results in the database would be done here
                 try {
+                    LOGGER.log(Level.INFO, "Storing output in database...");
                     storeOutputInDatabase(localResultsFile);
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "FileNotFoundException attempting to "
+                    RunUtils.setError(runIdHash, "FileNotFoundException attempting to "
                             + "store the results in the database: " + ex.getMessage());
+                    finalizeRun();
+                    return;
                 } catch (FluteSimulatorServiceException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "FluteSimulatorServiceException attempting to "
+                    RunUtils.setError(runIdHash, "FluteSimulatorServiceException attempting to "
                             + "store the results in the database: " + ex.getMessage());
+                    finalizeRun();
+                    return;
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "ClassNotFoundException attemtping to connect to the database: " + ex.getMessage());
+                    RunUtils.setError(runIdHash, "ClassNotFoundException attemtping to connect to the database: " + ex.getMessage());
+                    finalizeRun();
+                    return;
                 } catch (SQLException ex) {
                     ex.printStackTrace();
-                    RunUtils.setError(runId, "SQLException attempting to store data to the database: " + ex.getMessage());
+                    RunUtils.setError(runIdHash, "SQLException attempting to store data to the database: " + ex.getMessage());
+                    finalizeRun();
+                    return;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    RunUtils.setError(runIdHash, "Exception attempting to store data to the database: " + ex.getMessage());
+                    finalizeRun();
+                    return;
                 }
             }
 
             RunUtils.setFinished(runIdHash);
-            FluteSimulatorServiceImpl.removeRunFromQueuedList(runIdHash);
-            FluteSimulatorServiceImpl.simulatorRunFinished();
-            FluteSimulatorServiceImpl.runSimulatorThreads();
         } catch (NullPointerException e) {
             try {
                 String formattedJSONString = FluteSimulatorServiceImpl.formatJSONString(simConfigJson);
                 RunUtils.setError(runIdHash, "Enountered unexpected null value. Configuration object was: " + formattedJSONString);
-
-                e.printStackTrace();
+                finalizeRun();
+                return;
             } catch (IOException e1) {
-                e1.printStackTrace();
+                finalizeRun();
+                return;
             }
         } catch (IOException e) {
             try {
                 RunUtils.setError(runIdHash,
                         "Error creating run status file.  Specific error was:\n"
                         + e.getMessage());
-                e.printStackTrace();
+                finalizeRun();
+                return;
             } catch (IOException e1) {
-                e1.printStackTrace();
+                finalizeRun();
+                return;
             }
         }
     }
@@ -163,18 +282,29 @@ public class SimulatorThread extends Thread {
 
         String[] ageRanges = {"0-4", "5-18", "19-29", "30-64", "65+"};
 
-        System.out.println("Storing results to database:");
+        LOGGER.log(Level.INFO, "Storing results to database:");
         Map<String, String> tractIdMap = new HashMap<String, String>();
         String populationFile = null;
 
         // get the population location so we know what data file to use
-        String popLocation = simulatorConfiguration.getPopulationInitialization().getPopulationLocation();
+        List<PopulationDiseaseCensusResult> populationDiseaseCensusResults = simulatorConfiguration.getPopulationInitialization().getPopulationStates();
+        if (populationDiseaseCensusResults.size() != 1) {
+            throw new FluteSimulatorServiceException("FluTE only supports a single population location a this time");
+        }
+        List<String> locationsIncluded = populationDiseaseCensusResults.get(0).getLocation().getLocationsIncluded();
+        if (locationsIncluded.size() != 1) {
+            throw new FluteSimulatorServiceException("FluTE only supports a single population location at this time");
+        }
+        String popLocation = locationsIncluded.get(0);
         if (popLocation.equals("06037")) { // los angeles county
             populationFile = "la-tracts.txt";
         } else {
             populationFile = "one-tracts.txt";
             popLocation = "00000"; // use this as the INCITS code for the "one" population
         }
+
+        // get the run length
+        int runLength = simulatorConfiguration.getSimulatorTimeSpecification().getRunLength().intValue();
 
         InputStream laFile = SimulatorThread.class.getResourceAsStream("/" + populationFile);
         Scanner laScanner = new Scanner(laFile);
@@ -245,6 +375,22 @@ public class SimulatorThread extends Thread {
             }
         }
 
+        // create time-series dataset for the sum of all the tracts
+        System.err.println("creating tract sum time series");
+        List<Double> tractSumTimeSeries = new ArrayList<Double>(runLength); // no tract will have a time series longer than runLength
+        for (int i = 0; i < runLength; i++) {
+            tractSumTimeSeries.add(0.0);
+        }
+        for (String tract : tractIdMap.values()) {
+
+            if (tractTimeSeriesMap.containsKey(tract)) {
+                List<Double> tractTimeSeries = tractTimeSeriesMap.get(tract);
+                for (int i = 0; i < tractTimeSeries.size(); i++) {
+                    tractSumTimeSeries.set(i, tractSumTimeSeries.get(i) + tractTimeSeries.get(i));
+                }
+            }
+        }
+
         // now store the data
         int internalRunId = DbUtils.getInternalRunId(runId, simConfigHash, simConfigJson);
         int dsAxisId = DbUtils.getAxisId("disease_state");
@@ -269,7 +415,7 @@ public class SimulatorThread extends Thread {
 //        Map<String, List<Double>> tract = tractTimeSeriesAgeRangeMaps.get(2);
 //        List<Double> values = tract.get("920105");
 //        for (int i = 0; i < values.size(); i++) {
-//            System.out.println("t: " + i + "  count: " + values.get(i));
+//            LOGGER.log.println("t: " + i + "  count: " + values.get(i));
 //        }
 
 
@@ -304,6 +450,10 @@ public class SimulatorThread extends Thread {
                         timeSeriesForTract);
             }
         }
+
+        // store the tract-sum dataset
+        int popId = DbUtils.getOrCreatePopulationId(dsAxisId, locAxisId, "newly exposed", popLocation);
+        DbUtils.insertTimeSeries(internalRunId, popId, "newly exposed in " + popLocation, tractSumTimeSeries);
 
     }
 
