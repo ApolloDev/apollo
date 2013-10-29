@@ -14,13 +14,13 @@
  */
 package edu.pitt.apollo;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -29,30 +29,31 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import edu.pitt.apollo.seir.utils.BatchThread;
 import edu.pitt.apollo.seir.utils.QueueThread;
 import edu.pitt.apollo.seir.utils.RunIdProperties;
 import edu.pitt.apollo.seir.utils.RunIdStoreThread;
 import edu.pitt.apollo.seir.utils.RunUtils;
 import edu.pitt.apollo.seir.utils.SimulatorThread;
-import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI;
-import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
-import edu.pitt.apollo.types._07._03._2013.BatchRunSimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
-import edu.pitt.apollo.types._07._03._2013.SupportedPopulationLocation;
-
+import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI;
+import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
+import edu.pitt.apollo.types._10._28._2013.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
+import edu.pitt.apollo.types._10._28._2013.SupportedPopulationLocation;
 import edu.pitt.rods.apollo.SeirModelAdapter.DbUtils;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService_v1.3", endpointInterface = "edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI")
 public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	// queue for simulator threads
@@ -117,9 +118,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "batchRun", targetNamespace = "")
-	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.BatchRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/batchRun")
-	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.BatchRunResponse")
+	@RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/batchRun")
+	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRunResponse")
 	public BatchRunResult batchRun(
 			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
 		// for (String hash : md5RunIdMap.keySet()) {
@@ -157,9 +158,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "supportedPopluationLocations", targetNamespace = "")
-	@RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetSupportedLocations")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getSupportedLocations")
-	@ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetSupportedLocationsResponse")
+	@RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocations")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getSupportedLocations")
+	@ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocationsResponse")
 	public List<SupportedPopulationLocation> getSupportedLocations() {
 		// TODO Auto-generated method stub
 		return null;
@@ -167,9 +168,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "configurationFile", targetNamespace = "")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetConfigurationFileForRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getConfigurationFileForRun")
-	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetConfigurationFileForRunResponse")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigurationFileForRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getConfigurationFileForRun")
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigurationFileForRunResponse")
 	public String getConfigurationFileForRun(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
 		String json = "There was an error retreving the file.  Specific error was:\n";
@@ -191,9 +192,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "runId", targetNamespace = "")
-	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.Run")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/run")
-	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.RunResponse")
+	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.Run")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/run")
+	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.RunResponse")
 	public String run(
 			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 		try {
@@ -240,9 +241,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetRunStatusResponse")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatusResponse")
 	public RunStatus getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
 		try {
