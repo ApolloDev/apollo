@@ -27,28 +27,28 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.service.apolloservice._07._03._2013.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice._07._03._2013.ApolloServiceV13;
-import edu.pitt.apollo.types._07._03._2013.Antiviral;
-import edu.pitt.apollo.types._07._03._2013.AntiviralTreatment;
-import edu.pitt.apollo.types._07._03._2013.AntiviralTreatmentControlMeasure;
-import edu.pitt.apollo.types._07._03._2013.CuratedLibraryItemContainer;
-import edu.pitt.apollo.types._07._03._2013.FixedStartTime;
-import edu.pitt.apollo.types._07._03._2013.InfectiousDisease;
-import edu.pitt.apollo.types._07._03._2013.ReactiveStartTime;
-import edu.pitt.apollo.types._07._03._2013.ReactiveTriggersDefinition;
-import edu.pitt.apollo.types._07._03._2013.SchoolClosureControlMeasure;
-import edu.pitt.apollo.types._07._03._2013.SchoolClosureTargetFacilities;
-import edu.pitt.apollo.types._07._03._2013.TemporalDiseaseParameter;
-import edu.pitt.apollo.types._07._03._2013.TimeAxisCategoryLabels;
-import edu.pitt.apollo.types._07._03._2013.TimeStepUnit;
-import edu.pitt.apollo.types._07._03._2013.Treatment;
-import edu.pitt.apollo.types._07._03._2013.Vaccination;
-import edu.pitt.apollo.types._07._03._2013.VaccinationControlMeasure;
-import edu.pitt.apollo.types._07._03._2013.VaccinationEfficacy;
-import edu.pitt.apollo.types._07._03._2013.VaccinationEfficacyByTimeSinceDose;
-import edu.pitt.apollo.types._07._03._2013.VaccinationEfficacyForSimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.VaccinationPreventableOutcome;
+import edu.pitt.apollo.service.apolloservice._10._28._2013.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice._10._28._2013.ApolloServiceV131;
+import edu.pitt.apollo.types._10._28._2013.Antiviral;
+import edu.pitt.apollo.types._10._28._2013.AntiviralTreatment;
+import edu.pitt.apollo.types._10._28._2013.AntiviralTreatmentControlMeasure;
+import edu.pitt.apollo.types._10._28._2013.CuratedLibraryItemContainer;
+import edu.pitt.apollo.types._10._28._2013.FixedStartTime;
+import edu.pitt.apollo.types._10._28._2013.InfectiousDisease;
+import edu.pitt.apollo.types._10._28._2013.ReactiveStartTime;
+import edu.pitt.apollo.types._10._28._2013.ReactiveTriggersDefinition;
+import edu.pitt.apollo.types._10._28._2013.SchoolClosureControlMeasure;
+import edu.pitt.apollo.types._10._28._2013.SchoolClosureTargetFacilities;
+import edu.pitt.apollo.types._10._28._2013.TemporalDiseaseParameter;
+import edu.pitt.apollo.types._10._28._2013.TimeAxisCategoryLabels;
+import edu.pitt.apollo.types._10._28._2013.TimeStepUnit;
+import edu.pitt.apollo.types._10._28._2013.Treatment;
+import edu.pitt.apollo.types._10._28._2013.Vaccination;
+import edu.pitt.apollo.types._10._28._2013.VaccinationControlMeasure;
+import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacy;
+import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacyByTimeSinceDose;
+import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.VaccinationPreventableOutcome;
 
 public class WSClient {
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3/services/apolloservice?wsdl";
@@ -620,7 +620,7 @@ public class WSClient {
 	public static void main(String[] args) throws InterruptedException,
 			IOException, DatatypeConfigurationException {
 
-		ApolloServiceV13 service = new ApolloServiceV13(new URL(WSDL_LOC));
+		ApolloServiceV131 service = new ApolloServiceV131(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 //		 addAcVcm(port);
