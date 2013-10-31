@@ -280,6 +280,17 @@
     
 
 
+    <!-- http://purl.obolibrary.org/obo/BFO_0000066 -->
+
+    <ObjectProperty rdf:about="&obo;BFO_0000066">
+        <rdfs:label xml:lang="en">occurs in</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000118 xml:lang="en">occurs_in</obo:IAO_0000118>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/BFO_0000108 -->
 
     <ObjectProperty rdf:about="&obo;BFO_0000108">
@@ -633,15 +644,15 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -4345,17 +4356,54 @@ While in many pieces of fiction the order in which the purely intentional entiti
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;GO_0044409"/>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;BFO_0000066"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;IDO_0000467"/>
+                                            </Restriction>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <unionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000166"/>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;bearer_of"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000458"/>
+                                                    </Restriction>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;bearer_of"/>
+                                                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </unionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                     <Restriction>
                         <onProperty rdf:resource="&obo;APOLLO_SV_00000116"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000308"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_participant"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000528"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -5334,10 +5382,111 @@ While in many pieces of fiction the order in which the purely intentional entiti
                         <onProperty rdf:resource="&ro;has_part"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000157"/>
                     </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000165"/>
+                    </Restriction>
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">An information content entity that is about a MIDAS scenario and contains population disease census data.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000163 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000163">
+        <rdfs:label xml:lang="en">ecosystem census data</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000153"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000164 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000164">
+        <rdfs:label xml:lang="en">agent-level ecosystem data generation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000165 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000165">
+        <rdfs:label xml:lang="en">agent-level ecosystem census data</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IAO_0000100"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000164"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&obo;OBI_0000293"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000153"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000100"/>
+        <obo:IAO_0000115 xml:lang="en">A data set that is the specified output of a agent-level ecosystem data generation that had census data as an input.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000166 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000166">
+        <rdfs:label xml:lang="en">contaminated material entity</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;location_of"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                            <Class>
+                                                <complementOf>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                                    </Restriction>
+                                                </complementOf>
+                                            </Class>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;IDO_0000450"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <obo:IAO_0000115 xml:lang="en">A material entity that has a part, which is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -5652,13 +5801,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -5748,13 +5897,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -6190,6 +6339,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000467">
         <rdfs:label xml:lang="en">susceptibility</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <rdfs:comment>Low susceptibility is often referred to as resistance.  In this sense, resistance is a quality.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">A quality that inheres in an entity and is the degree to which it can be harmed by another entity.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
@@ -6204,6 +6354,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000468">
         <rdfs:label xml:lang="en">susceptibility to infectious agent</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000467"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
@@ -7520,15 +7671,15 @@ for now.</obo:IAO_0000116>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
     </Class>
     
 
@@ -7867,6 +8018,9 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000302">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000303">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;improper_part_of">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -7882,9 +8036,6 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000303">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000304">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -7966,6 +8117,9 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000141">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000142">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -7981,9 +8135,6 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000142">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;language">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -8121,20 +8272,10 @@ for now.</obo:IAO_0000116>
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -8145,6 +8286,16 @@ for now.</obo:IAO_0000116>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
