@@ -240,59 +240,20 @@
 	</complexType>
 
 
-	<complexType name="InfectiousDisease">
-		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
-				<sequence>
-					<element name="causativeOrganismName" type="token"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
-					</element>
-					<element name="hostOrganismName" type="token" maxOccurs="1"
-						minOccurs="1"></element>
-					<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
-
-						</annotation>
-					</element>
-
-					<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
-
-						</annotation>
-					</element>
-
-					<element name="reproductionNumber" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
-
-						</annotation>
-					</element>
-
-					<element name="asymptomaticInfectionFraction" type="tns:Probability"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
-
-						</annotation>
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
-
+	<!-- <complexType name="InfectiousDisease"> <complexContent> <extension 
+		base="tns:ApolloIndexableItem"> <sequence> <element name="causativeOrganismName" 
+		type="token" maxOccurs="1" minOccurs="1"> <annotation> <documentation source="none" 
+		/> </annotation> </element> <element name="hostOrganismName" type="token" 
+		maxOccurs="1" minOccurs="1"></element> <element name="infectiousPeriod" type="tns:TemporalDiseaseParameter" 
+		maxOccurs="1" minOccurs="1"> <annotation> <documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" 
+		/> </annotation> </element> <element name="latentPeriod" type="tns:TemporalDiseaseParameter" 
+		maxOccurs="1" minOccurs="1"> <annotation> <documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" 
+		/> </annotation> </element> <element name="reproductionNumber" type="tns:PositiveDouble" 
+		maxOccurs="1" minOccurs="1"> <annotation> <documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" 
+		/> </annotation> </element> <element name="asymptomaticInfectionFraction" 
+		type="tns:Probability" maxOccurs="1" minOccurs="1"> <annotation> <documentation 
+		source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" /> </annotation> 
+		</element> </sequence> </extension> </complexContent> </complexType> -->
 
 	<complexType name="PopulationDiseaseState">
 		<sequence>
@@ -1466,55 +1427,63 @@
 	<complexType name="ApolloIndexableItem"></complexType>
 
 	<complexType name="Infection">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
 
-		<sequence>
-			<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
+				<sequence>
+					<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation source="none" />
 
-				</annotation>
-			</element>
-			<element name="hostTaxonID" type="token" maxOccurs="1"
-				minOccurs="1" />
+						</annotation>
+					</element>
+					<element name="hostTaxonID" type="token" maxOccurs="1"
+						minOccurs="1" />
 
-			<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
+					<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
 
-				</annotation>
-			</element>
+						</annotation>
+					</element>
 
-			<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
+					<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
 
-				</annotation>
-			</element>
+						</annotation>
+					</element>
 
-			<element name="infectiousnessTemporalProfile" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="0"></element>
-			<element name="probabilityNeverSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
+					<element name="infectiousnessTemporalProfile" type="tns:TemporalDiseaseParameter"
+						maxOccurs="1" minOccurs="0"></element>
+					<element name="probabilityNeverSymptomatic" type="tns:Probability"
+						maxOccurs="1" minOccurs="0">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
 
-				</annotation>
-			</element>
-			<element name="probabilitySevereGivenSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0" />
+						</annotation>
+					</element>
+					<element name="probabilitySevereGivenSymptomatic" type="tns:Probability"
+						maxOccurs="1" minOccurs="0" />
 
-			<element name="infectionAcquisition" type="tns:InfectionAcquisition"
-				maxOccurs="unbounded" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
+					<element name="infectionAcquisition" type="tns:InfectionAcquisition"
+						maxOccurs="unbounded" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
 
-				</annotation>
-			</element>
+						</annotation>
+					</element>
 
-		</sequence>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="InfectionAcquisition">
