@@ -34,224 +34,251 @@ import edu.pitt.apollo.types._10._28._2013.AntiviralTreatment;
 import edu.pitt.apollo.types._10._28._2013.AntiviralTreatmentControlMeasure;
 import edu.pitt.apollo.types._10._28._2013.CuratedLibraryItemContainer;
 import edu.pitt.apollo.types._10._28._2013.FixedStartTime;
-import edu.pitt.apollo.types._10._28._2013.InfectiousDisease;
+import edu.pitt.apollo.types._10._28._2013.Infection;
+import edu.pitt.apollo.types._10._28._2013.InfectionAcquisition;
+import edu.pitt.apollo.types._10._28._2013.PathogenTaxonID;
 import edu.pitt.apollo.types._10._28._2013.ReactiveStartTime;
 import edu.pitt.apollo.types._10._28._2013.ReactiveTriggersDefinition;
 import edu.pitt.apollo.types._10._28._2013.SchoolClosureControlMeasure;
 import edu.pitt.apollo.types._10._28._2013.SchoolClosureTargetFacilities;
 import edu.pitt.apollo.types._10._28._2013.TemporalDiseaseParameter;
-import edu.pitt.apollo.types._10._28._2013.TimeAxisCategoryLabels;
 import edu.pitt.apollo.types._10._28._2013.TimeStepUnit;
 import edu.pitt.apollo.types._10._28._2013.Treatment;
 import edu.pitt.apollo.types._10._28._2013.Vaccination;
 import edu.pitt.apollo.types._10._28._2013.VaccinationControlMeasure;
-import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacy;
-import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacyByTimeSinceDose;
 import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacyForSimulatorConfiguration;
 import edu.pitt.apollo.types._10._28._2013.VaccinationPreventableOutcome;
 
 public class WSClient {
-	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3/services/apolloservice?wsdl";
-//	public static final String WSDL_LOC = "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3.1/services/apolloservice?wsdl";
+
+	// public static final String WSDL_LOC =
+	// "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
 
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice1.3/services/apolloservice?wsdl";
 
-	public static String addSARS(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.5d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("SARS coronavirus");
+	private static Infection addDisease(PathogenTaxonID pathogenTaxonID,
+			String hostTaxonID, double infectiousPeriod, double latentPeriod,
+			double infectiousnessTemporalProfile,
+			double probabilityNeverSymptomatic,
+			double probabilitySevereGivenSymptomatic, double reproductionNumber) {
+		Infection infection = new Infection();
+		infection.setPathogenTaxonID(pathogenTaxonID);
+		infection.setHostTaxonID(hostTaxonID);
 
 		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
 		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.4d);
-		id.setLatentPeriod(tdp);
+		tdp.setTimeStepValue(infectiousPeriod);
+		infection.setInfectiousPeriod(tdp);
 
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(5.8d);
-		id.setInfectiousPeriod(tdp2);
+		tdp = new TemporalDiseaseParameter();
+		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+		tdp.setTimeStepValue(latentPeriod);
+		infection.setLatentPeriod(tdp);
 
-		id.setReproductionNumber(1.42);
+		tdp = new TemporalDiseaseParameter();
+		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+		tdp.setTimeStepValue(infectiousnessTemporalProfile);
+		infection.setInfectiousnessTemporalProfile(tdp);
 
-		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
-		itemIndexingLabels.add("SARS");
-		itemIndexingLabels.add("Severe acute respiratory syndrome");
-		itemIndexingLabels.add("Hong Kong");
-		itemIndexingLabels.add("2002");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("hypothetical");
+		infection.setProbabilityNeverSymptomatic(probabilityNeverSymptomatic);
+		infection
+				.setProbabilitySevereGivenSymptomatic(probabilitySevereGivenSymptomatic);
 
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
-				"Hypothetical SARS added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		InfectionAcquisition ia = new InfectionAcquisition();
+		ia.setPathogenTaxonID(pathogenTaxonID);
+		ia.setInfectiousHostTaxonID(hostTaxonID);
+		ia.setSusceptibleHostTaxonID(hostTaxonID);
+		ia.setReproductionNumber(reproductionNumber);
+		ia.setTransmissionCoefficient(null);
 
+		infection.getInfectionAcquisition().add(ia);
+
+		return infection;
+	}
+
+//	public static String addSARS(ApolloServiceEI port) {
+//		addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/5.8d, /*lp*/2.4d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, 1.42);
 		
-	}
-	
-	
-	
-	
-	public static String addSmallpox(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.5d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("variola virus");
+//		Infection id = new Infection();
+//		id.set
+//		id.setAsymptomaticInfectionFraction(0.5d);
+//		id.setHostOrganismName("human");
+//		id.setCausativeOrganismName("SARS coronavirus");
+//
+//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
+//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp.setTimeStepValue(2.4d);
+//		id.setLatentPeriod(tdp);
+//
+//		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
+//		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp2.setTimeStepValue(5.8d);
+//		id.setInfectiousPeriod(tdp2);
+//
+//		id.setReproductionNumber(1.42);
+//
+//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
+//		itemIndexingLabels.add("Infection");
+//		itemIndexingLabels.add("SARS");
+//		itemIndexingLabels.add("Severe acute respiratory syndrome");
+//		itemIndexingLabels.add("Hong Kong");
+//		itemIndexingLabels.add("2002");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("hypothetical");
+//
+//		return port.addLibraryItem(
+//				id,
+//				"The infectious disease of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
+//				"Hypothetical SARS added by John Levander, University of Pittsburgh",
+//				"Infection", itemIndexingLabels);
+//
+//		
+//	}
 
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.7d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(9d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(4.3);
-
-		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
-		itemIndexingLabels.add("Smallpox");
-		itemIndexingLabels.add("variola virus");
-		itemIndexingLabels.add("usa");
-		itemIndexingLabels.add("1977");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("hypothetical");
-
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Smallpox",
-				"Hypothetical Smallpox virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
-
-	}
-	
-	
-	
-	
-	
-	public static String addRubella(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.2d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("rubella virus");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(3d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(3d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(5d);
-
-		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
-		itemIndexingLabels.add("Rubella");
-		itemIndexingLabels.add("rubella virus");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("hypothetical");
-
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Rubella",
-				"Hypothetical Rubella virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
-
-	}
-
-	public static String addDiptheria(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.25d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("corynebacterium diphtheriae");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(3.2d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(5.2d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(4.1d);
-
-		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
-		itemIndexingLabels.add("Diptheria");
-		itemIndexingLabels.add("corynebacterium diphtheriae");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("hypothetical");
-
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Diptheria",
-				"Hypothetical Diptheria added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
-	}
-	
-	public static String addMeningitidis(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.25d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("neisseria meningitidis");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.2d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(6.2d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(3.1d);
-
-		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
-		itemIndexingLabels.add("meningitis");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("hypothetical");
-
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Meningitis",
-				"Hypothetical Meningitis added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
-	}
-
+//	public static String addSmallpox(ApolloServiceEI port) {
+//		Infection id = new Infection();
+//		id.setAsymptomaticInfectionFraction(0.5d);
+//		id.setHostOrganismName("human");
+//		id.setCausativeOrganismName("variola virus");
+//
+//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
+//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp.setTimeStepValue(2.7d);
+//		id.setLatentPeriod(tdp);
+//
+//		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
+//		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp2.setTimeStepValue(9d);
+//		id.setInfectiousPeriod(tdp2);
+//
+//		id.setReproductionNumber(4.3);
+//
+//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
+//		itemIndexingLabels.add("Infection");
+//		itemIndexingLabels.add("Smallpox");
+//		itemIndexingLabels.add("variola virus");
+//		itemIndexingLabels.add("usa");
+//		itemIndexingLabels.add("1977");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("hypothetical");
+//
+//		return port
+//				.addLibraryItem(
+//						id,
+//						"The infectious disease of humans caused by Smallpox",
+//						"Hypothetical Smallpox virus added by John Levander, University of Pittsburgh",
+//						"Infection", itemIndexingLabels);
+//
+//	}
+//
+//	public static String addRubella(ApolloServiceEI port) {
+//		Infection id = new Infection();
+//		id.setAsymptomaticInfectionFraction(0.2d);
+//		id.setHostOrganismName("human");
+//		id.setCausativeOrganismName("rubella virus");
+//
+//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
+//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp.setTimeStepValue(3d);
+//		id.setLatentPeriod(tdp);
+//
+//		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
+//		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp2.setTimeStepValue(3d);
+//		id.setInfectiousPeriod(tdp2);
+//
+//		id.setReproductionNumber(5d);
+//
+//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
+//		itemIndexingLabels.add("Infection");
+//		itemIndexingLabels.add("Rubella");
+//		itemIndexingLabels.add("rubella virus");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("hypothetical");
+//
+//		return port
+//				.addLibraryItem(
+//						id,
+//						"The infectious disease of humans caused by Rubella",
+//						"Hypothetical Rubella virus added by John Levander, University of Pittsburgh",
+//						"Infection", itemIndexingLabels);
+//
+//	}
+//
+//	public static String addDiptheria(ApolloServiceEI port) {
+//		
+//		Infection id = new Infection();
+//		id.setPathogenTaxonID(PathogenTaxonID.)
+//		id.setAsymptomaticInfectionFraction(0.25d);
+//		id.setHostOrganismName("human");
+//		id.setCausativeOrganismName("corynebacterium diphtheriae");
+//
+//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
+//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp.setTimeStepValue(3.2d);
+//		id.setLatentPeriod(tdp);
+//
+//		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
+//		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp2.setTimeStepValue(5.2d);
+//		id.setInfectiousPeriod(tdp2);
+//
+//		id.setReproductionNumber(4.1d);
+//
+//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
+//		itemIndexingLabels.add("Infection");
+//		itemIndexingLabels.add("Diptheria");
+//		itemIndexingLabels.add("corynebacterium diphtheriae");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("hypothetical");
+//
+//		return port
+//				.addLibraryItem(
+//						id,
+//						"The infectious disease of humans caused by Diptheria",
+//						"Hypothetical Diptheria added by John Levander, University of Pittsburgh",
+//						"Infection", itemIndexingLabels);
+//	}
+//
+//	public static String addMeningitidis(ApolloServiceEI port) {
+//		Infection id = new Infection();
+//		id.setAsymptomaticInfectionFraction(0.25d);
+//		id.setHostOrganismName("human");
+//		id.setCausativeOrganismName("neisseria meningitidis");
+//
+//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
+//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp.setTimeStepValue(2.2d);
+//		id.setLatentPeriod(tdp);
+//
+//		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
+//		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
+//		tdp2.setTimeStepValue(6.2d);
+//		id.setInfectiousPeriod(tdp2);
+//
+//		id.setReproductionNumber(3.1d);
+//
+//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
+//		itemIndexingLabels.add("Infection");
+//		itemIndexingLabels.add("meningitis");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("hypothetical");
+//
+//		return port
+//				.addLibraryItem(
+//						id,
+//						"The infectious disease of humans caused by Meningitis",
+//						"Hypothetical Meningitis added by John Levander, University of Pittsburgh",
+//						"Infection", itemIndexingLabels);
+//	}
 
 	public static String addH1N1(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.5d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("Influenza A virus subtype H1N1");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(6d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(1.3);
+		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6d, /*lp*/2d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, /*r0*/1.3d);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
+		itemIndexingLabels.add("Infection");
 		itemIndexingLabels.add("Influenza");
 		itemIndexingLabels.add("swine");
 		itemIndexingLabels.add("usa");
@@ -261,34 +288,21 @@ public class WSClient {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Influenza A virus subtype H1N1",
-				"Hypothetical H1N1 virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		return port
+				.addLibraryItem(
+						id,
+						"The infectious disease of humans caused by Influenza A virus subtype H1N1",
+						"Hypothetical H1N1 virus added by John Levander, University of Pittsburgh",
+		
+						"Infection", itemIndexingLabels);
 
 	}
-	
+
 	public static String addH5N1(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.5d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("Influenza A virus subtype H5N1");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.1d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(6.3d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(1.4);
+		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.3d, /*lp*/2.1d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, /*r0*/1.4d);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
+		itemIndexingLabels.add("Infection");
 		itemIndexingLabels.add("Influenza");
 		itemIndexingLabels.add("china");
 		itemIndexingLabels.add("avian");
@@ -298,34 +312,20 @@ public class WSClient {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Influenza A virus subtype H5N1",
-				"Hypothetical H5N1 virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		return port
+				.addLibraryItem(
+						id,
+						"The infectious disease of humans caused by Influenza A virus subtype H5N1",
+						"Hypothetical H5N1 virus added by John Levander, University of Pittsburgh",
+						"Infection", itemIndexingLabels);
 
 	}
-	
+
 	public static String addH7N9(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.6d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("Influenza A virus subtype H7N9");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(1.9d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(5.3d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(1.5);
-
+		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/5.3d, /*lp*/1.9d, /*itp*/1.4d, /*pns*/0.6d, /*psgs*/0.9d, /*r0*/1.5d);
+		
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
+		itemIndexingLabels.add("Infection");
 		itemIndexingLabels.add("Influenza");
 		itemIndexingLabels.add("taiwan");
 		itemIndexingLabels.add("avian");
@@ -335,34 +335,20 @@ public class WSClient {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
-		return port.addLibraryItem(
-				id,
-				"The infectious disease of humans caused by Influenza A virus subtype H7N9",
-				"Hypothetical H7N9 virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		return port
+				.addLibraryItem(
+						id,
+						"The infectious disease of humans caused by Influenza A virus subtype H7N9",
+						"Hypothetical H7N9 virus added by John Levander, University of Pittsburgh",
+						"Infection", itemIndexingLabels);
 
 	}
 
 	public static String addH3N2(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.6d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("Influenza A virus subtype H3N2");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.9d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(6.3d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(1.2);
-
+		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.3d, /*lp*/2.9d, /*itp*/1.4d, /*pns*/0.6d, /*psgs*/0.9d, /*r0*/1.2d);
+		
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
+		itemIndexingLabels.add("Infection");
 		itemIndexingLabels.add("Influenza");
 		itemIndexingLabels.add("california");
 		itemIndexingLabels.add("A/H3N2");
@@ -371,35 +357,20 @@ public class WSClient {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
-		return port.addLibraryItem(
-				id,
-				
-				"The infectious disease of humans caused by Influenza A virus subtype H3N2",
-				"Hypothetical H3N2 virus added by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		return port
+				.addLibraryItem(
+						id,
+						"The infectious disease of humans caused by Influenza A virus subtype H3N2",
+						"Hypothetical H3N2 virus added by John Levander, University of Pittsburgh",
+						"Infection", itemIndexingLabels);
 
 	}
-	
+
 	public static String addH7N7(ApolloServiceEI port) {
-		InfectiousDisease id = new InfectiousDisease();
-		id.setAsymptomaticInfectionFraction(0.3d);
-		id.setHostOrganismName("human");
-		id.setCausativeOrganismName("Influenza A virus subtype H7N7");
-
-		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp.setTimeStepValue(2.6d);
-		id.setLatentPeriod(tdp);
-
-		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-		tdp2.setTimeStepValue(6.1d);
-		id.setInfectiousPeriod(tdp2);
-
-		id.setReproductionNumber(7.44);
-
+		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.1d, /*lp*/2.6d, /*itp*/1.4d, /*pns*/0.3d, /*psgs*/0.9d, /*r0*/7.44d);
+		
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("InfectiousDisease");
+		itemIndexingLabels.add("Infection");
 		itemIndexingLabels.add("Influenza");
 		itemIndexingLabels.add("netherlands");
 		itemIndexingLabels.add("A/H7N7");
@@ -408,17 +379,16 @@ public class WSClient {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
-		return port.addLibraryItem(
-				id,
-				
-				"The infectious disease of humans caused by Influenza A virus subtype H7N7" +
-				"",
-				"Hypothetical H7N7 virus aded by John Levander, University of Pittsburgh",
-				"InfectiousDisease", itemIndexingLabels);
+		return port
+				.addLibraryItem(
+						id,
+
+						"The infectious disease of humans caused by Influenza A virus subtype H7N7"
+								+ "",
+						"Hypothetical H7N7 virus aded by John Levander, University of Pittsburgh",
+						"Infection", itemIndexingLabels);
 
 	}
-
-
 
 	public static String addAcAvt(ApolloServiceEI port) {
 		Antiviral av = new Antiviral();
@@ -487,7 +457,7 @@ public class WSClient {
 		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
 		vesc.setStrainIdentifier("H1N1");
 		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
-		//vesc.setTreatment(vacc);
+		// vesc.setTreatment(vacc);
 		vesc.setTreatment(t);
 		vesc.setVaccineIdentifier("Influenza A (H1N1) 2009 Monovalent Vaccine");
 		vesc.setAverageVaccinationEfficacy(0.7);
@@ -623,21 +593,21 @@ public class WSClient {
 		ApolloServiceV131 service = new ApolloServiceV131(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
-//		 addAcVcm(port);
-//		 addAcAvt(port);
-//		 addAllSccm(port);
-//		 addIndividualSccm(port);
-//		 addH1N1(port);
-//		 addH3N2(port);
-//		 addH5N1(port);
-//		 addH7N7(port);
-//		 addH7N9(port);
-//		 addDiptheria(port);
-//		 addMeningitidis(port);
-//		 addRubella(port);
-//		 addSARS(port);
-//		 addSmallpox(port);
-//		 		 
+		addAcVcm(port);
+		addAcAvt(port);
+		addAllSccm(port);
+		addIndividualSccm(port);
+		addH1N1(port);
+		addH3N2(port);
+		addH5N1(port);
+		addH7N7(port);
+		addH7N9(port);
+//		addDiptheria(port);
+//		addMeningitidis(port);
+//		addRubella(port);
+//		addSARS(port);
+//		addSmallpox(port);
+
 		GregorianCalendar c = new GregorianCalendar();
 		c.add(Calendar.YEAR, -1);
 		XMLGregorianCalendar date;
