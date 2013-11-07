@@ -47,7 +47,8 @@ public class WSClient {
 			JsonMappingException, IOException {
 		SimulatorServiceV131 service = new SimulatorServiceV131(
 				new URL(
-						"http://betaweb.rods.pitt.edu/seirsimulatorservice1.3.1/services/seirsimulatorservice?wsdl"));
+						//"http://betaweb.rods.pitt.edu/seirsimulatorservice1.3.1/services/seirsimulatorservice?wsdl"));
+						"http://warhol-fred.psc.edu:8090/fred?wsdl"));
 		SimulatorServiceEI port = service.getSimulatorServiceEndpoint();
 
 		//
@@ -60,8 +61,8 @@ public class WSClient {
 		//
 		// // ServiceRecord sr = new ServiceRecord();
 		SoftwareIdentification si = new SoftwareIdentification();
-		si.setSoftwareDeveloper("UPitt");
-		si.setSoftwareName("SEIR");
+		si.setSoftwareDeveloper("UPitt,CMU,");
+		si.setSoftwareName("FRED");
 		si.setSoftwareVersion("1.3.1");
 		si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
 
