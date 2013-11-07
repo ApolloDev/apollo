@@ -171,19 +171,19 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
     static {
         Map<String, String> env = System.getenv();
-        APOLLO_DIR = env.get("APOLLO_WORK_DIR");
+        APOLLO_DIR = env.get("APOLLO_131_WORK_DIR");
         if (APOLLO_DIR != null) {
             if (!APOLLO_DIR.endsWith(File.separator)) {
                 APOLLO_DIR += File.separator;
             }
             System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
         } else {
-            System.out.println("APOLLO_DIR environment variable not found!");
+            System.out.println("APOLLO_131_WORK_DIR environment variable not found!");
             APOLLO_DIR = "";
         }
         EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
         configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-        db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/db4o_db_13");
+        db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/db4o_db_131");
     }
 
     @Override
