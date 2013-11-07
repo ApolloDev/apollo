@@ -167,7 +167,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="diseases"
-							type="apollo:InfectiousDisease" maxOccurs="unbounded"
+							type="apollo:Infection" maxOccurs="unbounded"
 							minOccurs="0">
 						</xsd:element>
 					</xsd:sequence>
