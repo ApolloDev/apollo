@@ -50,7 +50,7 @@
 			</plugin>
 		</plugins>
 		<!-- Name of the generated WAR file -->
-		<finalName>visualizerservice1.3</finalName>
+		<finalName>visualizerservice1.3.1</finalName>
 	</build>
 
 	<profiles>
