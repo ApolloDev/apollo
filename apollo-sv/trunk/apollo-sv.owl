@@ -5177,23 +5177,23 @@ While in many pieces of fiction the order in which the purely intentional entiti
             <Restriction>
                 <onProperty rdf:resource="&obo;OBI_0000300"/>
                 <allValuesFrom>
-                    <Restriction>
-                        <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
-                        <someValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
+                                <someValuesFrom>
                                     <Restriction>
                                         <onProperty rdf:resource="&obo;OBI_0000308"/>
                                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
                                     </Restriction>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;has_participant"/>
-                                        <someValuesFrom rdf:resource="&obo;FMA_9825"/>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </someValuesFrom>
-                    </Restriction>
+                                </someValuesFrom>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom rdf:resource="&obo;FMA_9825"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                 </allValuesFrom>
             </Restriction>
         </equivalentClass>
