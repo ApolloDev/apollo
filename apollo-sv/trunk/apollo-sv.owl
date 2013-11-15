@@ -324,14 +324,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -340,6 +332,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -776,12 +776,12 @@
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -1684,24 +1684,6 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000026 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000026">
-        <rdfs:label xml:lang="en">obsolete_delay of closure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000027 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000027">
-        <rdfs:label xml:lang="en">obsolete_time step of closure</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000029 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000029">
@@ -1735,16 +1717,6 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
         <obo:IAO_0000115 xml:lang="en">A process that is applied to a population with the goal of preventing, or mitigating the severity of a disease.  </obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000030 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000030">
-        <rdfs:label xml:lang="en">obsolete_control measure name</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-        <apollo_sv:APOLLO_SV_0000040>control measure name</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2126,22 +2098,6 @@ Note that the name for this concept, were it to be named based on its intent, wo
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000044 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000044">
-        <rdfs:label xml:lang="en">obsolete_vaccine efficacy delay</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-        <rdfs:comment xml:lang="en">MB: 1. The class restriction might seem counter-intuitive, but looking at the definition of &quot;vaccination…&quot; and has_specified_output convinced me that this is what it ought to be.
-2. In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs. 
-</rdfs:comment>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000600 xml:lang="en">The duration of the time period between an organism&apos;s participation in a vaccination against a specific infectious agent and the organism’s acquisition of immunity against that infectious agent.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The time measurement datum of the time interval between the beginning of a vaccination against an infectious agent and the participant&apos;s acquisition of immunity. </obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccine efficacy delay</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000045 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000045">
@@ -2486,19 +2442,6 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000056 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000056">
-        <rdfs:label xml:lang="en">obsolete_geophysical geographical location data set</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A data set containing geophysical information about a geographical region.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">A data set containing geophysical information about a geographical region. This term is not currently used in Apollo-WS.</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">geophysical geographical location data set</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000058 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000058">
@@ -2681,15 +2624,6 @@ Maybe we need to discuss this.
         <obo:IAO_0000115 xml:lang="en">A simulation of a vaccination control measure.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A type of control measure that uses vaccination to create immunity in simulated organisms to specific pathogens.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulation of vaccination control measure</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000062 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000062">
-        <rdfs:label xml:lang="en">obsolete_initiated</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
     </Class>
     
 
@@ -4828,17 +4762,6 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000132 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000132">
-        <rdfs:label xml:lang="en">obsolete_control measure start time</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
-        <obo:IAO_0000600 xml:lang="en">The time step during which a control measure begins</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">obsolete_control measure start time</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000133 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000133">
@@ -5379,7 +5302,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000155 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000155">
-        <rdfs:label xml:lang="en">population disease survey</rdfs:label>
+        <rdfs:label xml:lang="en">population infection survey</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -5508,7 +5431,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000157 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000157">
-        <rdfs:label xml:lang="en">population disease census</rdfs:label>
+        <rdfs:label xml:lang="en">population infection census</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -5570,30 +5493,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000160">
         <rdfs:label xml:lang="en">contamination</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <Class>
-                        <complementOf rdf:resource="&obo;APOLLO_SV_00000114"/>
-                    </Class>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_participant"/>
-                        <someValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;bearer_of"/>
-                                        <someValuesFrom rdf:resource="&obo;IDO_0000450"/>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </someValuesFrom>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -5727,6 +5627,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
 
     <Class rdf:about="&obo;APOLLO_SV_00000166">
         <rdfs:label xml:lang="en">contaminated material entity</rdfs:label>
+        <rdfs:label xml:lang="en">contaminated thing</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -5763,6 +5664,46 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000115 xml:lang="en">A material entity that has a part, which is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000167 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000167">
+        <rdfs:label xml:lang="en">contamination acquisition</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&GO;GO_0008150"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000293"/>
+                        <someValuesFrom rdf:resource="&obo;IDO_0000528"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000293"/>
+                        <someValuesFrom>
+                            <Class>
+                                <unionOf rdf:parseType="Collection">
+                                    <Class>
+                                        <complementOf rdf:resource="&obo;APOLLO_SV_00000166"/>
+                                    </Class>
+                                    <Class>
+                                        <complementOf rdf:resource="&obo;IDO_0000528"/>
+                                    </Class>
+                                </unionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000299"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000166"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -8267,6 +8208,14 @@ Mathias Brochhausen</obo:IAO_0000117>
     
 
 
+    <!-- http://www.geneontology.org/formats/oboInOwl#ObsoleteClass -->
+
+    <Class rdf:about="&oboInOwl;ObsoleteClass">
+        <rdfs:label xml:lang="en">Obsolete Class</rdfs:label>
+    </Class>
+    
+
+
     <!-- http://www.ifomis.org/bfo/1.1#Entity -->
 
     <Class rdf:about="&bfo;Entity"/>
@@ -8388,9 +8337,6 @@ Mathias Brochhausen</obo:IAO_0000117>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000105">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000314">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
@@ -8403,11 +8349,11 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000313">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000310">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000590">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000310">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000311">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8461,10 +8407,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000180">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000182">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000181">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
@@ -8482,9 +8424,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000183">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000047">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000186">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -8532,15 +8471,8 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000580">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000059">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000057">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000576">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000579">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
@@ -8596,9 +8528,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;format">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000141">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
@@ -8661,14 +8590,8 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;OBI_0500000">
         <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000018">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&dc;description">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000012">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;identifier">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -8697,28 +8620,11 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&dc;subject">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000097">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000098">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000096">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000093">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000008">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000091">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000024">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000025">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8742,17 +8648,16 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000419">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000128">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000121"/>
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
+    <rdf:Description rdf:about="&obo;IAO_0000415">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000318">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000415">
+    <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000319">
+    <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
@@ -8766,6 +8671,9 @@ Mathias Brochhausen</obo:IAO_0000117>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8773,20 +8681,14 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000317">
+    <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000418">
+    <rdf:Description rdf:about="&obo;IAO_0000317">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000326">
@@ -8819,9 +8721,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000222">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000019">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000220">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
@@ -8830,10 +8729,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000034">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000035">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000131">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
