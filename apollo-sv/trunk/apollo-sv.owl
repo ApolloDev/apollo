@@ -179,7 +179,9 @@
 
     <!-- http://purl.obolibrary.org/obo/IAO_0000600 -->
 
-    <AnnotationProperty rdf:about="&obo;IAO_0000600"/>
+    <AnnotationProperty rdf:about="&obo;IAO_0000600">
+        <rdfs:label xml:lang="en">elucidation</rdfs:label>
+    </AnnotationProperty>
     
 
 
@@ -383,7 +385,21 @@
 
     <ObjectProperty rdf:about="&obo;APOLLO_SV_00000177">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdfs:label xml:lang="en">administrated by</rdfs:label>
+        <rdfs:label xml:lang="en">obsoleted_administrated by</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="&oboInOwl;ObsoleteProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000053 -->
+
+    <ObjectProperty rdf:about="&obo;BFO_0000053">
+        <rdfs:label xml:lang="en">is bearer of</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000118 xml:lang="en">bearer of</obo:IAO_0000118>
+        <obo:IAO_0000118 xml:lang="en">bearer_of</obo:IAO_0000118>
+        <equivalentProperty rdf:resource="&OBO_REL;bearer_of"/>
+        <equivalentProperty rdf:resource="&ro;bearer_of"/>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
     </ObjectProperty>
     
@@ -602,11 +618,68 @@
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OMIABIS_0000008 -->
+
+    <ObjectProperty rdf:about="&obo;OMIABIS_0000008">
+        <rdfs:label xml:lang="en">owns</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000119 xml:lang="en">Reinach, A. Sämtliche Werke. Texkritische Ausgabe, München: Philosophia Verlag, 1989, p.189-204.</obo:IAO_0000119>
+        <obo:IAO_0000600 xml:lang="en">This is a primitive relation. This relation is the foundation to the owners right to have the owned entity at his/her full disposal. </obo:IAO_0000600>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OMIABIS_0000009 -->
 
     <ObjectProperty rdf:about="&obo;OMIABIS_0000009">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdfs:label xml:lang="en">administrates</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <rdfs:comment xml:lang="en">A definition of &quot;tranfers&quot; object property can be found in d-acts: http:purl.obolibrary.org/iao/d-acts.owl</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">a administrates b if c owns b and some rights and obligations grounded in the owning relation regarding b are transferred  from c to a.</obo:IAO_0000115>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMIABIS_0000048 -->
+
+    <ObjectProperty rdf:about="&obo;OMIABIS_0000048">
+        <rdfs:label xml:lang="en">is owned by</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000119 xml:lang="en">Reinach, A. Sämtliche Werke. Texkritische Ausgabe, München: Philosophia Verlag, 1989, p.189-204.</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">a is owned by b if b has complete power over a. All rights and obligations of ownership are grounded in this (primitive) relation. The claims and obligations of ownership can be partially transferred to a third party by the owner, b.</obo:IAO_0000115>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000068 -->
+
+    <ObjectProperty rdf:about="&obo;OMRSE_00000068">
+        <rdfs:label xml:lang="en">is administrated by</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000070 -->
+
+    <ObjectProperty rdf:about="&obo;OMRSE_00000070">
+        <rdfs:label xml:lang="en">is enrolled in school</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </ObjectProperty>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000071 -->
+
+    <ObjectProperty rdf:about="&obo;OMRSE_00000071">
+        <rdfs:label xml:lang="en">is admitted to hospital</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
     </ObjectProperty>
     
@@ -696,6 +769,12 @@
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
         <rdfs:subPropertyOf rdf:resource="&obo;RO_0002222"/>
     </ObjectProperty>
+    
+
+
+    <!-- http://purl.org/obo/owl/OBO_REL#bearer_of -->
+
+    <rdf:Description rdf:about="&OBO_REL;bearer_of"/>
     
 
 
@@ -838,6 +917,14 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+    </ObjectProperty>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#ObsoleteProperty -->
+
+    <ObjectProperty rdf:about="&oboInOwl;ObsoleteProperty">
+        <rdfs:label xml:lang="en">ObsoleteProperty</rdfs:label>
     </ObjectProperty>
     
 
@@ -1061,8 +1148,9 @@
 
     <Class rdf:about="&obo;APOLLO_SV_00000001">
         <rdfs:label xml:lang="en">epidemic model</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000064"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000174"/>
         <obo:IAO_0000117>William Hogan and Michael Wagner</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">An algorithm the concretizations of which models the transmission of transmissible disease.</obo:IAO_0000115>
         <obo:IAO_0000115 xml:lang="en">an algorithm whose concretization is realized as a simulating of Infectious disease epidemic or Infectious disease pandemic.</obo:IAO_0000115>
     </Class>
     
@@ -1684,6 +1772,45 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000026 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000026">
+        <rdfs:label xml:lang="en">facility survey</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
+        <obo:IAO_0000115 xml:lang="en">A planned process involving counting numbers of facilities in a specific region.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000027 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000027">
+        <rdfs:label xml:lang="en">school facility census</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000173"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;OMRSE_00000064"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000026"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000026"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000029 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000029">
@@ -1721,9 +1848,40 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000030 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000030">
+        <rdfs:label xml:lang="en">hospital patient population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;BFO_0000075"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000011"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000071"/>
+                                <onClass rdf:resource="&obo;OMRSE_00000056"/>
+                                <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000023"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000031 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000031">
+        <rdfs:label xml:lang="en">simulated population</rdfs:label>
         <rdfs:label xml:lang="en">simulation of population</rdfs:label>
         <equivalentClass>
             <Class>
@@ -2098,6 +2256,46 @@ Note that the name for this concept, were it to be named based on its intent, wo
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000044 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000044">
+        <rdfs:label xml:lang="en">nursery school student population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;BFO_0000075"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000058"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000070"/>
+                                <onClass>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OMRSE_00000057"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;OMRSE_00000059"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </onClass>
+                                <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000178"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000045 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000045">
@@ -2442,6 +2640,35 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000056 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000056">
+        <rdfs:label xml:lang="en">hospital patient population census</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000153"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000030"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000153"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000058 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000058">
@@ -2624,6 +2851,45 @@ Maybe we need to discuss this.
         <obo:IAO_0000115 xml:lang="en">A simulation of a vaccination control measure.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A type of control measure that uses vaccination to create immunity in simulated organisms to specific pathogens.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulation of vaccination control measure</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000062 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000062">
+        <rdfs:label xml:lang="en">primary school student population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;BFO_0000075"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000058"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000070"/>
+                                <onClass>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OMRSE_00000057"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;OMRSE_00000060"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </onClass>
+                                <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000178"/>
     </Class>
     
 
@@ -4360,8 +4626,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000111 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000111">
-        <rdfs:label xml:lang="en">educational institution</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0000245"/>
+        <rdfs:label xml:lang="en">obsolete_educational institution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <obo:IAO_0000115 xml:lang="en">An educational institution is an place organization which provides the necessary system for people of different ages gain an education. It includes (among others) preschools, childcare, elementary schools, and universities.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Types_of_educational_institutions (amended)</obo:IAO_0000119>
     </Class>
@@ -4758,6 +5024,45 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
         <obo:IAO_0000600 xml:lang="en">Fraction of the population ascertained as having disease that results in initiating a reactive control measure </obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reactive control measure threshold</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000132 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000132">
+        <rdfs:label xml:lang="en">secondary school student population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&obo;BFO_0000075"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000058"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000070"/>
+                                <onClass>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;OMRSE_00000057"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;OMRSE_00000065"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </onClass>
+                                <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000178"/>
     </Class>
     
 
@@ -5448,7 +5753,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
-        <obo:IAO_0000115 xml:lang="en">A data set that is the specific outcome of a population disease survey.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population disease survey.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -5626,44 +5931,35 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000166 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000166">
-        <rdfs:label xml:lang="en">contaminated material entity</rdfs:label>
         <rdfs:label xml:lang="en">contaminated thing</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                    <rdf:Description rdf:about="&snap;IndependentContinuant"/>
                     <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
+                        <onProperty rdf:resource="&ro;location_of"/>
                         <someValuesFrom>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;location_of"/>
-                                <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000528"/>
                                     <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                            <Class>
-                                                <complementOf>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&ro;participates_in"/>
-                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
-                                                    </Restriction>
-                                                </complementOf>
-                                            </Class>
+                                        <complementOf>
                                             <Restriction>
-                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                <someValuesFrom rdf:resource="&obo;IDO_0000450"/>
+                                                <onProperty rdf:resource="&ro;participates_in"/>
+                                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
                                             </Restriction>
-                                        </intersectionOf>
+                                        </complementOf>
                                     </Class>
-                                </someValuesFrom>
-                            </Restriction>
+                                </intersectionOf>
+                            </Class>
                         </someValuesFrom>
                     </Restriction>
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
-        <obo:IAO_0000115 xml:lang="en">A material entity that has a part, which is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
+        <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
+        <obo:IAO_0000115 xml:lang="en">An entity that contains a pathogen (either internal to itself or on its surface) and is not undergoing an infection</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An independent continuant that is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -5705,6 +6001,112 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">a biological process whereby an entity that does not contain a pathogen becomes a contaminated thing</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000168 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000168">
+        <rdfs:label xml:lang="en">nursery school student population census</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000176"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000044"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000176"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000169 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000169">
+        <rdfs:label xml:lang="en">primary school student population census</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000176"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000062"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000176"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000170 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000170">
+        <rdfs:label xml:lang="en">secondary school student population census</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000176"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000132"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000152"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000176"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000171 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000171">
+        <rdfs:label xml:lang="en">antiviral treatment</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OGMS_0000090"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000293"/>
+                        <someValuesFrom rdf:resource="&obo;CHEBI_36044"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OGMS_0000090"/>
+        <obo:IAO_0000115 xml:lang="en">A treatment with an antiviral drug.</obo:IAO_0000115>
     </Class>
     
 
@@ -5782,11 +6184,20 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000174 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000174">
+        <rdfs:label xml:lang="en">disease transmission model</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000064"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000175 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000175">
-        <rdfs:label xml:lang="en">school organization</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000111"/>
+        <rdfs:label xml:lang="en">obsolete_school organization</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <obo:IAO_0000115 xml:lang="en">An organization created with the purpose of providing education to those of its members that are bearer of student role.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5800,7 +6211,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000173"/>
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000153"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0000136"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000178"/>
@@ -5817,6 +6228,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000153"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -5833,11 +6245,11 @@ While in many pieces of fiction the order in which the purely intentional entiti
                         <intersectionOf rdf:parseType="Collection">
                             <Restriction>
                                 <onProperty rdf:resource="&ro;bearer_of"/>
-                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000180"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000058"/>
                             </Restriction>
                             <Restriction>
-                                <onProperty rdf:resource="&obo;APOLLO_SV_00000177"/>
-                                <onClass rdf:resource="&obo;APOLLO_SV_00000175"/>
+                                <onProperty rdf:resource="&obo;OMRSE_00000070"/>
+                                <onClass rdf:resource="&obo;OMRSE_00000057"/>
                                 <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
                             </Restriction>
                         </intersectionOf>
@@ -5852,11 +6264,32 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000179 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000179">
+        <rdfs:label xml:lang="en">simulator configuration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&ro;has_part"/>
+                <someValuesFrom>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0000136"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000097"/>
+                    </Restriction>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that contains everything a simulator needs to run, including the representation of a scenario.</obo:IAO_0000115>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000180 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000180">
-        <rdfs:label xml:lang="en">student role</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000001"/>
+        <rdfs:label xml:lang="en">obsolete_student role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <obo:IAO_0000115 xml:lang="en">A human social role that is realized by attending a school to receive formal education.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -7769,6 +8202,47 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000010 -->
+
+    <Class rdf:about="&obo;OMRSE_00000010">
+        <rdfs:label xml:lang="en">human health care role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000024"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A role in human social processes that is realized by health care processes such as seeking or providing treatment for disease and injury, diagnosing disease and injury, or undergoing diagnosis. </obo:IAO_0000115>
+        <rdfs:comment>Mathias Brochhausen</rdfs:comment>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">health care role</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000011 -->
+
+    <Class rdf:about="&obo;OMRSE_00000011">
+        <rdfs:label xml:lang="en">patient role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000010"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A human health care role that inheres in an organism [human?] as the recipient of a health care service.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A role borne by an organism being as the recipient of a health care service.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Amanda Hicks</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Patient</obo:IAO_0000119>
+        <obo:IAO_0000118 xml:lang="en">patient</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000015 -->
+
+    <Class rdf:about="&obo;OMRSE_00000015">
+        <rdfs:label xml:lang="en">health care provider organization role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000027"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <rdfs:comment xml:lang="en">Definition needed, but the idea is that we want to differentiate between provider and payer organizations.  Some organizaitons have both roles (e.g., UPMC has a Hospital Division, a Physician Divison, and an Insurance Division).</rdfs:comment>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OMRSE_00000022 -->
 
     <Class rdf:about="&obo;OMRSE_00000022">
@@ -7804,6 +8278,34 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000024 -->
+
+    <Class rdf:about="&obo;OMRSE_00000024">
+        <rdfs:label xml:lang="en">role in human social processes</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Role"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A role inhering in an entity realized by social interactions in human society.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">Previous definition: A role played by an entity in human social processes.</rdfs:comment>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000025 -->
+
+    <Class rdf:about="&obo;OMRSE_00000025">
+        <rdfs:label xml:lang="en">organization social role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000024"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A role in human social processes that inheres in an organization.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">Defined class that we will ultimately move to an application ontology.  We are leaving here for now until we determine which application ontology: it is likely going to be an ontology that does not currently (2012-06-05) exist.
+
+Ditto for its current descendants.</rdfs:comment>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OMRSE_00000026 -->
 
     <Class rdf:about="&obo;OMRSE_00000026">
@@ -7824,6 +8326,18 @@ Ditto for its current descendants.</rdfs:comment>
         <rdfs:comment xml:lang="en">Previous definition: A role in human social processes played by an organism.</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan
 Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000027 -->
+
+    <Class rdf:about="&obo;OMRSE_00000027">
+        <rdfs:label xml:lang="en">organization health care role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000025"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">An organization social role that is realized by a health care process.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">Previous definition: An organization social role played by an organization in health care processes.</rdfs:comment>
     </Class>
     
 
@@ -7936,6 +8450,253 @@ Mathias Brochhausen</obo:IAO_0000117>
     <Class rdf:about="&obo;OMRSE_00000037">
         <rdfs:label xml:lang="en">aggregate of major administrative subdivisions</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000035"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000052 -->
+
+    <Class rdf:about="&obo;OMRSE_00000052">
+        <rdfs:label xml:lang="en">hospital function</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Function"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A function inhering in a facility that manifests by the facility participating in providing inpatient and outpatient healthcare to a patient population.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000053 -->
+
+    <Class rdf:about="&obo;OMRSE_00000053">
+        <rdfs:label xml:lang="en">school function</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Function"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A function inhering in a facility that manifests by the facility participating in providing formal education to a student population.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000054 -->
+
+    <Class rdf:about="&obo;OMRSE_00000054">
+        <rdfs:label xml:lang="en">hospital role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000015"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A healthcare provider role that inheres in an organization and is realized by providing inpatient and outpatient care.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000055 -->
+
+    <Class rdf:about="&obo;OMRSE_00000055">
+        <rdfs:label xml:lang="en">school role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;Role"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000117 xml:lang="en">An organization social role that inheres in an organization and is realized by providing formal education to students.</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000056 -->
+
+    <Class rdf:about="&obo;OMRSE_00000056">
+        <rdfs:label xml:lang="en">hospital organization</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000053"/>
+                        <someValuesFrom rdf:resource="&obo;OMRSE_00000054"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000245"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">An organization that is the bearer of a hospital role.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000057 -->
+
+    <Class rdf:about="&obo;OMRSE_00000057">
+        <rdfs:label xml:lang="en">school organization</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000053"/>
+                        <someValuesFrom rdf:resource="&obo;OMRSE_00000055"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0000245"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">An organization that is the bearer of a school role.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000058 -->
+
+    <Class rdf:about="&obo;OMRSE_00000058">
+        <rdfs:label xml:lang="en">student role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000001"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A human social role that is realized by the process of formal education that the bearer undergoes.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000059 -->
+
+    <Class rdf:about="&obo;OMRSE_00000059">
+        <rdfs:label xml:lang="en">nursery school role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000055"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000060 -->
+
+    <Class rdf:about="&obo;OMRSE_00000060">
+        <rdfs:label xml:lang="en">primary school role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000055"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000061 -->
+
+    <Class rdf:about="&obo;OMRSE_00000061">
+        <rdfs:label xml:lang="en">architectural structure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <rdfs:comment xml:lang="en">&quot;Building&quot; is a subclass of this. </rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">A material entity that is a human made strcuture with firm connection between its foundation and the ground.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">This type of entity is referred to as &quot;Bauwerk&quot; or &quot;Bauliche Anlage&quot;.</rdfs:comment>
+        <obo:IAO_0000119 xml:lang="en">http://de.wikipedia.org/wiki/Bauwerk</obo:IAO_0000119>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000062 -->
+
+    <Class rdf:about="&obo;OMRSE_00000062">
+        <rdfs:label xml:lang="en">facility</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OMRSE_00000061"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <someValuesFrom rdf:resource="&snap;Function"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000061"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">An architectural structure that bears some function.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000063 -->
+
+    <Class rdf:about="&obo;OMRSE_00000063">
+        <rdfs:label xml:lang="en">hospital facility</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OMRSE_00000062"/>
+                    <Class>
+                        <unionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMIABIS_0000048"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000056"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000068"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000056"/>
+                            </Restriction>
+                        </unionOf>
+                    </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <someValuesFrom rdf:resource="&obo;OMRSE_00000052"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000062"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A facility that is run by a hospital organization and is the bearer of a hospital function.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000064 -->
+
+    <Class rdf:about="&obo;OMRSE_00000064">
+        <rdfs:label xml:lang="en">school facility</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OMRSE_00000062"/>
+                    <Class>
+                        <unionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMIABIS_0000048"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000057"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OMRSE_00000068"/>
+                                <someValuesFrom rdf:resource="&obo;OMRSE_00000057"/>
+                            </Restriction>
+                        </unionOf>
+                    </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <someValuesFrom rdf:resource="&obo;OMRSE_00000053"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000062"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A facility that is run by a school organization and is the bearer of a school function.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OMRSE_00000065 -->
+
+    <Class rdf:about="&obo;OMRSE_00000065">
+        <rdfs:label xml:lang="en">secondary school role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000055"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -8529,6 +9290,9 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&dc;format">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000142">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8544,9 +9308,6 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000142">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;language">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -8657,30 +9418,30 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&ro;derives_from">
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;derives_from">
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8739,11 +9500,11 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000038">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000132">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000327">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000132">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000429">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
