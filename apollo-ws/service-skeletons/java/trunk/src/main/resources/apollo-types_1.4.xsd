@@ -6,7 +6,7 @@
 
 
 
-   
+
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
@@ -30,6 +30,13 @@
 	<simpleType name="NonNegativeDouble">
 		<restriction base="double">
 			<minInclusive value="0" />
+		</restriction>
+	</simpleType>
+	
+	<simpleType name="SimulatorType">
+		<restriction base="string">
+			<enumeration value="agent-based" />
+			<enumeration value="compartmental" />
 		</restriction>
 	</simpleType>
 
@@ -235,55 +242,48 @@
 
 
 	<complexType name="Infection">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation source="none" />
+						</annotation>
+					</element>
+					<element name="hostTaxonID" type="token" maxOccurs="1"
+						minOccurs="1" />
 
-		<sequence>
-			<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
+					<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
 
-				</annotation>
-			</element>
-			<element name="hostTaxonID" type="token" maxOccurs="1"
-				minOccurs="1" />
+						</annotation>
+					</element>
 
-			<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
+					<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
+						maxOccurs="1" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
 
-				</annotation>
-			</element>
+						</annotation>
+					</element>
 
-			<element name="latentPeriod" type="tns:TemporalDiseaseParameter"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
 
-				</annotation>
-			</element>
+					<element name="infectionAcquisition" type="tns:InfectionAcquisition"
+						maxOccurs="unbounded" minOccurs="1">
+						<annotation>
+							<documentation
+								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
 
-			<element name="probabilityNeverSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000045" />
-
-				</annotation>
-			</element>
-			<element name="probabilitySevereGivenSymptomatic" type="tns:Probability"
-				maxOccurs="1" minOccurs="0" />
-
-			<element name="infectionAcquisition"
-				type="tns:InfectionAcquisition" maxOccurs="unbounded"
-				minOccurs="1">
-				<annotation>
-					<documentation
-						source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
-
-				</annotation>
-			</element>
-
-		</sequence>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 
@@ -310,15 +310,13 @@
 	</complexType>
 
 
-	<complexType name="PopulationDiseaseCensus">
+	<complexType name="PopulationInfectionAndImmunityCensus">
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
+                    <element name="description" type="string" maxOccurs="1" minOccurs="1" />
+                    <element name="date" type="dateTime" maxOccurs="unbounded" minOccurs="1" />
 					<element name="populationSpecies" type="string" maxOccurs="1"
-						minOccurs="1" />
-					<element name="time" type="tns:TimeDefinition" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="populationDiseaseCensusResult" type="tns:PopulationDiseaseCensusResult"
 						maxOccurs="1" minOccurs="1">
@@ -382,30 +380,16 @@
 				</annotation>
 			</element>
 
-			<element minOccurs="1" maxOccurs="1"
-				name="midasScenarioRepresentation" type="tns:MidasScenarioRepresentation">
+			<element minOccurs="1" maxOccurs="1" name="scenario"
+				type="tns:InfectiousDiseaseScenario">
 				<annotation>
 					<documentation source="none" />
 
 				</annotation>
 			</element>
-			<element name="infectiousDiseaseKnowledge" type="tns:Infection"
-				maxOccurs="unbounded" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000042" />
-
-				</annotation>
-			</element>
 
 
 
-			<element name="controlMeasures" type="tns:ControlMeasures"
-				maxOccurs="1" minOccurs="0">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
 		</sequence>
 	</complexType>
 
@@ -423,7 +407,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="SyntheticPopulationConfiguration">
+	<complexType name="AgentModelEcosystemCensusDescription">
 		<sequence>
 			<element name="serviceIdentification" type="tns:SoftwareIdentification" />
 
@@ -1200,7 +1184,7 @@
 
 	<complexType name="BioticEcosystem">
 		<sequence>
-			<element name="communities" type="tns:PopulationDiseaseCensus"
+			<element name="communities" type="tns:PopulationInfectionAndImmunityCensus"
 				maxOccurs="unbounded" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1221,7 +1205,14 @@
 
 	<complexType name="BayesianNetworkStructureType" />
 
-	<complexType name="TreatmentPreventableOutcome" />
+	<complexType name="DiseaseOutcome">
+		<sequence>
+			<element name="description" type="string" maxOccurs="1"
+				minOccurs="1" />
+
+			<element name="name" type="token" />
+		</sequence>
+	</complexType>
 
 	<complexType name="TreatmentEfficacyValueType" />
 
@@ -1313,15 +1304,10 @@
 		</sequence>
 	</complexType>
 
-	<!--
-		From here to end are types that are NOT USED IN SIMULATOR CONFIG. They
-		are either library types or BioEcon types
-	-->
-	<!--
-		N.B. They can't be yanked out and used on their own because some
-		inherit from types above and others have member variables that take
-		above type
-	-->
+	<!-- From here to end are types that are NOT USED IN SIMULATOR CONFIG. They 
+		are either library types or BioEcon types -->
+	<!-- N.B. They can't be yanked out and used on their own because some inherit 
+		from types above and others have member variables that take above type -->
 
 	<complexType name="VaccinationEfficacyInferred">
 		<complexContent>
@@ -1391,39 +1377,47 @@
 	<complexType name="SensitivityAnalysisResult" />
 
 	<complexType name="DecisionModel">
-		<sequence>
-			<element name="decisionAlternatives" type="tns:DecisionAlternative"
-				maxOccurs="unbounded" minOccurs="1" />
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="decisionAlternatives" type="tns:DecisionAlternative"
+						maxOccurs="unbounded" minOccurs="1" />
 
-			<element name="simulatorConfiguration " type="string"
-				maxOccurs="1" minOccurs="0" />
+					<element name="simulatorConfiguration "
+						type="tns:SimulatorConfiguration" maxOccurs="1" minOccurs="0" />
 
-			<element name="utilityFunction" type="string" maxOccurs="1"
-				minOccurs="1" />
-		</sequence>
+					<element name="utilityFunction"
+						type="tns:UtilityFunction" maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="DecisionAnalysis">
-		<sequence>
-			<element name="decisionModel" type="string" maxOccurs="1"
-				minOccurs="1" />
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="decisionModel" type="tns:DecisionModel"
+						maxOccurs="1" minOccurs="1" />
 
-			<element name="baseCaseResult " type="string" maxOccurs="1"
-				minOccurs="1" />
+					<element name="baseCaseResult " type="tns:BaseCaseResult"
+						maxOccurs="1" minOccurs="1" />
 
-			<element name="sensitivityAnalyses" type="string" maxOccurs="unbounded"
-				minOccurs="0" />
-		</sequence>
+					<element name="sensitivityAnalyses" type="tns:SensitivityAnalysis"
+						maxOccurs="unbounded" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="ExpectedUtility" />
 
 	<complexType name="BaseCaseResult">
 		<sequence>
-			<element name="decisionAlternatives" type="tns:DecisionAnalysis"
+			<element name="decisionAlternatives" type="tns:DecisionAlternative"
 				maxOccurs="unbounded" minOccurs="1" />
 
-			<element name="expectedUtilities" type="string" maxOccurs="unbounded"
+			<element name="expectedUtilities" type="double" maxOccurs="unbounded"
 				minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1476,32 +1470,44 @@
 		</restriction>
 	</simpleType>
 
+	<simpleType name="Outcome">
+		<restriction base="string">
+			<enumeration value="asymptomatic" />
+			<enumeration value="symptomatic" />
+			<enumeration value="severely symptomatic" />
+		</restriction>
+	</simpleType>
+
 	<complexType name="InfectionAcquisition">
-		<sequence>
-			<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
-				maxOccurs="1" minOccurs="1" />
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
+						maxOccurs="1" minOccurs="1" />
 
-			<element name="susceptibleHostTaxonID" type="string"
-				maxOccurs="1" minOccurs="1" />
+					<element name="susceptibleHostTaxonID" type="string"
+						maxOccurs="1" minOccurs="1" />
 
-			<element name="reproductionNumber" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="0" />
+					<element name="reproductionNumber" type="tns:PositiveDouble"
+						maxOccurs="1" minOccurs="0" />
 
-			<element name="transmissionCoefficient" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="0" />
+					<element name="transmissionCoefficient" type="tns:PositiveDouble"
+						maxOccurs="1" minOccurs="0" />
 
-			<element name="TransmissionProbability" type="tns:Probability"
-				maxOccurs="1" minOccurs="0" />
+					<element name="TransmissionProbability" type="tns:Probability"
+						maxOccurs="1" minOccurs="0" />
 
-			<choice>
-				<element name="infectiousHostTaxonID" type="string"
-					maxOccurs="1" minOccurs="0" />
+					<choice>
+						<element name="infectiousHostTaxonID" type="string"
+							maxOccurs="1" minOccurs="0" />
 
-				<element name="contaminatedMaterialID" type="string"
-					maxOccurs="1" minOccurs="0" />
+						<element name="contaminatedMaterialID" type="string"
+							maxOccurs="1" minOccurs="0" />
 
-			</choice>
-		</sequence>
+					</choice>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="InfectionAcquisitionLibraryItem">
@@ -1532,41 +1538,304 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="MidasScenarioRepresentation">
+	<complexType name="SimulatorConfiguration">
 		<sequence>
-			<element name="populationDiseaseCensus" type="tns:PopulationDiseaseCensus"
-				maxOccurs="unbounded" minOccurs="1" />
+			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
+				maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation source="none" />
 
-			<element name="agentLevelEcosystemCensus" type="tns:AgentLevelEcosystemCensus"
+				</annotation>
+			</element>
+			<element name="authentication" type="tns:Authentication"
+				maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation source="none" />
+
+				</annotation>
+			</element>
+			<element name="simulatorTimeSpecification" type="tns:SimulatorTimeSpecification"
+				maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation source="none" />
+
+				</annotation>
+			</element>
+
+
+
+
+			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenario"
 				maxOccurs="1" minOccurs="1" />
 
-			<element name="populationTreatmentCensus" type="tns:PopulationTreatmentCensus"
-				maxOccurs="unbounded" minOccurs="0" />
 		</sequence>
 	</complexType>
-
-	<complexType name="AgentLevelEcosystemCensus">
+	
+	<complexType name="InfectiousDiseaseScenario2">
 		<sequence>
-			<element name="bioticEcosystemParts" type="string" />
-			<element name="abioticEcosystemParts" type="string" />
-		</sequence>
-	</complexType>
 
-	<complexType name="PopulationTreatmentCensus" />
 
-	<complexType name="Contamination">
-		<sequence>
-			<element name="InfectiousHostTaxonID" type="string"></element>
-			<element name="contaminatedSource" type="string"></element>
-			<element name="pathogenTaxonID"
-				type="tns:PathogenTaxonID">
+			<element name="date" type="dateTime" maxOccurs="1"
+				minOccurs="0">
 			</element>
-			<element name="abioticEcosystemElementID" type="string"></element>
-			<element name="contaminationProbability"
-				type="tns:Probability">
+			<element name="ecosytemCensus"
+				type="tns:EcosytemCensusForSimulator" maxOccurs="1" minOccurs="0" />
+			<element name="infectionsDiseasesAndInfectionCensuses"
+				type="tns:InfectionDiseaseAndInfectionCensus" maxOccurs="unbounded"
+				minOccurs="1" />
+
+
+
+
+            <element name="contaminationsAndContaminationCensuses" type="tns:ContaminationAndContaminationCensus" maxOccurs="unbounded" minOccurs="0" />
+            <element name="treatmentsControlMeasuresAndCensuses" type="tns:TreatmentControlMeasureAndCensuses" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="parametersForIndividualBehaviorModels"
+				type="tns:ParametersForIndividualBehaviorModel"
+				maxOccurs="unbounded" minOccurs="0" />
+
+
+			<element name="populationTreatmentCensusesForTimeZero"
+				type="tns:PopulationTreatmentCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+
+			<element name="contaminatedThingsCensusesForTimeZero"
+				type="tns:ContaminatedThingsCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+
+
+			<element name="controlMeasureInventoryCensuses"
+				type="tns:ControlMeasureInventoryCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+
+			<element name="NewElement" type="string"></element>
+		</sequence>
+		<attributeGroup ref="tns:NewAttributeGroup" />
+	</complexType>
+
+	<complexType name="InfectiousDiseaseScenario">
+		<sequence>
+
+
+			<element name="date" type="dateTime" maxOccurs="1" minOccurs="0"></element>
+			<element name="infections" type="tns:Infection"
+				maxOccurs="unbounded" minOccurs="1" />
+
+			<element name="diseases" type="tns:InfectiousDisease"
+				maxOccurs="unbounded" minOccurs="1" />
+
+			<element name="ecosytemCensusForSimulator"
+				type="tns:EcosytemCensusForSimulator" maxOccurs="1" minOccurs="1" />
+
+			<element
+				name="populationInfectionAndImmunityCensuses"
+				type="tns:PopulationInfectionAndImmunityCensus"
+				maxOccurs="unbounded" minOccurs="1" />
+
+			<element name="parametersForIndividualBehaviorModels"
+				type="tns:ParametersForIndividualBehaviorModel"
+				maxOccurs="unbounded" minOccurs="0" />
+
+			<element name="treatments" type="tns:Treatment"
+				maxOccurs="unbounded" minOccurs="0" />
+
+			<element name="populationTreatmentCensuses"
+				type="tns:PopulationTreatmentCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+			<element name="contaminationAcquisitions"
+				type="tns:ContaminationAcquisition" maxOccurs="unbounded"
+				minOccurs="0" />
+
+			<element name="contaminatedThingsCensuses"
+				type="tns:ContaminatedThingsCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+
+			<element name="controlMeasures" type="tns:ControlMeasure"
+				maxOccurs="unbounded" minOccurs="0" />
+
+			<element name="controlMeasureInventoryCensuses"
+				type="tns:ControlMeasureInventoryCensus" maxOccurs="unbounded"
+				minOccurs="0" />
+
+		</sequence>
+		<attributeGroup ref="tns:NewAttributeGroup" />
+	</complexType>
+
+	<complexType name="CompartmentalModelEcosystemCensus">
+		<sequence>
+			<element name="bioticEcosystemParts" type="tns:PopulationDiseaseCensusResult"
+				maxOccurs="unbounded" minOccurs="1" />
+			<element name="abioticEcosystemParts" type="tns:abioticEcosystemPartCensus"
+				maxOccurs="unbounded" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="PopulationTreatmentCensus">
+		<sequence>
+			<element name="treatment" type="string" />
+			<element name="population" type="string" />
+			<element name="exceptionTree" type="string" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ContaminationAcquisition">
+		<sequence>
+			<element name="abioticEcosystemElementID" type="string" />
+			<element name="pathogenTaxonID" type="tns:PathogenTaxonID" />
+
+			<element name="infectiousHostSource" type="string" />
+			<element name="contaminatedSource" type="string" />
+			<element name="contaminationProbability" type="tns:Probability" />
+
+		</sequence>
+	</complexType>
+
+	<complexType name="ContaminableMaterialEntity" />
+
+	<complexType name="PopulationAndAbioticEcosystemCensusDescription">
+		<sequence>
+			<element name="populationCensusDescriptions" type="tns:PopulationCensusDescription"
+				maxOccurs="unbounded" minOccurs="1" />
+
+			<element name="abioticEcosystemElementCensusDescriptions"
+				type="tns:AbioticEcosystemElementCensusDescription" maxOccurs="unbounded"
+				minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="PopulationCensusDescription">
+		<sequence>
+			<element name="taxonID" type="token" maxOccurs="1" minOccurs="1" />
+
+			<element name="characteristics" type="token" maxOccurs="unbounded"
+				minOccurs="0" />
+
+		</sequence>
+	</complexType>
+
+	<complexType name="AbioticEcosystemElementCensusDescription">
+		<sequence>
+			<element name="abioticElementID" type="token" maxOccurs="1"
+				minOccurs="1" />
+
+			<element name="characteristics" type="token" maxOccurs="unbounded"
+				minOccurs="0" />
+
+		</sequence>
+	</complexType>
+
+	<complexType name="ContaminatedThingsCensus">
+		<sequence>
+			<element name="contaminatedThings" type="tns:ContaminatedThing"
+				maxOccurs="1" minOccurs="1" />
+
+			<element name="location" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="contaminationStatusOfAllInstances" type="string"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="abioticEcosystemPartCensus">
+		<sequence>
+			<element name="abioticEcosystemElementID" type="token"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="InfectiousDisease">
+		<sequence>
+			<element name="diseaseID" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="speciesWithDisease" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="causalPathogen" type="tns:PathogenTaxonID"
+				maxOccurs="1" minOccurs="1" />
+
+			<element name="probabilityNeverSymptomatic" type="tns:Probability"
+				maxOccurs="1" minOccurs="0" />
+
+			<element name="probabilitySeverelySymptomaticGivenSymptomatic"
+				type="tns:Probability" maxOccurs="1" minOccurs="0" />
+
+		</sequence>
+	</complexType>
+
+	<complexType name="ParametersForIndividualBehaviorModel">
+	<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+		<sequence>
+			<element name="species" type="string" maxOccurs="1"
+				minOccurs="1" />
+
+			<element name="behaviors" type="string" maxOccurs="unbounded"
+				minOccurs="1" />
+			<element name="probabilitiesOfBehaviors" type="string"
+				maxOccurs="unbounded" minOccurs="1" />
+		</sequence>
+		</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="EcosytemCensusForSimulator">
+		<sequence>
+			<element name="date" type="dateTime" maxOccurs="1" minOccurs="0"></element>
+			<element name="location" type="tns:LocationDefinition"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="simulatorType" type="tns:SimulatorType"
+				maxOccurs="1" minOccurs="1" />
+			<choice>
+				<element name="agentModelEcosystemCensus"
+					type="tns:AgentModelEcosystemCensus" maxOccurs="1" minOccurs="1" />
+
+				<element name="compartmentalModelEcosystemCensus"
+					type="tns:CompartmentalModelEcosystemCensus" maxOccurs="1"
+					minOccurs="1" />
+
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="AgentModelEcosystemCensus">
+		<sequence>
+			<element name="agentModelEcosystemCensusDescription" type="tns:AgentModelEcosystemCensusDescription"
+				maxOccurs="1" minOccurs="1" />
+
+			<element name="url" type="tns:UrlOutputResource" maxOccurs="1"
+				minOccurs="1" />
+
+		</sequence>
+	</complexType>
+	<attributeGroup name="NewAttributeGroup" />
+
+	
+
+	<complexType name="ContaminatedThing" />
+
+	<complexType name="ControlMeasureInventoryCensus" />
+
+	<complexType name="InfectionDiseaseAndInfectionCensus">
+		<sequence>
+			<element name="infection" type="tns:Infection" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="piiCensus"
+				type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="diseases" type="tns:InfectiousDisease"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ContaminationAndContaminationCensus">
+		<sequence>
+			<element name="contamination" type="tns:ContaminatedThing" maxOccurs="1" minOccurs="1"></element>
+			<element name="contaminationCensus"
+				type="tns:ContaminableMaterialEntity" maxOccurs="1" minOccurs="1">
 			</element>
 		</sequence>
 	</complexType>
 	
-    <complexType name="ContaminableMaterialEntity"></complexType>
+    <complexType name="TreatmentControlMeasureAndCensuses"></complexType>
 </schema>
