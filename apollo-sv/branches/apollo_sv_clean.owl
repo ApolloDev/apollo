@@ -326,14 +326,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -343,6 +335,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -874,21 +874,21 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
     </ObjectProperty>
     
 
@@ -1398,7 +1398,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
                     <rdf:Description rdf:about="&obo;IAO_0020000"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0020012"/>
-                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -1901,11 +1901,15 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000070"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
-                        <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
-                    </Restriction>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000070"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                                <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                     <Restriction>
                         <onProperty rdf:resource="&ro;participates_in"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
@@ -2250,8 +2254,7 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
                     <rdf:Description rdf:about="&obo;IAO_0020000"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0020012"/>
-                        <onClass rdf:resource="&obo;APOLLO_SV_00000007"/>
-                        <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -2495,18 +2498,14 @@ While in many pieces of fiction the order in which the purely intentional entiti
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;IAO_0000029"/>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;IAO_0020012"/>
-                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
-                            </Restriction>
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;OBI_0000312"/>
-                                <allValuesFrom rdf:resource="&obo;IAO_0020010"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0020012"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;IAO_0020010"/>
+                    </Restriction>
                 </intersectionOf>
             </Class>
         </equivalentClass>
@@ -2526,11 +2525,15 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000070"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
-                        <someValuesFrom rdf:resource="&span;TemporalInterval"/>
-                    </Restriction>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000070"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
+                                <someValuesFrom rdf:resource="&span;TemporalInterval"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                     <Restriction>
                         <onProperty rdf:resource="&ro;participates_in"/>
                         <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
@@ -2577,18 +2580,14 @@ While in many pieces of fiction the order in which the purely intentional entiti
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;IAO_0000029"/>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;IAO_0020012"/>
-                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000066"/>
-                            </Restriction>
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;OBI_0000312"/>
-                                <allValuesFrom rdf:resource="&obo;IAO_0020010"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;IAO_0020012"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000066"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000312"/>
+                        <allValuesFrom rdf:resource="&obo;IAO_0020010"/>
+                    </Restriction>
                 </intersectionOf>
             </Class>
         </equivalentClass>
@@ -3087,18 +3086,27 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000100"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000104"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;located_in"/>
-                        <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
-                    </Restriction>
+                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000100"/>
+                                    </Restriction>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_part"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000104"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;located_in"/>
+                                <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                 </intersectionOf>
             </Class>
         </equivalentClass>
@@ -3137,6 +3145,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
                     <Restriction>
                         <onProperty rdf:resource="&ro;located_in"/>
                         <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
@@ -3148,17 +3157,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                 <intersectionOf rdf:parseType="Collection">
                                     <rdf:Description rdf:about="&snap;MaterialEntity"/>
                                     <Class>
-                                        <complementOf>
-                                            <Class>
-                                                <unionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&ro;part_of"/>
-                                                        <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
-                                                    </Restriction>
-                                                </unionOf>
-                                            </Class>
-                                        </complementOf>
+                                        <complementOf rdf:resource="&obo;OBI_0100026"/>
                                     </Class>
                                 </intersectionOf>
                             </Class>
@@ -3212,18 +3211,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;has_part"/>
-                                <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
-                            </Restriction>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;located_in"/>
-                                <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
+                    <rdf:Description rdf:about="&snap;MaterialEntity"/>
                     <Class>
                         <complementOf>
                             <Restriction>
@@ -3237,6 +3225,20 @@ While in many pieces of fiction the order in which the purely intentional entiti
                             </Restriction>
                         </complementOf>
                     </Class>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;located_in"/>
+                                        <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
                 </intersectionOf>
             </Class>
         </equivalentClass>
@@ -3294,8 +3296,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                     <rdf:Description rdf:about="&obo;IAO_0020000"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0020012"/>
-                        <onClass rdf:resource="&obo;IAO_0000010"/>
-                        <qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</qualifiedCardinality>
+                        <someValuesFrom rdf:resource="&obo;IAO_0000010"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -3346,7 +3347,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                     <rdf:Description rdf:about="&obo;IAO_0020000"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0020012"/>
-                        <allValuesFrom rdf:resource="&obo;IAO_0000010"/>
+                        <someValuesFrom rdf:resource="&obo;IAO_0000010"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -3403,23 +3404,21 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;part_of"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000123"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;part_of"/>
+                                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0000136"/>
                         <someValuesFrom rdf:resource="&obo;OMRSE_00000057"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;part_of"/>
-                        <someValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IAO_0000007"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;part_of"/>
-                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000123"/>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </someValuesFrom>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -3454,17 +3453,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                             <rdf:Description rdf:about="&obo;FMA_9637"/>
                                             <Restriction>
                                                 <onProperty rdf:resource="&ro;part_of"/>
-                                                <someValuesFrom>
-                                                    <Class>
-                                                        <intersectionOf rdf:parseType="Collection">
-                                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                                            <Restriction>
-                                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                                <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                                                            </Restriction>
-                                                        </intersectionOf>
-                                                    </Class>
-                                                </someValuesFrom>
+                                                <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
                                             </Restriction>
                                         </intersectionOf>
                                     </Class>
@@ -3505,11 +3494,11 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                         <intersectionOf rdf:parseType="Collection">
                                             <rdf:Description rdf:about="&obo;OBI_0100026"/>
                                             <Restriction>
-                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
                                                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
                                             </Restriction>
                                             <Restriction>
-                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
                                                 <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
                                             </Restriction>
                                         </intersectionOf>
@@ -3526,11 +3515,11 @@ While in many pieces of fiction the order in which the purely intentional entiti
                                                 <intersectionOf rdf:parseType="Collection">
                                                     <rdf:Description rdf:about="&obo;OBI_0100026"/>
                                                     <Restriction>
-                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                        <onProperty rdf:resource="&ro;bearer_of"/>
                                                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
                                                     </Restriction>
                                                     <Restriction>
-                                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                        <onProperty rdf:resource="&ro;bearer_of"/>
                                                         <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
                                                     </Restriction>
                                                 </intersectionOf>
@@ -4083,14 +4072,18 @@ While in many pieces of fiction the order in which the purely intentional entiti
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&snap;Disposition"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;inheres_in"/>
-                        <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&OBO_REL;realized_by"/>
-                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000167"/>
-                    </Restriction>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;inheres_in"/>
+                                <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&OBO_REL;realized_by"/>
+                                <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000167"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                 </intersectionOf>
             </Class>
         </equivalentClass>
@@ -5617,32 +5610,6 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000414">
         <rdfs:label xml:lang="en">infectious agent host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000415"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&ro;inheres_in"/>
-                <someValuesFrom>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;part_of"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;OGMS_0000087"/>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
-                                                <someValuesFrom rdf:resource="&obo;IDO_0000596"/>
-                                            </Restriction>
-                                        </intersectionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
-                </someValuesFrom>
-            </Restriction>
-        </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <rdfs:comment>By this definition, vectors and other organisms that may not be infected are bearers of the infectious agent host role.</rdfs:comment>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
@@ -5658,32 +5625,6 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000415">
         <rdfs:label xml:lang="en">pathogen host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000629"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&ro;inheres_in"/>
-                <someValuesFrom>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;part_of"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;OGMS_0000087"/>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
-                                                <someValuesFrom rdf:resource="&obo;IDO_0000528"/>
-                                            </Restriction>
-                                        </intersectionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
-                </someValuesFrom>
-            </Restriction>
-        </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">A host role borne by an organism in virtue of the fact that its extended organism contains a pathogen.</obo:IAO_0000115>
         <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
@@ -6000,32 +5941,6 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <Class rdf:about="&obo;IDO_0000629">
         <rdfs:label xml:lang="en">host role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Role"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&ro;inheres_in"/>
-                <someValuesFrom>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;part_of"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;OGMS_0000087"/>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;has_part"/>
-                                                <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
-                                            </Restriction>
-                                        </intersectionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
-                </someValuesFrom>
-            </Restriction>
-        </rdfs:subClassOf>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&apos;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
@@ -6966,7 +6881,7 @@ Mathias Brochhausen</obo:IAO_0000117>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;OMRSE_00000061"/>
                     <Restriction>
-                        <onProperty rdf:resource="&ro;bearer_of"/>
+                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
                         <someValuesFrom rdf:resource="&snap;Function"/>
                     </Restriction>
                 </intersectionOf>
@@ -7167,15 +7082,15 @@ Mathias Brochhausen</obo:IAO_0000117>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -7537,6 +7452,9 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000572">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;has_agent">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -7552,9 +7470,6 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000574">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -7714,12 +7629,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
@@ -7731,9 +7640,6 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -7741,6 +7647,15 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
