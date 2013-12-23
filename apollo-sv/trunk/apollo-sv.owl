@@ -59,6 +59,8 @@
         <dc:contributor>Mike Wagner</dc:contributor>
         <dc:contributor>Shawn T. Brown</dc:contributor>
         <dc:contributor>William R. Hogan</dc:contributor>
+        <dc:license>Creative Commons 3.0 CC-BY license</dc:license>
+        <rdfs:comment>The Apollo-SV ontology by the University of Pittsburgh and the University of Arkansas for Medical Sciences is licensed under CC BY 3.0</rdfs:comment>
         <imports rdf:resource="&obo;geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
     </Ontology>
