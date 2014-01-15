@@ -245,13 +245,13 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
+					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation source="none" />
 						</annotation>
 					</element>
-					<element name="hostTaxonID" type="token" maxOccurs="1"
+					<element name="hostTaxonID" type="tns:NcbiTaxonId" maxOccurs="1"
 						minOccurs="1" />
 
 					<element name="infectiousPeriod" type="tns:TemporalDiseaseParameter"
@@ -381,7 +381,7 @@
 			</element>
 
 			<element minOccurs="1" maxOccurs="1" name="scenario"
-				type="tns:InfectiousDiseaseScenario">
+				type="tns:InfectiousDiseaseScenarioInformation">
 				<annotation>
 					<documentation source="none" />
 
@@ -407,20 +407,19 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="AgentModelEcosystemCensusDescription">
+	<complexType name="AgentLevelPopulationAndEnvironmentCensusDescription">
 		<sequence>
 			<element name="serviceIdentification" type="tns:SoftwareIdentification" />
 
 			<element name="authentication" type="tns:Authentication" />
 			<element name="requesterIdentification" type="tns:RequesterIdentification" />
-			<element name="householdCharacteristics" type="token"
-				maxOccurs="4" minOccurs="1" />
 
 
 			<element name="countiesOfInterest" type="tns:INCITS31"
 				maxOccurs="unbounded" minOccurs="1" />
 
-		</sequence>
+            <element name="householdCharacteristics" type="token" maxOccurs="4" minOccurs="1" />
+        </sequence>
 	</complexType>
 
 	<complexType name="SoftwareIdentification">
@@ -951,17 +950,6 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ControlMeasures">
-		<sequence>
-			<element name="controlMeasures" type="tns:ControlMeasure"
-				maxOccurs="unbounded" minOccurs="0">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
-		</sequence>
-	</complexType>
 
 	<complexType name="DiscreteProbabilityDistribution">
 		<sequence>
@@ -1125,14 +1113,16 @@
 			<extension base="tns:TreatmentEfficacy">
 				<sequence>
 
-					<element name="vaccineIdentifier" type="token" maxOccurs="1"
-						minOccurs="1" />
-
-					<element name="strainIdentifier" type="token" maxOccurs="1"
-						minOccurs="1" />
-
-					<element name="forVaccinationPreventableOutcome" type="tns:VaccinationPreventableOutcome"
+					<element name="vaccineIdentifier" type="token"
 						maxOccurs="1" minOccurs="1" />
+
+					<element name="strainIdentifier" type="token"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="hostIdentifier" type="token" maxOccurs="1" minOccurs="1"></element>
+					<element name="forVaccinationPreventableOutcome"
+						type="tns:VaccinationPreventableOutcome" maxOccurs="1"
+						minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1299,7 +1289,7 @@
 				maxOccurs="unbounded" minOccurs="1" />
 
 			<element name="vaccinationEfficacyByTimeSinceMostRecentDose"
-				type="tns:Probability" maxOccurs="unbounded" minOccurs="1" />
+				type="tns:Fraction" maxOccurs="unbounded" minOccurs="1" />
 
 		</sequence>
 	</complexType>
@@ -1463,7 +1453,7 @@
 	<complexType name="ApolloIndexableItem" />
 
 	<simpleType name="PathogenTaxonID">
-		<restriction base="string">
+		<restriction base="nonNegativeInteger">
 			<enumeration value="influenza" />
 			<enumeration value="b_anthracis" />
 			<enumeration value="giardia lamblia" />
@@ -1482,11 +1472,11 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:PathogenTaxonID"
+					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="susceptibleHostTaxonID" type="string"
-						maxOccurs="1" minOccurs="1" />
+					<element name="susceptibleHostTaxonID"
+						type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1" />
 
 					<element name="reproductionNumber" type="tns:PositiveDouble"
 						maxOccurs="1" minOccurs="0" />
@@ -1498,8 +1488,8 @@
 						maxOccurs="1" minOccurs="0" />
 
 					<choice>
-						<element name="infectiousHostTaxonID" type="string"
-							maxOccurs="1" minOccurs="0" />
+						<element name="infectiousHostTaxonID"
+							type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="0" />
 
 						<element name="contaminatedMaterialID" type="string"
 							maxOccurs="1" minOccurs="0" />
@@ -1565,7 +1555,7 @@
 
 
 
-			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenario"
+			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenarioInformation"
 				maxOccurs="1" minOccurs="1" />
 
 		</sequence>
@@ -1579,7 +1569,7 @@
 				minOccurs="0">
 			</element>
 			<element name="ecosytemCensus"
-				type="tns:EcosytemCensusForSimulator" maxOccurs="1" minOccurs="0" />
+				type="tns:PopulationAndEnvironmentCensus" maxOccurs="1" minOccurs="0" />
 			<element name="infectionsDiseasesAndInfectionCensuses"
 				type="tns:InfectionDiseaseAndInfectionCensus" maxOccurs="unbounded"
 				minOccurs="1" />
@@ -1612,7 +1602,7 @@
 		<attributeGroup ref="tns:NewAttributeGroup" />
 	</complexType>
 
-	<complexType name="InfectiousDiseaseScenario">
+	<complexType name="InfectiousDiseaseScenarioInformation">
 		<sequence>
 
 
@@ -1623,8 +1613,8 @@
 			<element name="diseases" type="tns:InfectiousDisease"
 				maxOccurs="unbounded" minOccurs="1" />
 
-			<element name="ecosytemCensusForSimulator"
-				type="tns:EcosytemCensusForSimulator" maxOccurs="1" minOccurs="1" />
+			<element name="populationsAndEnvironsCensus"
+				type="tns:PopulationAndEnvironmentCensus" maxOccurs="1" minOccurs="1" />
 
 			<element
 				name="populationInfectionAndImmunityCensuses"
@@ -1660,7 +1650,7 @@
 		<attributeGroup ref="tns:NewAttributeGroup" />
 	</complexType>
 
-	<complexType name="CompartmentalModelEcosystemCensus">
+	<complexType name="CompartmentalModelPopulationAndEnvironmentCensus">
 		<sequence>
 			<element name="bioticEcosystemParts" type="tns:PopulationDiseaseCensusResult"
 				maxOccurs="unbounded" minOccurs="1" />
@@ -1680,9 +1670,9 @@
 	<complexType name="ContaminationAcquisition">
 		<sequence>
 			<element name="abioticEcosystemElementID" type="string" />
-			<element name="pathogenTaxonID" type="tns:PathogenTaxonID" />
+			<element name="pathogenTaxonID" type="tns:NcbiTaxonId" />
 
-			<element name="infectiousHostSource" type="string" />
+			<element name="infectiousHostSource" type="tns:NcbiTaxonId" />
 			<element name="contaminatedSource" type="string" />
 			<element name="contaminationProbability" type="tns:Probability" />
 
@@ -1743,12 +1733,14 @@
 	</complexType>
 
 	<complexType name="InfectiousDisease">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
 		<sequence>
 			<element name="diseaseID" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="speciesWithDisease" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="causalPathogen" type="tns:PathogenTaxonID"
+			<element name="speciesWithDisease" type="tns:NcbiTaxonId"
+				maxOccurs="1" minOccurs="1" />
+			<element name="causalPathogen" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
 
 			<element name="probabilityNeverSymptomatic" type="tns:Probability"
@@ -1756,8 +1748,9 @@
 
 			<element name="probabilitySeverelySymptomaticGivenSymptomatic"
 				type="tns:Probability" maxOccurs="1" minOccurs="0" />
-
 		</sequence>
+						</extension>
+				</complexContent>
 	</complexType>
 
 	<complexType name="ParametersForIndividualBehaviorModel">
@@ -1776,7 +1769,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="EcosytemCensusForSimulator">
+	<complexType name="PopulationAndEnvironmentCensus">
 		<sequence>
 			<element name="date" type="dateTime" maxOccurs="1" minOccurs="0"></element>
 			<element name="location" type="tns:LocationDefinition"
@@ -1786,19 +1779,19 @@
 				maxOccurs="1" minOccurs="1" />
 			<choice>
 				<element name="agentModelEcosystemCensus"
-					type="tns:AgentModelEcosystemCensus" maxOccurs="1" minOccurs="1" />
+					type="tns:AgentLevelPopulationAndEnvironmentCensus" maxOccurs="1" minOccurs="1" />
 
 				<element name="compartmentalModelEcosystemCensus"
-					type="tns:CompartmentalModelEcosystemCensus" maxOccurs="1"
+					type="tns:CompartmentalModelPopulationAndEnvironmentCensus" maxOccurs="1"
 					minOccurs="1" />
 
 			</choice>
 		</sequence>
 	</complexType>
 
-	<complexType name="AgentModelEcosystemCensus">
+	<complexType name="AgentLevelPopulationAndEnvironmentCensus">
 		<sequence>
-			<element name="agentModelEcosystemCensusDescription" type="tns:AgentModelEcosystemCensusDescription"
+			<element name="agentModelEcosystemCensusDescription" type="tns:AgentLevelPopulationAndEnvironmentCensusDescription"
 				maxOccurs="1" minOccurs="1" />
 
 			<element name="url" type="tns:UrlOutputResource" maxOccurs="1"
@@ -1838,4 +1831,6 @@
 	</complexType>
 	
     <complexType name="TreatmentControlMeasureAndCensuses"></complexType>
+
+    <complexType name="NcbiTaxonId"></complexType>
 </schema>
