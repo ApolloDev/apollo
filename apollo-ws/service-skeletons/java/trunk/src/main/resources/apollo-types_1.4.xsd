@@ -7,6 +7,7 @@
 
 
 
+	<include schemaLocation=""></include>
 	<include schemaLocation="" />
 	<include schemaLocation="" />
 	<include schemaLocation="" />
@@ -298,7 +299,7 @@
 					<element name="hostTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="infectiousPeriod" type="tns:NumericParameter"
+					<element name="infectiousPeriod" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation
@@ -307,7 +308,7 @@
 						</annotation>
 					</element>
 
-					<element name="latentPeriod" type="tns:NumericParameter"
+					<element name="latentPeriod" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation
@@ -774,13 +775,40 @@
 	</simpleType>
 
 	<complexType name="AgeRange">
-		<sequence>
-			<element name="lowerBound" type="nonNegativeInteger"
-				maxOccurs="1" minOccurs="1" />
-			<element name="upperBound" type="nonNegativeInteger"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="lowerBound" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="1" />
+					<element name="upperBound" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
+
+	<complexType name="FacilityCategory">
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="facility" type="tns:FacilityEnum"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+		<complexType name="FacilityCategory">
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="gender" type="tns:Gender"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
 
 	<complexType name="SimulatorTimeRange">
 		<sequence>
@@ -851,13 +879,13 @@
 					<element name="controlMeasureStartTime" type="tns:ControlMeasureStartTime"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="controlMeasureResponseDelay" type="tns:NonNegativeDouble"
+					<element name="controlMeasureResponseDelay" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation source="none" />
 						</annotation>
 					</element>
-					<element name="controlMeasureCompliance" type="tns:Fraction"
+					<element name="controlMeasureCompliance" type="tns:ProbabilisticParameterValue"
 						maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation source="none" />
@@ -1020,7 +1048,7 @@
 	</complexType>
 
 
-	<complexType name="DiscreteProbabilityDistribution">
+	<complexType name="DiscreteNonparametricProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:UnconditionalProbabilityDistribution">
 				<sequence>
@@ -1066,16 +1094,13 @@
 	</complexType>
 
 
-	<complexType name="NumericParameter">
-
+	<complexType name="NumericParameterValue">
 		<sequence>
 			<element name="unitOfMeasure" type="tns:UnitOfMeasure"
 				maxOccurs="1" minOccurs="0" />
 
 			<choice>
 				<element name="value" type="double" maxOccurs="1" minOccurs="1" />
-				<element name="distribution" type="tns:DiscreteProbabilityDistribution"
-					maxOccurs="1" minOccurs="1" />
 
 				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
@@ -1085,10 +1110,24 @@
 
 			</choice>
 		</sequence>
-
-
 	</complexType>
 
+	<complexType name="ProbabilisticParameterValue">
+		<sequence>
+
+
+			<choice>
+				<element name="value" type="double" maxOccurs="1" minOccurs="1" />
+
+				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
+					maxOccurs="1" minOccurs="1" />
+
+				<element name="conditionalProbabilityDistribution" type="tns:ConditionalProbabilityDistribution"
+					maxOccurs="1" minOccurs="1" />
+
+			</choice>
+		</sequence>
+	</complexType>
 
 
 	<complexType name="TreatmentEfficacy">
@@ -1285,11 +1324,11 @@
 					<element name="averageVaccinationEfficacy" type="tns:Probability"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="vaccinationEfficacybyAge" type="tns:AgeGroupEfficacy"
+					<element name="vaccinationEfficacybyAge" type="tns:ProbabilisticParameterValue"
 						maxOccurs="unbounded" minOccurs="0" />
 
 					<element name="vaccinationEfficaciesByTimeSinceMostRecentDose"
-						type="tns:VaccinationEfficacyByTimeSinceDose" maxOccurs="unbounded"
+						type="tns:ProbabilisticParameterValue" maxOccurs="unbounded"
 						minOccurs="0" />
 
 				</sequence>
@@ -1373,7 +1412,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="CuratedLibraryItem">
+	<complexType name="CatalogEntryForApolloLibraryItem">
 		<sequence>
 			<element name="itemDescription" type="string" maxOccurs="1"
 				minOccurs="1" />
@@ -1504,7 +1543,7 @@
 
 	<complexType name="CuratedLibraryItemContainer">
 		<sequence>
-			<element name="curatedLibraryItem" type="tns:CuratedLibraryItem"
+			<element name="curatedLibraryItem" type="tns:CatalogEntryForApolloLibraryItem"
 				maxOccurs="1" minOccurs="1" />
 			<element name="apolloIndexableItem" type="tns:ApolloIndexableItem"
 				maxOccurs="1" minOccurs="1" />
@@ -1523,6 +1562,15 @@
 			<enumeration value="asymptomatic" />
 			<enumeration value="symptomatic" />
 			<enumeration value="severely symptomatic" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="FacilityEnum">
+		<restriction base="string">
+			<enumeration value="preschool" />
+			<enumeration value="primarySchool" />
+			<enumeration value="secondarySchool" />
+			<enumeration value="workplace" />
 		</restriction>
 	</simpleType>
 
@@ -1549,9 +1597,9 @@
 					</choice>
 					<element name="reproductionNumber" type="tns:PositiveDouble"
 						maxOccurs="1" minOccurs="0" />
-					<element name="transmissionProbability" type="tns:Probability"
+					<element name="transmissionProbability" type="tns:ProbabilisticParameterValue"
 						maxOccurs="1" minOccurs="0" />
-					<element name="transmissionCoefficient" type="tns:PositiveDouble"
+					<element name="transmissionCoefficient" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
@@ -1762,11 +1810,11 @@
 					<element name="causalPathogen" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="probabilityNeverSymptomatic" type="tns:Probability"
+					<element name="probabilityNeverSymptomatic" type="tns:ProbabilisticParameterValue"
 						maxOccurs="1" minOccurs="0" />
 
 					<element name="probabilitySeverelySymptomaticGivenSymptomatic"
-						type="tns:Probability" maxOccurs="1" minOccurs="0" />
+						type="tns:ProbabilisticParameterValue" maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1890,7 +1938,7 @@
 
 		</complexContent>
 	</complexType>
-	
+
 	<complexType name="NonparametricDiscreteProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:UnconditionalProbabilityDistribution" />
@@ -1942,12 +1990,10 @@
     			type="tns:CategoryDefinition" maxOccurs="1" minOccurs="1"/>
     		
     		<choice>
-    			<element name="conditioningVariable"
+                <element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution" maxOccurs="1" minOccurs="1" />
+                <element name="conditioningVariable"
     				type="tns:ConditioningVariable" maxOccurs="1" minOccurs="1"/>
     			
-    			<element name="unconditionalProbabilityDistribution"
-    				type="tns:UnconditionalProbabilityDistribution" maxOccurs="1"
-    				minOccurs="1"/>
     			
     		</choice>
     	</sequence>
