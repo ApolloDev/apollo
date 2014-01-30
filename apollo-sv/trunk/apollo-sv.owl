@@ -2906,7 +2906,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000086 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000086">
-        <rdfs:label xml:lang="en">epidemic control measure plan specification</rdfs:label>
+        <rdfs:label xml:lang="en">infectious disease control strategies</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -3750,25 +3750,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000129 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000129">
-        <rdfs:label xml:lang="en">Reactive control measure</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000086"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom rdf:resource="&obo;IAO_0000001"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000086"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000001"/>
-            </Restriction>
-        </rdfs:subClassOf>
+        <rdfs:label xml:lang="en">obsolete_Reactive control measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Reactive control measure</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a control measure (program) that is initiated or modified by an epidemic-related event (or if you prefer, an event occurring within/during the simulation)</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">an epidemic control measure plan specification that has a conditional specification as part</obo:IAO_0000115>
@@ -5031,6 +5014,205 @@ While in many pieces of fiction the order in which the purely intentional entiti
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000183 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000183">
+        <rdfs:label xml:lang="en">simulator time specification</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <rdfs:subClassOf>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000015"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000068"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </rdfs:subClassOf>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000184 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000184">
+        <rdfs:label xml:lang="en">infectious disease scenario information</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that represents the state of a disease transmission model (DTM) at simulator time zero.   </obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000185 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000185">
+        <rdfs:label xml:lang="en">scenario date</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that is a real date that corresponds to simulator time zero. </obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000187 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000187">
+        <rdfs:label xml:lang="en">population treatment census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+        <obo:IAO_0000115 xml:lang="en">A census about the medical treatment of a population.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000188 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000188">
+        <rdfs:label xml:lang="en">population and environment census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+        <obo:IAO_0000115 xml:lang="en">A census that represents the biotic and abiotic elements of an ecosystem at simulator time zero.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000189 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000189">
+        <rdfs:label xml:lang="en">control measure inventory census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+        <obo:IAO_0000115 xml:lang="en">A census that is the outcome of assessing control measure related facilities and supply chains.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000190 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000190">
+        <rdfs:label xml:lang="en">infectious organism</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;IDO_0000537"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000053"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
+        <obo:IAO_0000115 xml:lang="en">An infectious agent host who is able to transmit the infection.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000191 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000191">
+        <rdfs:label xml:lang="en">transmission coefficient</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that represents the rate that an infection moves from infected individuals to susceptible individuals in a population.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000192 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000192">
+        <rdfs:label xml:lang="en">vaccination efficacy measured</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <obo:IAO_0000115 xml:lang="en">A data item specifying the measured vaccination efficacy.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000193 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000193">
+        <rdfs:label xml:lang="en">vaccination efficacy inferred</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
+        <obo:IAO_0000115 xml:lang="en">A data item inferring the vaccination efficacy on epidemiological data.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000194 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000194">
+        <rdfs:label xml:lang="en">individual treatment control strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000195 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000195">
+        <rdfs:label xml:lang="en">target population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
+        <obo:IAO_0000115 xml:lang="en">An organism population that is the target for a disease control strategy.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000196 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000196">
+        <rdfs:label xml:lang="en">ring vaccination individual treatment control strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000194"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000197 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000197">
+        <rdfs:label xml:lang="en">agent level population and environment census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000188"/>
+        <obo:IAO_0000115 xml:lang="en">An instance of the an AgentLevel PopulationAndEnvironmentCensus type comprises an AgentLevel PopulationAndEnvironmentCensus Description, which describes the biotic and abiotic ecosystems elements that are counted by the census, and a URL where the census (the counts) can be retrieved. </obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000198 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000198">
+        <rdfs:label xml:lang="en">agent model ecosystem census description</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000199 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000199">
+        <rdfs:label xml:lang="en">compartment model population and environment census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000200 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000200">
+        <rdfs:label xml:lang="en">population strata definition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000201 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000201">
+        <rdfs:label xml:lang="en">contaminated thing census</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
+        <obo:IAO_0000115 xml:lang="en">A census about all contaminated things in an area of interest.</obo:IAO_0000115>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00001008">
@@ -5473,13 +5655,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -7620,11 +7802,11 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&UO;UO_0000002">
         <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;subject">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000414">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;subject">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000098">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
@@ -7666,9 +7848,6 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
@@ -7680,6 +7859,9 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -7687,9 +7869,9 @@ Mathias Brochhausen</obo:IAO_0000117>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -7745,11 +7927,11 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000038">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000327">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000132">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000327">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000429">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
