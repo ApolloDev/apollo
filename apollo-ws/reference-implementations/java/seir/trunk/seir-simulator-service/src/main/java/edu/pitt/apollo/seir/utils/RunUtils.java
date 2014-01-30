@@ -20,7 +20,7 @@ import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
 public class RunUtils {
 
 //    public static String WORK_DIR = "/Users/jdl50/apollo/work/";
-    public static String WORK_DIR = "/home/jdl/Public/1.3/";
+    public static String WORK_DIR = "/home/jdl/Public/1.3.1/";
 
     public static synchronized String getNextId() throws IOException {
 
