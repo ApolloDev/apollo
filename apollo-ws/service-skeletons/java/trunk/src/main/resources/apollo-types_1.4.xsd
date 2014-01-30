@@ -7,7 +7,8 @@
 
 
 
-	<include schemaLocation=""></include>
+    <include schemaLocation=""></include>
+    <include schemaLocation=""></include>
 	<include schemaLocation="" />
 	<include schemaLocation="" />
 	<include schemaLocation="" />
@@ -440,7 +441,7 @@
 			</element>
 
 			<element minOccurs="1" maxOccurs="1" name="scenario"
-				type="tns:InfectiousDiseaseScenarioInformation">
+				type="tns:InfectiousDiseaseScenario">
 				<annotation>
 					<documentation source="none" />
 
@@ -1117,7 +1118,8 @@
 
 
 			<choice>
-				<element name="value" type="double" maxOccurs="1" minOccurs="1" />
+				<element name="value" type="tns:Probability"
+					maxOccurs="1" minOccurs="1" />
 
 				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
@@ -1472,7 +1474,7 @@
 					<element name="decisionAlternatives" type="tns:DecisionAlternative"
 						maxOccurs="unbounded" minOccurs="1" />
 
-					<element name="simulatorConfiguration " type="tns:SimulatorConfiguration"
+					<element name="simulatorConfiguration " type="tns:RunSimulationMessage"
 						maxOccurs="1" minOccurs="0" />
 
 					<element name="utilityFunction" type="tns:UtilityFunction"
@@ -1634,7 +1636,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="SimulatorConfiguration">
+	<complexType name="RunSimulationMessage">
 		<sequence>
 			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
 				maxOccurs="1" minOccurs="1">
@@ -1661,7 +1663,7 @@
 
 
 
-			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenarioInformation"
+			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenario"
 				maxOccurs="1" minOccurs="1" />
 
 		</sequence>
@@ -1669,42 +1671,45 @@
 
 
 
-	<complexType name="InfectiousDiseaseScenarioInformation">
+	<complexType name="InfectiousDiseaseScenario">
 		<sequence>
 
 
 			<element name="scenarioDate" type="dateTime" maxOccurs="1"
 				minOccurs="0" />
 
-			<element name="infections" type="tns:Infection" maxOccurs="unbounded"
-				minOccurs="1" />
+			<element name="location" type="string"></element>
+			<element name="infections" type="tns:Infection"
+				maxOccurs="unbounded" minOccurs="1" />
 
 			<element name="diseases" type="tns:InfectiousDisease"
 				maxOccurs="unbounded" minOccurs="1" />
 
-			<element name="contaminations" type="tns:Contamination"
+			<element name="contaminations" type="tns:ContaminatedThing"
 				maxOccurs="unbounded" minOccurs="0" />
-			<element name="treatments" type="tns:Treatment" maxOccurs="unbounded"
+			<element name="treatments" type="tns:Treatment"
+				maxOccurs="unbounded" minOccurs="0" />
+			<element name="infectiousDiseaseControlStrategies"
+				type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
 				minOccurs="0" />
-			<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
-				maxOccurs="unbounded" minOccurs="0" />
-			<element name="populationsAndEnvironsCensus" type="tns:PopulationAndEnvironmentCensus"
-				maxOccurs="1" minOccurs="1" />
+			<element name="populationsAndEnvironmentCensus"
+				type="tns:PopulationAndEnvironmentCensus" maxOccurs="1"
+				minOccurs="1" />
 
-			<element name="populationInfectionAndImmunityCensuses" type="tns:PopulationInfectionAndImmunityCensus"
+			<element name="populationInfectionAndImmunityCensuses"
+				type="tns:PopulationInfectionAndImmunityCensus"
 				maxOccurs="unbounded" minOccurs="1" />
 
 
 
-			<element name="populationTreatmentCensuses" type="tns:PopulationTreatmentCensus"
-				maxOccurs="unbounded" minOccurs="0" />
+			<element name="populationTreatmentCensuses"
+				type="tns:PopulationTreatmentCensus" maxOccurs="unbounded"
+				minOccurs="0" />
 
-			<element name="contaminationCensuses" type="tns:ContaminationCensus"
-				maxOccurs="unbounded" minOccurs="0" />
+			<element name="contaminationCensuses"
+				type="tns:ContaminatedThingCensus" maxOccurs="unbounded" minOccurs="0" />
 
 
-			<element name="controlMeasureInventoryCensuses" type="tns:ControlMeasureInventoryCensus"
-				maxOccurs="unbounded" minOccurs="0" />
 
 		</sequence>
 		<attributeGroup ref="tns:NewAttributeGroup" />
@@ -1780,15 +1785,16 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ContaminationCensus">
+	<complexType name="ContaminatedThingCensus">
 		<sequence>
-			<element name="contaminatedThings" type="tns:Contamination"
-				maxOccurs="1" minOccurs="1" />
-
+			<element name="date" type="string"></element>
 			<element name="location" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="contaminationStatusOfAllInstances" type="string"
-				maxOccurs="1" minOccurs="1" />
+			<element name="pathogen" type="string"></element>
+			<element name="contaminableThings"
+				type="tns:ContaminatedThing" maxOccurs="1" minOccurs="1" />
+
+			<element name="fractionContaminated" type="string"></element>
 		</sequence>
 	</complexType>
 
@@ -1871,14 +1877,11 @@
 
 
 
-	<complexType name="Contamination">
+	<complexType name="ContaminatedThing">
 		<sequence>
-			<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
+            <element name="abioticThingTaxonId" type="string" maxOccurs="1" minOccurs="1" />
+            <element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
-			<element name="abioticThingTaxonId" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="contaminationAcquisitions" type="tns:ContaminationAcquisition"
-				maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -1888,7 +1891,7 @@
 
 	<complexType name="ContaminationAndContaminationCensus">
 		<sequence>
-			<element name="contamination" type="tns:Contamination"
+			<element name="contamination" type="tns:ContaminatedThing"
 				maxOccurs="1" minOccurs="1" />
 			<element name="contaminationCensus" type="tns:ContaminableMaterialEntity"
 				maxOccurs="1" minOccurs="1" />
