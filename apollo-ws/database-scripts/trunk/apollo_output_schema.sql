@@ -34,6 +34,7 @@ CREATE TABLE apollo_service_visualizer_cache_results (
   id    INT(8) NOT NULL AUTO_INCREMENT,
   cache_id INT(8) NOT NULL REFERENCES apollo_service_visualizer_cache(cache_id),
   url TEXT,
+  description VARCHAR(255),
   PRIMARY KEY (id)
 );
 
