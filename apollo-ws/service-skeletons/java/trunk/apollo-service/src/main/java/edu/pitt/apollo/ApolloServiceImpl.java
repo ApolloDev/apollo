@@ -602,6 +602,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/getRegisteredServices")
 	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/", className = "edu.pitt.apollo.service.apolloservice._10._28._2013.GetRegisteredServicesResponse")
 	public List<ServiceRecord> getRegisteredServices() {
+
 		try {
 			return RegistrationUtils.getRegisteredSoftware();
 		} catch (IOException e) {
