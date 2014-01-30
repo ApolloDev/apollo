@@ -231,4 +231,9 @@ public class DbUtils {
         pstmt = getConn().prepareStatement(query);
         pstmt.execute();
     }
+    
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        
+        establishDbConn();
+    }
 }
