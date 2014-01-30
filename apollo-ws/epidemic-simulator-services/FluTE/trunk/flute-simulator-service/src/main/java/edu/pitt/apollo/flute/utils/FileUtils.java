@@ -1,11 +1,6 @@
 package edu.pitt.apollo.flute.utils;
 
-import edu.pitt.apollo.FluteSimulatorServiceException;
-import edu.pitt.apollo.apollotranslator.ApolloTranslator;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
-import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +9,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class FileUtils {
@@ -42,33 +36,33 @@ public class FileUtils {
         return RunUtils.WORK_DIR + File.separator + runIdHash + File.separator;
     }
 
-    public static synchronized void createFluteConfigFile(SimulatorConfiguration config, String outputFileDir)
-            throws FileNotFoundException, IOException, FluteSimulatorServiceException, ApolloTranslatorException,
-            IllegalAccessException, ClassNotFoundException {
-
-        // load the file names to use
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(fluteServiceConfigDir + FLUTE_SERVICE_PROPERTIES_FILE));
-        String javaScriptFilePath = properties.getProperty("translation_javascript_path");
-        String translationInstructionsFilePath = properties.getProperty("translation_instructions_path");
-
-        if (javaScriptFilePath == null) {
-            throw new FluteSimulatorServiceException("Could not find translatio_javascript_path in FluTE"
-                    + " properties file");
-        }
-        if (translationInstructionsFilePath == null) {
-            throw new FluteSimulatorServiceException("Could not find translation_instructions_path in FluTE"
-                    + " properties file");
-        }
-
-//        ApolloTranslator translator = new ApolloTranslator(translationInstructionsFilePath, javaScriptFilePath, false);
-//        translator.translate(config, outputFileDir);
-
-        ApolloTranslator translator = new ApolloTranslator(config, translationInstructionsFilePath, javaScriptFilePath, "#");
-        translator.translate();
-        translator.writeNativeFiles(translator.getSetterReturnObjects(), outputFileDir);
-        translator.writeVerbose(translator.getSetterReturnObjects(), outputFileDir + File.separator + FLUTE_VERBOSE_LOCAL_FILE_NAME);
-    }
+//    public static synchronized void createFluteConfigFile(SimulatorConfiguration config, String outputFileDir)
+//            throws FileNotFoundException, IOException, FluteSimulatorServiceException, ApolloTranslatorException,
+//            IllegalAccessException, ClassNotFoundException {
+//
+//        // load the file names to use
+//        Properties properties = new Properties();
+//        properties.load(new FileInputStream(fluteServiceConfigDir + FLUTE_SERVICE_PROPERTIES_FILE));
+//        String javaScriptFilePath = properties.getProperty("translation_javascript_path");
+//        String translationInstructionsFilePath = properties.getProperty("translation_instructions_path");
+//
+//        if (javaScriptFilePath == null) {
+//            throw new FluteSimulatorServiceException("Could not find translatio_javascript_path in FluTE"
+//                    + " properties file");
+//        }
+//        if (translationInstructionsFilePath == null) {
+//            throw new FluteSimulatorServiceException("Could not find translation_instructions_path in FluTE"
+//                    + " properties file");
+//        }
+//
+////        ApolloTranslator translator = new ApolloTranslator(translationInstructionsFilePath, javaScriptFilePath, false);
+////        translator.translate(config, outputFileDir);
+//
+//        ApolloTranslator translator = new ApolloTranslator(config, translationInstructionsFilePath, javaScriptFilePath, "#");
+//        translator.translate();
+//        translator.writeNativeFiles(translator.getSetterReturnObjects(), outputFileDir);
+//        translator.writeVerbose(translator.getSetterReturnObjects(), outputFileDir + File.separator + FLUTE_VERBOSE_LOCAL_FILE_NAME);
+//    }
 
     public static String loadConfigurationFile(String runIdHash, boolean verbose) throws FileNotFoundException {
 
