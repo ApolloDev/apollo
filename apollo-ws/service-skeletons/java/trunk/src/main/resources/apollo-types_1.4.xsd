@@ -303,12 +303,13 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
+					<element name="description" type="string"
+						maxOccurs="1" minOccurs="1" />
 					<element name="date" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
-					<element name="populationSpecies" type="tns:NcbiTaxonId"
-						maxOccurs="1" minOccurs="1" />
+					<element name="populationSpecies"
+						type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1" />
+					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1"></element>
 					<element name="censusData"
 						type="tns:PopulationImmunityAndInfectionCensusData" maxOccurs="1"
 						minOccurs="1">
@@ -1289,9 +1290,11 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="locationsIncluded" type="token" maxOccurs="unbounded"
+			<element name="locationsIncluded"
+				type="tns:IncitsUsaOrStateOrCountyCode" maxOccurs="unbounded"
 				minOccurs="1" />
-			<element name="locationsExcluded" type="token" maxOccurs="unbounded"
+			<element name="locationsExcluded"
+				type="tns:IncitsUsaOrStateOrCountyCode" maxOccurs="unbounded"
 				minOccurs="0" />
 
 		</sequence>
@@ -1588,13 +1591,13 @@
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="0" />
-					<element name="location" type="string" maxOccurs="1"
-						minOccurs="1" />
+					<element name="location"
+						type="tns:LocationDefinition" maxOccurs="1" minOccurs="1" />
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="diseases" type="tns:InfectiousDisease"
 						maxOccurs="unbounded" minOccurs="1" />
-					<element name="contaminations" type="tns:FractionOfThingContaminated"
+					<element name="contaminations" type="tns:Contamination"
 						maxOccurs="unbounded" minOccurs="0" />
 					<element name="treatments" type="tns:Treatment" maxOccurs="unbounded"
 						minOccurs="0" />
@@ -1605,7 +1608,7 @@
 						minOccurs="1" />
 					<element name="populationTreatmentCensuses" type="tns:PopulationTreatmentCensus"
 						maxOccurs="unbounded" minOccurs="0" />
-					<element name="contaminationCensuses" type="tns:ContaminatedThingCensus"
+					<element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus"
 						maxOccurs="unbounded" minOccurs="0" />
 				</sequence>
 			</extension>
@@ -1740,8 +1743,6 @@
 					<element name="diseaseOutcomes" type="tns:DiseaseOutcomeAndProbability"
 						maxOccurs="unbounded" minOccurs="0" />
 
-					<element name="probabilitySeverelySymptomaticGivenSymptomatic"
-						type="tns:ProbabilisticParameterValue" maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1807,11 +1808,13 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="NcbiTaxonId">
-		<restriction base="positiveInteger">
-			<totalDigits value="5" fixed="true" />
-		</restriction>
-	</simpleType>
+	<complexType name="NcbiTaxonId">
+	<sequence>
+					<element name="ncbiTaxonId" type="integer" maxOccurs="1" minOccurs="1" />
+			<element name="gisrnCladeName" type="string" maxOccurs="1"
+				minOccurs="0" />
+				</sequence>
+	</complexType>
 
 
 
