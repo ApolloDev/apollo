@@ -130,7 +130,7 @@ public class WSClient {
 //
 //		return port.addLibraryItem(
 //				id,
-//				"The infectious disease of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
+//				"The infection of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
 //				"Hypothetical SARS added by John Levander, University of Pittsburgh",
 //				"Infection", itemIndexingLabels);
 //
@@ -167,7 +167,7 @@ public class WSClient {
 //		return port
 //				.addLibraryItem(
 //						id,
-//						"The infectious disease of humans caused by Smallpox",
+//						"The infection of humans caused by Smallpox",
 //						"Hypothetical Smallpox virus added by John Levander, University of Pittsburgh",
 //						"Infection", itemIndexingLabels);
 //
@@ -201,7 +201,7 @@ public class WSClient {
 //		return port
 //				.addLibraryItem(
 //						id,
-//						"The infectious disease of humans caused by Rubella",
+//						"The infection of humans caused by Rubella",
 //						"Hypothetical Rubella virus added by John Levander, University of Pittsburgh",
 //						"Infection", itemIndexingLabels);
 //
@@ -237,7 +237,7 @@ public class WSClient {
 //		return port
 //				.addLibraryItem(
 //						id,
-//						"The infectious disease of humans caused by Diptheria",
+//						"The infection of humans caused by Diptheria",
 //						"Hypothetical Diptheria added by John Levander, University of Pittsburgh",
 //						"Infection", itemIndexingLabels);
 //	}
@@ -269,7 +269,7 @@ public class WSClient {
 //		return port
 //				.addLibraryItem(
 //						id,
-//						"The infectious disease of humans caused by Meningitis",
+//						"The infection of humans caused by Meningitis",
 //						"Hypothetical Meningitis added by John Levander, University of Pittsburgh",
 //						"Infection", itemIndexingLabels);
 //	}
@@ -291,7 +291,7 @@ public class WSClient {
 		return port
 				.addLibraryItem(
 						id,
-						"The infectious disease of humans caused by Influenza A virus subtype H1N1",
+						"The infection of humans caused by Influenza A virus subtype H1N1",
 						"Hypothetical H1N1 virus added by John Levander, University of Pittsburgh",
 		
 						"Infection", itemIndexingLabels);
@@ -315,7 +315,7 @@ public class WSClient {
 		return port
 				.addLibraryItem(
 						id,
-						"The infectious disease of humans caused by Influenza A virus subtype H5N1",
+						"The infection of humans caused by Influenza A virus subtype H5N1",
 						"Hypothetical H5N1 virus added by John Levander, University of Pittsburgh",
 						"Infection", itemIndexingLabels);
 
@@ -338,7 +338,7 @@ public class WSClient {
 		return port
 				.addLibraryItem(
 						id,
-						"The infectious disease of humans caused by Influenza A virus subtype H7N9",
+						"The infection of humans caused by Influenza A virus subtype H7N9",
 						"Hypothetical H7N9 virus added by John Levander, University of Pittsburgh",
 						"Infection", itemIndexingLabels);
 
@@ -360,7 +360,7 @@ public class WSClient {
 		return port
 				.addLibraryItem(
 						id,
-						"The infectious disease of humans caused by Influenza A virus subtype H3N2",
+						"The infection of humans caused by Influenza A virus subtype H3N2",
 						"Hypothetical H3N2 virus added by John Levander, University of Pittsburgh",
 						"Infection", itemIndexingLabels);
 
@@ -383,9 +383,9 @@ public class WSClient {
 				.addLibraryItem(
 						id,
 
-						"The infectious disease of humans caused by Influenza A virus subtype H7N7"
+						"The infection of humans caused by Influenza A virus subtype H7N7"
 								+ "",
-						"Hypothetical H7N7 virus aded by John Levander, University of Pittsburgh",
+						"Hypothetical H7N7 virus added by John Levander, University of Pittsburgh",
 						"Infection", itemIndexingLabels);
 
 	}
@@ -423,11 +423,6 @@ public class WSClient {
 		itemIndexingLabels.add("Antiviral");
 		itemIndexingLabels.add("AntiviralTreatment");
 		itemIndexingLabels.add("Allegheny County");
-		itemIndexingLabels.add("42003");
-		itemIndexingLabels.add("Allegheny County Health Department");
-		itemIndexingLabels.add("ACHD");
-		itemIndexingLabels.add("2009");
-		itemIndexingLabels.add("H1N1");
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("hypothetical");
 
@@ -530,12 +525,6 @@ public class WSClient {
 		indexingValues.add("SchoolClosureControlMeasure");
 		indexingValues.add("SchoolClosure");
 		indexingValues.add("Reactive Start Time");
-		indexingValues.add("Allegheny County");
-		indexingValues.add("42003");
-		indexingValues.add("Allegheny County Health Department");
-		indexingValues.add("ACHD");
-		indexingValues.add("2009");
-		indexingValues.add("H1N1");
 		indexingValues.add("human");
 		indexingValues.add("hypothetical");
 
@@ -570,12 +559,6 @@ public class WSClient {
 		indexingValues.add("SchoolClosureControlMeasure");
 		indexingValues.add("SchoolClosure");
 		indexingValues.add("Reactive Start Time");
-		indexingValues.add("Allegheny County");
-		indexingValues.add("42003");
-		indexingValues.add("Allegheny County Health Department");
-		indexingValues.add("ACHD");
-		indexingValues.add("2009");
-		indexingValues.add("H1N1");
 		indexingValues.add("human");
 		indexingValues.add("hypothetical");
 
