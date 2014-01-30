@@ -50,7 +50,7 @@ import edu.pitt.apollo.types._10._28._2013.VaccinationEfficacyForSimulatorConfig
 import edu.pitt.apollo.types._10._28._2013.VaccinationPreventableOutcome;
 
 public class WSClient {
-	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice1.3.1/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://localhost:8080/apolloservice1.3.1/services/apolloservice?wsdl";
 
 	// public static final String WSDL_LOC =
 	// "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
@@ -443,25 +443,25 @@ public class WSClient {
 	public static String addAcVcm(ApolloServiceEI port) {
 		// add Vacc
 		Vaccination vacc = new Vaccination();
-		vacc.setDescription("H1N1 Vaccine");
+		vacc.setDescription("A/(H3N2) Victoria/361//2011-like");
 		vacc.setNumDosesInTreatmentCourse(new BigInteger("1"));
 		vacc.setSpeciesOfTreatedOrganisms("human");
 		vacc.getTreatmentContraindications();
 
 		Treatment t = new Treatment();
-		t.setDescription("A vaccination for H1N1.");
+		t.setDescription("dummy treatment");
 		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
 		t.setSpeciesOfTreatedOrganisms("human");
-		t.getTreatmentContraindications();
+//		t.getTreatmentContraindications();
 
 		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
-		vesc.setStrainIdentifier("H1N1");
+		vesc.setStrainIdentifier("A/(H3N2) Victoria/361//2011-like");
 		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
 		// vesc.setTreatment(vacc);
 		vesc.setTreatment(t);
-		vesc.setVaccineIdentifier("Influenza A (H1N1) 2009 Monovalent Vaccine");
-		vesc.setAverageVaccinationEfficacy(0.7);
-		vesc.setDescription("The vaccination efficacy for the Influenza A (H1N1) 2009 Monovalent Vaccine");
+		vesc.setVaccineIdentifier("A/(H3N2) Victoria/361//2011-like");
+		vesc.setAverageVaccinationEfficacy(0.47);
+		vesc.setDescription("A/(H3N2) Victoria/361//2011-like");
 
 		vacc.getVaccinationEfficacies().add(vesc);
 
@@ -475,36 +475,36 @@ public class WSClient {
 		vaccCmFst.setStartTime(new BigInteger("0"));
 		vaccCmFst.setStopTime(new BigInteger("127"));
 		vcm.setControlMeasureStartTime(vaccCmFst);
-		vcm.setDescription("The vaccination control measure used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		vcm.setDescription("dummy vaccination control measure to hold efficacy");
 
 		for (int i = 0; i < 56; i++)
-			vcm.getVaccineSupplySchedule().add(3500);
+			vcm.getVaccineSupplySchedule().add(0);
 
 		for (int i = 56; i < 87; i++)
-			vcm.getVaccineSupplySchedule().add(10000);
+			vcm.getVaccineSupplySchedule().add(0);
 
 		for (int i = 87; i < 127; i++)
-			vcm.getVaccineSupplySchedule().add(3500);
+			vcm.getVaccineSupplySchedule().add(0);
 
 		for (int i = 0; i < 127; i++)
 			vcm.getVaccinationAdministrationCapacity().add(
-					new BigInteger("5000"));
+					new BigInteger("0"));
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("VaccinationControlMeasure");
-		itemIndexingLabels.add("Vaccination");
-		itemIndexingLabels.add("Vaccine");
-		itemIndexingLabels.add("Allegheny County");
-		itemIndexingLabels.add("42003");
-		itemIndexingLabels.add("Allegheny County Health Department");
-		itemIndexingLabels.add("ACHD");
-		itemIndexingLabels.add("2009");
-		itemIndexingLabels.add("H1N1");
-		itemIndexingLabels.add("human");
-		itemIndexingLabels.add("non-hypothetical");
+//		itemIndexingLabels.add("VaccinationControlMeasure");
+//		itemIndexingLabels.add("Vaccination");
+//		itemIndexingLabels.add("Vaccine");
+//		itemIndexingLabels.add("Allegheny County");
+//		itemIndexingLabels.add("42003");
+//		itemIndexingLabels.add("Allegheny County Health Department");
+//		itemIndexingLabels.add("ACHD");
+//		itemIndexingLabels.add("2009");
+//		itemIndexingLabels.add("H1N1");
+//		itemIndexingLabels.add("human");
+//		itemIndexingLabels.add("non-hypothetical");
 
 		return port.addLibraryItem(vcm, vcm.getDescription(),
-				"Discussion with ACHD staff.", "VaccinationControlMeasure",
+				"", "VaccinationControlMeasure",
 				itemIndexingLabels);
 	}
 
@@ -594,14 +594,14 @@ public class WSClient {
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 		addAcVcm(port);
-		addAcAvt(port);
-		addAllSccm(port);
-		addIndividualSccm(port);
-		addH1N1(port);
-		addH3N2(port);
-		addH5N1(port);
-		addH7N7(port);
-		addH7N9(port);
+//		addAcAvt(port);
+//		addAllSccm(port);
+//		addIndividualSccm(port);
+//		addH1N1(port);
+//		addH3N2(port);
+//		addH5N1(port);
+//		addH7N7(port);
+//		addH7N9(port);
 //		addDiptheria(port);
 //		addMeningitidis(port);
 //		addRubella(port);
