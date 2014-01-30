@@ -24,9 +24,9 @@ import edu.pitt.apollo.flute.utils.QueueThread;
 import edu.pitt.apollo.flute.utils.RunIdProperties;
 import edu.pitt.apollo.flute.utils.RunIdStoreThread;
 import edu.pitt.apollo.flute.utils.SimulatorThread;
-import edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI;
-import edu.pitt.apollo.types._07._03._2013.BatchRunResult;
-import edu.pitt.apollo.types._07._03._2013.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI;
+import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
+import edu.pitt.apollo.types._10._28._2013.BatchRunSimulatorConfiguration;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,11 +37,11 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._07._03._2013.SoftwareIdentification;
-import edu.pitt.apollo.types._07._03._2013.SupportedPopulationLocation;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
+import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
+import edu.pitt.apollo.types._10._28._2013.SupportedPopulationLocation;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import java.util.Queue;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService_v1.3", endpointInterface = "edu.pitt.apollo.service.simulatorservice._07._03._2013.SimulatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI")
 public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     // queue for simulator threads
@@ -99,9 +99,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "runStatus", targetNamespace = "")
-    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetRunStatus")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getRunStatus")
-    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetRunStatusResponse")
+    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatus")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getRunStatus")
+    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatusResponse")
     public RunStatus getRunStatus(
             @WebParam(name = "runId", targetNamespace = "") String runId) {
         try {
@@ -118,9 +118,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "supportedPopluationLocations", targetNamespace = "")
-    @RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetSupportedLocations")
+    @RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocations")
     @WebMethod
-    @ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetSupportedLocationsResponse")
+    @ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocationsResponse")
     public List<SupportedPopulationLocation> getSupportedLocations() {
         // TODO Auto-generated method stub
         return null;
@@ -128,9 +128,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "runId", targetNamespace = "")
-    @RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.Run")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/run")
-    @ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.RunResponse")
+    @RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.Run")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/run")
+    @ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.RunResponse")
     public String run(
             @WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 
@@ -163,9 +163,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "batchRun", targetNamespace = "")
-    @RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.BatchRun")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/batchRun")
-    @ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.BatchRunResponse")
+    @RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRun")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/batchRun")
+    @ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRunResponse")
     public BatchRunResult batchRun(
             @WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
 
@@ -201,9 +201,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "getConfigurationFileForRun", targetNamespace = "")
-    @RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetConfigrationFileForRun")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/getConfigurationFileForRun")
-    @ResponseWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/07/03/2013/", className = "edu.pitt.apollo.service.simulatorservice._07._03._2013.GetConfigrationFileForRunResponse")
+    @RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigrationFileForRun")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getConfigurationFileForRun")
+    @ResponseWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigrationFileForRunResponse")
     public String getConfigurationFileForRun(String runId) {
 
 //        String[] splitRunId = runId.split("::");
