@@ -1,8 +1,8 @@
 package edu.pitt.apollo.flute.utils;
 
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
