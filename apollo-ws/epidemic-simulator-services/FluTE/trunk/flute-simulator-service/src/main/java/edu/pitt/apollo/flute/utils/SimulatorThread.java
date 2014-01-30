@@ -4,12 +4,12 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import edu.pitt.apollo.FluteSimulatorServiceException;
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
-import edu.pitt.apollo.service.translatorservice._07._03._2013.TranslatorServiceEI;
-import edu.pitt.apollo.service.translatorservice._07._03._2013.TranslatorServiceV13;
-import edu.pitt.apollo.types._07._03._2013.PopulationDiseaseCensusResult;
-import edu.pitt.apollo.types._07._03._2013.RunStatus;
-import edu.pitt.apollo.types._07._03._2013.RunStatusEnum;
-import edu.pitt.apollo.types._07._03._2013.SimulatorConfiguration;
+import edu.pitt.apollo.service.translatorservice._10._28._2013.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice._10._28._2013.TranslatorServiceV131;
+import edu.pitt.apollo.types._10._28._2013.PopulationDiseaseCensusResult;
+import edu.pitt.apollo.types._10._28._2013.RunStatus;
+import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
+import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -101,10 +101,10 @@ public class SimulatorThread extends Thread {
                     // store in the run directory created by RunUtils 
                 LOGGER.log(Level.INFO, "Sending request to translator service...");
 
-                TranslatorServiceV13 service;
+                TranslatorServiceV131 service;
                 TranslatorServiceEI port;
                 try {
-                    service = new TranslatorServiceV13(
+                    service = new TranslatorServiceV131(
                             new URL(TRANSLATOR_SERVICE_WSDL));
                     port = service.getTranslatorServiceEndpoint();
                 } catch (Exception ex) {
