@@ -3,6 +3,7 @@ package edu.pitt.apollo.utilities;
 import edu.pitt.apollo.container.ImageSeriesContainer;
 import edu.pitt.apollo.container.IncidenceTimeSeriesContainer;
 import edu.pitt.apollo.container.SeirTimeSeriesContainer;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -12,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -26,12 +29,32 @@ import java.util.Scanner;
  */
 public class DatabaseUtility {
 
-    private static final ResourceBundle databaseSettings = ResourceBundle.getBundle("database_connect");
     private static final String[] seirTimeSeriesNames = {"susceptible", "exposed", "infectious", "recovered"};
     private Connection connect = null;
     private ResultSet resultSet = null;
     private PreparedStatement statement = null;
     private List<String> runIds;
+    static final Properties properties = new Properties();
+
+    private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
+    
+    static {
+        InputStream input;
+        Map<String, String> env = System.getenv();
+        String dir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        String fn = dir
+                + "/database.properties";
+        try {
+
+            input = new FileInputStream(fn);
+            properties.load(input);
+            System.out.println("Successfully loaded " + fn + " file.");
+        } catch (Exception e) {
+            System.out.println("\n\n\nError loading "
+                    + fn + " file\n\n\n");
+        }
+
+    }
 
     public DatabaseUtility(List<String> runIds) {
         this.runIds = runIds;
@@ -43,10 +66,10 @@ public class DatabaseUtility {
         SeirTimeSeriesContainer seirContainer = new SeirTimeSeriesContainer();
         IncidenceTimeSeriesContainer incidenceContainer = new IncidenceTimeSeriesContainer();
 
-        String dbHost = databaseSettings.getString("db_host");
-        String dbUser = databaseSettings.getString("db_user");
-        String dbPassword = databaseSettings.getString("db_password");
-        String dbDatabase = databaseSettings.getString("db_database");
+        String dbClass = properties.getProperty("class");
+        String url = properties.getProperty("url");
+        String user = properties.getProperty("user");
+        String password = properties.getProperty("password");
 
         // get the run id query
         StringBuilder runIdQuery = new StringBuilder();
@@ -109,8 +132,8 @@ public class DatabaseUtility {
 
             List[] timeSeries = new List[4];
             try {
-                Class.forName("com.mysql.jdbc.Driver");
-                connect = DriverManager.getConnection("jdbc:mysql://" + dbHost + "/" + dbDatabase, dbUser, dbPassword);
+                Class.forName(dbClass);
+                connect = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
                 statement = connect.prepareStatement(runIdQuery.toString());
                 statement.setString(1, runId);
                 resultSet = statement.executeQuery();
