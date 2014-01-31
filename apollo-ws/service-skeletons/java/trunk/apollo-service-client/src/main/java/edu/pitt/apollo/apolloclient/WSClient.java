@@ -14,6 +14,15 @@
  */
 package edu.pitt.apollo.apolloclient;
 
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceV20;
 import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
@@ -36,13 +45,6 @@ import edu.pitt.apollo.types.v2_0.RunStatusEnum;
 import edu.pitt.apollo.types.v2_0.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.GregorianCalendar;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 public class WSClient {
 
@@ -73,6 +75,7 @@ public class WSClient {
         infection.setLatentPeriod(latentPeriod);
 
         InfectionAcquisition ia = new InfectionAcquisition();
+        
         ia.setPathogenTaxonID(pathId);
         ia.setSusceptibleHostTaxonID(hostId);
         ia.setReproductionNumber(1.3);
