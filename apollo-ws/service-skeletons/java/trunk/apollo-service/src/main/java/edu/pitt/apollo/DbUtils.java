@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import edu.pitt.apollo.types._10._28._2013.UrlOutputResource;
-import edu.pitt.apollo.types._10._28._2013.VisualizerResult;
+import edu.pitt.apollo.types.v2_0.UrlOutputResource;
+import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 
 /**
@@ -97,19 +97,19 @@ public class DbUtils {
         }
     }
 
-    public static void insertIntoRunCache(String runId, String md5HashOfSimulatorConfiguration) throws ClassNotFoundException, SQLException {
+    public static void insertIntoRunCache(String runId, String md5HashOfRunSimulationMessage) throws ClassNotFoundException, SQLException {
 
         String query = "INSERT INTO apollo_service_simulator_run_cache (LABEL, MD5HASHOFSIMULATORCONFIGURATION) "
-                + "VALUES ('" + runId + "','" + md5HashOfSimulatorConfiguration + "')";
+                + "VALUES ('" + runId + "','" + md5HashOfRunSimulationMessage + "')";
 
         PreparedStatement pstmt = getConn().prepareStatement(query);
         pstmt.execute();
     }
 
-    public static String checkRunCache(String md5HashOfSimulatorConfiguration) throws SQLException, ClassNotFoundException {
+    public static String checkRunCache(String md5HashOfRunSimulationMessage) throws SQLException, ClassNotFoundException {
 
         String query = "SELECT LABEL,MD5HASHOFSIMULATORCONFIGURATION FROM apollo_service_simulator_run_cache"
-                + " where MD5HASHOFSIMULATORCONFIGURATION LIKE " + "'" + md5HashOfSimulatorConfiguration + "'";
+                + " where MD5HASHOFSIMULATORCONFIGURATION LIKE " + "'" + md5HashOfRunSimulationMessage + "'";
 
         PreparedStatement pstmt = getConn().prepareStatement(query);
         ResultSet rs = pstmt.executeQuery();
@@ -122,10 +122,10 @@ public class DbUtils {
         return runId;
     }
 
-    public static void deleteFromRunCache(String md5HashOfSimulatorConfiguration) throws ClassNotFoundException, SQLException {
+    public static void deleteFromRunCache(String md5HashOfRunSimulationMessage) throws ClassNotFoundException, SQLException {
 
         String query = "DELETE FROM apollo_service_simulator_run_cache WHERE MD5HASHOFSIMULATORCONFIGURATION = '"
-                + md5HashOfSimulatorConfiguration + "'";
+                + md5HashOfRunSimulationMessage + "'";
 
         PreparedStatement pstmt = getConn().prepareStatement(query);
         pstmt.execute();
@@ -230,10 +230,5 @@ public class DbUtils {
         query = "DELETE FROM apollo_service_visualizer_cache WHERE MD5HASHOFCONFIGURATION = '" + md5HashOfVisualizerConfiguration + "'";
         pstmt = getConn().prepareStatement(query);
         pstmt.execute();
-    }
-    
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        
-        establishDbConn();
     }
 }
