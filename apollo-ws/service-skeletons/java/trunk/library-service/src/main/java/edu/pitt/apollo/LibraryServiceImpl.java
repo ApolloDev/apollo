@@ -14,46 +14,49 @@
  */
 package edu.pitt.apollo;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.ConfigScope;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ext.Db4oUUID;
-import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
+import edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI;
+import edu.pitt.apollo.types.v2_0.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_0.CatalogEntryForApolloLibraryItem;
+import edu.pitt.apollo.types.v2_0.CuratedLibraryItemContainer;
 
-import edu.pitt.apollo.service.libraryservice._10._28._2013.LibraryServiceEI;
-import edu.pitt.apollo.types._10._28._2013.ApolloIndexableItem;
-import edu.pitt.apollo.types._10._28._2013.CuratedLibraryItem;
-import edu.pitt.apollo.types._10._28._2013.CuratedLibraryItemContainer;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Map;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
-
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.libraryservice._10._28._2013.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
+	
+	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
+	private static final String DB4O_FILENAME = "db4o_db_20";
 
     private static ObjectContainer db4o;
     private static String APOLLO_DIR = "";
 
     @Override
     @WebResult(name = "uuid", targetNamespace = "")
-    @RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.AddLibraryItem")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/addLibraryItem")
-    @ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.AddLibraryItemResponse")
+    @RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.AddLibraryItem")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/addLibraryItem")
+    @ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.AddLibraryItemResponse")
     public String addLibraryItem(
             @WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
             @WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
@@ -79,7 +82,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
         try {
             date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 
-            CuratedLibraryItem cli = new CuratedLibraryItem();
+            CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
             cli.setItemCreationTime(date);
             cli.setItemDescription(itemDescription);
             cli.setItemSource(itemSource);
@@ -97,9 +100,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
     @Override
     @WebResult(name = "curatedLibraryItemContainer", targetNamespace = "")
-    @RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetLibraryItem")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/getLibraryItem")
-    @ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetLibraryItemResponse")
+    @RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetLibraryItem")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getLibraryItem")
+    @ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetLibraryItemResponse")
     public CuratedLibraryItemContainer getLibraryItem(
             @WebParam(name = "uuid", targetNamespace = "") String uuid) {
         // TODO Auto-generated method stub
@@ -114,10 +117,10 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
         CuratedLibraryItemContainer result = new CuratedLibraryItemContainer();
         result.setApolloIndexableItem((ApolloIndexableItem) o);
-        CuratedLibraryItem cli = new CuratedLibraryItem();
+        CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
         cli.setItemUuid(uuid);
         ObjectSet<Object> r = db4o.queryByExample(cli);
-        CuratedLibraryItem item = (CuratedLibraryItem) r.get(0);
+        CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r.get(0);
         db4o.activate(item, 100);
         db4o.activate(o, 100);
 
@@ -127,18 +130,18 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
     @Override
     @WebResult(name = "uuids", targetNamespace = "")
-    @RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetUuidsForLibraryItemsCreatedSinceDateTime")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/getUuidsForLibraryItemsCreatedSinceDateTime")
-    @ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
+    @RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsCreatedSinceDateTime")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getUuidsForLibraryItemsCreatedSinceDateTime")
+    @ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
     public List<String> getUuidsForLibraryItemsCreatedSinceDateTime(
             @WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
         // TODO Auto-generated method stub
         List<String> resultList = new ArrayList<String>();
 //
-        CuratedLibraryItem cli = new CuratedLibraryItem();
-        final ObjectSet<CuratedLibraryItem> allItems = db4o.queryByExample(cli);
+        CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+        final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
 
-        for (CuratedLibraryItem item : allItems) {
+        for (CatalogEntryForApolloLibraryItem item : allItems) {
             int c = item.getItemCreationTime().compare(creationDateTime);
             if ((c == DatatypeConstants.EQUAL)
                     || (c == DatatypeConstants.GREATER)) {
@@ -150,18 +153,18 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
     @Override
     @WebResult(name = "uuids", targetNamespace = "")
-    @RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetUuidsForLibraryItemsGivenType")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/10/28/2013/getUuidsForLibraryItemsGivenType")
-    @ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/10/28/2013/", className = "edu.pitt.apollo.service.libraryservice._10._28._2013.GetUuidsForLibraryItemsGivenTypeResponse")
+    @RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsGivenType")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getUuidsForLibraryItemsGivenType")
+    @ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsGivenTypeResponse")
     public List<String> getUuidsForLibraryItemsGivenType(
             @WebParam(name = "type", targetNamespace = "") String type) {
         // TODO Auto-generated method stub
         List<String> resultList = new ArrayList<String>();
 //
-        CuratedLibraryItem cli = new CuratedLibraryItem();
-        final ObjectSet<CuratedLibraryItem> allItems = db4o.queryByExample(cli);
+        CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+        final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
 
-        for (CuratedLibraryItem item : allItems) {
+        for (CatalogEntryForApolloLibraryItem item : allItems) {
             if (item.getItemType().equals(type)) {
                 resultList.add(item.getItemUuid());
             }
@@ -171,19 +174,19 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
     static {
         Map<String, String> env = System.getenv();
-        APOLLO_DIR = env.get("APOLLO_131_WORK_DIR");
+        APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
         if (APOLLO_DIR != null) {
             if (!APOLLO_DIR.endsWith(File.separator)) {
                 APOLLO_DIR += File.separator;
             }
-            System.out.println("APOLLO_DIR is now:" + APOLLO_DIR);
+            System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
         } else {
-            System.out.println("APOLLO_131_WORK_DIR environment variable not found!");
+            System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE+"environment variable not found!");
             APOLLO_DIR = "";
         }
         EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
         configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-        db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/db4o_db_131");
+        db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/" + DB4O_FILENAME);
     }
 
     @Override
