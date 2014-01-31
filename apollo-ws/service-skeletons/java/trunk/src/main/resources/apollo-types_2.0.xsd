@@ -1694,7 +1694,6 @@
 
 			<element name="fractionsOfThingsContaminated" type="tns:FractionOfThingContaminated"
 				maxOccurs="1" minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
