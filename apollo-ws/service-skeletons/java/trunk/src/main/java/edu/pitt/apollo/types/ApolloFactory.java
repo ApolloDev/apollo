@@ -22,9 +22,9 @@ import javax.naming.spi.ObjectFactory;
 public class ApolloFactory {
 	private static ObjectFactory factory = new ObjectFactory();
 
-	public static SimulatorConfiguration createEpidemicModelInput() {
+	public static RunSimulationMessage createEpidemicModelInput() {
 
-		SimulatorConfiguration cfg = factory.createSimulatorConfiguration();
+		RunSimulationMessage cfg = factory.createRunSimulationMessage();
 		cfg.setAntiviralControlMeasure(createAntiviralControlMeasure());
 		cfg.setVaccinationControlMeasure(createVaccinationControlMeasure());
 		cfg.setDisease(factory.createDisease());

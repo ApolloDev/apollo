@@ -24,10 +24,10 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.syntheticpopulationservice._10._28._2013.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.types._10._28._2013.RunStatus;
-import edu.pitt.apollo.types._10._28._2013.ServiceResult;
-import edu.pitt.apollo.types._10._28._2013.SyntheticPopulationConfiguration;
+import edu.pitt.apollo.service.syntheticpopulationservice.v2_0.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.types.v2_0.AgentLevelPopulationAndEnvironmentCensusDescription;
+import edu.pitt.apollo.types.v2_0.RunStatus;
+import edu.pitt.apollo.types.v2_0.ServiceResult;
 
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
@@ -53,7 +53,7 @@ class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/run")
 	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.RunResponse")
 	public List<ServiceResult> run(
-			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") SyntheticPopulationConfiguration syntheticPopulationConfiguration) {
+			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") AgentLevelPopulationAndEnvironmentCensusDescription agentLevelPopulationAndEnvironmentCensusDescription) {
 		// TODO Auto-generated method stub
 		return null;
 	}

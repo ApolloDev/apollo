@@ -11,10 +11,10 @@ import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.pitt.apollo.types._10._28._2013.Authentication;
-import edu.pitt.apollo.types._10._28._2013.ServiceRecord;
-import edu.pitt.apollo.types._10._28._2013.ServiceRegistrationRecord;
-import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0.Authentication;
+import edu.pitt.apollo.types.v2_0.ServiceRecord;
+import edu.pitt.apollo.types.v2_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 
 
 
