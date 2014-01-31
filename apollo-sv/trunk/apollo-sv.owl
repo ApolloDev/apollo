@@ -915,12 +915,12 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -1218,6 +1218,7 @@
         <obo:IAO_0000115 xml:lang="en">The average value of transmissions of the infectious agent from one infected organism to another, resulting in an infection in a completely susceptible population.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The number of organisms that each infected organism infects in a completely susceptible population. </obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">basic reproductive rate</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1412,7 +1413,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to all version of a specific simulator.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An identifier that refers to all versions of a specific simulator, such as “FRED”.  We intend that it uniquely identify a simulator when combined with simulator developer.  For example, the combination www.psc.edu/FRED would differentiate the FRED simulator created by a Pittsburgh organization from another “FRED” simulator maintained elsewhere. The implementation of namespace control for simulator name (i.e., making sure that they don’t use “FRED” twice) is the responsibility of simulator developer.</obo:IAO_0000600>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator name</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator identification</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2920,7 +2921,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
         <obo:IAO_0000115 xml:lang="en">a plan specification whose objective specification is an epidemic control objective specification</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">epidemic control measure</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious disease control strategy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3131,6 +3132,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ecosystem</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3380,7 +3382,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to all version of a specific software.</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">software name</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">software identification</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3493,6 +3495,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">An infection is the reproduction of a pathogen in (a part of) the tissue of a host organism from another species.</obo:IAO_0000115>
         <dc:creator xml:lang="en">M. Brochhausen</dc:creator>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infection</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3558,9 +3561,9 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;GO_0044409"/>
-        <obo:IAO_0000117 xml:lang="en"></obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The biological process of pathogen organism(s) entering (the body of) a host organism and reproducing using host resources that immediately precedes an infection involving the same host organism and pathogen as participants.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infection acquisition</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4059,6 +4062,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000090"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4442,7 +4446,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000157 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000157">
-        <rdfs:label xml:lang="en">PII</rdfs:label>
+        <rdfs:label xml:lang="en">PII Census</rdfs:label>
         <rdfs:label xml:lang="en">population infection and immunity census</rdfs:label>
         <equivalentClass>
             <Class>
@@ -4462,6 +4466,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population disease survey.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population infection and immunity census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4580,6 +4585,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">ecosystem census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ecosystem census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4656,9 +4662,9 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
-        <obo:IAO_0000115 xml:lang="en">An entity that contains a pathogen (either internal to itself or on its surface) and is not undergoing an infection</obo:IAO_0000115>
         <obo:IAO_0000115 xml:lang="en">An independent continuant that is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">contaminated thing</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4700,6 +4706,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">a biological process whereby an entity that does not contain a pathogen becomes a contaminated thing</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">contamination acquisition</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4781,6 +4788,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000090"/>
         <obo:IAO_0000115 xml:lang="en">A treatment with an antiviral drug.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">antiviral treatment</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4859,6 +4867,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </rdfs:subClassOf>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The count of a specific entity in a specified region at a specified time.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -4958,6 +4967,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">An information content entity that contains everything a simulator needs to run, including the representation of a scenario.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator configuration</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5033,6 +5043,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator time specification</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5054,6 +5065,18 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">scenario date</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <obo:IAO_0000115 xml:lang="en">An information content entity that is a real date that corresponds to simulator time zero. </obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000186 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000186">
+        <rdfs:label xml:lang="en">contamination</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
+        <rdfs:comment xml:lang="en">Contamination is the process: existence or reproduction of pathogen inside/on some material entity not undergoing infection. It’s still in flux.
+</rdfs:comment>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">contamination</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5144,6 +5167,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000194">
         <rdfs:label xml:lang="en">individual treatment control strategy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious disease control strategy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5207,9 +5231,21 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000201 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000201">
-        <rdfs:label xml:lang="en">contaminated thing census</rdfs:label>
+        <rdfs:label xml:lang="en">contaminated things census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <obo:IAO_0000115 xml:lang="en">A census about all contaminated things in an area of interest.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">contaminated things census</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000202 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000202">
+        <rdfs:label xml:lang="en">indexable Apollo item</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <rdfs:comment xml:lang="en">A class representing an abstract type. This class has no attributes and programmers should use it to determine whether an instance should be saved or can be retrieved. </rdfs:comment>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">indexable Apollo item</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5656,13 +5692,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -5851,6 +5887,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <rdfs:comment>The disposition is realized in an infectious disease course.</rdfs:comment>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious disease</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000118 xml:lang="en">tranmissible disease</obo:IAO_0000118>
     </Class>
     
@@ -6522,6 +6559,7 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=35</obo:IAO_0000119>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">treatment</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
