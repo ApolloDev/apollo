@@ -161,7 +161,7 @@
 			</plugins>
 		</pluginManagement>
 		<!-- Name of the generated WAR file -->
-		<finalName>apollo-service131</finalName>
+		<finalName>apollo-service20</finalName>
 	</build>
 
 	<profiles>

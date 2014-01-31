@@ -82,7 +82,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	private static final String REGISTRY_FILENAME = "registered_services.xml";
 	private static final String ERROR_FILENAME = "run_errors.txt";
 	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
-	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
+	public static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
 	private static final String DB4O_FILENAME = "db4o_db_20";
 
 	private static String APOLLO_DIR = "";
