@@ -28,21 +28,21 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI;
-import edu.pitt.apollo.types._10._28._2013.RunStatus;
-import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
-import edu.pitt.apollo.types._10._28._2013.UrlOutputResource;
-import edu.pitt.apollo.types._10._28._2013.VisualizerConfiguration;
-import edu.pitt.apollo.types._10._28._2013.VisualizerResult;
+import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI;
+import edu.pitt.apollo.types.v2_0.RunStatus;
+import edu.pitt.apollo.types.v2_0.RunStatusEnum;
+import edu.pitt.apollo.types.v2_0.UrlOutputResource;
+import edu.pitt.apollo.types.v2_0.VisualizerConfiguration;
+import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
 	@Override
 	@WebResult(name = "visualizerResult", targetNamespace = "")
-	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.Run")
-	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/run")
-	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.RunResponse")
+	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.Run")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/run")
+	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.RunResponse")
 	public VisualizerResult run(
 			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
 		String runIdString = visualizerConfiguration.getVisualizationOptions()
@@ -145,9 +145,9 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 
 	@Override
 	@WebResult(name = "configurationFile", targetNamespace = "")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/getConfigurationFileForRun")
-	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRunResponse")
+	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/getConfigurationFileForRun")
+	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRunResponse")
 	public String getConfigurationFileForRun(
 			@WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
 		// TODO Auto-generated method stub
@@ -156,9 +156,9 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 
 	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/10/28/2013/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatusResponse")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatusResponse")
 	public RunStatus getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
 		RunStatus rs = new RunStatus();
