@@ -24,13 +24,14 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI;
-import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
-import edu.pitt.apollo.types._10._28._2013.BatchRunSimulatorConfiguration;
-import edu.pitt.apollo.types._10._28._2013.RunStatus;
-import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
-import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._10._28._2013.SupportedPopulationLocation;
+import edu.pitt.apollo.service.simulatorservice.v2_0.SimulatorServiceEI;
+import edu.pitt.apollo.types.v2_0.BatchRunResult;
+import edu.pitt.apollo.types.v2_0.BatchRunSimulationMessage;
+import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0.RunStatus;
+import edu.pitt.apollo.types.v2_0.RunStatusEnum;
+import edu.pitt.apollo.types.v2_0.SupportedPopulationLocation;
 
 
 
@@ -72,15 +73,15 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/run")
 	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.RunResponse")
 	public String run(
-			@WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
+			@WebParam(name = "simulatorConfiguration", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
 		
-		return simulatorConfiguration.getSimulatorIdentification()
+		return runSimulationMessage.getSimulatorIdentification()
 				.getSoftwareDeveloper()
 				+ "_"
-				+ simulatorConfiguration.getSimulatorIdentification()
+				+ runSimulationMessage.getSimulatorIdentification()
 						.getSoftwareName()
 				+ "_"
-				+ simulatorConfiguration.getSimulatorIdentification().getSoftwareVersion() + "_17";
+				+ runSimulationMessage.getSimulatorIdentification().getSoftwareVersion() + "_17";
 	}
 
 	@Override
@@ -89,7 +90,7 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/batchRun")
 	@ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.BatchRunResponse")
 	public BatchRunResult batchRun(
-			@WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+			@WebParam(name = "batchRunRunSimulationMessage", targetNamespace = "") BatchRunSimulationMessage batchRunSimulationMessage) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -101,6 +102,17 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", className = "edu.pitt.apollo.service.simulatorservice.GetConfigurationFileForRunResponse")
 	public String getConfigurationFileForRun(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "populationAndEnvironmentCensus", targetNamespace = "")
+	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetPopulationAndEnvironmentCensus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0/getPopulationAndEnvironmentCensus")
+	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetPopulationAndEnvironmentCensusResponse")
+	public PopulationAndEnvironmentCensus getPopulationAndEnvironmentCensus(
+			@WebParam(name = "location", targetNamespace = "") String location) {
 		// TODO Auto-generated method stub
 		return null;
 	}
