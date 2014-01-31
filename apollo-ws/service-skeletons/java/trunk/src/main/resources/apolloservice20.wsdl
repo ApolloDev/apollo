@@ -11,7 +11,7 @@
 			<xsd:element name="runSimulation">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="simulatorConfiguration" type="apollo:SimulatorConfiguration" />
+						<xsd:element name="runSimulationMessage" type="apollo:RunSimulationMessage" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -102,8 +102,8 @@
 			<xsd:element name="batchRunSimulation">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="batchRunSimulatorConfiguration"
-							type="apollo:BatchRunSimulatorConfiguration"></xsd:element>
+						<xsd:element name="batchRunSimulationMessage"
+							type="apollo:BatchRunSimulationMessage"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -117,7 +117,7 @@
 			<xsd:element name="generateSyntheticPopulation">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="syntheticPopulationConfiguration" type="apollo:SyntheticPopulationConfiguration"></xsd:element>
+						<xsd:element name="agentLevelPopulationAndEnvironmentCensusDescription" type="apollo:AgentLevelPopulationAndEnvironmentCensusDescription"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -269,6 +269,20 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="getPopulationAndEnvironmentCensus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="location" type="xsd:token"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getPopulationAndEnvironmentCensusResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="populationAndEnvironmentCensus" type="apollo:PopulationAndEnvironmentCensus"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runSimulationRequest">
@@ -373,6 +387,12 @@
 	<wsdl:message name="addLibraryItemResponse">
 		<wsdl:part name="parameters" element="tns:addLibraryItemResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getPopulationAndEnvironmentCensusRequest">
+		<wsdl:part name="parameters" element="tns:getPopulationAndEnvironmentCensus"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getPopulationAndEnvironmentCensusResponse">
+		<wsdl:part name="parameters" element="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
@@ -426,6 +446,10 @@
 		<wsdl:operation name="addLibraryItem">
 			<wsdl:input message="tns:addLibraryItemRequest"></wsdl:input>
 			<wsdl:output message="tns:addLibraryItemResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getPopulationAndEnvironmentCensus">
+			<wsdl:input message="tns:getPopulationAndEnvironmentCensusRequest"></wsdl:input>
+			<wsdl:output message="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
@@ -556,6 +580,16 @@
 		<wsdl:operation name="addLibraryItem">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/addLibraryItem" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getPopulationAndEnvironmentCensus">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getPopulationAndEnvironmentCensus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
