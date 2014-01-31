@@ -915,12 +915,12 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -5246,6 +5246,18 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <rdfs:comment xml:lang="en">A class representing an abstract type. This class has no attributes and programmers should use it to determine whether an instance should be saved or can be retrieved. </rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">indexable Apollo item</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000203 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000203">
+        <rdfs:label xml:lang="en">NCBI taxon identifier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
+        <obo:IAO_0000115 xml:lang="en"></obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An identifier curated by the NCBI Taxonomy and designating a biological taxon.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">NCBI taxon id</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
