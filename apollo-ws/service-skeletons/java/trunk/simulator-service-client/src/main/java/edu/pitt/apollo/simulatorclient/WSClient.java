@@ -71,7 +71,7 @@ public class WSClient {
 	//	port.registerService(srr, success, msg);
 		System.out.println(msg.value);
 
-		SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration();
+		RunSimulationMessage simulatorConfiguration = new RunSimulationMessage();
 
 		simulatorConfiguration.setAuthentication(auth);
 		simulatorConfiguration
