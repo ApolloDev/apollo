@@ -379,43 +379,7 @@
 	</complexType>
 
 
-	<complexType name="ApolloSimulatorMessage">
-		<sequence>
-			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
-			<element name="authentication" type="tns:Authentication"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
-			<element name="simulatorTimeSpecification" type="tns:SimulatorTimeSpecification"
-				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
-
-			<element minOccurs="1" maxOccurs="1" name="scenario"
-				type="tns:InfectiousDiseaseScenario">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
-			</element>
-
-
-
-		</sequence>
-	</complexType>
-
+	
 	<complexType name="UrlOutputResource">
 		<sequence>
 			<element name="description" type="string" />
