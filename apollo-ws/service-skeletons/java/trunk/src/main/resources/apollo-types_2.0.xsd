@@ -379,7 +379,7 @@
 	</complexType>
 
 
-	
+
 	<complexType name="UrlOutputResource">
 		<sequence>
 			<element name="description" type="string" />
@@ -1466,8 +1466,12 @@
 						<element name="contaminatedMaterialID" type="token"
 							maxOccurs="1" minOccurs="0" />
 					</choice>
-					<element name="reproductionNumber" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="0" />
+					<choice>
+						<element name="reproductionNumber" type="tns:PositiveDouble"
+							maxOccurs="1" minOccurs="1" />
+						<element name="imperialReproductionNumber" type="tns:ImperialReproductionNumber"
+							maxOccurs="1" minOccurs="1" />
+					</choice>
 					<element name="transmissionProbability" type="tns:ProbabilisticParameterValue"
 						maxOccurs="1" minOccurs="0" />
 					<element name="transmissionCoefficient" type="tns:NumericParameterValue"
@@ -1886,6 +1890,83 @@
 			</element>
 			<element name="probability" type="tns:ProbabilisticParameterValue"
 				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ImperialReproductionNumber">
+		<sequence>
+			<element name="averageCommunityImperialReproductionNumber"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="averageHouseholdImperialReproductionNumber"
+				type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="imperialReproductionNumberForPlace" type="tns:ImperialReproductionNumberForPlace"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="seasonalityFunctionParameters" type="tns:SeasonalityFunctionParameters"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="probSymptomaticInfectionClinicallyDetected"
+				type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
+			<element name="symptomaticInfectionMultiplier" type="tns:PositiveDouble"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="probSevereInfectionClinicallyDetected" type="tns:Probability"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="severeInfectionMultiplier" type="tns:PositiveDouble"
+				maxOccurs="1" minOccurs="1">
+			</element>
+
+		</sequence>
+	</complexType>
+
+	<complexType name="ImperialReproductionNumberForPlace">
+		<sequence>
+			<element name="placeType" type="tns:FacilityEnum" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="averageImperialReproductionNumber" type="tns:PositiveDouble"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="withinGroupTransmissionProbability" type="tns:Probability"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="probSymptomaticIndividualAbsent" type="tns:Probability"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="symptomaticAbsenteeMultiplier" type="tns:PositiveDouble"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="probSeverelyInfectedIndividualAbsent" type="tns:Probability"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="severelyInfectedAbsenteeMultiplier" type="tns:PositiveDouble"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="spatialKernelFunctionParameters" type="tns:SpatialKernelFunctionParameters"
+				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="SeasonalityFunctionParameters">
+		<sequence>
+			<element name="maximumSeasonalLatitude" type="double"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="minimumSeasonalLatitude" type="double"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="seasonalTemporalOffset" type="double"
+				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="SpatialKernelFunctionParameters">
+		<sequence>
+			<element name="type" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="a0" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="a1" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="b0" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="b1" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="c1" type="double" maxOccurs="1" minOccurs="1"></element>
+			<element name="cutoff" type="double" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 </schema>
