@@ -602,7 +602,7 @@
 	<wsdl:service name="ApolloService_v2.0">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/apolloservice131/services/apolloservice" />
+				location="http://localhost:8080/apolloservice20/services/apolloservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
