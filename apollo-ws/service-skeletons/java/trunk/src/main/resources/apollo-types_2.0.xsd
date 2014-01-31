@@ -522,7 +522,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="BatchRunSimulatorConfiguration">
+	<complexType name="BatchRunSimulationMessage">
 		<sequence>
 			<element name="batchConfigurationFile" type="anyURI" />
 			<element name="acceptCachedResults" type="boolean" />
