@@ -17,22 +17,24 @@ package edu.pitt.apollo.visualizerclient;
 
 
 
-import edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceV131;
-import edu.pitt.apollo.types._10._28._2013.ApolloSoftwareType;
-import edu.pitt.apollo.types._10._28._2013.Authentication;
-import edu.pitt.apollo.types._10._28._2013.RunStatus;
-import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
-import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
-import edu.pitt.apollo.types._10._28._2013.VisualizationOptions;
-import edu.pitt.apollo.types._10._28._2013.VisualizerConfiguration;
-import edu.pitt.apollo.types._10._28._2013.VisualizerResult;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceV20;
+import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
+import edu.pitt.apollo.types.v2_0.Authentication;
+import edu.pitt.apollo.types.v2_0.RunStatus;
+import edu.pitt.apollo.types.v2_0.RunStatusEnum;
+import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0.VisualizationOptions;
+import edu.pitt.apollo.types.v2_0.VisualizerConfiguration;
+import edu.pitt.apollo.types.v2_0.VisualizerResult;
+
 public class WSClient {
+
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
-		VisualizerServiceV131 service = new VisualizerServiceV131(new URL("http://warhol-fred.psc.edu:8091/gaia?wsdl"));
+		VisualizerServiceV20 service = new VisualizerServiceV20(new URL("http://warhol-fred.psc.edu:8091/gaia?wsdl"));
 		VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
 
                 VisualizerConfiguration  vizConfig = new VisualizerConfiguration();
