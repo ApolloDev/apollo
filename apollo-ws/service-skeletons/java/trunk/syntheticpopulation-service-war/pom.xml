@@ -50,7 +50,7 @@
 			</plugin>
 		</plugins>
 		<!-- Name of the generated WAR file -->
-		<finalName>syntheticpopulationservice131</finalName>
+		<finalName>syntheticpopulationservice20</finalName>
 	</build>
 
 	<profiles>
