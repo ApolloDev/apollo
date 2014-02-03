@@ -271,14 +271,6 @@
 
 						</annotation>
 					</element>
-					<element name="infectiousnessTemporalProfile"
-						type="tns:NumericParameterValue" maxOccurs="1" minOccurs="0">
-					</element>
-					<element name="probabilityNeverSymptomatic"
-						type="tns:ProbabilisticParameterValue" maxOccurs="1"
-						minOccurs="0">
-					</element>
-					<element name="probabilitySevereGivenSymptomatic" type="tns:ProbabilisticParameterValue" maxOccurs="1" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
