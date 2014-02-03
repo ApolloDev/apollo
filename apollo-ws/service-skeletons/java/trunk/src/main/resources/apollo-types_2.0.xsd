@@ -445,8 +445,9 @@
 	</complexType>
 
 	<simpleType name="IncitsUsaOrStateOrCountyCode">
-		<restriction base="positiveInteger">
-			<totalDigits value="5" fixed="true" />
+		<restriction base="token">
+			<minLength value="2"/>
+			<maxLength value="5"/>
 		</restriction>
 	</simpleType>
 
