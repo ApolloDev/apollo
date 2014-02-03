@@ -234,8 +234,8 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
-						maxOccurs="1" minOccurs="1">
+					<element name="pathogenTaxonID"
+						type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation source="none" />
 						</annotation>
@@ -243,8 +243,8 @@
 					<element name="hostTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 
-					<element name="infectiousPeriod" type="tns:NumericParameterValue"
-						maxOccurs="1" minOccurs="1">
+					<element name="infectiousPeriod"
+						type="tns:NumericParameterValue" maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation
 								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000016" />
@@ -252,8 +252,8 @@
 						</annotation>
 					</element>
 
-					<element name="latentPeriod" type="tns:NumericParameterValue"
-						maxOccurs="1" minOccurs="1">
+					<element name="latentPeriod"
+						type="tns:NumericParameterValue" maxOccurs="1" minOccurs="1">
 						<annotation>
 							<documentation
 								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000017" />
@@ -262,14 +262,23 @@
 					</element>
 
 
-					<element name="infectionAcquisition" type="tns:InfectionAcquisition"
-						maxOccurs="unbounded" minOccurs="1">
+					<element name="infectionAcquisition"
+						type="tns:InfectionAcquisition" maxOccurs="unbounded"
+						minOccurs="1">
 						<annotation>
 							<documentation
 								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000043" />
 
 						</annotation>
 					</element>
+					<element name="infectiousnessTemporalProfile"
+						type="tns:NumericParameterValue" maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="probabilityNeverSymptomatic"
+						type="tns:ProbabilisticParameterValue" maxOccurs="1"
+						minOccurs="0">
+					</element>
+					<element name="probabilitySevereGivenSymptomatic" type="tns:ProbabilisticParameterValue" maxOccurs="1" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
