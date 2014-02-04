@@ -50,7 +50,7 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="RunStatusEnum">
+	<simpleType name="MethodCallStatusEnum">
 		<restriction base="string">
 			<enumeration value="exiting" />
 			<enumeration value="held" />
@@ -65,10 +65,10 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="RunStatus">
+	<complexType name="MethodCallStatus">
 		<sequence>
-			<element name="status" type="tns:RunStatusEnum" />
-			<element name="message" type="string" />
+			<element name="status" type="tns:MethodCallStatusEnum" maxOccurs="1" minOccurs="1"/>
+			<element name="message" type="string" maxOccurs="1" minOccurs="1"/>
 		</sequence>
 	</complexType>
 
@@ -83,8 +83,8 @@
 
 	<complexType name="SupportedPopulationLocation">
 		<sequence>
-			<element name="populationLocation" type="token" />
 			<element name="populationLocationDescription" type="token" />
+			<element name="populationLocation" type="token" />
 		</sequence>
 	</complexType>
 
@@ -109,7 +109,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="VisualizerConfiguration">
+	<complexType name="RunVisualizationMessage">
 		<sequence>
 			<element name="visualizerIdentification" type="tns:SoftwareIdentification" />
 
@@ -524,7 +524,7 @@
 					<element name="genders" type="tns:Gender" maxOccurs="unbounded"
 						minOccurs="0">
 					</element>
-					<element name="infectionStates" type="tns:InfectionState"
+					<element name="diseaseOutcomes" type="tns:DiseaseOutcome"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
 				</sequence>
@@ -868,12 +868,6 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ServiceRegistrationResult">
-		<sequence>
-			<element name="actionSuccessful" type="boolean" />
-			<element name="message" type="string" />
-		</sequence>
-	</complexType>
 
 
 	<complexType name="DiscreteNonparametricProbabilityDistribution">
@@ -1942,4 +1936,52 @@
 			<element name="cutoff" type="double" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
+	<complexType name="GetLocationsSupportedBySimulatorResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="locations" type="tns:SupportedPopulationLocation"
+				maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	
+
+
+	<complexType name="GetPopulationAndEnvironmentCensusResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1"></element>
+			<element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+    <complexType name="GetConfigurationFileForSimulationResult">
+    	<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="configurationFile" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="configurationFileInHtmlFormat" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+    
+    <complexType name="AddLibraryItemResult">
+    	<sequence>
+    		<element name="methodCallStatus"
+    			type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="uuid" type="token" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="GetLibraryItemResult">
+    	<sequence>
+    		<element name="methodCallStatus"
+    			type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="curatedLibraryItemContainer" type="tns:CuratedLibraryItemContainer" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
 </schema>
