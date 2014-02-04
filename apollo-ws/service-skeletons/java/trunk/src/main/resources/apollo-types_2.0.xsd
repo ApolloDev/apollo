@@ -293,7 +293,7 @@
 					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
 						minOccurs="1"></element>
 					<element name="censusData"
-						type="tns:PopulationImmunityAndInfectionCensusData" maxOccurs="1"
+						type="tns:PopulationInfectionAndImmunityCensusData" maxOccurs="1"
 						minOccurs="1">
 					</element>
 				</sequence>
@@ -301,7 +301,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="PopulationImmunityAndInfectionCensusData">
+	<complexType name="PopulationInfectionAndImmunityCensusData">
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
@@ -310,10 +310,10 @@
 				maxOccurs="1" minOccurs="1">
 			</element>
 			<element name="censusDataCells"
-				type="tns:PopulationImmunityAndInfectionCensusDataCell" maxOccurs="unbounded"
+				type="tns:PopulationInfectionAndImmunityCensusDataCell" maxOccurs="unbounded"
 				minOccurs="1">
 			</element>
-			<element name="exceptionSubpopulations" type="tns:PopulationImmunityAndInfectionCensusData"
+			<element name="exceptionSubpopulations" type="tns:PopulationInfectionAndImmunityCensusData"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
@@ -533,7 +533,7 @@
 	</complexType>
 
 
-	<complexType name="PopulationImmunityAndInfectionCensusDataCell">
+	<complexType name="PopulationInfectionAndImmunityCensusDataCell">
 		<sequence>
 			<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
 				minOccurs="0">
@@ -1499,7 +1499,7 @@
 
 	<complexType name="CompartmentalModelPopulationAndEnvironmentCensus">
 		<sequence>
-			<element name="bioticEcosystemParts" type="tns:PopulationImmunityAndInfectionCensusData"
+			<element name="bioticEcosystemParts" type="tns:PopulationInfectionAndImmunityCensusData"
 				maxOccurs="unbounded" minOccurs="1" />
 			<element name="abioticEcosystemParts" type="tns:abioticEcosystemPartCensus"
 				maxOccurs="unbounded" minOccurs="1" />
