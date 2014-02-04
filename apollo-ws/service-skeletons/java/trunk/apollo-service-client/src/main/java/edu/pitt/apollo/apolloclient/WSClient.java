@@ -35,9 +35,10 @@ import edu.pitt.apollo.types.v2_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0.LocationDefinition;
 import edu.pitt.apollo.types.v2_0.NcbiTaxonId;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
-import edu.pitt.apollo.types.v2_0.PopulationImmunityAndInfectionCensusData;
 import edu.pitt.apollo.types.v2_0.PopulationImmunityAndInfectionCensusDataCell;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensus;
+import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusData;
+import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0.RunStatus;
@@ -67,18 +68,18 @@ public class WSClient {
         NumericParameterValue infectiousPeriod = new NumericParameterValue();
         infectiousPeriod.setUnitOfMeasure(TimeStepUnit.DAY.toString());
         infectiousPeriod.setValue(6.0);
-        infection.setInfectiousPeriod(infectiousPeriod);
+        infection.setInfectiousPeriodDuration(infectiousPeriod);
 
         NumericParameterValue latentPeriod = new NumericParameterValue();
         latentPeriod.setUnitOfMeasure(TimeStepUnit.DAY.toString());
         latentPeriod.setValue(2.0);
-        infection.setLatentPeriod(latentPeriod);
+        infection.setLatentPeriodDuration(latentPeriod);
 
         InfectionAcquisition ia = new InfectionAcquisition();
         
         ia.setPathogenTaxonID(pathId);
         ia.setSusceptibleHostTaxonID(hostId);
-        ia.setReproductionNumber(1.3);
+        ia.setBasicReproductionNumber(1.3);
 
         infection.getInfectionAcquisition().add(ia);
         return infection;
@@ -118,26 +119,26 @@ public class WSClient {
         pathId.setNcbiTaxonId(BigInteger.ZERO);
         census.setPathogen(pathId);
 
-        PopulationImmunityAndInfectionCensusData data = new PopulationImmunityAndInfectionCensusData();
+        PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
         data.setDescription("Allegheny County");
 
         LocationDefinition location = new LocationDefinition();
-        location.getLocationsIncluded().add(new BigInteger("42003"));
+        location.getLocationsIncluded().add("42003");
         data.setLocation(location);
 
-        PopulationImmunityAndInfectionCensusDataCell susceptibleCell = new PopulationImmunityAndInfectionCensusDataCell();
+        PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
         susceptibleCell.setInfectionState(InfectionState.SUSCEPTIBLE);
         susceptibleCell.setFractionInInfectionState(0.8);
 
-        PopulationImmunityAndInfectionCensusDataCell exposedCell = new PopulationImmunityAndInfectionCensusDataCell();
+        PopulationInfectionAndImmunityCensusDataCell exposedCell = new PopulationInfectionAndImmunityCensusDataCell();
         exposedCell.setInfectionState(InfectionState.EXPOSED);
         exposedCell.setFractionInInfectionState(0.0);
 
-        PopulationImmunityAndInfectionCensusDataCell infectiousCell = new PopulationImmunityAndInfectionCensusDataCell();
+        PopulationInfectionAndImmunityCensusDataCell infectiousCell = new PopulationInfectionAndImmunityCensusDataCell();
         infectiousCell.setInfectionState(InfectionState.INFECTIOUS);
         infectiousCell.setFractionInInfectionState(0.05);
 
-        PopulationImmunityAndInfectionCensusDataCell recoveredCell = new PopulationImmunityAndInfectionCensusDataCell();
+        PopulationInfectionAndImmunityCensusDataCell recoveredCell = new PopulationInfectionAndImmunityCensusDataCell();
         recoveredCell.setInfectionState(InfectionState.RECOVERED);
         recoveredCell.setFractionInInfectionState(0.15);
 
