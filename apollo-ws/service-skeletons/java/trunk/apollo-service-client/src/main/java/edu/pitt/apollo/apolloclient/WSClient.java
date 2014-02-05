@@ -32,20 +32,21 @@ import edu.pitt.apollo.types.v2_0.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0.InfectionState;
 import edu.pitt.apollo.types.v2_0.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_0.Location;
 import edu.pitt.apollo.types.v2_0.LocationDefinition;
+import edu.pitt.apollo.types.v2_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.NcbiTaxonId;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
-import edu.pitt.apollo.types.v2_0.PopulationImmunityAndInfectionCensusDataCell;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0.RunStatus;
-import edu.pitt.apollo.types.v2_0.RunStatusEnum;
 import edu.pitt.apollo.types.v2_0.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
+import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
 
 public class WSClient {
 
@@ -66,12 +67,12 @@ public class WSClient {
         infection.setHostTaxonID(hostId);
 
         NumericParameterValue infectiousPeriod = new NumericParameterValue();
-        infectiousPeriod.setUnitOfMeasure(TimeStepUnit.DAY.toString());
+        infectiousPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
         infectiousPeriod.setValue(6.0);
         infection.setInfectiousPeriodDuration(infectiousPeriod);
 
         NumericParameterValue latentPeriod = new NumericParameterValue();
-        latentPeriod.setUnitOfMeasure(TimeStepUnit.DAY.toString());
+        latentPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
         latentPeriod.setValue(2.0);
         infection.setLatentPeriodDuration(latentPeriod);
 
@@ -120,10 +121,9 @@ public class WSClient {
         census.setPathogen(pathId);
 
         PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
-        data.setDescription("Allegheny County");
 
-        LocationDefinition location = new LocationDefinition();
-        location.getLocationsIncluded().add("42003");
+        Location location = new Location();
+        location.setLocationCode("42003");
         data.setLocation(location);
 
         PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
@@ -208,8 +208,8 @@ public class WSClient {
         rasid.setRunId(runId);
         rasid.setSoftwareId(getSoftwareIdentification());
 
-        RunStatus rs = port.getRunStatus(rasid);
-        while (rs.getStatus() != RunStatusEnum.COMPLETED) {
+        MethodCallStatus rs = port.getRunStatus(rasid);
+        while (rs.getStatus() != MethodCallStatusEnum.COMPLETED) {
             System.out.println("Status is " + rs.getStatus());
             System.out.println("Message is " + rs.getMessage());
             System.out.println("\n");
