@@ -326,6 +326,14 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -335,14 +343,6 @@
                 </unionOf>
             </Class>
         </rdfs:range>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -871,15 +871,9 @@
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
@@ -889,6 +883,12 @@
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -915,12 +915,12 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -1250,6 +1250,11 @@
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
+        <apollo_sv:APOLLO_SV_0000040>simulation time step specification</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment>simulation time step value
+simulation time step unit
+simulation run length
+</rdfs:comment>
     </Class>
     
 
@@ -1566,7 +1571,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the infectiousness of infectious individuals in a population expressed in time step units, for example “6.1”</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The measurement datum for the duration of the parts of an infectious disease course during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious period duration</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1596,7 +1601,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval between the host&apos;s extended organism acquiring an infection as a part and the host bearing a contagiousness disposition in the curse of the same disease course within a population of hosts.</obo:IAO_0000115>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">latent period</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">latent period duration</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -2995,6 +3000,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">1. Apollo-SV does not distinguish between ‘vaccine efficacy’ and ‘vaccine effectiveness.’
+
+2. Apollo-SV also considers the use of ‘vaccine’ in both terms a misnomer.
+</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">a measurement datum that is about a vaccination efficacy and is the specified output of a vaccination efficacy study</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">a vaccination efficacy result from a vaccination efficacy study</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">measured vaccination efficacy</apollo_sv:APOLLO_SV_0000040>
@@ -3081,6 +3090,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">Two or more distinct populations that are part of the same biotic ecosystem.</obo:IAO_0000115>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">community</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3139,6 +3149,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <obo:IAO_0000115 xml:lang="en">Ecosystem is the sum of all biotic and abiotic entities in a geographical region. </obo:IAO_0000115>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ecosystem</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3196,8 +3207,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <rdfs:comment></rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The abiotic ecosystem is the sum total of all continuants in a geographical region that are not organisms, parts of organisms, or dependent continuants that inhere in organisms.</obo:IAO_0000115>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">abiotic ecosystem</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3226,7 +3239,6 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000115 xml:lang="en">A rule that is part of an infectious disease control strategy specification and specifies at which fraction of a population a control strategy is to be discontinued.</obo:IAO_0000115>
-        <obo:IAO_0000115 xml:lang="en">A rule that is part of specifies at which fraction of a population</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The fraction of a population that is targeted for treatment at which the control measure is discontinued.   The concept derives from the epidemiological notion of ‘herd immunity,’ which is a level of immunity in a population at which there are not enough susceptible individuals for a contagious disease to maintain the chain reaction.   Technically, it is when the effective reproduction rate &lt;= 1, which means that infectious individuals at most infect one person during the course of their illness.</obo:IAO_0000600>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control measure reacitve endpoint fraction</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -3274,6 +3286,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000115 xml:lang="en">The biotic ecosystem is the sum total of all organism populations in a particular geographical region.</obo:IAO_0000115>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">biotic ecosystem</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -3505,6 +3518,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <obo:IAO_0000115 xml:lang="en">An infection is the reproduction of a pathogen in (a part of) the tissue of a host organism from another species.</obo:IAO_0000115>
         <dc:creator xml:lang="en">M. Brochhausen</dc:creator>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infection</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">infection is reproduction of a pathogen inside some tissue of a host.  By associating infection with the classes latent period and infectious period, which are associated with specific pathogen species and host species, Apollo-SV defines infection further as reproduction of a particular pathogen species inside some tissue of a particular host species.</rdfs:comment>
     </Class>
     
 
@@ -3570,6 +3584,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;GO_0044409"/>
+        <rdfs:comment xml:lang="en">Apollo-SV defines infection acquisition rather than infection transmission, which is the direction of movement of a pathogen in current use.  The Apollo-SV conceptualization is simpler when accounting for infections acquired from contaminate things.
+The likelihood of acquisition is expressed by parameters such as the basic reproduction rate and transmission coefficient.   
+an infection is acquired from an infectious organism or a contaminated thing. 
+</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">The biological process of pathogen organism(s) entering (the body of) a host organism and reproducing using host resources that immediately precedes an infection involving the same host organism and pathogen as participants.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infection acquisition</apollo_sv:APOLLO_SV_0000040>
@@ -4072,7 +4090,9 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000090"/>
+        <obo:IAO_0000115 xml:lang="en">A treatment that consists of the administration of antigenic material  to stimulate an individual&apos;s immune system to develop adaptive immunity to a pathogen. </obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Vaccination</obo:IAO_0000119>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -4475,9 +4495,10 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
-        <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population disease survey.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population infection survey.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population infection and immunity census</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">population infection and immunity census as a census of the infection status (e.g., susceptible, infected, infectious and immune) of all individuals in some population.</rdfs:comment>
     </Class>
     
 
@@ -4596,8 +4617,9 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000163">
         <rdfs:label xml:lang="en">ecosystem census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
-        <rdfs:comment xml:lang="en">Essentially, a count of some type of thing (human being, school, vaccine vial, mosquito, etc.) in an ecosystem.  One issue is whether a purely population census is a subtype of ecosystem census, or whether an ecosystem census necessarily has as parts some census of some biotic ecosystem population AND some census of some abiotic ecosystem element.</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">Ecosystem census is a data set that has counts of biotic and abiotic entities in a geographical region.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">There is no requirement that every type of biotic and abiotic entity in a region is counted, i.e., a count of all people and schools in a geographic region is an ecosystem census</rdfs:comment>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">ecosystem census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -4675,6 +4697,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;IndependentContinuant"/>
+        <obo:IAO_0000600 xml:lang="en">A contaminated thing is an entity that contains a pathogen (either internal to itself or on its surface) that is not undergoing an infection.    </obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">An independent continuant that is the localization of a pathogen, but is not undergoing an infection.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">contaminated thing</apollo_sv:APOLLO_SV_0000040>
@@ -4893,6 +4916,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000174">
         <rdfs:label xml:lang="en">disease transmission model</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000064"/>
+        <obo:IAO_0000115 xml:lang="en">An algorithm that models the progress of a transmissible disease.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">disease transmission model</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5086,6 +5111,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">scenario date</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <obo:IAO_0000115 xml:lang="en">An information content entity that is a real date that corresponds to simulator time zero. </obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">scenario date</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5108,6 +5134,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">population treatment census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <obo:IAO_0000115 xml:lang="en">A census about the medical treatment of a population.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population treatment census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5118,6 +5145,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">population and environment census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <obo:IAO_0000115 xml:lang="en">A census that represents the biotic and abiotic elements of an ecosystem at simulator time zero.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">This census should exclude infection, immunity, treatment, or contamination.  </rdfs:comment>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population and environment census</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5169,7 +5198,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000192">
         <rdfs:label xml:lang="en">vaccination efficacy measured</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
-        <obo:IAO_0000115 xml:lang="en">A data item specifying the measured vaccination efficacy.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data item specifying a measured vaccination efficacy.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy measured</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5179,7 +5209,8 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000193">
         <rdfs:label xml:lang="en">vaccination efficacy inferred</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
-        <obo:IAO_0000115 xml:lang="en">A data item inferring the vaccination efficacy based on epidemiological data.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data item inferring a vaccination efficacy based on epidemiological data.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy inferred</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5189,7 +5220,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
     <Class rdf:about="&obo;APOLLO_SV_00000194">
         <rdfs:label xml:lang="en">individual treatment control strategy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000086"/>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infectious disease control strategy</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">individual disease control strategy</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5200,6 +5231,7 @@ While in many pieces of fiction the order in which the purely intentional entiti
         <rdfs:label xml:lang="en">target population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
         <obo:IAO_0000115 xml:lang="en">An organism population that is the target for a disease control strategy.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">target population</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5383,6 +5415,17 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000208 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000208">
+        <rdfs:label xml:lang="en">control strategy start time information</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">An information content entity that is about the start time of the implementation of a control strategy.</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">control strategy start time</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000209 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000209">
@@ -5407,6 +5450,83 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <obo:IAO_0000115 xml:lang="en">An infectious agent host who is NOT able to transmit the infection to another organism of the same species.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infected</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000210 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000210">
+        <rdfs:label xml:lang="en">apollo simulator message</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000179"/>
+        <obo:IAO_0000115 xml:lang="en">A simulator configuration for a simulator that is part of the Apollo system.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Apollo simulator message</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000211 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000211">
+        <rdfs:label xml:lang="en">transmission probability</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">The probability of the occurence of an infection acquisition from one infected organism to another when in contact.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">transmission probability</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000212 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000212">
+        <rdfs:label xml:lang="en">treatment administration capacity schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <apollo_sv:APOLLO_SV_0000040>treatment administration capacity schedule</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the availability of a particular drug over a specific temporal interval in a geographical region.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000213 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000213">
+        <rdfs:label xml:lang="en">treatment supply schedule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the availibility of a particular drug over a specific temporal interval in a geograpical region.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000214 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000214">
+        <rdfs:label xml:lang="en">vaccination efficacy for simulator configuration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that specifies the vaccination efficacy that is part of a simulator configuration.</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy for simulator configuration</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000215 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000215">
+        <rdfs:label xml:lang="en">probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that assigns a probability to each measurable subset of the possible outcomes of a random experiment, survey, or procedure of statistical inference. </obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Probability_distribution</obo:IAO_0000119>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">probability distribution</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000216 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000216">
+        <rdfs:label xml:lang="en">discrete probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000215"/>
+        <obo:IAO_0000115 xml:lang="en">a probability distribution over a discrete random variable</obo:IAO_0000115>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">discrete probability distribution</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -6712,6 +6832,9 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000115 xml:lang="en">A processual entity whose completion is hypothesized (by a healthcare provider) to alleviate the signs and symptoms associated with a disorder</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
+        <rdfs:comment xml:lang="en">Apollo-SV currently defines two subclasses of treatment.
+See vaccination and antiviral treatment.  
+</rdfs:comment>
         <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=35</obo:IAO_0000119>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">treatment</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -6844,6 +6967,7 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">A human social role borne by a human being being realized in behaviour which is considered socially appropriate for individuals of a specific sex in the context of a specific culture.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">gender</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Gender_role</obo:IAO_0000119>
     </Class>
     
@@ -7303,6 +7427,7 @@ Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">An architectural structure that bears some function.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">facility</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -8046,6 +8171,9 @@ Mathias Brochhausen</obo:IAO_0000117>
     <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
@@ -8067,9 +8195,6 @@ Mathias Brochhausen</obo:IAO_0000117>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
