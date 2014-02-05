@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v2_0/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ApolloService_v2.0"
-	targetNamespace="http://service.apollo.pitt.edu/apolloservice/v2_0/">
+	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v2_0/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="ApolloService_v2.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v2_0/">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v2_0/"
 			xmlns:apollo="http://types.apollo.pitt.edu/v2_0/">
-			<xsd:import schemaLocation="apollo-types_2.0.xsd" namespace="http://types.apollo.pitt.edu/v2_0/">
+			<xsd:import schemaLocation="apollo-types_2.0.xsd"
+				namespace="http://types.apollo.pitt.edu/v2_0/">
 			</xsd:import>
 			<xsd:element name="runSimulation">
 				<xsd:complexType>
@@ -22,6 +23,38 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="runVisualization">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runVisualizationMessage" type="apollo:RunVisualizationMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="runVisualizationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="visualizationResult" type="apollo:VisualizerResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="runSyntheticPopulationGeneration">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runSyntheticPopulationGenerationMessage"
+							type="apollo:RunSyntheticPopulationGenerationMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="runSyntheticPopulationGenerationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="syntheticPopulationGenerationResult"
+							type="apollo:SyntheticPopulationGenerationResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -34,7 +67,7 @@
 			<xsd:element name="getRunStatusResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
+						<xsd:element name="runStatus" type="apollo:MethodCallStatus"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -48,7 +81,7 @@
 			<xsd:element name="registerServiceResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="serviceRegistrationResult" type="apollo:ServiceRegistrationResult">
+						<xsd:element name="methodCallStatus" type="apollo:MethodCallStatus">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -63,7 +96,7 @@
 			<xsd:element name="unRegisterServiceResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="serviceRegistrationResult" type="apollo:ServiceRegistrationResult">
+						<xsd:element name="methodCallStatus" type="apollo:MethodCallStatus">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -83,118 +116,51 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="runVisualization">
+			<xsd:element name="runSimulations">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="visualizerConfiguration" type="apollo:VisualizerConfiguration"></xsd:element>
+						<xsd:element name="runSimulationsMessage" type="apollo:RunSimulationsMessage"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="runVisualizationResponse">
+			<xsd:element name="runSimulationsResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="visualizerResult"
-							type="apollo:VisualizerResult">
+						<xsd:element name="runSimulationsResult" type="apollo:RunSimulationsResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForSimulation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runAndSoftwareIdentification"
+							type="apollo:RunAndSoftwareIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getConfigurationFileForSimulationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getConfigurationFileForSimulationResult"
+							type="apollo:GetConfigurationFileForSimulationResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="batchRunSimulation">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="batchRunSimulationMessage"
-							type="apollo:BatchRunSimulationMessage"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="batchRunSimulationResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="batchRunSimulatorResult" type="apollo:BatchRunResult"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="generateSyntheticPopulation">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="agentLevelPopulationAndEnvironmentCensusDescription" type="apollo:AgentLevelPopulationAndEnvironmentCensusDescription"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="generateSyntheticPopulationResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="syntheticPopulationResult" type="apollo:SyntheticPopulationResult"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getConfigurationFileForRun">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="runAndSoftwareIdentification" type="apollo:RunAndSoftwareIdentification"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getConfigurationFileForRunResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="queryForDiseaseConfiguration">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="diseaseName"
-							type="xsd:token" maxOccurs="1" minOccurs="0">
-						</xsd:element>
-						<xsd:element name="infectiousPeriod"
-							type="xsd:double" maxOccurs="1" minOccurs="0">
-						</xsd:element>
-						<xsd:element name="latentPeriod"
-							type="xsd:double" maxOccurs="1" minOccurs="0">
-						</xsd:element>
-						<xsd:element name="reproductionNumber"
-							type="xsd:double" maxOccurs="1" minOccurs="0">
-						</xsd:element>
-						<xsd:element name="asymptomaticInfectionFraction"
-							type="xsd:double" maxOccurs="1" minOccurs="0">
-						</xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="queryForDiseaseConfigurationResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="diseases"
-							type="apollo:Infection" maxOccurs="unbounded"
-							minOccurs="0">
-						</xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getItemsReadyToBeIndexed">
-				<xsd:complexType>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getItemsReadyToBeIndexedResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="out" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+
 			<xsd:element name="getUuidsForLibraryItemsCreatedSinceDateTime">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="creationDateTime" type="xsd:dateTime" maxOccurs="1" minOccurs="1"></xsd:element>
+						<xsd:element name="creationDateTime" type="xsd:dateTime"
+							maxOccurs="1" minOccurs="1"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getUuidsForLibraryItemsCreatedSinceDateTimeResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="uuids" type="xsd:token" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+						<xsd:element name="getLibraryItemsResult" type="apollo:GetLibraryItemUuidsResult"
+							maxOccurs="1" minOccurs="1"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -208,21 +174,7 @@
 			<xsd:element name="getLibraryItemResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="curatedLibraryItemContainer" type="apollo:CuratedLibraryItemContainer"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getLibraryItemsGivenType">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="type" type="xsd:token"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getLibraryItemsGivenTypeResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="curatedLibraryItemContainer" type="xsd:string"></xsd:element>
+						<xsd:element name="getLibraryItemResult" type="apollo:GetLibraryItemResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -236,8 +188,8 @@
 			<xsd:element name="getUuidsForLibraryItemsGivenTypeResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="uuids" type="xsd:token"
-							maxOccurs="unbounded" minOccurs="0">
+						<xsd:element name="getLibraryItemsResult" type="apollo:GetLibraryItemUuidsResult"
+							maxOccurs="1" minOccurs="1">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -245,19 +197,18 @@
 			<xsd:element name="addLibraryItem">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="apolloIndexableItem"
-							type="apollo:ApolloIndexableItem">
+						<xsd:element name="authentication" type="apollo:Authentication">
 						</xsd:element>
-						<xsd:element name="itemDescription"
-							type="xsd:string">
+						<xsd:element name="apolloIndexableItem" type="apollo:ApolloIndexableItem">
 						</xsd:element>
-						<xsd:element name="itemSource"
-							type="xsd:string">
+						<xsd:element name="itemDescription" type="xsd:string">
+						</xsd:element>
+						<xsd:element name="itemSource" type="xsd:string">
 						</xsd:element>
 						<xsd:element name="itemType" type="xsd:token">
 						</xsd:element>
-						<xsd:element name="itemIndexingLabels"
-							type="xsd:token" maxOccurs="unbounded" minOccurs="0">
+						<xsd:element name="itemIndexingLabels" type="xsd:token"
+							maxOccurs="unbounded" minOccurs="0">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -265,24 +216,62 @@
 			<xsd:element name="addLibraryItemResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="uuid" type="xsd:token" maxOccurs="1" minOccurs="0"></xsd:element>
+						<xsd:element name="addLibraryItemResult" type="apollo:AddLibraryItemResult"
+							maxOccurs="1" minOccurs="1"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getPopulationAndEnvironmentCensus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="location" type="xsd:token"></xsd:element>
+						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification"></xsd:element>
+						<xsd:element name="location" type="apollo:LocationCode"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="getPopulationAndEnvironmentCensusResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="populationAndEnvironmentCensus" type="apollo:PopulationAndEnvironmentCensus"></xsd:element>
+						<xsd:element name="getPopulationAndEnvironmentCensusResult"
+							type="apollo:GetPopulationAndEnvironmentCensusResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="getLocationsSupportedBySimulator">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLocationsSupportedBySimulatorResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getLocationsSupportedBySimulatorResult"
+							type="apollo:GetLocationsSupportedBySimulatorResult" maxOccurs="1"
+							minOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="removeLibraryItem">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="authentication" type="apollo:Authentication">
+						</xsd:element>
+						<xsd:element name="uuid" type="xsd:token">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="removeLibraryItemResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="methodCallStatus" type="apollo:MethodCallStatus"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runSimulationRequest">
@@ -321,23 +310,25 @@
 	<wsdl:message name="runVisualizationResponse">
 		<wsdl:part name="parameters" element="tns:runVisualizationResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="batchRunSimulationRequest">
-		<wsdl:part name="parameters" element="tns:batchRunSimulation"></wsdl:part>
+	<wsdl:message name="runSimulationsRequest">
+		<wsdl:part name="parameters" element="tns:runSimulations"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="batchRunSimulationResponse">
-		<wsdl:part name="parameters" element="tns:batchRunSimulationResponse"></wsdl:part>
+	<wsdl:message name="runSimulationsResponse">
+		<wsdl:part name="parameters" element="tns:runSimulationsResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="generateSyntheticPopulationRequest">
-		<wsdl:part name="parameters" element="tns:generateSyntheticPopulation"></wsdl:part>
+	<wsdl:message name="runSyntheticPopulationGenerationRequest">
+		<wsdl:part name="parameters" element="tns:runSyntheticPopulationGeneration"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="generateSyntheticPopulationResponse">
-		<wsdl:part name="parameters" element="tns:generateSyntheticPopulationResponse"></wsdl:part>
+	<wsdl:message name="runSyntheticPopulationGenerationResponse">
+		<wsdl:part name="parameters"
+			element="tns:runSyntheticPopulationGenerationResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getConfigurationFileForRunRequest">
-		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
+	<wsdl:message name="getConfigurationFileForSimulationRequest">
+		<wsdl:part name="parameters" element="tns:getConfigurationFileForSimulation"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getConfigurationFileForRunResponse">
-		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
+	<wsdl:message name="getConfigurationFileForSimulationResponse">
+		<wsdl:part name="parameters"
+			element="tns:getConfigurationFileForSimulationResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="queryForDiseaseConfigurationRequest">
 		<wsdl:part name="parameters" element="tns:queryForDiseaseConfiguration"></wsdl:part>
@@ -352,16 +343,20 @@
 		<wsdl:part name="parameters" element="tns:getItemsReadyToBeIndexedResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTImeRequest">
-		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTIme"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getUuidsForLibraryItemsCreatedSinceDateTIme"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTImeResponse">
-		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTImeResponse"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getUuidsForLibraryItemsCreatedSinceDateTImeResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTimeRequest">
-		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTime"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getUuidsForLibraryItemsCreatedSinceDateTime"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getUuidsForLibraryItemsCreatedSinceDateTimeResponse">
-		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getLibraryItemRequest">
 		<wsdl:part name="parameters" element="tns:getLibraryItem"></wsdl:part>
@@ -379,7 +374,8 @@
 		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsGivenType"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getUuidsForLibraryItemsGivenTypeResponse">
-		<wsdl:part name="parameters" element="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="addLibraryItemRequest">
 		<wsdl:part name="parameters" element="tns:addLibraryItem"></wsdl:part>
@@ -391,74 +387,100 @@
 		<wsdl:part name="parameters" element="tns:getPopulationAndEnvironmentCensus"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getPopulationAndEnvironmentCensusResponse">
-		<wsdl:part name="parameters" element="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:part>
+		<wsdl:part name="parameters"
+			element="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocationsSupportedBySimulatorRequest">
+		<wsdl:part name="parameters" element="tns:getLocationsSupportedBySimulator"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocationsSupportedBySimulatorResponse">
+		<wsdl:part name="parameters"
+			element="tns:getLocationsSupportedBySimulatorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="removeLibraryItemRequest">
+		<wsdl:part name="parameters" element="tns:removeLibraryItem"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="removeLibraryItemResponse">
+		<wsdl:part name="parameters" element="tns:removeLibraryItemResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
 			<wsdl:output message="tns:runSimulationResponse" />
 		</wsdl:operation>
+		<wsdl:operation name="runSimulations">
+			<wsdl:input message="tns:runSimulationsRequest"></wsdl:input>
+			<wsdl:output message="tns:runSimulationsResponse"></wsdl:output>
+		</wsdl:operation>
 		<wsdl:operation name="runVisualization">
 			<wsdl:input message="tns:runVisualizationRequest"></wsdl:input>
 			<wsdl:output message="tns:runVisualizationResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="runSyntheticPopulationGeneration">
+			<wsdl:input message="tns:runSyntheticPopulationGenerationRequest"></wsdl:input>
+			<wsdl:output message="tns:runSyntheticPopulationGenerationResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="getRunStatus">
 			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="registerService">
-			<wsdl:input message="tns:registerServiceRequest"></wsdl:input>
-			<wsdl:output message="tns:registerServiceResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="unRegisterService">
-			<wsdl:input message="tns:unRegisterServiceRequest"></wsdl:input>
-			<wsdl:output message="tns:unRegisterServiceResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getRegisteredServices">
-			<wsdl:input message="tns:getRegisteredServicesRequest"></wsdl:input>
-			<wsdl:output message="tns:getRegisteredServicesResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="batchRunSimulation">
-			<wsdl:input message="tns:batchRunSimulationRequest"></wsdl:input>
-			<wsdl:output message="tns:batchRunSimulationResponse"></wsdl:output>
-		</wsdl:operation>
-
-		<wsdl:operation name="generateSyntheticPopulation">
-			<wsdl:input message="tns:generateSyntheticPopulationRequest"></wsdl:input>
-			<wsdl:output message="tns:generateSyntheticPopulationResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForRun">
-			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
-			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getUuidsForLibraryItemsCreatedSinceDateTime">
-			<wsdl:input message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeRequest"></wsdl:input>
-			<wsdl:output message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getLibraryItem">
-			<wsdl:input message="tns:getLibraryItemRequest"></wsdl:input>
-			<wsdl:output message="tns:getLibraryItemResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getUuidsForLibraryItemsGivenType">
-			<wsdl:input message="tns:getUuidsForLibraryItemsGivenTypeRequest"></wsdl:input>
-			<wsdl:output message="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="addLibraryItem">
-			<wsdl:input message="tns:addLibraryItemRequest"></wsdl:input>
-			<wsdl:output message="tns:addLibraryItemResponse"></wsdl:output>
+		<wsdl:operation name="getConfigurationFileForSimulation">
+			<wsdl:input message="tns:getConfigurationFileForSimulationRequest"></wsdl:input>
+			<wsdl:output message="tns:getConfigurationFileForSimulationResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="getPopulationAndEnvironmentCensus">
 			<wsdl:input message="tns:getPopulationAndEnvironmentCensusRequest"></wsdl:input>
 			<wsdl:output message="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="getLocationsSupportedBySimulator">
+			<wsdl:input message="tns:getLocationsSupportedBySimulatorRequest"></wsdl:input>
+			<wsdl:output message="tns:getLocationsSupportedBySimulatorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addLibraryItem">
+			<wsdl:input message="tns:addLibraryItemRequest"></wsdl:input>
+			<wsdl:output message="tns:addLibraryItemResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLibraryItem">
+			<wsdl:input message="tns:getLibraryItemRequest"></wsdl:input>
+			<wsdl:output message="tns:getLibraryItemResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="removeLibraryItem">
+			<wsdl:input message="tns:removeLibraryItemRequest"></wsdl:input>
+			<wsdl:output message="tns:removeLibraryItemResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getUuidsForLibraryItemsGivenType">
+			<wsdl:input message="tns:getUuidsForLibraryItemsGivenTypeRequest"></wsdl:input>
+			<wsdl:output message="tns:getUuidsForLibraryItemsGivenTypeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getUuidsForLibraryItemsCreatedSinceDateTime">
+			<wsdl:input message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeRequest"></wsdl:input>
+			<wsdl:output
+				message="tns:getUuidsForLibraryItemsCreatedSinceDateTimeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="registerService">
+			<wsdl:input message="tns:registerServiceRequest"></wsdl:input>
+			<wsdl:output message="tns:registerServiceResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRegisteredServices">
+			<wsdl:input message="tns:getRegisteredServicesRequest"></wsdl:input>
+			<wsdl:output message="tns:getRegisteredServicesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="unRegisterService">
+			<wsdl:input message="tns:unRegisterServiceRequest"></wsdl:input>
+			<wsdl:output message="tns:unRegisterServiceResponse"></wsdl:output>
+		</wsdl:operation>
+
+
+
+
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
 		type="tns:ApolloServiceEI">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
-		<wsdl:operation name="runSimulation">
+		<wsdl:operation name="runSimulations">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/runSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/runSimulations" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -516,9 +538,9 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="batchRunSimulation">
+		<wsdl:operation name="runSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/batchRunSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/runSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -526,9 +548,9 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="generateSyntheticPopulation">
+		<wsdl:operation name="runSyntheticPopulationGeneration">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/generateSyntheticPopulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/runSyntheticPopulationGeneration" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -536,9 +558,9 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForRun">
+		<wsdl:operation name="getConfigurationFileForSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getConfigurationFileForRun" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getConfigurationFileForSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -590,6 +612,26 @@
 		<wsdl:operation name="getPopulationAndEnvironmentCensus">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getPopulationAndEnvironmentCensus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLocationsSupportedBySimulator">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getLocationsSupportedBySimulator" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="removeLibraryItem">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/removeLibraryItem" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
