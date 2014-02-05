@@ -25,8 +25,8 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.syntheticpopulationservice.v2_0.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.types.v2_0.AgentLevelPopulationAndEnvironmentCensusDescription;
-import edu.pitt.apollo.types.v2_0.RunStatus;
+import edu.pitt.apollo.types.v2_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.types.v2_0.ServiceResult;
 
 
@@ -37,37 +37,28 @@ endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
 class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 
 	@Override
-	@WebResult(name = "runStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetRunStatusResponse")
-	public RunStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String runId) {
+	@WebResult(name = "serviceResult", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/")
+	@RequestWrapper(localName = "runSyntheticPopulationGeneration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v2_0.RunSyntheticPopulationGeneration")
+	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/runSyntheticPopulationGeneration")
+	@ResponseWrapper(localName = "runSyntheticPopulationGenerationResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v2_0.RunSyntheticPopulationGenerationResponse")
+	public List<ServiceResult> runSyntheticPopulationGeneration(
+			@WebParam(name = "runSyntheticPopulationGenerationMessage", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/") RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@WebResult(name = "serviceResult", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
-	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.Run")
-	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/run")
-	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.RunResponse")
-	public List<ServiceResult> run(
-			@WebParam(name = "syntheticPopulationConfiguration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") AgentLevelPopulationAndEnvironmentCensusDescription agentLevelPopulationAndEnvironmentCensusDescription) {
+	@WebResult(name = "runStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v2_0.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v2_0.GetRunStatusResponse")
+	public MethodCallStatus getRunStatus(
+			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/") String runId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	@WebResult(name = "configurationFile", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetConfigurationFileForRun")
-	@WebMethod
-	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", className = "edu.pitt.apollo.service.syntheticpopulationservice.GetConfigurationFileForRunResponse")
-	public String getConfigurationFileForRun(
-			@WebParam(name = "runIdentification", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/") String runIdentification) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
 
