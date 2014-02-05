@@ -383,7 +383,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="BatchRunSimulationMessage">
+	<complexType name="RunSimulationsMessage">
 		<sequence>
 			<element name="batchConfigurationFile" type="anyURI" />
 			<element name="acceptCachedResults" type="boolean" />
@@ -391,7 +391,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="BatchRunResult">
+	<complexType name="RunSimulationsResult">
 		<sequence>
 			<element name="completedFile" type="anyURI" />
 			<element name="runId" type="tns:RunIdentification" />
@@ -564,12 +564,9 @@
 
 	<complexType name="ControlStrategyTargetPopulationsAndPrioritization">
 		<sequence>
-			<element name="controlStrategyNamedPrioritizationScheme"
-				type="token" maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="controlStrategyTargetPopulationsAndPrioritization"
-				type="tns:TargetPriorityPopulation" maxOccurs="unbounded" minOccurs="0">
-			</element>
+			<choice><element name="controlStrategyTargetPopulationsAndPrioritization" type="tns:TargetPriorityPopulation" maxOccurs="unbounded" minOccurs="1">
+			</element><element name="controlStrategyNamedPrioritizationScheme" type="token" maxOccurs="1" minOccurs="1">
+			</element></choice>
 		</sequence>
 	</complexType>
 
@@ -660,7 +657,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="SyntheticPopulationResult">
+	<complexType name="SyntheticPopulationGenerationResult">
 		<sequence>
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource"
@@ -1630,6 +1627,16 @@
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+	
+	<complexType name="GetLibraryItemUuidsResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Uuids" type="token"
+				maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
 
 	<complexType name="Location">
 		<sequence>
@@ -1673,4 +1680,6 @@
 			</extension>
 		</complexContent>
 	</complexType>
+
+    <complexType name="RunSyntheticPopulationGenerationMessage"></complexType>
 </schema>
