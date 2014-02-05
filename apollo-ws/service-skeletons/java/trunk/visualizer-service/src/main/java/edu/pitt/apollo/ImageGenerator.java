@@ -15,7 +15,7 @@ import edu.pitt.apollo.container.IncidenceTimeSeriesContainer;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.utilities.DatabaseUtility;
 import edu.pitt.apollo.utilities.VisualizerChartUtility;
-import org.apache.commons.codec.digest.DigestUtils;
+
 
 /**
  *
