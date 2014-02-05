@@ -15,8 +15,6 @@
 
 package edu.pitt.apollo;
 
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -30,11 +28,9 @@ import edu.pitt.apollo.types.v2_0.GetLocationsSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0.RunSimulationsResult;
-import edu.pitt.apollo.types.v2_0.SupportedPopulationLocation;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 class SimulatorServiceImpl implements SimulatorServiceEI {
