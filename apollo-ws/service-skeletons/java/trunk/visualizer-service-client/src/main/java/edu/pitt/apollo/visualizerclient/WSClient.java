@@ -24,11 +24,11 @@ import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI;
 import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceV20;
 import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
 import edu.pitt.apollo.types.v2_0.Authentication;
-import edu.pitt.apollo.types.v2_0.RunStatus;
-import edu.pitt.apollo.types.v2_0.RunStatusEnum;
+import edu.pitt.apollo.types.v2_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.VisualizationOptions;
-import edu.pitt.apollo.types.v2_0.VisualizerConfiguration;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 public class WSClient {
@@ -37,7 +37,7 @@ public class WSClient {
 		VisualizerServiceV20 service = new VisualizerServiceV20(new URL("http://warhol-fred.psc.edu:8091/gaia?wsdl"));
 		VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
 
-                VisualizerConfiguration  vizConfig = new VisualizerConfiguration();
+                RunVisualizationMessage  vizConfig = new RunVisualizationMessage();
 //                vizConfig.
                 VisualizationOptions options = new VisualizationOptions();
                 options.setRunId("UPitt,PSC,CMU_FRED_2.0.1_259387");
@@ -62,13 +62,13 @@ public class WSClient {
                 
                 
                 
-                VisualizerResult result =  port.run(vizConfig);
+                VisualizerResult result =  port.runVisualization(vizConfig);
                 
                 String runId = result.getRunId();
                 
-                RunStatus status = port.getRunStatus(runId);
+                MethodCallStatus status = port.getRunStatus(runId);
                 
-                while (status.getStatus() != RunStatusEnum.COMPLETED) {
+                while (status.getStatus() != MethodCallStatusEnum.COMPLETED) {
                     System.out.println(status.getStatus() + "    " + status.getMessage());
                     System.out.println(result.getVisualizerOutputResource().get(0).getURL());
                     
