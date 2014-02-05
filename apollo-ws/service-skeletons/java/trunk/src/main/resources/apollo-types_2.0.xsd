@@ -1185,8 +1185,6 @@
 		<complexContent>
 			<extension base="tns:Census">
 				<sequence>
-					<element name="date" type="dateTime" maxOccurs="1"
-						minOccurs="0" />
 					<element name="populationSpecies" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 					<element name="treatment" type="tns:Treatment" maxOccurs="1"
@@ -1210,8 +1208,8 @@
 				<element name="contaminatedSource" type="token" maxOccurs="1"
 					minOccurs="1" />
 			</choice>
-			<element name="contaminationProbability" type="tns:Probability"
-				maxOccurs="1" minOccurs="1" />
+			<element name="contaminationProbability"
+				type="tns:ProbabilisticParameterValue" maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
 
@@ -1241,16 +1239,46 @@
 		<complexContent>
 			<extension base="tns:Census">
 				<sequence>
-					<element name="date" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
-					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
-						minOccurs="1" />
-					<element name="fractionsOfThingsContaminated" type="tns:FractionOfThingContaminated"
+					<element name="kindOfThing" type="tns:AbioticEcosystemEnum" maxOccurs="1" minOccurs="1"></element>
+					<element name="pathogen" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
+					<element name="censusData"
+						type="tns:ContaminatedThingCensusData" maxOccurs="1"
+						minOccurs="1" />
 				</sequence>
 
 			</extension>
 		</complexContent>
+	</complexType>
+
+	<complexType name="ContaminatedThingCensusData">
+		<complexContent>
+			<extension base="tns:CensusData">
+				<sequence>
+					<element name="fractionContaminated"
+						type="tns:Fraction" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="exceptionSublocations"
+						type="tns:ContaminatedThingCensusData" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+					<choice></choice>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ContaminatedThingCensusDataCell">
+		<sequence>
+			<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="gender" type="tns:Gender" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="fractionContaminated" type="tns:Fraction"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
 	</complexType>
 
 	<complexType name="abioticEcosystemPartCensus">
@@ -1272,7 +1300,7 @@
 						minOccurs="1" />
 					<element name="numberOfWorkplaces" type="integer"
 						maxOccurs="1" minOccurs="1" />
-					<element name="subEcosystemCensuses" type="tns:PopulationAndEnvironmentCensus"
+					<element name="subLocationCensuses" type="tns:PopulationAndEnvironmentCensus"
 						maxOccurs="unbounded" minOccurs="0" />
 				</sequence>
 			</extension>
@@ -1619,10 +1647,8 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
 					<element name="date" type="dateTime" maxOccurs="1"
-						minOccurs="1"></element>
+						minOccurs="0"></element>
 					<element name="location" type="tns:Location" maxOccurs="1"
 						minOccurs="1"></element>
 				</sequence>
@@ -1634,10 +1660,15 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1"></element>
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1"></element>
+					<element name="description" type="string"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="location" type="tns:Location"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="date" type="dateTime" maxOccurs="1"
+						minOccurs="1">
+					</element>
 				</sequence>
 			</extension>
 		</complexContent>
