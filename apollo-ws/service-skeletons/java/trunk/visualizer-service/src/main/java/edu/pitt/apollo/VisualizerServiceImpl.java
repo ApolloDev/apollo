@@ -29,23 +29,24 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI;
-import edu.pitt.apollo.types.v2_0.RunStatus;
-import edu.pitt.apollo.types.v2_0.RunStatusEnum;
+import edu.pitt.apollo.types.v2_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
-import edu.pitt.apollo.types.v2_0.VisualizerConfiguration;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
+	
 	@Override
-	@WebResult(name = "visualizerResult", targetNamespace = "")
-	@RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.Run")
-	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/run")
-	@ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.RunResponse")
-	public VisualizerResult run(
-			@WebParam(name = "visualizerConfiguration", targetNamespace = "") VisualizerConfiguration visualizerConfiguration) {
-		String runIdString = visualizerConfiguration.getVisualizationOptions()
+	@WebResult(name = "visualizationResult", targetNamespace = "")
+	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice.v2_0.RunVisualization")
+	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/runVisualization")
+	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice.v2_0.RunVisualizationResponse")
+	public VisualizerResult runVisualization(
+			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
+		String runIdString = runVisualizationMessage.getVisualizationOptions()
 				.getRunId();
 		List<String> runIds;
 		Map<String, String> runIdSeriesLabel = new HashMap<String, String>();
@@ -118,7 +119,7 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 		// System.out.println("run ids 0: " + runIds.get(0));
 
 		VisualizerResult result = new VisualizerResult();
-		result.setRunId(visualizerConfiguration.getVisualizationOptions()
+		result.setRunId(runVisualizationMessage.getVisualizationOptions()
 				.getRunId()); // use the same runId as in the request
 
 		ImageGenerator ig = null;
@@ -144,24 +145,13 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 	}
 
 	@Override
-	@WebResult(name = "configurationFile", targetNamespace = "")
-	@RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/getConfigurationFileForRun")
-	@ResponseWrapper(localName = "getConfigurationFileForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetConfigurationFileForRunResponse")
-	public String getConfigurationFileForRun(
-			@WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatus")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice.v2_0.GetRunStatus")
 	@WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice._10._28._2013.GetRunStatusResponse")
-	public RunStatus getRunStatus(
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", className = "edu.pitt.apollo.service.visualizerservice.v2_0.GetRunStatusResponse")
+	public MethodCallStatus getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "") String runId) {
-		RunStatus rs = new RunStatus();
+		MethodCallStatus rs = new MethodCallStatus();
 
 		String runIdString = runId;
 		List<String> runIds;
@@ -225,7 +215,7 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 		File finishedFile = new File(finishedFilePath);
 		if (finishedFile.exists()) {
 			rs.setMessage("Run with ID " + runId + " is completed");
-			rs.setStatus(RunStatusEnum.COMPLETED);
+			rs.setStatus(MethodCallStatusEnum.COMPLETED);
 		} else {
 			// check started file
 			String startedFilePath = runDirectory + File.separator
@@ -233,13 +223,13 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 			File startedFile = new File(startedFilePath);
 			if (startedFile.exists()) {
 				rs.setMessage("Still running with run ID " + runId);
-				rs.setStatus(RunStatusEnum.RUNNING);
+				rs.setStatus(MethodCallStatusEnum.RUNNING);
 			} else {
 				System.out.println("finished file path: "
 						+ finishedFile.getAbsolutePath());
 				rs.setMessage("Run with ID " + runId
 						+ " has not been requested yet");
-				rs.setStatus(RunStatusEnum.FAILED);
+				rs.setStatus(MethodCallStatusEnum.FAILED);
 			}
 		}
 		return rs;
