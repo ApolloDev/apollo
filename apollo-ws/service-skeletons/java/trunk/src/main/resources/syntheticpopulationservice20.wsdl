@@ -16,16 +16,16 @@
 
 			<xsd:import schemaLocation="apollo-types_2.0.xsd" namespace="http://types.apollo.pitt.edu/v2_0/"></xsd:import>
 
-			<xsd:element name="run">
+			<xsd:element name="runSyntheticPopulationGeneration">
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="agentLevelPopulationAndEnvironmentCensusDescription"
-							type="apollo:AgentLevelPopulationAndEnvironmentCensusDescription"></xsd:element>
+						<xsd:element name="runSyntheticPopulationGenerationMessage"
+							type="apollo:RunSyntheticPopulationGenerationMessage"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="runResponse">
+			<xsd:element name="runSyntheticPopulationGenerationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
 
@@ -46,35 +46,19 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="runStatus" type="apollo:RunStatus"></xsd:element>
+						<xsd:element name="runStatus" type="apollo:MethodCallStatus"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getConfigurationFileForRun">
-				<xsd:complexType>
-					<xsd:sequence>
-
-						<xsd:element name="runIdentification" type="apollo:RunIdentification"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getConfigurationFileForRunResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-
-						<xsd:element name="configurationFile" type="xsd:string"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 
 
-	<wsdl:message name="runRequest">
-		<wsdl:part name="parameters" element="tns:run"></wsdl:part>
+	<wsdl:message name="runSyntheticPopulationGenerationRequest">
+		<wsdl:part name="parameters" element="tns:runSyntheticPopulationGeneration"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="runResponse">
-		<wsdl:part name="parameters" element="tns:runResponse"></wsdl:part>
+	<wsdl:message name="runSyntheticPopulationGenerationResponse">
+		<wsdl:part name="parameters" element="tns:runSyntheticPopulationGenerationResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getRunStatusRequest">
 		<wsdl:part name="parameters" element="tns:getRunStatus"></wsdl:part>
@@ -82,34 +66,24 @@
 	<wsdl:message name="getRunStatusResponse">
 		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getConfigurationFileForRunRequest">
-		<wsdl:part name="parameters" element="tns:getConfigurationFileForRun"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getConfigurationFileForRunResponse">
-		<wsdl:part name="parameters" element="tns:getConfigurationFileForRunResponse"></wsdl:part>
-	</wsdl:message>
-	<wsdl:portType name="SyntheticPopulationServiceEI">		<wsdl:operation name="run">
-			<wsdl:input message="tns:runRequest"></wsdl:input>
-			<wsdl:output message="tns:runResponse"></wsdl:output>
+	<wsdl:portType name="SyntheticPopulationServiceEI">		<wsdl:operation name="runSyntheticPopulationGeneration">
+			<wsdl:input message="tns:runSyntheticPopulationGenerationRequest"></wsdl:input>
+			<wsdl:output message="tns:runSyntheticPopulationGenerationResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="getRunStatus">
 			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForRun">
-			<wsdl:input message="tns:getConfigurationFileForRunRequest"></wsdl:input>
-			<wsdl:output message="tns:getConfigurationFileForRunResponse"></wsdl:output>
-		</wsdl:operation>
+		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="SyntheticPopulationServiceBinding"
 		type="tns:SyntheticPopulationServiceEI">
 
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
-		<wsdl:operation name="run">
+		<wsdl:operation name="runSyntheticPopulationGeneration">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/run" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/runSyntheticPopulationGeneration" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -132,19 +106,7 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForRun">
 
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/getConfigurationFileForRun" />
-			<wsdl:input>
-
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
 	</wsdl:binding>
 
 	<wsdl:service name="SyntheticPopulationService_v2.0">
