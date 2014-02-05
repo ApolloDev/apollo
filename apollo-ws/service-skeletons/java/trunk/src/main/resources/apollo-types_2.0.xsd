@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0/"
 	xmlns:tns="http://types.apollo.pitt.edu/v2_0/" elementFormDefault="qualified">
-
-
-
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
@@ -44,6 +40,9 @@
 			<enumeration value="month" />
 			<enumeration value="day" />
 			<enumeration value="hour" />
+
+
+
 			<enumeration value="minute" />
 			<enumeration value="second" />
 			<enumeration value="millisecond" />
@@ -67,11 +66,12 @@
 
 	<complexType name="MethodCallStatus">
 		<sequence>
-			<element name="status" type="tns:MethodCallStatusEnum" maxOccurs="1" minOccurs="1"/>
-			<element name="message" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="status" type="tns:MethodCallStatusEnum"
+				maxOccurs="1" minOccurs="1" />
+			<element name="message" type="string" maxOccurs="1"
+				minOccurs="1" />
 		</sequence>
 	</complexType>
-
 
 	<simpleType name="Gender">
 		<restriction base="string">
@@ -92,9 +92,6 @@
 		<sequence>
 			<element name="requesterId" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/asv/ASV_00000006" />
-				</annotation>
 			</element>
 			<element name="requesterPassword" type="token" maxOccurs="1"
 				minOccurs="1" />
@@ -112,7 +109,6 @@
 	<complexType name="RunVisualizationMessage">
 		<sequence>
 			<element name="visualizerIdentification" type="tns:SoftwareIdentification" />
-
 			<element name="authentication" type="tns:Authentication" />
 			<element name="visualizationOptions" type="tns:VisualizationOptions" />
 		</sequence>
@@ -143,23 +139,12 @@
 		<sequence>
 			<element name="timeStepUnit" type="tns:TimeStepUnit"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000014" />
-				</annotation>
 			</element>
-
 			<element name="timeStepValue" maxOccurs="1" minOccurs="1"
 				type="tns:PositiveDouble">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000012" />
-				</annotation>
 			</element>
-
 			<element name="runLength" type="positiveInteger" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000015" />
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
@@ -170,23 +155,12 @@
 				<sequence>
 					<element name="individualTreatment" type="tns:Treatment"
 						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-						</annotation>
 					</element>
 					<element name="supplySchedule" type="nonNegativeInteger"
 						maxOccurs="unbounded" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000051" />
-						</annotation>
 					</element>
 					<element name="administrationCapacity" type="nonNegativeInteger"
 						maxOccurs="unbounded" minOccurs="1">
-						<annotation>
-							<documentation
-								source="http://purl.obolibrary.org/obo/APOLLO_SV_00000052" />
-						</annotation>
 					</element>
 					<element name="targetPopulationsAndPrioritizations"
 						type="tns:ControlStrategyTargetPopulationsAndPrioritization"
@@ -196,13 +170,10 @@
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="Vaccination">
 		<complexContent>
 			<extension base="tns:Treatment">
 				<sequence>
-
 					<element name="vaccine" type="tns:Vaccine" maxOccurs="1"
 						minOccurs="1" />
 					<element name="vaccinationEfficacies" type="tns:VaccinationEfficacy"
@@ -212,23 +183,17 @@
 		</complexContent>
 	</complexType>
 
-
 	<complexType name="RingIndividualTreatmentControlStrategy">
 		<complexContent>
 			<extension base="tns:IndividualTreatmentControlStrategy">
 				<sequence>
 					<element name="ringDiameterInMeters" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
 					</element>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
-
 
 	<complexType name="Infection">
 		<complexContent>
@@ -256,21 +221,16 @@
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="Contamination">
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
 					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="contaminatedPeriod" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="contaminationAcquisition" type="tns:ContaminationAcquisition"
 						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
@@ -278,16 +238,10 @@
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="PopulationInfectionAndImmunityCensus">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:Census">
 				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
-					<element name="date" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
 					<element name="populationSpecies" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
@@ -302,41 +256,37 @@
 	</complexType>
 
 	<complexType name="PopulationInfectionAndImmunityCensusData">
-		<sequence>
-			<element name="description" type="string" maxOccurs="1"
-				minOccurs="1" />
-
-			<element name="location" type="tns:LocationDefinition"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="censusDataCells"
-				type="tns:PopulationInfectionAndImmunityCensusDataCell" maxOccurs="unbounded"
-				minOccurs="1">
-			</element>
-			<element name="exceptionSubpopulations" type="tns:PopulationInfectionAndImmunityCensusData"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-		</sequence>
+		<complexContent>
+			<extension base="tns:CensusData">
+				<sequence>
+					<element name="censusDataCells"
+						type="tns:PopulationInfectionAndImmunityCensusDataCell" maxOccurs="unbounded"
+						minOccurs="1">
+					</element>
+					<element name="exceptionSubpopulations"
+						type="tns:PopulationInfectionAndImmunityCensusData" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="PopulationTreatmentCensusData">
-		<sequence>
-			<element name="description" type="string" maxOccurs="1"
-				minOccurs="1" />
+		<complexContent>
+			<extension base="tns:CensusData">
+				<sequence>
 
-			<element name="location" type="tns:LocationDefinition"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="treatmentCensusDataCells" type="tns:PopulationTreatmentCensusDataCell"
-				maxOccurs="unbounded" minOccurs="1">
-			</element>
-			<element name="exceptionSubpopulations" type="tns:PopulationTreatmentCensusData"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-		</sequence>
+					<element name="treatmentCensusDataCells" type="tns:PopulationTreatmentCensusDataCell"
+						maxOccurs="unbounded" minOccurs="1">
+					</element>
+					<element name="exceptionSubpopulations" type="tns:PopulationTreatmentCensusData"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
-
-
 
 	<complexType name="UrlOutputResource">
 		<sequence>
@@ -352,59 +302,27 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="AgentLevelPopulationAndEnvironmentCensusDescription">
-		<sequence>
-			<element name="serviceIdentification" type="tns:SoftwareIdentification" />
-
-			<element name="authentication" type="tns:Authentication" />
-			<element name="requesterIdentification" type="tns:RequesterIdentification" />
-
-
-			<element name="countiesOfInterest" type="tns:IncitsUsaOrStateOrCountyCode"
-				maxOccurs="unbounded" minOccurs="1" />
-
-			<element name="householdCharacteristics" type="token"
-				maxOccurs="4" minOccurs="1" />
-		</sequence>
-	</complexType>
 
 	<complexType name="SoftwareIdentification">
 		<sequence>
 			<element name="softwareDeveloper" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000105" />
-
-				</annotation>
 			</element>
 			<element name="softwareName" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000109" />
-
-				</annotation>
 			</element>
 			<element name="softwareVersion" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000108" />
-
-				</annotation>
 			</element>
 			<element name="softwareType" type="tns:ApolloSoftwareType"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
 
-	<simpleType name="IncitsUsaOrStateOrCountyCode">
+	<simpleType name="LocationCode">
 		<restriction base="token">
-			<minLength value="2" />
-			<maxLength value="5" />
+			<pattern value="[A-Z0-9]{2,15}"></pattern>
 		</restriction>
 	</simpleType>
 
@@ -420,24 +338,14 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="vaccineIdentifier" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000117" />
-
-				</annotation>
 			</element>
 			<element name="valence" type="positiveInteger" maxOccurs="unbounded"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000137" />
-
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
-
 
 	<complexType name="AgeGroupEfficacy">
 		<sequence>
@@ -450,7 +358,6 @@
 		<sequence>
 			<element name="infants" type="boolean" maxOccurs="1"
 				minOccurs="0" />
-
 			<element name="preschoolers" type="boolean" maxOccurs="1"
 				minOccurs="0" />
 			<element name="schoolAgeChildren" type="boolean" maxOccurs="1"
@@ -463,7 +370,6 @@
 				minOccurs="0" />
 			<element name="pregnantAdultsRestricted" type="boolean"
 				maxOccurs="1" minOccurs="0" />
-
 		</sequence>
 	</complexType>
 
@@ -473,10 +379,6 @@
 				minOccurs="1" />
 			<element name="antiviralId" type="token" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="http://purl.obolibrary.org/obo/APOLLO_SV_00000122" />
-
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
@@ -496,8 +398,6 @@
 		</sequence>
 	</complexType>
 
-
-
 	<complexType name="AntiviralTreatment">
 		<complexContent>
 			<extension base="tns:Treatment">
@@ -510,10 +410,7 @@
 		</complexContent>
 	</complexType>
 
-
 	<complexType name="ArrayDimensionsDefinition" />
-
-
 	<complexType name="PopulationStrataDefinition">
 		<complexContent>
 			<extension base="tns:ArrayDimensionsDefinition">
@@ -532,69 +429,37 @@
 		</complexContent>
 	</complexType>
 
-
 	<complexType name="PopulationInfectionAndImmunityCensusDataCell">
 		<sequence>
 			<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
 				minOccurs="0">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="gender" type="tns:Gender" maxOccurs="1"
 				minOccurs="0">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
-
 			<element name="infectionState" type="tns:InfectionState"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
-
 			<element name="fractionInInfectionState" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
 
 	<complexType name="PopulationTreatmentCensusDataCell">
-		<complexContent>
-			<extension base="tns:ArrayDimensionsDefinition">
-				<sequence>
-					<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
-						minOccurs="0">
-						<annotation>
-							<documentation source="none" />
+		<sequence>
+			<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="gender" type="tns:Gender" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="treatmentState" type="tns:TreatmentState"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="fractionInInfectionState" type="tns:Fraction"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
 
-						</annotation>
-					</element>
-					<element name="gender" type="tns:Gender" maxOccurs="1"
-						minOccurs="0">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
-					</element>
-
-					<element name="treatmentState" type="tns:TreatmentState"
-						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
-					</element>
-
-					<element name="fractionInInfectionState" type="tns:Fraction"
-						maxOccurs="1" minOccurs="1" />
-				</sequence>
-			</extension>
-		</complexContent>
 	</complexType>
 
 	<complexType name="PopulationStrataArray">
@@ -603,11 +468,8 @@
 				maxOccurs="1" minOccurs="1" />
 			<element name="values" type="tns:Fraction" maxOccurs="unbounded"
 				minOccurs="1" />
-
 		</sequence>
 	</complexType>
-
-
 
 	<complexType name="TemporalArrayDimensionsDefinition">
 		<complexContent>
@@ -619,7 +481,6 @@
 			</extension>
 		</complexContent>
 	</complexType>
-
 
 	<simpleType name="InfectionState">
 		<restriction base="string">
@@ -675,7 +536,6 @@
 		</complexContent>
 	</complexType>
 
-
 	<complexType name="SimulatorTimeRange">
 		<sequence>
 			<element name="lowerBound" type="nonNegativeInteger" />
@@ -683,35 +543,20 @@
 		</sequence>
 	</complexType>
 
-
-
 	<complexType name="TargetPriorityPopulation">
 		<sequence>
 			<element name="label" type="token" maxOccurs="1" minOccurs="1" />
 			<element name="fractionOfTargetPopulationToPrioritize" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="priority" type="nonNegativeInteger" maxOccurs="1"
 				minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<choice>
 				<element name="targetPopulationDefinition" type="tns:PopulationStrataDefinition"
 					maxOccurs="1" minOccurs="1">
-					<annotation>
-						<documentation source="none" />
-
-					</annotation>
 				</element>
 				<element name="targetPopulationDefinitionEnum" type="tns:TargetPopulationDefinitionEnum"
 					maxOccurs="1" minOccurs="1">
-					<annotation>
-						<documentation source="none" />
-
-					</annotation>
 				</element>
 			</choice>
 		</sequence>
@@ -721,19 +566,12 @@
 		<sequence>
 			<element name="controlStrategyNamedPrioritizationScheme"
 				type="token" maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-				</annotation>
 			</element>
 			<element name="controlStrategyTargetPopulationsAndPrioritization"
 				type="tns:TargetPriorityPopulation" maxOccurs="unbounded" minOccurs="0">
-				<annotation>
-					<documentation source="none" />
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
-
 
 	<complexType name="InfectiousDiseaseControlStrategy">
 		<complexContent>
@@ -741,16 +579,12 @@
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1" />
-
 					<element name="controlStrategyStartTime" type="tns:ControlStrategyStartTime"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="controlStrategyResponseDelay" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="controlStrategyCompliance" type="tns:ProbabilisticParameterValue"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="controlStrategyReactiveEndPointFraction"
 						type="tns:Fraction" maxOccurs="1" minOccurs="0" />
 				</sequence>
@@ -758,50 +592,28 @@
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="ReactiveTriggersDefinition">
 		<sequence>
 			<element name="reactiveControlStrategyTest" type="token"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="reactiveControlStrategyThreshold" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="ascertainmentFraction" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="ascertainmentDelay" type="nonNegativeInteger"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 		</sequence>
 	</complexType>
-
 
 	<simpleType name="TargetPopulationDefinitionEnum">
 		<restriction base="token">
 			<enumeration value="household_member_of_infant" />
 		</restriction>
-
 	</simpleType>
-
-
 
 	<complexType name="SchoolClosureControlStrategy">
 		<complexContent>
@@ -809,23 +621,14 @@
 				<sequence>
 					<element name="schoolClosureDuration" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
 					</element>
 					<element name="schoolClosureTargetFacilities" type="tns:SchoolClosureTargetFacilities"
 						maxOccurs="1" minOccurs="1">
-						<annotation>
-							<documentation source="none" />
-
-						</annotation>
 					</element>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
-
 
 	<simpleType name="ApolloSoftwareType">
 		<restriction base="string">
@@ -842,7 +645,6 @@
 		</sequence>
 	</complexType>
 
-
 	<simpleType name="SchoolClosureTargetFacilities">
 		<restriction base="token">
 			<enumeration value="all" />
@@ -855,7 +657,6 @@
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="visualizerOutputResource" type="tns:UrlOutputResource"
 				maxOccurs="unbounded" minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
@@ -864,11 +665,8 @@
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource"
 				maxOccurs="unbounded" minOccurs="1" />
-
 		</sequence>
 	</complexType>
-
-
 
 	<complexType name="DiscreteNonparametricProbabilityDistribution">
 		<complexContent>
@@ -876,26 +674,19 @@
 				<sequence>
 					<element name="probabilityValuePairs" type="tns:ProbabilityValuePair"
 						maxOccurs="unbounded" minOccurs="1" />
-
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
-
-
-
 	<complexType name="TreatmentContraindication">
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="0" />
-
 			<element name="simulatorReferencablePopulation" type="tns:PopulationStrataDefinition"
 				maxOccurs="1" minOccurs="0" />
-
 			<element name="fractionOfSimulatorReferencablePopulation"
 				type="tns:Fraction" maxOccurs="1" minOccurs="0" />
-
 			<element name="pregnancy" type="boolean" maxOccurs="1"
 				minOccurs="0" />
 		</sequence>
@@ -905,7 +696,6 @@
 		<sequence>
 			<element name="axisDefinitions" type="tns:ArrayDimensionsDefinition"
 				maxOccurs="1" minOccurs="1" />
-
 			<choice>
 				<element name="pointProbabilities" type="tns:Probability"
 					maxOccurs="unbounded" minOccurs="1" />
@@ -915,54 +705,41 @@
 		</sequence>
 	</complexType>
 
-
 	<complexType name="NumericParameterValue">
 		<sequence>
 			<element name="unitOfMeasure" type="tns:UnitOfMeasure"
 				maxOccurs="1" minOccurs="0" />
-
 			<choice>
 				<element name="value" type="double" maxOccurs="1" minOccurs="1" />
-
 				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
-
 				<element name="conditionalProbabilityDistribution" type="tns:ConditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
-
 			</choice>
 		</sequence>
 	</complexType>
 
 	<complexType name="ProbabilisticParameterValue">
 		<sequence>
-
-
 			<choice>
 				<element name="value" type="tns:Probability" maxOccurs="1"
 					minOccurs="1" />
-
 				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
-
 				<element name="conditionalProbabilityDistribution" type="tns:ConditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
-
 			</choice>
 		</sequence>
 	</complexType>
-
 
 	<complexType name="TreatmentEfficacy">
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="treatment" type="tns:Treatment" maxOccurs="1"
 				minOccurs="1" />
 		</sequence>
 	</complexType>
-
 
 	<complexType name="Treatment">
 		<complexContent>
@@ -970,21 +747,16 @@
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1" />
-
 					<element name="speciesOfTreatedOrganisms" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="numDosesInTreatmentCourse" type="positiveInteger"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="treatmentContraindications" type="tns:TreatmentContraindication"
 						maxOccurs="unbounded" minOccurs="0" />
-
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
-
 
 	<complexType name="BayesianNetworkDistribution">
 		<complexContent>
@@ -992,10 +764,8 @@
 				<sequence>
 					<element name="networkStructure" type="tns:BayesianNetworkStructureType"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="CPTs" type="tns:ConditionalProbabilityTable"
 						maxOccurs="unbounded" minOccurs="0" />
-
 					<element name="PPFs" type="tns:PrototypicalProbabilityFunction"
 						maxOccurs="unbounded" minOccurs="0" />
 					<element name="GeNIE_XML" type="tns:GeNIE_XMLType"
@@ -1006,14 +776,12 @@
 	</complexType>
 
 	<complexType name="ControlStrategyStartTime" />
-
 	<complexType name="FixedStartTime">
 		<complexContent>
 			<extension base="tns:ControlStrategyStartTime">
 				<sequence>
 					<element name="startTimeRelativeToScenarioDate" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="stopTimeRelativeToScenarioDate" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
@@ -1032,19 +800,13 @@
 		</complexContent>
 	</complexType>
 
-
-
-
 	<complexType name="TimeDefinition">
 		<sequence>
 			<element name="simulatorTime" type="int" maxOccurs="1"
 				minOccurs="1" />
 			<element name="date" type="date" maxOccurs="1" minOccurs="0" />
-
 		</sequence>
 	</complexType>
-
-
 
 	<simpleType name="VaccinationPreventableOutcome">
 		<restriction base="string">
@@ -1054,21 +816,16 @@
 		</restriction>
 	</simpleType>
 
-
 	<complexType name="VaccinationEfficacy">
 		<complexContent>
 			<extension base="tns:TreatmentEfficacy">
 				<sequence>
-
 					<element name="vaccineIdentifier" type="token" maxOccurs="1"
 						minOccurs="1" />
-
 					<element name="strainIdentifier" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="hostIdentifier" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="forVaccinationPreventableOutcome" type="tns:VaccinationPreventableOutcome"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
@@ -1087,19 +844,14 @@
 		</complexContent>
 	</complexType>
 
-
-
-
 	<complexType name="Ecosystem">
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
 			<element name="bioticEcosystem" type="tns:BioticEcosystem"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="abioticEcosystem" type="tns:AbioticEcosystem"
 				maxOccurs="1" minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
@@ -1114,35 +866,22 @@
 		<sequence>
 			<element name="homes" type="string" maxOccurs="unbounded"
 				minOccurs="0" />
-
 			<element name="schools" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-
 			<element name="workplaces" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-
 		</sequence>
 	</complexType>
 
 	<complexType name="BayesianNetworkStructureType" />
-
-
 	<complexType name="TreatmentEfficacyValueType" />
-
 	<complexType name="VaccinationEfficacyValue" />
-
-
-
-
 	<complexType name="PrototypicalProbabilityFunction" />
-
 	<complexType name="GeNIE_XMLType">
 		<sequence>
 			<element name="theXML" type="string" maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
-
-
 
 	<complexType name="VaccinationEfficacyForSimulatorConfiguration">
 		<complexContent>
@@ -1150,14 +889,11 @@
 				<sequence>
 					<element name="averageVaccinationEfficacy" type="tns:Probability"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="vaccinationEfficacybyAgeRange" type="tns:ProbabilisticParameterValue"
 						maxOccurs="unbounded" minOccurs="0" />
-
 					<element name="vaccinationEfficaciesByTimeSinceMostRecentDose"
 						type="tns:VaccinationEfficacyByTimeSinceDose" maxOccurs="unbounded"
 						minOccurs="0" />
-
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1169,24 +905,18 @@
 				<sequence>
 					<element name="averageAntiviralTreatmentEfficacy" type="tns:Probability"
 						maxOccurs="1" minOccurs="1" />
-
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="TimeAxisCategoryLabels">
 		<sequence>
 			<element name="label" type="token" maxOccurs="1" minOccurs="1" />
-
 			<element name="simulatorTimeEarliest" type="nonNegativeInteger"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="simulatorTimeLatest" type="nonNegativeInteger"
 				maxOccurs="1" minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
@@ -1194,11 +924,10 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="locationsIncluded" type="tns:IncitsUsaOrStateOrCountyCode"
+			<element name="locationsIncluded" type="tns:LocationCode"
 				maxOccurs="unbounded" minOccurs="1" />
-			<element name="locationsExcluded" type="tns:IncitsUsaOrStateOrCountyCode"
+			<element name="locationsExcluded" type="tns:LocationCode"
 				maxOccurs="unbounded" minOccurs="0" />
-
 		</sequence>
 	</complexType>
 
@@ -1206,16 +935,12 @@
 		<sequence>
 			<element name="numberOfDosesAdministered" type="positiveInteger"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="timeIntervalLabelDefinitions" type="tns:TimeAxisCategoryLabels"
 				maxOccurs="unbounded" minOccurs="1" />
-
 			<element name="vaccinationEfficacyByTimeSinceMostRecentDose"
 				type="tns:Fraction" maxOccurs="unbounded" minOccurs="1" />
-
 		</sequence>
 	</complexType>
-
 
 	<complexType name="VaccinationEfficacyInferred">
 		<complexContent>
@@ -1223,7 +948,6 @@
 				<sequence>
 					<element name="inferredFromTheseStudies" type="tns:VaccinationEfficacyStudy"
 						maxOccurs="unbounded" minOccurs="1" />
-
 					<element name="vaccinationEfficacyModel" type="tns:BayesianNetworkDistribution"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
@@ -1235,22 +959,16 @@
 		<sequence>
 			<element name="itemDescription" type="string" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="itemSource" type="string" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="itemType" type="token" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="itemUuid" type="token" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="itemIndexingLabels" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-
 			<element name="itemCreationTime" type="dateTime" maxOccurs="1"
 				minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
@@ -1272,7 +990,6 @@
 		<sequence>
 			<element name="lambdaFunction" type="string" maxOccurs="1"
 				minOccurs="1" />
-
 			<choice>
 				<element name="textDescription" type="string" maxOccurs="1"
 					minOccurs="1" />
@@ -1281,19 +998,15 @@
 	</complexType>
 
 	<complexType name="SensitivityAnalysis" />
-
 	<complexType name="SensitivityAnalysisResult" />
-
 	<complexType name="DecisionModel">
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
 					<element name="decisionAlternatives" type="tns:DecisionAlternative"
 						maxOccurs="unbounded" minOccurs="1" />
-
 					<element name="simulatorConfiguration " type="tns:RunSimulationMessage"
 						maxOccurs="1" minOccurs="0" />
-
 					<element name="utilityFunction" type="tns:UtilityFunction"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
@@ -1307,10 +1020,8 @@
 				<sequence>
 					<element name="decisionModel" type="tns:DecisionModel"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="baseCaseResult " type="tns:BaseCaseResult"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="sensitivityAnalyses" type="tns:SensitivityAnalysis"
 						maxOccurs="unbounded" minOccurs="0" />
 				</sequence>
@@ -1319,12 +1030,10 @@
 	</complexType>
 
 	<complexType name="ExpectedUtility" />
-
 	<complexType name="BaseCaseResult">
 		<sequence>
 			<element name="decisionAlternatives" type="tns:DecisionAlternative"
 				maxOccurs="unbounded" minOccurs="1" />
-
 			<element name="expectedUtilities" type="double" maxOccurs="unbounded"
 				minOccurs="1" />
 		</sequence>
@@ -1347,18 +1056,14 @@
 				minOccurs="0" />
 			<element name="vaccinationPreventableOutcome" type="tns:VaccinationPreventableOutcome"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="vaccinationEfficacyMeasured" type="tns:VaccinationEfficacyMeasured"
 				maxOccurs="unbounded" minOccurs="1" />
-
 			<element name="dataSets" type="string" maxOccurs="unbounded"
 				minOccurs="1" />
-
 			<element name="references" type="string" maxOccurs="unbounded"
 				minOccurs="1" />
 		</sequence>
 	</complexType>
-
 
 	<complexType name="CuratedLibraryItemContainer">
 		<sequence>
@@ -1370,10 +1075,8 @@
 	</complexType>
 
 	<complexType name="ApolloIndexableItem" />
-
 	<simpleType name="PathogenTaxonID">
 		<restriction base="positiveInteger" />
-
 	</simpleType>
 
 	<simpleType name="DiseaseOutcome">
@@ -1400,7 +1103,6 @@
 				<sequence>
 					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="susceptibleHostTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 					<choice>
@@ -1424,42 +1126,21 @@
 		</complexContent>
 	</complexType>
 
-
-
 	<complexType name="RunSimulationMessage">
 		<sequence>
 			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="authentication" type="tns:Authentication"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
 			<element name="simulatorTimeSpecification" type="tns:SimulatorTimeSpecification"
 				maxOccurs="1" minOccurs="1">
-				<annotation>
-					<documentation source="none" />
-
-				</annotation>
 			</element>
-
-
-
-
 			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenario"
 				maxOccurs="1" minOccurs="1" />
-
 		</sequence>
 	</complexType>
-
-
 
 	<complexType name="InfectiousDiseaseScenario">
 		<complexContent>
@@ -1467,8 +1148,8 @@
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="0" />
-					<element name="location" type="tns:LocationDefinition"
-						maxOccurs="1" minOccurs="1" />
+					<element name="location" type="tns:Location" maxOccurs="1"
+						minOccurs="1" />
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="diseases" type="tns:InfectiousDisease"
@@ -1501,15 +1182,20 @@
 	</complexType>
 
 	<complexType name="PopulationTreatmentCensus">
-		<sequence>
-			<element name="date" type="dateTime" maxOccurs="1" minOccurs="0" />
-			<element name="populationSpecies" type="tns:NcbiTaxonId"
-				maxOccurs="1" minOccurs="1" />
-			<element name="treatment" type="tns:Treatment" maxOccurs="1"
-				minOccurs="1" />
-			<element name="treatmentCensusData" type="tns:PopulationTreatmentCensusData"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
+		<complexContent>
+			<extension base="tns:Census">
+				<sequence>
+					<element name="date" type="dateTime" maxOccurs="1"
+						minOccurs="0" />
+					<element name="populationSpecies" type="tns:NcbiTaxonId"
+						maxOccurs="1" minOccurs="1" />
+					<element name="treatment" type="tns:Treatment" maxOccurs="1"
+						minOccurs="1" />
+					<element name="treatmentCensusData" type="tns:PopulationTreatmentCensusData"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="ContaminationAcquisition">
@@ -1518,8 +1204,6 @@
 				maxOccurs="1" minOccurs="1" />
 			<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
-
-
 			<choice>
 				<element name="infectiousHostSource" type="tns:NcbiTaxonId"
 					maxOccurs="1" minOccurs="1" />
@@ -1531,30 +1215,16 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="Census"></complexType>
 
-
-	<complexType name="PopulationAndAbioticEcosystemCensusDescription">
-		<sequence>
-			<element name="populationCensusDescriptions" type="tns:PopulationCensusDescription"
-				maxOccurs="unbounded" minOccurs="1" />
-
-			<element name="abioticEcosystemElementCensusDescriptions"
-				type="tns:AbioticEcosystemElementCensusDescription" maxOccurs="unbounded"
-				minOccurs="1" />
-		</sequence>
-	</complexType>
 
 	<complexType name="PopulationCensusDescription">
 		<sequence>
 			<element name="populationSpecies" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
-
 			<element name="characteristics" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-
-			<element name="locations" type="tns:IncitsUsaOrStateOrCountyCode"
-				maxOccurs="unbounded" minOccurs="1" />
+			<element name="locations" type="tns:LocationCode" maxOccurs="unbounded"
+				minOccurs="1" />
 		</sequence>
 	</complexType>
 
@@ -1562,24 +1232,25 @@
 		<sequence>
 			<element name="abioticElementID" type="token" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="characteristics" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-
 		</sequence>
 	</complexType>
 
 	<complexType name="ContaminatedThingCensus">
-		<sequence>
-			<element name="date" type="dateTime" maxOccurs="1" minOccurs="1" />
-			<element name="location" type="token" maxOccurs="1"
-				minOccurs="1" />
-			<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="1" />
+		<complexContent>
+			<extension base="tns:Census">
+				<sequence>
+					<element name="date" type="dateTime" maxOccurs="1"
+						minOccurs="1" />
+					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
+						minOccurs="1" />
+					<element name="fractionsOfThingsContaminated" type="tns:FractionOfThingContaminated"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
 
-			<element name="fractionsOfThingsContaminated" type="tns:FractionOfThingContaminated"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="abioticEcosystemPartCensus">
@@ -1589,26 +1260,24 @@
 		</sequence>
 	</complexType>
 
-
-
 	<complexType name="PopulationAndEnvironmentCensus">
-		<sequence>
-			<element name="IncitsCodeOfAdministrativeUnit" type="tns:IncitsUsaOrStateOrCountyCode"
-				maxOccurs="1" minOccurs="1" />
-			<element name="nameOfAdministativeUnit" type="token"
-				maxOccurs="1" minOccurs="0" />
-			<element name="numberOfPeople" type="integer" maxOccurs="1"
-				minOccurs="1" />
-			<element name="numberOfSchools" type="integer" maxOccurs="1"
-				minOccurs="1" />
-			<element name="numberOfWorkplaces" type="integer" maxOccurs="1"
-				minOccurs="1" />
-			<element name="subEcosystemCensuses" type="tns:PopulationAndEnvironmentCensus"
-				maxOccurs="unbounded" minOccurs="0" />
-		</sequence>
+		<complexContent>
+			<extension base="tns:Census">
+				<sequence>
+					<element name="nameOfAdministativeUnit" type="token"
+						maxOccurs="1" minOccurs="0" />
+					<element name="numberOfPeople" type="integer" maxOccurs="1"
+						minOccurs="1" />
+					<element name="numberOfSchools" type="integer" maxOccurs="1"
+						minOccurs="1" />
+					<element name="numberOfWorkplaces" type="integer"
+						maxOccurs="1" minOccurs="1" />
+					<element name="subEcosystemCensuses" type="tns:PopulationAndEnvironmentCensus"
+						maxOccurs="unbounded" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
-
-
 
 	<complexType name="InfectiousDisease">
 		<complexContent>
@@ -1620,47 +1289,11 @@
 						maxOccurs="1" minOccurs="1" />
 					<element name="causalPathogen" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-
 					<element name="diseaseOutcomes" type="tns:DiseaseOutcomeAndProbability"
 						maxOccurs="unbounded" minOccurs="0" />
-
 				</sequence>
 			</extension>
 		</complexContent>
-	</complexType>
-
-
-
-	<complexType name="PopulationAndEnvironmentCensus-DEPRECATED">
-		<sequence>
-			<element name="date" type="dateTime" maxOccurs="1" minOccurs="0" />
-			<element name="location" type="tns:LocationDefinition"
-				maxOccurs="1" minOccurs="1" />
-
-			<element name="simulatorType" type="tns:SimulatorType"
-				maxOccurs="1" minOccurs="1" />
-			<choice>
-				<element name="agentModelEcosystemCensus" type="tns:AgentLevelPopulationAndEnvironmentCensus"
-					maxOccurs="1" minOccurs="1" />
-
-				<element name="compartmentalModelEcosystemCensus"
-					type="tns:CompartmentalModelPopulationAndEnvironmentCensus"
-					maxOccurs="1" minOccurs="1" />
-
-			</choice>
-		</sequence>
-	</complexType>
-
-	<complexType name="AgentLevelPopulationAndEnvironmentCensus">
-		<sequence>
-			<element name="agentModelEcosystemCensusDescription"
-				type="tns:AgentLevelPopulationAndEnvironmentCensusDescription"
-				maxOccurs="1" minOccurs="1" />
-
-			<element name="url" type="tns:UrlOutputResource" maxOccurs="1"
-				minOccurs="1" />
-
-		</sequence>
 	</complexType>
 
 	<complexType name="FractionOfThingContaminated">
@@ -1671,14 +1304,6 @@
 				minOccurs="1" />
 		</sequence>
 	</complexType>
-
-	<complexType name="ControlStrategyInventoryCensus" />
-
-
-
-
-	<complexType name="TreatmentControlStrategyAndCensuses" />
-
 
 	<simpleType name="INCITS">
 		<restriction base="positiveInteger">
@@ -1695,59 +1320,42 @@
 		</sequence>
 	</complexType>
 
-
-
-	<simpleType name="UnitOfMeasure">
-		<restriction base="string" />
-	</simpleType>
-
-
-
 	<complexType name="ProbabilityValuePair">
 		<sequence>
 			<element name="value" type="double" maxOccurs="1" minOccurs="1" />
 			<element name="probability" type="tns:Probability" maxOccurs="1"
 				minOccurs="1" />
-
 		</sequence>
 	</complexType>
 
-
-
 	<complexType name="ProbabilityDistribution" />
-
 	<complexType name="UnconditionalProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:ProbabilityDistribution" />
-
 		</complexContent>
 	</complexType>
 
 	<complexType name="NonparametricDiscreteProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:UnconditionalProbabilityDistribution" />
-
 		</complexContent>
 	</complexType>
 
 	<complexType name="ParametricProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:UnconditionalProbabilityDistribution" />
-
 		</complexContent>
 	</complexType>
 
 	<complexType name="DiscreteParametricProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:ParametricProbabilityDistribution" />
-
 		</complexContent>
 	</complexType>
 
 	<complexType name="ContinuousParametricProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:ParametricProbabilityDistribution" />
-
 		</complexContent>
 	</complexType>
 
@@ -1801,7 +1409,6 @@
 		</complexContent>
 	</complexType>
 
-
 	<complexType name="ConditionalProbabilityDistribution">
 		<sequence>
 			<element name="firstConditioningVariable" type="tns:ConditioningVariable"
@@ -1813,7 +1420,6 @@
 		<sequence>
 			<element name="variableName" type="token" maxOccurs="1"
 				minOccurs="1" />
-
 			<element name="values" type="tns:Category" maxOccurs="unbounded"
 				minOccurs="1" />
 		</sequence>
@@ -1823,22 +1429,16 @@
 		<sequence>
 			<element name="categoryDefinition" type="tns:CategoryDefinition"
 				maxOccurs="1" minOccurs="1" />
-
 			<choice>
 				<element name="unconditionalProbabilityDistribution" type="tns:UnconditionalProbabilityDistribution"
 					maxOccurs="1" minOccurs="1" />
 				<element name="conditioningVariable" type="tns:ConditioningVariable"
 					maxOccurs="1" minOccurs="1" />
-
-
 			</choice>
 		</sequence>
 	</complexType>
 
 	<complexType name="CategoryDefinition" />
-
-
-
 	<simpleType name="AbioticEcosystemEnum">
 		<restriction base="string">
 			<enumeration value="preschool" />
@@ -1847,6 +1447,28 @@
 			<enumeration value="workplace" />
 			<enumeration value="pigFarm" />
 			<enumeration value="chickenFarm" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="UnitOfMeasure">
+		<restriction base="string">
+			<enumeration value="dollars" />
+			<enumeration value="euros" />
+			<enumeration value="weight_in_pounds" />
+			<enumeration value="weight_in_kilograms" />
+			<enumeration value="seconds" />
+			<enumeration value="minutes" />
+			<enumeration value="hours" />
+			<enumeration value="days" />
+			<enumeration value="weeks" />
+			<enumeration value="months" />
+			<enumeration value="years" />
+			<enumeration value="doses" />
+			<enumeration value="fraction" />
+			<enumeration value="percent" />
+			<enumeration value="meters" />
+			<enumeration value="inches" />
+			<enumeration value="miles" />
 		</restriction>
 	</simpleType>
 
@@ -1885,7 +1507,6 @@
 			<element name="severeInfectionMultiplier" type="tns:PositiveDouble"
 				maxOccurs="1" minOccurs="1">
 			</element>
-
 		</sequence>
 	</complexType>
 
@@ -1915,6 +1536,7 @@
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
 	<complexType name="SeasonalityFunctionParameters">
 		<sequence>
 			<element name="maximumSeasonalLatitude" type="double"
@@ -1925,6 +1547,7 @@
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
 	<complexType name="SpatialKernelFunctionParameters">
 		<sequence>
 			<element name="type" type="token" maxOccurs="1" minOccurs="1"></element>
@@ -1946,42 +1569,83 @@
 		</sequence>
 	</complexType>
 
-	
-
-
 	<complexType name="GetPopulationAndEnvironmentCensusResult">
 		<sequence>
-			<element name="methodCallStatus" type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1"></element>
-			<element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" maxOccurs="1" minOccurs="1"></element>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus"
+				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-    <complexType name="GetConfigurationFileForSimulationResult">
-    	<sequence>
+	<complexType name="GetConfigurationFileForSimulationResult">
+		<sequence>
 			<element name="methodCallStatus" type="tns:MethodCallStatus"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="configurationFile" type="string" maxOccurs="1" minOccurs="0"></element>
-			<element name="configurationFileInHtmlFormat" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="configurationFile" type="string" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="configurationFileInHtmlFormat" type="string"
+				maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
-    
-    <complexType name="AddLibraryItemResult">
-    	<sequence>
-    		<element name="methodCallStatus"
-    			type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1">
-    		</element>
-    		<element name="uuid" type="token" maxOccurs="1" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
+	<complexType name="AddLibraryItemResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="uuid" type="token" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
 
-    <complexType name="GetLibraryItemResult">
-    	<sequence>
-    		<element name="methodCallStatus"
-    			type="tns:MethodCallStatus" maxOccurs="1" minOccurs="1">
-    		</element>
-    		<element name="curatedLibraryItemContainer" type="tns:CuratedLibraryItemContainer" maxOccurs="1" minOccurs="1"></element>
-    	</sequence>
-    </complexType>
+	<complexType name="GetLibraryItemResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="curatedLibraryItemContainer" type="tns:CuratedLibraryItemContainer"
+				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Location">
+		<sequence>
+			<choice>
+				<element name="locationCode" type="tns:LocationCode"
+					maxOccurs="1" minOccurs="1"></element>
+				<element name="locationDefinition" type="tns:LocationDefinition"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="CensusData">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="description" type="string" maxOccurs="1"
+						minOccurs="1" />
+					<element name="date" type="dateTime" maxOccurs="1"
+						minOccurs="1"></element>
+					<element name="location" type="tns:Location" maxOccurs="1"
+						minOccurs="1"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="Census">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="description" type="string" maxOccurs="1"
+						minOccurs="1"></element>
+					<element name="location" type="tns:Location" maxOccurs="1"
+						minOccurs="1"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 </schema>
