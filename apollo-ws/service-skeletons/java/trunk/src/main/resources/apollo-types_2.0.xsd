@@ -1305,12 +1305,6 @@
 		</sequence>
 	</complexType>
 
-	<simpleType name="INCITS">
-		<restriction base="positiveInteger">
-			<totalDigits value="5" fixed="true" />
-		</restriction>
-	</simpleType>
-
 	<complexType name="NcbiTaxonId">
 		<sequence>
 			<element name="ncbiTaxonId" type="integer" maxOccurs="1"
