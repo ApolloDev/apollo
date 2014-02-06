@@ -39,16 +39,16 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLocationsSupportedBySimulator">
+			<xsd:element name="getScenarioLocationCodesSupportedBySimulator">
 				<xsd:complexType>
 					<xsd:sequence>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLocationsSupportedBySimulatorResponse">
+			<xsd:element name="getScenarioLocationCodesSupportedBySimulatorResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="getLocationsSupportedBySimulatorResult" type="apollo:GetLocationsSupportedBySimulatorResult"
+						<xsd:element name="getLocationsSupportedBySimulatorResult" type="apollo:GetScenarioLocationCodesSupportedBySimulatorResult"
 							maxOccurs="1" minOccurs="1">
 						</xsd:element>
 					</xsd:sequence>
@@ -113,11 +113,11 @@
 	<wsdl:message name="getRunStatusResponse">
 		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getLocationsSupportedBySimulatorRequest">
-		<wsdl:part name="parameters" element="tns:getLocationsSupportedBySimulator"></wsdl:part>
+	<wsdl:message name="getScenarioLocationCodesSupportedBySimulatorRequest">
+		<wsdl:part name="parameters" element="tns:getScenarioLocationCodesSupportedBySimulator"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getLocationsSupportedBySimulatorResponse">
-		<wsdl:part name="parameters" element="tns:getLocationsSupportedBySimulatorResponse"></wsdl:part>
+	<wsdl:message name="getScenarioLocationCodesSupportedBySimulatorResponse">
+		<wsdl:part name="parameters" element="tns:getScenarioLocationCodesSupportedBySimulatorResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="runSimulationsRequest">
 		<wsdl:part name="parameters" element="tns:runSimulations"></wsdl:part>
@@ -147,9 +147,9 @@
 			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
 			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLocationsSupportedBySimulator">
-			<wsdl:input message="tns:getLocationsSupportedBySimulatorRequest"></wsdl:input>
-			<wsdl:output message="tns:getLocationsSupportedBySimulatorResponse"></wsdl:output>
+		<wsdl:operation name="getScenarioLocationCodesSupportedBySimulator">
+			<wsdl:input message="tns:getScenarioLocationCodesSupportedBySimulatorRequest"></wsdl:input>
+			<wsdl:output message="tns:getScenarioLocationCodesSupportedBySimulatorResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="runSimulations">
 			<wsdl:input message="tns:runSimulationsRequest"></wsdl:input>
@@ -188,9 +188,10 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLocationsSupportedBySimulator">
+		<wsdl:operation
+			name="getScenarioLocationCodesSupportedBySimulator">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/v2_0/getLocationsSupportedBySimulator" />
+				soapAction="http://service.apollo.pitt.edu/simulatorservice/v2_0/getScenarioLocationCodesSupportedBySimulator" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
