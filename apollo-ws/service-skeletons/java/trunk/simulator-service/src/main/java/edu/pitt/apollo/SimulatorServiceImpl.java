@@ -24,8 +24,8 @@ import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.simulatorservice.v2_0.SimulatorServiceEI;
 import edu.pitt.apollo.types.v2_0.GetConfigurationFileForSimulationResult;
-import edu.pitt.apollo.types.v2_0.GetLocationsSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
@@ -76,15 +76,6 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 		return null;
 	}
 
-	@Override
-	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "getLocationsSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetLocationsSupportedBySimulator")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0/getLocationsSupportedBySimulator")
-	@ResponseWrapper(localName = "getLocationsSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetLocationsSupportedBySimulatorResponse")
-	public GetLocationsSupportedBySimulatorResult getLocationsSupportedBySimulator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	@WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
@@ -112,6 +103,16 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 				+ "_"
 				+ runSimulationMessage.getSimulatorIdentification()
 						.getSoftwareVersion() + "_17";
+	}
+
+	@Override
+	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

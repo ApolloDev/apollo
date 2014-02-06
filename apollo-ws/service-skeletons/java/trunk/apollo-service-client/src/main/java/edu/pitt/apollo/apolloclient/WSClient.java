@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceV20;
+import edu.pitt.apollo.types.v2_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
 import edu.pitt.apollo.types.v2_0.Authentication;
 import edu.pitt.apollo.types.v2_0.Infection;
@@ -33,10 +34,8 @@ import edu.pitt.apollo.types.v2_0.InfectionState;
 import edu.pitt.apollo.types.v2_0.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0.Location;
-import edu.pitt.apollo.types.v2_0.LocationDefinition;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0.NcbiTaxonId;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusData;
@@ -56,15 +55,13 @@ public class WSClient {
 
         Infection infection = new Infection();
 
-        NcbiTaxonId pathId = new NcbiTaxonId();
+        ApolloPathogenCode pathId = new ApolloPathogenCode();
         pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId(BigInteger.ZERO);
+        pathId.setNcbiTaxonId("0");
         infection.setPathogenTaxonID(pathId);
 
-        NcbiTaxonId hostId = new NcbiTaxonId();
-        hostId.setGisrnCladeName("human");
-        hostId.setNcbiTaxonId(BigInteger.ZERO);
-        infection.setHostTaxonID(hostId);
+        
+        infection.setHostTaxonID("0");
 
         NumericParameterValue infectiousPeriod = new NumericParameterValue();
         infectiousPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
@@ -79,7 +76,7 @@ public class WSClient {
         InfectionAcquisition ia = new InfectionAcquisition();
         
         ia.setPathogenTaxonID(pathId);
-        ia.setSusceptibleHostTaxonID(hostId);
+        ia.setSusceptibleHostTaxonID("0");
         ia.setBasicReproductionNumber(1.3);
 
         infection.getInfectionAcquisition().add(ia);
@@ -92,11 +89,11 @@ public class WSClient {
 
         disease.setDiseaseID("H1N1");
 
-        NcbiTaxonId pathId = new NcbiTaxonId();
+        ApolloPathogenCode pathId = new ApolloPathogenCode();
         pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId(BigInteger.ZERO);
+        pathId.setNcbiTaxonId("0");
         disease.setCausalPathogen(pathId);
-        disease.setSpeciesWithDisease(pathId);
+        disease.setSpeciesWithDisease("0");
 
         return disease;
     }
@@ -110,14 +107,11 @@ public class WSClient {
         XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         census.setDate(date);
 
-        NcbiTaxonId popSpecies = new NcbiTaxonId();
-        popSpecies.setGisrnCladeName("human");
-        popSpecies.setNcbiTaxonId(BigInteger.ZERO);
-        census.setPopulationSpecies(popSpecies);
+        census.setPopulationSpecies("0");
 
-        NcbiTaxonId pathId = new NcbiTaxonId();
+        ApolloPathogenCode pathId = new ApolloPathogenCode();
         pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId(BigInteger.ZERO);
+        pathId.setNcbiTaxonId("0");
         census.setPathogen(pathId);
 
         PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
