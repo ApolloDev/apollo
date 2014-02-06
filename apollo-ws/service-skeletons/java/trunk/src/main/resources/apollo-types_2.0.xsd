@@ -1570,7 +1570,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="GetLocationsSupportedBySimulatorResult">
+	<complexType name="GetScenarioLocationCodesSupportedBySimulatorResult">
 		<sequence>
 			<element name="methodCallStatus" type="tns:MethodCallStatus"
 				maxOccurs="1" minOccurs="1"></element>
