@@ -189,7 +189,7 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
+					<element name="pathogenTaxonID" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="hostTaxonID" type="tns:NcbiTaxonId"
@@ -215,7 +215,7 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
+					<element name="pathogenTaxonID" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
 					<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
 						maxOccurs="1" minOccurs="1" />
@@ -234,7 +234,7 @@
 				<sequence>
 					<element name="populationSpecies" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-					<element name="pathogen" type="tns:NcbiTaxonId" maxOccurs="1"
+					<element name="pathogen" type="tns:ApolloPathogenCode" maxOccurs="1"
 						minOccurs="1"></element>
 					<element name="censusData"
 						type="tns:PopulationInfectionAndImmunityCensusData" maxOccurs="1"
@@ -312,7 +312,7 @@
 
 	<simpleType name="ApolloLocationCode">
 		<restriction base="token">
-			<pattern value="[A-Z0-9]{2,15}"></pattern>
+			<pattern value="[A-Z0-9]{2,17}"></pattern>
 		</restriction>
 	</simpleType>
 
@@ -440,9 +440,7 @@
 			<element name="ageRange" type="tns:AgeRange" maxOccurs="1"
 				minOccurs="0">
 			</element>
-			<element name="gender" type="tns:Gender" maxOccurs="1"
-				minOccurs="0">
-			</element>
+			<element name="gender" type="tns:Gender" maxOccurs="1" minOccurs="0"></element>
 			<element name="treatmentState" type="tns:TreatmentState"
 				maxOccurs="1" minOccurs="1">
 			</element>
@@ -789,12 +787,11 @@
 
 	<complexType name="TimeDefinition">
 		<sequence>
-			<element name="simulatorTime" type="int" maxOccurs="1"
-				minOccurs="1" />
-			<element name="date" type="date" maxOccurs="1" minOccurs="0" />
+			<element name="simulatorTime" type="int" maxOccurs="1" minOccurs="1" />
+			<element name="dateTime" type="dateTime" maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
-
+	
 	<simpleType name="VaccinationPreventableOutcome">
 		<restriction base="string">
 			<enumeration value="infection" />
@@ -809,7 +806,7 @@
 				<sequence>
 					<element name="vaccineIdentifier" type="token" maxOccurs="1"
 						minOccurs="1" />
-					<element name="strainIdentifier" type="tns:NcbiTaxonId"
+					<element name="strainIdentifier" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
 					<element name="hostIdentifier" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
@@ -1071,7 +1068,7 @@
 			<enumeration value="asymptomatic" />
 			<enumeration value="symptomatic" />
 			<enumeration value="severely symptomatic" />
-			<enumeration value="hospitalized" />
+			<enumeration value="hospitalization" />
 		</restriction>
 	</simpleType>
 
@@ -1088,7 +1085,7 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
+					<element name="pathogenTaxonID" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
 					<element name="susceptibleHostTaxonID" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
@@ -1134,7 +1131,7 @@
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
-						minOccurs="0" />
+						minOccurs="1" />
 					<element name="location" type="tns:Location" maxOccurs="1"
 						minOccurs="1" />
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
@@ -1187,7 +1184,7 @@
 		<sequence>
 			<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
 				maxOccurs="1" minOccurs="1" />
-			<element name="pathogenTaxonID" type="tns:NcbiTaxonId"
+			<element name="pathogenTaxonID" type="tns:ApolloPathogenCode"
 				maxOccurs="1" minOccurs="1" />
 			<choice>
 				<element name="infectiousHostSource" type="tns:NcbiTaxonId"
@@ -1227,7 +1224,7 @@
 			<extension base="tns:Census">
 				<sequence>
 					<element name="kindOfThing" type="tns:AbioticEcosystemEnum" maxOccurs="1" minOccurs="1"></element>
-					<element name="pathogen" type="tns:NcbiTaxonId"
+					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
 					<element name="censusData"
 						type="tns:ContaminatedThingCensusData" maxOccurs="1"
@@ -1301,7 +1298,7 @@
 						minOccurs="1" />
 					<element name="speciesWithDisease" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-					<element name="causalPathogen" type="tns:NcbiTaxonId"
+					<element name="causalPathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
 					<element name="diseaseOutcomes" type="tns:DiseaseOutcomeAndProbability"
 						maxOccurs="unbounded" minOccurs="0" />
@@ -1319,15 +1316,22 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="NcbiTaxonId">
+	<complexType name="ApolloPathogenCode"> 
 		<sequence>
-			<element name="ncbiTaxonId" type="integer" maxOccurs="1"
+			<element name="ncbiTaxonId" type="tns:NcbiTaxonId" maxOccurs="1"
 				minOccurs="1" />
 			<element name="gisrnCladeName" type="token" maxOccurs="1"
 				minOccurs="0" />
 		</sequence>
 	</complexType>
+	
 
+	<simpleType name="NcbiTaxonId">
+		<restriction base="token">
+			<pattern value="[0-9]"></pattern>
+		</restriction>
+	</simpleType>
+	
 	<complexType name="ProbabilityValuePair">
 		<sequence>
 			<element name="value" type="double" maxOccurs="1" minOccurs="1" />
@@ -1471,8 +1475,6 @@
 			<enumeration value="weeks" />
 			<enumeration value="months" />
 			<enumeration value="years" />
-			<enumeration value="doses" />
-			<enumeration value="fraction" />
 			<enumeration value="percent" />
 			<enumeration value="meters" />
 			<enumeration value="inches" />
