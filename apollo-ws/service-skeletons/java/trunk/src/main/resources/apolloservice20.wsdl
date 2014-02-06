@@ -225,7 +225,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification"></xsd:element>
-						<xsd:element name="location" type="apollo:LocationCode"></xsd:element>
+						<xsd:element name="location" type="apollo:ApolloLocationCode"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -237,7 +237,7 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLocationsSupportedBySimulator">
+			<xsd:element name="getScenarioLocationCodesSupportedBySimulator">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification">
@@ -245,11 +245,11 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLocationsSupportedBySimulatorResponse">
+			<xsd:element name="getScenarioLocationCodesSupportedBySimulatorResponse">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="getLocationsSupportedBySimulatorResult"
-							type="apollo:GetLocationsSupportedBySimulatorResult" maxOccurs="1"
+							type="apollo:GetScenarioLocationCodesSupportedBySimulatorResult" maxOccurs="1"
 							minOccurs="1"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -390,12 +390,12 @@
 		<wsdl:part name="parameters"
 			element="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getLocationsSupportedBySimulatorRequest">
-		<wsdl:part name="parameters" element="tns:getLocationsSupportedBySimulator"></wsdl:part>
+	<wsdl:message name="getScenarioLocationCodesSupportedBySimulatorRequest">
+		<wsdl:part name="parameters" element="tns:getScenarioLocationCodesSupportedBySimulator"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getLocationsSupportedBySimulatorResponse">
+	<wsdl:message name="getScenarioLocationCodesSupportedBySimulatorResponse">
 		<wsdl:part name="parameters"
-			element="tns:getLocationsSupportedBySimulatorResponse"></wsdl:part>
+			element="tns:getScenarioLocationCodesSupportedBySimulatorResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="removeLibraryItemRequest">
 		<wsdl:part name="parameters" element="tns:removeLibraryItem"></wsdl:part>
@@ -432,9 +432,9 @@
 			<wsdl:input message="tns:getPopulationAndEnvironmentCensusRequest"></wsdl:input>
 			<wsdl:output message="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLocationsSupportedBySimulator">
-			<wsdl:input message="tns:getLocationsSupportedBySimulatorRequest"></wsdl:input>
-			<wsdl:output message="tns:getLocationsSupportedBySimulatorResponse"></wsdl:output>
+		<wsdl:operation name="getScenarioLocationCodesSupportedBySimulator">
+			<wsdl:input message="tns:getScenarioLocationCodesSupportedBySimulatorRequest"></wsdl:input>
+			<wsdl:output message="tns:getScenarioLocationCodesSupportedBySimulatorResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="addLibraryItem">
 			<wsdl:input message="tns:addLibraryItemRequest"></wsdl:input>
@@ -619,9 +619,10 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLocationsSupportedBySimulator">
+		<wsdl:operation
+			name="getScenarioLocationCodesSupportedBySimulator">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getLocationsSupportedBySimulator" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0/getScenarioLocationCodesSupportedBySimulator" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
