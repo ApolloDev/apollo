@@ -58,8 +58,8 @@ import edu.pitt.apollo.types.v2_0.Authentication;
 import edu.pitt.apollo.types.v2_0.GetConfigurationFileForSimulationResult;
 import edu.pitt.apollo.types.v2_0.GetLibraryItemResult;
 import edu.pitt.apollo.types.v2_0.GetLibraryItemUuidsResult;
-import edu.pitt.apollo.types.v2_0.GetLocationsSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
@@ -731,25 +731,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return getLibraryServicePort().removeLibraryItem(authentication, uuid);
 	}
 
-	@Override
-	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "getLocationsSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetLocationsSupportedBySimulator")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getLocationsSupportedBySimulator")
-	@ResponseWrapper(localName = "getLocationsSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetLocationsSupportedBySimulatorResponse")
-	public GetLocationsSupportedBySimulatorResult getLocationsSupportedBySimulator(
-			@WebParam(name = "simulatorIdentification", targetNamespace = "") SoftwareIdentification simulatorIdentification) {
-
-		// 1. get simulator specified by simulatorIdentification
-		// 2. check to see if it is registered
-		// 3. if it IS register, call getLocationsSUpportedBySimulator on the
-		// simulatorservice AND set runStatus to COMPLETED
-		// 4. if it ISN't registered, set runStatus to ERROR and provide message
-		GetLocationsSupportedBySimulatorResult res = new GetLocationsSupportedBySimulatorResult();
-		// so if it fails, set an error in the runstatus
-		// res.setQueryStatus(value)
-		return null;
-
-	}
 
 	@Override
 	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
@@ -786,6 +767,24 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	protected void finalize() throws Throwable {
 		super.finalize();
 		db4o.close();
+	}
+
+	@Override
+	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
+			@WebParam(name = "simulatorIdentification", targetNamespace = "") SoftwareIdentification simulatorIdentification) {
+		// 1. get simulator specified by simulatorIdentification
+		// 2. check to see if it is registered
+		// 3. if it IS register, call getLocationsSUpportedBySimulator on the
+		// simulatorservice AND set runStatus to COMPLETED
+		// 4. if it ISN't registered, set runStatus to ERROR and provide message
+		GetScenarioLocationCodesSupportedBySimulatorResult res = new GetScenarioLocationCodesSupportedBySimulatorResult();
+		// so if it fails, set an error in the runstatus
+		// res.setQueryStatus(value)
+		return null;
 	}
 
 }
