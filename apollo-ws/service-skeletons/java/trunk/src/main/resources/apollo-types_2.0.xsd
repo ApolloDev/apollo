@@ -1252,7 +1252,6 @@
 						type="tns:ContaminatedThingCensusData" maxOccurs="unbounded"
 						minOccurs="0">
 					</element>
-					<choice></choice>
 				</sequence>
 			</extension>
 		</complexContent>
