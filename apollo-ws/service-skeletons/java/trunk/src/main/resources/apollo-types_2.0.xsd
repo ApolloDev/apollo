@@ -33,16 +33,13 @@
 			<enumeration value="compartmental" />
 		</restriction>
 	</simpleType>
-
+	
 	<simpleType name="TimeStepUnit">
 		<restriction base="string">
 			<enumeration value="year" />
 			<enumeration value="month" />
 			<enumeration value="day" />
 			<enumeration value="hour" />
-
-
-
 			<enumeration value="minute" />
 			<enumeration value="second" />
 			<enumeration value="millisecond" />
@@ -313,7 +310,7 @@
 		</sequence>
 	</complexType>
 
-	<simpleType name="LocationCode">
+	<simpleType name="ApolloLocationCode">
 		<restriction base="token">
 			<pattern value="[A-Z0-9]{2,15}"></pattern>
 		</restriction>
@@ -914,9 +911,9 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="locationsIncluded" type="tns:LocationCode"
+            <element name="locationsIncluded" type="tns:ApolloLocationCode"
 				maxOccurs="unbounded" minOccurs="1" />
-			<element name="locationsExcluded" type="tns:LocationCode"
+			<element name="locationsExcluded" type="tns:ApolloLocationCode"
 				maxOccurs="unbounded" minOccurs="0" />
 		</sequence>
 	</complexType>
@@ -1211,7 +1208,7 @@
 				maxOccurs="1" minOccurs="1" />
 			<element name="characteristics" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
-			<element name="locations" type="tns:LocationCode" maxOccurs="unbounded"
+			<element name="locations" type="tns:Location" maxOccurs="unbounded"
 				minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1575,7 +1572,7 @@
 		<sequence>
 			<element name="methodCallStatus" type="tns:MethodCallStatus"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="locationCode" type="tns:LocationCode"
+			<element name="locationCodes" type="tns:ApolloLocationCode"
 				maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
@@ -1632,11 +1629,12 @@
 
 	<complexType name="Location">
 		<sequence>
-			<choice>
-				<element name="locationCode" type="tns:LocationCode"
-					maxOccurs="1" minOccurs="1"></element>
-				<element name="locationDefinition" type="tns:LocationDefinition"
+            <choice>
+				<element name="locationCode" type="tns:ApolloLocationCode"
 					maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="locationDefinition"
+					type="tns:LocationDefinition" maxOccurs="1" minOccurs="1">
 				</element>
 			</choice>
 		</sequence>
