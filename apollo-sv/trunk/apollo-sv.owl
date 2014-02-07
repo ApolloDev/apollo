@@ -326,14 +326,6 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -343,6 +335,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -915,12 +915,12 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -1223,6 +1223,19 @@
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000003 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000003">
+        <rdfs:label xml:lang="en">population immunity survey</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000152"/>
+        <obo:IAO_0000115 xml:lang="en">A population survey that assesses the level of immunity against a particular pathogen in a specified population.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">Comment from Mike (to do!):
+I checked because an infection and immunity census would involve two different census methods.   One would be some kind of disease surveillance that counts infections.  The other is some kind of immunity census process based on seroprevalence studies or vaccination registries.</rdfs:comment>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000005 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000005">
@@ -1282,8 +1295,9 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
     <Class rdf:about="&obo;APOLLO_SV_00000007">
         <rdfs:label xml:lang="en">simulation software</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000010"/>
-        <obo:IAO_0000115 xml:lang="en">A Software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A software that provides a model of a real phenomenon based on a set of mathematical formulas.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Simulation_software</obo:IAO_0000119>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">simulator</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1390,40 +1404,11 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000011 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000011">
-        <rdfs:label xml:lang="en">simulator</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OBI_0000968"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom>
-                            <Class>
-                                <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OBI_0400107"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&ro;has_part"/>
-                                        <someValuesFrom>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                <someValuesFrom>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&obo;OBI_0000294"/>
-                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000007"/>
-                                                    </Restriction>
-                                                </someValuesFrom>
-                                            </Restriction>
-                                        </someValuesFrom>
-                                    </Restriction>
-                                </intersectionOf>
-                            </Class>
-                        </someValuesFrom>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0000968"/>
-        <obo:IAO_0000115 xml:lang="en">A device that has a computer as its part which has a part that bears the concretization of simulation software.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">control strategy reactive start time information</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000208"/>
+        <obo:IAO_0000115 xml:lang="en">A control strategy start time information item that is based on a condition that triggers the control measure.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">reactive start time</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -1463,7 +1448,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
     <Class rdf:about="&obo;APOLLO_SV_00000014">
         <rdfs:label xml:lang="en">simulation time step unit</rdfs:label>
         <rdfs:subClassOf rdf:resource="&UO;UO_0000003"/>
-        <obo:IAO_0000600 xml:lang="en">The time unit such as “hours” or “days” for each time step of a simulation.  Time step unit is always used with time step value.</obo:IAO_0000600>
+        <rdfs:comment xml:lang="en">The time unit such as “hours” or “days” for each time step of a simulation.  Time step unit is always used with time step value.</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The time unit that is part of a simulation time step action specification.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">time step unit</apollo_sv:APOLLO_SV_0000040>
     </Class>
@@ -1654,6 +1639,9 @@ It is worth noting that there are control measures such as closing schools that 
     <Class rdf:about="&obo;APOLLO_SV_00000025">
         <rdfs:label xml:lang="en">vaccination efficacy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
+        <rdfs:comment xml:lang="en">Notes: 
+1. Apollo-SV does not distinguish between ‘vaccine efficacy’ and ‘vaccine effectiveness.’
+2. Apollo-SV also considers the use of ‘vaccine’ in both terms a misnomer</rdfs:comment>
         <obo:IAO_0000115 xml:lang="en">The disposition of one or more portions of vaccine, when administered to an organism by a certain route and according to a certain schedule, to produce a structural change in an organism of a specific species, whereby this structural change serves as the physical basis of a protective resistance disposition.</obo:IAO_0000115>
         <rdfs:comment xml:lang="en">need to generate class restriction.  Something like:
 
@@ -4021,7 +4009,7 @@ an infection is acquired from an infectious organism or a contaminated thing.
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000090"/>
-        <obo:IAO_0000115 xml:lang="en">A treatment that consists of the administration of antigenic material  to stimulate an individual&apos;s immune system to develop adaptive immunity to a pathogen. </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A treatment that consists of the administration of antigenic material to stimulate an individual&apos;s immune system to develop adaptive immunity to a pathogen.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Vaccination</obo:IAO_0000119>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination</apollo_sv:APOLLO_SV_0000040>
@@ -4391,6 +4379,15 @@ an infection is acquired from an infectious organism or a contaminated thing.
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000152"/>
         <obo:IAO_0000115 xml:lang="en">A population survey that includes the counts of susceptible, immune, contagious and exposed organisms.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">Comment from Mike (to do!):
+I checked because an infection and immunity census would involve two different census methods.   One would be some kind of disease surveillance that counts infections.  The other is some kind of immunity census process based on seroprevalence studies or vaccination registries.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Equivalent class was:
+&apos;population survey&apos; and (has_part some 
+(counting and (has_specified_output some 
+(count and (&apos;is about&apos; some &apos;exposed population&apos;))) and (has_specified_output some 
+(count and (&apos;is about&apos; some &apos;infectious population&apos;))) and (has_specified_output some 
+(count and (&apos;is about&apos; some &apos;susceptible population&apos;))) and (has_specified_output some 
+(count and (&apos;is about&apos; some &apos;immune population&apos;)))))</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -4415,19 +4412,35 @@ an infection is acquired from an infectious organism or a contaminated thing.
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;APOLLO_SV_00000173"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000312"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000155"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000312"/>
-                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000155"/>
-                    </Restriction>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000003"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000155"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000003"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;OBI_0000312"/>
+                                <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000155"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
                 </intersectionOf>
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
-        <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population infection survey.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population infection survey and an population immunity survey.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">population infection and immunity census</apollo_sv:APOLLO_SV_0000040>
         <rdfs:comment xml:lang="en">population infection and immunity census as a census of the infection status (e.g., susceptible, infected, infectious and immune) of all individuals in some population.</rdfs:comment>
@@ -5395,7 +5408,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000179"/>
         <obo:IAO_0000115 xml:lang="en">A simulator configuration that start an Apollo simulator.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">run simulator message</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">run simulation message</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -5416,8 +5429,8 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <Class rdf:about="&obo;APOLLO_SV_00000212">
         <rdfs:label xml:lang="en">treatment administration capacity schedule</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the capacity to administer a particular treatment over a specific temporal interval in a specified geographical region.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040>treatment administration capacity schedule</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the availability of a particular drug over a specific temporal interval in a geographical region.</obo:IAO_0000115>
     </Class>
     
 
@@ -5427,7 +5440,8 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <Class rdf:about="&obo;APOLLO_SV_00000213">
         <rdfs:label xml:lang="en">treatment supply schedule</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
-        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the availibility of a particular drug over a specific temporal interval in a geograpical region.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A plan specification that specifies the availability of a particular drug over a specific temporal interval in a specified geographical region.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -5438,6 +5452,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <rdfs:label xml:lang="en">vaccination efficacy for simulator configuration</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <obo:IAO_0000115 xml:lang="en">An information content entity that specifies the vaccination efficacy that is part of a simulator configuration.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">vaccination efficacy for simulator configuration</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -5474,6 +5489,17 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <obo:IAO_0000115 xml:lang="en">A data item that specifies the epidemiological relevant state of an organism at a specific time.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">infection state</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000218 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000218">
+        <rdfs:label xml:lang="en">vaccination preventable outcome</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000005"/>
+        <obo:IAO_0000115 xml:lang="en">An objective specification that species the disease outcome a vaccination seeks to prevent.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -8105,12 +8131,6 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8119,9 +8139,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8132,6 +8149,15 @@ school facility
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000418">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8187,11 +8213,11 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000038">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000132">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000327">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000132">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000429">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
