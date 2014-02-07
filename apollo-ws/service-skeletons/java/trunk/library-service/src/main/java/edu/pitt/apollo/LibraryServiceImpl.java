@@ -49,7 +49,7 @@ import edu.pitt.apollo.types.v2_0.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
 	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
@@ -186,7 +186,41 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
 			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
 		// TODO Auto-generated method stub
-		return null;
+//		GetLibraryItemResult result = new GetLibraryItemResult();
+//		MethodCallStatus status = new MethodCallStatus();
+////		status.setMessage("Okay.");
+////		status.setStatus(MethodCallStatusEnum.COMPLETED);
+//
+//		long longPart = Long.valueOf(uuid.split(" ")[1]);
+//		String sig = uuid.split(" ")[0];
+//		byte[] signaturePart = new byte[sig.length()];
+//		for (int i = 0; i < sig.length(); i++) {
+//			signaturePart[i] = (byte) sig.charAt(i);
+//		}
+//		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+//		Object o = db4o.ext().getByUUID(db4oUuid);
+//                
+//                CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
+//		container.setApolloIndexableItem((ApolloIndexableItem) o);
+//		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+//		cli.setItemUuid(uuid);
+//		ObjectSet<Object> r = db4o.queryByExample(cli);
+//		CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r
+//				.get(0);
+//                
+//                db4o.activate(item, 100);
+//                db4o.activate(o, 100);
+//                db4o.ext().purge(o);
+//                db4o.ext().purge(item);
+//                db4o.delete(o);
+//                db4o.delete(item);
+//                db4o.commit();
+//                
+//                status.setMessage("Deleted object.");
+//                status.setStatus(MethodCallStatusEnum.COMPLETED);
+//                
+//                return status;
+            return null;
 	}
 
 	@Override
