@@ -34,6 +34,7 @@ import edu.pitt.apollo.types.v2_0.InfectionState;
 import edu.pitt.apollo.types.v2_0.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0.Location;
+import edu.pitt.apollo.types.v2_0.LocationDefinition;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
@@ -46,6 +47,7 @@ import edu.pitt.apollo.types.v2_0.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
 import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
+import java.util.Calendar;
 
 public class WSClient {
 
@@ -60,7 +62,7 @@ public class WSClient {
         pathId.setNcbiTaxonId("0");
         infection.setPathogenTaxonID(pathId);
 
-        
+
         infection.setHostTaxonID("0");
 
         NumericParameterValue infectiousPeriod = new NumericParameterValue();
@@ -74,7 +76,7 @@ public class WSClient {
         infection.setLatentPeriodDuration(latentPeriod);
 
         InfectionAcquisition ia = new InfectionAcquisition();
-        
+
         ia.setPathogenTaxonID(pathId);
         ia.setSusceptibleHostTaxonID("0");
         ia.setBasicReproductionNumber(1.3);
@@ -102,11 +104,15 @@ public class WSClient {
 
         PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 
-        census.setDescription("Allegheny County Population");
+        census.setDescription("Penobscot County Population");
         GregorianCalendar c = new GregorianCalendar();
         XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         census.setDate(date);
 
+        Location location = new Location();
+        location.setLocationCode("23019");
+        census.setLocation(location);
+        
         census.setPopulationSpecies("0");
 
         ApolloPathogenCode pathId = new ApolloPathogenCode();
@@ -116,8 +122,8 @@ public class WSClient {
 
         PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
 
-        Location location = new Location();
-        location.setLocationCode("42003");
+        location = new Location();
+        location.setLocationCode("23019");
         data.setLocation(location);
 
         PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
@@ -147,7 +153,7 @@ public class WSClient {
 
     private static SoftwareIdentification getSoftwareIdentification() {
         SoftwareIdentification si = new SoftwareIdentification();
-        si.setSoftwareDeveloper("UPitt");
+        si.setSoftwareDeveloper("UPitt,PSC,CMU");
         si.setSoftwareName("FRED");
         si.setSoftwareVersion("2.0.1_i");
         si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
@@ -167,12 +173,26 @@ public class WSClient {
 
         message.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
         SimulatorTimeSpecification stc = message.getSimulatorTimeSpecification();
-        stc.setRunLength(new BigInteger("30"));
+        stc.setRunLength(new BigInteger("65"));
         stc.setTimeStepUnit(TimeStepUnit.DAY);
         stc.setTimeStepValue(1d);
 
         InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 
+        LocationDefinition definition = new LocationDefinition();
+        definition.setDescription("location");
+        
+        Location location = new Location();
+        location.setLocationCode("23019");
+        scenario.setLocation(location);
+        
+        GregorianCalendar c = new GregorianCalendar();
+        c.add(Calendar.YEAR, -1);
+        XMLGregorianCalendar date;
+
+        date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        scenario.setScenarioDate(date);
+        
         // add infection
         scenario.getInfections().add(getInfection());
 
