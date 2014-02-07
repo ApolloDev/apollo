@@ -14,6 +14,9 @@
  */
 package edu.pitt.apollo.apolloclient;
 
+import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,6 +51,7 @@ import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
 import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
 import java.util.Calendar;
+import java.util.List;
 
 public class WSClient {
 
@@ -112,7 +116,7 @@ public class WSClient {
         Location location = new Location();
         location.setLocationCode("23019");
         census.setLocation(location);
-        
+
         census.setPopulationSpecies("0");
 
         ApolloPathogenCode pathId = new ApolloPathogenCode();
@@ -173,7 +177,7 @@ public class WSClient {
 
         message.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
         SimulatorTimeSpecification stc = message.getSimulatorTimeSpecification();
-        stc.setRunLength(new BigInteger("65"));
+        stc.setRunLength(new BigInteger("113"));
         stc.setTimeStepUnit(TimeStepUnit.DAY);
         stc.setTimeStepValue(1d);
 
@@ -181,18 +185,18 @@ public class WSClient {
 
         LocationDefinition definition = new LocationDefinition();
         definition.setDescription("location");
-        
+
         Location location = new Location();
         location.setLocationCode("23019");
         scenario.setLocation(location);
-        
+
         GregorianCalendar c = new GregorianCalendar();
         c.add(Calendar.YEAR, -1);
         XMLGregorianCalendar date;
 
         date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         scenario.setScenarioDate(date);
-        
+
         // add infection
         scenario.getInfections().add(getInfection());
 
@@ -207,20 +211,53 @@ public class WSClient {
         return message;
     }
 
+    public static void testPopulationAndEnvironmentCensuses(ApolloServiceEI port) {
+
+        SoftwareIdentification id = getSoftwareIdentification();
+        GetScenarioLocationCodesSupportedBySimulatorResult result = port.getScenarioLocationCodesSupportedBySimulator(id);
+        List<String> locationCodes = result.getLocationCodes();
+
+        if (!locationCodes.contains("42")) {
+            throw new RuntimeException("Location codes did not contain code 42");
+        }
+        if (!locationCodes.contains("42003")) {
+            throw new RuntimeException("Location codes did not contain code 42003");
+        }
+        GetPopulationAndEnvironmentCensusResult censusResult = port.getPopulationAndEnvironmentCensus(id, "42");
+        PopulationAndEnvironmentCensus census = censusResult.getPopulationAndEnvironmentCensus();
+        System.out.println("Location code 42");
+        System.out.println("NameOfAdministrativeUnit: " + census.getNameOfAdministativeUnit());
+        System.out.println("NumberOfPeople: " + census.getNumberOfPeople());
+        System.out.println("NumberOfSchools: " + census.getNumberOfSchools());
+        System.out.println("NumberOfWorkplaces: " + census.getNumberOfWorkplaces());
+        System.out.println("Number of sublocations: " + census.getSubLocationCensuses().size());
+        System.out.println();
+//        List<PopulationAndEnvironmentCensus> subCensuses = census.getSubLocationCensuses();
+
+        //        //confirm working that subtree is built
+        censusResult = port.getPopulationAndEnvironmentCensus(id, "42003");
+        census = censusResult.getPopulationAndEnvironmentCensus();
+        System.out.println("Location code 42003");
+        System.out.println("NameOfAdministrativeUnit: " + census.getNameOfAdministativeUnit());
+        System.out.println("NumberOfPeople: " + census.getNumberOfPeople());
+        System.out.println("NumberOfSchools: " + census.getNumberOfSchools());
+        System.out.println("NumberOfWorkplaces: " + census.getNumberOfWorkplaces());
+        System.out.println("Number of sublocations: " + census.getSubLocationCensuses().size());
+        //        //confirm working no subtree but good info
+        //   
+
+    }
+
     public static void main(String[] args) throws DatatypeConfigurationException, MalformedURLException, InterruptedException {
 
-        RunSimulationMessage message = createRunSimulationMessage();
 
+
+        RunSimulationMessage message = createRunSimulationMessage();
+//
         ApolloServiceV20 service = new ApolloServiceV20(new URL(WSDL_LOC));
         ApolloServiceEI port = service.getApolloServiceEndpoint();
-//        
-//        List<String> locationCodes = port.getScenarioLocationCodesSupportedBySimulator(/*FRED*/);
-//        census = port.getPopulationAndEnvironmentCensus(/*fred*/null, "42");
-//        //confirm working that subtree is built
-//        census = port.getPopulationAndEnvironmentCensus(/*fred*/null, "42003");
-//        //confirm working no subtree but good info
-//        
 
+//        testPopulationAndEnvironmentCensuses(port);
 
         String runId = port.runSimulation(message);
         System.out.println("Simulator returned runId: " + runId);
