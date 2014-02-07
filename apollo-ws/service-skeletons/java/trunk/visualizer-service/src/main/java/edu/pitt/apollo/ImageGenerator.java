@@ -15,6 +15,7 @@ import edu.pitt.apollo.container.IncidenceTimeSeriesContainer;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.utilities.DatabaseUtility;
 import edu.pitt.apollo.utilities.VisualizerChartUtility;
+import org.apache.commons.codec.digest.DigestUtils;
 
 
 /**
@@ -165,7 +166,7 @@ public class ImageGenerator {
         }
 
         String id = stBuild.toString();
-
+        md5 = DigestUtils.md5Hex(id);
         //Create MessageDigest object for MD5
 //        MessageDigest digest = MessageDigest.getInstance("MD5");
 //        //Update input string in message digest
@@ -275,14 +276,14 @@ public class ImageGenerator {
         List<UrlOutputResource> resource = new ArrayList<UrlOutputResource>();
         List<String> runIds = new ArrayList<String>();
 //        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_231860");
-        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_261732");
-        runIds.add("UPitt_SEIR_1.3.1_332434");
+//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_261732");
+        runIds.add("UPitt_Reed-Frost_1.3.1_75736");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_261732", "UPitt,PSC,CMU_FRED_2.0.1_261732");
-        runIdSeriesLabels.put("UPitt_SEIR_1.3.1_332434", "UPitt_SEIR_1.3.1_332434");
+        runIdSeriesLabels.put("UPitt_Reed-Frost_1.3.1_75736", "UPitt_Reed-Frost_1.3.1_75736");
+//        runIdSeriesLabels.put("UPitt_SEIR_1.3.1_332434", "UPitt_SEIR_1.3.1_332434");
 
-        ImageGenerator generator = new ImageGenerator(runIds, resource, runIdSeriesLabels, false, true);
+        ImageGenerator generator = new ImageGenerator(runIds, resource, runIdSeriesLabels, false, false);
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {
