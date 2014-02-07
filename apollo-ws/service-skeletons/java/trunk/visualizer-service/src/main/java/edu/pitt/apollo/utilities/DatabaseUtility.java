@@ -133,7 +133,7 @@ public class DatabaseUtility {
             List[] timeSeries = new List[4];
             try {
                 Class.forName(dbClass);
-                connect = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
+                connect = DriverManager.getConnection(url, user, password);
                 statement = connect.prepareStatement(runIdQuery.toString());
                 statement.setString(1, runId);
                 resultSet = statement.executeQuery();
