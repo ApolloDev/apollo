@@ -34,23 +34,23 @@ import edu.pitt.apollo.types.v2_0.VisualizerResult;
 public class WSClient {
 
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
-		VisualizerServiceV20 service = new VisualizerServiceV20(new URL("http://warhol-fred.psc.edu:8091/gaia?wsdl"));
+		VisualizerServiceV20 service = new VisualizerServiceV20(new URL("http://localhost:8095/visualizerservice2.0/services/visualizerservice?wsdl"));
 		VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
 
                 RunVisualizationMessage  vizConfig = new RunVisualizationMessage();
 //                vizConfig.
                 VisualizationOptions options = new VisualizationOptions();
-                options.setRunId("UPitt,PSC,CMU_FRED_2.0.1_259387");
-                options.setLocation("06037");
-                options.setOutputFormat("mp4");
+                options.setRunId("UPitt,PSC,CMU_FRED_2.0.1_298673");
+                options.setLocation("01027");
+                options.setOutputFormat("png");
                 
                 vizConfig.setVisualizationOptions(options);
                 
                 SoftwareIdentification sid = new SoftwareIdentification();
-                sid.setSoftwareName("GAIA");
+                sid.setSoftwareName("Image Visualizer");
                 sid.setSoftwareType(ApolloSoftwareType.VISUALIZER);
                 sid.setSoftwareVersion("1.0");
-                sid.setSoftwareDeveloper("PSC");
+                sid.setSoftwareDeveloper("UPitt");
                 
                 vizConfig.setVisualizerIdentification(sid);
                 
