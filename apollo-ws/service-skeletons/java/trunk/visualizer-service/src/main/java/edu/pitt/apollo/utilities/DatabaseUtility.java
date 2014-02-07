@@ -89,7 +89,8 @@ public class DatabaseUtility {
             System.err.println("IO exception closing input stream");
         }
 
-        // get the seir time series query
+        // this time series query is intended for FluTE and FRED, which store output
+        // by census tracts and block groups. It won't work for SEIR
         StringBuilder timeSeriesQuery = new StringBuilder();
         queryInput = DatabaseUtility.class.getResourceAsStream("/time_series_query.sql");
         // bcd query
@@ -108,7 +109,7 @@ public class DatabaseUtility {
         }
 
 
-        // get the seir time series query
+        // this query is intended for SEIR
         StringBuilder timeSeriesQuery2 = new StringBuilder();
         queryInput = DatabaseUtility.class.getResourceAsStream("/time_series_query_2.sql");
         // bcd query
