@@ -81,10 +81,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	private static final String ERROR_FILENAME = "run_errors.txt";
 	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
 	public static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
-	private static final String DB4O_FILENAME = "db4o_db_20";
+//	private static final String DB4O_FILENAME = "db4o_db_20";
 
 	private static String APOLLO_DIR = "";
-	private static ObjectContainer db4o;
+//	private static ObjectContainer db4o;
 
 	static String getRegistryFilename() {
 		return APOLLO_DIR + REGISTRY_FILENAME;
@@ -757,16 +757,16 @@ class ApolloServiceImpl implements ApolloServiceEI {
 					+ " environment variable not found!");
 			APOLLO_DIR = "";
 		}
-		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
-		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/"
-				+ DB4O_FILENAME);
+//		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
+//		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
+//		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/"
+//				+ DB4O_FILENAME);
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		db4o.close();
+//		db4o.close();
 	}
 
 	@Override
