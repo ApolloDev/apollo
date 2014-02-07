@@ -35,7 +35,7 @@ import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v1.3.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice._10._28._2013.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
 	
