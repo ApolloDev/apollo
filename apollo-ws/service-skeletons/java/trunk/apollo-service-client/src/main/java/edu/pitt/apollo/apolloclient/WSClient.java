@@ -213,6 +213,14 @@ public class WSClient {
 
         ApolloServiceV20 service = new ApolloServiceV20(new URL(WSDL_LOC));
         ApolloServiceEI port = service.getApolloServiceEndpoint();
+//        
+//        List<String> locationCodes = port.getScenarioLocationCodesSupportedBySimulator(/*FRED*/);
+//        census = port.getPopulationAndEnvironmentCensus(/*fred*/null, "42");
+//        //confirm working that subtree is built
+//        census = port.getPopulationAndEnvironmentCensus(/*fred*/null, "42003");
+//        //confirm working no subtree but good info
+//        
+
 
         String runId = port.runSimulation(message);
         System.out.println("Simulator returned runId: " + runId);
