@@ -16,17 +16,24 @@ package edu.pitt.apollo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
@@ -38,11 +45,6 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
-
-import com.db4o.Db4oEmbedded;
-import com.db4o.ObjectContainer;
-import com.db4o.config.ConfigScope;
-import com.db4o.config.EmbeddedConfiguration;
 
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceEI;
 import edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI;
@@ -60,8 +62,10 @@ import edu.pitt.apollo.types.v2_0.GetLibraryItemResult;
 import edu.pitt.apollo.types.v2_0.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v2_0.Location;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0.RunSimulationsMessage;
@@ -81,10 +85,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	private static final String ERROR_FILENAME = "run_errors.txt";
 	private static final String RUN_ERROR_PREFIX = "ApolloServiceError";
 	public static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
-//	private static final String DB4O_FILENAME = "db4o_db_20";
+	// private static final String DB4O_FILENAME = "db4o_db_20";
+	private static final String CENSUS_DATA_FILENAME = "fred_census_data.csv";
 
 	private static String APOLLO_DIR = "";
-//	private static ObjectContainer db4o;
+	// private static ObjectContainer db4o;
+	private static List<PopulationAndEnvironmentCensus> censusData;
 
 	static String getRegistryFilename() {
 		return APOLLO_DIR + REGISTRY_FILENAME;
@@ -588,8 +594,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
 			@WebParam(name = "simulatorIdentification", targetNamespace = "") SoftwareIdentification simulatorIdentification,
 			@WebParam(name = "location", targetNamespace = "") String location) {
-		// TODO Auto-generated method stub
-		return null;
+		GetPopulationAndEnvironmentCensusResult res = new GetPopulationAndEnvironmentCensusResult();
+		MethodCallStatus status = new MethodCallStatus();
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+		status.setMessage("Success!");
+		res.setPopulationAndEnvironmentCensus(getPopulationAndEnvironmentCensusGivenINCITS(location));
+		return res;
 	}
 
 	@Override
@@ -731,7 +741,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return getLibraryServicePort().removeLibraryItem(authentication, uuid);
 	}
 
-
 	@Override
 	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
 	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetUuidsForLibraryItemsCreatedSinceDateTime")
@@ -742,6 +751,106 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return getLibraryServicePort()
 				.getUuidsForLibraryItemsCreatedSinceDateTime(creationDateTime);
 	}
+
+	@Override
+	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
+			@WebParam(name = "simulatorIdentification", targetNamespace = "") SoftwareIdentification simulatorIdentification) {
+		GetScenarioLocationCodesSupportedBySimulatorResult res = new GetScenarioLocationCodesSupportedBySimulatorResult();
+		for (PopulationAndEnvironmentCensus c : censusData) {
+			res.getLocationCodes().add(c.getLocation().getLocationCode());
+			for (PopulationAndEnvironmentCensus cc : c.getSubLocationCensuses()) {
+				res.getLocationCodes().add(cc.getLocation().getLocationCode());
+			}
+		}
+		MethodCallStatus status = new MethodCallStatus();
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+		status.setMessage("Returned " + res.getLocationCodes().size()
+				+ " items.");
+		res.setMethodCallStatus(status);
+		return res;
+
+	}
+
+	private static PopulationAndEnvironmentCensus getPopulationAndEnvironmentCensusGivenINCITS(
+			String INCITS) {
+
+		for (PopulationAndEnvironmentCensus c : censusData) {
+			if (INCITS.length() == 2) { // state
+				if (c.getLocation().getLocationCode().equalsIgnoreCase(INCITS)) {
+					return c;
+				}
+			} else { // county
+				if (c.getLocation().getLocationCode().substring(0, 2)
+						.equalsIgnoreCase(INCITS.substring(0, 2))) {
+					// down the rabbit hole
+					for (PopulationAndEnvironmentCensus cc : c
+							.getSubLocationCensuses()) {
+						if (cc.getLocation().getLocationCode()
+								.equalsIgnoreCase(INCITS)) {
+							return cc;
+						}
+					}
+				}
+			}
+
+		}
+
+		return null;
+	}
+
+	public static void readCensusData() throws FileNotFoundException,
+			DatatypeConfigurationException {
+		File f = new File(APOLLO_DIR + "/" + CENSUS_DATA_FILENAME);
+		censusData = new ArrayList<PopulationAndEnvironmentCensus>();
+
+		GregorianCalendar cal = new GregorianCalendar();
+		XMLGregorianCalendar date = DatatypeFactory.newInstance()
+				.newXMLGregorianCalendar(cal);
+		date.setMonth(1);
+		date.setDay(1);
+		date.setYear(2009);
+
+		Scanner s = new Scanner(f);
+		boolean onHeader = true;
+		while (s.hasNextLine()) {
+			if (onHeader) {
+				onHeader = false;
+				s.nextLine();
+				continue;
+
+			}
+			String[] cols = s.nextLine().split("\t");
+
+			PopulationAndEnvironmentCensus c = new PopulationAndEnvironmentCensus();
+			c.setDate(date);
+			c.setDescription(cols[1]);
+			Location l = new Location();
+			l.setLocationCode(cols[0]);
+			c.setLocation(l);
+			c.setNameOfAdministativeUnit(cols[1]);
+			c.setNumberOfPeople(new BigInteger(cols[2]));
+			c.setNumberOfSchools(new BigInteger(cols[3]));
+			c.setNumberOfWorkplaces(new BigInteger(cols[4]));
+
+			if (cols[0].length() == 2) { // state
+				censusData.add(c);
+			} else { // county
+				PopulationAndEnvironmentCensus stateRoot = getPopulationAndEnvironmentCensusGivenINCITS(cols[0]
+						.substring(0, 2));
+				stateRoot.getSubLocationCensuses().add(c);
+			}
+		}
+		s.close();
+	}
+	
+//	public static void main(String[] args) {
+//		PopulationAndEnvironmentCensus c = getPopulationAndEnvironmentCensusGivenINCITS("42");
+//		c = getPopulationAndEnvironmentCensusGivenINCITS("42003");
+//	}
 
 	static {
 		Map<String, String> env = System.getenv();
@@ -757,34 +866,29 @@ class ApolloServiceImpl implements ApolloServiceEI {
 					+ " environment variable not found!");
 			APOLLO_DIR = "";
 		}
-//		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
-//		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-//		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/"
-//				+ DB4O_FILENAME);
+		// EmbeddedConfiguration configuration =
+		// Db4oEmbedded.newConfiguration();
+		// configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
+		// db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/"
+		// + DB4O_FILENAME);
+
+		try {
+			try {
+				readCensusData();
+			} catch (DatatypeConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-//		db4o.close();
-	}
-
-	@Override
-	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulator")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0/getScenarioLocationCodesSupportedBySimulator")
-	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0/", className = "edu.pitt.apollo.service.apolloservice.v2_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
-	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
-			@WebParam(name = "simulatorIdentification", targetNamespace = "") SoftwareIdentification simulatorIdentification) {
-		// 1. get simulator specified by simulatorIdentification
-		// 2. check to see if it is registered
-		// 3. if it IS register, call getLocationsSUpportedBySimulator on the
-		// simulatorservice AND set runStatus to COMPLETED
-		// 4. if it ISN't registered, set runStatus to ERROR and provide message
-		GetScenarioLocationCodesSupportedBySimulatorResult res = new GetScenarioLocationCodesSupportedBySimulatorResult();
-		// so if it fails, set an error in the runstatus
-		// res.setQueryStatus(value)
-		return null;
+		// db4o.close();
 	}
 
 }
