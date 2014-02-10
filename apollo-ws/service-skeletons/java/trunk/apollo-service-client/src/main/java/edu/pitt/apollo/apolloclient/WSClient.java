@@ -14,9 +14,7 @@
  */
 package edu.pitt.apollo.apolloclient;
 
-import java.io.File;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -87,7 +85,7 @@ public class WSClient {
 		softwareId.setSoftwareType(ApolloSoftwareType.SIMULATOR);
 		return softwareId;
 	}
-
+	
 	private SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
 		SoftwareIdentification softwareId = new SoftwareIdentification();
 		softwareId.setSoftwareName("Image Visualizer"); // rename this
@@ -380,14 +378,13 @@ public class WSClient {
 
 		Vaccine vaccine = new Vaccine();
 		vaccine.setDescription("Influenza A (H1N1) 2009 Monovalent Vaccine");
+		vaccine.getValence().add(new BigInteger("1"));
 		vacc.setVaccine(vaccine);
 
 		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
 
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
-		// strain.setGisrnCladeName("A/(H3N2) Victoria/361//2011-like");
-
 		vesc.setStrainIdentifier(strain);
 		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
 		// vesc.setTreatment(vacc);
@@ -433,37 +430,33 @@ public class WSClient {
 
 	private IndividualTreatmentControlStrategy getVaccinationControlStrategy() {
 		IndividualTreatmentControlStrategy vaccinationControlMeasure = new IndividualTreatmentControlStrategy();
-		vaccinationControlMeasure.setControlStrategyCompliance(getControlStrategyCompilance());
-		vaccinationControlMeasure.setControlStrategyReactiveEndPointFraction(1.0);
-		vaccinationControlMeasure.setControlStrategyResponseDelay(getResponseDelay());
-		vaccinationControlMeasure.setControlStrategyStartTime(getFixedStartTime());
-		vaccinationControlMeasure.setDescription("An example vaccination control strategy.");
+		vaccinationControlMeasure
+				.setControlStrategyCompliance(getControlStrategyCompilance());
+		vaccinationControlMeasure
+				.setControlStrategyReactiveEndPointFraction(1.0);
+		vaccinationControlMeasure
+				.setControlStrategyResponseDelay(getResponseDelay());
+		vaccinationControlMeasure
+				.setControlStrategyStartTime(getFixedStartTime());
+		vaccinationControlMeasure
+				.setDescription("An example vaccination control strategy.");
 		vaccinationControlMeasure.setIndividualTreatment(getVaccination());
-		vaccinationControlMeasure.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
+		vaccinationControlMeasure
+				.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
 
 		for (int i = 0; i < 90; i++)
-			vaccinationControlMeasure.getSupplySchedule().add(new BigInteger("3500"));
+			vaccinationControlMeasure.getSupplySchedule().add(
+					new BigInteger("3500"));
 
 		for (int i = 0; i < 90; i++)
-			vaccinationControlMeasure.getAdministrationCapacity().add(new BigInteger("3500"));
+			vaccinationControlMeasure.getAdministrationCapacity().add(
+					new BigInteger("3500"));
 
 		return vaccinationControlMeasure;
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {
-		URL wsdlURL = ApolloServiceV20.WSDL_LOCATION;
-		if (args.length > 0 && args[0] != null && !"".equals(args[0])) {
-			File wsdlFile = new File(args[0]);
-			try {
-				if (wsdlFile.exists()) {
-					wsdlURL = wsdlFile.toURI().toURL();
-				} else {
-					wsdlURL = new URL(args[0]);
-				}
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		}
+		URL wsdlURL = new URL(WSDL_LOC);
 
 		WSClient client = new WSClient(
 				wsdlURL);
@@ -490,5 +483,3 @@ public class WSClient {
 	}
 
 }
-    
-
