@@ -14,23 +14,26 @@
  */
 package edu.pitt.apollo.apolloclient;
 
-import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
+import java.io.File;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceV20;
 import edu.pitt.apollo.types.v2_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
 import edu.pitt.apollo.types.v2_0.Authentication;
+import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0.Infection;
 import edu.pitt.apollo.types.v2_0.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0.InfectionState;
@@ -41,179 +44,323 @@ import edu.pitt.apollo.types.v2_0.LocationDefinition;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
+import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
 import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
-import java.util.Calendar;
-import java.util.List;
+import edu.pitt.apollo.types.v2_0.UrlOutputResource;
+import edu.pitt.apollo.types.v2_0.VisualizationOptions;
+import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 public class WSClient {
 
     public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0/services/apolloservice?wsdl";
 
-    private static Infection getInfection() {
 
-        Infection infection = new Infection();
+	private ApolloServiceEI port;
 
-        ApolloPathogenCode pathId = new ApolloPathogenCode();
-        pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId("0");
-        infection.setPathogenTaxonID(pathId);
+	private static final QName SERVICE_NAME = new QName(
+			"http://service.apollo.pitt.edu/apolloservice/v2_0/",
+			"ApolloService_v2.0");
 
+	private WSClient(URL wsdlURL) {
+		ApolloServiceV20 ss = new ApolloServiceV20(wsdlURL, SERVICE_NAME);
+		port = ss.getApolloServiceEndpoint();
+	}
 
-        infection.setHostTaxonID("0");
+	public SoftwareIdentification getSoftwareIdentificationForFred() {
+		SoftwareIdentification softwareId = new SoftwareIdentification();
+		softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
+		softwareId.setSoftwareName("FRED");
+		softwareId.setSoftwareVersion("2.0.1_i");
+		softwareId.setSoftwareType(ApolloSoftwareType.SIMULATOR);
+		return softwareId;
+	}
 
-        NumericParameterValue infectiousPeriod = new NumericParameterValue();
-        infectiousPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
-        infectiousPeriod.setValue(6.0);
-        infection.setInfectiousPeriodDuration(infectiousPeriod);
+	private SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
+		SoftwareIdentification softwareId = new SoftwareIdentification();
+		softwareId.setSoftwareName("Image Visualizer"); // rename this
+														// timeseries or
+														// something!
+		softwareId.setSoftwareType(ApolloSoftwareType.VISUALIZER);
+		softwareId.setSoftwareVersion("1.0");
+		softwareId.setSoftwareDeveloper("UPitt");
+		return softwareId;
+	}
 
-        NumericParameterValue latentPeriod = new NumericParameterValue();
-        latentPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
-        latentPeriod.setValue(2.0);
-        infection.setLatentPeriodDuration(latentPeriod);
+	private SoftwareIdentification getSoftwareIdentifiationForGaia() {
+		SoftwareIdentification softwareId = new SoftwareIdentification();
+		softwareId.setSoftwareName("GAIA");
+		softwareId.setSoftwareType(ApolloSoftwareType.VISUALIZER);
+		softwareId.setSoftwareVersion("1.0");
+		softwareId.setSoftwareDeveloper("PSC");
+		return softwareId;
+	}
 
-        InfectionAcquisition ia = new InfectionAcquisition();
+	public Authentication getAuthentication() {
+		Authentication authentication = new Authentication();
+		authentication.setRequesterId("TutorialUser");
+		authentication.setRequesterPassword("TutorialPassword");
+		return authentication;
+	}
 
-        ia.setPathogenTaxonID(pathId);
-        ia.setSusceptibleHostTaxonID("0");
-        ia.setBasicReproductionNumber(1.3);
+	public SimulatorTimeSpecification getSimulatorTimeSpecification() {
+		SimulatorTimeSpecification timeSpec = new SimulatorTimeSpecification();
+		// the run length of the simulation is 90 days
+		timeSpec.setRunLength(new BigInteger("90"));
+		timeSpec.setTimeStepUnit(TimeStepUnit.DAY);
+		timeSpec.setTimeStepValue(1.0);
+		return timeSpec;
+	}
 
-        infection.getInfectionAcquisition().add(ia);
-        return infection;
-    }
+	private PopulationInfectionAndImmunityCensus getPopulationInfectionAndImmunityCensus() {
+		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
+		census.setDescription("Population of Allegheny County, Pennsylvania");
+		GregorianCalendar calendar = new GregorianCalendar();
+		XMLGregorianCalendar censusDate = null;
+		try {
+			censusDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(
+					calendar);
+		} catch (DatatypeConfigurationException e) {
+			System.out.println("Error!  Unable to set date, error was:"
+					+ e.getMessage());
+			System.exit(-1);
+		}
 
-    private static InfectiousDisease getInfectiousDisease() {
+		census.setDate(censusDate);
 
-        InfectiousDisease disease = new InfectiousDisease();
+		Location location = new Location();
+		location.setLocationCode("42003");
+		census.setLocation(location);
+		census.setPopulationSpecies("9606"); // homo sapiens
 
-        disease.setDiseaseID("H1N1");
+		ApolloPathogenCode pathId = new ApolloPathogenCode();
+		pathId.setGisrnCladeName("H1N1");
+		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
+		census.setPathogen(pathId);
 
-        ApolloPathogenCode pathId = new ApolloPathogenCode();
-        pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId("0");
-        disease.setCausalPathogen(pathId);
-        disease.setSpeciesWithDisease("0");
+		PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
+		data.setLocation(location);
+		PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
+		susceptibleCell.setInfectionState(InfectionState.SUSCEPTIBLE);
+		susceptibleCell.setFractionInInfectionState(0.8);
+		PopulationInfectionAndImmunityCensusDataCell exposedCell = new PopulationInfectionAndImmunityCensusDataCell();
+		exposedCell.setInfectionState(InfectionState.EXPOSED);
+		exposedCell.setFractionInInfectionState(0.0);
+		PopulationInfectionAndImmunityCensusDataCell infectiousCell = new PopulationInfectionAndImmunityCensusDataCell();
+		infectiousCell.setInfectionState(InfectionState.INFECTIOUS);
+		infectiousCell.setFractionInInfectionState(0.05);
+		PopulationInfectionAndImmunityCensusDataCell recoveredCell = new PopulationInfectionAndImmunityCensusDataCell();
+		recoveredCell.setInfectionState(InfectionState.RECOVERED);
+		recoveredCell.setFractionInInfectionState(0.15);
 
-        return disease;
-    }
+		data.getCensusDataCells().add(susceptibleCell);
+		data.getCensusDataCells().add(exposedCell);
+		data.getCensusDataCells().add(infectiousCell);
+		data.getCensusDataCells().add(recoveredCell);
 
-    private static PopulationInfectionAndImmunityCensus getPopulationInfectionAndImmunityCensus() throws DatatypeConfigurationException {
+		census.setCensusData(data);
 
-        PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
+		return census;
+	}
 
-        census.setDescription("Penobscot County Population");
-        GregorianCalendar c = new GregorianCalendar();
-        XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-        census.setDate(date);
+	private InfectiousDisease getInfectiousDisease() {
+		InfectiousDisease disease = new InfectiousDisease();
+		disease.setDiseaseID("H1N1");
+		disease.setSpeciesWithDisease("9606"); // homo sapiens
 
-        Location location = new Location();
-        location.setLocationCode("23019");
-        census.setLocation(location);
+		ApolloPathogenCode pathId = new ApolloPathogenCode();
+		pathId.setGisrnCladeName("H1N1");
+		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 
-        census.setPopulationSpecies("0");
+		disease.setCausalPathogen(pathId);
 
-        ApolloPathogenCode pathId = new ApolloPathogenCode();
-        pathId.setGisrnCladeName("H1N1");
-        pathId.setNcbiTaxonId("0");
-        census.setPathogen(pathId);
+		return disease;
+	}
 
-        PopulationInfectionAndImmunityCensusData data = new PopulationInfectionAndImmunityCensusData();
+	private Infection getInfection() {
+		Infection infection = new Infection();
 
-        location = new Location();
-        location.setLocationCode("23019");
-        data.setLocation(location);
+		ApolloPathogenCode pathId = new ApolloPathogenCode();
+		pathId.setGisrnCladeName("H1N1");
+		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
+		infection.setPathogenTaxonID(pathId);
 
-        PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
-        susceptibleCell.setInfectionState(InfectionState.SUSCEPTIBLE);
-        susceptibleCell.setFractionInInfectionState(0.8);
+		infection.setHostTaxonID("9606"); // homo sapiens
 
-        PopulationInfectionAndImmunityCensusDataCell exposedCell = new PopulationInfectionAndImmunityCensusDataCell();
-        exposedCell.setInfectionState(InfectionState.EXPOSED);
-        exposedCell.setFractionInInfectionState(0.0);
+		NumericParameterValue infectiousPeriod = new NumericParameterValue();
+		infectiousPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
+		infectiousPeriod.setValue(6.0);
+		infection.setInfectiousPeriodDuration(infectiousPeriod);
 
-        PopulationInfectionAndImmunityCensusDataCell infectiousCell = new PopulationInfectionAndImmunityCensusDataCell();
-        infectiousCell.setInfectionState(InfectionState.INFECTIOUS);
-        infectiousCell.setFractionInInfectionState(0.05);
+		NumericParameterValue latentPeriod = new NumericParameterValue();
+		latentPeriod.setUnitOfMeasure(UnitOfMeasure.DAYS);
+		latentPeriod.setValue(2.0);
+		infection.setLatentPeriodDuration(latentPeriod);
 
-        PopulationInfectionAndImmunityCensusDataCell recoveredCell = new PopulationInfectionAndImmunityCensusDataCell();
-        recoveredCell.setInfectionState(InfectionState.RECOVERED);
-        recoveredCell.setFractionInInfectionState(0.15);
+		InfectionAcquisition infectionAcquisition = new InfectionAcquisition();
 
-        data.getCensusDataCells().add(susceptibleCell);
-        data.getCensusDataCells().add(exposedCell);
-        data.getCensusDataCells().add(infectiousCell);
-        data.getCensusDataCells().add(recoveredCell);
+		infectionAcquisition.setPathogenTaxonID(pathId);
+		infectionAcquisition.setSusceptibleHostTaxonID("9606"); // homo sapiens
+		infectionAcquisition.setBasicReproductionNumber(1.3);
 
-        census.setCensusData(data);
-        return census;
-    }
+		infection.getInfectionAcquisition().add(infectionAcquisition);
 
-    private static SoftwareIdentification getSoftwareIdentification() {
-        SoftwareIdentification si = new SoftwareIdentification();
-        si.setSoftwareDeveloper("UPitt,PSC,CMU");
-        si.setSoftwareName("FRED");
-        si.setSoftwareVersion("2.0.1_i");
-        si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
+		return infection;
+	}
 
-        return si;
-    }
+	private InfectiousDiseaseScenario getInfectiousDiseaseScenario() {
+		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 
-    private static RunSimulationMessage createRunSimulationMessage() throws DatatypeConfigurationException {
-        RunSimulationMessage message = new RunSimulationMessage();
+		LocationDefinition definition = new LocationDefinition();
+		definition.setDescription("Allegheny County, Pennsylvania");
+		// set the scenario location to Allegheny County
+		Location location = new Location();
+		location.setLocationCode("42003");
+		scenario.setLocation(location);
 
-        Authentication auth = new Authentication();
-        auth.setRequesterId("fake_user");
-        auth.setRequesterPassword("fake_password");
-        message.setAuthentication(auth);
+		// set the scenario date to 2009/09/01
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.YEAR, 2009);
+		calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 
-        message.setSimulatorIdentification(getSoftwareIdentification());
+		// translate from Java style Calendar to an XML compatible calendar
+		XMLGregorianCalendar scenarioDate = null;
+		try {
+			scenarioDate = DatatypeFactory.newInstance()
+					.newXMLGregorianCalendar(calendar);
+		} catch (DatatypeConfigurationException e) {
+			System.out.println("Error!  Unable to set date, error was:"
+					+ e.getMessage());
+			System.exit(-1);
+		}
 
-        message.setSimulatorTimeSpecification(new SimulatorTimeSpecification());
-        SimulatorTimeSpecification stc = message.getSimulatorTimeSpecification();
-        stc.setRunLength(new BigInteger("113"));
-        stc.setTimeStepUnit(TimeStepUnit.DAY);
-        stc.setTimeStepValue(1d);
+		scenario.setScenarioDate(scenarioDate);
 
-        InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
+		scenario.getInfections().add(getInfection());
 
-        LocationDefinition definition = new LocationDefinition();
-        definition.setDescription("location");
+		scenario.getDiseases().add(getInfectiousDisease());
 
-        Location location = new Location();
-        location.setLocationCode("23019");
-        scenario.setLocation(location);
+		scenario.getPopulationInfectionAndImmunityCensuses().add(
+				getPopulationInfectionAndImmunityCensus());
 
-        GregorianCalendar c = new GregorianCalendar();
-        c.add(Calendar.YEAR, -1);
-        XMLGregorianCalendar date;
+		return scenario;
+	}
 
-        date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-        scenario.setScenarioDate(date);
+	public String callRunSimulation() {
+		RunSimulationMessage message = new RunSimulationMessage();
+		message.setAuthentication(getAuthentication());
+		message.setSimulatorIdentification(getSoftwareIdentificationForFred());
+		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification());
+		message.setInfectiousDiseaseScenario(getInfectiousDiseaseScenario());
+		return port.runSimulation(message);
+	}
 
-        // add infection
-        scenario.getInfections().add(getInfection());
+	public MethodCallStatus checkStatusOfWebServiceCall(
+			RunAndSoftwareIdentification runAndSoftwareId) {
+		// give the simulator a chance to launch the simulation
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e1) {
+			//this is acceptable
+		}
+		while (true) {
+			MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
 
-        // add disease
-        scenario.getDiseases().add(getInfectiousDisease());
+			switch (status.getStatus()) {
 
-        // add population
-        scenario.getPopulationInfectionAndImmunityCensuses().add(getPopulationInfectionAndImmunityCensus());
+			case AUTHENTICATION_FAILURE:
+			case UNAUTHORIZED:
+				System.out
+						.println("We weren't authorized for this run! Error message is:"
+								+ status.getMessage());
+				return status;
+			case COMPLETED:
+				System.out.println("Run completed!");
+				return status;
+			case FAILED:
+				System.out.println("Run Failed! Error message is:"
+						+ status.getMessage());
+				return status;
+			case RUNNING:
+			case MOVING:
+			case QUEUED:
+			case HELD:
+			case EXITING:
+			case WAITING:
+				System.out.println("The "
+						+ runAndSoftwareId.getSoftwareId().getSoftwareName()
+						+ " run is active (" + status.getStatus().toString()
+						+ "). The status message is: " + status.getMessage());
+				try {
+					Thread.sleep(20000);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	}
 
-        message.setInfectiousDiseaseScenario(scenario);
+	private void getResourcesFromVisualizer(String simulatorRunId,
+			SoftwareIdentification visualizerSoftwareIdentification) {
+		System.out.println("Visualizing runId" + simulatorRunId + " using the "
+				+ visualizerSoftwareIdentification.getSoftwareName()
+				+ " visualizer.");
 
-        return message;
-    }
+		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 
-    public static void testPopulationAndEnvironmentCensuses(ApolloServiceEI port) {
+		VisualizationOptions options = new VisualizationOptions();
+		options.setRunId(simulatorRunId);
+		runVisualizationMessage.setVisualizationOptions(options);
 
-        SoftwareIdentification id = getSoftwareIdentification();
+		runVisualizationMessage
+				.setVisualizerIdentification(visualizerSoftwareIdentification);
+
+		Authentication auth = new Authentication();
+		auth.setRequesterId("TutorialUser");
+		auth.setRequesterPassword("TutorialPassword");
+		runVisualizationMessage.setAuthentication(auth);
+
+		VisualizerResult visualizerResult = port
+				.runVisualization(runVisualizationMessage);
+
+		String visualizationRunId = visualizerResult.getRunId();
+
+		RunAndSoftwareIdentification visualizationRunAndSoftwareId = new RunAndSoftwareIdentification();
+		visualizationRunAndSoftwareId.setRunId(visualizationRunId);
+		visualizationRunAndSoftwareId
+				.setSoftwareId(visualizerSoftwareIdentification);
+
+		if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId)
+				.getStatus() == MethodCallStatusEnum.COMPLETED) {
+			System.out
+					.println("The following resources were returned from the "
+							+ visualizerSoftwareIdentification
+									.getSoftwareName() + " visualizer:");
+			for (UrlOutputResource r : visualizerResult
+					.getVisualizerOutputResource()) {
+				System.out.println("\t" + r.getURL());
+			}
+
+		}
+
+	}
+	
+	//TODO: move this out of here
+    public void testPopulationAndEnvironmentCensuses(ApolloServiceEI port) {
+
+        SoftwareIdentification id = getSoftwareIdentificationForFred();
         GetScenarioLocationCodesSupportedBySimulatorResult result = port.getScenarioLocationCodesSupportedBySimulator(id);
         List<String> locationCodes = result.getLocationCodes();
 
@@ -248,787 +395,44 @@ public class WSClient {
 
     }
 
-    public static void main(String[] args) throws DatatypeConfigurationException, MalformedURLException, InterruptedException {
 
+	public static void main(String args[]) throws java.lang.Exception {
+		URL wsdlURL = ApolloServiceV20.WSDL_LOCATION;
+		if (args.length > 0 && args[0] != null && !"".equals(args[0])) {
+			File wsdlFile = new File(args[0]);
+			try {
+				if (wsdlFile.exists()) {
+					wsdlURL = wsdlFile.toURI().toURL();
+				} else {
+					wsdlURL = new URL(args[0]);
+				}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
 
+		WSClient client = new WSClient(
+				wsdlURL);
+		String simulationRunId = client.callRunSimulation();
+		System.out.println("The simulator returned a runId of "
+				+ simulationRunId);
+		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
+		runAndSoftwareId.setSoftwareId(client
+				.getSoftwareIdentificationForFred());
+		runAndSoftwareId.setRunId(simulationRunId);
+		MethodCallStatus status = client
+				.checkStatusOfWebServiceCall(runAndSoftwareId);
+		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
+			client.getResourcesFromVisualizer(simulationRunId,
+					client.getSoftwareIdentifiationForTimeSeriesVisualizer());
+			client.getResourcesFromVisualizer(simulationRunId,
+					client.getSoftwareIdentifiationForGaia());
 
-        RunSimulationMessage message = createRunSimulationMessage();
-//
-        ApolloServiceV20 service = new ApolloServiceV20(new URL(WSDL_LOC));
-        ApolloServiceEI port = service.getApolloServiceEndpoint();
+		}
 
-//        testPopulationAndEnvironmentCensuses(port);
+	}
 
-        String runId = port.runSimulation(message);
-        System.out.println("Simulator returned runId: " + runId);
-        // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
-
-        RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
-        rasid.setRunId(runId);
-        rasid.setSoftwareId(getSoftwareIdentification());
-
-        MethodCallStatus rs = port.getRunStatus(rasid);
-        while (rs.getStatus() != MethodCallStatusEnum.COMPLETED) {
-            System.out.println("Status is " + rs.getStatus());
-            System.out.println("Message is " + rs.getMessage());
-            System.out.println("\n");
-            Thread.sleep(500);
-            rs = port.getRunStatus(rasid);
-        }
-        System.out.println("Status is " + rs.getStatus());
-        System.out.println("Message is " + rs.getMessage());
-
-    }
 }
-// public static final String WSDL_LOC =
-// "http://dbmi-dt-036.univ.pitt.edu:8080/apolloservice1.3/services/apolloservice?wsdl";
-// public static final String WSDL_LOC =
-// "http://localhost:8080/apolloservice1.3/services/apolloservice?wsdl";
-//	private static Infection addDisease(PathogenTaxonID pathogenTaxonID,
-//			String hostTaxonID, double infectiousPeriod, double latentPeriod,
-//			double infectiousnessTemporalProfile,
-//			double probabilityNeverSymptomatic,
-//			double probabilitySevereGivenSymptomatic, double reproductionNumber) {
-//		Infection infection = new Infection();
-//		infection.setPathogenTaxonID(pathogenTaxonID);
-//		infection.setHostTaxonID(hostTaxonID);
-//
-//		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-//		tdp.setTimeStepValue(infectiousPeriod);
-//		infection.setInfectiousPeriod(tdp);
-//
-//		tdp = new TemporalDiseaseParameter();
-//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-//		tdp.setTimeStepValue(latentPeriod);
-//		infection.setLatentPeriod(tdp);
-//
-//		tdp = new TemporalDiseaseParameter();
-//		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-//		tdp.setTimeStepValue(infectiousnessTemporalProfile);
-//		infection.setInfectiousnessTemporalProfile(tdp);
-//
-//		infection.setProbabilityNeverSymptomatic(probabilityNeverSymptomatic);
-//		infection
-//				.setProbabilitySevereGivenSymptomatic(probabilitySevereGivenSymptomatic);
-//
-//		InfectionAcquisition ia = new InfectionAcquisition();
-//		ia.setPathogenTaxonID(pathogenTaxonID);
-//		ia.setInfectiousHostTaxonID(hostTaxonID);
-//		ia.setSusceptibleHostTaxonID(hostTaxonID);
-//		ia.setReproductionNumber(reproductionNumber);
-//		ia.setTransmissionCoefficient(null);
-//
-//		infection.getInfectionAcquisition().add(ia);
-//
-//		return infection;
-//	}
-//
-////	public static String addSARS(ApolloServiceEI port) {
-////		addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/5.8d, /*lp*/2.4d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, 1.42);
-//		
-////		Infection id = new Infection();
-////		id.set
-////		id.setAsymptomaticInfectionFraction(0.5d);
-////		id.setHostOrganismName("human");
-////		id.setCausativeOrganismName("SARS coronavirus");
-////
-////		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-////		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp.setTimeStepValue(2.4d);
-////		id.setLatentPeriod(tdp);
-////
-////		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-////		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp2.setTimeStepValue(5.8d);
-////		id.setInfectiousPeriod(tdp2);
-////
-////		id.setReproductionNumber(1.42);
-////
-////		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("Infection");
-////		itemIndexingLabels.add("SARS");
-////		itemIndexingLabels.add("Severe acute respiratory syndrome");
-////		itemIndexingLabels.add("Hong Kong");
-////		itemIndexingLabels.add("2002");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("hypothetical");
-////
-////		return port.addLibraryItem(
-////				id,
-////				"The infection of humans caused by Severe acute respiratory syndrome (S.A.R.S.)",
-////				"Hypothetical SARS added by John Levander, University of Pittsburgh",
-////				"Infection", itemIndexingLabels);
-////
-////		
-////	}
-//
-////	public static String addSmallpox(ApolloServiceEI port) {
-////		Infection id = new Infection();
-////		id.setAsymptomaticInfectionFraction(0.5d);
-////		id.setHostOrganismName("human");
-////		id.setCausativeOrganismName("variola virus");
-////
-////		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-////		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp.setTimeStepValue(2.7d);
-////		id.setLatentPeriod(tdp);
-////
-////		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-////		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp2.setTimeStepValue(9d);
-////		id.setInfectiousPeriod(tdp2);
-////
-////		id.setReproductionNumber(4.3);
-////
-////		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("Infection");
-////		itemIndexingLabels.add("Smallpox");
-////		itemIndexingLabels.add("variola virus");
-////		itemIndexingLabels.add("usa");
-////		itemIndexingLabels.add("1977");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("hypothetical");
-////
-////		return port
-////				.addLibraryItem(
-////						id,
-////						"The infection of humans caused by Smallpox",
-////						"Hypothetical Smallpox virus added by John Levander, University of Pittsburgh",
-////						"Infection", itemIndexingLabels);
-////
-////	}
-////
-////	public static String addRubella(ApolloServiceEI port) {
-////		Infection id = new Infection();
-////		id.setAsymptomaticInfectionFraction(0.2d);
-////		id.setHostOrganismName("human");
-////		id.setCausativeOrganismName("rubella virus");
-////
-////		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-////		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp.setTimeStepValue(3d);
-////		id.setLatentPeriod(tdp);
-////
-////		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-////		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp2.setTimeStepValue(3d);
-////		id.setInfectiousPeriod(tdp2);
-////
-////		id.setReproductionNumber(5d);
-////
-////		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("Infection");
-////		itemIndexingLabels.add("Rubella");
-////		itemIndexingLabels.add("rubella virus");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("hypothetical");
-////
-////		return port
-////				.addLibraryItem(
-////						id,
-////						"The infection of humans caused by Rubella",
-////						"Hypothetical Rubella virus added by John Levander, University of Pittsburgh",
-////						"Infection", itemIndexingLabels);
-////
-////	}
-////
-////	public static String addDiptheria(ApolloServiceEI port) {
-////		
-////		Infection id = new Infection();
-////		id.setPathogenTaxonID(PathogenTaxonID.)
-////		id.setAsymptomaticInfectionFraction(0.25d);
-////		id.setHostOrganismName("human");
-////		id.setCausativeOrganismName("corynebacterium diphtheriae");
-////
-////		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-////		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp.setTimeStepValue(3.2d);
-////		id.setLatentPeriod(tdp);
-////
-////		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-////		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp2.setTimeStepValue(5.2d);
-////		id.setInfectiousPeriod(tdp2);
-////
-////		id.setReproductionNumber(4.1d);
-////
-////		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("Infection");
-////		itemIndexingLabels.add("Diptheria");
-////		itemIndexingLabels.add("corynebacterium diphtheriae");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("hypothetical");
-////
-////		return port
-////				.addLibraryItem(
-////						id,
-////						"The infection of humans caused by Diptheria",
-////						"Hypothetical Diptheria added by John Levander, University of Pittsburgh",
-////						"Infection", itemIndexingLabels);
-////	}
-////
-////	public static String addMeningitidis(ApolloServiceEI port) {
-////		Infection id = new Infection();
-////		id.setAsymptomaticInfectionFraction(0.25d);
-////		id.setHostOrganismName("human");
-////		id.setCausativeOrganismName("neisseria meningitidis");
-////
-////		TemporalDiseaseParameter tdp = new TemporalDiseaseParameter();
-////		tdp.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp.setTimeStepValue(2.2d);
-////		id.setLatentPeriod(tdp);
-////
-////		TemporalDiseaseParameter tdp2 = new TemporalDiseaseParameter();
-////		tdp2.setTimeStepUnit(TimeStepUnit.DAY);
-////		tdp2.setTimeStepValue(6.2d);
-////		id.setInfectiousPeriod(tdp2);
-////
-////		id.setReproductionNumber(3.1d);
-////
-////		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("Infection");
-////		itemIndexingLabels.add("meningitis");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("hypothetical");
-////
-////		return port
-////				.addLibraryItem(
-////						id,
-////						"The infection of humans caused by Meningitis",
-////						"Hypothetical Meningitis added by John Levander, University of Pittsburgh",
-////						"Infection", itemIndexingLabels);
-////	}
-//
-//	public static String addH1N1(ApolloServiceEI port) {
-//		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6d, /*lp*/2d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, /*r0*/1.3d);
-//
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("Infection");
-//		itemIndexingLabels.add("Influenza");
-//		itemIndexingLabels.add("swine");
-//		itemIndexingLabels.add("usa");
-//		itemIndexingLabels.add("A/H1N1");
-//		itemIndexingLabels.add("H1N1");
-//		itemIndexingLabels.add("2009");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						id,
-//						"The infection of humans caused by Influenza A virus subtype H1N1",
-//						"Hypothetical H1N1 virus added by John Levander, University of Pittsburgh",
-//		
-//						"Infection", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addH5N1(ApolloServiceEI port) {
-//		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.3d, /*lp*/2.1d, /*itp*/1.4d, /*pns*/0.5d, /*psgs*/0.9d, /*r0*/1.4d);
-//
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("Infection");
-//		itemIndexingLabels.add("Influenza");
-//		itemIndexingLabels.add("china");
-//		itemIndexingLabels.add("avian");
-//		itemIndexingLabels.add("A/H5N1");
-//		itemIndexingLabels.add("H5N1");
-//		itemIndexingLabels.add("2008");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						id,
-//						"The infection of humans caused by Influenza A virus subtype H5N1",
-//						"Hypothetical H5N1 virus added by John Levander, University of Pittsburgh",
-//						"Infection", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addH7N9(ApolloServiceEI port) {
-//		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/5.3d, /*lp*/1.9d, /*itp*/1.4d, /*pns*/0.6d, /*psgs*/0.9d, /*r0*/1.5d);
-//		
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("Infection");
-//		itemIndexingLabels.add("Influenza");
-//		itemIndexingLabels.add("taiwan");
-//		itemIndexingLabels.add("avian");
-//		itemIndexingLabels.add("A/H7N9");
-//		itemIndexingLabels.add("H7N9");
-//		itemIndexingLabels.add("2013");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						id,
-//						"The infection of humans caused by Influenza A virus subtype H7N9",
-//						"Hypothetical H7N9 virus added by John Levander, University of Pittsburgh",
-//						"Infection", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addH3N2(ApolloServiceEI port) {
-//		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.3d, /*lp*/2.9d, /*itp*/1.4d, /*pns*/0.6d, /*psgs*/0.9d, /*r0*/1.2d);
-//		
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("Infection");
-//		itemIndexingLabels.add("Influenza");
-//		itemIndexingLabels.add("california");
-//		itemIndexingLabels.add("A/H3N2");
-//		itemIndexingLabels.add("H3N2");
-//		itemIndexingLabels.add("2009");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						id,
-//						"The infection of humans caused by Influenza A virus subtype H3N2",
-//						"Hypothetical H3N2 virus added by John Levander, University of Pittsburgh",
-//						"Infection", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addH7N7(ApolloServiceEI port) {
-//		Infection id = addDisease(PathogenTaxonID.INFLUENZA, "human", /*ip*/6.1d, /*lp*/2.6d, /*itp*/1.4d, /*pns*/0.3d, /*psgs*/0.9d, /*r0*/7.44d);
-//		
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("Infection");
-//		itemIndexingLabels.add("Influenza");
-//		itemIndexingLabels.add("netherlands");
-//		itemIndexingLabels.add("A/H7N7");
-//		itemIndexingLabels.add("H7N7");
-//		itemIndexingLabels.add("2003");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						id,
-//
-//						"The infection of humans caused by Influenza A virus subtype H7N7"
-//								+ "",
-//						"Hypothetical H7N7 virus added by John Levander, University of Pittsburgh",
-//						"Infection", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addAcAvt(ApolloServiceEI port) {
-//		Antiviral av = new Antiviral();
-//		av.setAntiviralId("Tamiflu");
-//		av.setDescription("Tamiflu");
-//		AntiviralTreatment avt = new AntiviralTreatment();
-//		avt.setDescription("A treatment course of the antiviral Tamiflu");
-//		avt.setNumDosesInTreatmentCourse(new BigInteger("10"));
-//		avt.setSpeciesOfTreatedOrganisms("human");
-//		avt.getTreatmentContraindications();
-//
-//		// avt.s
-//		AntiviralTreatmentControlMeasure atcm = new AntiviralTreatmentControlMeasure();
-//		atcm.setAntiviralTreatment(avt);
-//		atcm.setDescription("A control measure in which all sick humans are treated with a course of Tamiflu.");
-//		atcm.setControlMeasureCompliance(0.9);
-//		atcm.setControlMeasureNamedPrioritizationScheme("Treat Sick Only");
-//		atcm.setControlMeasureReactiveEndPointFraction(1d);
-//		atcm.setControlMeasureResponseDelay(4d);
-//		FixedStartTime atcmFst = new FixedStartTime();
-//		atcmFst.setStartTime(new BigInteger("0"));
-//		atcmFst.setStopTime(new BigInteger("127"));
-//		atcm.setControlMeasureStartTime(atcmFst);
-//		for (int i = 0; i < 128; i++) {
-//			atcm.getAntiviralSupplySchedule().add(2000);
-//			atcm.getAntiviralTreatmentAdministrationCapacity().add(
-//					new BigInteger("2000"));
-//		}
-//
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//		itemIndexingLabels.add("AntiviralTreatmentControlMeasure");
-//		itemIndexingLabels.add("Antiviral");
-//		itemIndexingLabels.add("AntiviralTreatment");
-//		itemIndexingLabels.add("Allegheny County");
-//		itemIndexingLabels.add("human");
-//		itemIndexingLabels.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						atcm,
-//						"A hypothetical control measure in which all sick humans are treated with a course of Tamiflu.",
-//						"Expert opinion regarding a realistic (yet hypothetical) Antiviral Treatment Control Measure.",
-//						"AntiviralTreatmentControlMeasure", itemIndexingLabels);
-//
-//	}
-//
-//	public static String addAcVcm(ApolloServiceEI port) {
-//		// add Vacc
-//		Vaccination vacc = new Vaccination();
-//		vacc.setDescription("A/(H3N2) Victoria/361//2011-like");
-//		vacc.setNumDosesInTreatmentCourse(new BigInteger("1"));
-//		vacc.setSpeciesOfTreatedOrganisms("human");
-//		vacc.getTreatmentContraindications();
-//
-//		Treatment t = new Treatment();
-//		t.setDescription("dummy treatment");
-//		t.setNumDosesInTreatmentCourse(new BigInteger("1"));
-//		t.setSpeciesOfTreatedOrganisms("human");
-////		t.getTreatmentContraindications();
-//
-//		VaccinationEfficacyForRunSimulationMessage vesc = new VaccinationEfficacyForRunSimulationMessage();
-//		vesc.setStrainIdentifier("A/(H3N2) Victoria/361//2011-like");
-//		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
-//		// vesc.setTreatment(vacc);
-//		vesc.setTreatment(t);
-//		vesc.setVaccineIdentifier("A/(H3N2) Victoria/361//2011-like");
-//		vesc.setAverageVaccinationEfficacy(0.47);
-//		vesc.setDescription("A/(H3N2) Victoria/361//2011-like");
-//
-//		vacc.getVaccinationEfficacies().add(vesc);
-//
-//		VaccinationControlMeasure vcm = new VaccinationControlMeasure();
-//		vcm.setVaccination(vacc);
-//		vcm.setControlMeasureCompliance(0.5);
-//		vcm.setControlMeasureNamedPrioritizationScheme("ACIP");
-//		vcm.setControlMeasureReactiveEndPointFraction(1d);
-//		vcm.setControlMeasureResponseDelay(0d);
-//		FixedStartTime vaccCmFst = new FixedStartTime();
-//		vaccCmFst.setStartTime(new BigInteger("0"));
-//		vaccCmFst.setStopTime(new BigInteger("127"));
-//		vcm.setControlMeasureStartTime(vaccCmFst);
-//		vcm.setDescription("dummy vaccination control measure to hold efficacy");
-//
-//		for (int i = 0; i < 56; i++)
-//			vcm.getVaccineSupplySchedule().add(0);
-//
-//		for (int i = 56; i < 87; i++)
-//			vcm.getVaccineSupplySchedule().add(0);
-//
-//		for (int i = 87; i < 127; i++)
-//			vcm.getVaccineSupplySchedule().add(0);
-//
-//		for (int i = 0; i < 127; i++)
-//			vcm.getVaccinationAdministrationCapacity().add(
-//					new BigInteger("0"));
-//
-//		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-////		itemIndexingLabels.add("VaccinationControlMeasure");
-////		itemIndexingLabels.add("Vaccination");
-////		itemIndexingLabels.add("Vaccine");
-////		itemIndexingLabels.add("Allegheny County");
-////		itemIndexingLabels.add("42003");
-////		itemIndexingLabels.add("Allegheny County Health Department");
-////		itemIndexingLabels.add("ACHD");
-////		itemIndexingLabels.add("2009");
-////		itemIndexingLabels.add("H1N1");
-////		itemIndexingLabels.add("human");
-////		itemIndexingLabels.add("non-hypothetical");
-//
-//		return port.addLibraryItem(vcm, vcm.getDescription(),
-//				"", "VaccinationControlMeasure",
-//				itemIndexingLabels);
-//	}
-//
-//	public static String addAllSccm(ApolloServiceEI port) {
-//		SchoolClosureControlMeasure scm = new SchoolClosureControlMeasure();
-//		ReactiveStartTime rst = new ReactiveStartTime();
-//		ReactiveTriggersDefinition rtd = new ReactiveTriggersDefinition();
-//		rtd.setReactiveControlMeasureThreshold(0.01);
-//		rtd.setReactiveControlMeasureTest("Symptomatic Students");
-//		rtd.setAscertainmentDelay(new BigInteger("2"));
-//		rtd.setAscertainmentFraction(0.5);
-//		rst.setTrigger(rtd);
-//		scm.setControlMeasureStartTime(rst);
-//		scm.setControlMeasureCompliance(1d);
-//		scm.setControlMeasureNamedPrioritizationScheme("Immediately Close All Schools");
-//		scm.setControlMeasureReactiveEndPointFraction(1d);
-//		scm.setControlMeasureResponseDelay(2d);
-//		scm.setDescription("A school closure control measure where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
-//		scm.setSchoolClosureDuration(new BigInteger("56"));
-//		scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.ALL);
-//		List<String> indexingValues = new ArrayList<String>();
-//		indexingValues.add("BARDA");
-//		indexingValues.add("SchoolClosureControlMeasure");
-//		indexingValues.add("SchoolClosure");
-//		indexingValues.add("Reactive Start Time");
-//		indexingValues.add("human");
-//		indexingValues.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						scm,
-//						scm.getDescription(),
-//						"A hypothetical school closure control measure specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//						"SchoolClosureControlMeasure", indexingValues);
-//	}
-//
-//	public static String addIndividualSccm(ApolloServiceEI port) {
-//		SchoolClosureControlMeasure scm = new SchoolClosureControlMeasure();
-//
-//		ReactiveStartTime rst = new ReactiveStartTime();
-//		ReactiveTriggersDefinition rtd = new ReactiveTriggersDefinition();
-//		rtd.setReactiveControlMeasureThreshold(0.01);
-//		rtd.setReactiveControlMeasureTest("Symptomatic Students");
-//		rtd.setAscertainmentDelay(new BigInteger("2"));
-//		rtd.setAscertainmentFraction(0.5);
-//		rst.setTrigger(rtd);
-//		scm.setControlMeasureStartTime(rst);
-//		scm.setControlMeasureCompliance(1d);
-//		scm.setControlMeasureNamedPrioritizationScheme("Close Schools Individually");
-//		scm.setControlMeasureReactiveEndPointFraction(1d);
-//		scm.setControlMeasureResponseDelay(2d);
-//		scm.setDescription("A school closure control measure where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
-//		scm.setSchoolClosureDuration(new BigInteger("56"));
-//		scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.INDIVIDUAL);
-//		List<String> indexingValues = new ArrayList<String>();
-//		indexingValues.add("BARDA");
-//		indexingValues.add("SchoolClosureControlMeasure");
-//		indexingValues.add("SchoolClosure");
-//		indexingValues.add("Reactive Start Time");
-//		indexingValues.add("human");
-//		indexingValues.add("hypothetical");
-//
-//		return port
-//				.addLibraryItem(
-//						scm,
-//						scm.getDescription(),
-//						"A hypothetical school closure control measure specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//						"SchoolClosureControlMeasure", indexingValues);
-//	}
-//
-//	public static void main(String[] args) throws InterruptedException,
-//			IOException, DatatypeConfigurationException {
-//
-//		ApolloServiceV131 service = new ApolloServiceV131(new URL(WSDL_LOC));
-//		ApolloServiceEI port = service.getApolloServiceEndpoint();
-//
-//		addAcVcm(port);
-////		addAcAvt(port);
-////		addAllSccm(port);
-////		addIndividualSccm(port);
-////		addH1N1(port);
-////		addH3N2(port);
-////		addH5N1(port);
-////		addH7N7(port);
-////		addH7N9(port);
-////		addDiptheria(port);
-////		addMeningitidis(port);
-////		addRubella(port);
-////		addSARS(port);
-////		addSmallpox(port);
-//
-//		GregorianCalendar c = new GregorianCalendar();
-//		c.add(Calendar.YEAR, -1);
-//		XMLGregorianCalendar date;
-//
-//		date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-//		List<String> l = port.getUuidsForLibraryItemsCreatedSinceDateTime(date);
-//		for (int i = 0; i < l.size(); i++) {
-//			CuratedLibraryItemContainer item = port.getLibraryItem(l.get(i));
-//			System.out
-//					.printf("Item %d:\n\tUUID: %s\n\tType: %s\n\tDescription: %s\n\tSource: %s\n",
-//							i + 1, item.getCuratedLibraryItem().getItemUuid(),
-//							item.getCuratedLibraryItem().getItemType(), item
-//									.getCuratedLibraryItem()
-//									.getItemDescription(), item
-//									.getCuratedLibraryItem().getItemSource());
-//			System.out.print("\tIndexing labels: ");
-//			for (int j = 0; j < item.getCuratedLibraryItem()
-//					.getItemIndexingLabels().size(); j++) {
-//				System.out.print(item.getCuratedLibraryItem()
-//						.getItemIndexingLabels().get(j));
-//				if (j < item.getCuratedLibraryItem().getItemIndexingLabels()
-//						.size() - 1) {
-//					System.out.print(", ");
-//				}
-//				if (j > 0 && j % 4 == 0) {
-//					System.out.print("\n                         ");
-//				}
-//			}
-//			System.out.println();
-//
-//		}
-//
-//		// // add
-//		// System.out.println(uuid);
-//		//
-//		// // grab
-//		//
-//		// CuratedLibraryItemContainer clic = port.getLibraryItem(uuid);
-//		// System.out.println("The item is of type: "
-//		// + clic.getCuratedLibraryItem().getItemType());
-//		// System.out.println("The item is tagged as follows: ");
-//		// for (int i = 0; i < clic.getCuratedLibraryItem()
-//		// .getItemIndexingLabels().size(); i++) {
-//		// System.out.println("\t"
-//		// + clic.getCuratedLibraryItem().getItemIndexingLabels()
-//		// .get(i));
-//		// }
-//		// SchoolClosureControlMeasure sscm = (SchoolClosureControlMeasure) clic
-//		// .getApolloIndexableItem();
-//		// System.out.println("The school will remain closed for "
-//		// + sscm.getSchoolClosureDuration() + " days.");
-//		//
-//		// // query
-//		// GregorianCalendar c = new GregorianCalendar();
-//		// c.add(Calendar.YEAR, -1);
-//		// XMLGregorianCalendar date;
-//		//
-//		// date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-//		// List<String> l =
-//		// port.getUuidsForLibraryItemsCreatedSinceDateTime(date);
-//		// System.out.println(l);
-//		//
-//		// // query
-//		// l =
-//		// port.getUuidsForLibraryItemsGivenType("SchoolClosureControlMeasure");
-//		// System.out.println(l);
-//
-//	}
-//}
-//
-////
-////
-//// @SuppressWarnings("unused")
-//// ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
-////
-////
-//// Authentication auth = new Authentication();
-//// auth.setRequesterId("fake_user");
-//// auth.setRequesterPassword("fake_password");
-//// srr.setAuthentication(auth);
-//// //
-//// // ServiceRecord sr = new ServiceRecord();
-//// SoftwareIdentification si = new SoftwareIdentification();
-//// si.setSoftwareDeveloper("UPitt");
-//// si.setSoftwareName("SEIR");
-//// si.setSoftwareVersion("1.2");
-//// si.setSoftwareType(ApolloSoftwareType.SIMULATOR);
-//// srr.setSoftwareIdentification(si);
-////
-//// srr.setUrl("http://localhost:8080/seirsimulatorservice/services/seirsimulatorservice?wsdl");
-////
-//// port.registerService(srr);
-//// // sr.setSimulatorIdentification(si);
-//// //
-//// // srr.setServiceRecord(sr);
-//// // srr.setUrl("http://youtube.com");
-//// // //srr.setUrl("http://localhost:8087/fred?wsdl");
-//// //
-//// // Holder<Boolean> success = new Holder<Boolean>();
-//// // Holder<String> msg = new Holder<String>();
-//// // port.registerService(srr, success, msg);
-//// // System.out.println(msg.value);
-////
-//// // List<ServiceRecord> l = port.getRegisteredServices();
-//// // System.out.println("Found " + l.size() + " registered services!");
-//// // for (ServiceRecord r : l) {
-//// //
-//// System.out.println(r.getSimulatorIdentification().getSimulatorDeveloper());
-//// // System.out.println(r.getSimulatorIdentification().getSimulatorName());
-//// // System.out.println(r.getSimulatorIdentification().getSimulatorVersion() +
-//// "\n\n");
-//// // }
-////
-//// RunSimulationMessage simulatorConfiguration = new RunSimulationMessage();
-////
-//// simulatorConfiguration.setAuthentication(auth);
-//// // simulatorConfiguration
-//// // .setAntiviralControlMeasure(new AntiviralTreatmentControlMeasure());
-//// //// AntiviralTreatmentControlMeasure acm = simulatorConfiguration
-//// // .getAntiviralControlMeasure();
-//// // acm.setAntiviralCmCompliance(0d);
-//// // acm.setAntiviralEfficacy(0d);
-//// // acm.setAntiviralEfficacyDelay(0d);
-//// // acm.getAntiviralAdminSchedule().add(1d);
-//// // acm.getAntiviralSupplySchedule().add(1d);
-////
-//// simulatorConfiguration.setSimulatorIdentification(si);
-////
-//// simulatorConfiguration.setDisease(new Disease());
-//// Disease disease = simulatorConfiguration.getDisease();
-//// disease.setAsymptomaticInfectionFraction(0.5);
-//// disease.setDiseaseName("Influenza");
-//// disease.setInfectiousPeriod(3.2);
-//// disease.setLatentPeriod(2.0);
-//// disease.setReproductionNumber(1.7);
-////
-//// simulatorConfiguration
-//// .setPopulationInitialization(new SimulatedPopulation());
-//// SimulatedPopulation sp = simulatorConfiguration
-//// .getPopulationInitialization();
-//// sp.setPopulationLocation("42003");
-////
-//// List<PopulationDiseaseState> ds = sp.getPopulationDiseaseState();
-//// PopulationDiseaseState pds = new PopulationDiseaseState();
-//// pds.setDiseaseState("susceptible");
-//// pds.setFractionOfPopulation(0.95);
-//// ds.add(pds);
-//// pds = new PopulationDiseaseState();
-//// pds.setDiseaseState("exposed");
-//// pds.setFractionOfPopulation(0.0);
-//// ds.add(pds);
-//// pds = new PopulationDiseaseState();
-//// pds.setDiseaseState("infectious");
-//// pds.setFractionOfPopulation(0.01);
-//// ds.add(pds);
-//// pds = new PopulationDiseaseState();
-//// pds.setDiseaseState("recovered");
-//// pds.setFractionOfPopulation(0.04);
-//// ds.add(pds);
-////
-//// simulatorConfiguration
-//// .setSimulatorTimeSpecification(new SimulatorTimeSpecification());
-//// SimulatorTimeSpecification stc = simulatorConfiguration
-//// .getSimulatorTimeSpecification();
-//// stc.setRunLength(new BigInteger("30"));
-//// stc.setTimeStepUnit(TimeStepUnit.DAY);
-//// stc.setTimeStepValue(1d);
-////
-//// // simulatorConfiguration
-//// // .setVaccinationControlMeasure(new VaccinationControlMeasure());
-//// // VaccinationControlMeasure vcm = simulatorConfiguration
-//// // .getVaccinationControlMeasure();
-//// // vcm.setVaccineCmCompliance(0d);
-//// // vcm.setVaccineEfficacy(0d);
-//// // vcm.setVaccineEfficacyDelay(0d);
-//// // for (int i = 0; i < 30; i++) {
-//// // vcm.getVaccinationAdminSchedule().add(0d);
-//// // vcm.getVaccineSupplySchedule().add(0d);
-//// // }
-////
-//// //MessageDigest md = MessageDigest.getInstance("MD5");
-////
-//// // XStream xStream = new XStream(new DomDriver());
-//// // FileWriter fw = new FileWriter(new File("simulatorConfiguration.xml"));
-//// // xStream.toXML(simulatorConfiguration, fw);
-//// // fw.close();
-////
-//// // OBJECTMAPPER MAPPER = NEW OBJECTMAPPER();
-//// // WRITER STRWRITER = NEW FILEWRITER(NEW
-//// FILE("SIMULATORCONFIGURATION.JSON"));
-//// // MAPPER.WRITEVALUE(STRWRITER, SIMULATORCONFIGURATION);
-//// // @SUPPRESSWARNINGS("UNUSED")
-//// // STRING USERDATAJSON = STRWRITER.TOSTRING();
-//// // STRWRITER.CLOSE();
-//// //
-////
-//// // String runId = port.runSimulation(simulatorConfiguration);
-//// // System.out.println("Simulator returned runId: " + runId );
-//// // // String runId = "Pitt,PSC,CMU_FRED_2.0.1_231162";
-//// // RunStatus rs = port.getRunStatus(runId, sr);
-//// // while (rs.getStatus() != RunStatusEnum.COMPLETED) {
-//// // System.out.println("Status is " + rs.getStatus());
-//// // System.out.println("Message is " + rs.getMessage());
-//// // System.out.println("\n");
-//// // Thread.sleep(500);
-//// // rs = port.getRunStatus(runId, sr);
-//// // }
-//// // System.out.println("Status is " + rs.getStatus());
-//// // System.out.println("Message is " + rs.getMessage());
-////
-//// // port.unRegisterService(srr, success, msg);
-//// // System.out.println(msg.value);
-////
-//// }
+
+    
 
