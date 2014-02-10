@@ -49,8 +49,6 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-classpath</argument>
-						<classpath />
 						<!-- Uncomment below for debug output with CXF. Will need to configure 
 							client-side interceptors and supply a java.util.logging properties file: 
 							http://cxf.apache.org/docs/debugging-and-logging.html Place the logging file 

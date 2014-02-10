@@ -397,20 +397,7 @@ public class WSClient {
 
 
 	public static void main(String args[]) throws java.lang.Exception {
-		URL wsdlURL = ApolloServiceV20.WSDL_LOCATION;
-		if (args.length > 0 && args[0] != null && !"".equals(args[0])) {
-			File wsdlFile = new File(args[0]);
-			try {
-				if (wsdlFile.exists()) {
-					wsdlURL = wsdlFile.toURI().toURL();
-				} else {
-					wsdlURL = new URL(args[0]);
-				}
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		URL wsdlURL = new URL(WSClient.WSDL_LOC);
 		WSClient client = new WSClient(
 				wsdlURL);
 		String simulationRunId = client.callRunSimulation();
