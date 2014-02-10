@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -32,8 +31,9 @@ import edu.pitt.apollo.service.apolloservice.v2_0.ApolloServiceV20;
 import edu.pitt.apollo.types.v2_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
 import edu.pitt.apollo.types.v2_0.Authentication;
-import edu.pitt.apollo.types.v2_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v2_0.ControlStrategyTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v2_0.FixedStartTime;
+import edu.pitt.apollo.types.v2_0.IndividualTreatmentControlStrategy;
 import edu.pitt.apollo.types.v2_0.Infection;
 import edu.pitt.apollo.types.v2_0.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0.InfectionState;
@@ -44,10 +44,10 @@ import edu.pitt.apollo.types.v2_0.LocationDefinition;
 import edu.pitt.apollo.types.v2_0.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
-import edu.pitt.apollo.types.v2_0.PopulationAndEnvironmentCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0.PopulationInfectionAndImmunityCensusDataCell;
+import edu.pitt.apollo.types.v2_0.ProbabilisticParameterValue;
 import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
@@ -56,6 +56,10 @@ import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.TimeStepUnit;
 import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
+import edu.pitt.apollo.types.v2_0.Vaccination;
+import edu.pitt.apollo.types.v2_0.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types.v2_0.VaccinationPreventableOutcome;
+import edu.pitt.apollo.types.v2_0.Vaccine;
 import edu.pitt.apollo.types.v2_0.VisualizationOptions;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
@@ -75,7 +79,7 @@ public class WSClient {
 		port = ss.getApolloServiceEndpoint();
 	}
 
-	public SoftwareIdentification getSoftwareIdentificationForFred() {
+	public SoftwareIdentification getSoftwareIdentificationForSimulator() {
 		SoftwareIdentification softwareId = new SoftwareIdentification();
 		softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
 		softwareId.setSoftwareName("FRED");
@@ -123,7 +127,16 @@ public class WSClient {
 	private PopulationInfectionAndImmunityCensus getPopulationInfectionAndImmunityCensus() {
 		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 		census.setDescription("Population of Allegheny County, Pennsylvania");
+
 		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.YEAR, 2009);
+		calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
 		XMLGregorianCalendar censusDate = null;
 		try {
 			censusDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(
@@ -133,7 +146,6 @@ public class WSClient {
 					+ e.getMessage());
 			System.exit(-1);
 		}
-
 		census.setDate(censusDate);
 
 		Location location = new Location();
@@ -167,7 +179,6 @@ public class WSClient {
 		data.getCensusDataCells().add(recoveredCell);
 
 		census.setCensusData(data);
-
 		return census;
 	}
 
@@ -261,10 +272,11 @@ public class WSClient {
 
 	public String callRunSimulation() {
 		RunSimulationMessage message = new RunSimulationMessage();
-		message.setAuthentication(getAuthentication());
-		message.setSimulatorIdentification(getSoftwareIdentificationForFred());
-		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification());
 		message.setInfectiousDiseaseScenario(getInfectiousDiseaseScenario());
+		message.setAuthentication(getAuthentication());
+		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator());
+		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification());
+		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies().add(getVaccinationControlStrategy());
 		return port.runSimulation(message);
 	}
 
@@ -274,7 +286,7 @@ public class WSClient {
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e1) {
-			//this is acceptable
+			// this is acceptable
 		}
 		while (true) {
 			MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
@@ -284,7 +296,7 @@ public class WSClient {
 			case AUTHENTICATION_FAILURE:
 			case UNAUTHORIZED:
 				System.out
-						.println("We weren't authorized for this run! Error message is:"
+						.println("No authorization for this run! Error message is:"
 								+ status.getMessage());
 				return status;
 			case COMPLETED:
@@ -316,12 +328,14 @@ public class WSClient {
 			SoftwareIdentification visualizerSoftwareIdentification) {
 		System.out.println("Visualizing runId" + simulatorRunId + " using the "
 				+ visualizerSoftwareIdentification.getSoftwareName()
-				+ " visualizer.");
+				+ " visualizer...");
 
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 
 		VisualizationOptions options = new VisualizationOptions();
 		options.setRunId(simulatorRunId);
+		options.setLocation("42003");
+		options.setOutputFormat("default");
 		runVisualizationMessage.setVisualizationOptions(options);
 
 		runVisualizationMessage
@@ -356,59 +370,115 @@ public class WSClient {
 		}
 
 	}
-	
-	//TODO: move this out of here
-    public void testPopulationAndEnvironmentCensuses(ApolloServiceEI port) {
 
-        SoftwareIdentification id = getSoftwareIdentificationForFred();
-        GetScenarioLocationCodesSupportedBySimulatorResult result = port.getScenarioLocationCodesSupportedBySimulator(id);
-        List<String> locationCodes = result.getLocationCodes();
+	private Vaccination getVaccination() {
+		Vaccination vacc = new Vaccination();
+		vacc.setDescription("H1N1 Vaccine");
+		vacc.setNumDosesInTreatmentCourse(new BigInteger("1"));
+		vacc.setSpeciesOfTreatedOrganisms("Homo sapiens");
+		vacc.getTreatmentContraindications();
 
-        if (!locationCodes.contains("42")) {
-            throw new RuntimeException("Location codes did not contain code 42");
-        }
-        if (!locationCodes.contains("42003")) {
-            throw new RuntimeException("Location codes did not contain code 42003");
-        }
-        GetPopulationAndEnvironmentCensusResult censusResult = port.getPopulationAndEnvironmentCensus(id, "42");
-        PopulationAndEnvironmentCensus census = censusResult.getPopulationAndEnvironmentCensus();
-        System.out.println("Location code 42");
-        System.out.println("NameOfAdministrativeUnit: " + census.getNameOfAdministativeUnit());
-        System.out.println("NumberOfPeople: " + census.getNumberOfPeople());
-        System.out.println("NumberOfSchools: " + census.getNumberOfSchools());
-        System.out.println("NumberOfWorkplaces: " + census.getNumberOfWorkplaces());
-        System.out.println("Number of sublocations: " + census.getSubLocationCensuses().size());
-        System.out.println();
-//        List<PopulationAndEnvironmentCensus> subCensuses = census.getSubLocationCensuses();
+		Vaccine vaccine = new Vaccine();
+		vaccine.setDescription("Influenza A (H1N1) 2009 Monovalent Vaccine");
+		vacc.setVaccine(vaccine);
 
-        //        //confirm working that subtree is built
-        censusResult = port.getPopulationAndEnvironmentCensus(id, "42003");
-        census = censusResult.getPopulationAndEnvironmentCensus();
-        System.out.println("Location code 42003");
-        System.out.println("NameOfAdministrativeUnit: " + census.getNameOfAdministativeUnit());
-        System.out.println("NumberOfPeople: " + census.getNumberOfPeople());
-        System.out.println("NumberOfSchools: " + census.getNumberOfSchools());
-        System.out.println("NumberOfWorkplaces: " + census.getNumberOfWorkplaces());
-        System.out.println("Number of sublocations: " + census.getSubLocationCensuses().size());
-        //        //confirm working no subtree but good info
-        //   
+		VaccinationEfficacyForSimulatorConfiguration vesc = new VaccinationEfficacyForSimulatorConfiguration();
 
-    }
+		ApolloPathogenCode strain = new ApolloPathogenCode();
+		strain.setNcbiTaxonId("114727");
+		// strain.setGisrnCladeName("A/(H3N2) Victoria/361//2011-like");
 
+		vesc.setStrainIdentifier(strain);
+		vesc.setForVaccinationPreventableOutcome(VaccinationPreventableOutcome.INFECTION);
+		// vesc.setTreatment(vacc);
+		// vesc.setTreatment(t);
+		vesc.setVaccineIdentifier("Influenza A (H1N1) 2009 Monovalent Vaccine");
+		vesc.setAverageVaccinationEfficacy(0.47);
+		vesc.setDescription("The vaccination efficacy for the Influenza A (H1N1) 2009 Monovalent Vaccine");
+
+		vacc.getVaccinationEfficacies().add(vesc);
+
+		return vacc;
+	}
+
+	private ProbabilisticParameterValue getControlStrategyCompilance() {
+		ProbabilisticParameterValue compliance = new ProbabilisticParameterValue();
+		compliance.setValue(0.5);
+		return compliance;
+
+	}
+
+	private ControlStrategyTargetPopulationsAndPrioritization getTargetPopulationsAndPrioritizations() {
+		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization
+				.setControlStrategyNamedPrioritizationScheme("ACIP");
+		return targetPopulationsAndPrioritization;
+	}
+
+	private NumericParameterValue getResponseDelay() {
+		NumericParameterValue responseDelay = new NumericParameterValue();
+		responseDelay.setUnitOfMeasure(UnitOfMeasure.DAYS);
+		responseDelay.setValue(0d);
+
+		return responseDelay;
+
+	}
+
+	private FixedStartTime getFixedStartTime() {
+		FixedStartTime fixedStartTime = new FixedStartTime();
+		fixedStartTime.setStartTimeRelativeToScenarioDate(new BigInteger("0"));
+		fixedStartTime.setStopTimeRelativeToScenarioDate(new BigInteger("90"));
+		return fixedStartTime;
+	}
+
+	private IndividualTreatmentControlStrategy getVaccinationControlStrategy() {
+		IndividualTreatmentControlStrategy vaccinationControlMeasure = new IndividualTreatmentControlStrategy();
+		vaccinationControlMeasure.setControlStrategyCompliance(getControlStrategyCompilance());
+		vaccinationControlMeasure.setControlStrategyReactiveEndPointFraction(1.0);
+		vaccinationControlMeasure.setControlStrategyResponseDelay(getResponseDelay());
+		vaccinationControlMeasure.setControlStrategyStartTime(getFixedStartTime());
+		vaccinationControlMeasure.setDescription("An example vaccination control strategy.");
+		vaccinationControlMeasure.setIndividualTreatment(getVaccination());
+		vaccinationControlMeasure.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
+
+		for (int i = 0; i < 90; i++)
+			vaccinationControlMeasure.getSupplySchedule().add(new BigInteger("3500"));
+
+		for (int i = 0; i < 90; i++)
+			vaccinationControlMeasure.getAdministrationCapacity().add(new BigInteger("3500"));
+
+		return vaccinationControlMeasure;
+	}
 
 	public static void main(String args[]) throws java.lang.Exception {
-		URL wsdlURL = new URL(WSClient.WSDL_LOC);
+		URL wsdlURL = ApolloServiceV20.WSDL_LOCATION;
+		if (args.length > 0 && args[0] != null && !"".equals(args[0])) {
+			File wsdlFile = new File(args[0]);
+			try {
+				if (wsdlFile.exists()) {
+					wsdlURL = wsdlFile.toURI().toURL();
+				} else {
+					wsdlURL = new URL(args[0]);
+				}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		WSClient client = new WSClient(
 				wsdlURL);
 		String simulationRunId = client.callRunSimulation();
 		System.out.println("The simulator returned a runId of "
 				+ simulationRunId);
+
 		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
 		runAndSoftwareId.setSoftwareId(client
-				.getSoftwareIdentificationForFred());
+				.getSoftwareIdentificationForSimulator());
 		runAndSoftwareId.setRunId(simulationRunId);
+
 		MethodCallStatus status = client
 				.checkStatusOfWebServiceCall(runAndSoftwareId);
+
 		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
 			client.getResourcesFromVisualizer(simulationRunId,
 					client.getSoftwareIdentifiationForTimeSeriesVisualizer());
@@ -420,6 +490,5 @@ public class WSClient {
 	}
 
 }
-
     
 
