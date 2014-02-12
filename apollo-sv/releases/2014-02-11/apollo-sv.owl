@@ -49,15 +49,15 @@
      xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
      xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
-    <Ontology rdf:about="&obo;apollo_sv/dev/apollo_sv.owl">
-        <dc:contributor>Amanda Hicks</dc:contributor>
-        <dc:contributor>Josh Hanna</dc:contributor>
-        <versionInfo xml:lang="en">(development) see svn repository for details</versionInfo>
-        <dc:title xml:lang="en">Apollo Standard Vocabulary Ontologized (Apollo_SV)</dc:title>
-        <dc:contributor>John Levander</dc:contributor>
-        <dc:creator>Mathias Brochhausen</dc:creator>
-        <dc:contributor>Mike Wagner</dc:contributor>
+    <Ontology rdf:about="&obo;apollo_sv/2014-02-11/apollo_sv.owl">
         <dc:contributor>Shawn T. Brown</dc:contributor>
+        <versionInfo xml:lang="en">2014-02-11 (release)</versionInfo>
+        <dc:contributor>Josh Hanna</dc:contributor>
+        <dc:creator>Mathias Brochhausen</dc:creator>
+        <dc:contributor>John Levander</dc:contributor>
+        <dc:contributor>Amanda Hicks</dc:contributor>
+        <dc:title xml:lang="en">Apollo Standard Vocabulary Ontologized (Apollo_SV)</dc:title>
+        <dc:contributor>Mike Wagner</dc:contributor>
         <dc:contributor>William R. Hogan</dc:contributor>
         <imports rdf:resource="&obo;geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
@@ -326,6 +326,14 @@
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">commissions</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -335,14 +343,6 @@
                 </unionOf>
             </Class>
         </rdfs:range>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -871,21 +871,21 @@
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
             <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
@@ -915,12 +915,12 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -5894,13 +5894,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -5990,13 +5990,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -7613,15 +7613,15 @@ school facility
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -7983,6 +7983,9 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000572">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;has_agent">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -7998,9 +8001,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000574">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8032,6 +8032,9 @@ school facility
     <rdf:Description rdf:about="&dc;format">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000142">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8047,9 +8050,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000142">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;language">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -8096,11 +8096,11 @@ school facility
     <rdf:Description rdf:about="&dc;description">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
-        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&dc;identifier">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
+        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000013">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8160,6 +8160,9 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8168,12 +8171,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8181,9 +8178,12 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8242,11 +8242,11 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000038">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000327">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000132">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000327">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000429">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
