@@ -127,7 +127,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	private LibraryServiceEI getLibraryServicePort() {
 		URL libraryServiceURL;
 		try {
-			libraryServiceURL = new URL("");
+			libraryServiceURL = new URL("http://localhost:8080/libraryservice2.0/services/libraryservice?wsdl");
 
 			return new LibraryServiceV20(libraryServiceURL)
 					.getLibraryServiceEndpoint();
@@ -349,7 +349,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			@WebParam(name = "itemType", targetNamespace = "") String itemType,
 			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
 		// TODO Auto-generated method stub
-		return null;
+		return getLibraryServicePort().addLibraryItem(authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
 	}
 
 	@Override
