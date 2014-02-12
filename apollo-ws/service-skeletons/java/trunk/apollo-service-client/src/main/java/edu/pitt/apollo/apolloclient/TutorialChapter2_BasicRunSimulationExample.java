@@ -277,7 +277,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 				System.out.println("No authorization for this run! Error message is:" + status.getMessage());
 				return status;
 			case COMPLETED:
-				System.out.println("Run completed!");
+				System.out.println("Completed!");
 				return status;
 			case FAILED:
 				System.out.println("Run Failed! Error message is:" + status.getMessage());
