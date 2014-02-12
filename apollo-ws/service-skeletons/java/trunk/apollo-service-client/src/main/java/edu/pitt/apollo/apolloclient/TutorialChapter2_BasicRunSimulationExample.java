@@ -55,26 +55,19 @@ import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.types.v2_0.VisualizationOptions;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
-public class BasicApolloBrokerClient {
+public class TutorialChapter2_BasicRunSimulationExample {
 
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0/services/apolloservice?wsdl";
 
 	private ApolloServiceEI port;
-	
-	
 
-	private static final QName SERVICE_NAME = new QName(
-			"http://service.apollo.pitt.edu/apolloservice/v2_0/",
-			"ApolloService_v2.0");
+	private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0/", "ApolloService_v2.0");
 
-	protected BasicApolloBrokerClient() throws MalformedURLException {
-		
-		
-		ApolloServiceV20 ss = new ApolloServiceV20(new URL(WSDL_LOC),
-				SERVICE_NAME);
+	protected TutorialChapter2_BasicRunSimulationExample() throws MalformedURLException {
+		ApolloServiceV20 ss = new ApolloServiceV20(new URL(WSDL_LOC), SERVICE_NAME);
 		port = ss.getApolloServiceEndpoint();
 	}
-	
+
 	public ApolloServiceEI getPort() {
 		return port;
 	}
@@ -90,9 +83,7 @@ public class BasicApolloBrokerClient {
 
 	protected SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
 		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareName("Image Visualizer"); // rename this
-														// timeseries or
-														// something!
+		softwareId.setSoftwareName("Time Series Visualizer");
 		softwareId.setSoftwareType(ApolloSoftwareType.VISUALIZER);
 		softwareId.setSoftwareVersion("1.0");
 		softwareId.setSoftwareDeveloper("UPitt");
@@ -117,7 +108,6 @@ public class BasicApolloBrokerClient {
 
 	protected SimulatorTimeSpecification getSimulatorTimeSpecification() {
 		SimulatorTimeSpecification timeSpec = new SimulatorTimeSpecification();
-		// the run length of the simulation is 90 days
 		timeSpec.setRunLength(new BigInteger("90"));
 		timeSpec.setTimeStepUnit(TimeStepUnit.DAY);
 		timeSpec.setTimeStepValue(1.0);
@@ -139,11 +129,9 @@ public class BasicApolloBrokerClient {
 
 		XMLGregorianCalendar censusDate = null;
 		try {
-			censusDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-					calendar);
+			censusDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 		} catch (DatatypeConfigurationException e) {
-			System.out.println("Error!  Unable to set date, error was:"
-					+ e.getMessage());
+			System.out.println("Error!  Unable to set date, error was:" + e.getMessage());
 			System.exit(-1);
 		}
 		census.setDate(censusDate);
@@ -192,7 +180,6 @@ public class BasicApolloBrokerClient {
 		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 
 		disease.setCausalPathogen(pathId);
-
 		return disease;
 	}
 
@@ -250,22 +237,16 @@ public class BasicApolloBrokerClient {
 		// translate from Java style Calendar to an XML compatible calendar
 		XMLGregorianCalendar scenarioDate = null;
 		try {
-			scenarioDate = DatatypeFactory.newInstance()
-					.newXMLGregorianCalendar(calendar);
+			scenarioDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 		} catch (DatatypeConfigurationException e) {
-			System.out.println("Error!  Unable to set date, error was:"
-					+ e.getMessage());
+			System.out.println("Error!  Unable to set date, error was:" + e.getMessage());
 			System.exit(-1);
 		}
 
 		scenario.setScenarioDate(scenarioDate);
-
 		scenario.getInfections().add(getInfection());
-
 		scenario.getDiseases().add(getInfectiousDisease());
-
-		scenario.getPopulationInfectionAndImmunityCensuses().add(
-				getPopulationInfectionAndImmunityCensus());
+		scenario.getPopulationInfectionAndImmunityCensuses().add(getPopulationInfectionAndImmunityCensus());
 
 		return scenario;
 	}
@@ -279,8 +260,7 @@ public class BasicApolloBrokerClient {
 		return message;
 	}
 
-	protected MethodCallStatus checkStatusOfWebServiceCall(
-			RunAndSoftwareIdentification runAndSoftwareId) {
+	protected MethodCallStatus checkStatusOfWebServiceCall(RunAndSoftwareIdentification runAndSoftwareId) {
 		// give the simulator a chance to launch the simulation
 		try {
 			Thread.sleep(10000);
@@ -294,16 +274,13 @@ public class BasicApolloBrokerClient {
 
 			case AUTHENTICATION_FAILURE:
 			case UNAUTHORIZED:
-				System.out
-						.println("No authorization for this run! Error message is:"
-								+ status.getMessage());
+				System.out.println("No authorization for this run! Error message is:" + status.getMessage());
 				return status;
 			case COMPLETED:
 				System.out.println("Run completed!");
 				return status;
 			case FAILED:
-				System.out.println("Run Failed! Error message is:"
-						+ status.getMessage());
+				System.out.println("Run Failed! Error message is:" + status.getMessage());
 				return status;
 			case RUNNING:
 			case MOVING:
@@ -311,10 +288,8 @@ public class BasicApolloBrokerClient {
 			case HELD:
 			case EXITING:
 			case WAITING:
-				System.out.println("The "
-						+ runAndSoftwareId.getSoftwareId().getSoftwareName()
-						+ " run is active (" + status.getStatus().toString()
-						+ "). The status message is: " + status.getMessage());
+				System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active (" +
+						status.getStatus().toString() + "). The status message is: " + status.getMessage());
 				try {
 					Thread.sleep(20000);
 				} catch (InterruptedException e) {
@@ -323,11 +298,9 @@ public class BasicApolloBrokerClient {
 		}
 	}
 
-	protected void getResourcesFromVisualizer(String simulatorRunId,
-			SoftwareIdentification visualizerSoftwareIdentification) {
-		System.out.println("Visualizing runId" + simulatorRunId + " using the "
-				+ visualizerSoftwareIdentification.getSoftwareName()
-				+ " visualizer...");
+	protected void getResourcesFromVisualizer(String simulatorRunId, SoftwareIdentification visualizerSoftwareIdentification) {
+		System.out.println("Visualizing runId" + simulatorRunId + " using the " + 
+				visualizerSoftwareIdentification.getSoftwareName() + " visualizer...");
 
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 
@@ -337,44 +310,34 @@ public class BasicApolloBrokerClient {
 		options.setOutputFormat("default");
 		runVisualizationMessage.setVisualizationOptions(options);
 
-		runVisualizationMessage
-				.setVisualizerIdentification(visualizerSoftwareIdentification);
+		runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
 
 		Authentication auth = new Authentication();
 		auth.setRequesterId("TutorialUser");
 		auth.setRequesterPassword("TutorialPassword");
 		runVisualizationMessage.setAuthentication(auth);
 
-		VisualizerResult visualizerResult = port
-				.runVisualization(runVisualizationMessage);
+		VisualizerResult visualizerResult = port.runVisualization(runVisualizationMessage);
 
 		String visualizationRunId = visualizerResult.getRunId();
 
 		RunAndSoftwareIdentification visualizationRunAndSoftwareId = new RunAndSoftwareIdentification();
 		visualizationRunAndSoftwareId.setRunId(visualizationRunId);
-		visualizationRunAndSoftwareId
-				.setSoftwareId(visualizerSoftwareIdentification);
+		visualizationRunAndSoftwareId.setSoftwareId(visualizerSoftwareIdentification);
 
-		if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId)
-				.getStatus() == MethodCallStatusEnum.COMPLETED) {
-			System.out
-					.println("The following resources were returned from the "
-							+ visualizerSoftwareIdentification
-									.getSoftwareName() + " visualizer:");
-			for (UrlOutputResource r : visualizerResult
-					.getVisualizerOutputResource()) {
+		if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId).getStatus() == MethodCallStatusEnum.COMPLETED) {
+			System.out.println("The following resources were returned from the " + visualizerSoftwareIdentification.getSoftwareName() +
+					" visualizer:");
+			for (UrlOutputResource r : visualizerResult.getVisualizerOutputResource()) {
 				System.out.println("\t" + r.getURL());
 			}
-
 		}
-
 	}
 
 	protected void runSimulationAndDisplayResults() {
 		RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
 		String simulationRunId = port.runSimulation(runSimulationMessage);
-		System.out.println("The simulator returned a runId of "
-				+ simulationRunId);
+		System.out.println("The simulator returned a runId of " + simulationRunId);
 
 		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
 		runAndSoftwareId.setSoftwareId(getSoftwareIdentificationForSimulator());
@@ -383,17 +346,13 @@ public class BasicApolloBrokerClient {
 		MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
 
 		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
-			getResourcesFromVisualizer(simulationRunId,
-					getSoftwareIdentifiationForTimeSeriesVisualizer());
-			getResourcesFromVisualizer(simulationRunId,
-					getSoftwareIdentifiationForGaia());
-
+			getResourcesFromVisualizer(simulationRunId, getSoftwareIdentifiationForTimeSeriesVisualizer());
+			getResourcesFromVisualizer(simulationRunId, getSoftwareIdentifiationForGaia());
 		}
-
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {
-		new BasicApolloBrokerClient().runSimulationAndDisplayResults();
+		new TutorialChapter2_BasicRunSimulationExample().runSimulationAndDisplayResults();
 	}
 
 }
