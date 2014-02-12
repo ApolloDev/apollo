@@ -14,10 +14,9 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends Tuto
 	}
 
 	public void getPopulationAndEnvironmentCensus(String apolloLocationCode) {
-		
-		//first, make sure the apolloLocationCode is supported by the simulator
-		GetScenarioLocationCodesSupportedBySimulatorResult result = getPort()
-				.getScenarioLocationCodesSupportedBySimulator(getSoftwareIdentificationForSimulator());
+		// first, make sure the apolloLocationCode is supported by the simulator
+		GetScenarioLocationCodesSupportedBySimulatorResult result = getPort().getScenarioLocationCodesSupportedBySimulator(
+				getSoftwareIdentificationForSimulator());
 
 		System.out.println("Call to getScenarioLocationCodesSupportedBySimulator() returned with result: "
 				+ result.getMethodCallStatus().getStatus());
@@ -25,8 +24,7 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends Tuto
 		List<String> locationCodes = result.getLocationCodes();
 		for (int i = 0; i < locationCodes.size(); i++) {
 			if (locationCodes.get(i).equals(apolloLocationCode)) { // the location code is supported!
-				System.out.println("PopulationAndEnvironmentCensus for ApolloLocationCode " + apolloLocationCode
-						+ " is:");
+				System.out.println("PopulationAndEnvironmentCensus for ApolloLocationCode " + apolloLocationCode + " is:");
 
 				GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensusResult = getPort()
 						.getPopulationAndEnvironmentCensus(getSoftwareIdentificationForSimulator(), apolloLocationCode);
@@ -42,14 +40,14 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends Tuto
 	private void parsePopululationAndEnvironmentCensus(PopulationAndEnvironmentCensus populationAndEnvironmentCensus,
 			int recursionLevel) {
 		String indent = "";
-		for (int i = 0; i < recursionLevel; i++) 
+		for (int i = 0; i < recursionLevel; i++)
 			indent += "\t";
 
 		System.out.println(indent + "Description: " + populationAndEnvironmentCensus.getDescription());
 		System.out.println(indent + "Location Code: " + populationAndEnvironmentCensus.getLocation().getLocationCode());
 		System.out.println(indent + "Date: " + populationAndEnvironmentCensus.getDate());
-		System.out.println(indent + "Name of Administrative Unit: "
-				+ populationAndEnvironmentCensus.getNameOfAdministativeUnit());
+		System.out
+				.println(indent + "Name of Administrative Unit: " + populationAndEnvironmentCensus.getNameOfAdministativeUnit());
 
 		System.out.println(indent + "Number of People: " + populationAndEnvironmentCensus.getNumberOfPeople());
 		System.out.println(indent + "Number of Schools: " + populationAndEnvironmentCensus.getNumberOfSchools());
