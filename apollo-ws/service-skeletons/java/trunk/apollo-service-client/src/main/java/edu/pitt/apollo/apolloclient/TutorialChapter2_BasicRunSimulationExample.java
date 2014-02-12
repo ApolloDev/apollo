@@ -14,7 +14,6 @@
  */
 package edu.pitt.apollo.apolloclient;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
