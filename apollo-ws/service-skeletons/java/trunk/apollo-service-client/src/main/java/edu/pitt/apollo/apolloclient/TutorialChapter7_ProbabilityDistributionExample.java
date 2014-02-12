@@ -81,7 +81,8 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 		probabilityValuePairDay3.setValue(3.0);
 		probabilityValuePairDay3.setValue(0.1);
 
-		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution = new DiscreteNonparametricProbabilityDistribution();
+		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution =
+				new DiscreteNonparametricProbabilityDistribution();
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay1);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay2);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay3);
@@ -120,7 +121,8 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 		probabilityValuePairDay3.setValue(3.0);
 		probabilityValuePairDay3.setValue(0.2);
 
-		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution = new DiscreteNonparametricProbabilityDistribution();
+		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution = 
+				new DiscreteNonparametricProbabilityDistribution();
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay1);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay2);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay3);
@@ -173,12 +175,14 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 		probabilityValuePairDay3Female.setValue(3.0);
 		probabilityValuePairDay3Female.setValue(0.5);
 
-		DiscreteNonparametricProbabilityDistribution DiscreteNonparametricProbabilityDistributionForMales = new DiscreteNonparametricProbabilityDistribution();
+		DiscreteNonparametricProbabilityDistribution DiscreteNonparametricProbabilityDistributionForMales = 
+				new DiscreteNonparametricProbabilityDistribution();
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay1Male);
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay2Male);
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay3Male);
 
-		DiscreteNonparametricProbabilityDistribution DiscreteNonparametricProbabilityDistributionForFemales = new DiscreteNonparametricProbabilityDistribution();
+		DiscreteNonparametricProbabilityDistribution DiscreteNonparametricProbabilityDistributionForFemales =
+				new DiscreteNonparametricProbabilityDistribution();
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay1Female);
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay2Female);
 		DiscreteNonparametricProbabilityDistributionForMales.getProbabilityValuePairs().add(probabilityValuePairDay3Female);
@@ -216,7 +220,8 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 		probabilityValuePairDay3.setValue(3.0);
 		probabilityValuePairDay3.setValue(0.2);
 
-		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution = new DiscreteNonparametricProbabilityDistribution();
+		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution =
+				new DiscreteNonparametricProbabilityDistribution();
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay1);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay2);
 		discreteNonparametricProbabilityDistribution.getProbabilityValuePairs().add(probabilityValuePairDay3);
@@ -224,15 +229,19 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 		return discreteNonparametricProbabilityDistribution;
 	}
 	
-	public RunSimulationMessage setLatentPeriodToConditionalProbabilityDistribution(ConditionalProbabilityDistribution conditionalProbabilityDistribution) {
+	public RunSimulationMessage setLatentPeriodToConditionalProbabilityDistribution(
+			ConditionalProbabilityDistribution conditionalProbabilityDistribution) {
 	    RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
-		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0).getLatentPeriodDuration().setConditionalProbabilityDistribution(conditionalProbabilityDistribution);
+		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0).
+			getLatentPeriodDuration().setConditionalProbabilityDistribution(conditionalProbabilityDistribution);
 		return runSimulationMessage;
 	}
 	
-	public RunSimulationMessage setLatentPeriodToUnconditionalProbabilityDistribution(UnconditionalProbabilityDistribution unconditionalProbabilityDistribution) {
+	public RunSimulationMessage setLatentPeriodToUnconditionalProbabilityDistribution(
+			UnconditionalProbabilityDistribution unconditionalProbabilityDistribution) {
 	    RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
-		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0).getLatentPeriodDuration().setUnconditionalProbabilityDistribution(unconditionalProbabilityDistribution);
+		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0).
+			getLatentPeriodDuration().setUnconditionalProbabilityDistribution(unconditionalProbabilityDistribution);
 		return runSimulationMessage;
 	}
 
