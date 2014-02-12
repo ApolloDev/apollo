@@ -117,7 +117,10 @@ public class TutorialChapter9_LibraryExample extends
 		System.out.println("The existing Basic Reproduction Number in the InfectionDiseaseScenario is: "
 				+ infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0)
 						.getBasicReproductionNumber());
-		System.out.println("See the results for this run at: http:// //");
+		System.out.println("See the results for this run at: ");
+		System.out.println("\thttp://research.rods.pitt.edu/apollo-web-images/2f219828b4afba0dd8d522d278e1984d/disease_states.png");
+		System.out.println("\thttp://research.rods.pitt.edu/apollo-web-images/2f219828b4afba0dd8d522d278e1984d/incidence.png");
+		System.out.println("\thttp://warhol-fred.psc.edu/GAIA/gaia.output.1392159219.ogg");
 
 		return infectiousDiseaseScenario;
 	}
