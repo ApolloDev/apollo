@@ -49,7 +49,7 @@ public class LibraryClient extends
 						infection,
 						"The Infection instance of the InfectiousDiseaseScenario from the tutorial..",
 						"Tutorial", "Infection", labels);
-		infectionUuid = result.getUuid(); //here nick example
+		infectionUuid = result.getUuid(); // here nick example
 		System.out.println(result.getUuid());
 
 		InfectiousDiseaseControlStrategy vaccinationControlStrategy = infectiousDiseaseScenario
@@ -60,6 +60,7 @@ public class LibraryClient extends
 				"The Vaccination Control Strategy used in the tutorial",
 				"Tutorial", "InfectiousDiseaseControlStrategy", labels);
 
+		vaccinationControlStrategyUuid = result.getUuid();
 		System.out.println(result.getUuid());
 
 		result = getPort().addLibraryItem(getAuthentication(),
@@ -67,6 +68,7 @@ public class LibraryClient extends
 				"The Infectious Disease Scenario used in the tutorial",
 				"Tutorial", "InfectiousDiseaseScenario", labels);
 
+		infectiousDiseaseScenarioUuid = result.getUuid();
 		System.out.println(result.getUuid());
 
 	}
@@ -80,8 +82,9 @@ public class LibraryClient extends
 		System.out.println("Host Taxon ID: " + infection.getHostTaxonID());
 		System.out
 				.println("Pathogen Taxon ID" + infection.getPathogenTaxonID());
-		System.out.println("Infectiousness"
-				+ infection.getInfectiousness().getValue());
+		if (infection.getInfectiousness() != null)
+			System.out.println("Infectiousness"
+					+ infection.getInfectiousness().getValue());
 		System.out.println("InfectiousPeriodDuration"
 				+ infection.getInfectiousPeriodDuration().getValue());
 		System.out.println("LatentPeriodDuration"
@@ -99,34 +102,48 @@ public class LibraryClient extends
 				+ infectionAcquisition.getBasicReproductionNumber());
 
 	}
-	
+
 	public void loadVaccinationControlStrategy() {
-		GetLibraryItemResult vaccinationControlStrategyItem = getPort().getLibraryItem(
-				vaccinationControlStrategyUuid);
+		GetLibraryItemResult vaccinationControlStrategyItem = getPort()
+				.getLibraryItem(vaccinationControlStrategyUuid);
 		IndividualTreatmentControlStrategy vaccinationControlStrategy = (IndividualTreatmentControlStrategy) vaccinationControlStrategyItem
 				.getCuratedLibraryItemContainer().getApolloIndexableItem();
 		System.out.println("Infection instance retrieved from the library:");
-		System.out.println("Description: " + vaccinationControlStrategy.getDescription());
-		System.out.println("Reactive End Point Fraction: " + vaccinationControlStrategy.getControlStrategyReactiveEndPointFraction());
-		System.out.println("Compliance: " + vaccinationControlStrategy.getControlStrategyCompliance());
-		System.out.println("Response Delay: " + vaccinationControlStrategy.getControlStrategyResponseDelay());
-		System.out.println("Control Strategy Start Time: " + ((FixedStartTime) vaccinationControlStrategy.getControlStrategyStartTime()).getStartTimeRelativeToScenarioDate());
-		
-		Vaccination vaccination = (Vaccination) vaccinationControlStrategy.getIndividualTreatment();
-		System.out.println("Num Doses in Treatment Course:" + vaccination.getNumDosesInTreatmentCourse());
+		System.out.println("Description: "
+				+ vaccinationControlStrategy.getDescription());
+		System.out.println("Reactive End Point Fraction: "
+				+ vaccinationControlStrategy
+						.getControlStrategyReactiveEndPointFraction());
+		System.out.println("Compliance: "
+				+ vaccinationControlStrategy.getControlStrategyCompliance());
+		System.out.println("Response Delay: "
+				+ vaccinationControlStrategy.getControlStrategyResponseDelay());
+		System.out.println("Control Strategy Start Time: "
+				+ ((FixedStartTime) vaccinationControlStrategy
+						.getControlStrategyStartTime())
+						.getStartTimeRelativeToScenarioDate());
+
+		Vaccination vaccination = (Vaccination) vaccinationControlStrategy
+				.getIndividualTreatment();
+		System.out.println("Num Doses in Treatment Course:"
+				+ vaccination.getNumDosesInTreatmentCourse());
 	}
-	
+
 	public InfectiousDiseaseScenario loadInfectiousDiseaseScenario() {
-		GetLibraryItemResult infectionDiseaseScenarioLibraryItem = getPort().getLibraryItem(
-				infectiousDiseaseScenarioUuid);
+		GetLibraryItemResult infectionDiseaseScenarioLibraryItem = getPort()
+				.getLibraryItem(infectiousDiseaseScenarioUuid);
 		InfectiousDiseaseScenario infectiousDiseaseScenario = (InfectiousDiseaseScenario) infectionDiseaseScenarioLibraryItem
 				.getCuratedLibraryItemContainer().getApolloIndexableItem();
-		System.out.println("Existing Basic Reproduction Number: " +
-		infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0).getBasicReproductionNumber());
-		
+		System.out.println("Existing Basic Reproduction Number: "
+				+ infectiousDiseaseScenario.getInfections().get(0)
+						.getInfectionAcquisition().get(0)
+						.getBasicReproductionNumber());
+
 		System.out.println("Setting Basic Reproduction Number to 1.7...");
-		infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0).setBasicReproductionNumber(1.7);
-		
+		infectiousDiseaseScenario.getInfections().get(0)
+				.getInfectionAcquisition().get(0)
+				.setBasicReproductionNumber(1.7);
+
 		return infectiousDiseaseScenario;
 	}
 
@@ -139,16 +156,18 @@ public class LibraryClient extends
 		client.save();
 		client.loadInfection();
 		client.loadVaccinationControlStrategy();
-		//maybe run fred with orig r0, maybe we don't have to though because it's already run...just show them the URL to the orig r0 run
-		
-		
-		//this actually changes r0
-		InfectiousDiseaseScenario infectiousDiseaseScenario = client.loadInfectiousDiseaseScenario();
-		
-		RunSimulationMessage runSimulationMessage = client.getRunSimulationMessage();
-		runSimulationMessage.setInfectiousDiseaseScenario(infectiousDiseaseScenario);
+		// maybe run fred with orig r0, maybe we don't have to though because
+		// it's already run...just show them the URL to the orig r0 run
+
+		// this actually changes r0
+		InfectiousDiseaseScenario infectiousDiseaseScenario = client
+				.loadInfectiousDiseaseScenario();
+
+		RunSimulationMessage runSimulationMessage = client
+				.getRunSimulationMessage();
+		runSimulationMessage
+				.setInfectiousDiseaseScenario(infectiousDiseaseScenario);
 		client.runSimulationAndDisplayResults();
-		 
 
 	}
 
