@@ -33,7 +33,7 @@ public class TutorialChapter9_LibraryExample extends
 		return auth;
 	}
 
-	public void save() {
+	public void saveItems() {
 		RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
 
 		InfectiousDiseaseScenario infectiousDiseaseScenario = runSimulationMessage.getInfectiousDiseaseScenario();
@@ -143,7 +143,7 @@ public class TutorialChapter9_LibraryExample extends
 	 */
 	public static void main(String[] args) throws MalformedURLException {
 		TutorialChapter9_LibraryExample example = new TutorialChapter9_LibraryExample();
-		example.save();
+		example.saveItems();
 		example.loadInfection();
 		example.loadVaccinationControlStrategy();
 
