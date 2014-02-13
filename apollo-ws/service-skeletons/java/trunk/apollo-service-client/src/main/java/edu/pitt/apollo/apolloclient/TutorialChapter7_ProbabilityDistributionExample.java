@@ -71,15 +71,15 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 
 		ProbabilityValuePair probabilityValuePairDay1 = new ProbabilityValuePair();
 		probabilityValuePairDay1.setValue(1.0);
-		probabilityValuePairDay1.setValue(0.5);
+		probabilityValuePairDay1.setProbability(0.5);
 
 		ProbabilityValuePair probabilityValuePairDay2 = new ProbabilityValuePair();
 		probabilityValuePairDay2.setValue(2.0);
-		probabilityValuePairDay2.setValue(0.4);
+		probabilityValuePairDay2.setProbability(0.4);
 
 		ProbabilityValuePair probabilityValuePairDay3 = new ProbabilityValuePair();
 		probabilityValuePairDay3.setValue(3.0);
-		probabilityValuePairDay3.setValue(0.1);
+		probabilityValuePairDay3.setProbability(0.1);
 
 		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution =
 				new DiscreteNonparametricProbabilityDistribution();
@@ -111,15 +111,15 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 
 		ProbabilityValuePair probabilityValuePairDay1 = new ProbabilityValuePair();
 		probabilityValuePairDay1.setValue(1.0);
-		probabilityValuePairDay1.setValue(0.2);
+		probabilityValuePairDay1.setProbability(0.2);
 
 		ProbabilityValuePair probabilityValuePairDay2 = new ProbabilityValuePair();
 		probabilityValuePairDay2.setValue(2.0);
-		probabilityValuePairDay2.setValue(0.6);
+		probabilityValuePairDay2.setProbability(0.6);
 
 		ProbabilityValuePair probabilityValuePairDay3 = new ProbabilityValuePair();
 		probabilityValuePairDay3.setValue(3.0);
-		probabilityValuePairDay3.setValue(0.2);
+		probabilityValuePairDay3.setProbability(0.2);
 
 		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution = 
 				new DiscreteNonparametricProbabilityDistribution();
@@ -153,27 +153,27 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 
 		ProbabilityValuePair probabilityValuePairDay1Male = new ProbabilityValuePair();
 		probabilityValuePairDay1Male.setValue(1.0);
-		probabilityValuePairDay1Male.setValue(0.3);
+		probabilityValuePairDay1Male.setProbability(0.3);
 
 		ProbabilityValuePair probabilityValuePairDay2Male = new ProbabilityValuePair();
 		probabilityValuePairDay2Male.setValue(2.0);
-		probabilityValuePairDay2Male.setValue(0.5);
+		probabilityValuePairDay2Male.setProbability(0.5);
 
 		ProbabilityValuePair probabilityValuePairDay3Male = new ProbabilityValuePair();
 		probabilityValuePairDay3Male.setValue(3.0);
-		probabilityValuePairDay3Male.setValue(0.2);
+		probabilityValuePairDay3Male.setProbability(0.2);
 
 		ProbabilityValuePair probabilityValuePairDay1Female = new ProbabilityValuePair();
 		probabilityValuePairDay1Female.setValue(1.0);
-		probabilityValuePairDay1Female.setValue(0.2);
+		probabilityValuePairDay1Female.setProbability(0.2);
 
 		ProbabilityValuePair probabilityValuePairDay2Female = new ProbabilityValuePair();
 		probabilityValuePairDay2Female.setValue(2.0);
-		probabilityValuePairDay2Female.setValue(0.3);
+		probabilityValuePairDay2Female.setProbability(0.3);
 
 		ProbabilityValuePair probabilityValuePairDay3Female = new ProbabilityValuePair();
 		probabilityValuePairDay3Female.setValue(3.0);
-		probabilityValuePairDay3Female.setValue(0.5);
+		probabilityValuePairDay3Female.setProbability(0.5);
 
 		DiscreteNonparametricProbabilityDistribution DiscreteNonparametricProbabilityDistributionForMales = 
 				new DiscreteNonparametricProbabilityDistribution();
@@ -210,15 +210,15 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 	public UnconditionalProbabilityDistribution getUnconditionalProbabilityDistribution() {
 		ProbabilityValuePair probabilityValuePairDay1 = new ProbabilityValuePair();
 		probabilityValuePairDay1.setValue(1.0);
-		probabilityValuePairDay1.setValue(0.2);
+		probabilityValuePairDay1.setProbability(0.2);
 
 		ProbabilityValuePair probabilityValuePairDay2 = new ProbabilityValuePair();
 		probabilityValuePairDay2.setValue(2.0);
-		probabilityValuePairDay2.setValue(0.6);
+		probabilityValuePairDay2.setProbability(0.6);
 
 		ProbabilityValuePair probabilityValuePairDay3 = new ProbabilityValuePair();
 		probabilityValuePairDay3.setValue(3.0);
-		probabilityValuePairDay3.setValue(0.2);
+		probabilityValuePairDay3.setProbability(0.2);
 
 		DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution =
 				new DiscreteNonparametricProbabilityDistribution();
