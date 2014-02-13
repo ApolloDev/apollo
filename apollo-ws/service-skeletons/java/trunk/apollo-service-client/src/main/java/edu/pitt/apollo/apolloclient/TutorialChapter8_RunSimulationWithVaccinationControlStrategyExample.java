@@ -70,7 +70,8 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 	}
 
 	private ControlStrategyTargetPopulationsAndPrioritization getTargetPopulationsAndPrioritizations() {
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
+		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = 
+				new ControlStrategyTargetPopulationsAndPrioritization();
 		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme("ACIP");
 		return targetPopulationsAndPrioritization;
 	}
@@ -102,7 +103,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 			vaccinationControlStrategy.getSupplySchedule().add(new BigInteger("3500"));
 
 		for (int i = 0; i < 90; i++)
-			vaccinationControlStrategy.getAdministrationCapacity().add(new BigInteger("3500"));
+			vaccinationControlStrategy.getAdministrationCapacity().add(new BigInteger("3500")); 
 
 		return vaccinationControlStrategy;
 	}
