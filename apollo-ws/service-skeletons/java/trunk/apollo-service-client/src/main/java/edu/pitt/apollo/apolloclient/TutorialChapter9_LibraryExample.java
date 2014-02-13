@@ -82,7 +82,7 @@ public class TutorialChapter9_LibraryExample extends
 		InfectionAcquisition infectionAcquisition = infection.getInfectionAcquisition().get(0);
 		System.out.println("\tInfectionAcquisition:");
 		System.out.println("\t\tSusceptible Host Taxon ID: " + infectionAcquisition.getSusceptibleHostTaxonID());
-		System.out.println("\t\tPathogen Taxon ID: " + infectionAcquisition.getPathogenTaxonID());
+		System.out.println("\t\tPathogen Taxon ID: " + infectionAcquisition.getPathogenTaxonID().getNcbiTaxonId());
 		System.out.println("\t\tBasic Reproduction Number: " + infectionAcquisition.getBasicReproductionNumber());
 		System.out.println();
 	}

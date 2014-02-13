@@ -202,15 +202,21 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		latentPeriod.setValue(2.0);
 		infection.setLatentPeriodDuration(latentPeriod);
 
+		infection.getInfectionAcquisition().add(getInfectionAcquisition());
+
+		return infection;
+	}
+
+	private InfectionAcquisition getInfectionAcquisition() {
 		InfectionAcquisition infectionAcquisition = new InfectionAcquisition();
 
+		ApolloPathogenCode pathId = new ApolloPathogenCode();
+		pathId.setGisrnCladeName("H1N1");
+		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 		infectionAcquisition.setPathogenTaxonID(pathId);
 		infectionAcquisition.setSusceptibleHostTaxonID("9606"); // homo sapiens
 		infectionAcquisition.setBasicReproductionNumber(1.3);
-
-		infection.getInfectionAcquisition().add(infectionAcquisition);
-
-		return infection;
+		return infectionAcquisition;
 	}
 
 	protected InfectiousDiseaseScenario getInfectiousDiseaseScenario() {
@@ -298,7 +304,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 	}
 
 	protected void getResourcesFromVisualizer(String simulatorRunId, SoftwareIdentification visualizerSoftwareIdentification) {
-		System.out.println("Visualizing runId" + simulatorRunId + " using the " + 
+		System.out.println("Visualizing runId: " + simulatorRunId + " using the " + 
 				visualizerSoftwareIdentification.getSoftwareName() + " visualizer...");
 
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
