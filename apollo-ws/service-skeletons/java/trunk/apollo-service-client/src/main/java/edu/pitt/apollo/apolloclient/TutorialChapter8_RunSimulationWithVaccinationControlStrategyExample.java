@@ -118,6 +118,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 
 	public static void main(String[] args) throws MalformedURLException {
 		new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample().runSimulationAndDisplayResults();
+		//it already runs for VACC but we need to re-run Chapter 2, get the runId's dynamically and create a combined incidence curve
 
 	}
 

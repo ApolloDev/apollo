@@ -149,16 +149,16 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		data.setLocation(location);
 		PopulationInfectionAndImmunityCensusDataCell susceptibleCell = new PopulationInfectionAndImmunityCensusDataCell();
 		susceptibleCell.setInfectionState(InfectionState.SUSCEPTIBLE);
-		susceptibleCell.setFractionInInfectionState(0.8);
+		susceptibleCell.setFractionInInfectionState(0.94);
 		PopulationInfectionAndImmunityCensusDataCell exposedCell = new PopulationInfectionAndImmunityCensusDataCell();
 		exposedCell.setInfectionState(InfectionState.EXPOSED);
 		exposedCell.setFractionInInfectionState(0.0);
 		PopulationInfectionAndImmunityCensusDataCell infectiousCell = new PopulationInfectionAndImmunityCensusDataCell();
 		infectiousCell.setInfectionState(InfectionState.INFECTIOUS);
-		infectiousCell.setFractionInInfectionState(0.05);
+		infectiousCell.setFractionInInfectionState(0.01);
 		PopulationInfectionAndImmunityCensusDataCell recoveredCell = new PopulationInfectionAndImmunityCensusDataCell();
 		recoveredCell.setInfectionState(InfectionState.RECOVERED);
-		recoveredCell.setFractionInInfectionState(0.15);
+		recoveredCell.setFractionInInfectionState(0.05); 
 
 		data.getCensusDataCells().add(susceptibleCell);
 		data.getCensusDataCells().add(exposedCell);
