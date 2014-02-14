@@ -5,14 +5,21 @@ import edu.pitt.apollo.container.SeirTimeSeriesContainer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -34,6 +41,59 @@ import org.jfree.ui.RectangleInsets;
  * Class: VisualizerChartUtility
  * IDE: NetBeans 6.9.1
  */
+class SimpleNumberAxis extends NumberAxis implements Serializable {
+
+    @Override
+    public List refreshTicks(Graphics2D g2, AxisState state,
+            Rectangle2D dataArea, RectangleEdge edge) {
+
+        List allTicks = super.refreshTicks(g2, state, dataArea, edge);
+        List myTicks = new ArrayList();
+
+        // get the default tick interval between THREE consecutive ticks, since we skip showing one
+        int startTick = ((NumberTick) allTicks.get(0)).getNumber().intValue();
+        int nextTickToShow = ((NumberTick) allTicks.get(2)).getNumber().intValue();
+        int tickInterval = nextTickToShow - startTick;
+
+        boolean skipTick = false;
+        for (int i = 0; i < allTicks.size(); i++) {
+            NumberTick numberTick = (NumberTick) allTicks.get(i);
+
+            if (i == 0) {
+                NumberTick newtick = new NumberTick(1, "1", numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
+                myTicks.add(newtick);
+                continue;
+            }
+
+//            if (TickType.MAJOR.equals(numberTick.getTickType())
+//                    && (numberTick.getValue() % 5 != 0)) {
+//                myTicks.add(new NumberTick(TickType.MINOR, numberTick.getValue(), "",
+//                        numberTick.getTextAnchor(), numberTick.getRotationAnchor(),
+//                        numberTick.getAngle()));
+//                continue;
+//            }
+
+            if (skipTick) {
+                skipTick = false;
+                continue;
+            }
+
+            skipTick = true;
+
+            if (tickInterval >= 5) {
+                // keep the original tick marks after 1
+                NumberTick newtick = new NumberTick(numberTick.getNumber().intValue(), Integer.toString((numberTick.getNumber().intValue())), numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
+                myTicks.add(newtick);
+            } else {
+                // increment the ticks by 1
+                NumberTick newtick = new NumberTick(numberTick.getNumber().intValue() + 1, Integer.toString((numberTick.getNumber().intValue() + 1)), numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
+                myTicks.add(newtick);
+            }
+        }
+        return myTicks;
+    }
+}
+
 public class VisualizerChartUtility {
 
     private static BasicStroke seriesStroke = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
@@ -56,10 +116,15 @@ public class VisualizerChartUtility {
 
         // get greatest data value
         double maxYValue = 0.0;
+        double maxXValue = 0.0;
         for (int i = 0; i < dataset.getItemCount(0); i++) {
 
             if (dataset.getYValue(0, i) > maxYValue) {
                 maxYValue = dataset.getYValue(0, i);
+            }
+
+            if (dataset.getXValue(0, i) > maxXValue) {
+                maxXValue = dataset.getXValue(0, i);
             }
         }
         int yAxisStep = (int) Math.round(maxYValue / 10.0);
@@ -70,12 +135,15 @@ public class VisualizerChartUtility {
         axis.setTickLabelFont(new Font("Calibri", Font.PLAIN, 20));
         axis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
 
-
-        NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
+        SimpleNumberAxis xaxis = new SimpleNumberAxis();
+//        NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
         xaxis.setTickLabelFont(new Font("Calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
         xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        
+        xaxis.setRange(1, maxXValue);
+//        xaxis.setLowerBound(1.0);
+        plot.setDomainAxis(xaxis);
+
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -115,15 +183,19 @@ public class VisualizerChartUtility {
         plot.setBackgroundPaint(new Color(255, 255, 255));
 
         // get greatest data value
-        double maxYValue = 0.0;
+        double maxYValue = 0.0, maxXValue = 0.0;
         int seriesCount = dataset.getSeriesCount();
         for (int j = 0; j < dataset.getSeriesCount(); j++) {
             for (int i = 0; i < dataset.getItemCount(j); i++) {
                 if (dataset.getYValue(j, i) > maxYValue) {
                     maxYValue = dataset.getYValue(j, i);
                 }
+                if (dataset.getXValue(0, i) > maxXValue) {
+                    maxXValue = dataset.getXValue(0, i);
+                }
             }
         }
+
         int yAxisStep = (int) Math.round(maxYValue / 10.0);
         yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5))) * 2;
 
@@ -133,11 +205,15 @@ public class VisualizerChartUtility {
         axis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
 
 
-        NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
+        SimpleNumberAxis xaxis = new SimpleNumberAxis();
+//        NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
         xaxis.setTickLabelFont(new Font("Calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
         xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        
+        xaxis.setRange(1, maxXValue);
+//        xaxis.setLowerBound(1.0);
+        plot.setDomainAxis(xaxis);
+
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -188,11 +264,14 @@ public class VisualizerChartUtility {
         plot.setBackgroundPaint(new Color(255, 255, 255));
 
         // get the greatest data value
-        double maxYValue = 0.0;
+        double maxYValue = 0.0, maxXValue = 0.0;
         for (int j = 0; j < dataset.getSeriesCount(); j++) {
             for (int i = 0; i < dataset.getItemCount(j); i++) {
                 if (dataset.getYValue(j, i) > maxYValue) {
                     maxYValue = dataset.getYValue(j, i);
+                }
+                if (dataset.getXValue(0, i) > maxXValue) {
+                    maxXValue = dataset.getXValue(0, i);
                 }
             }
         }
@@ -209,7 +288,8 @@ public class VisualizerChartUtility {
         xaxis.setTickLabelFont(new Font("calibri", Font.PLAIN, 20));
         xaxis.setLabelFont(new Font("calibri", Font.PLAIN, 30));
         xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        
+        xaxis.setRange(0.0, maxXValue);
+
         LegendTitle legend = (LegendTitle) chart.getLegend();
         legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
         legend.setItemLabelPadding(new RectangleInsets(5, 5, 5, 25));
@@ -222,16 +302,16 @@ public class VisualizerChartUtility {
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
         renderer.setSeriesStroke(0, seriesStroke);
-        renderer.setSeriesPaint(0, new Color(235, 33, 33)); // RED
+        renderer.setSeriesPaint(1, new Color(235, 33, 33)); // RED - EXPOSED
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesStroke(1, seriesStroke);
-        renderer.setSeriesPaint(1, new Color(55, 83, 196));
+        renderer.setSeriesPaint(0, new Color(55, 83, 196)); // BLUE - SUSCEPTIBLE
         renderer.setSeriesShapesVisible(1, false);
         renderer.setSeriesStroke(2, seriesStroke);
-        renderer.setSeriesPaint(2, new Color(5, 158, 61)); // GREEN
+        renderer.setSeriesPaint(3, new Color(5, 158, 61)); // GREEN - RECOVERED
         renderer.setSeriesShapesVisible(2, false);
         renderer.setSeriesStroke(3, seriesStroke);
-        renderer.setSeriesPaint(3, new Color(216, 56, 224)); // PURPLE
+        renderer.setSeriesPaint(2, new Color(216, 56, 224)); // PURPLE - INFECTIOUS
         renderer.setSeriesShapesVisible(3, false);
 
         plot.setRenderer(renderer);
@@ -241,10 +321,10 @@ public class VisualizerChartUtility {
         return chart;
     }
 
-    private XYSeries createXYSeries(double[] data, String name) {
+    private XYSeries createXYSeries(double[] data, String name, int startIndex) {
 
         final XYSeries series = new XYSeries(name);
-        for (int i = 0; i < data.length; i++) {
+        for (int i = startIndex; i < data.length; i++) {
             series.add(i, data[i]);
         }
 
@@ -254,10 +334,10 @@ public class VisualizerChartUtility {
     private XYDataset createSeirXYDataset(SeirTimeSeriesContainer container, String runId) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(createXYSeries(container.getSusceptibleTimeSeries(runId), "Susceptible"));
-        dataset.addSeries(createXYSeries(container.getExposedTimeSeries(runId), "Exposed"));
-        dataset.addSeries(createXYSeries(container.getInfectiousTimeSeries(runId), "Infectious"));
-        dataset.addSeries(createXYSeries(container.getRecoveredTimeSeries(runId), "Recovered"));
+        dataset.addSeries(createXYSeries(container.getSusceptibleTimeSeries(runId), "Susceptible", 0));
+        dataset.addSeries(createXYSeries(container.getExposedTimeSeries(runId), "Exposed", 0));
+        dataset.addSeries(createXYSeries(container.getInfectiousTimeSeries(runId), "Infectious", 0));
+        dataset.addSeries(createXYSeries(container.getRecoveredTimeSeries(runId), "Recovered", 0));
 
         return dataset;
     }
@@ -265,7 +345,7 @@ public class VisualizerChartUtility {
     private XYDataset createIncidenceDataset(IncidenceTimeSeriesContainer container, String runId) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(createXYSeries(container.getIncidenceTimeSeries(runId), "Incidence"));
+        dataset.addSeries(createXYSeries(container.getIncidenceTimeSeries(runId), "Incidence", 1));
 
         return dataset;
     }
@@ -278,7 +358,7 @@ public class VisualizerChartUtility {
 
         int i = 0;
         for (String runId : incidenceMap.keySet()) {
-            dataset.addSeries(createXYSeries(incidenceMap.get(runId), runIdSeriesLabels.get(runId)));
+            dataset.addSeries(createXYSeries(incidenceMap.get(runId), runIdSeriesLabels.get(runId), 1));
             i++;
         }
 
@@ -292,7 +372,7 @@ public class VisualizerChartUtility {
             if (runId.toLowerCase().contains("flute")) { // can't show disease states for flute yet
                 continue;
             }
-            
+
             XYDataset dataset = createSeirXYDataset(seirContainer, runId);
             JFreeChart chart = createDiseaseStatesChart(dataset, "Disease states over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
