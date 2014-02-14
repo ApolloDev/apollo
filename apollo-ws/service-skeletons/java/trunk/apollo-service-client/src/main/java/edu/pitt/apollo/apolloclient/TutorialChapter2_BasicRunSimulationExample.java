@@ -339,21 +339,37 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		}
 	}
 
-	protected void runSimulationAndDisplayResults() {
-		RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
+        protected RunAndSoftwareIdentification runSimulation() {
+            
+                RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
 		String simulationRunId = port.runSimulation(runSimulationMessage);
 		System.out.println("The simulator returned a runId of " + simulationRunId);
 
 		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
 		runAndSoftwareId.setSoftwareId(getSoftwareIdentificationForSimulator());
 		runAndSoftwareId.setRunId(simulationRunId);
+            
+                MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
+                if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
+                    return runAndSoftwareId;	
+		} else {
+                    System.exit(-1);
+                    return null;
+                }
 
-		MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
-
-		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
-			getResourcesFromVisualizer(simulationRunId, getSoftwareIdentifiationForTimeSeriesVisualizer());
-			getResourcesFromVisualizer(simulationRunId, getSoftwareIdentifiationForGaia());
-		}
+        }
+        
+        protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
+            getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
+	    getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
+        }
+        
+	protected RunAndSoftwareIdentification runSimulationAndDisplayResults() {
+		
+                RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation();
+		displayResults(simulatorRunAndSoftwareId);
+                
+                return simulatorRunAndSoftwareId;
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {
