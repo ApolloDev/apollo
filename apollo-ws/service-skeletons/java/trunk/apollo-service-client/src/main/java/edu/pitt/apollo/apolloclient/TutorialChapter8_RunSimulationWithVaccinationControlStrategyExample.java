@@ -115,41 +115,36 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 		return vaccinationControlStrategy;
 	}
         
-        protected void createIncidenceVisualizationForMultipleSimulations(String ... simulatorRunIds) {
-		
+	protected void createIncidenceVisualizationForMultipleSimulations(String... simulatorRunIds) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 		runVisualizationMessage.setAuthentication(getAuthentication());
 		runVisualizationMessage.setVisualizerIdentification(getSoftwareIdentifiationForTimeSeriesVisualizer());
 		VisualizationOptions options = new VisualizationOptions();
-		
-		//pass all runId's to "setRunId()" delimited by the ";" character
-		//let's hope there are no semicolons in the runId!
+
 		String runIdString = "";
 		for (String simulatorRunId : simulatorRunIds) {
 			runIdString += simulatorRunId + ":";
 		}
-		runIdString = runIdString.substring(0, runIdString.length()-1);
-		System.out.println(runIdString);
+		runIdString = runIdString.substring(0, runIdString.length() - 1);
 		options.setRunId(runIdString);
 		options.setLocation("42003");
 		options.setOutputFormat("default");
 		runVisualizationMessage.setVisualizationOptions(options);
 
 		VisualizerResult visualizerResult = getPort().runVisualization(runVisualizationMessage);
-				
-		
+
 		RunAndSoftwareIdentification runAndSoftwareIdentification = new RunAndSoftwareIdentification();
 		runAndSoftwareIdentification.setSoftwareId(getSoftwareIdentifiationForTimeSeriesVisualizer());
 		runAndSoftwareIdentification.setRunId(visualizerResult.getRunId());
 
 		if (checkStatusOfWebServiceCall(runAndSoftwareIdentification).getStatus() == MethodCallStatusEnum.COMPLETED) {
-			System.out.println("The following resources were returned from the " + getSoftwareIdentifiationForTimeSeriesVisualizer().getSoftwareName() +
-					" visualizer:");
+			System.out.println("The following resources were returned from the "
+					+ getSoftwareIdentifiationForTimeSeriesVisualizer().getSoftwareName() + " visualizer:");
 			for (UrlOutputResource r : visualizerResult.getVisualizerOutputResource()) {
 				System.out.println("\t" + r.getURL());
 			}
 		}
-		
+
 	}
         
 
@@ -162,18 +157,23 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 	};
 
 	public static void main(String[] args) throws MalformedURLException {
-            TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
-		RunAndSoftwareIdentification vaccinationRunAndSoftwareId = tutorialChapter8.runSimulationAndDisplayResults();
-		//run no vacc, save id
-                TutorialChapter2_BasicRunSimulationExample tutorialChapter2 = new TutorialChapter2_BasicRunSimulationExample();
-		RunAndSoftwareIdentification noVaccinationRunAndSoftwareId = tutorialChapter2.runSimulation();
-                //run vacc, save id,
-                //create combined incidence..
-		//it already runs for VACC but we need to re-run Chapter 2, get the runId's dynamically and create a combined incidence curve
+		TutorialChapter2_BasicRunSimulationExample tutorialChapter2 =
+				new TutorialChapter2_BasicRunSimulationExample();
+		
+		RunSimulationMessage runSimulationMessageWithoutVaccination =
+				tutorialChapter2.getRunSimulationMessage();
+		RunAndSoftwareIdentification noVaccinationRunAndSoftwareId =
+				tutorialChapter2.runSimulation(runSimulationMessageWithoutVaccination);
+		
+		TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = 
+				new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
+		RunSimulationMessage runSimulationMessageWithVaccination = tutorialChapter8.getRunSimulationMessage();
+		RunAndSoftwareIdentification vaccinationRunAndSoftwareId = 
+				tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithVaccination);
 
-                tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(noVaccinationRunAndSoftwareId.getRunId(), vaccinationRunAndSoftwareId.getRunId());
-                
-                
+		tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(
+				noVaccinationRunAndSoftwareId.getRunId(),
+				vaccinationRunAndSoftwareId.getRunId());
 	}
 
 }
