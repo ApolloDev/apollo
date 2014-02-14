@@ -12,6 +12,7 @@ import edu.pitt.apollo.types.v2_0.Infection;
 import edu.pitt.apollo.types.v2_0.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0.InfectiousDiseaseControlStrategy;
 import edu.pitt.apollo.types.v2_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0.Vaccination;
 
@@ -21,6 +22,7 @@ public class TutorialChapter9_LibraryExample extends
 	public String infectionUuid = "";
 	public String infectiousDiseaseScenarioUuid = "";
 	public String vaccinationControlStrategyUuid = "";
+        private InfectiousDiseaseScenario infectiousDiseaseScenarioWithUpdatedR0;
 
 	public TutorialChapter9_LibraryExample() throws MalformedURLException {
 		super();
@@ -117,23 +119,28 @@ public class TutorialChapter9_LibraryExample extends
 		System.out.println("The existing Basic Reproduction Number in the InfectionDiseaseScenario is: "
 				+ infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0)
 						.getBasicReproductionNumber());
-		System.out.println("See the results for this run at: ");
-		System.out.println("\thttp://research.rods.pitt.edu/apollo-web-images/2f219828b4afba0dd8d522d278e1984d/disease_states.png");
-		System.out.println("\thttp://research.rods.pitt.edu/apollo-web-images/2f219828b4afba0dd8d522d278e1984d/incidence.png");
-		System.out.println("\thttp://warhol-fred.psc.edu/GAIA/gaia.output.1392159219.ogg");
 
 		return infectiousDiseaseScenario;
 	}
 
-	private void changeR0AndRunFredWithNewScenario(InfectiousDiseaseScenario infectiousDiseaseScenario) {
+
+    @Override
+    public RunSimulationMessage getRunSimulationMessage() {
+        RunSimulationMessage message = super.getRunSimulationMessage();
+        if (infectiousDiseaseScenarioWithUpdatedR0 != null) {
+        message.setInfectiousDiseaseScenario(infectiousDiseaseScenarioWithUpdatedR0);
+        }
+        return message;
+    }
+    
+	private RunAndSoftwareIdentification changeR0AndRunFredWithNewScenario(InfectiousDiseaseScenario infectiousDiseaseScenario) {
 		System.out.println("Changing the Basic Reproduction Number to 1.7...");
 		infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0)
 				.setBasicReproductionNumber(1.7);
 		System.out.println("Running FRED with newly updated InfectiousDiseaseScenario...");
 
-		RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
-		runSimulationMessage.setInfectiousDiseaseScenario(infectiousDiseaseScenario);
-		runSimulationAndDisplayResults();
+                infectiousDiseaseScenarioWithUpdatedR0 = infectiousDiseaseScenario;
+		return runSimulationAndDisplayResults();
 
 	}
 
@@ -149,7 +156,14 @@ public class TutorialChapter9_LibraryExample extends
 
 		InfectiousDiseaseScenario infectiousDiseaseScenario = example.loadInfectiousDiseaseScenario();
 		//run FRED here, save run id
-		example.changeR0AndRunFredWithNewScenario(infectiousDiseaseScenario);
+                TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
+                RunAndSoftwareIdentification originalR0RunAndSoftwareId = tutorialChapter8.runSimulation();
+                RunAndSoftwareIdentification newR0RunAndSoftwareId = example.changeR0AndRunFredWithNewScenario(infectiousDiseaseScenario);
+                
+                tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(originalR0RunAndSoftwareId.getRunId(), newR0RunAndSoftwareId.getRunId());
+                
+                
+		
 		//run FRED here, save run id
 		
 		//genreate combined incidence.......
