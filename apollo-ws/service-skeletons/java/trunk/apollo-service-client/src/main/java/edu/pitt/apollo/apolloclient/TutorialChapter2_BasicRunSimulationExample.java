@@ -339,41 +339,42 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		}
 	}
 
-        protected RunAndSoftwareIdentification runSimulation() {
-            
-                RunSimulationMessage runSimulationMessage = getRunSimulationMessage();
+	protected RunAndSoftwareIdentification runSimulation(RunSimulationMessage runSimulationMessage) {
 		String simulationRunId = port.runSimulation(runSimulationMessage);
 		System.out.println("The simulator returned a runId of " + simulationRunId);
 
 		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
 		runAndSoftwareId.setSoftwareId(getSoftwareIdentificationForSimulator());
 		runAndSoftwareId.setRunId(simulationRunId);
-            
-                MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
-                if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
-                    return runAndSoftwareId;	
-		} else {
-                    System.exit(-1);
-                    return null;
-                }
 
-        }
+		MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
+		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
+			return runAndSoftwareId;
+		} else {
+			System.exit(-1);
+			return null;
+		}
+	}
+
+	protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
+		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(),
+				getSoftwareIdentifiationForTimeSeriesVisualizer());
+		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(),
+				getSoftwareIdentifiationForGaia());
+	}
         
-        protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
-            getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
-	    getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
-        }
-        
-	protected RunAndSoftwareIdentification runSimulationAndDisplayResults() {
-		
-                RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation();
+	
+	protected RunAndSoftwareIdentification runSimulationAndDisplayResults(
+			RunSimulationMessage runSimulationMessage) {
+		RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation(runSimulationMessage);
 		displayResults(simulatorRunAndSoftwareId);
-                
-                return simulatorRunAndSoftwareId;
+		return simulatorRunAndSoftwareId;
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {
-		new TutorialChapter2_BasicRunSimulationExample().runSimulationAndDisplayResults();
+		TutorialChapter2_BasicRunSimulationExample example = new TutorialChapter2_BasicRunSimulationExample();
+		RunSimulationMessage runSimulationMessage = example.getRunSimulationMessage();
+		example.runSimulationAndDisplayResults(runSimulationMessage);
 	}
 
 }
