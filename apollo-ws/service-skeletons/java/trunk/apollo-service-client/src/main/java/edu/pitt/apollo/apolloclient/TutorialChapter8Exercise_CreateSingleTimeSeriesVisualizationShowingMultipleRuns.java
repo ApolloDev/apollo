@@ -60,7 +60,7 @@ public class TutorialChapter8Exercise_CreateSingleTimeSeriesVisualizationShowing
 		TutorialChapter8Exercise_CreateSingleTimeSeriesVisualizationShowingMultipleRuns exercise = new TutorialChapter8Exercise_CreateSingleTimeSeriesVisualizationShowingMultipleRuns();
 		//..309 is the non-vaccination run
 		//..564 is the run with vaccination
-		exercise.createVisualzation("UPitt,PSC,CMU_FRED_2.0.1_i_1392150158", "UPitt,PSC,CMU_FRED_2.0.1_i_1392159091");
+		exercise.createVisualzation("UPitt,PSC,CMU_FRED_2.0.1_i_1392315060", "UPitt,PSC,CMU_FRED_2.0.1_i_1392315197");
 
 	}
 
