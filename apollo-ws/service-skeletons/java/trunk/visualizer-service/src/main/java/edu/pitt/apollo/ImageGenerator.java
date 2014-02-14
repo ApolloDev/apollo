@@ -1,8 +1,6 @@
 package edu.pitt.apollo;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +25,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * Class: ImageGenerator
  * IDE: NetBeans 6.9.1
  */
+
 public class ImageGenerator {
 
     private static final ResourceBundle rb = ResourceBundle.getBundle("visualizer");
@@ -133,24 +132,6 @@ public class ImageGenerator {
         generateImages(createDiseaseStatesChart, createIncidenceChart, createCombinedIncidenceChart);
     }
 
-    private String getFileId(String id) throws NoSuchAlgorithmException {
-
-        String md5 = null;
-
-        if (id == null) {
-            return null;
-        }
-
-        //Create MessageDigest object for MD5
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        //Update input string in message digest
-        digest.update(id.getBytes(), 0, id.length());
-        //Converts message digest value in base 16 (hex) 
-        md5 = new BigInteger(1, digest.digest()).toString(16);
-
-        return md5;
-    }
-
     private String getVisualizerId() throws NoSuchAlgorithmException {
 
         String md5 = null;
@@ -167,52 +148,7 @@ public class ImageGenerator {
 
         String id = stBuild.toString();
         md5 = DigestUtils.md5Hex(id);
-        //Create MessageDigest object for MD5
-//        MessageDigest digest = MessageDigest.getInstance("MD5");
-//        //Update input string in message digest
-//        digest.update(id.getBytes(), 0, id.length());
-//        //Converts message digest value in base 16 (hex) 
-//        md5 = new BigInteger(1, digest.digest()).toString(16);
-
         return md5;
-    }
-
-//    private String getVisualizerIdForRun() throws FileNotFoundException {
-//        // return null if the table file doesn't exist or if
-//        // the table does not contain the runId
-//
-//        File tableFile = new File(VISUALIZER_TABLE_FILE);
-//        if (!tableFile.exists()) {
-//            return null;
-//        }
-//
-//        Scanner scanner = new Scanner(tableFile);
-//        while (scanner.hasNextLine()) {
-//            String[] line = scanner.nextLine().split("\t");
-//            if (line[0].equals(runId)) {
-//                return line[1];
-//            }
-//        }
-//
-//        return null; // this will be returned if no matching runId was found
-//    }
-//    private void storeVisualizerId() throws FileNotFoundException, IOException {
-//        
-//        File tableFile = new File(VISUALIZER_TABLE_FILE);
-//        
-//        if (!tableFile.exists()) {
-//            tableFile.createNewFile();
-//        }
-//        
-//        PrintStream ps = new PrintStream(tableFile);
-//        ps.println(runId + "\t" + visualizerId);
-//        ps.close();
-//    }
-    private boolean checkFile(String filePath) {
-
-        File file = new File(filePath);
-
-        return file.exists();
     }
 
     private void adjustGlobalEpidemicSimulatorIncidence(IncidenceTimeSeriesContainer incidenceContainer) {
@@ -277,10 +213,10 @@ public class ImageGenerator {
         List<String> runIds = new ArrayList<String>();
 //        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_231860");
 //        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_261732");
-        runIds.add("UPitt_Reed-Frost_1.3.1_75736");
+        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1392243203");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("UPitt_Reed-Frost_1.3.1_75736", "UPitt_Reed-Frost_1.3.1_75736");
+        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1392243203", "UPitt,PSC,CMU_FRED_2.0.1_i_1392243203");
 //        runIdSeriesLabels.put("UPitt_SEIR_1.3.1_332434", "UPitt_SEIR_1.3.1_332434");
 
         ImageGenerator generator = new ImageGenerator(runIds, resource, runIdSeriesLabels, false, false);
