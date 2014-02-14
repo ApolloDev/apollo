@@ -60,7 +60,6 @@ class SimpleNumberAxis extends NumberAxis implements Serializable {
 
         // get the default tick interval
         int tickInterval = (int) super.getTickUnit().getSize();
-        System.out.println("tick interval: " + tickInterval);
 
         // first we need to sort the tick units array to make sure we skip the right ticks
         Collections.sort(allTicks, new Comparator<NumberTick>() {
