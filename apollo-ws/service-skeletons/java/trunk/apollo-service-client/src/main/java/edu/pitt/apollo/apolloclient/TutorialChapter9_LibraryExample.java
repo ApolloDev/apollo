@@ -148,8 +148,11 @@ public class TutorialChapter9_LibraryExample extends
 		example.loadVaccinationControlStrategy();
 
 		InfectiousDiseaseScenario infectiousDiseaseScenario = example.loadInfectiousDiseaseScenario();
-
+		//run FRED here, save run id
 		example.changeR0AndRunFredWithNewScenario(infectiousDiseaseScenario);
+		//run FRED here, save run id
+		
+		//genreate combined incidence.......
 
 	}
 
