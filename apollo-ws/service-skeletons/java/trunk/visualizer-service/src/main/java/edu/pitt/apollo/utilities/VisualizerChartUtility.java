@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -47,48 +49,52 @@ class SimpleNumberAxis extends NumberAxis implements Serializable {
     public List refreshTicks(Graphics2D g2, AxisState state,
             Rectangle2D dataArea, RectangleEdge edge) {
 
+        // for a tick interval >= 5, we add a tick for 1 and then keep the default ticks,
+        // e.g. 1, 5, 10, 15,...
+        
+        // for a tick interval < 5, we add a tick for 1 and then start measuring the ticks from there,
+        // e.g. for a tick interval of 2, we would have 1, 3, 5, 7,...
+        
         List allTicks = super.refreshTicks(g2, state, dataArea, edge);
         List myTicks = new ArrayList();
 
-        // get the default tick interval between THREE consecutive ticks, since we skip showing one
-        int startTick = ((NumberTick) allTicks.get(0)).getNumber().intValue();
-        int nextTickToShow = ((NumberTick) allTicks.get(2)).getNumber().intValue();
-        int tickInterval = nextTickToShow - startTick;
+        // get the default tick interval
+        int tickInterval = (int) super.getTickUnit().getSize();
+        System.out.println("tick interval: " + tickInterval);
 
-        boolean skipTick = false;
+        // first we need to sort the tick units array to make sure we skip the right ticks
+        Collections.sort(allTicks, new Comparator<NumberTick>() {
+
+            @Override
+            public int compare(NumberTick o1, NumberTick o2) {
+                return ((Integer) o1.getNumber().intValue()).compareTo(o2.getNumber().intValue());
+            }
+        });
+
+        int tickCount = 0;
         for (int i = 0; i < allTicks.size(); i++) {
             NumberTick numberTick = (NumberTick) allTicks.get(i);
 
             if (i == 0) {
                 NumberTick newtick = new NumberTick(1, "1", numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
                 myTicks.add(newtick);
+                tickCount++;
                 continue;
             }
-
-//            if (TickType.MAJOR.equals(numberTick.getTickType())
-//                    && (numberTick.getValue() % 5 != 0)) {
-//                myTicks.add(new NumberTick(TickType.MINOR, numberTick.getValue(), "",
-//                        numberTick.getTextAnchor(), numberTick.getRotationAnchor(),
-//                        numberTick.getAngle()));
-//                continue;
-//            }
-
-            if (skipTick) {
-                skipTick = false;
-                continue;
-            }
-
-            skipTick = true;
 
             if (tickInterval >= 5) {
-                // keep the original tick marks after 1
-                NumberTick newtick = new NumberTick(numberTick.getNumber().intValue(), Integer.toString((numberTick.getNumber().intValue())), numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
-                myTicks.add(newtick);
+                // no adjustment needed in this case, the tick interval will be maintained
+                myTicks.add(numberTick);
             } else {
-                // increment the ticks by 1
-                NumberTick newtick = new NumberTick(numberTick.getNumber().intValue() + 1, Integer.toString((numberTick.getNumber().intValue() + 1)), numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
-                myTicks.add(newtick);
+                // creating a new NumberTick and adding it to myTicks will plot ALL ticks (1, 2, 3, 4,...) so we need to skip some
+                // according to the tick interval
+                if (tickCount % tickInterval == 0) {
+                    NumberTick newtick = new NumberTick(numberTick.getNumber().intValue(), Integer.toString((numberTick.getNumber().intValue())), numberTick.getTextAnchor(), numberTick.getRotationAnchor(), numberTick.getAngle());
+                    myTicks.add(newtick);
+                }
             }
+
+            tickCount++;
         }
         return myTicks;
     }
