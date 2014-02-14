@@ -7,15 +7,22 @@ import edu.pitt.apollo.types.v2_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0.ControlStrategyTargetPopulationsAndPrioritization;
 import edu.pitt.apollo.types.v2_0.FixedStartTime;
 import edu.pitt.apollo.types.v2_0.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.NumericParameterValue;
 import edu.pitt.apollo.types.v2_0.ProbabilisticParameterValue;
+import edu.pitt.apollo.types.v2_0.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.Treatment;
 import edu.pitt.apollo.types.v2_0.UnitOfMeasure;
+import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.types.v2_0.Vaccination;
 import edu.pitt.apollo.types.v2_0.VaccinationEfficacyForSimulatorConfiguration;
 import edu.pitt.apollo.types.v2_0.VaccinationPreventableOutcome;
 import edu.pitt.apollo.types.v2_0.Vaccine;
+import edu.pitt.apollo.types.v2_0.VisualizationOptions;
+import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample extends
 		TutorialChapter2_BasicRunSimulationExample {
@@ -107,6 +114,44 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 
 		return vaccinationControlStrategy;
 	}
+        
+        protected void createIncidenceVisualizationForMultipleSimulations(String ... simulatorRunIds) {
+		
+		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
+		runVisualizationMessage.setAuthentication(getAuthentication());
+		runVisualizationMessage.setVisualizerIdentification(getSoftwareIdentifiationForTimeSeriesVisualizer());
+		VisualizationOptions options = new VisualizationOptions();
+		
+		//pass all runId's to "setRunId()" delimited by the ";" character
+		//let's hope there are no semicolons in the runId!
+		String runIdString = "";
+		for (String simulatorRunId : simulatorRunIds) {
+			runIdString += simulatorRunId + ":";
+		}
+		runIdString = runIdString.substring(0, runIdString.length()-1);
+		System.out.println(runIdString);
+		options.setRunId(runIdString);
+		options.setLocation("42003");
+		options.setOutputFormat("default");
+		runVisualizationMessage.setVisualizationOptions(options);
+
+		VisualizerResult visualizerResult = getPort().runVisualization(runVisualizationMessage);
+				
+		
+		RunAndSoftwareIdentification runAndSoftwareIdentification = new RunAndSoftwareIdentification();
+		runAndSoftwareIdentification.setSoftwareId(getSoftwareIdentifiationForTimeSeriesVisualizer());
+		runAndSoftwareIdentification.setRunId(visualizerResult.getRunId());
+
+		if (checkStatusOfWebServiceCall(runAndSoftwareIdentification).getStatus() == MethodCallStatusEnum.COMPLETED) {
+			System.out.println("The following resources were returned from the " + getSoftwareIdentifiationForTimeSeriesVisualizer().getSoftwareName() +
+					" visualizer:");
+			for (UrlOutputResource r : visualizerResult.getVisualizerOutputResource()) {
+				System.out.println("\t" + r.getURL());
+			}
+		}
+		
+	}
+        
 
 	@Override
 	public RunSimulationMessage getRunSimulationMessage() {
@@ -117,12 +162,18 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 	};
 
 	public static void main(String[] args) throws MalformedURLException {
-		new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample().runSimulationAndDisplayResults();
+            TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
+		RunAndSoftwareIdentification vaccinationRunAndSoftwareId = tutorialChapter8.runSimulationAndDisplayResults();
 		//run no vacc, save id
-		//run vacc, save id,
-		//create combined incidence..
+                TutorialChapter2_BasicRunSimulationExample tutorialChapter2 = new TutorialChapter2_BasicRunSimulationExample();
+		RunAndSoftwareIdentification noVaccinationRunAndSoftwareId = tutorialChapter2.runSimulation();
+                //run vacc, save id,
+                //create combined incidence..
 		//it already runs for VACC but we need to re-run Chapter 2, get the runId's dynamically and create a combined incidence curve
 
+                tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(noVaccinationRunAndSoftwareId.getRunId(), vaccinationRunAndSoftwareId.getRunId());
+                
+                
 	}
 
 }
