@@ -22,7 +22,6 @@ public class TutorialChapter9_LibraryExample extends
 	public String infectionUuid = "";
 	public String infectiousDiseaseScenarioUuid = "";
 	public String vaccinationControlStrategyUuid = "";
-        private InfectiousDiseaseScenario infectiousDiseaseScenarioWithUpdatedR0;
 
 	public TutorialChapter9_LibraryExample() throws MalformedURLException {
 		super();
@@ -112,36 +111,20 @@ public class TutorialChapter9_LibraryExample extends
 	public InfectiousDiseaseScenario loadInfectiousDiseaseScenario() {
 		System.out.println("Retrieving InfectiousDiseaseScenario instance from Library using Uuid: "
 				+ infectiousDiseaseScenarioUuid + "\n");
-		GetLibraryItemResult infectionDiseaseScenarioLibraryItem = getPort().getLibraryItem(
-				infectiousDiseaseScenarioUuid);
+		GetLibraryItemResult infectionDiseaseScenarioLibraryItem = getPort().getLibraryItem(infectiousDiseaseScenarioUuid);
 		InfectiousDiseaseScenario infectiousDiseaseScenario = (InfectiousDiseaseScenario) infectionDiseaseScenarioLibraryItem
 				.getCuratedLibraryItemContainer().getApolloIndexableItem();
 		System.out.println("The existing Basic Reproduction Number in the InfectionDiseaseScenario is: "
 				+ infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0)
 						.getBasicReproductionNumber());
-
 		return infectiousDiseaseScenario;
 	}
 
-
-    @Override
-    public RunSimulationMessage getRunSimulationMessage() {
-        RunSimulationMessage message = super.getRunSimulationMessage();
-        if (infectiousDiseaseScenarioWithUpdatedR0 != null) {
-        message.setInfectiousDiseaseScenario(infectiousDiseaseScenarioWithUpdatedR0);
-        }
-        return message;
-    }
-    
-	private RunAndSoftwareIdentification changeR0AndRunFredWithNewScenario(InfectiousDiseaseScenario infectiousDiseaseScenario) {
+	private InfectiousDiseaseScenario setR0(InfectiousDiseaseScenario infectiousDiseaseScenario, Double value) {
 		System.out.println("Changing the Basic Reproduction Number to 1.7...");
 		infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisition().get(0)
 				.setBasicReproductionNumber(1.7);
-		System.out.println("Running FRED with newly updated InfectiousDiseaseScenario...");
-
-                infectiousDiseaseScenarioWithUpdatedR0 = infectiousDiseaseScenario;
-		return runSimulationAndDisplayResults();
-
+		return infectiousDiseaseScenario;
 	}
 
 	/**
@@ -149,25 +132,27 @@ public class TutorialChapter9_LibraryExample extends
 	 * @throws MalformedURLException
 	 */
 	public static void main(String[] args) throws MalformedURLException {
-		TutorialChapter9_LibraryExample example = new TutorialChapter9_LibraryExample();
-		example.saveItems();
-		example.loadInfection();
-		example.loadVaccinationControlStrategy();
-
-		InfectiousDiseaseScenario infectiousDiseaseScenario = example.loadInfectiousDiseaseScenario();
-		//run FRED here, save run id
-                TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
-                RunAndSoftwareIdentification originalR0RunAndSoftwareId = tutorialChapter8.runSimulation();
-                RunAndSoftwareIdentification newR0RunAndSoftwareId = example.changeR0AndRunFredWithNewScenario(infectiousDiseaseScenario);
-                
-                tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(originalR0RunAndSoftwareId.getRunId(), newR0RunAndSoftwareId.getRunId());
-                
-                
+		TutorialChapter9_LibraryExample tutorialChapter9 = new TutorialChapter9_LibraryExample();
+		tutorialChapter9.saveItems();
+		tutorialChapter9.loadInfection();
+		tutorialChapter9.loadVaccinationControlStrategy();
+		InfectiousDiseaseScenario infectiousDiseaseScenario = tutorialChapter9.loadInfectiousDiseaseScenario();
+		InfectiousDiseaseScenario infectiousDiseaseScenarioWithHighR0 = tutorialChapter9.setR0(infectiousDiseaseScenario, 1.7);
 		
-		//run FRED here, save run id
 		
-		//genreate combined incidence.......
-
+		TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = 
+				new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
+		RunSimulationMessage runSimulationMessageWithNormalR0 = tutorialChapter8.getRunSimulationMessage();
+		RunAndSoftwareIdentification normalR0runAndSoftwareId = 
+				tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithNormalR0);
+		
+		RunSimulationMessage runSimulationMessageWithHighR0 = tutorialChapter8.getRunSimulationMessage();
+		runSimulationMessageWithHighR0.setInfectiousDiseaseScenario(infectiousDiseaseScenarioWithHighR0);
+		RunAndSoftwareIdentification highR0RunAndSoftwareId =
+				tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithHighR0); 
+                
+        tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(
+        		normalR0runAndSoftwareId.getRunId(), highR0RunAndSoftwareId.getRunId());
 	}
 
 }
