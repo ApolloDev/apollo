@@ -394,7 +394,7 @@
 				<sequence>
 					<element name="antiviral" type="tns:Antiviral" maxOccurs="1"
 						minOccurs="1" />
-					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy" maxOccurs="unbounded" minOccurs="0"/>
+					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy"/>
 				</sequence>
 			</extension>
 		</complexContent>
