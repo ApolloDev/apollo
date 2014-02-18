@@ -1186,10 +1186,43 @@
 						maxOccurs="unbounded" minOccurs="0" />
 					<element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus"
 						maxOccurs="unbounded" minOccurs="0" />
+					<element name="subLocationInfectiousDiseaseScenarios" type="tns:SubLocationInfectiousDiseaseScenario"
+						maxOccurs="unbounded" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
+
+	<complexType name="SubLocationInfectiousDiseaseScenario">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<element name="subLocation" type="tns:Location" maxOccurs="1"
+						minOccurs="1" />
+					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
+						minOccurs="1" />
+					<element name="diseases" type="tns:InfectiousDisease"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="contaminations" type="tns:Contamination"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="treatments" type="tns:Treatment" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="populationInfectionAndImmunityCensuses"
+						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
+						minOccurs="1" />
+					<element name="populationTreatmentCensuses" type="tns:PopulationTreatmentCensus"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="sublocationScenarios" type="tns:SubLocationInfectiousDiseaseScenario"
+						maxOccurs="unbounded" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
 
 	<complexType name="CompartmentalModelPopulationAndEnvironmentCensus">
 		<sequence>
