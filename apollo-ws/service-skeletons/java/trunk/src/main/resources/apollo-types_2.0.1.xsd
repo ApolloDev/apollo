@@ -197,7 +197,7 @@
 					<element name="infectiousPeriodDuration" type="tns:NumericParameterValue"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="infectiousnessProfile" type="tns:ConditionalProbabilityDistribution"
+					<element name="infectiousnessProfile" type="tns:ParametricProbabilityDistribution"
 						maxOccurs="1" minOccurs="0">
 					</element>
 					<element name="latentPeriodDuration" type="tns:NumericParameterValue"
@@ -509,11 +509,15 @@
 		<complexContent>
 			<extension base="tns:CategoryDefinition">
 				<sequence>
-                    <element name="unitOfTime" type="tns:UnitOfTime" maxOccurs="1" minOccurs="1">
+					<element name="unitOfTime" type="tns:UnitOfTime" maxOccurs="1"
+						minOccurs="1">
 					</element>
-                    <element name="durationInTimeUnits" type="nonNegativeInteger" maxOccurs="1" minOccurs="1" />
-                    <element name="timeZeroReference" type="tns:timeScaleEnum" maxOccurs="1" minOccurs="1"></element>
-                    <element name="startOfTimeSpan" type="nonNegativeInteger" maxOccurs="1" minOccurs="1" />
+					<element name="durationInTimeUnits" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="1" />
+					<element name="timeZeroReference" type="tns:timeScaleEnum"
+						maxOccurs="1" minOccurs="1"></element>
+					<element name="startOfTimeSpan" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1359,6 +1363,12 @@
 	<simpleType name="NcbiTaxonId">
 		<restriction base="token">
 			<pattern value="[0-9]"></pattern>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="vaccineOntologyId">
+		<restriction base="token">
+			<pattern value="[A-Z_0-9]{2,17}"></pattern>
 		</restriction>
 	</simpleType>
 
