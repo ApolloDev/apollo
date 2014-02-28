@@ -1,0 +1,6 @@
+days = 100
+symp[0] = 0.5
+R0 = 1.7
+primary_cases_file[0] = fred_initial_population_0.txt
+residual_immunity_ages[0] = 2 0 100
+residual_immunity_values[0] = 1 0.0499961
