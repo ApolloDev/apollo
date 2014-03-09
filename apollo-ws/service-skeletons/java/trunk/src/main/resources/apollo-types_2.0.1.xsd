@@ -143,18 +143,14 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="individualTreatment"
-						type="tns:Treatment" maxOccurs="1" minOccurs="1">
+					<element name="individualTreatment" type="tns:Treatment"
+						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="treatmentDuration" type="tns:Duration" maxOccurs="1" minOccurs="0"></element>
-					<element name="delayFromSymptomsToTreatment"
-						type="tns:Duration" maxOccurs="1" minOccurs="0">
+					<element name="delayFromSymptomsToTreatment" type="tns:Duration"
+						maxOccurs="1" minOccurs="0">
 					</element>
-					<element name="supplySchedule-perDay"
-						type="nonNegativeInteger" maxOccurs="unbounded" minOccurs="1">
-					</element>
-					<element name="administrationCapacity-perDay"
-						type="nonNegativeInteger" maxOccurs="unbounded" minOccurs="1">
+					<element name="treatmentSystemLogistics" type="tns:TreatmentSystemLogistics"
+						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="targetPopulationsAndPrioritizations"
 						type="tns:ControlStrategyTargetPopulationsAndPrioritization"
@@ -163,9 +159,9 @@
 			</extension>
 		</complexContent>
 	</complexType>
-	
 
-	
+
+
 
 	<complexType name="Vaccination">
 		<complexContent>
@@ -204,8 +200,9 @@
 					<element name="infectiousPeriodDuration" type="tns:Duration"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="infectiousnessProfile" type="tns:ParametricProbabilityDistribution"
-						maxOccurs="1" minOccurs="0">
+					<element name="infectiousnessProfile"
+						type="tns:ContinuousParametricProbabilityDistribution" maxOccurs="1"
+						minOccurs="0">
 					</element>
 					<element name="latentPeriodDuration" type="tns:Duration"
 						maxOccurs="1" minOccurs="1">
@@ -501,10 +498,13 @@
 		<complexContent>
 			<extension base="tns:CategoryDefinition">
 				<sequence>
-					<element name="unitOfTime" type="tns:UnitOfTime" maxOccurs="1"
-						minOccurs="1"></element>
+					<element name="unitOfTimeForLowerBound" type="tns:UnitOfTime"
+						maxOccurs="1" minOccurs="1">
+					</element>
 					<element name="lowerBound" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1" />
+					<element name="unitOfTimeForUpperBound" type="tns:UnitOfTime"
+						maxOccurs="1" minOccurs="1"></element>
 					<element name="upperBound" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
@@ -619,7 +619,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="ReactiveTriggersDefinition">
+	<complexType name="ReactiveTriggerDefinition">
 		<sequence>
 			<element name="reactiveControlStrategyTest" type="token"
 				maxOccurs="1" minOccurs="1">
@@ -627,10 +627,10 @@
 			<element name="reactiveControlStrategyThreshold" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="newCaseDetection"
-				type="tns:NewCaseDetection" maxOccurs="1" minOccurs="1">
+			<element name="newCaseDetection" type="tns:DiseaseSurveillanceCapability"
+				maxOccurs="1" minOccurs="1">
 			</element>
-			
+
 		</sequence>
 	</complexType>
 
@@ -745,8 +745,6 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="treatment" type="tns:Treatment" maxOccurs="1"
-				minOccurs="1" />
 		</sequence>
 	</complexType>
 
@@ -756,12 +754,27 @@
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1" />
+					<choice>
+						<element name="vaccineId" type="tns:vaccineOntologyId"
+							maxOccurs="1" minOccurs="1">
+						</element>
+						<element name="DrugId" type="token" maxOccurs="1"
+							minOccurs="1">
+						</element>
+					</choice>
 					<element name="speciesOfTreatedOrganism" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 					<element name="numDosesInTreatmentCourse" type="positiveInteger"
 						maxOccurs="1" minOccurs="1" />
+					<element name="durationOfTreatmentCourse" type="duration"
+						maxOccurs="1" minOccurs="1">
+					</element>
 					<element name="treatmentContraindications" type="tns:TreatmentContraindication"
 						maxOccurs="unbounded" minOccurs="0" />
+					<element name="treatmentEfficacies" type="tns:TreatmentEfficacy"
+						maxOccurs="unbounded" minOccurs="1">
+					</element>
+
 				</sequence>
 			</extension>
 		</complexContent>
@@ -802,7 +815,7 @@
 		<complexContent>
 			<extension base="tns:ControlStrategyStartTime">
 				<sequence>
-					<element name="triggers" type="tns:ReactiveTriggersDefinition"
+					<element name="triggers" type="tns:ReactiveTriggerDefinition"
 						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
 			</extension>
@@ -900,9 +913,9 @@
 					<element name="averageVaccinationEfficacy" type="tns:Probability"
 						maxOccurs="1" minOccurs="1" />
 					<element name="vaccinationEfficacybyAgeRange" type="tns:ProbabilisticParameter"
-						maxOccurs="unbounded" minOccurs="0" />
+						maxOccurs="1" minOccurs="0" />
 					<element name="vaccinationEfficaciesByTimeSinceMostRecentDose"
-						type="tns:VaccinationEfficacyByTimeSinceDose" maxOccurs="unbounded"
+						type="tns:VaccinationEfficacyByTimeSinceDose" maxOccurs="1"
 						minOccurs="0" />
 				</sequence>
 			</extension>
@@ -1796,7 +1809,8 @@
 
 	<complexType name="TransmissionProbability">
 		<sequence>
-			<element name="contactDefinition" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="contactDefinition" type="string" maxOccurs="1"
+				minOccurs="0"></element>
 			<choice>
 				<element name="probabililty" type="tns:Probability"
 					maxOccurs="1" minOccurs="1">
@@ -1891,13 +1905,13 @@
 					<element name="maximumTravelDistance-km" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1">
 					</element>
-    	</sequence>
+				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
 
-	<complexType name="NewCaseDetection">
+	<complexType name="DiseaseSurveillanceCapability">
 		<sequence>
 			<element name="location" type="tns:Location" maxOccurs="1"
 				minOccurs="1">
@@ -1916,8 +1930,25 @@
 			<element name="specificityOfCaseDetection" type="tns:Probability"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="delayToDetection" type="tns:Duration"
+			<element name="delayToDetectionOfCase" type="tns:Duration"
 				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TreatmentSystemLogistics">
+		<sequence>
+			<element name="description" type="string" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="location" type="tns:Location" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			
+			<element name="supplySchedule-perDay"
+				type="nonNegativeInteger" maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="administrationCapacity-perDay"
+				type="nonNegativeInteger" maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
