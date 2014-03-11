@@ -1148,16 +1148,20 @@
 					maxOccurs="1" minOccurs="1" />
 				<element name="Beta" type="tns:Ratio" maxOccurs="1"
 					minOccurs="1" />
-				<element name="globalEpidemicSimulatorRepresentation" type="tns:GlobalEpidemicSimulatorRepresentation" maxOccurs="1"
+				<element name="forGlobalEpidemicSimulator" type="tns:ParametersForGesContactAndTransmissionModel" maxOccurs="1"
 					minOccurs="1" />
 			</choice>
 		</sequence>
 	</complexType>
 
-	<complexType name="GlobalEpidemicSimulatorRepresentation">
+	<complexType name="ParametersForGesContactAndTransmissionModel">
 		<sequence>
-            <element name="seasonalFunctionParameters" type="tns:SeasonalityFunctionParameters" maxOccurs="1" minOccurs="1"></element>
-            <element name="transmissionProbabilityParameterSet"
+            <element name="condtionalIndividualBehaviors" type="tns:ConditionalIndividualBehavior" maxOccurs="unbounded" minOccurs="1"></element>
+            <element name="seasonalFunctionParameters"
+				type="tns:SeasonalityFunctionParameters" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="transmissionProbabilityParameterSet"
 				type="tns:GesTransmissionProbabilityParameters" maxOccurs="1"
 				minOccurs="1" />
 			<element name="contactModelsForPlaceTypes"
@@ -1955,7 +1959,9 @@
 	<simpleType name="BehaviorEnum">
 		<restriction base="string">
 			<enumeration value="absentFromWork" />
-			<enumeration value="absentFromNurserySchool" />
+			<enumeration value="absentFromPreSchool" />
+			<enumeration value="absentFromPrimarySchool" />
+			<enumeration value="absentFromSecondarySchool" />
 		</restriction>
 	</simpleType>
 		
