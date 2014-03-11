@@ -520,8 +520,8 @@
 		<complexContent>
 			<extension base="tns:CategoryDefinition">
 				<sequence>
-					<element name="unitOfTime" type="tns:UnitOfTimeEnum" maxOccurs="1"
-						minOccurs="1">
+					<element name="unitOfTime" type="tns:UnitOfTimeEnum"
+						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="timeZeroReference" type="tns:timeScaleEnum"
 						maxOccurs="1" minOccurs="1"></element>
@@ -720,8 +720,8 @@
 
 	<complexType name="Duration">
 		<sequence>
-			<element name="unitOfTime" type="tns:UnitOfTimeEnum" maxOccurs="1"
-				minOccurs="1" />
+			<element name="unitOfTime" type="tns:UnitOfTimeEnum"
+				maxOccurs="1" minOccurs="1" />
 			<choice>
 				<element name="value" type="tns:NonNegativeDouble"
 					maxOccurs="1" minOccurs="1" />
@@ -1120,19 +1120,139 @@
 					<element name="susceptibleHostTaxonId" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
 					<choice>
-						<element name="infectiousHostTaxonId" type="tns:NcbiTaxonId"
-							maxOccurs="1" minOccurs="1" />
-						<element name="contaminatedMaterialId" type="token"
-							maxOccurs="1" minOccurs="1" />
+                        <element name="fromContaminatedThing" type="tns:InfectionAcquisitionFromContaminatedThing" maxOccurs="1" minOccurs="1" />
+                        <element name="fromInfectiousHost"
+							type="tns:InfectionAcquisitionFromInfectiousHost" maxOccurs="1" minOccurs="1" />
 					</choice>
-					<element name="basicReproductionNumber" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1" />
-					<element name="transmissionCoefficient" type="tns:TransmissionCoefficient"
-						maxOccurs="1" minOccurs="0" />
+
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
+	
+	<complexType name="InfectionAcquisitionFromContaminatedThing">
+		<sequence>
+			<element name="abtioticEcosystemType" type="tns:AbioticEcosystemEnum"
+				maxOccurs="1" minOccurs="1" />
+							<element name="transmissionProbability" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="InfectionAcquisitionFromInfectiousHost">
+		<sequence>
+			<element name="infectiousHostTaxonId" type="tns:NcbiTaxonId"
+				maxOccurs="1" minOccurs="1" />
+			<choice>
+				<element name="basicReproductionNumber" type="tns:PositiveDouble"
+					maxOccurs="1" minOccurs="1" />
+				<element name="Beta" type="tns:Ratio" maxOccurs="1"
+					minOccurs="1" />
+				<element name="globalEpidemicSimulatorRepresentation" type="tns:GlobalEpidemicSimulatorRepresentation" maxOccurs="1"
+					minOccurs="1" />
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="GlobalEpidemicSimulatorRepresentation">
+		<sequence>
+            <element name="seasonalFunctionParameters" type="tns:SeasonalityFunctionParameters" maxOccurs="1" minOccurs="1"></element>
+            <element name="transmissionProbabilityParameterSet"
+				type="tns:GesTransmissionProbabilityParameters" maxOccurs="1"
+				minOccurs="1" />
+			<element name="contactModelsForPlaceTypes"
+				type="tns:ContactModelForPlaceType" maxOccurs="6" minOccurs="6" />
+		</sequence>
+	</complexType>
+
+	<complexType name="GesTransmissionProbabilityParameters">
+		<sequence>
+			<element name="prophylaxis_susc" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="vacc_susc" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="treat_inf" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="prophylaxis_inf" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="vacc_inf" type="tns:ProbabilisticParameter"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="relative_inf_symptomatic_multiplier" type="tns:NonNegativeDouble"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ContactModelForPlaceType"/>
+
+	<complexType name="ContactModelForCommunity">
+		<complexContent>
+			<extension base="tns:ContactModelForPlaceType">
+				<sequence>
+					<element name="communityTransmissionCoefficient" type="tns:Ratio"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="c_community" type="tns:PositiveDouble" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="q_community" type="tns:PositiveDouble" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="severity_multiplier_severeInfectionMultiplier"
+						type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ContactModelForHousehold">
+		<complexContent>
+			<extension base="tns:ContactModelForPlaceType">
+				<sequence>
+					<element name="householdTransmissionCoefficient"
+						type="tns:Ratio" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="c_household" type="tns:PositiveDouble" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="q_household" type="tns:PositiveDouble" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="severity_multiplier_severeInfectionMultiplier"
+						type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ContactModelForSchoolOrWorkplace">
+		<complexContent>
+			<extension base="tns:ContactModelForPlaceType">
+				<sequence>
+					<element name="placeType" type="tns:AbioticEcosystemEnum"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="placeTransmissionCoefficient" type="tns:Ratio"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="q_social" type="tns:PositiveDouble"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="severity_multiplier_severeInfectionMultiplier"
+						type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
 
 	<complexType name="RunSimulationMessage">
 		<sequence>
@@ -1606,17 +1726,7 @@
 	<complexType name="TransmissionCoefficient" />
 
 
-	<complexType name="Beta">
-		<complexContent>
-			<extension base="tns:TransmissionCoefficient">
-				<sequence>
-					<element name="value" type="tns:PositiveDouble" maxOccurs="1"
-						minOccurs="1">
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
+
 
 
 	<complexType name="GesTransmissionCoefficient">
@@ -1808,22 +1918,6 @@
 
 	<complexType name="RunSyntheticPopulationGenerationMessage"></complexType>
 
-	<complexType name="TransmissionProbability">
-		<sequence>
-			<element name="contactDefinition" type="string" maxOccurs="1"
-				minOccurs="0"></element>
-			<choice>
-				<element name="probabililty" type="tns:Probability"
-					maxOccurs="1" minOccurs="1">
-				</element>
-				<element name="probabilityDistribution" type="tns:ProbabilityDistribution"
-					maxOccurs="1" minOccurs="1">
-				</element>
-			</choice>
-		</sequence>
-	</complexType>
-
-
 
 	<complexType name="Population">
 		<sequence>
@@ -1834,6 +1928,37 @@
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
+	<complexType name="Individual">
+		<sequence>
+			<element name="speciesId" type="tns:NcbiTaxonId" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="conditionalBehaviors" type="tns:ConditionalIndividualBehavior"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ConditionalIndividualBehavior">
+		<sequence>
+			<element name="behavior" type="tns:BehaviorEnum" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="conditionalProbability" type="tns:ConditionalProbabilityDistribution" maxOccurs="1"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+
+	<simpleType name="BehaviorEnum">
+		<restriction base="string">
+			<enumeration value="absentFromWork" />
+			<enumeration value="absentFromNurserySchool" />
+		</restriction>
+	</simpleType>
+		
 
 	<complexType name="FacilityClosureControlStrategy">
 		<complexContent>
@@ -1952,4 +2077,16 @@
 			</element>
 		</sequence>
 	</complexType>
+
+	<complexType name="Ratio">
+			<sequence>
+		<element name="numeratorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
+			maxOccurs="1" minOccurs="0"></element>
+		<element name="denominatorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
+			maxOccurs="1" minOccurs="0"></element>
+		<element name="value" type="double" maxOccurs="1" minOccurs="0"></element>
+		<element name="probabilityDistribution" type="tns:ProbabilityDistribution" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+    
 </schema>
