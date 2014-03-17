@@ -1,7 +1,9 @@
-package edu.pitt.apollo.utilities;
+package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import edu.pitt.apollo.container.IncidenceTimeSeriesContainer;
-import edu.pitt.apollo.container.SeirTimeSeriesContainer;
+import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.IncidenceTimeSeriesContainer;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisState;
@@ -326,7 +329,7 @@ public class VisualizerChartUtility {
         return chart;
     }
 
-    private XYSeries createXYSeries(double[] data, String name, int startIndex) {
+    private XYSeries createXYSeries(Double[] data, String name, int startIndex) {
 
         final XYSeries series = new XYSeries(name);
         for (int i = startIndex; i < data.length; i++) {
@@ -336,41 +339,40 @@ public class VisualizerChartUtility {
         return series;
     }
 
-    private XYDataset createSeirXYDataset(SeirTimeSeriesContainer container, String runId) {
+    private XYDataset createSeirXYDataset(TimeSeriesContainer container) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(createXYSeries(container.getSusceptibleTimeSeries(runId), "Susceptible", 0));
-        dataset.addSeries(createXYSeries(container.getExposedTimeSeries(runId), "Exposed", 0));
-        dataset.addSeries(createXYSeries(container.getInfectiousTimeSeries(runId), "Infectious", 0));
-        dataset.addSeries(createXYSeries(container.getRecoveredTimeSeries(runId), "Recovered", 0));
-
+        dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.SUSCEPTIBLE), "Susceptible", 0));
+        dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.EXPOSED), "Exposed", 0));
+        dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.INFECTIOUS), "Infectious", 0));
+        dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.RECOVERED), "Recovered", 0));
         return dataset;
     }
 
-    private XYDataset createIncidenceDataset(IncidenceTimeSeriesContainer container, String runId) {
+    private XYDataset createIncidenceDataset(TimeSeriesContainer container, String runId) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(createXYSeries(container.getIncidenceTimeSeries(runId), "Incidence", 1));
-
+        dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.NEWLY_EXPOSED), "Incidence", 1));
+        
         return dataset;
     }
 
-    private XYDataset createCombinedIncidenceDataset(IncidenceTimeSeriesContainer container,
+    private XYDataset createCombinedIncidenceDataset(ImageSeriesMap imageSeriesMap,
             Map<String, String> runIdSeriesLabels) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        Map<String, double[]> incidenceMap = container.getIncidenceTimeSeriesMap();
+//        Map<String, double[]> incidenceMap = container.getIncidenceTimeSeriesMap();
 
         int i = 0;
-        for (String runId : incidenceMap.keySet()) {
-            dataset.addSeries(createXYSeries(incidenceMap.get(runId), runIdSeriesLabels.get(runId), 1));
+        for (String runId : imageSeriesMap.keySet()) {
+            dataset.addSeries(createXYSeries(imageSeriesMap.get(runId).getSeries(InfectionStateEnum.NEWLY_EXPOSED), runIdSeriesLabels.get(runId), 1));
             i++;
         }
 
         return dataset;
     }
 
-    public void createSeirTimeSeriesChart(SeirTimeSeriesContainer seirContainer, Map<String, String> filepathMap) {
+    public void createSeirTimeSeriesChart(ImageSeriesMap imageSeriesMap, Map<String, String> filepathMap) {
 
         for (String runId : filepathMap.keySet()) {
 
@@ -378,7 +380,8 @@ public class VisualizerChartUtility {
                 continue;
             }
 
-            XYDataset dataset = createSeirXYDataset(seirContainer, runId);
+            TimeSeriesContainer container = imageSeriesMap.get(runId);
+            XYDataset dataset = createSeirXYDataset(container);
             JFreeChart chart = createDiseaseStatesChart(dataset, "Disease states over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
@@ -402,11 +405,12 @@ public class VisualizerChartUtility {
         }
     }
 
-    public void createIncidenceTimeSeriesChart(IncidenceTimeSeriesContainer incidenceContainer, Map<String, String> filepathMap) {
+    public void createIncidenceTimeSeriesChart(ImageSeriesMap imageSeriesMap, Map<String, String> filepathMap) {
 
         for (String runId : filepathMap.keySet()) {
 
-            XYDataset dataset = createIncidenceDataset(incidenceContainer, runId);
+            TimeSeriesContainer container = imageSeriesMap.get(runId);
+            XYDataset dataset = createIncidenceDataset(container, runId);
             JFreeChart chart = createIncidenceChart(dataset, "Incidence of newly exposed over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
@@ -428,10 +432,10 @@ public class VisualizerChartUtility {
         }
     }
 
-    public void createCombinedIncidenceTimeSeriesChart(IncidenceTimeSeriesContainer incidenceContainer, String filepath,
+    public void createCombinedIncidenceTimeSeriesChart(ImageSeriesMap imageSeriesMap, String filepath,
             Map<String, String> runIdSeriesLabels) {
 
-        XYDataset dataset = createCombinedIncidenceDataset(incidenceContainer, runIdSeriesLabels);
+        XYDataset dataset = createCombinedIncidenceDataset(imageSeriesMap, runIdSeriesLabels);
         JFreeChart chart = createCombinedIncidenceChart(dataset, "Incidence of newly exposed over time", "simulation time step", "");
         BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
