@@ -542,11 +542,11 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="FacilityCategory">
+	<complexType name="PlaceCategory">
 		<complexContent>
 			<extension base="tns:CategoryDefinition">
 				<sequence>
-					<element name="facility" type="tns:FacilityEnum" maxOccurs="1"
+					<element name="place" type="tns:PlaceEnum" maxOccurs="1"
 						minOccurs="1" />
 				</sequence>
 			</extension>
@@ -630,11 +630,13 @@
 			<element name="reactiveControlStrategyTest" type="token"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="reactiveControlStrategyThreshold" type="tns:Fraction"
+			<element name="reactiveControlStrategyThreshold" type="int"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="newCaseDetection" type="tns:DiseaseSurveillanceCapability"
-				maxOccurs="1" minOccurs="1">
+			<element name="unitOfMeasureForThreshold" type="tns:UnitOfMeasureEnum" maxOccurs="1" minOccurs="1"></element>
+			<element name="diseaseSurveillanceCapability"
+				type="tns:DiseaseSurveillanceCapability" maxOccurs="1"
+				minOccurs="1">
 			</element>
 
 		</sequence>
@@ -1101,7 +1103,7 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="FacilityEnum">
+	<simpleType name="PlaceEnum">
 		<restriction base="string">
 			<enumeration value="preschool" />
 			<enumeration value="primarySchool" />
@@ -1192,7 +1194,16 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ContactModelForPlaceType"/>
+	<complexType name="ContactModelForPlaceType">
+			<sequence>
+			<element name="spatialKernelParametersForPlace"
+				type="tns:SpatialKernelFunctionParameters" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			</sequence>
+	</complexType>
+	
+	
 
 	<complexType name="ContactModelForCommunity">
 		<complexContent>
@@ -1246,11 +1257,11 @@
 					<element name="placeTransmissionCoefficient"
 						type="tns:Rate" maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="P_P _group" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P _sympt_absent" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P _sympt_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P _severe_absent" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P _severe_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_P_group" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_sympt_absent" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_sympt_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_severe_absent" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_severe_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
 					<element name="q_social" type="tns:PositiveDouble"
 						maxOccurs="1" minOccurs="1">
 					</element>
@@ -1716,6 +1727,7 @@
 			<enumeration value="months" />
 			<enumeration value="years" />
 			<enumeration value="percent" />
+			<enumeration value="cases" />
 			<enumeration value="meters" />
 			<enumeration value="inches" />
 			<enumeration value="miles" />
@@ -1773,7 +1785,7 @@
 
 	<complexType name="TransmissionCoefficientForPlace">
 		<sequence>
-			<element name="placeType" type="tns:FacilityEnum" maxOccurs="1"
+			<element name="placeType" type="tns:PlaceEnum" maxOccurs="1"
 				minOccurs="1">
 			</element>
 			<element name="baseTransmissionCoefficient" type="tns:PositiveDouble"
@@ -1972,16 +1984,16 @@
 	</simpleType>
 		
 
-	<complexType name="FacilityClosureControlStrategy">
+	<complexType name="PlaceClosureControlStrategy">
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="facilityClass" type="tns:FacilityEnum"
+					<element name="placeClass" type="tns:PlaceEnum"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="closeIndividualFacilitiesIndependentally"
+					<element name="closeIndividualPlacesIndependentally"
 						type="boolean" maxOccurs="1" minOccurs="1"></element>
-					<element name="closureDuration" type="tns:Duration"
+					<element name="closurePeriod" type="tns:Duration"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="householdTransmissionMultiplier" type="tns:NonNegativeDouble"
@@ -1999,7 +2011,7 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-                    <element name="periodOfQuarantine" type="tns:Duration" maxOccurs="1" minOccurs="1">
+                    <element name="quarantinePeriod" type="tns:Duration" maxOccurs="1" minOccurs="1">
 					</element>
                     <element name="compliance" type="tns:ProbabilisticParameter"
 						maxOccurs="1" minOccurs="1" />
