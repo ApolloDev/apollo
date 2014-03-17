@@ -1,5 +1,6 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.timeseriesvisualizer;
 
+import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -8,11 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import edu.pitt.apollo.container.ImageSeriesContainer;
-import edu.pitt.apollo.container.IncidenceTimeSeriesContainer;
+import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
-import edu.pitt.apollo.utilities.DatabaseUtility;
-import edu.pitt.apollo.utilities.VisualizerChartUtility;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
 import org.apache.commons.codec.digest.DigestUtils;
 
 
@@ -118,7 +118,7 @@ public class ImageGenerator {
         return runDirectory;
     }
 
-    public void createTimeSeriesImages() {
+    public void createTimeSeriesImages() throws TimeSeriesVisualizerException {
 
         // if a file does not exist we want to generate the image, so we use the negation
 //        boolean generateDiseaseStates = !checkFile(diseaseStateImagePath);
@@ -151,59 +151,59 @@ public class ImageGenerator {
         return md5;
     }
 
-    private void adjustGlobalEpidemicSimulatorIncidence(IncidenceTimeSeriesContainer incidenceContainer) {
+//    private void adjustGlobalEpidemicSimulatorIncidence(ImageSeriesMap imageSeriesMap) throws TimeSeriesVisualizerException {
+//
+////        Map<String, double[]> incidenceMap = incidenceContainer.getIncidenceTimeSeriesMap();
+//        if (imageSeriesMap.size() > 1) {
+//            // only need to adjust if there is more than 1 incidence curve (combined incidence)
+//            int targetRunLength = 0;
+//            String simulatorKey = null;
+//            for (String runId : imageSeriesMap.keySet()) {
+//                if (!runId.contains("Global_Epidemic_Simulator")) {
+//                    targetRunLength = imageSeriesMap.get(runId).getSeriesLength();
+//                    // all of the non GES simulators should have the same length, so it doesn't matter if this is set multiple times
+//                } else {
+//                    simulatorKey = runId;
+//                }
+//            }
+//
+//            if (simulatorKey != null) {
+//
+//                Double[] series = imageSeriesMap.get(simulatorKey).getSeries(InfectionStateEnum.NEWLY_EXPOSED);
+//                Double[] newSeries = new Double[targetRunLength];
+//
+////                if (series.length < targetRunLength) {
+////                    System.arraycopy(series, 0, newSeries, 0, series.length);
+////                    // the rest of the newSeries array already contains zeros
+////                } else 
+//                if (series.length > targetRunLength) {
+//                    System.arraycopy(series, 0, newSeries, 0, newSeries.length);
+//                }
+//
+//                imageSeriesMap.get(simulatorKey).setSeries(InfectionStateEnum.NEWLY_EXPOSED, newSeries);
+//            }
+//
+//        }
+//    }
 
-        Map<String, double[]> incidenceMap = incidenceContainer.getIncidenceTimeSeriesMap();
-        if (incidenceMap.size() > 1) {
-            // only need to adjust if there is more than 1 incidence curve (combined incidence)
-            int targetRunLength = 0;
-            String simulatorKey = null;
-            for (String key : incidenceMap.keySet()) {
-                if (!key.contains("Global_Epidemic_Simulator")) {
-                    targetRunLength = incidenceMap.get(key).length;
-                    // all of the non GES simulators should have the same length, so it doesn't matter if this is set multiple times
-                } else {
-                    simulatorKey = key;
-                }
-            }
-
-            if (simulatorKey != null) {
-
-                double[] series = incidenceMap.get(simulatorKey);
-                double[] newSeries = new double[targetRunLength];
-
-//                if (series.length < targetRunLength) {
-//                    System.arraycopy(series, 0, newSeries, 0, series.length);
-//                    // the rest of the newSeries array already contains zeros
-//                } else 
-                if (series.length > targetRunLength) {
-                    System.arraycopy(series, 0, newSeries, 0, newSeries.length);
-                }
-
-                incidenceMap.put(simulatorKey, newSeries);
-            }
-
-        }
-    }
-
-    private void generateImages(boolean generateDiseaseStates, boolean generateIncidence, boolean generateCombinedIncidence) {
+    private void generateImages(boolean generateDiseaseStates, boolean generateIncidence, boolean generateCombinedIncidence) throws TimeSeriesVisualizerException {
 
         DatabaseUtility dbUtil = new DatabaseUtility(runIds);
-        ImageSeriesContainer container = dbUtil.retrieveTimeSeriesFromDatabase(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
+        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabase(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
 
-        adjustGlobalEpidemicSimulatorIncidence(container.getIncidenceSeriesContainer());
+//        adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
 
         VisualizerChartUtility chartUtility = new VisualizerChartUtility();
 
         System.out.println("Creating images...");
         if (generateDiseaseStates) {
-            chartUtility.createSeirTimeSeriesChart(container.getSeirSeriesContainer(), diseaseStateImagePathMap);
+            chartUtility.createSeirTimeSeriesChart(imageSeriesMap, diseaseStateImagePathMap);
         }
         if (generateIncidence) {
-            chartUtility.createIncidenceTimeSeriesChart(container.getIncidenceSeriesContainer(), incidenceImagePathMap);
+            chartUtility.createIncidenceTimeSeriesChart(imageSeriesMap, incidenceImagePathMap);
         }
         if (generateCombinedIncidence) {
-            chartUtility.createCombinedIncidenceTimeSeriesChart(container.getIncidenceSeriesContainer(), combinedIncidenceImagePath, runIdSeriesLabels);
+            chartUtility.createCombinedIncidenceTimeSeriesChart(imageSeriesMap, combinedIncidenceImagePath, runIdSeriesLabels);
         }
     }
 
@@ -211,13 +211,13 @@ public class ImageGenerator {
 
         List<UrlOutputResource> resource = new ArrayList<UrlOutputResource>();
         List<String> runIds = new ArrayList<String>();
-//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_231860");
-//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_261732");
-        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1392243203");
+        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393616088");
+//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393534706");
+//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393019653");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1392243203", "UPitt,PSC,CMU_FRED_2.0.1_i_1392243203");
-//        runIdSeriesLabels.put("UPitt_SEIR_1.3.1_332434", "UPitt_SEIR_1.3.1_332434");
+        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1393616088", "UPitt,PSC,CMU_FRED_2.0.1_i_1393616088");
+//        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1393534706", "UPitt,PSC,CMU_FRED_2.0.1_i_1393534706");
 
         ImageGenerator generator = new ImageGenerator(runIds, resource, runIdSeriesLabels, false, false);
         try {
