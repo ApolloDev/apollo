@@ -1,4 +1,4 @@
-package edu.pitt.apollo.container;
+package edu.pitt.apollo.timeseriesvisualizer.types;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -12,8 +12,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package edu.pitt.apollo;
+package edu.pitt.apollo.timeseriesvisualizer;
 
+import edu.pitt.apollo.timeseriesvisualizer.ImageGenerator;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.types.v2_0.VisualizerResult;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
@@ -217,9 +220,30 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 			rs.setMessage("Run with ID " + runId + " is completed");
 			rs.setStatus(MethodCallStatusEnum.COMPLETED);
 		} else {
+                    
+                    // check error file
+                    String errorFilePath = runDirectory + File.separator + ImageGeneratorRunnable.ERROR_FILE;
+                    File errorFile = new File(errorFilePath);
+                    if (errorFile.exists()) {
+                        rs.setStatus(MethodCallStatusEnum.FAILED);
+                        try {
+                            Scanner scanner = new Scanner(errorFile);
+                            StringBuilder error = new StringBuilder();
+                            while (scanner.hasNextLine()) {
+                                error.append(scanner.nextLine()).append("\n");
+                            }
+                            
+                            rs.setMessage(error.toString());
+                        } catch (FileNotFoundException ex) {
+                            System.err.println("Could not open error file \"" + errorFilePath + "\" for reading");
+                            rs.setMessage("Could not open error file for run with ID " + runId);
+                        }
+                    } else {
+                    
 			// check started file
 			String startedFilePath = runDirectory + File.separator
 					+ ImageGeneratorRunnable.STARTED_FILE;
+
 			File startedFile = new File(startedFilePath);
 			if (startedFile.exists()) {
 				rs.setMessage("Still running with run ID " + runId);
@@ -231,6 +255,7 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 						+ " has not been requested yet");
 				rs.setStatus(MethodCallStatusEnum.FAILED);
 			}
+                    }
 		}
 		return rs;
 	}
