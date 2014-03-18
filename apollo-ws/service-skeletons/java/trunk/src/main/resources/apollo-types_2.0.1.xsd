@@ -1158,7 +1158,6 @@
 
 	<complexType name="GesParametersForContactAndTransmission">
 		<sequence>
-            <element name="condtionalIndividualBehaviors" type="tns:ConditionalIndividualBehavior" maxOccurs="unbounded" minOccurs="1"></element>
             <element name="seasonalityFunctionParameters"
 				type="tns:SeasonalityFunctionParameters" maxOccurs="1"
 				minOccurs="1">
@@ -1173,12 +1172,6 @@
 
 	<complexType name="GesTransmissionProbabilityParameters">
 		<sequence>
-			<element name="prophylaxis_susc" type="tns:ProbabilisticParameter"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="vacc_susc" type="tns:ProbabilisticParameter"
-				maxOccurs="1" minOccurs="1">
-			</element>
 			<element name="treat_inf" type="tns:ProbabilisticParameter"
 				maxOccurs="1" minOccurs="1">
 			</element>
@@ -1295,27 +1288,32 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="scenarioDate" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1" />
-					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="diseases" type="tns:InfectiousDisease"
+					<element name="scenarioDate" type="dateTime"
+						maxOccurs="1" minOccurs="1" />
+					<element name="location" type="tns:Location"
+						maxOccurs="1" minOccurs="1" />
+					<element name="infections" type="tns:Infection"
 						maxOccurs="unbounded" minOccurs="1" />
-					<element name="contaminations" type="tns:Contamination"
+					<element name="diseases"
+						type="tns:InfectiousDisease" maxOccurs="unbounded" minOccurs="1" />
+					<element name="contaminations"
+						type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
+					<element name="treatments" type="tns:Treatment"
 						maxOccurs="unbounded" minOccurs="0" />
-					<element name="treatments" type="tns:Treatment" maxOccurs="unbounded"
+					<element name="infectiousDiseaseControlStrategies"
+						type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
 						minOccurs="0" />
-					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="populationInfectionAndImmunityCensuses"
-						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="populationTreatmentCensuses" type="tns:PopulationTreatmentCensus"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus"
-						maxOccurs="unbounded" minOccurs="0" />
+					<element
+						name="populationInfectionAndImmunityCensuses"
+						type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="populationTreatmentCensuses"
+						type="tns:PopulationTreatmentCensus" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="contaminatedThingCensuses"
+						type="tns:ContaminatedThingCensus" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="nonApolloParameter" type="tns:NonApolloParameter" maxOccurs="unbounded" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2112,4 +2110,18 @@
 		</sequence>
 	</complexType>
     
+
+	<complexType name="NonApolloParameter">
+		<sequence>
+			<element name="description" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="parameterName" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="NewElement" type="double" maxOccurs="1"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
 </schema>
