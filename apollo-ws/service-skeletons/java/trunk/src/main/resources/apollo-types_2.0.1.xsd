@@ -1134,7 +1134,7 @@
 	
 	<complexType name="InfectionAcquisitionFromContaminatedThing">
 		<sequence>
-			<element name="abtioticEcosystemType" type="tns:AbioticEcosystemEnum"
+			<element name="abioticEcosystemType" type="tns:AbioticEcosystemEnum"
 				maxOccurs="1" minOccurs="1" />
 							<element name="transmissionProbability" type="tns:ProbabilisticParameter"
 				maxOccurs="1" minOccurs="1" />
@@ -1162,15 +1162,15 @@
 				type="tns:SeasonalityFunctionParameters" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="transmissionProbabilityParameterSet"
-				type="tns:GesTransmissionProbabilityParameters" maxOccurs="1"
+			<element name="infectiousnessParameterSet"
+				type="tns:GesInfectiousnessParameterSet" maxOccurs="1"
 				minOccurs="1" />
-			<element name="contactModelsForPlaceTypes"
-				type="tns:ContactModelForPlaceType" maxOccurs="6" minOccurs="6" />
+			<element name="contactModelsForSettings"
+				type="tns:ContactModelForSetting" maxOccurs="6" minOccurs="6" />
 		</sequence>
 	</complexType>
 
-	<complexType name="GesTransmissionProbabilityParameters">
+	<complexType name="GesInfectiousnessParameterSet">
 		<sequence>
 			<element name="treat_inf" type="tns:ProbabilisticParameter"
 				maxOccurs="1" minOccurs="1">
@@ -1187,9 +1187,9 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ContactModelForPlaceType">
+	<complexType name="ContactModelForSetting">
 			<sequence>
-			<element name="spatialKernelParametersForPlace"
+			<element name="spatialKernelParametersForSetting"
 				type="tns:SpatialKernelFunctionParameters" maxOccurs="1"
 				minOccurs="1">
 			</element>
@@ -1200,9 +1200,9 @@
 
 	<complexType name="ContactModelForCommunity">
 		<complexContent>
-			<extension base="tns:ContactModelForPlaceType">
+			<extension base="tns:ContactModelForSetting">
 				<sequence>
-					<element name="communityTransmissionCoefficient" type="tns:Rate"
+					<element name="r_community" type="tns:Rate"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="c_community" type="tns:PositiveDouble" maxOccurs="1"
@@ -1221,9 +1221,9 @@
 
 	<complexType name="ContactModelForHousehold">
 		<complexContent>
-			<extension base="tns:ContactModelForPlaceType">
+			<extension base="tns:ContactModelForSetting">
 				<sequence>
-					<element name="householdTransmissionCoefficient"
+					<element name="r_household"
 						type="tns:Rate" maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="c_household" type="tns:PositiveDouble" maxOccurs="1"
@@ -1240,21 +1240,27 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="ContactModelForSchoolOrWorkplace">
+	<complexType name="ContactModelForPlace">
 		<complexContent>
-			<extension base="tns:ContactModelForPlaceType">
+			<extension base="tns:ContactModelForSetting">
 				<sequence>
 					<element name="placeType"
 						type="tns:AbioticEcosystemEnum" maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="placeTransmissionCoefficient"
+					<element name="r_place"
 						type="tns:Rate" maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="P_P_group" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P_sympt_absent" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P_sympt_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P_severe_absent" type="string" maxOccurs="1" minOccurs="1"></element>
-					<element name="P_severe_absent_com" type="string" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_Pn_group" type="tns:WithinGroupTransmissionProbability" maxOccurs="unbounded" minOccurs="0"></element>
+					<element name="P_sympt_absent" type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
+					<element name="P_sympt_absent_com"
+						type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="P_severe_absent"
+						type="tns:Probability" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="P_severe_absent_com"
+						type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="1">
+					</element>
 					<element name="q_social" type="tns:PositiveDouble"
 						maxOccurs="1" minOccurs="1">
 					</element>
@@ -2122,6 +2128,15 @@
 			<element name="NewElement" type="double" maxOccurs="1"
 				minOccurs="1">
 			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="WithinGroupTransmissionProbability">
+		<sequence>
+			<element name="groupType" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="probability" type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 </schema>
