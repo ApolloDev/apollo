@@ -193,6 +193,12 @@
     
 
 
+    <!-- http://purl.obolibrary.org/obo/UBPROP_0000003 -->
+
+    <AnnotationProperty rdf:about="&obo;UBPROP_0000003"/>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/apollo_sv.owl/APOLLO_SV_0000040 -->
 
     <AnnotationProperty rdf:about="&obo;apollo_sv.owl/APOLLO_SV_0000040">
@@ -571,26 +577,6 @@
     
 
 
-    <!-- http://purl.obolibrary.org/obo/IDO_0000660 -->
-
-    <ObjectProperty rdf:about="&obo;IDO_0000660">
-        <rdfs:label xml:lang="en">results_in</rdfs:label>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-    </ObjectProperty>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000664 -->
-
-    <ObjectProperty rdf:about="&obo;IDO_0000664">
-        <rdfs:label>has_material_basis_in</rdfs:label>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-    </ObjectProperty>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/OBI_0000294 -->
 
     <ObjectProperty rdf:about="&obo;OBI_0000294">
@@ -874,21 +860,21 @@
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
     </ObjectProperty>
     
 
@@ -900,27 +886,6 @@
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-    </ObjectProperty>
-    
-
-
-    <!-- http://purl.org/obo/owl/OBO_REL#results_in_formation_of -->
-
-    <ObjectProperty rdf:about="&OBO_REL;results_in_formation_of">
-        <rdfs:label xml:lang="en">results_in_formation_of</rdfs:label>
-        <rdfs:comment rdf:datatype="&xsd;string">Example: autophagic vacuole formation results_in_formation_of autophagic vacuole. macromolecular complex assembly results_in_formation_of a macromolecule. Note: essentially the same as biosynthesis, although in biosynthesis the assembly is via chemical reactions</rdfs:comment>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
-        <rdfs:subPropertyOf rdf:resource="&obo;IDO_0000660"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
@@ -1237,7 +1202,7 @@
                                                     <rdf:Description rdf:about="&obo;OBI_0100026"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&ro;proper_part_of"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000514"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000234"/>
                                                     </Restriction>
                                                 </intersectionOf>
                                             </Class>
@@ -1815,7 +1780,7 @@ can&apos;t recall whether we should use process or processual_entity for future 
                 <intersectionOf rdf:parseType="Collection">
                     <Restriction>
                         <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
-                        <someValuesFrom rdf:resource="&obo;OMRSE_00000022"/>
+                        <someValuesFrom rdf:resource="&obo;PCO_0000000"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;participates_in"/>
@@ -2043,7 +2008,7 @@ Note that the name for this concept, were it to be named based on its intent, wo
                                                     <rdf:Description rdf:about="&obo;OBI_0100026"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&ro;proper_part_of"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                                                        <someValuesFrom rdf:resource="&obo;PCO_0000001"/>
                                                     </Restriction>
                                                 </intersectionOf>
                                             </Class>
@@ -2660,20 +2625,6 @@ simulation run length</rdfs:comment>
 
     <Class rdf:about="&obo;APOLLO_SV_00000073">
         <rdfs:label xml:lang="en">simulation of symptomatic organism</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000573"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;participates_in"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000005"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000034"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">symptomatic</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A simulated organism in a simulated population that has at least one symptom caused by a particular simulated disease.</obo:IAO_0000600>
@@ -2691,7 +2642,7 @@ simulation run length</rdfs:comment>
                 <intersectionOf rdf:parseType="Collection">
                     <Restriction>
                         <onProperty rdf:resource="&obo;APOLLO_SV_00000067"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000569"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000236"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;participates_in"/>
@@ -2931,7 +2882,7 @@ simulation run length</rdfs:comment>
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OMRSE_00000022"/>
+                                    <rdf:Description rdf:about="&obo;PCO_0000000"/>
                                     <Restriction>
                                         <onProperty rdf:resource="&ro;has_proper_part"/>
                                         <allValuesFrom>
@@ -3036,7 +2987,7 @@ simulation run length</rdfs:comment>
                     <rdf:Description rdf:about="&snap;ObjectAggregate"/>
                     <Restriction>
                         <onProperty rdf:resource="&ro;has_proper_part"/>
-                        <allValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                        <allValuesFrom rdf:resource="&obo;PCO_0000001"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -3223,7 +3174,7 @@ simulation run length</rdfs:comment>
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                                    <rdf:Description rdf:about="&obo;PCO_0000001"/>
                                     <Restriction>
                                         <onProperty rdf:resource="&ro;located_in"/>
                                         <someValuesFrom rdf:resource="&obo;geo.owl#GEO_000000151"/>
@@ -3436,7 +3387,7 @@ simulation run length</rdfs:comment>
                     <rdf:Description rdf:about="&GO;GO_0000003"/>
                     <Restriction>
                         <onProperty rdf:resource="&ro;has_participant"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000528"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;located_in"/>
@@ -3446,7 +3397,7 @@ simulation run length</rdfs:comment>
                                 <someValuesFrom>
                                     <Class>
                                         <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;FMA_9637"/>
+                                            <rdf:Description rdf:about="&obo;UBERON_0000479"/>
                                             <Restriction>
                                                 <onProperty rdf:resource="&ro;part_of"/>
                                                 <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
@@ -3483,54 +3434,42 @@ simulation run length</rdfs:comment>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&obo;GO_0044409"/>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <Restriction>
-                                <onProperty rdf:resource="&obo;BFO_0000066"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
-                                            </Restriction>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;bearer_of"/>
-                                                <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                                            </Restriction>
-                                        </intersectionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;has_participant"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <unionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000166"/>
-                                            <Class>
-                                                <intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&ro;bearer_of"/>
-                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
-                                                    </Restriction>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&ro;bearer_of"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                                                    </Restriction>
-                                                </intersectionOf>
-                                            </Class>
-                                        </unionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
                     <Restriction>
                         <onProperty rdf:resource="&obo;APOLLO_SV_00000116"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000066"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_participant"/>
+                        <someValuesFrom>
+                            <Class>
+                                <unionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000166"/>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
+                                            </Restriction>
+                                        </intersectionOf>
+                                    </Class>
+                                </unionOf>
+                            </Class>
+                        </someValuesFrom>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -3577,7 +3516,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IDO_0000537"/>
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
                                     <Class>
                                         <complementOf>
                                             <Restriction>
@@ -3915,7 +3854,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                                    <rdf:Description rdf:about="&obo;PCO_0000001"/>
                                     <Restriction>
                                         <onProperty rdf:resource="&ro;participates_in"/>
                                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000029"/>
@@ -3952,7 +3891,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IDO_0000537"/>
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
                                     <Restriction>
                                         <onProperty rdf:resource="&OBO_REL;bearer_of"/>
                                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
@@ -4198,7 +4137,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                             </Restriction>
                             <Restriction>
                                 <onProperty rdf:resource="&ro;has_participant"/>
-                                <someValuesFrom rdf:resource="&obo;FMA_9825"/>
+                                <someValuesFrom rdf:resource="&obo;UBERON_0002405"/>
                             </Restriction>
                         </intersectionOf>
                     </Class>
@@ -4234,7 +4173,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                                                     <rdf:Description rdf:about="&obo;APOLLO_SV_00000032"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&obo;IAO_0000136"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                                                        <someValuesFrom rdf:resource="&obo;PCO_0000001"/>
                                                     </Restriction>
                                                 </intersectionOf>
                                             </Class>
@@ -4264,7 +4203,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                     <rdf:Description rdf:about="&obo;APOLLO_SV_00000173"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;IAO_0000136"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000509"/>
+                        <someValuesFrom rdf:resource="&obo;PCO_0000001"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&obo;OBI_0000312"/>
@@ -4290,35 +4229,21 @@ An infection is acquired from an infectious organism or a contaminated thing.
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;IDO_0000509"/>
+                    <rdf:Description rdf:about="&obo;PCO_0000001"/>
                     <Restriction>
                         <onProperty rdf:resource="&ro;has_proper_part"/>
                         <allValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
                                     <Class>
                                         <complementOf>
                                             <Restriction>
-                                                <onProperty rdf:resource="&OBO_REL;bearer_of"/>
+                                                <onProperty rdf:resource="&ro;bearer_of"/>
                                                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
                                             </Restriction>
                                         </complementOf>
                                     </Class>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&OBO_REL;bearer_of"/>
-                                        <someValuesFrom>
-                                            <Class>
-                                                <intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&obo;IDO_0000629"/>
-                                                    <Restriction>
-                                                        <onProperty rdf:resource="&OBO_REL;realized_by"/>
-                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
-                                                    </Restriction>
-                                                </intersectionOf>
-                                            </Class>
-                                        </someValuesFrom>
-                                    </Restriction>
                                 </intersectionOf>
                             </Class>
                         </allValuesFrom>
@@ -4326,7 +4251,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">exposed population</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A population of host organisms undergoing infection and that are not infectious.</obo:IAO_0000115>
     </Class>
@@ -4383,7 +4308,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                                                     <rdf:Description rdf:about="&obo;APOLLO_SV_00000032"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&obo;IAO_0000136"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000514"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000234"/>
                                                     </Restriction>
                                                 </intersectionOf>
                                             </Class>
@@ -4397,7 +4322,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                                                     <rdf:Description rdf:about="&obo;APOLLO_SV_00000032"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&obo;IAO_0000136"/>
-                                                        <someValuesFrom rdf:resource="&obo;IDO_0000592"/>
+                                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000235"/>
                                                     </Restriction>
                                                 </intersectionOf>
                                             </Class>
@@ -4430,7 +4355,7 @@ I checked because an infection and immunity census would involve two different c
 
     <Class rdf:about="&obo;APOLLO_SV_00000156">
         <rdfs:label xml:lang="en">infectious population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
         <obo:IAO_0000115 xml:lang="en">A population of host organisms undergoing infection that are contagious.</obo:IAO_0000115>
     </Class>
     
@@ -4545,11 +4470,11 @@ I checked because an infection and immunity census would involve two different c
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000514"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000234"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&ro;has_part"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000592"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000235"/>
                     </Restriction>
                 </intersectionOf>
             </Class>
@@ -4594,7 +4519,7 @@ I checked because an infection and immunity census would involve two different c
 
     <Class rdf:about="&obo;APOLLO_SV_00000163">
         <rdfs:label xml:lang="en">recovered population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">recovered</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117 xml:lang="en">A population of organisms that have been infected, but are no longer able to transmit the disease and to acquire the infection again.</obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -4657,7 +4582,7 @@ I checked because an infection and immunity census would involve two different c
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;IDO_0000528"/>
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000237"/>
                                     <Class>
                                         <complementOf>
                                             <Restriction>
@@ -4692,7 +4617,7 @@ I checked because an infection and immunity census would involve two different c
                     <rdf:Description rdf:about="&GO;GO_0008150"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;OBI_0000293"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000528"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
                     </Restriction>
                     <Restriction>
                         <onProperty rdf:resource="&obo;OBI_0000293"/>
@@ -4703,7 +4628,7 @@ I checked because an infection and immunity census would involve two different c
                                         <complementOf rdf:resource="&obo;APOLLO_SV_00000166"/>
                                     </Class>
                                     <Class>
-                                        <complementOf rdf:resource="&obo;IDO_0000528"/>
+                                        <complementOf rdf:resource="&obo;APOLLO_SV_00000237"/>
                                     </Class>
                                 </unionOf>
                             </Class>
@@ -4819,14 +4744,17 @@ I checked because an infection and immunity census would involve two different c
                     <rdf:Description rdf:about="&snap;Disposition"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;OBI_0000300"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000115"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&OBO_REL;inheres_in"/>
                         <allValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000115"/>
-                                    <Restriction>
-                                        <onProperty rdf:resource="&obo;OBI_0000308"/>
-                                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                                    </Restriction>
+                                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                                    <Class>
+                                        <complementOf rdf:resource="&obo;APOLLO_SV_00000238"/>
+                                    </Class>
                                 </intersectionOf>
                             </Class>
                         </allValuesFrom>
@@ -5146,7 +5074,7 @@ I checked because an infection and immunity census would involve two different c
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;IDO_0000537"/>
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
                     <Restriction>
                         <onProperty rdf:resource="&obo;BFO_0000053"/>
                         <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000182"/>
@@ -5154,7 +5082,7 @@ I checked because an infection and immunity census would involve two different c
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000238"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectious</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An infectious agent host who is able to transmit the infection to another organism of the same species.</obo:IAO_0000115>
     </Class>
@@ -5209,7 +5137,7 @@ I checked because an infection and immunity census would involve two different c
 
     <Class rdf:about="&obo;APOLLO_SV_00000195">
         <rdfs:label xml:lang="en">target population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">target population</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An organism population that is the target for a disease control strategy.</obo:IAO_0000115>
     </Class>
@@ -5416,7 +5344,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;IDO_0000537"/>
+                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
                     <Class>
                         <complementOf>
                             <Restriction>
@@ -5428,7 +5356,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000238"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infected</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An infectious agent host who is NOT able to transmit the infection to another organism of the same species.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
@@ -5588,7 +5516,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
 
     <Class rdf:about="&obo;APOLLO_SV_00000221">
         <rdfs:label xml:lang="en">immune population acting like immune</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000592"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immune and acts like immune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members know they are immune (do not seek vaccination/antiviral treatment, etc.).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -5600,7 +5528,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
 
     <Class rdf:about="&obo;APOLLO_SV_00000222">
         <rdfs:label xml:lang="en">immune population acting like not immune</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000592"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immune but acts like not immune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members assume they are not immune (e.g. seek vaccination/antiviral treatment).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -5724,6 +5652,170 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000233 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000233">
+        <rdfs:label xml:lang="en">ASV:infected population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&ro;has_proper_part"/>
+                <allValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;location_of"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </allValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
+        <obo:IAO_0000115 xml:lang="en">A population of only infected members of one species.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000234 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000234">
+        <rdfs:label xml:lang="en">ASV:susceptible population</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&ro;has_proper_part"/>
+                <allValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;bearer_of"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </allValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
+        <obo:IAO_0000115 xml:lang="en">A population of organisms that are all susceptible.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000235 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000235">
+        <rdfs:label xml:lang="en">ASV:immune population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
+        <obo:IAO_0000115 xml:lang="en">A population of organisms that are all immune.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000236 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000236">
+        <rdfs:label xml:lang="en">ASV:asymptomatic host</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000238"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000237 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000237">
+        <rdfs:label xml:lang="en">ASV:pathogen</rdfs:label>
+        <equivalentClass>
+            <Restriction>
+                <onProperty rdf:resource="&ro;bearer_of"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&snap;Disposition"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&OBO_REL;realized_by"/>
+                                <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000238 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000238">
+        <rdfs:label xml:lang="en">ASV:host</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_part"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;UBERON_0000479"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;location_of"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000239 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000239">
+        <rdfs:label xml:lang="en">ASV:infectious disease</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OGMS_0000031"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;OBI_0000300"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;OGMS_0000063"/>
+                                    <Restriction>
+                                        <onProperty>
+                                            <rdf:Description>
+                                                <inverseOf rdf:resource="&obo;APOLLO_SV_00000116"/>
+                                            </rdf:Description>
+                                        </onProperty>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&OBO_REL;inheres_in"/>
+                        <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000238"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OGMS_0000031"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00001008">
@@ -5743,75 +5835,12 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
-    <!-- http://purl.obolibrary.org/obo/BO_0000001 -->
-
-    <Class rdf:about="&obo;BO_0000001">
-        <rdfs:label>brucellosis</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000568"/>
-        <obo:IAO_0000115>a zoonosis that is caused by Brucella.</obo:IAO_0000115>
-        <obo:IAO_0000117>YH, YL, ZX</obo:IAO_0000117>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/CHEBI_36044 -->
 
     <Class rdf:about="&obo;CHEBI_36044">
         <rdfs:label xml:lang="en">antiviral drug</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Role"/>
         <rdfs:comment xml:lang="en">The usage or intended usage of a drug product to act against a viral infection of a host.</rdfs:comment>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/FLU_0000887 -->
-
-    <Class rdf:about="&obo;FLU_0000887">
-        <rdfs:label rdf:datatype="&xsd;string">influenza disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_934"/>
-        <obo:IAO_0000119 rdf:datatype="&xsd;string">URL:http://www2.merriam-webster.com/cgi-bin/mwmednlm?book=Medical&amp;va=influenza</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">Any of several acute highly contagious respiratory diseases caused by strains of three major orthomyxoviruses now considered to comprise three species assigned to three separate genera: (1): Influenza A (2): Influenza B (3): Influenza C.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/FMA_55652 -->
-
-    <Class rdf:about="&obo;FMA_55652">
-        <rdfs:label xml:lang="en">Anatomical set</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;FMA_67165"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/FMA_78590 -->
-
-    <Class rdf:about="&obo;FMA_78590">
-        <rdfs:label xml:lang="en">Set of heterogeneous clusters</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;FMA_55652"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/FMA_9637 -->
-
-    <Class rdf:about="&obo;FMA_9637">
-        <rdfs:label rdf:datatype="&xsd;string">Portion of tissue</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;FMA_67135"/>
-        <obo:IAO_0000115 rdf:datatype="&xsd;string">Anatomical structure which has as its parts cells of predominantly one type with or without intercellular matrix. Examples: epithelium, muscle tissue, connective tissue, neural tissue, lymphoid tissue.</obo:IAO_0000115>
-        <oboInOwl:id rdf:datatype="&xsd;string">FMA:9637</oboInOwl:id>
-        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">Tissue</oboInOwl:hasExactSynonym>
-        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">fma</oboInOwl:hasOBONamespace>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/fma.owl</obo:IAO_0000412>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/FMA_9825 -->
-
-    <Class rdf:about="&obo;FMA_9825">
-        <rdfs:label xml:lang="en">Immune system</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;FMA_78590"/>
     </Class>
     
 
@@ -6036,13 +6065,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -6283,319 +6312,6 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000118 xml:lang="en">experimental time series</obo:IAO_0000118>
         <obo:IAO_0000112 xml:lang="en">pmid:20604925 - time-lapse live cell microscopy</obo:IAO_0000112>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000414 -->
-
-    <Class rdf:about="&obo;IDO_0000414">
-        <rdfs:label xml:lang="en">infectious agent host role</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000415"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A pathogen host role borne by an organism in virtue of the fact that its extended organism contains an infectious agent.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <rdfs:comment>By this definition, vectors and other organisms that may not be infected are bearers of the infectious agent host role.</rdfs:comment>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000415 -->
-
-    <Class rdf:about="&obo;IDO_0000415">
-        <rdfs:label xml:lang="en">pathogen host role</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000629"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <rdfs:comment>Bearing the infectious agent host role implies bearing the pathogen host role, but the reverse is not true.  See comment for infectious agent host role.</rdfs:comment>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A host role borne by an organism in virtue of the fact that its extended organism contains a pathogen.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000436 -->
-
-    <Class rdf:about="&obo;IDO_0000436">
-        <rdfs:label xml:lang="en">infectious disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;OGMS_0000031"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDisease</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:comment>The disposition is realized in an infectious disease course.</rdfs:comment>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A disease whose physical basis is an infectious disorder.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">tranmissible disease</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000450 -->
-
-    <Class rdf:about="&obo;IDO_0000450">
-        <rdfs:label xml:lang="en">pathogenic disposition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <rdfs:comment>The use of &apos;initiates&apos; is intended to convey that a pathogenic disposition is realized when processes resulting in a disorder begin because of some action on the part of the bearer of the disposition.  By this interpretation of &apos;initiates&apos;, disorder-causing entities such as glass, UV light, and toxins do not have a pathogenic disposition.</rdfs:comment>
-        <rdfs:comment>The disposition is realized in processes that create a disorder.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">A disposition to initiate processes that result in a disorder.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">pathogenicity</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000452 -->
-
-    <Class rdf:about="&obo;IDO_0000452">
-        <rdfs:label xml:lang="en">infectious disposition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000450"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A pathogenic disposition that inheres in an organism and is the disposition for that organism (1) to be transmitted to a host, (2) to establish itself in the host, and (3) to become part of a disorder in the host.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <rdfs:comment>The disposition is realized in a process that has as part a transmission process, an establishment in host process, and a process in which an entity becomes part of a disorder.  The infectious disposition has a complementary disposition that inheres in an organism and is the capability to be host to an entity with an infectious disposition and to undergo processes intiated by that entity that result in a disorder.</rdfs:comment>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000495 -->
-
-    <Class rdf:about="&obo;IDO_0000495">
-        <rdfs:label xml:lang="en">infectious disease course</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OGMS_0000063"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000308"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000436"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;OGMS_0000063"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A disease course that is the realization of an infectious disease.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000509 -->
-
-    <Class rdf:about="&obo;IDO_0000509">
-        <rdfs:label xml:lang="en">organism population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">organism population</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An aggregate of organisms of the same Species.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000600>The organism population may be delineated by spatio-temporal proximity or by demographic criteria such as age.</obo:IAO_0000600>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000511 -->
-
-    <Class rdf:about="&obo;IDO_0000511">
-        <rdfs:label xml:lang="en">infected population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000115 xml:lang="en">An organism population whose members have an infection.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000514 -->
-
-    <Class rdf:about="&obo;IDO_0000514">
-        <rdfs:label xml:lang="en">susceptible population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism population whose members are not infected with an infectious agent and who lack immunity to the infectious agent.</obo:IAO_0000115>
-        <obo:IAO_0000118 xml:lang="en">at-risk population</obo:IAO_0000118>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000528 -->
-
-    <Class rdf:about="&obo;IDO_0000528">
-        <rdfs:label xml:lang="en">pathogen</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">pathogen</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A material entity with a pathogenic disposition.</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000600 xml:lang="en">An organism that causes infection.</obo:IAO_0000600>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000531 -->
-
-    <Class rdf:about="&obo;IDO_0000531">
-        <rdfs:label xml:lang="en">host</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&OBO_REL;has_role"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000629"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">host</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism bearing a host role.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000600 xml:lang="en">an organism that is the subject of infection</obo:IAO_0000600>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000537 -->
-
-    <Class rdf:about="&obo;IDO_0000537">
-        <rdfs:label xml:lang="en">infectious agent host</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
-                    <Restriction>
-                        <onProperty rdf:resource="&OBO_REL;has_role"/>
-                        <someValuesFrom rdf:resource="&obo;IDO_0000414"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;participates_in"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">An organism bearing an infectious agent host role.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000568 -->
-
-    <Class rdf:about="&obo;IDO_0000568">
-        <rdfs:label xml:lang="en">zoonosis</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000115 xml:lang="en">An infectious disease that has as its physical basis an infectious disorder composed of infectious agents that have a zoonotic disposition.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000569 -->
-
-    <Class rdf:about="&obo;IDO_0000569">
-        <rdfs:label xml:lang="en">aymptomatic host of infectious agent</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism that is host to an infectious agent has no symptoms of the infectious disease associated with the infectious agent.</obo:IAO_0000115>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000573 -->
-
-    <Class rdf:about="&obo;IDO_0000573">
-        <rdfs:label xml:lang="en">symptomatic host of infectious agent</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000537"/>
-        <rdfs:subClassOf>
-            <Restriction>
-                <onProperty rdf:resource="&OBO_REL;has_role"/>
-                <someValuesFrom rdf:resource="&obo;IDO_0000414"/>
-            </Restriction>
-        </rdfs:subClassOf>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism who is host to an infectious agent and has symptoms of the infectious disease associated with the infectious agent</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000592 -->
-
-    <Class rdf:about="&obo;IDO_0000592">
-        <rdfs:label xml:lang="en">immune population</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000509"/>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">An organism population whose members have acquired immunity to an infectious agent.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000625 -->
-
-    <Class rdf:about="&obo;IDO_0000625">
-        <rdfs:label xml:lang="en">establishment of localization in host</rdfs:label>
-        <equivalentClass>
-            <Restriction>
-                <onProperty rdf:resource="&OBO_REL;unfolds_in"/>
-                <someValuesFrom rdf:resource="&obo;IDO_0000531"/>
-            </Restriction>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&GO;GO_0051234"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">An establishment of localization process in which a material entity reaches a site in an organism in which it can survive, grow, multiply, or mature.</obo:IAO_0000115>
-        <obo:IAO_0000116>Requested addition of this term to the GO.</obo:IAO_0000116>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <rdfs:comment xml:lang="en">An organism begins bearing a particular host role as soon as the extended organism contains the relevant material entity, regardless of that entity&apos;s location in the extended organism.  An establishment process is any process by which the entity reaches a location in the extended organism in which it can persist and continue its lifecycle.  For example, an organism is host to a virus as soon as any part of the extended organism is occupied by virus particles.  During an establishment process, virus particles enter host cells of the relevant type, and viral DNA is integrated into host DNA.</rdfs:comment>
-    </Class>
-    
-
-
-    <!-- http://purl.obolibrary.org/obo/IDO_0000629 -->
-
-    <Class rdf:about="&obo;IDO_0000629">
-        <rdfs:label xml:lang="en">host role</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&snap;Role"/>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000117>Lindsay Cowell</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">A role borne by an organism in virtue of the fact that it&apos;s extended organism contains a material entity other than the organism.</obo:IAO_0000115>
-        <obo:IAO_0000117>Alexander Diehl</obo:IAO_0000117>
     </Class>
     
 
@@ -7179,6 +6895,7 @@ See vaccination and antiviral treatment.
 
     <Class rdf:about="&obo;OMRSE_00000022">
         <rdfs:label xml:lang="en">collection of organisms</rdfs:label>
+        <equivalentClass rdf:resource="&obo;PCO_0000000"/>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -7669,92 +7386,273 @@ school facility
     
 
 
+    <!-- http://purl.obolibrary.org/obo/PCO_0000000 -->
+
+    <Class rdf:about="&obo;PCO_0000000">
+        <rdfs:label xml:lang="en">PCO:collection of organisms</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
+        <obo:IAO_0000115 xml:lang="en">A material entity that consists of two or more organisms, viruses, or viroids.</obo:IAO_0000115>
+        <obo:IAO_0000112 xml:lang="en">Examples include: population, community, species (meaning the collection of organisms that makes up a species, not the taxonomic rank), and family.</obo:IAO_0000112>
+        <rdfs:comment xml:lang="en">May be of the same or different species.</rdfs:comment>
+        <obo:IAO_0000118 xml:lang="en">group of organisms</obo:IAO_0000118>
+        <obo:IAO_0000118 xml:lang="en">organism collection</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/PCO_0000001 -->
+
+    <Class rdf:about="&obo;PCO_0000001">
+        <rdfs:label xml:lang="en">PCO:population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000018"/>
+        <obo:IAO_0000115 xml:lang="en">A collection of organisms, all of the same species, that live in the same place.</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">ISBN:0878932739</obo:IAO_0000119>
+        <rdfs:comment xml:lang="en">It is sometimes difficult to define the physical boundaries of a population. In the case of sexually reproducing organisms, the individuals within a population have the potential to reproduce with one another during the course of their lifetimes. &apos;Community&apos;, as often used to describe a group of humans, is a type of population. Classes for population already exist in IDO (&apos;organism population&apos;, IDO_0000509) and OBI (&apos;population&apos;, OBI_0000181). The definitions should be standardized across ontologies and only one term used.</rdfs:comment>
+        <obo:IAO_0000116 xml:lang="en">Still uncertain if this should include every organism of a species living in an area or any subset of them. For now make this a general term (unspecified) and then subclasses can be more specific.</obo:IAO_0000116>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/PCO_0000018 -->
+
+    <Class rdf:about="&obo;PCO_0000018">
+        <rdfs:label xml:lang="en">collection of organisms of the same species</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;PCO_0000000"/>
+        <obo:IAO_0000115 xml:lang="en">A material entity that has as parts two or more organisms, viruses, or viroids of the same species and no members of any other species.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0000061 -->
+
+    <Class rdf:about="&obo;UBERON_0000061">
+        <rdfs:label rdf:datatype="&xsd;string">anatomical structure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0000465"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0010825</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AEO:0000003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0000003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA2:0003003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EMAPA:0</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FBbt:00007001</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FMA:67135</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">GAID:781</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">HAO:0000003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MA:0003000</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MESH:A13</oboInOwl:hasDbXref>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Material anatomical entity that has inherent 3D shape and is generated by coordinated expression of the organism&apos;s own genome.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">SCTID:362889002</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0000037</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TGMA:0001823</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0000061</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001759</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">WBbt:0000100</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">XAO:0003000</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ZFA:0000037</oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">biological structure</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">http://dbpedia.org/ontology/AnatomicalStructure</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0000465 -->
+
+    <Class rdf:about="&obo;UBERON_0000465">
+        <rdfs:label rdf:datatype="&xsd;string">material anatomical entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0010264</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AEO:0000006</oboInOwl:hasDbXref>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Anatomical entity that has mass.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000006</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0000006</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA2:0003006</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FBbt:00007016</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FMA:67165</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">HAO:0000006</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0001836</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TGMA:0001826</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0000465</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001721</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0000467 -->
+
+    <Class rdf:about="&obo;UBERON_0000467">
+        <rdfs:label rdf:datatype="&xsd;string">anatomical system</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0000480"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0000007</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AEO:0000011</oboInOwl:hasDbXref>
+        <obo:UBPROP_0000001 rdf:datatype="&xsd;string">Anatomical group that has as its parts distinct anatomical structures interconnected by anatomical structures at a lower level of granularity.[TAO]</obo:UBPROP_0000001>
+        <obo:UBPROP_0000001 rdf:datatype="&xsd;string">Anatomical group that is has as its parts distinct anatomical structures interconnected by anatomical structures at a lower level of granularity.[AAO]</obo:UBPROP_0000001>
+        <obo:UBPROP_0000001 rdf:datatype="&xsd;string">Anatomical group that is has as its parts distinct anatomical structures interconnected by anatomical structures at a lower level of granularity.[CARO]</obo:UBPROP_0000001>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Anatomical group that is has as its parts distinct anatomical structures interconnected by anatomical structures at a lower level of granularity[CARO]. A group of organs that work together to perform a certain task [Wikipedia].</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000011</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BSA:0000049</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CALOHA:TS-2088</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0000011</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA2:0003011</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA:392</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EMAPA:16103</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EV:0100000</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FBbt:00004856</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FMA:7149</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">HAO:0000011</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MA:0000003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">NIF_GrossAnatomy:birnlex_14</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">OpenCyc:Mx4rCWM0QCtDEdyAAADggVbxzQ</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">SCTID:278195005</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0001439</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TGMA:0001831</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0000467</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">UMLS:C0460002</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001725</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">WBbt:0005746</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">WBbt:0005763</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">Wikipedia:Organ_system</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">XAO:0003002</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ZFA:0001439</oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">body system</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">galen:AnatomicalSystem</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ncithesaurus:Organ_System</oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">organ system</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasBroadSynonym rdf:datatype="&xsd;string">system</oboInOwl:hasBroadSynonym>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <rdfs:seeAlso rdf:resource="&obo;EHDAA2_0001330"/>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#uberon_slim"/>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0000479 -->
+
+    <Class rdf:about="&obo;UBERON_0000479">
+        <rdfs:label rdf:datatype="&xsd;string">tissue</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0010000"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0000607</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0010054</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AEO:0000043</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000043</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CALOHA:TS-2090</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0000043</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA2:0003043</oboInOwl:hasDbXref>
+        <rdfs:comment rdf:datatype="&xsd;string">Editor note: changed label and definition to reflect CARO2</rdfs:comment>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FBbt:00007003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FMA:9637</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">HAO:0000043</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MA:0003002</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MESH:A10</oboInOwl:hasDbXref>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Multicellular anatomical structure that consists of many cells of one or a few types, arranged in an extracellular matrix such that their long-range organisation is at least partly a repetition of their short-range organisation.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">NIF_GrossAnatomy:birnlex_19</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0001477</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TGMA:0001844</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0000479</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">UMLS:C0040300</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001757</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">WBbt:0005729</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">XAO:0003040</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ZFA:0001477</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">galen:Tissue</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ncithesaurus:Tissue</oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">portion of tissue</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasNarrowSynonym rdf:datatype="&xsd;string">simple tissue</oboInOwl:hasNarrowSynonym>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">tissue portion</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0000480 -->
+
+    <Class rdf:about="&obo;UBERON_0000480">
+        <rdfs:label rdf:datatype="&xsd;string">anatomical group</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0000061"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0010008</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AEO:0000054</oboInOwl:hasDbXref>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Anatomical structure consisting of at least two non-overlapping organs, multi-tissue aggregates or portion of tissues or cells of different types that does not constitute an organism, organ, multi-tissue aggregate, or portion of tissue.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000054</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0000054</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">EHDAA2:0003054</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">HAO:0000054</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0001512</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TGMA:0001846</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0000480</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001724</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">XAO:0003001</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ZFA:0001512</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0002405 -->
+
+    <Class rdf:about="&obo;UBERON_0002405">
+        <rdfs:label rdf:datatype="&xsd;string">immune system</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0000467"/>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">AAO:0011003</oboInOwl:hasDbXref>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">Anatomical system that protects the body from foreign substances, cells, and tissues by producing the immune response and that includes especially the thymus, spleen, lymphoid tissue, lymphocytes including the B cells and T cells, and antibodies.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">BILA:0000104</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FMA:9825</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">GAID:328</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MA:0002711</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">MESH:A15.382</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">OpenCyc:Mx4rvWNkm5wpEbGdrcN5Y29ycA</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">SCTID:362590003</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">TAO:0001159</oboInOwl:hasDbXref>
+        <obo:UBPROP_0000003 rdf:datatype="&xsd;string">The antibody-based immune system defined by the presence of the major histocompatibility complex (MHC), T cell receptor (TCR), B cell receptor (BCR) or recombination activating genes (RAGs) is known beginning from jawed fishes.[well established][VHOG]</obo:UBPROP_0000003>
+        <rdfs:comment rdf:datatype="&xsd;string">This class was created automatically from a combination of ontologies</rdfs:comment>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0002405</oboInOwl:id>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">UMLS:C0020962</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">VHOG:0001247</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">Wikipedia:Immune_system</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">XAO:0003152</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ZFA:0001159</oboInOwl:hasDbXref>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">ncithesaurus:Immune_System</oboInOwl:hasDbXref>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#uberon_slim"/>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#vertebrate_core"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/UBERON_0010000 -->
+
+    <Class rdf:about="&obo;UBERON_0010000">
+        <rdfs:label rdf:datatype="&xsd;string">multicellular anatomical structure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;UBERON_0000061"/>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">An anatomical structure that has more than one cell as a part.</obo:IAO_0000115>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">CARO:0010000</oboInOwl:hasDbXref>
+        <oboInOwl:hasDbXref rdf:datatype="&xsd;string">FBbt:00100313</oboInOwl:hasDbXref>
+        <oboInOwl:id rdf:datatype="&xsd;string">UBERON:0010000</oboInOwl:id>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/uberon.owl</obo:IAO_0000412>
+        <oboInOwl:hasExactSynonym rdf:datatype="&xsd;string">multicellular structure</oboInOwl:hasExactSynonym>
+        <oboInOwl:hasOBONamespace rdf:datatype="&xsd;string">uberon</oboInOwl:hasOBONamespace>
+        <oboInOwl:inSubset rdf:resource="&obo;uberon/core#upper_level"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/geo.owl#GEO_000000151 -->
 
     <rdf:Description rdf:about="&obo;geo.owl#GEO_000000151">
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Location</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">any arbitrary part of the Earth, typically including the surface and adjacent atmosphere.</obo:IAO_0000600>
     </rdf:Description>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_0050160 -->
-
-    <Class rdf:about="&DOID;DOID_0050160">
-        <rdfs:label xml:lang="en">inhalational anthrax</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_7427"/>
-        <obo:IAO_0000115 xml:lang="en">An anthrax disease that results_in infection located_in lung lymph nodes brought on by breathing in the spores of the bacteria Bacillus anthracis. The first symptoms of inhalation anthrax are like cold or flu symptoms and can include a sore throat, mild fever and muscle aches. Later symptoms include cough, chest discomfort, shortness of breath, tiredness and muscle aches.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_1398 -->
-
-    <Class rdf:about="&DOID;DOID_1398">
-        <rdfs:label xml:lang="en">parasitic infectious disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000115 xml:lang="en">A disease by infectious agent that is carried out by a parasite which by definition is a pathogen that simultaneously injures and derives sustenance from its host.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_2789 -->
-
-    <Class rdf:about="&DOID;DOID_2789">
-        <rdfs:label xml:lang="en">parasitic protozoa infectious disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_1398"/>
-        <obo:IAO_0000115 xml:lang="en">A parasitic infectious disease that is caused by parasitic protozoa which are microorganisms classified as unicellular eukaryotes.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_526 -->
-
-    <Class rdf:about="&DOID;DOID_526">
-        <rdfs:label xml:lang="en">Human immunodeficiency virus infectious disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_934"/>
-        <obo:IAO_0000115 xml:lang="en">A viral infectious disease that results_in destruction of immune system, leading to life-threatening opportunistic infections and cancers, has_material_basis_in Human immunodeficiency virus 1 or has_material_basis_in Human immunodeficiency virus 2, which are transmitted_by sexual contact, transmitted_by transfer of blood, semen, vaginal fluid, pre-ejaculate, or breast milk, transmitted_by congenital method, and transmitted_by contaminated needles. The virus infects helper T cells (CD4+ T cells) which are directly or indirectly destroyed, macrophages, and dendritic cells. The infection has_symptom diarrhea, has_symptom fatigue, has_symptom fever, has_symptom vaginal yeast infection, has_symptom headache, has_symptom mouth sores, has_symptom muscle aches, has_symptom sore throat, and has_symptom swollen lymph glands.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_635 -->
-
-    <Class rdf:about="&DOID;DOID_635">
-        <rdfs:label xml:lang="en">acquired immunodeficiency syndrome</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_526"/>
-        <obo:IAO_0000115 xml:lang="en">A Human immunodeficiency virus infectious disease that results_in reduction in the numbers of CD4-bearing helper T cells below 200 per B5L of blood or 14% of all lymphocytes thereby rendering the subject highly vulnerable to life-threatening infections and cancers, has_material_basis_in Human immunodeficiency virus 1 or has_material_basis_in Human immunodeficiency virus 2, which are transmitted_by sexual contact, transmitted_by transfer of blood, semen, vaginal fluid, pre-ejaculate, or breast milk, transmitted_by congenital method, and transmitted_by contaminated needles. Opportunistic infections are common in people with AIDS.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_7427 -->
-
-    <Class rdf:about="&DOID;DOID_7427">
-        <rdfs:label xml:lang="en">anthrax disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000115 xml:lang="en">A primary Bacillaceae infectious disease that results_in infection located_in skin, located_in lung lymph nodes or located_in gastrointestinal tract, has_material_basis_in Bacillus anthracis, transmitted_by contact with infected animals or animal products, transmitted_by airborne spores or transmitted_by ingestion of undercooked meat from infected animals and has_symptom skin ulcer, has_symptom nausea, has_symptom poor appetite, has_symptom bloody diarrhea, has_symptom fever or has_symptom shortness of breath.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_9181 -->
-
-    <Class rdf:about="&DOID;DOID_9181">
-        <rdfs:label xml:lang="en">amebiasis</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&DOID;DOID_2789"/>
-        <obo:IAO_0000115 xml:lang="en">A parasitic protozoa infectious disease that involves infection caused by the amoeba Entamoeba histolytica.</obo:IAO_0000115>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/DOID#DOID_934 -->
-
-    <Class rdf:about="&DOID;DOID_934">
-        <rdfs:label xml:lang="en">viral infectious disease</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000115 xml:lang="en">A disease by infectious agent that results_in infection, has_material_basis_in Viruses.</obo:IAO_0000115>
-    </Class>
     
 
 
@@ -7775,12 +7673,12 @@ school facility
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
     </Class>
     
 
@@ -7806,16 +7704,6 @@ school facility
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">The directed movement of a cell, substance or cellular entity, such as a protein complex or organelle, to a specific location.</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">establishment of localization</obo:IAO_0000111>
-    </Class>
-    
-
-
-    <!-- http://purl.org/obo/owl/IDOMAL#IDOMAL_0001052 -->
-
-    <Class rdf:about="&IDOMAL;IDOMAL_0001052">
-        <rdfs:label xml:lang="en">malaria</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IDO_0000436"/>
-        <obo:IAO_0000115 xml:lang="en">An acute febrile illness characterized by periodic febrile paroxysms caused by parasites of the genus Plasmodium.</obo:IAO_0000115>
     </Class>
     
 
@@ -8243,9 +8131,6 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000141">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000142">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8268,6 +8153,9 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000142">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&dc;language">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
@@ -8412,40 +8300,40 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&ro;derives_from">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000417">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;derives_from">
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
