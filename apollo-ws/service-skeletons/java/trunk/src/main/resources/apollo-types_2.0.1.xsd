@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0/"
-	xmlns:tns="http://types.apollo.pitt.edu/v2_0/" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0_1/"
+	xmlns:tns="http://types.apollo.pitt.edu/v2_0_1/" elementFormDefault="qualified">
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />

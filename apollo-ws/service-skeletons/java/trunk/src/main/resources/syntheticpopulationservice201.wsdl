@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
-	xmlns:tns="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/"
+	xmlns:tns="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0_1/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
-	targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/"
+	targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0_1/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
 	<wsdl:types>
 
 		<xsd:schema elementFormDefault="qualified"
-			targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/"
-			xmlns:apollo="http://types.apollo.pitt.edu/v2_0/">
+			targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0_1/"
+			xmlns:apollo="http://types.apollo.pitt.edu/v2_0_1/">
 
 			<!-- <xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd" 
 				namespace="http://types.apollo.pitt.edu/"></xsd:import> -->
 
-			<xsd:import schemaLocation="apollo-types_2.0.xsd" namespace="http://types.apollo.pitt.edu/v2_0/"></xsd:import>
+			<xsd:import schemaLocation="apollo-types_2.0.1.xsd" namespace="http://types.apollo.pitt.edu/v2_0_1/"></xsd:import>
 
 			<xsd:element name="runSyntheticPopulationGeneration">
 				<xsd:complexType>
@@ -83,7 +83,7 @@
 		<wsdl:operation name="runSyntheticPopulationGeneration">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/runSyntheticPopulationGeneration" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0_1/runSyntheticPopulationGeneration" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -96,7 +96,7 @@
 		<wsdl:operation name="getRunStatus">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/getRunStatus" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0_1/getRunStatus" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -109,7 +109,7 @@
 
 	</wsdl:binding>
 
-	<wsdl:service name="SyntheticPopulationService_v2.0">
+	<wsdl:service name="SyntheticPopulationService_v2.0.1">
 		<wsdl:port name="SyntheticPopulationServiceEndpoint"
 			binding="tns:SyntheticPopulationServiceBinding">
 			<!-- <soap:address location="http://synthiastage.rti.org/Account/synthia-WS.asmx" /> -->
