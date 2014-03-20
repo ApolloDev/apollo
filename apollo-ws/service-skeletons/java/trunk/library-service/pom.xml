@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>2.0-SNAPSHOT</version>
+		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>library-service</artifactId>
 	<name>-- LibraryService Web Service Provider</name>
@@ -122,9 +122,9 @@
 									<wsdlOptions>
 										<wsdlOption>
 											<wsdl>
-												${basedir}/../src/main/resources/libraryservice20.wsdl
+												${basedir}/../src/main/resources/libraryservice201.wsdl
 											</wsdl>
-											<wsdlLocation>classpath:libraryservice20.wsdl</wsdlLocation>
+											<wsdlLocation>classpath:libraryservice201.wsdl</wsdlLocation>
 										</wsdlOption>
 									</wsdlOptions>
 								</configuration>
