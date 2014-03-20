@@ -364,7 +364,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		String simConfigHash = getMd5HashFromString(baos.toString());
 		// check for cached result
 		try {
-			runId = DbUtils.checkRunCache(simConfigHash);
+			runId = DbUtilsTest.checkRunCache(simConfigHash);
 			if (runId != null) {
 
 				// check the status of the run
@@ -376,7 +376,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				MethodCallStatusEnum statusEnum = status.getStatus();
 
 				if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
-					DbUtils.deleteFromRunCache(simConfigHash);
+					DbUtilsTest.deleteFromRunCache(simConfigHash);
 				} else {
 					return runId;
 				}
@@ -435,7 +435,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			System.out.println("Returned run ID is + " + runId);
 
 			try {
-				DbUtils.insertIntoRunCache(runId, simConfigHash);
+				DbUtilsTest.insertIntoRunCache(runId, simConfigHash);
 			} catch (ClassNotFoundException ex) {
 				runId = RunUtils.getErrorRunId();
 				RunUtils.reportError(runId,
@@ -616,7 +616,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 		// check the cache
 		try {
-			result = DbUtils.checkVisualizerCache(visConfigHash);
+			result = DbUtilsTest.checkVisualizerCache(visConfigHash);
 			if (result != null) {
 
 				// check the status of the run
@@ -629,7 +629,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				MethodCallStatusEnum statusEnum = status.getStatus();
 
 				if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
-					DbUtils.deleteFromVisualizerCache(visConfigHash);
+					DbUtilsTest.deleteFromVisualizerCache(visConfigHash);
 				} else {
 					return result;
 				}
@@ -701,9 +701,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 			// cache the visualizer result
 			try {
-				String cacheId = DbUtils.insertIntoVisualizerCache(runId,
+				String cacheId = DbUtilsTest.insertIntoVisualizerCache(runId,
 						visConfigHash);
-				DbUtils.insertIntoVisualizerResultsCache(cacheId,
+				DbUtilsTest.insertIntoVisualizerResultsCache(cacheId,
 						visualizerResult.getVisualizerOutputResource());
 			} catch (ClassNotFoundException ex) {
 				RunUtils.reportError(visualizerResult.getRunId(),
