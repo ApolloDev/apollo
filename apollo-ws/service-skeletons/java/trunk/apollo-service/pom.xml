@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>2.0-SNAPSHOT</version>
+		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>apollo-service</artifactId>
 	<name>-- ApolloService Web Service Provider</name>
@@ -39,22 +39,22 @@
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>simulator-service-client</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>library-service-client</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>visualizer-service-client</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>syntheticpopulation-service-client</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -161,7 +161,7 @@
 			</plugins>
 		</pluginManagement>
 		<!-- Name of the generated WAR file -->
-		<finalName>apollo-service20</finalName>
+		<finalName>apollo-service201</finalName>
 	</build>
 
 	<profiles>
@@ -186,9 +186,9 @@
 									<wsdlOptions>
 										<wsdlOption>
 											<wsdl>
-												${basedir}/../src/main/resources/apolloservice20.wsdl
+												${basedir}/../src/main/resources/apolloservice201.wsdl
 											</wsdl>
-											<wsdlLocation>classpath:apolloservice20.wsdl</wsdlLocation>
+											<wsdlLocation>classpath:apolloservice201.wsdl</wsdlLocation>
 										</wsdlOption>
 									</wsdlOptions>
 								</configuration>
