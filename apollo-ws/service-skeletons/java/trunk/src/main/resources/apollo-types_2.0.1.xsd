@@ -1692,10 +1692,14 @@
 	</complexType>
 
 	<complexType name="ConditionalProbabilityDistribution">
-		<sequence>
-			<element name="firstConditioningVariable" type="tns:ConditioningVariable"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
+		<complexContent>
+			<extension base="tns:ProbabilityDistribution">
+				<sequence>
+					<element name="firstConditioningVariable" type="tns:ConditioningVariable"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="ConditioningVariable">
