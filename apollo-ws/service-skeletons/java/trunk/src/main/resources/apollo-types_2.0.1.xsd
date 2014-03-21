@@ -8,6 +8,7 @@
 		</restriction>
 	</simpleType>
 
+	
 	<simpleType name="Fraction">
 		<restriction base="double">
 			<minInclusive value="0" />
