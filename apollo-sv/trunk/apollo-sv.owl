@@ -1407,7 +1407,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
     <Class rdf:about="&obo;APOLLO_SV_00000011">
         <rdfs:label xml:lang="en">control strategy reactive start time information</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000208"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">reactive start time</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ReactiveStartTime</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A control strategy start time information item that is based on a condition that triggers the control strategy.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -1727,7 +1727,7 @@ can&apos;t recall whether we should use process or processual_entity for future 
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">control measure</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDiseaseControlStrategy</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A process that is applied to a population with the goal of preventing, or mitigating the severity of an infectious disease.  </obo:IAO_0000115>
     </Class>
     
@@ -2904,7 +2904,7 @@ simulation run length</rdfs:comment>
                 </intersectionOf>
             </Class>
         </rdfs:subClassOf>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">measured vaccination efficacy</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">VaccinationEfficacyMeasured</apollo_sv:APOLLO_SV_0000040>
         <rdfs:comment xml:lang="en">1. Apollo-SV does not distinguish between ‘vaccine efficacy’ and ‘vaccine effectiveness.’
 
 2. Apollo-SV also considers the use of ‘vaccine’ in both terms a misnomer.
@@ -2935,7 +2935,7 @@ simulation run length</rdfs:comment>
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000471"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">vaccination efficacy study</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">VaccinationEfficacyStudy</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">a study design execution that has as its specified output one or more measured vaccination efficacy data items</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">an experiment that measures vaccination efficacy from a sample of vaccinated and possibly unvaccinated individuals</obo:IAO_0000600>
     </Class>
@@ -3013,7 +3013,7 @@ simulation run length</rdfs:comment>
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000096 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000096">
-        <rdfs:label>units</rdfs:label>
+        <rdfs:label>unit</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">units</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">The increments of measurement for a measurable thing</obo:IAO_0000600>
@@ -3593,7 +3593,7 @@ An infection is acquired from an infectious organism or a contaminated thing.
                 <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
             </Restriction>
         </rdfs:subClassOf>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">antiviral ID</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">antiviralId</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A unique identifier for an antiviral drug</obo:IAO_0000600>
         <obo:IAO_0000115>a unique identifier that refers to an antiviral drug product</obo:IAO_0000115>
     </Class>
@@ -4915,7 +4915,7 @@ I checked because an infection and immunity census would involve two different c
                 </someValuesFrom>
             </Restriction>
         </rdfs:subClassOf>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">simulator configuration</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">simulatorConfiguration</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An information content entity that contains everything a simulator needs to run, including the representation of a scenario.</obo:IAO_0000115>
     </Class>
     
@@ -5212,7 +5212,7 @@ I checked because an infection and immunity census would involve two different c
     <Class rdf:about="&obo;APOLLO_SV_00000202">
         <rdfs:label xml:lang="en">indexable Apollo item</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Apollo indexable item</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ApolloIndexableItem</apollo_sv:APOLLO_SV_0000040>
         <rdfs:comment xml:lang="en">A class representing an abstract type. This class has no attributes and programmers should use it to determine whether an instance should be saved or can be retrieved. </rdfs:comment>
     </Class>
     
@@ -5371,7 +5371,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <Class rdf:about="&obo;APOLLO_SV_00000210">
         <rdfs:label xml:lang="en">apollo simulator configuration</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000179"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">run simulation message</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">RunSimulationMessage</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A simulator configuration that start an Apollo simulator.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5519,7 +5519,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <Class rdf:about="&obo;APOLLO_SV_00000221">
         <rdfs:label xml:lang="en">immune population acting like immune</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immune and acts like immune</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneAndActsLikeImmune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members know they are immune (do not seek vaccination/antiviral treatment, etc.).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5531,7 +5531,7 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <Class rdf:about="&obo;APOLLO_SV_00000222">
         <rdfs:label xml:lang="en">immune population acting like not immune</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immune but acts like not immune</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneButActsLikeNotImmune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members assume they are not immune (e.g. seek vaccination/antiviral treatment).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -7013,7 +7013,7 @@ See vaccination and antiviral treatment.
     <Class rdf:about="&obo;OMRSE_00000007">
         <rdfs:label xml:lang="en">gender role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Role"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Gender</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">gender</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">A human social role borne by a human being being realized in behaviour which is considered socially appropriate for individuals of a specific sex in the context of a specific culture.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -7106,7 +7106,7 @@ See vaccination and antiviral treatment.
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;ObjectAggregate"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">population</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Population</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An object aggregate of organisms.</obo:IAO_0000115>
         <rdfs:comment xml:lang="en">Any arbitrary collection of organisms.  They need not be of the same taxonomic class.  </rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">This term refers to a real population, such as the population of Allegheny County or of the U.S.   As a set, it could null (size zero), for example the population of people in Allegheny County older than 130 years of age.  It could also be a single organism. The population is not restricted to members of one species.</obo:IAO_0000600>
@@ -7552,7 +7552,7 @@ school facility
     <Class rdf:about="&obo;PATO_0000047">
         <rdfs:label xml:lang="en">biological sex</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Quality"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">biological sex</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">biologicalSex</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
         <obo:IAO_0000115 xml:lang="en">An organismal quality inhering in a bearer by virtue of the bearer&apos;s ability to undergo sexual reproduction in order to differentiate the individuals or types involved.</obo:IAO_0000115>
         <obo:IAO_0000111 xml:lang="en">biological sex</obo:IAO_0000111>
