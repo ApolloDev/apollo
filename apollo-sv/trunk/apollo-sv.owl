@@ -860,21 +860,21 @@
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -2742,7 +2742,7 @@ simulation run length</rdfs:comment>
 
     <Class rdf:about="&obo;APOLLO_SV_00000082">
         <rdfs:label xml:lang="en">Bayesian network</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000246"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Bayesian network</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">a discrete probability distribution</obo:IAO_0000600>
     </Class>
@@ -5899,6 +5899,121 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000244 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000244">
+        <rdfs:label xml:lang="en">disease identifier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">diseaseId</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">We still need to decide which coding schema to adopt.-MB</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">a unique identifier that refers to a disease.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000245 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000245">
+        <rdfs:label xml:lang="en">conditional probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000215"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ConditionalProbabilityDistribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A probability distribution of two jointly distributed random variables X and Y, where Y is know to be a particular value.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000246 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000246">
+        <rdfs:label xml:lang="en">joint probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000215"/>
+        <obo:IAO_0000115 xml:lang="en">In the study of probability, given at least two random variables X, Y, ..., that are defined on a probability space, the joint probability distribution for X, Y, ... is a probability distribution that gives the probability that each of X, Y, ... falls in any particular range or discrete set of values specified for that variable.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/w/index.php?title=Joint_probability_distribution&amp;oldid=599692661</obo:IAO_0000119>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000247 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000247">
+        <rdfs:label xml:lang="en">unconditional probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000215"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">UnconditionalProbabilityDistribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en"></obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An unconditional probability distribution is the probability distribution of an uncertain variable, U, implicitly incorporating the uncertainty introduced by any other relevant variables. Mathematically, U’s unconditional probability distribution is written {U | E}, where E represents the background state of information under which the distribution is assessed.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000119 xml:lang="en">http://grahamjeffery.com/glossary/213-unconditional-probability-distribution</obo:IAO_0000119>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000248 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000248">
+        <rdfs:label xml:lang="en">parametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000247"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ParametricProbabilityDistribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000249 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000249">
+        <rdfs:label xml:lang="en">nonparametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000247"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000250 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000250">
+        <rdfs:label xml:lang="en">discrete parametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000248"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">DiscreteParametricProbabilityDistribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000251 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000251">
+        <rdfs:label xml:lang="en">continuous parametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000248"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ContinuousParametricProbabilityDistribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000252 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000252">
+        <rdfs:label xml:lang="en">discrete nonparametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000249"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">discrete nonparametric probability distribution</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000253 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000253">
+        <rdfs:label xml:lang="en">continuous nonparametric probability distribution</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000249"/>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00001008">
@@ -7756,12 +7871,12 @@ school facility
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
     </Class>
     
 
@@ -8291,11 +8406,11 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000012">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;identifier">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
         <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;identifier">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000013">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8407,9 +8522,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8417,6 +8529,9 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
