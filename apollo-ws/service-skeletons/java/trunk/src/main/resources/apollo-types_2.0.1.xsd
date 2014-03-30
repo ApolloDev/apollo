@@ -8,7 +8,7 @@
 		</restriction>
 	</simpleType>
 
-	
+
 	<simpleType name="Fraction">
 		<restriction base="double">
 			<minInclusive value="0" />
@@ -647,8 +647,11 @@
 			<element name="reactiveControlStrategyThreshold" type="int"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="unitOfMeasureForThreshold" type="tns:UnitOfMeasureEnum"
+			<element name="reactiveControlStrategyOperator" type="tns:OperatorEnum"
 				maxOccurs="1" minOccurs="1"></element>
+			<element name="unitOfMeasureForThreshold" type="tns:UnitOfMeasureEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
 			<element name="diseaseSurveillanceCapability" type="tns:DiseaseSurveillanceCapability"
 				maxOccurs="1" minOccurs="1">
 			</element>
@@ -799,7 +802,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="BayesianNetworkDistribution">
+	<complexType name="BayesianNetwork">
 		<complexContent>
 			<extension base="tns:ProbabilityDistribution">
 				<sequence>
@@ -886,16 +889,8 @@
 		</restriction>
 	</simpleType>
 
-
-	<simpleType name="OperatorEnum">
-		<restriction base="string">
-			<enumeration value="lessThanOrEqual" />
-			<enumeration value="moreThanOrEqual" />
-		</restriction>
-	</simpleType>
-
+	
 	<complexType name="TreatmentEfficacy">
-
 		<sequence>
 			<element name="hostIdentifier" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
@@ -1018,7 +1013,7 @@
 				<sequence>
 					<element name="inferredFromTheseStudies" type="tns:VaccinationEfficacyStudy"
 						maxOccurs="unbounded" minOccurs="1" />
-					<element name="vaccinationEfficacyModel" type="tns:BayesianNetworkDistribution"
+					<element name="vaccinationEfficacyModel" type="tns:BayesianNetwork"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
@@ -1145,6 +1140,7 @@
 	</complexType>
 
 	<complexType name="ApolloIndexableItem" />
+	
 	<simpleType name="PathogenTaxonID">
 		<restriction base="positiveInteger" />
 	</simpleType>
@@ -1164,6 +1160,7 @@
 			<enumeration value="primarySchool" />
 			<enumeration value="secondarySchool" />
 			<enumeration value="allSchools" />
+						<enumeration value="allSchoolsOfOneLevelInOneTract" />
 			<enumeration value="workplace" />
 		</restriction>
 	</simpleType>
@@ -1205,7 +1202,7 @@
 			<choice>
 				<element name="basicReproductionNumber" type="tns:PositiveDouble"
 					maxOccurs="1" minOccurs="1" />
-				<element name="Beta" type="tns:Rate" maxOccurs="1"
+				<element name="beta" type="tns:Rate" maxOccurs="1"
 					minOccurs="1" />
 				<element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission"
 					maxOccurs="1" minOccurs="1" />
@@ -1792,6 +1789,7 @@
 			<enumeration value="inches" />
 			<enumeration value="miles" />
 			<enumeration value="daily_dose" />
+			<enumeration value="percent_of_population_vaccinated" />
 		</restriction>
 	</simpleType>
 
@@ -1806,70 +1804,6 @@
 	</complexType>
 
 
-	<complexType name="TransmissionCoefficient" />
-
-
-
-
-
-	<complexType name="GesTransmissionCoefficient">
-		<complexContent>
-			<extension base="tns:TransmissionCoefficient">
-				<sequence>
-					<element name="averageCommunityImperialReproductionNumber"
-						type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="averageHouseholdImperialReproductionNumber"
-						type="tns:PositiveDouble" maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="imperialReproductionNumberForPlace" type="tns:TransmissionCoefficientForPlace"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
-					<element name="seasonalityFunctionParameters" type="tns:SeasonalityFunctionParameters"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="probSymptomaticInfectionClinicallyDetected"
-						type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
-					<element name="symptomaticInfectionMultiplier" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="probSevereInfectionClinicallyDetected" type="tns:Probability"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="severeInfectionMultiplier" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1">
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
-
-	<complexType name="TransmissionCoefficientForPlace">
-		<sequence>
-			<element name="placeType" type="tns:PlaceEnum" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="baseTransmissionCoefficient" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="1"></element>
-			<element name="withinGroupTransmissionProbability" type="tns:Probability"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="probSymptomaticIndividualAbsent" type="tns:Probability"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="symptomaticAbsenteeMultiplier" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="probSeverelyInfectedIndividualAbsent" type="tns:Probability"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="severelyInfectedAbsenteeMultiplier" type="tns:PositiveDouble"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="spatialKernelFunctionParameters" type="tns:SpatialKernelFunctionParameters"
-				maxOccurs="1" minOccurs="1"></element>
-		</sequence>
-	</complexType>
 
 	<complexType name="SeasonalityFunctionParameters">
 		<sequence>
@@ -2052,7 +1986,7 @@
 					<element name="placeClass" type="tns:PlaceEnum" maxOccurs="1"
 						minOccurs="1">
 					</element>
-					<element name="closeIndividualPlacesIndependentally" type="boolean"
+					<element name="closeIndividualPlacesIndependently" type="boolean"
 						maxOccurs="1" minOccurs="1"></element>
 					<element name="closurePeriod" type="tns:Duration"
 						maxOccurs="1" minOccurs="1">
@@ -2154,31 +2088,33 @@
 				minOccurs="1">
 			</element>
 
-			<element name="supplySchedule-perDay" type="nonNegativeInteger"
+			<element name="supplySchedulePerDay" type="nonNegativeInteger"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
 			<element name="supplyScheduleUnits" type="tns:UnitOfMeasureEnum"
-				maxOccurs="unbounded" minOccurs="0">
+				maxOccurs="1" minOccurs="0">
 			</element>
-			<element name="administrationCapacity-perDay" type="nonNegativeInteger"
+			<element name="administrationCapacityPerDay" type="nonNegativeInteger"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
 			<element name="administrationCapacityUnits" type="tns:UnitOfMeasureEnum"
-				maxOccurs="unbounded" minOccurs="0">
+				maxOccurs="1" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
 
 	<complexType name="Rate">
 		<sequence>
-			<element name="numeratorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
-				maxOccurs="1" minOccurs="0"></element>
-			<element name="denominatorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
-				maxOccurs="1" minOccurs="0"></element>
-			<element name="value" type="double" maxOccurs="1" minOccurs="0"></element>
-			<element name="probabilityDistribution" type="tns:ProbabilityDistribution"
-				maxOccurs="1" minOccurs="0"></element>
-		</sequence>
+			<element name="numeratorUnitOfMeasure"
+				type="tns:UnitOfMeasureEnum" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="denominatorUnitOfMeasure"
+				type="tns:UnitOfMeasureEnum" maxOccurs="1" minOccurs="1">
+			</element>
+			<choice><element name="value" type="double" maxOccurs="1" minOccurs="1">
+			</element><element name="probabilityDistribution" type="tns:ProbabilityDistribution" maxOccurs="1" minOccurs="1">
+			</element></choice>
+        </sequence>
 	</complexType>
 
 
@@ -2190,7 +2126,7 @@
 			<element name="parameterName" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="NewElement" type="double" maxOccurs="1"
+			<element name="parameterValue" type="double" maxOccurs="1"
 				minOccurs="1">
 			</element>
 		</sequence>
@@ -2207,4 +2143,11 @@
 	</complexType>
 
 
+
+	<simpleType name="OperatorEnum">
+		<restriction base="string">
+			<enumeration value="less_than_or_equal" />
+			<enumeration value="greater_than_or_equal" />
+		</restriction>
+	</simpleType>
 </schema>
