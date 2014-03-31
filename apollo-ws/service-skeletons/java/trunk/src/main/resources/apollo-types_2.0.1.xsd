@@ -170,10 +170,11 @@
 		<complexContent>
 			<extension base="tns:Treatment">
 				<sequence>
-					<element name="vaccine" type="tns:Vaccine" maxOccurs="1"
+					<element name="vaccineId" type="tns:vaccineOntologyId" maxOccurs="1"
 						minOccurs="1" />
-					<element name="vaccinationEfficacies" type="tns:TreatmentEfficacy"
-						maxOccurs="unbounded" minOccurs="0" />
+					<element name="vaccinationEfficacies"
+						type="tns:VaccinationEfficacyForSimulatorConfiguration"
+						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -399,9 +400,9 @@
 		<complexContent>
 			<extension base="tns:Treatment">
 				<sequence>
-					<element name="antiviral" type="tns:Antiviral" maxOccurs="1"
+					<element name="antiviralId" type="token" maxOccurs="1"
 						minOccurs="1" />
-					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy" />
+					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy" maxOccurs="unbounded" minOccurs="1"/>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -778,14 +779,6 @@
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<choice>
-						<element name="vaccineId" type="tns:vaccineOntologyId"
-							maxOccurs="1" minOccurs="1">
-						</element>
-						<element name="drugId" type="token" maxOccurs="1"
-							minOccurs="1">
-						</element>
-					</choice>
 					<element name="numDosesInTreatmentCourse" type="positiveInteger"
 						maxOccurs="1" minOccurs="1" />
 					<element name="durationOfTreatmentCourse" type="tns:Duration"
@@ -793,9 +786,6 @@
 					</element>
 					<element name="treatmentContraindications" type="tns:TreatmentContraindication"
 						maxOccurs="unbounded" minOccurs="0" />
-					<element name="treatmentEfficacies" type="tns:TreatmentEfficacy"
-						maxOccurs="unbounded" minOccurs="1">
-					</element>
 
 				</sequence>
 			</extension>
@@ -898,12 +888,6 @@
 				maxOccurs="1" minOccurs="1" />
 			<element name="forTreatmentPreventableOutcome" type="tns:TreatmentPreventableOutcomeEnum"
 				maxOccurs="1" minOccurs="1" />
-			<choice>
-				<element name="vaccineIdentifier" type="tns:vaccineOntologyId"
-					maxOccurs="1" minOccurs="1" />
-				<element name="drugIdentifier" type="token" maxOccurs="1"
-					minOccurs="1"></element>
-			</choice>
 		</sequence>
 
 	</complexType>
@@ -949,8 +933,8 @@
 	</complexType>
 
 	<complexType name="BayesianNetworkStructureType" />
-	<complexType name="TreatmentEfficacyValueType" />
-	<complexType name="VaccinationEfficacyValue" />
+
+
 	<complexType name="PrototypicalProbabilityFunction" />
 	<complexType name="GeNIE_XMLType">
 		<sequence>
