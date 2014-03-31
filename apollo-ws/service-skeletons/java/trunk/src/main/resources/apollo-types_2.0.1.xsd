@@ -408,22 +408,23 @@
 	</complexType>
 
 	<complexType name="ArrayDimensionsDefinition" />
-	<complexType name="PopulationStrataDefinition">
-		<complexContent>
-			<extension base="tns:ArrayDimensionsDefinition">
-				<sequence>
-					<element name="ageRanges" type="tns:AgeRangeCategory"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
-					<element name="genders" type="tns:GenderEnum" maxOccurs="unbounded"
-						minOccurs="0">
-					</element>
-					<element name="diseaseOutcomes" type="tns:DiseaseOutcomeEnum"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
+
+	<complexType name="TargetPopulationDefinition">
+		<sequence>
+			<element name="ageRange" type="tns:AgeRangeCategory"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="gender" type="tns:GenderEnum" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="diseaseOutcome"
+				type="tns:DiseaseOutcomeEnum" maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="otherStratification"
+				type="tns:PopulationStratificationEnum" maxOccurs="1"
+				minOccurs="0">
+			</element>
+		</sequence>
 	</complexType>
 
 	<complexType name="PopulationInfectionAndImmunityCensusDataCell">
@@ -458,14 +459,7 @@
 
 	</complexType>
 
-	<complexType name="PopulationStrataArray">
-		<sequence>
-			<element name="description" type="tns:PopulationStrataDefinition"
-				maxOccurs="1" minOccurs="1" />
-			<element name="values" type="tns:Fraction" maxOccurs="unbounded"
-				minOccurs="1" />
-		</sequence>
-	</complexType>
+
 
 	<complexType name="TemporalArrayDimensionsDefinition">
 		<complexContent>
@@ -574,19 +568,19 @@
 		<sequence>
 			<element name="description" type="token" maxOccurs="1"
 				minOccurs="1" />
+			<choice>
+				<element name="targetPopulationDefinition" type="tns:TargetPopulationDefinition"
+					maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="targetPopulationEnum" type="tns:TargetPopulationEnum"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
 			<element name="fractionOfTargetPopulationToPrioritize" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1" />
 			<element name="priority" type="nonNegativeInteger" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<choice>
-				<element name="targetPopulationDefinition" type="tns:PopulationStrataDefinition"
-					maxOccurs="1" minOccurs="1">
-				</element>
-				<element name="targetPopulationDefinitionEnum" type="tns:TargetPopulationDefinitionEnum"
-					maxOccurs="1" minOccurs="1">
-				</element>
-			</choice>
 		</sequence>
 	</complexType>
 
@@ -661,12 +655,20 @@
 
 
 
-	<simpleType name="TargetPopulationDefinitionEnum">
+	<simpleType name="TargetPopulationEnum">
 		<restriction base="token">
 			<enumeration value="all" />
 			<enumeration value="members_of_the_same_household" />
 			<enumeration value="newly_sick" />
 			<enumeration value="household_member_of_infant" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="PopulationStratificationEnum">
+		<restriction base="token">
+			<enumeration value="essential_workforce" />
+			<enumeration value="pregnant" />
+			<enumeration value="high_risk" />
 		</restriction>
 	</simpleType>
 
@@ -720,12 +722,10 @@
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
 				minOccurs="0" />
-			<element name="simulatorReferencablePopulation" type="tns:PopulationStrataDefinition"
+			<element name="simulatorReferencablePopulation" type="tns:TargetPopulationDefinition"
 				maxOccurs="1" minOccurs="0" />
 			<element name="fractionOfSimulatorReferencablePopulation"
 				type="tns:Fraction" maxOccurs="1" minOccurs="0" />
-			<element name="pregnancy" type="boolean" maxOccurs="1"
-				minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -889,7 +889,7 @@
 		</restriction>
 	</simpleType>
 
-	
+
 	<complexType name="TreatmentEfficacy">
 		<sequence>
 			<element name="hostIdentifier" type="tns:NcbiTaxonId"
@@ -1140,7 +1140,7 @@
 	</complexType>
 
 	<complexType name="ApolloIndexableItem" />
-	
+
 	<simpleType name="PathogenTaxonID">
 		<restriction base="positiveInteger" />
 	</simpleType>
@@ -1160,7 +1160,7 @@
 			<enumeration value="primarySchool" />
 			<enumeration value="secondarySchool" />
 			<enumeration value="allSchools" />
-						<enumeration value="allSchoolsOfOneLevelInOneTract" />
+			<enumeration value="allSchoolsOfOneLevelInOneTract" />
 			<enumeration value="workplace" />
 		</restriction>
 	</simpleType>
@@ -2105,11 +2105,11 @@
 
 	<complexType name="Rate">
 		<sequence>
-			<element name="numeratorUnitOfMeasure"
-				type="tns:UnitOfMeasureEnum" maxOccurs="1" minOccurs="1">
+			<element name="numeratorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
+				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="denominatorUnitOfMeasure"
-				type="tns:UnitOfMeasureEnum" maxOccurs="1" minOccurs="1">
+			<element name="denominatorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
+				maxOccurs="1" minOccurs="1">
 			</element>
 			<choice><element name="value" type="double" maxOccurs="1" minOccurs="1">
 			</element><element name="probabilityDistribution" type="tns:ProbabilityDistribution" maxOccurs="1" minOccurs="1">
