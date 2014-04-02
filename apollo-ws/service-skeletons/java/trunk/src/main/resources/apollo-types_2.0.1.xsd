@@ -52,6 +52,10 @@
 			<enumeration value="exiting" />
 			<enumeration value="held" />
 			<enumeration value="queued" />
+			<enumeration value="translating" />
+			<enumeration value="initializing" />
+			<enumeration value="writing_log_files"/>
+			<enumeration value="staging" />
 			<enumeration value="running" />
 			<enumeration value="moving" />
 			<enumeration value="waiting" />
@@ -109,22 +113,7 @@
 		<restriction base="token" />
 	</simpleType>
 
-	<complexType name="ServiceRecord">
-		<sequence>
-			<element name="url" type="anyURI" />
-			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
-		</sequence>
-	</complexType>
 
-	<complexType name="ServiceRegistrationRecord">
-		<complexContent>
-			<extension base="tns:ServiceRecord">
-				<sequence>
-					<element name="authentication" type="tns:Authentication" />
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="SimulatorTimeSpecification">
 		<sequence>
@@ -170,11 +159,11 @@
 		<complexContent>
 			<extension base="tns:Treatment">
 				<sequence>
-					<element name="vaccineId" type="tns:vaccineOntologyId" maxOccurs="1"
-						minOccurs="1" />
+					<element name="vaccineId" type="tns:vaccineOntologyId"
+						maxOccurs="1" minOccurs="1" />
 					<element name="vaccinationEfficacies"
-						type="tns:VaccinationEfficacyForSimulatorConfiguration"
-						maxOccurs="unbounded" minOccurs="1" />
+						type="tns:VaccinationEfficacyForSimulatorConfiguration" maxOccurs="unbounded"
+						minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -402,7 +391,8 @@
 				<sequence>
 					<element name="antiviralId" type="token" maxOccurs="1"
 						minOccurs="1" />
-					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy" maxOccurs="unbounded" minOccurs="1"/>
+					<element name="antiviralTreatmentEfficacy" type="tns:AntiviralTreatmentEfficacy"
+						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -418,12 +408,11 @@
 			<element name="gender" type="tns:GenderEnum" maxOccurs="1"
 				minOccurs="0">
 			</element>
-			<element name="diseaseOutcome"
-				type="tns:DiseaseOutcomeEnum" maxOccurs="1" minOccurs="0">
+			<element name="diseaseOutcome" type="tns:DiseaseOutcomeEnum"
+				maxOccurs="1" minOccurs="0">
 			</element>
-			<element name="otherStratification"
-				type="tns:PopulationStratificationEnum" maxOccurs="1"
-				minOccurs="0">
+			<element name="otherStratification" type="tns:PopulationStratificationEnum"
+				maxOccurs="1" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
@@ -680,6 +669,8 @@
 			<enumeration value="simulator" />
 			<enumeration value="visualizer" />
 			<enumeration value="syntheticPopulationGenerator" />
+			<enumeration value="translator" />
+
 		</restriction>
 	</simpleType>
 
@@ -1312,6 +1303,8 @@
 
 	<complexType name="RunSimulationMessage">
 		<sequence>
+			<element name="runId" type="positiveInteger" maxOccurs="1"
+				minOccurs="1"></element>
 			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
 				maxOccurs="1" minOccurs="1">
 			</element>
@@ -2095,10 +2088,14 @@
 			<element name="denominatorUnitOfMeasure" type="tns:UnitOfMeasureEnum"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<choice><element name="value" type="double" maxOccurs="1" minOccurs="1">
-			</element><element name="probabilityDistribution" type="tns:ProbabilityDistribution" maxOccurs="1" minOccurs="1">
-			</element></choice>
-        </sequence>
+			<choice>
+				<element name="value" type="double" maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="probabilityDistribution" type="tns:ProbabilityDistribution"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
+		</sequence>
 	</complexType>
 
 
@@ -2127,11 +2124,38 @@
 	</complexType>
 
 
-
 	<simpleType name="OperatorEnum">
 		<restriction base="string">
 			<enumeration value="less_than_or_equal" />
 			<enumeration value="greater_than_or_equal" />
 		</restriction>
 	</simpleType>
+
+	<complexType name="Role">
+		<sequence>
+			<element name="softwareIdentification" type="tns:SoftwareIdentification">
+			</element>
+			<element name="can_run" type="boolean"></element>
+			<element name="can_view_cached_results" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ServiceRecord">
+		<sequence>
+			<element name="url" type="anyURI" />
+			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ServiceRegistrationRecord">
+		<complexContent>
+			<extension base="tns:ServiceRecord">
+				<sequence>
+					<element name="authentication" type="tns:Authentication" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
 </schema>
