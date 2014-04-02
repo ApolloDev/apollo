@@ -119,6 +119,7 @@
 									<directory>${basedir}/../src/main/resources</directory>
 									<includes>
 										<include>apollo-types_2.0.1.xsd</include>
+										<include>apollo-service-types_2.0.1.xsd</include>
 									</includes>
 									<filtering>true</filtering>
 								</resource>
