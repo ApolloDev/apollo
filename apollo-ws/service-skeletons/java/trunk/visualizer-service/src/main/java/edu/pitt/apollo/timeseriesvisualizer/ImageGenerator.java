@@ -1,6 +1,5 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
-import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -9,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
-import edu.pitt.apollo.types.v2_0.UrlOutputResource;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
-import org.apache.commons.codec.digest.DigestUtils;
+import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 
 /**
