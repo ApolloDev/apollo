@@ -24,6 +24,10 @@
 	</properties>
 	
 	<modules>
+	  <module>apollo-types</module>
+	  <module>apollo-db-common</module>
+	  <module>apollo-services-common</module>
+	
 	  <module>apollo-service</module>
       <module>apollo-service-war</module>
 	  <module>apollo-service-client</module>
