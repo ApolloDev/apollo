@@ -93,19 +93,15 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="VisualizationOptions">
-		<sequence>
-			<element name="runId" type="token" />
-			<element name="location" type="token" />
-			<element name="outputFormat" type="token" />
-		</sequence>
-	</complexType>
 
 	<complexType name="RunVisualizationMessage">
 		<sequence>
-			<element name="visualizerIdentification" type="tns:SoftwareIdentification" />
+            <element name="visualizerIdentification"
+				type="tns:SoftwareIdentification" />
 			<element name="authentication" type="tns:Authentication" />
-			<element name="visualizationOptions" type="tns:VisualizationOptions" />
+			<element name="simulationRunIds"
+				type="tns:RunIdentification" maxOccurs="unbounded" minOccurs="1">
+			</element>
 		</sequence>
 	</complexType>
 
@@ -1303,8 +1299,6 @@
 
 	<complexType name="RunSimulationMessage">
 		<sequence>
-			<element name="runId" type="positiveInteger" maxOccurs="1"
-				minOccurs="1"></element>
 			<element name="simulatorIdentification" type="tns:SoftwareIdentification"
 				maxOccurs="1" minOccurs="1">
 			</element>
