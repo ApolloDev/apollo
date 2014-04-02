@@ -11,14 +11,17 @@
 			<xsd:element name="runVisualization">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runVisualizationMessage" type="apollo:RunVisualizationMessage" />
+                        <xsd:element name="visualizationRunId" type="apollo:RunIdentification">
+						</xsd:element>
+                        <xsd:element name="runVisualizationMessage"
+							type="apollo:RunVisualizationMessage" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="runVisualizationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="visualizationResult" type="apollo:VisualizerResult" />
+						
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
