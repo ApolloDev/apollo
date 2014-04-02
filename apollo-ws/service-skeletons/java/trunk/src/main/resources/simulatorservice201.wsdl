@@ -16,7 +16,10 @@
 			<xsd:element name="runSimulation">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runSimulationMessage" type="apollo:RunSimulationMessage" />
+                        <xsd:element name="simulationRunId" type="xsd:positiveInteger">
+						</xsd:element>
+                        <xsd:element name="runSimulationMessage"
+							type="apollo:RunSimulationMessage" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

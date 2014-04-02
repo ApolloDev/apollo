@@ -38,16 +38,17 @@ import com.db4o.config.ConfigScope;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ext.Db4oUUID;
 
-import edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI;
-import edu.pitt.apollo.types.v2_0.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_0.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_0.Authentication;
-import edu.pitt.apollo.types.v2_0.CatalogEntryForApolloLibraryItem;
-import edu.pitt.apollo.types.v2_0.CuratedLibraryItemContainer;
-import edu.pitt.apollo.types.v2_0.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_0.GetLibraryItemUuidsResult;
-import edu.pitt.apollo.types.v2_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
+import edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceEI;
+import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItemTypeEnum;
+import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.CatalogEntryForApolloLibraryItem;
+import edu.pitt.apollo.types.v2_0_1.CuratedLibraryItemContainer;
+import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
+import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
@@ -126,7 +127,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			cli.setItemCreationTime(date);
 			cli.setItemDescription(itemDescription);
 			cli.setItemSource(itemSource);
-			cli.setItemType(itemType);
+			cli.setItemType(ApolloIndexableItemTypeEnum.fromValue(itemType));
 			cli.setItemUuid(apolloUuid);
 			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
 			db4o.store(cli);
