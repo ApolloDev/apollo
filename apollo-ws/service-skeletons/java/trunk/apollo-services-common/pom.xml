@@ -133,23 +133,6 @@
 
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>xjc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<!-- The name of your generated source package -->
-
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 </project>

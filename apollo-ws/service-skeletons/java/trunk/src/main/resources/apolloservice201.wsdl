@@ -19,7 +19,9 @@
 			<xsd:element name="runSimulationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunIdentification" />
+						<xsd:element name="simulationRunId"
+							type="xsd:positiveInteger">
+						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

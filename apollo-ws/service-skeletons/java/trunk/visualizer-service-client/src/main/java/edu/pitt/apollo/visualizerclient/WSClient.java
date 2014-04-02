@@ -15,68 +15,56 @@
 package edu.pitt.apollo.visualizerclient;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceV20;
-import edu.pitt.apollo.types.v2_0.ApolloSoftwareType;
-import edu.pitt.apollo.types.v2_0.Authentication;
-import edu.pitt.apollo.types.v2_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_0.VisualizationOptions;
-import edu.pitt.apollo.types.v2_0.VisualizerResult;
 
 public class WSClient {
 
     public static void main(String[] args) throws MalformedURLException, InterruptedException {
-        VisualizerServiceV20 service = new VisualizerServiceV20(new URL("http://warhol-fred.psc.edu:8092/gaia?wsdl"));
-        VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
-
-        RunVisualizationMessage vizConfig = new RunVisualizationMessage();
-//                vizConfig.
-        VisualizationOptions options = new VisualizationOptions();
-        options.setRunId("UPitt,PSC,CMU_FRED_2.0.1_295201"); // 42003, 127 days
-        options.setLocation("42003");
-        options.setOutputFormat("mp4");
-
-        vizConfig.setVisualizationOptions(options);
-
-        SoftwareIdentification sid = new SoftwareIdentification();
-        sid.setSoftwareName("GAIA");
-        sid.setSoftwareType(ApolloSoftwareType.VISUALIZER);
-        sid.setSoftwareVersion("1.0");
-        sid.setSoftwareDeveloper("PSC");
-//                sid.setSoftwareName("Image Visualizer");
-//                sid.setSoftwareType(ApolloSoftwareType.VISUALIZER);
-//                sid.setSoftwareVersion("1.0");
-//                sid.setSoftwareDeveloper("UPitt");
-
-        vizConfig.setVisualizerIdentification(sid);
-
-        Authentication auth = new Authentication();
-        auth.setRequesterId("fake_id");
-        auth.setRequesterPassword("fake_password");
-
-        vizConfig.setAuthentication(auth);
-
-
-
-        VisualizerResult result = port.runVisualization(vizConfig);
-
-        String runId = result.getRunId();
-
-        MethodCallStatus status = port.getRunStatus(runId);
-
-        while (status.getStatus() != MethodCallStatusEnum.COMPLETED) {
-            System.out.println(status.getStatus() + "    " + status.getMessage());
-            System.out.println(result.getVisualizerOutputResource().get(0).getURL());
-
-            Thread.sleep(5000);
-            status = port.getRunStatus(runId);
-        }
-
-        System.out.println(status.getStatus());
+//        VisualizerServiceV201 service = new VisualizerServiceV201(new URL("http://warhol-fred.psc.edu:8092/gaia?wsdl"));
+//        VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
+//
+//        RunVisualizationMessage vizConfig = new RunVisualizationMessage();
+////                vizConfig.
+//        VisualizationOptions options = new VisualizationOptions();
+//        options.setRunId("UPitt,PSC,CMU_FRED_2.0.1_295201"); // 42003, 127 days
+//        options.setLocation("42003");
+//        options.setOutputFormat("mp4");
+//
+//        vizConfig.setVisualizationOptions(options);
+//
+//        SoftwareIdentification sid = new SoftwareIdentification();
+//        sid.setSoftwareName("GAIA");
+//        sid.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
+//        sid.setSoftwareVersion("1.0");
+//        sid.setSoftwareDeveloper("PSC");
+////                sid.setSoftwareName("Image Visualizer");
+////                sid.setSoftwareType(ApolloSoftwareType.VISUALIZER);
+////                sid.setSoftwareVersion("1.0");
+////                sid.setSoftwareDeveloper("UPitt");
+//
+//        vizConfig.setVisualizerIdentification(sid);
+//
+//        Authentication auth = new Authentication();
+//        auth.setRequesterId("fake_id");
+//        auth.setRequesterPassword("fake_password");
+//
+//        vizConfig.setAuthentication(auth);
+//
+//
+//
+//        VisualizerResult result = port.runVisualization(vizConfig);
+//
+//        String runId = result.getRunId();
+//
+//        MethodCallStatus status = port.getRunStatus(runId);
+//
+//        while (status.getStatus() != MethodCallStatusEnum.COMPLETED) {
+//            System.out.println(status.getStatus() + "    " + status.getMessage());
+//            System.out.println(result.getVisualizerOutputResource().get(0).getURL());
+//
+//            Thread.sleep(5000);
+//            status = port.getRunStatus(runId);
+//        }
+//
+//        System.out.println(status.getStatus());
     }
 }
