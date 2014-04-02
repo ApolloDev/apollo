@@ -7,8 +7,11 @@
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/simulatorservice/v2_0_1/"
 			xmlns:apollo="http://types.apollo.pitt.edu/v2_0_1/">
 
-			<xsd:import schemaLocation="apollo-types_2.0.1.xsd"
+				
+				<xsd:import schemaLocation="apollo-types_2.0.1.xsd"
 				namespace="http://types.apollo.pitt.edu/v2_0_1/">
+				
+				
 			</xsd:import>
 			<xsd:element name="runSimulation">
 				<xsd:complexType>
@@ -20,7 +23,6 @@
 			<xsd:element name="runSimulationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunIdentification" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
