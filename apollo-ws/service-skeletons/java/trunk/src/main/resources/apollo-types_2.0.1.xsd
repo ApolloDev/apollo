@@ -502,7 +502,7 @@
 					<element name="unitOfTime" type="tns:UnitOfTimeEnum"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="timeZeroReference" type="tns:timeScaleEnum"
+					<element name="timeZeroReference" type="tns:TimeScaleEnum"
 						maxOccurs="1" minOccurs="1"></element>
 					<element name="startOfTimeSpan" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="1" />
@@ -513,11 +513,12 @@
 		</complexContent>
 	</complexType>
 
-	<simpleType name="timeScaleEnum">
+	<simpleType name="TimeScaleEnum">
 		<restriction base="string">
 			<enumeration value="simulatorTimeScale" />
 			<enumeration value="controlStrategyTimeScale" />
 			<enumeration value="individualTreatmentTimeScale" />
+						<enumeration value="gregorianCalendar" />
 		</restriction>
 	</simpleType>
 
@@ -1470,18 +1471,6 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="ContaminatedThingCensusDataCell">
-		<sequence>
-			<element name="ageRange" type="tns:AgeRangeCategory"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="gender" type="tns:GenderEnum" maxOccurs="1"
-				minOccurs="0">
-			</element>
-			<element name="fractionContaminated" type="tns:Fraction"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
-	</complexType>
 
 	<complexType name="AbioticEcosystemPartCensus">
 		<sequence>
@@ -1963,10 +1952,10 @@
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="householdTransmissionMultiplier" type="tns:NonNegativeDouble"
-						maxOccurs="1" minOccurs="1">
+						maxOccurs="1" minOccurs="0">
 					</element>
 					<element name="communityTransmissionMultiplier" type="tns:NonNegativeDouble"
-						maxOccurs="1" minOccurs="1">
+						maxOccurs="1" minOccurs="0">
 					</element>
 				</sequence>
 			</extension>
