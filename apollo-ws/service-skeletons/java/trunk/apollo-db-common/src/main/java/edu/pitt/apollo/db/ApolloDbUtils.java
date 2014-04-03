@@ -544,6 +544,10 @@ public class ApolloDbUtils {
             throw new ApolloDatabaseKeyNotFoundException("No entry found in software_identification where id = " + i);
         }
     }
+    
+    public String getURLForSoftwareIdentification(SoftwareIdentification softwareId) {
+        return null;
+    }
 
     public int addSimulationRun(RunSimulationMessage runSimulationMessage) throws ApolloDatabaseRecordNotInsertedException, SQLException, ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
         int softwareKey = getSoftwareIdentificationKey(runSimulationMessage.getSimulatorIdentification());
