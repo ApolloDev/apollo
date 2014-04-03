@@ -682,7 +682,7 @@
 					<element name="unitOfMeasureForThreshold" type="tns:UnitOfMeasureEnum"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="diseaseSurveillanceCapability" type="tns:TreatmentSurveillanceCapability"
+					<element name="treatmentSurveillanceCapability" type="tns:TreatmentSurveillanceCapability"
 						maxOccurs="1" minOccurs="1">
 					</element>
 				</sequence>
@@ -1992,7 +1992,7 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="maximumTravelDistance-km" type="tns:NonNegativeDouble"
+					<element name="maximumTravelDistanceInKm" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="compliance" type="tns:ProbabilisticParameter"
@@ -2150,4 +2150,12 @@
 	</complexType>
 
 
+
+	<complexType name="AaaDummyType">
+		<sequence>
+			<element name="elementIWantToScreenSnapWithoutArrows"
+				type="tns:PlaceClosureControlStrategy">
+			</element>
+		</sequence>
+	</complexType>
 </schema>
