@@ -126,165 +126,28 @@ public class ApolloDbUtils {
 		return dbcon;
 	}
 
-	public Map<String, String> getStoredRuns() throws SQLException, ClassNotFoundException {
-		try {
-			String query = "SELECT LABEL,MD5HASHOFCONFIGURATIONFILE from run";
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
-
-			Map<String, String> hashLabelMap = new HashMap<String, String>();
-			while (rs.next()) {
-				String hash = rs.getString("md5HashOfConfigurationFile");
-				String label = rs.getString("label");
-				if (label != null) {
-					hashLabelMap.put(label, hash);
-				}
-			}
-			return hashLabelMap;
-		} catch (SQLException e) {
-			throw new SQLException("Error retreiving all stored run hashes. Specific error was:\n" + e.getMessage());
-		}
-	}
-
-	public void insertIntoRunCache(String runId, String md5HashOfRunSimulationMessage) throws ClassNotFoundException,
-			SQLException {
-
-		String query = "INSERT INTO apollo_service_simulator_run_cache (LABEL, MD5HASHOFSIMULATORCONFIGURATION) " + "VALUES ('"
-				+ runId + "','" + md5HashOfRunSimulationMessage + "')";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		pstmt.execute();
-	}
-
-	public String checkRunCache(String md5HashOfRunSimulationMessage) throws SQLException, ClassNotFoundException {
-
-		String query = "SELECT LABEL,MD5HASHOFSIMULATORCONFIGURATION FROM apollo_service_simulator_run_cache"
-				+ " where MD5HASHOFSIMULATORCONFIGURATION LIKE " + "'" + md5HashOfRunSimulationMessage + "'";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		ResultSet rs = pstmt.executeQuery();
-
-		String runId = null;
-		while (rs.next()) {
-			runId = rs.getString("LABEL");
-		}
-
-		return runId;
-	}
-
-	public void deleteFromRunCache(String md5HashOfRunSimulationMessage) throws ClassNotFoundException, SQLException {
-
-		String query = "DELETE FROM apollo_service_simulator_run_cache WHERE MD5HASHOFSIMULATORCONFIGURATION = '"
-				+ md5HashOfRunSimulationMessage + "'";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		pstmt.execute();
-	}
-
-	public String insertIntoVisualizerCache(String runId, String md5HashOfVisualizerConfiguration) throws SQLException,
-			ClassNotFoundException {
-
-		String query = "INSERT INTO apollo_service_visualizer_cache (LABEL, MD5HASHOFCONFIGURATION) " + "VALUES ('" + runId
-				+ "', '" + md5HashOfVisualizerConfiguration + "')";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		pstmt.execute();
-
-		query = "SELECT CACHE_ID FROM apollo_service_visualizer_cache WHERE LABEL LIKE '" + runId + "'";
-		pstmt = getConn().prepareStatement(query);
-		ResultSet rs = pstmt.executeQuery();
-
-		String cacheId = null;
-		while (rs.next()) {
-			cacheId = rs.getString("CACHE_ID");
-		}
-
-		return cacheId;
-	}
-
-	public void insertIntoVisualizerResultsCache(String cacheId, List<UrlOutputResource> urlList) throws ClassNotFoundException,
-			SQLException {
-
-		String query = "INSERT INTO apollo_service_visualizer_cache_results (CACHE_ID, URL, DESCRIPTION) VALUES (?,?,?)";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-
-		for (UrlOutputResource uor : urlList) {
-			String url = uor.getURL().toString();
-			String description = uor.getDescription();
-			pstmt.setString(1, cacheId);
-			pstmt.setString(2, url);
-			pstmt.setString(3, description);
-			pstmt.addBatch();
-		}
-
-		pstmt.executeBatch();
-	}
-
-	public VisualizerResult checkVisualizerCache(String md5HashOfVisualizerConfiguration) throws SQLException,
-			ClassNotFoundException {
-
-		String query = "SELECT CACHE_ID,LABEL,MD5HASHOFCONFIGURATION FROM apollo_service_visualizer_cache WHERE"
-				+ " MD5HASHOFCONFIGURATION LIKE '" + md5HashOfVisualizerConfiguration + "'";
-
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		ResultSet rs = pstmt.executeQuery();
-
-		String cacheId = null;
-		String label = null;
-		while (rs.next()) {
-			cacheId = rs.getString("CACHE_ID");
-			label = rs.getString("LABEL");
-		}
-
-		if (cacheId == null) {
-			// this visualizer run does not exist in the database
-			return null;
-		}
-
-		// create the visualizer result
-		VisualizerResult vizResult = new VisualizerResult();
-		vizResult.setRunId(label);
-		List<UrlOutputResource> urlList = vizResult.getVisualizerOutputResource();
-
-		query = "SELECT URL,DESCRIPTION FROM apollo_service_visualizer_cache_results WHERE CACHE_ID = " + cacheId;
-		pstmt = getConn().prepareStatement(query);
-		rs = pstmt.executeQuery();
-
-		while (rs.next()) {
-			String url = rs.getString("URL");
-			String description = rs.getString("DESCRIPTION");
-
-			UrlOutputResource resource = new UrlOutputResource();
-			resource.setDescription(description);
-			resource.setURL(url);
-			urlList.add(resource);
-		}
-
-		return vizResult;
-	}
-
-	public void deleteFromVisualizerCache(String md5HashOfVisualizerConfiguration) throws ClassNotFoundException, SQLException {
-
-		String query = "SELECT CACHE_ID FROM apollo_service_visualizer_cache WHERE MD5HASHOFCONFIGURATION = '"
-				+ md5HashOfVisualizerConfiguration + "'";
-		PreparedStatement pstmt = getConn().prepareStatement(query);
-		ResultSet rs = pstmt.executeQuery();
-
-		String cacheId = null;
-		while (rs.next()) {
-			cacheId = rs.getString("CACHE_ID");
-		}
-
-		query = "DELETE FROM apollo_service_visualizer_cache_results WHERE CACHE_ID = " + cacheId;
-		pstmt = getConn().prepareStatement(query);
-		pstmt.execute();
-
-		query = "DELETE FROM apollo_service_visualizer_cache WHERE MD5HASHOFCONFIGURATION = '" + md5HashOfVisualizerConfiguration
-				+ "'";
-		pstmt = getConn().prepareStatement(query);
-		pstmt.execute();
-	}
+	// public Map<String, String> getStoredRuns() throws SQLException,
+	// ClassNotFoundException {
+	// try {
+	// String query = "SELECT LABEL,MD5HASHOFCONFIGURATIONFILE from run";
+	// PreparedStatement pstmt = getConn().prepareStatement(query);
+	// ResultSet rs = pstmt.executeQuery();
+	//
+	// Map<String, String> hashLabelMap = new HashMap<String, String>();
+	// while (rs.next()) {
+	// String hash = rs.getString("md5HashOfConfigurationFile");
+	// String label = rs.getString("label");
+	// if (label != null) {
+	// hashLabelMap.put(label, hash);
+	// }
+	// }
+	// return hashLabelMap;
+	// } catch (SQLException e) {
+	// throw new
+	// SQLException("Error retreiving all stored run hashes. Specific error was:\n"
+	// + e.getMessage());
+	// }
+	// }
 
 	public int getUserKey(String requesterId, String requesterPassword) throws SQLException, ClassNotFoundException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseKeyNotFoundException {
@@ -308,7 +171,8 @@ public class ApolloDbUtils {
 	}
 
 	// user key doesn't exist
-	public int addUser(String requesterId, String requesterPassword, String email) throws SQLException, ClassNotFoundException, ApolloDatabaseRecordAlreadyExistsException {
+	public int addUser(String requesterId, String requesterPassword, String email) throws SQLException, ClassNotFoundException,
+			ApolloDatabaseRecordAlreadyExistsException {
 		// check authorization?!
 		try {
 			int userKey = getUserKey(requesterId, requesterPassword);
@@ -316,7 +180,7 @@ public class ApolloDbUtils {
 		} catch (ApolloDatabaseKeyNotFoundException e) {
 			// good this means the user doesn't already exist
 		} catch (ApolloDatabaseUserPasswordException e) {
-			//error
+			// error
 		}
 
 		String query = "INSERT INTO users (requester_id,requester_password,requester_email) VALUES (?,?,?)";
@@ -662,4 +526,46 @@ public class ApolloDbUtils {
 		}
 		return -1;
 	}
+
+	public SoftwareIdentification getSoftwareIdentification(int i) throws ApolloDatabaseKeyNotFoundException, SQLException,
+			ClassNotFoundException {
+		String query = "SELECT developer, name, version, service_type FROM software_identification WHERE " + "id = ?";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, i);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			SoftwareIdentification softwareIdentification = new SoftwareIdentification();
+			softwareIdentification.setSoftwareDeveloper(rs.getString(1));
+			softwareIdentification.setSoftwareName(rs.getString(2));
+			softwareIdentification.setSoftwareVersion(rs.getString(3));
+			softwareIdentification.setSoftwareType(ApolloSoftwareTypeEnum.fromValue(rs.getString(4)));
+			return softwareIdentification;
+		} else {
+			throw new ApolloDatabaseKeyNotFoundException("No entry found in software_identification where id = " + i);
+		}
+	}
+
+	public int addSimulationRun(RunSimulationMessage runSimulationMessage) throws ApolloDatabaseRecordNotInsertedException, SQLException, ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
+		int softwareKey = getSoftwareIdentificationKey(runSimulationMessage.getSimulatorIdentification());
+	
+		String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called) VALUES (?, ?, ?, ?)";
+		PreparedStatement pstmt = getConn().prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+		pstmt.setString(1, getMd5(runSimulationMessage));
+		pstmt.setInt(2, softwareKey);
+		pstmt.setInt(3, 1);
+		pstmt.setInt(4, 4); //4 is translator
+		pstmt.execute();
+		
+	
+		ResultSet rs = pstmt.getGeneratedKeys();
+		if (rs.next()) {
+			return rs.getInt(1);
+		} else {
+			throw new ApolloDatabaseRecordNotInsertedException("Record not inserted!");
+		}
+		
+	}
+
+
+
 }
