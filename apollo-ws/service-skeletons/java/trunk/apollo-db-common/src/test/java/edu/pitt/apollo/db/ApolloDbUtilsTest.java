@@ -207,6 +207,7 @@ public class ApolloDbUtilsTest extends TestCase {
 	public void testAddSimulationRun() {
 		try {
 			apolloDbUtils.addSimulationRun(tutorial.getRunSimulationMessage());
+			assertEquals("http://warhol-fred.psc.edu:8094/fred?wsdl", apolloDbUtils.getUrlForSoftwareIdentification(tutorial.getRunSimulationMessage().getSimulatorIdentification()));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
