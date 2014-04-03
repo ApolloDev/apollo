@@ -28,6 +28,7 @@ import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.Role;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
@@ -198,15 +199,15 @@ public class ApolloDbUtils {
 
 	}
 
-	public int getSoftwareIdentificationKey(SoftwareIdentification softwareIdentificationId) throws SQLException,
+	public int getSoftwareIdentificationKey(SoftwareIdentification softwareIdentification) throws SQLException,
 			ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
 
 		String query = "SELECT id FROM software_identification where developer = ? and name = ? and version = ? and service_type = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
-		pstmt.setString(1, softwareIdentificationId.getSoftwareDeveloper());
-		pstmt.setString(2, softwareIdentificationId.getSoftwareName());
-		pstmt.setString(3, softwareIdentificationId.getSoftwareVersion());
-		pstmt.setString(4, softwareIdentificationId.getSoftwareType().toString());
+		pstmt.setString(1, softwareIdentification.getSoftwareDeveloper());
+		pstmt.setString(2, softwareIdentification.getSoftwareName());
+		pstmt.setString(3, softwareIdentification.getSoftwareVersion());
+		pstmt.setString(4, softwareIdentification.getSoftwareType().toString());
 		ResultSet rs = pstmt.executeQuery();
 		int softwareIdKey = -1;
 		if (rs.next()) {
@@ -214,10 +215,10 @@ public class ApolloDbUtils {
 			return softwareIdKey;
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException("No entry in the software_identification table where developer = "
-					+ softwareIdentificationId.getSoftwareDeveloper() + " and name = "
-					+ softwareIdentificationId.getSoftwareName() + " and version = "
-					+ softwareIdentificationId.getSoftwareVersion() + " and service_type = "
-					+ softwareIdentificationId.getSoftwareType().toString());
+					+ softwareIdentification.getSoftwareDeveloper() + " and name = "
+					+ softwareIdentification.getSoftwareName() + " and version = "
+					+ softwareIdentification.getSoftwareVersion() + " and service_type = "
+					+ softwareIdentification.getSoftwareType().toString());
 
 		}
 	}
@@ -564,6 +565,92 @@ public class ApolloDbUtils {
 			throw new ApolloDatabaseRecordNotInsertedException("Record not inserted!");
 		}
 		
+	}
+	
+	
+	public int getSimulationRunId(RunSimulationMessage runSimulationMessage) throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
+		int softwareKey = getSoftwareIdentificationKey(runSimulationMessage.getSimulatorIdentification());
+		String md5Hash = getMd5(runSimulationMessage);
+		
+		String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ? and requester_id = ?";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		pstmt.setString(1, md5Hash);
+		pstmt.setInt(2, softwareKey);
+		pstmt.setInt(3, 1);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			return rs.getInt(1);
+		} else {
+			throw new ApolloDatabaseKeyNotFoundException("No id found for simulation run where md5_hash_of_run_message = " + md5Hash + " and softare_id = " + softwareKey + " and requester_id = 1");
+		}
+	}
+	
+	/**
+	 * 
+	 * @param runId
+	 * @param softwareIdentificationKey
+	 * @return The number of rows that were updated (either 1 or 0).
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public int updateLastServiceToBeCalledForRun(Integer runId, Integer softwareIdentificationKey) throws SQLException, ClassNotFoundException {
+		String query = "UPDATE run SET last_service_to_be_called = ? WHERE id = ?";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, softwareIdentificationKey);
+		pstmt.setInt(2, runId);
+		return pstmt.executeUpdate();
+		
+	}
+	
+	public int updateLastServiceToBeCalledForRun(Integer runId, SoftwareIdentification softwareIdentification) throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
+		int softwareIdentificationKey = getSoftwareIdentificationKey(softwareIdentification);
+		return updateLastServiceToBeCalledForRun(runId, softwareIdentificationKey);
+	}
+	
+	public int getNewSimulationGroupId() throws SQLException, ClassNotFoundException, ApolloDatabaseRecordNotInsertedException {
+		String query = "INSERT INTO simulation_groups DEFAULT";
+		PreparedStatement pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		pstmt.execute();
+		ResultSet rs = pstmt.getGeneratedKeys();
+		if (rs.next()) {
+			return rs.getInt(1);
+		} else {
+			throw new ApolloDatabaseRecordNotInsertedException("Unable to create new simulation group, insert failed.");
+		}
+	}
+	
+	public void addRunIdsToSimulationGroup(int simulationGroupId, List<String> simulationRunIds) throws SQLException, ClassNotFoundException {
+		String query = "INSERT INTO simulation_groups_definition (simulation_group_id, run_id) VALUES (?,?)";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		for (String simulationRunId: simulationRunIds) {
+			pstmt.setInt(1, simulationGroupId);
+			pstmt.setInt(2, Integer.valueOf(simulationRunId));
+			pstmt.execute();
+		}
+	}
+	
+	public int addVisualizationRun(RunVisualizationMessage runVisualizationMessage) throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException, ApolloDatabaseRecordNotInsertedException {
+		
+		int softwareKey = getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification());
+		int simulationGroupId = getNewSimulationGroupId();
+		addRunIdsToSimulationGroup(simulationGroupId, runVisualizationMessage.getSimulationRunIds());
+		
+		String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id) VALUES (?, ?, ?, ?)";
+		PreparedStatement pstmt = getConn().prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+		pstmt.setString(1, getMd5(runVisualizationMessage));
+		pstmt.setInt(2, softwareKey);
+		pstmt.setInt(3, 1);
+		pstmt.setInt(4, 4); //4 is translator
+		pstmt.setInt(5, simulationGroupId);
+		pstmt.execute();
+		
+	
+		ResultSet rs = pstmt.getGeneratedKeys();
+		if (rs.next()) {
+			return rs.getInt(1);
+		} else {
+			throw new ApolloDatabaseRecordNotInsertedException("Record not inserted!");
+		}
 	}
 
 
