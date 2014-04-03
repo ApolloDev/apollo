@@ -28,6 +28,7 @@ import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.Duration;
+import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.Infection;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
@@ -36,8 +37,6 @@ import edu.pitt.apollo.types.v2_0_1.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0_1.Location;
 import edu.pitt.apollo.types.v2_0_1.LocationDefinition;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusDataCell;
@@ -182,12 +181,12 @@ public class TutorialChapter2_BasicRunSimulationExample {
 
 		infection.setHostTaxonId("9606"); // homo sapiens
 
-		Duration infectiousPeriod = new Duration();
+		FixedDuration infectiousPeriod = new FixedDuration();
 		infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		infectiousPeriod.setValue(6.0);
 		infection.setInfectiousPeriodDuration(infectiousPeriod);
 
-		Duration latentPeriod = new Duration();
+		FixedDuration latentPeriod = new FixedDuration();
 		latentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		latentPeriod.setValue(2.0);
 		infection.setLatentPeriodDuration(latentPeriod);
