@@ -160,10 +160,6 @@
 			<wsdl:input message="tns:runSimulationsRequest"></wsdl:input>
 			<wsdl:output message="tns:runSimulationsResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForSimulation">
-			<wsdl:input message="tns:getConfigurationFileForSimulationRequest"></wsdl:input>
-			<wsdl:output message="tns:getConfigurationFileForSimulationResponse"></wsdl:output>
-		</wsdl:operation>
 		<wsdl:operation name="getPopulationAndEnvironmentCensus">
 			<wsdl:input message="tns:getPopulationAndEnvironmentCensusRequest"></wsdl:input>
 			<wsdl:output message="tns:getPopulationAndEnvironmentCensusResponse"></wsdl:output>
@@ -207,16 +203,6 @@
 		<wsdl:operation name="runSimulations">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/simulatorservice/v2_0_1/runSimulations" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getConfigurationFileForSimulation">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getConfigurationFileForSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
