@@ -55,8 +55,7 @@ public class ApolloDbUtils {
     // public final int RECORD_NOT_INSERTED = -6;
     public enum DbContentDataFormatEnum {
 
-        TEXT, URL, ZIP,
-    };
+        TEXT, URL, ZIP,};
 
     public enum DbContentDataType {
 
@@ -934,6 +933,74 @@ public class ApolloDbUtils {
         return popId;
     }
 
+    public int getOrCreatePopulationId(int diseaseStateAxisId, int locationAxisId,
+            String disease_state, String location)
+            throws ClassNotFoundException, SQLException {
+        int popId = -1;
+
+        popId = getPopulationId(disease_state + " in " + location);
+
+        if (popId == -1) {
+            try {
+                String query = "INSERT INTO simulated_population (LABEL) VALUES ('"
+                        + disease_state + " in " + location + "')";
+
+                PreparedStatement pstmt = getConn().prepareStatement(query);
+                pstmt.execute();
+            } catch (SQLException e) {
+                throw new SQLException("Error inserting disease state: "
+                        + disease_state + " into simulated_population."
+                        + " Specific error was:\n" + e.getMessage());
+            }
+
+            try {
+                String query = "SELECT ID FROM simulated_population WHERE LABEL like ?";
+                PreparedStatement pstmt = getConn().prepareStatement(query);
+                pstmt.setString(1, disease_state + " in " + location);
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    // System.out.println("Population id is:" +
+                    // rs.getInt(1));
+                    popId = rs.getInt(1);
+                } // end while
+            } catch (SQLException e) {
+                throw new SQLException(
+                        "Error retreiving ID from simulated_population for label: "
+                        + disease_state + "."
+                        + "   Specific error was:\n" + e.getMessage());
+            }
+
+            // there needs to be 2 inserts, one for the disease state, and one for the regionId
+            // they will have the same population ID but different axis IDs
+            try {
+                // disease state
+                String query = "INSERT INTO simulated_population_axis_value (population_id, axis_id, value) values (?,?,?)";
+                PreparedStatement pstmt = getConn().prepareStatement(query);
+                pstmt.setInt(1, popId);
+                pstmt.setInt(2, diseaseStateAxisId);
+                pstmt.setString(3, disease_state);
+                pstmt.execute();
+
+                // location
+                query = "INSERT INTO simulated_population_axis_value (population_id, axis_id, value) values (?,?,?)";
+                pstmt = getConn().prepareStatement(query);
+                pstmt.setInt(1, popId);
+                pstmt.setInt(2, locationAxisId);
+                pstmt.setString(3, location);
+                pstmt.execute();
+
+            } catch (SQLException e) {
+                throw new SQLException("Error inserting value: "
+                        + disease_state
+                        + " into simulated_population_axis_value."
+                        + " Specific error was:\n" + e.getMessage());
+            }
+        }
+
+        return popId;
+    }
+
     public void insertDiseaseStateTimeSeries(PreparedStatement pstmt,
             int runId, int popId, String disease_state, List<Double> ts)
             throws SQLException, ClassNotFoundException {
@@ -965,7 +1032,7 @@ public class ApolloDbUtils {
 
     }
 
-    public static void insertDiseaseStateTimeSeriesNegative(PreparedStatement pstmt,
+    public void insertDiseaseStateTimeSeriesNegative(PreparedStatement pstmt,
             int runId, int popId, String disease_state, List<Double> ts)
             throws SQLException, ClassNotFoundException {
 
