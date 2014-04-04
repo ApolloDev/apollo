@@ -31,8 +31,6 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
 
 /**
  * 
@@ -732,5 +730,64 @@ public class ApolloDbUtils {
 		} else {
 			throw new ApolloDatabaseRecordNotInsertedException("Record not inserted!");
 		}
+	}
+
+	public void removeRunData(int runId) throws SQLException, ClassNotFoundException {
+		// need to delete the data content
+		// find out if there any other runs that reference this data content
+		String query = "SELECT content_id FROM run_data WHERE run_id = ?";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, runId);
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			int content_id = rs.getInt(1);
+			String innerQuery = "SELECT content_id FROM run_data WHERE run_id <> ?";
+			PreparedStatement innerPstmt = getConn().prepareStatement(innerQuery);
+			innerPstmt.setInt(1, runId);
+			ResultSet innerRs = innerPstmt.executeQuery();
+			if (!innerRs.next()) {
+				// content_id is not used by any other run, delete it!
+				String deleteQuery = "DELETE FROM run_data_content WHERE id = ?";
+				PreparedStatement deletePstmt = getConn().prepareStatement(deleteQuery);
+				deletePstmt.setInt(1, content_id);
+				deletePstmt.execute();
+			}
+
+		}
+		query = "DELETE FROM run_data WHERE run_id = ?";
+		pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, runId);
+		pstmt.execute();
+
+		query = "SELECT simulation_group_id FROM run WHERE id = ?";
+		pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, runId);
+		rs = pstmt.executeQuery();
+		if (rs.next()) {
+			int simulation_group_id = rs.getInt(1);
+			if (!rs.wasNull()) {
+				String innerQuery = "DELETE FROM simulation_groups_definition WHERE simulation_group_id = ?";
+				pstmt = getConn().prepareStatement(innerQuery);
+				pstmt.setInt(1, simulation_group_id);
+				pstmt.execute();
+
+				innerQuery = "DELETE FROM simulation_groups WHERE id = ?";
+				pstmt = getConn().prepareStatement(innerQuery);
+				pstmt.setInt(1, simulation_group_id);
+				pstmt.execute();
+			}
+		}
+
+		query = "DELETE FROM time_series WHERE run_id = ?";
+		pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, runId);
+		pstmt.execute();
+		
+		query = "DELETE FROM run WHERE id = ?";
+		pstmt = getConn().prepareStatement(query);
+		pstmt.setInt(1, runId);
+		pstmt.execute();
+		
+		
 	}
 }
