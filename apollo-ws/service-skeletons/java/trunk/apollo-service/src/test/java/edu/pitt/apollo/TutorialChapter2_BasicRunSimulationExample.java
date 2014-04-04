@@ -16,7 +16,6 @@ package edu.pitt.apollo;
 
 import java.math.BigInteger;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -26,11 +25,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceV201;
 import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.Duration;
+import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.Infection;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
@@ -46,12 +44,9 @@ import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
 
 public class TutorialChapter2_BasicRunSimulationExample {
 
@@ -191,12 +186,12 @@ public class TutorialChapter2_BasicRunSimulationExample {
 
 		infection.setHostTaxonId("9606"); // homo sapiens
 
-		Duration infectiousPeriod = new Duration();
+		FixedDuration infectiousPeriod = new FixedDuration();
 		infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		infectiousPeriod.setValue(6.0);
 		infection.setInfectiousPeriodDuration(infectiousPeriod);
 
-		Duration latentPeriod = new Duration();
+		FixedDuration latentPeriod = new FixedDuration();
 		latentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		latentPeriod.setValue(2.0);
 		infection.setLatentPeriodDuration(latentPeriod);
