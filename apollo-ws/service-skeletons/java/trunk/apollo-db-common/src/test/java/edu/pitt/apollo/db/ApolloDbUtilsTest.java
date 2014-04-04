@@ -12,20 +12,20 @@ import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 public class ApolloDbUtilsTest extends TestCase {
 
-	//public TutorialChapter2_BasicRunSimulationExample tutorial;
+	// public TutorialChapter2_BasicRunSimulationExample tutorial;
 	private SoftwareIdentification fredSoftwareId;
 	private SoftwareIdentification gaiaSoftwareId;
 	private Authentication authUser1;
 	private Authentication authUser2;
-	
+
 	TutorialChapter2_BasicRunSimulationExample tutorial;
-	
+
 	private ApolloDbUtils apolloDbUtils;
 
 	private static String APOLLO_DIR = "";
 	private static final String DATABASE_PROPERTIES_FILE = "database.properties";
 	public static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
-	
+
 	public ApolloDbUtilsTest() {
 		// TODO Auto-generated constructor stub
 	}
@@ -44,22 +44,20 @@ public class ApolloDbUtilsTest extends TestCase {
 		Map<String, String> env = System.getenv();
 		APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		apolloDbUtils = new ApolloDbUtils(new File(APOLLO_DIR + "/" + DATABASE_PROPERTIES_FILE));
-		
+
 		authUser1 = new Authentication();
 		authUser1.setRequesterId("user1");
 		authUser1.setRequesterPassword("pass1");
 		authUser2 = new Authentication();
 		authUser2.setRequesterId("user2");
 		authUser2.setRequesterPassword("pass2");
-		
-		tutorial = new TutorialChapter2_BasicRunSimulationExample();
-		//insertUsers();
-		
-//		fredSoftwareId = tutorial.getSoftwareIdentificationForSimulator();
-//		gaiaSoftwareId = tutorial.getSoftwareIdentifiationForGaia();
-//		insertSoftwareIds();
 
-	
+		tutorial = new TutorialChapter2_BasicRunSimulationExample();
+		// insertUsers();
+
+		// fredSoftwareId = tutorial.getSoftwareIdentificationForSimulator();
+		// gaiaSoftwareId = tutorial.getSoftwareIdentifiationForGaia();
+		// insertSoftwareIds();
 
 	}
 
@@ -77,7 +75,6 @@ public class ApolloDbUtilsTest extends TestCase {
 			userKey = apolloDbUtils.addUser(authUser1.getRequesterId(), authUser1.getRequesterPassword(), "testemail@email.com");
 			assertEquals(1, userKey);
 
-						
 			boolean canRun = true;
 			boolean canViewCache = true;
 			apolloDbUtils.addRole(tutorial.getSoftwareIdentificationForSimulator(), canRun, canViewCache);
@@ -85,18 +82,21 @@ public class ApolloDbUtilsTest extends TestCase {
 			userKey = apolloDbUtils.getUserKey(authUser1.getRequesterId(), authUser1.getRequesterPassword());
 			assertEquals(1, userKey);
 
-//			userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(), authUser2.getRequesterPassword());
-//			assertEquals(ApolloDbUtils.RECORD_NOT_FOUND, userKey);
-			
-			userKey = apolloDbUtils.addUser(authUser2.getRequesterId(), authUser2.getRequesterPassword(), "testemail2@email2.com");
+			// userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(),
+			// authUser2.getRequesterPassword());
+			// assertEquals(ApolloDbUtils.RECORD_NOT_FOUND, userKey);
+
+			userKey = apolloDbUtils
+					.addUser(authUser2.getRequesterId(), authUser2.getRequesterPassword(), "testemail2@email2.com");
 			assertEquals(2, userKey);
-			
-//			userKey = apolloDbUtils.addUser(authUser2.getRequesterId(), authUser2.getRequesterPassword(), "hello!@hello.com");
-//			assertEquals(ApolloDbUtils.RECORD_ALREADY_EXISTS, userKey);
-			
+
+			// userKey = apolloDbUtils.addUser(authUser2.getRequesterId(),
+			// authUser2.getRequesterPassword(), "hello!@hello.com");
+			// assertEquals(ApolloDbUtils.RECORD_ALREADY_EXISTS, userKey);
+
 			userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(), authUser2.getRequesterPassword());
 			assertEquals(2, userKey);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +117,6 @@ public class ApolloDbUtilsTest extends TestCase {
 			// TODO Auto-generated catch block
 			fail(e.getMessage());
 		}
-		
 
 		// test inserting new software id
 		int gaiaKey;
@@ -127,9 +126,9 @@ public class ApolloDbUtilsTest extends TestCase {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			fail(e.getMessage());
-		
+
 		}
-	
+
 	}
 
 	public void testAddTextDataContent() {
@@ -140,8 +139,6 @@ public class ApolloDbUtilsTest extends TestCase {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
-	
-		
 
 	}
 
@@ -152,7 +149,7 @@ public class ApolloDbUtilsTest extends TestCase {
 	public void testGetSoftwareIdentification() {
 		SoftwareIdentification fredSoftwareId;
 		try {
-			fredSoftwareId = apolloDbUtils.getSoftwareIdentification(1);
+			fredSoftwareId = apolloDbUtils.getSoftwareIdentification(3);
 			assertEquals("UPitt,PSC,CMU", fredSoftwareId.getSoftwareDeveloper());
 			assertEquals("FRED", fredSoftwareId.getSoftwareName());
 			assertEquals("2.0.1_i", fredSoftwareId.getSoftwareVersion());
@@ -160,10 +157,10 @@ public class ApolloDbUtilsTest extends TestCase {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} // 2
-																						// ==
-																						// FRED
+			// ==
+			// FRED
 		try {
-			SoftwareIdentification gaiaSoftwareId = apolloDbUtils.getSoftwareIdentification(3);
+			SoftwareIdentification gaiaSoftwareId = apolloDbUtils.getSoftwareIdentification(5);
 			assertEquals("PSC", gaiaSoftwareId.getSoftwareDeveloper());
 			assertEquals("GAIA", gaiaSoftwareId.getSoftwareName());
 			assertEquals("1.0", gaiaSoftwareId.getSoftwareVersion());
@@ -171,47 +168,63 @@ public class ApolloDbUtilsTest extends TestCase {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} // 2
-																						// ==
-																						// GAIA
+			// ==
+			// GAIA
 
-	
-
-		
 	}
 
-//	public void testGetAuthentication() {
-//		Authentication auth = apolloDbUtils.getAuthentication(1);
-//		assertEquals("user1", auth.getRequesterId());
-//		assertEquals("user1pw", auth.getRequesterPassword());
-//
-//		auth = apolloDbUtils.getAuthentication(2);
-//		assertEquals("user2", auth.getRequesterId());
-//		assertEquals("user2pw", auth.getRequesterPassword());
-//	}
+	// public void testGetAuthentication() {
+	// Authentication auth = apolloDbUtils.getAuthentication(1);
+	// assertEquals("user1", auth.getRequesterId());
+	// assertEquals("user1pw", auth.getRequesterPassword());
+	//
+	// auth = apolloDbUtils.getAuthentication(2);
+	// assertEquals("user2", auth.getRequesterId());
+	// assertEquals("user2pw", auth.getRequesterPassword());
+	// }
 
-//	public void testInsertRun() {
-//		int runKey = ApolloDbUtils.getRunKey(tutorial.getRunSimulationMessage());
-//
-//		assertEquals(1, runKey);
-//		int dataContentKey = insertTextContent();
-//		String dataFormat = "text";
-//		String dataLabel = "config.txt";
-//		String dataType = "configuration file";
-//		String dataSourceSoftware = "translator";
-//		String dataDestinationSoftware = "FRED";
-//
-//		int runDataKey = ApolloDbUtils.addContentToRun(runKey, dataContentKey, dataFormat, dataLabel, dataType, dataSourceSoftware,
-//				dataDestinationSoftware);
-//	}
+	// public void testInsertRun() {
+	// int runKey = ApolloDbUtils.getRunKey(tutorial.getRunSimulationMessage());
+	//
+	// assertEquals(1, runKey);
+	// int dataContentKey = insertTextContent();
+	// String dataFormat = "text";
+	// String dataLabel = "config.txt";
+	// String dataType = "configuration file";
+	// String dataSourceSoftware = "translator";
+	// String dataDestinationSoftware = "FRED";
+	//
+	// int runDataKey = ApolloDbUtils.addContentToRun(runKey, dataContentKey,
+	// dataFormat, dataLabel, dataType, dataSourceSoftware,
+	// dataDestinationSoftware);
+	// }
 
 	public void testAddSimulationRun() {
 		try {
 			apolloDbUtils.addSimulationRun(tutorial.getRunSimulationMessage());
-			assertEquals("http://warhol-fred.psc.edu:8094/fred?wsdl", apolloDbUtils.getUrlForSoftwareIdentification(tutorial.getRunSimulationMessage().getSimulatorIdentification()));
+
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
 	}
+
+	public void testGetUrlForSoftwareIdentification() {
+		try {
+			assertEquals("http://warhol-fred.psc.edu:8094/fred?wsdl", apolloDbUtils.getUrlForSoftwareIdentification(tutorial
+					.getRunSimulationMessage().getSimulatorIdentification()));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+//	public void testDeleteRunData() {
+//		try {
+//			apolloDbUtils.removeRunData(1);
+//		} catch (Exception e) {
+//			fail(e.getMessage());
+//		}
+//	}
+
 	/**
 	 * @param args
 	 */
