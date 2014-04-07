@@ -33,6 +33,7 @@ import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.Infection;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisition;
+import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
 import edu.pitt.apollo.types.v2_0_1.InfectionStateEnum;
 import edu.pitt.apollo.types.v2_0_1.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseScenario;
@@ -55,7 +56,7 @@ import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
 
 public class TutorialChapter2_BasicRunSimulationExample {
 
-	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice201/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 
 	private ApolloServiceEI port;
 
@@ -75,9 +76,9 @@ public class TutorialChapter2_BasicRunSimulationExample {
 
 	public SoftwareIdentification getSoftwareIdentificationForSimulator() {
 		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
-		softwareId.setSoftwareName("FRED");
-		softwareId.setSoftwareVersion("2.0.1_i");
+		softwareId.setSoftwareDeveloper("UPitt");
+		softwareId.setSoftwareName("SEIR");
+		softwareId.setSoftwareVersion("1.0");
 		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
 		return softwareId;
 	}
@@ -217,7 +218,10 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 		infectionAcquisition.setPathogenTaxonId(pathId);
 		infectionAcquisition.setSusceptibleHostTaxonId("9606"); // homo sapiens
-		infectionAcquisition.getFromInfectiousHost().setBasicReproductionNumber(1.3);
+                InfectionAcquisitionFromInfectiousHost iafih = new InfectionAcquisitionFromInfectiousHost();
+                iafih.setInfectiousHostTaxonId("9606");
+                iafih.setBasicReproductionNumber(1.3);
+		infectionAcquisition.setFromInfectiousHost(iafih);
 		return infectionAcquisition;
 	}
 
@@ -353,8 +357,8 @@ public class TutorialChapter2_BasicRunSimulationExample {
 	}
 
 	protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
+//		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
+//		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
 	}
 
 	protected RunAndSoftwareIdentification runSimulationAndDisplayResults(RunSimulationMessage runSimulationMessage) {
