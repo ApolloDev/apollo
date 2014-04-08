@@ -40,6 +40,7 @@ public class ApolloRunSimulationThread extends Thread {
 
     public ApolloRunSimulationThread(int runId, RunSimulationMessage message,
             ApolloDbUtils dbUtils, ApolloServiceImpl apolloServiceImpl) {
+        System.out.println("in constructor");
         this.message = message;
         this.runId = runId;
         this.dbUtils = dbUtils;
@@ -75,7 +76,7 @@ public class ApolloRunSimulationThread extends Thread {
         translatorRasid.setSoftwareId(translatorServiceRecord.getSoftwareIdentification());
         MethodCallStatusEnum status = MethodCallStatusEnum.QUEUED; // doesn't really matter
         try {
-            while (status.equals(MethodCallStatusEnum.COMPLETED)) {
+            while (!status.equals(MethodCallStatusEnum.COMPLETED)) {
 
                 Thread.sleep(5000);
                 status = apolloServiceImpl.getRunStatus(translatorRasid).getStatus();
@@ -152,44 +153,52 @@ public class ApolloRunSimulationThread extends Thread {
         }
     }
 
-    private static void loadTranslatorSoftwareIdentification() throws SQLException,
-            ClassNotFoundException, ApolloRunSimulationException, IOException {
+    public static void loadTranslatorSoftwareIdentification() {
 
-        ApolloDbUtils dbUtils = new ApolloDbUtils(new File(ApolloServiceImpl.getDatabasePropertiesFilename()));
+        System.out.println("Loading translator software identification");
+        try {
+            ApolloDbUtils dbUtils = new ApolloDbUtils(new File(ApolloServiceImpl.getDatabasePropertiesFilename()));
 
-        Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
-        for (Integer id : softwareIdMap.keySet()) {
-            SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
-            if (softwareId.getSoftwareName().equals("translator")) {
-                translatorServiceRecord = softwareIdMap.get(id);
-                break;
+            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
+            for (Integer id : softwareIdMap.keySet()) {
+                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
+                    translatorServiceRecord = softwareIdMap.get(id);
+                    break;
+                }
+
             }
 
-        }
-
-        if (translatorServiceRecord == null) {
-            throw new ApolloRunSimulationException("Could not find translator in the list of registered services");
-        }
-    }
-
-    static {
-        try {
-            loadTranslatorSoftwareIdentification();
-        } catch (ApolloRunSimulationException ex) {
-            throw new RuntimeException("ApolloRunSimulationException attempting to load the translator service record: "
-                    + ex.getMessage());
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException("ClassNotFoundException attempting to load the translator service record: "
                     + ex.getMessage());
         } catch (IOException ex) {
             throw new RuntimeException("IOException attempting to load the translator service record: "
                     + ex.getMessage());
-//        } catch (RuntimeException ex) {
-//            throw new RuntimeException("RuntimeException attempting to load the translator service record: "
-//                    + ex.getMessage());
         } catch (SQLException ex) {
             throw new RuntimeException("SQLException attempting to load the translator service record: "
                     + ex.getMessage());
         }
+
+        if (translatorServiceRecord == null) {
+            throw new RuntimeException("Could not find translator in the list of registered services");
+        }
     }
+//    static {
+//        try {
+//            loadTranslatorSoftwareIdentification();
+//        } catch (ApolloRunSimulationException ex) {
+//            throw new RuntimeException("ApolloRunSimulationException attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        } catch (ClassNotFoundException ex) {
+//            throw new RuntimeException("ClassNotFoundException attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        } catch (IOException ex) {
+//            throw new RuntimeException("IOException attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        } catch (SQLException ex) {
+//            throw new RuntimeException("SQLException attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        }
+//    }
 }
