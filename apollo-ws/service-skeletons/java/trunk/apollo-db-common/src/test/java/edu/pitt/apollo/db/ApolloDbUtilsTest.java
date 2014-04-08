@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import edu.pitt.apollo.TutorialChapter2_BasicRunSimulationExample;
+import edu.pitt.apollo.examples.TutorialChapter2_ExampleConfig;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
@@ -18,7 +18,7 @@ public class ApolloDbUtilsTest extends TestCase {
 	private Authentication authUser1;
 	private Authentication authUser2;
 
-	TutorialChapter2_BasicRunSimulationExample tutorial;
+	TutorialChapter2_ExampleConfig tutorial;
 
 	private ApolloDbUtils apolloDbUtils;
 
@@ -52,7 +52,7 @@ public class ApolloDbUtilsTest extends TestCase {
 		authUser2.setRequesterId("user2");
 		authUser2.setRequesterPassword("pass2");
 
-		tutorial = new TutorialChapter2_BasicRunSimulationExample();
+		tutorial = new TutorialChapter2_ExampleConfig();
 		// insertUsers();
 
 		// fredSoftwareId = tutorial.getSoftwareIdentificationForSimulator();
