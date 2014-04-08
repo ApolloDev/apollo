@@ -27,8 +27,7 @@ import edu.pitt.apollo.FileLocks.FileLockAction;
  * An error can occur when file access is not synchronized. For example, if
  * "getRunStatus()" if called at the same time "run()" is called, the run()
  * method will try to delete the errorFile while the "getRunStatus()" method
- * will read the no-yet-deleted file and report that the run is in error.
- *  * 
+ * will read the no-yet-deleted file and report that the run is in error. *
  * 
  * @author jdl50
  * 
@@ -64,11 +63,19 @@ public class ErrorUtils {
 		}
 	}
 
-	public static void clearErrorFile(File errorFile) {
+	/**
+	 * 
+	 * @param errorFile
+	 * @return "True" if an error file was cleared, "False" if there was no error file
+	 */
+	public static boolean clearErrorFile(File errorFile) {
 		getFileLock(errorFile, FileLockAction.LOCK);
 		try {
 			if (errorFile.exists()) {
 				errorFile.delete();
+				return true;
+			} else {
+				return false;
 			}
 		} finally {
 			getFileLock(errorFile, FileLockAction.UNLOCK);
@@ -108,23 +115,23 @@ public class ErrorUtils {
 		return readErrorFromFile(errorFile);
 	}
 
-	public static void writeErrorToFile(String error, File errorFile) {
+	public static void writeErrorToFile(String error, File errorFile) throws IOException {
+		File parentDirectory = errorFile.getParentFile();
+		if (parentDirectory != null && !parentDirectory.exists()) {
+			parentDirectory.mkdirs();
+		}
 		getFileLock(errorFile, FileLockAction.LOCK);
 		try {
 			FileWriter fw;
-			try {
-				fw = new FileWriter(errorFile, false);
-				fw.write(error + "\n");
-				fw.close();
-			} catch (IOException e) {
-				// eat the error for now
-			}
+			fw = new FileWriter(errorFile, false);
+			fw.write(error + "\n");
+			fw.close();
 		} finally {
 			getFileLock(errorFile, FileLockAction.UNLOCK);
 		}
 	}
 
-	public static void writeErrorToFile(String error, String runId, String errorFilePrefix, String directory) {
+	public static void writeErrorToFile(String error, String runId, String errorFilePrefix, String directory) throws IOException {
 		File errorFile = new File(directory + "/" + errorFilePrefix + runId + ".txt");
 		writeErrorToFile(error, errorFile);
 

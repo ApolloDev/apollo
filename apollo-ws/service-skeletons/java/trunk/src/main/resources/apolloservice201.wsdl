@@ -36,7 +36,7 @@
 			<xsd:element name="runVisualizationResponse">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="visualizationResult" type="apollo:VisualizerResult">
+						<xsd:element name="visualizationResult" type="apollo:RunVisualizationResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -274,6 +274,20 @@
 				</xsd:complexType>
 			</xsd:element>
 
+			<xsd:element name="getVisualizerOutputResources">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="apollo:RunAndSoftwareIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getVisualizerOutputResourcesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getVisualizerOutputResourcesResult" type="apollo:GetVisualizerOutputResourcesResult" maxOccurs="1" minOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runSimulationRequest">
@@ -405,6 +419,12 @@
 	<wsdl:message name="removeLibraryItemResponse">
 		<wsdl:part name="parameters" element="tns:removeLibraryItemResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getVisualizerOutputResourcesRequest">
+		<wsdl:part name="parameters" element="tns:getVisualizerOutputResources"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getVisualizerOutputResourcesResponse">
+		<wsdl:part name="parameters" element="tns:getVisualizerOutputResourcesResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 		<wsdl:operation name="runSimulation">
 			<wsdl:input message="tns:runSimulationRequest" />
@@ -475,6 +495,10 @@
 
 
 
+		<wsdl:operation name="getVisualizerOutputResources">
+			<wsdl:input message="tns:getVisualizerOutputResourcesRequest"></wsdl:input>
+			<wsdl:output message="tns:getVisualizerOutputResourcesResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
 		type="tns:ApolloServiceEI">
