@@ -42,7 +42,7 @@
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
 								<include>apolloservice201.wsdl</include>
-								<include>apollo-types_2.0.xsd</include>
+								<include>apollo-types_2.0.1.xsd</include>
 							</includes>
 						</resource>
 					</webResources>
@@ -50,7 +50,7 @@
 			</plugin>
 		</plugins>
 		<!-- Name of the generated WAR file -->
-		<finalName>apolloservice2.0</finalName>
+		<finalName>apolloservice2.0.1</finalName>
 	</build>
 
 	<profiles>
