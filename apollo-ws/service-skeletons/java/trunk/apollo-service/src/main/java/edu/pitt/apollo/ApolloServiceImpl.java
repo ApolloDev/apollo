@@ -14,10 +14,6 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.ApolloDatabaseRecordNotInsertedException;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -48,6 +42,9 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
+import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.ApolloDatabaseRecordNotInsertedException;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI;
 import edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceEI;
 import edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceV201;
@@ -66,6 +63,7 @@ import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v2_0_1.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.types.v2_0_1.Location;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
@@ -76,13 +74,11 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
 import edu.pitt.apollo.types.v2_0_1.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_0_1.RunVisualizationResult;
 import edu.pitt.apollo.types.v2_0_1.ServiceRecord;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
@@ -397,18 +393,23 @@ class ApolloServiceImpl implements ApolloServiceEI {
             @WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
 
         // first check the apollo errors file
+        int runId = Integer.parseInt(runAndSoftwareIdentification.getRunId());
+        if (runId == -1) {
+        	return getErrorMethosCallStatus("Unable to write error file on server (disk full?).");
+        }
+
         {
-            long runId = Long.parseLong(runAndSoftwareIdentification.getRunId());
+            long runIdAsLong = Long.parseLong(runAndSoftwareIdentification.getRunId());
             if (ErrorUtils.checkFileExists(getErrorFile(runId))) {
 
                 MethodCallStatus status = new MethodCallStatus();
                 status.setStatus(MethodCallStatusEnum.FAILED);
-                status.setMessage(ErrorUtils.readErrorFromFile(getErrorFile(runId)));
+                status.setMessage(ErrorUtils.readErrorFromFile(getErrorFile(runIdAsLong)));
                 return status;
             }
         }
 
-        int runId = Integer.parseInt(runAndSoftwareIdentification.getRunId());
+         
         // get the last called software
         ApolloDbUtils dbUtils;
         try {
@@ -524,7 +525,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.RunVisualization")
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/runVisualization")
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.RunVisualizationResponse")
-    public VisualizerResult runVisualization(
+    public RunVisualizationResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
         // String runId;
         // ByteArrayOutputStream baos = getJSONBytes(runVisualizationMessage);
@@ -816,7 +817,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.RunSimulationResponse")
     public BigInteger runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-
+    	try {
         // check the cache
         ApolloDbUtils dbUtils;
         try {
@@ -921,5 +922,30 @@ class ApolloServiceImpl implements ApolloServiceEI {
         runThread.start();
 
         return new BigInteger(Long.toString(runId));
+    	}catch (Exception e) {
+    		System.out.println("Error writing error file: " + e.getMessage());
+    		//-1 should just be FATAL ERROR 
+    		return new BigInteger("-1");
+    	}
     }
+
+	@Override
+	@WebResult(name = "getVisualizerOutputResourcesResult", targetNamespace = "")
+	@RequestWrapper(localName = "getVisualizerOutputResources", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetVisualizerOutputResources")
+	@WebMethod
+	@ResponseWrapper(localName = "getVisualizerOutputResourcesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetVisualizerOutputResourcesResponse")
+	public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
+			@WebParam(name = "runId", targetNamespace = "") RunAndSoftwareIdentification runId) {
+        ApolloDbUtils dbUtils;
+        
+            try {
+				dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            return null;
+	}
+
+
 }
