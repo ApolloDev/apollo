@@ -3,12 +3,6 @@ package edu.pitt.apollo.apolloclient;
 import java.net.MalformedURLException;
 
 import edu.pitt.apollo.examples.TutorialChapter7_ProbabilityDistributionConfig;
-import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
 
 public class TutorialChapter7_ProbabilityDistributionExample extends
 		TutorialChapter2_BasicRunSimulationExample {
