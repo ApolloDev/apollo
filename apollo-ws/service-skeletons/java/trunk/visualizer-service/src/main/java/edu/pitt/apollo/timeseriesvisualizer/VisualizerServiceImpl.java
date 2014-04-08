@@ -18,9 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import javax.jws.WebMethod;
@@ -34,8 +32,6 @@ import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceEI;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-import edu.pitt.apollo.types.v2_0_1.VisualizerResult;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
