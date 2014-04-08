@@ -791,6 +791,16 @@ class ApolloServiceImpl implements ApolloServiceEI {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+//        try {
+            ApolloRunSimulationThread.loadTranslatorSoftwareIdentification();
+//        } catch (ApolloRunSimulationException ex) {
+//            throw new RuntimeException("ApolloRunSimulationException attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        } catch (Exception ex) {
+//            throw new RuntimeException("Exception attempting to load the translator service record: "
+//                    + ex.getMessage());
+//        }
     }
 
     @Override
@@ -904,6 +914,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
                     + ": " + ex.getMessage(), getErrorFile(errorId));
             return new BigInteger(Long.toString(errorId));
         }
+
+        System.out.println("Starting Apollo run simulation thread...");
         // start the thread to run the translator and then the simulator
         ApolloRunSimulationThread runThread = new ApolloRunSimulationThread(runId, runSimulationMessage, dbUtils, this);
         runThread.start();
