@@ -12,22 +12,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package edu.pitt.apollo;
+package edu.pitt.apollo.examples;
 
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.Duration;
 import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.Infection;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisition;
@@ -40,66 +37,40 @@ import edu.pitt.apollo.types.v2_0_1.LocationDefinition;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 
-public class TutorialChapter2_BasicRunSimulationExample {
+public class TutorialChapter2_ExampleConfig {
 
-	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0/services/apolloservice?wsdl";
-
-	
-
-	private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0/", "ApolloService_v2.0");
-
-	public TutorialChapter2_BasicRunSimulationExample() throws MalformedURLException {
-		//ApolloServiceV201 ss = new ApolloServiceV201(new URL(WSDL_LOC), SERVICE_NAME);
-		//port = ss.getApolloServiceEndpoint();
-	
-	}
-
-
-	public SoftwareIdentification getSoftwareIdentificationForSimulator() {
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
-		softwareId.setSoftwareName("FRED");
-		softwareId.setSoftwareVersion("2.0.1_i");
-		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
-		return softwareId;
-	}
-
-	protected SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareName("Time Series Visualizer");
-		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
-		softwareId.setSoftwareVersion("1.0");
-		softwareId.setSoftwareDeveloper("UPitt");
-		return softwareId;
-	}
-
-	protected SoftwareIdentification getSoftwareIdentifiationForGaia() {
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareName("GAIA");
-		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
-		softwareId.setSoftwareVersion("1.0");
-		softwareId.setSoftwareDeveloper("PSC");
-		return softwareId;
-	}
-
-	protected Authentication getAuthentication() {
+	public static Authentication getAuthentication() {
 		Authentication authentication = new Authentication();
 		authentication.setRequesterId("TutorialUser");
 		authentication.setRequesterPassword("TutorialPassword");
 		return authentication;
 	}
 
+	public static SoftwareIdentification getSoftwareIdentificationForSimulator() {
+		
+//		SoftwareIdentification softwareId = new SoftwareIdentification();
+//		softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
+//		softwareId.setSoftwareName("FRED");
+//		softwareId.setSoftwareVersion("2.0.1_i");
+//		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
+		SoftwareIdentification softwareId = new SoftwareIdentification();
+		softwareId.setSoftwareDeveloper("UPitt");
+		softwareId.setSoftwareName("SEIR");
+		softwareId.setSoftwareVersion("1.0");
+		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
+		return softwareId;
+	}
+
 	protected SimulatorTimeSpecification getSimulatorTimeSpecification() {
 		SimulatorTimeSpecification timeSpec = new SimulatorTimeSpecification();
-		timeSpec.setRunLength(new BigInteger("90"));
+		timeSpec.setRunLength(new BigInteger("92"));
 		timeSpec.setUnitOfTimeForSimulatorTimeStep(UnitOfTimeEnum.DAY);
-		timeSpec.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(1d);
+		timeSpec.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(1.0);
 		return timeSpec;
 	}
 
@@ -131,6 +102,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		census.setPopulationSpecies("9606"); // homo sapiens
 
 		ApolloPathogenCode pathId = new ApolloPathogenCode();
+		pathId.setCladeName("H1N1");
 		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 		census.setPathogen(pathId);
 
@@ -147,7 +119,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		infectiousCell.setFractionInInfectionState(0.01);
 		PopulationInfectionAndImmunityCensusDataCell recoveredCell = new PopulationInfectionAndImmunityCensusDataCell();
 		recoveredCell.setInfectionState(InfectionStateEnum.RECOVERED);
-		recoveredCell.setFractionInInfectionState(0.05); 
+		recoveredCell.setFractionInInfectionState(0.05);
 
 		data.getCensusDataCells().add(susceptibleCell);
 		data.getCensusDataCells().add(exposedCell);
@@ -197,10 +169,6 @@ public class TutorialChapter2_BasicRunSimulationExample {
 	}
 
 	private InfectionAcquisition getInfectionAcquisition() {
-		InfectionAcquisitionFromInfectiousHost acquisition = new InfectionAcquisitionFromInfectiousHost();
-		acquisition.setInfectiousHostTaxonId("humans");
-		acquisition.setBasicReproductionNumber(1.3);
-		
 		InfectionAcquisition infectionAcquisition = new InfectionAcquisition();
 
 		ApolloPathogenCode pathId = new ApolloPathogenCode();
@@ -208,7 +176,8 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		pathId.setNcbiTaxonId("114727"); // Influenza A subtype H1N1
 		infectionAcquisition.setPathogenTaxonId(pathId);
 		infectionAcquisition.setSusceptibleHostTaxonId("9606"); // homo sapiens
-		infectionAcquisition.setFromInfectiousHost(acquisition);
+		infectionAcquisition.setFromInfectiousHost(new InfectionAcquisitionFromInfectiousHost());
+		infectionAcquisition.getFromInfectiousHost().setBasicReproductionNumber(1.3);
 		return infectionAcquisition;
 	}
 
@@ -256,58 +225,6 @@ public class TutorialChapter2_BasicRunSimulationExample {
 		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator());
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification());
 		return message;
-	}
-
-	protected void getResourcesFromVisualizer(String simulatorRunId, SoftwareIdentification visualizerSoftwareIdentification) {
-//		System.out.println("Visualizing runId: " + simulatorRunId + " using the " + 
-//				visualizerSoftwareIdentification.getSoftwareName() + " visualizer...");
-//
-//		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
-//
-//		VisualizationOptions options = new VisualizationOptions();
-//		options.setRunId(simulatorRunId);
-//		options.setLocation("42003");
-//		options.setOutputFormat("default");
-//		runVisualizationMessage.setVisualizationOptions(options);
-//
-//		runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
-//
-//		Authentication auth = new Authentication();
-//		auth.setRequesterId("TutorialUser");
-//		auth.setRequesterPassword("TutorialPassword");
-//		runVisualizationMessage.setAuthentication(auth);
-//
-//		VisualizerResult visualizerResult = port.runVisualization(runVisualizationMessage);
-//
-//		String visualizationRunId = visualizerResult.getRunId();
-//
-//		RunAndSoftwareIdentification visualizationRunAndSoftwareId = new RunAndSoftwareIdentification();
-//		visualizationRunAndSoftwareId.setRunId(visualizationRunId);
-//		visualizationRunAndSoftwareId.setSoftwareId(visualizerSoftwareIdentification);
-//
-//		if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId).getStatus() == MethodCallStatusEnum.COMPLETED) {
-//			System.out.println("The following resources were returned from the " + visualizerSoftwareIdentification.getSoftwareName() +
-//					" visualizer:");
-//			for (UrlOutputResource r : visualizerResult.getVisualizerOutputResource()) {
-//				System.out.println("\t" + r.getURL());
-//			}
-//		}
-	}
-
-
-	protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(),
-				getSoftwareIdentifiationForTimeSeriesVisualizer());
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(),
-				getSoftwareIdentifiationForGaia());
-	}
-        
-	
-
-	public static void main(String args[]) throws java.lang.Exception {
-		TutorialChapter2_BasicRunSimulationExample example = new TutorialChapter2_BasicRunSimulationExample();
-		RunSimulationMessage runSimulationMessage = example.getRunSimulationMessage();
-	
 	}
 
 }
