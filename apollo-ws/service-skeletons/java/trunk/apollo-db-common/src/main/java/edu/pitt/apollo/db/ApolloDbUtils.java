@@ -59,7 +59,7 @@ public class ApolloDbUtils {
 
     public enum DbContentDataType {
 
-        SIMULATOR_LOG_FILE, CONFIGURATION_FILE
+        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE
     };
 
     public ApolloDbUtils(File databasePropertiesFile) throws IOException {
@@ -93,6 +93,7 @@ public class ApolloDbUtils {
                     + ".   Specific error was:\n" + e.getMessage());
         }
     }
+
 
     private ByteArrayOutputStream getJsonBytes(Object obj) {
         try {
@@ -398,33 +399,36 @@ public class ApolloDbUtils {
         return addTextDataContent(IOUtils.toString(content));
     }
 
-    public int addTextDataContent(String content) throws SQLException, ClassNotFoundException {
-        String md5 = DigestUtils.md5Hex(content);
-        // is the data already in the table?
-        String query = "SELECT id FROM run_data_content where md5_hash_of_content = ?";
-        PreparedStatement pstmt = getConn().prepareStatement(query);
-        pstmt.setString(1, md5);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            // no need to store the data twice
-            return rs.getInt(1);
-        } else {
-            pstmt.close();
-            // store it
-            query = "INSERT INTO run_data_content (text_content, md5_hash_of_content) values (?,?)";
-            pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            try {
-                pstmt.setString(1, content);
-                pstmt.setString(2, md5);
-                pstmt.execute();
-                rs = pstmt.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            } finally {
-                pstmt.close();
-            }
-        }
-    }
+
+	public int addTextDataContent(String content) throws SQLException, ClassNotFoundException {
+		String md5 = DigestUtils.md5Hex(content);
+		// is the data already in the table?
+		String query = "SELECT id FROM run_data_content where md5_hash_of_content = ?";
+		PreparedStatement pstmt = getConn().prepareStatement(query);
+		pstmt.setString(1, md5);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			// no need to store the data twice
+			return rs.getInt(1);
+		} else {
+			pstmt.close();
+			// store it
+			query = "INSERT INTO run_data_content (text_content, md5_hash_of_content) values (?,?)";
+			pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			try {
+				pstmt.setString(1, content);
+				pstmt.setString(2, md5);
+				pstmt.execute();
+				rs = pstmt.getGeneratedKeys();
+				rs.next();
+				return rs.getInt(1);
+				
+			} finally {
+				pstmt.close();
+			}
+		}
+	}
+
 
     public Map<String, ByteArrayOutputStream> getDataContentForSoftware(int runKey, int sourceSoftwareIdKey,
             int destinationSoftwareIdKey) throws SQLException, ClassNotFoundException, IOException {
@@ -475,6 +479,7 @@ public class ApolloDbUtils {
                 pstmt.close();
             }
 
+
             query = "INSERT INTO run_data (run_id, description_id, content_id) values (?,?,?)";
             try {
                 pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -492,6 +497,7 @@ public class ApolloDbUtils {
         } else {
             throw new ApolloDatabaseKeyNotFoundException("associateContentWithRunId() called with an invalid key: " + runKey);
         }
+
 
     }
 
