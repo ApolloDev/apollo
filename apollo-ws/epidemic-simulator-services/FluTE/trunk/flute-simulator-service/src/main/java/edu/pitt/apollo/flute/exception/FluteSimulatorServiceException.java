@@ -1,4 +1,4 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.flute.exception;
 
 /**
  *
