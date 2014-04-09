@@ -360,7 +360,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         int runId = simulationRunId.intValue();
         try {
             // set the started file for the run
-            RunUtils.setStarted(getRunDirectory(runId));
+            RunUtils.setStatusFile(getRunDirectory(runId), MethodCallStatusEnum.RUNNING);
         } catch (IOException ex) {
             try {
                 RunUtils.setError(getRunDirectory(runId), "IOException attempting to create started file for run "
