@@ -35,14 +35,13 @@ public class RunUtils {
 //
 //        return directory;
 //    }
-
     public static synchronized void setStatusFile(String directory, MethodCallStatusEnum status)
             throws IOException {
 
         File finished = new File(directory + File.separator + status.toString().toLowerCase() + ".txt");
         finished.createNewFile();
     }
-    
+
     public static boolean statusFileExists(String directory, MethodCallStatusEnum status) {
         return new File(directory + File.separator + status.toString().toLowerCase() + ".txt").exists();
     }
@@ -53,7 +52,6 @@ public class RunUtils {
 //        File finished = new File(directory + File.separator + "finished.txt");
 //        finished.createNewFile();
 //    }
-
     public static synchronized void setError(String directory, String msg)
             throws IOException {
 
@@ -102,6 +100,10 @@ public class RunUtils {
         } else if (statusFileExists(directory, MethodCallStatusEnum.COMPLETED)) {
             status.setMessage("Run is complete.");
             status.setStatus(MethodCallStatusEnum.COMPLETED);
+            return status;
+        } else if (statusFileExists(directory, MethodCallStatusEnum.LOG_FILES_WRITTEN)) {
+            status.setMessage("Log files written");
+            status.setStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN);
             return status;
         } else if (statusFileExists(directory, MethodCallStatusEnum.RUNNING)) {
             status.setMessage("Running...");
