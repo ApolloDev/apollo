@@ -11,7 +11,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Map;
 import java.util.Scanner;
 
-public class FileUtils {
+public class ConfigurationFileUtils {
 
     private static String fluteServiceConfigDir;
     private static final String FLUTE_SERVICE_PROPERTIES_FILE = "flute_service.properties";
