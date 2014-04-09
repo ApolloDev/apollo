@@ -52,6 +52,7 @@
 			<enumeration value="exiting" />
 			<enumeration value="held" />
 			<enumeration value="queued" />
+			<enumeration value="called_translator" />
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
@@ -285,7 +286,7 @@
 	<complexType name="UrlOutputResource">
 		<sequence>
 			<element name="description" type="string" />
-			<element name="URL" type="anySimpleType" />
+			<element name="URL" type="token" />
 		</sequence>
 	</complexType>
 
