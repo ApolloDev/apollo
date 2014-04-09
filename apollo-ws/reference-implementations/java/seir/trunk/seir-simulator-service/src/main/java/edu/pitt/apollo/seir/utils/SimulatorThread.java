@@ -16,6 +16,7 @@ import edu.pitt.apollo.seirepidemicmodeljava.file.ConfigurationFileLoader;
 import edu.pitt.apollo.seirepidemicmodeljava.model.SeirModel;
 import edu.pitt.apollo.seirepidemicmodeljava.types.SeirModelInput;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
@@ -79,16 +80,8 @@ public class SimulatorThread extends Thread {
             // first get the configuration file from the database
             Map<String, ByteArrayOutputStream> map;
             try {
-                System.out.println("runId: " + runId);
                 int translatorKey = dbUtils.getSoftwareIdentificationKey(getTranslatorSoftwareIdentification());
                 int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
-                System.out.println("translator key: " + translatorKey);
-                System.out.println("simulatorKey: " + simulatorKey);
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException ex) {
-//                    ex.printStackTrace();
-//                }
                 map = dbUtils.getDataContentForSoftware(runId,
                         translatorKey, simulatorKey);
                 // update this
@@ -111,9 +104,7 @@ public class SimulatorThread extends Thread {
             }
 
             String configurationFileContent = null;
-            System.out.println("map size: " + map.size());
             for (String label : map.keySet()) {
-                System.out.println("label: " + label);
                 if (label.equals("config.txt")) {
                     configurationFileContent = map.get(label).toString();
                     break;
@@ -151,8 +142,24 @@ public class SimulatorThread extends Thread {
                     // else use first location included
                     locationString = location.getLocationDefinition().getLocationsIncluded().get(0);
                 }
-                storeTimeSeriesTableOutput(results, locationString);
+
+//                try {
+//                    RunUtils.setStatusFile(impl.getRunDirectory(runId), MethodCallStatusEnum.WRITING_LOG_FILES);
+//                } catch (IOException ex) {
+//                    RunUtils.setError(impl.getRunDirectory(runId), "IOException attempting to write \"writing log files\" "
+//                            + "file for run " + runId + ": " + ex.getMessage());
+//                }
                 storeFileOutputToDatabase(results, locationString);
+                
+                try {
+                    RunUtils.setStatusFile(impl.getRunDirectory(runId), MethodCallStatusEnum.LOG_FILES_WRITTEN);
+                } catch (IOException ex) {
+                    RunUtils.setError(impl.getRunDirectory(runId), "IOException attempting to write \"log files written\" "
+                            + "file for run " + runId + ": " + ex.getMessage());
+                }
+                
+                storeTimeSeriesTableOutput(results, locationString);
+
             }
             if (useFile) {
                 storeLocalFileOutput(results);
@@ -161,7 +168,7 @@ public class SimulatorThread extends Thread {
 
             // create finished file
             try {
-                RunUtils.setFinished(impl.getRunDirectory(runId));
+                RunUtils.setStatusFile(impl.getRunDirectory(runId), MethodCallStatusEnum.COMPLETED);
             } catch (IOException ex) {
                 RunUtils.setError(impl.getRunDirectory(runId), "IOException attempting to write finished file for run "
                         + runId + ": " + ex.getMessage());
