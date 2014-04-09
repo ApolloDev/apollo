@@ -53,8 +53,9 @@
 			<enumeration value="held" />
 			<enumeration value="queued" />
 			<enumeration value="translating" />
+			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
-			<enumeration value="writing_log_files" />
+			<enumeration value="log_files_written" />
 			<enumeration value="staging" />
 			<enumeration value="running" />
 			<enumeration value="moving" />
@@ -62,6 +63,8 @@
 			<enumeration value="completed" />
 			<enumeration value="failed" />
 			<enumeration value="unauthorized" />
+			<enumeration value="unknown_runid" />
+			
 			<enumeration value="authentication_failure" />
 		</restriction>
 	</simpleType>
@@ -103,6 +106,13 @@
 			</element>
 		</sequence>
 	</complexType>
+	
+	<complexType name="RunVisualizationResult">
+		<sequence>
+			<element name="visualizationRunId" type="tns:RunIdentification" />
+		</sequence>
+	</complexType>
+	
 
 	<simpleType name="RunIdentification">
 		<restriction base="token" />
@@ -682,7 +692,7 @@
 					<element name="unitOfMeasureForThreshold" type="tns:UnitOfMeasureEnum"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="diseaseSurveillanceCapability" type="tns:TreatmentSurveillanceCapability"
+					<element name="treatmentSurveillanceCapability" type="tns:TreatmentSurveillanceCapability"
 						maxOccurs="1" minOccurs="1">
 					</element>
 				</sequence>
@@ -733,11 +743,10 @@
 
 
 
-	<complexType name="VisualizerResult">
+	<complexType name="GetVisualizerOutputResourcesResult">
 		<sequence>
-			<element name="runId" type="tns:RunIdentification" />
-			<element name="visualizerOutputResource" type="tns:UrlOutputResource"
-				maxOccurs="unbounded" minOccurs="1" />
+			<element name="methodCallStatus" type="tns:MethodCallStatus"></element>
+			<element name="urlOutputResources" type="tns:UrlOutputResource" maxOccurs="unbounded" minOccurs="0"/>
 		</sequence>
 	</complexType>
 
@@ -1992,7 +2001,7 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="maximumTravelDistance-km" type="tns:NonNegativeDouble"
+					<element name="maximumTravelDistanceInKm" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="compliance" type="tns:ProbabilisticParameter"
@@ -2150,4 +2159,12 @@
 	</complexType>
 
 
+
+	<complexType name="AaaDummyType">
+		<sequence>
+			<element name="elementIWantToScreenSnapWithoutArrows"
+				type="tns:PlaceClosureControlStrategy">
+			</element>
+		</sequence>
+	</complexType>
 </schema>
