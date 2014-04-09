@@ -1,8 +1,9 @@
-package edu.pitt.apollo.flute.utils;
+package edu.pitt.apollo.flute.thread;
 
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.flute.utils.RunUtils;
 import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
 import edu.pitt.apollo.types._10._28._2013.RunStatus;
 import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
@@ -29,6 +30,8 @@ import org.codehaus.jackson.type.TypeReference;
 
 public class BatchThread extends Thread {
 
+    // BATCH RUNNING IS CURRENTLY NOT SUPPORTED FOR FLUTE
+    
     private String batchRunId;
     private String batchRunIdMd5Hash;
     private String batchConfigurationFileUrl;
@@ -89,13 +92,13 @@ public class BatchThread extends Thread {
                 String simConfigHash = RunUtils.getMd5HashFromString(simConfigJson);
 
                 SoftwareIdentification sid = sc.getSimulatorIdentification();
-                RunIdProperties runIdProps = FluteSimulatorServiceImpl.getOrAddRunId(simConfigHash, sid);
-                String runId = runIdProps.getRunId();
+                String runId = FluteSimulatorServiceImpl.getOrAddRunId(simConfigHash, sid);
+//                String runId = runIdProps.getRunId();
                 String runIdHash = RunUtils.getMd5HashFromString(runId);
 
                 // this should never store anything to the database
                 Thread worker = new SimulatorThread(sc, simConfigHash, runId, runIdHash,
-                        simConfigJson, true, true, false);
+                        simConfigJson);
 
                 // need to wait until the simulator queue has a spot to run the simulator
                 boolean addedSimulatorToQueue = FluteSimulatorServiceImpl.addSimulatorThread(worker);
