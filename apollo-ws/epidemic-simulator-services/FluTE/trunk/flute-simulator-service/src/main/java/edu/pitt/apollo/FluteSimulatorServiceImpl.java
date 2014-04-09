@@ -18,15 +18,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import edu.pitt.apollo.flute.utils.FileUtils;
+import edu.pitt.apollo.flute.utils.ConfigurationFileUtils;
 import edu.pitt.apollo.flute.utils.RunUtils;
-import edu.pitt.apollo.flute.utils.QueueThread;
-import edu.pitt.apollo.flute.utils.RunIdProperties;
-import edu.pitt.apollo.flute.utils.RunIdStoreThread;
-import edu.pitt.apollo.flute.utils.SimulatorThread;
-import edu.pitt.apollo.service.simulatorservice._10._28._2013.SimulatorServiceEI;
-import edu.pitt.apollo.types._10._28._2013.BatchRunResult;
-import edu.pitt.apollo.types._10._28._2013.BatchRunSimulatorConfiguration;
+import edu.pitt.apollo.flute.thread.QueueThread;
+import edu.pitt.apollo.flute.thread.RunIdStoreThread;
+import edu.pitt.apollo.flute.thread.SimulatorThread;
+import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,11 +34,6 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.types._10._28._2013.RunStatus;
-import edu.pitt.apollo.types._10._28._2013.RunStatusEnum;
-import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
-import edu.pitt.apollo.types._10._28._2013.SupportedPopulationLocation;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -143,8 +135,8 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
         // get a run ID
         SoftwareIdentification sid = simulatorConfiguration.getSimulatorIdentification();
-        RunIdProperties runIdProps = getOrAddRunId(simConfigHash, sid);
-        String runId = runIdProps.getRunId();
+        String runId = getOrAddRunId(simConfigHash, sid);
+//        String runId = runIdProps.getRunId();
         // hash the run ID to avoid issues with certain characters
 //        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
         String runIdHash = RunUtils.getMd5HashFromString(runId);
@@ -153,8 +145,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
         addRunToQueuedList(runIdHash);
 
         Thread worker = new SimulatorThread(simulatorConfiguration,
-                simConfigHash, runId, runIdHash, simConfigJson,
-                !runIdProps.isRunIdInDatabase(), false, true);
+                simConfigHash, runId, runIdHash, simConfigJson);
         QueueThread queueThread = new QueueThread(worker);
         queueThread.start();
 
@@ -221,7 +212,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
         String runIdHash = RunUtils.getMd5HashFromString(newRunId);
         String configText = null;
         try {
-            configText = FileUtils.loadConfigurationFile(runIdHash, verbose);
+            configText = ConfigurationFileUtils.loadConfigurationFile(runIdHash, verbose);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -327,17 +318,14 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
         }
     }
 
-    public static synchronized RunIdProperties getOrAddRunId(String simConfigHash, SoftwareIdentification sid) {
+    public static synchronized String getOrAddRunId(String simConfigHash, SoftwareIdentification sid) {
 
         // not using a cache anymore since that is done in apollo service
-        RunIdProperties runIdProps = new RunIdProperties();
         String newRunId = sid.getSoftwareDeveloper() + "_"
                 + sid.getSoftwareName() + "_" + sid.getSoftwareVersion()
                 + "_" + incrementRunId();
 
-        runIdProps.setRunId(newRunId);
-        runIdProps.setRunIdInDatabase(false);
-        return runIdProps;
+        return newRunId;
 
     }
 

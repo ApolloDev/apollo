@@ -1,4 +1,4 @@
-package edu.pitt.apollo.flute.utils;
+package edu.pitt.apollo.flute.thread;
 
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
 
