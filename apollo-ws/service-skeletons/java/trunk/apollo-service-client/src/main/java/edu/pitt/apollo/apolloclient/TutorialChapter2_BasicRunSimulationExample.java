@@ -14,6 +14,7 @@
  */
 package edu.pitt.apollo.apolloclient;
 
+import edu.pitt.apollo.types.v2_0_1.GetVisualizerOutputResourcesResult;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,160 +37,163 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 public class TutorialChapter2_BasicRunSimulationExample {
 
-	//public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice201/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
+    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice201/services/apolloservice?wsdl";
+    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
+    private ApolloServiceEI port;
+    private TutorialChapter2_ExampleConfig config;
+    private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0_1/",
+            "ApolloService_v2.0.1");
 
-	private ApolloServiceEI port;
+    public TutorialChapter2_BasicRunSimulationExample() throws MalformedURLException {
+        ApolloServiceV201 ss = new ApolloServiceV201(new URL(WSDL_LOC), SERVICE_NAME);
+        port = ss.getApolloServiceEndpoint();
+        config = new TutorialChapter2_ExampleConfig();
+    }
 
-	private TutorialChapter2_ExampleConfig config;
+    public ApolloServiceEI getPort() {
+        return port;
+    }
 
-	private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0_1/",
-			"ApolloService_v2.0.1");
+    public SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
+        SoftwareIdentification softwareId = new SoftwareIdentification();
+        softwareId.setSoftwareName("Time Series Visualizer");
+        softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
+        softwareId.setSoftwareVersion("1.0");
+        softwareId.setSoftwareDeveloper("UPitt");
+        return softwareId;
+    }
 
-	public TutorialChapter2_BasicRunSimulationExample() throws MalformedURLException {
-		ApolloServiceV201 ss = new ApolloServiceV201(new URL(WSDL_LOC), SERVICE_NAME);
-		port = ss.getApolloServiceEndpoint();
-		config = new TutorialChapter2_ExampleConfig();
-	}
+    public SoftwareIdentification getSoftwareIdentifiationForGaia() {
+        SoftwareIdentification softwareId = new SoftwareIdentification();
+        softwareId.setSoftwareName("GAIA");
+        softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
+        softwareId.setSoftwareVersion("1.0");
+        softwareId.setSoftwareDeveloper("PSC");
+        return softwareId;
+    }
 
-	public ApolloServiceEI getPort() {
-		return port;
-	}
+    protected MethodCallStatus checkStatusOfWebServiceCall(RunAndSoftwareIdentification runAndSoftwareId) {
+        // give the simulator a chance to launch the simulation
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            // this is acceptable
+        }
+        while (true) {
+            MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
 
-	public SoftwareIdentification getSoftwareIdentifiationForTimeSeriesVisualizer() {
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareName("Time Series Visualizer");
-		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
-		softwareId.setSoftwareVersion("1.0");
-		softwareId.setSoftwareDeveloper("UPitt");
-		return softwareId;
-	}
+            switch (status.getStatus()) {
 
-	public SoftwareIdentification getSoftwareIdentifiationForGaia() {
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareName("GAIA");
-		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
-		softwareId.setSoftwareVersion("1.0");
-		softwareId.setSoftwareDeveloper("PSC");
-		return softwareId;
-	}
+                case AUTHENTICATION_FAILURE:
+                case UNAUTHORIZED:
+                    System.out.println("No authorization for this run! Error message is:" + status.getMessage());
+                    return status;
+                case LOG_FILES_WRITTEN:
+                    System.out.println("The simulator finished writing the log files!");
+                    return status;
+                case COMPLETED:
+                    System.out.println("Completed!");
+                    return status;
+                case FAILED:
+                    System.out.println("Run Failed! Error message is:" + status.getMessage());
+                    return status;
+                case RUNNING:
+                case TRANSLATING:
+                case TRANSLATION_COMPLETED:
 
-	protected MethodCallStatus checkStatusOfWebServiceCall(RunAndSoftwareIdentification runAndSoftwareId) {
-		// give the simulator a chance to launch the simulation
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// this is acceptable
-		}
-		while (true) {
-			MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
+                case MOVING:
+                case QUEUED:
+                case HELD:
+                case EXITING:
+                case WAITING:
+                    System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
+                            + status.getStatus().toString() + "). The status message is: " + status.getMessage());
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException e) {
+                    }
+                case INITIALIZING:
+                    break;
+                case STAGING:
+                    break;
+                case UNKNOWN_RUNID:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
-			switch (status.getStatus()) {
+    protected void getResourcesFromVisualizer(String simulatorRunId, SoftwareIdentification visualizerSoftwareIdentification) {
+        System.out.println("Visualizing runId: " + simulatorRunId + " using the "
+                + visualizerSoftwareIdentification.getSoftwareName() + " visualizer...");
 
-			case AUTHENTICATION_FAILURE:
-			case UNAUTHORIZED:
-				System.out.println("No authorization for this run! Error message is:" + status.getMessage());
-				return status;
-			case LOG_FILES_WRITTEN:
-				System.out.println("The simulator finished writing the log files!");
-				return status;
-			case COMPLETED:
-				System.out.println("Completed!");
-				return status;
-			case FAILED:
-				System.out.println("Run Failed! Error message is:" + status.getMessage());
-				return status;
-			case RUNNING:
-			case TRANSLATING:
-			case TRANSLATION_COMPLETED:
+        RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 
-			case MOVING:
-			case QUEUED:
-			case HELD:
-			case EXITING:
-			case WAITING:
-				System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
-						+ status.getStatus().toString() + "). The status message is: " + status.getMessage());
-				try {
-					Thread.sleep(20000);
-				} catch (InterruptedException e) {
-				}
-			case INITIALIZING:
-				break;
-			case STAGING:
-				break;
-			case UNKNOWN_RUNID:
-				break;
-			default:
-				break;
-			}
-		}
-	}
+        runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
 
-	protected void getResourcesFromVisualizer(String simulatorRunId, SoftwareIdentification visualizerSoftwareIdentification) {
-		System.out.println("Visualizing runId: " + simulatorRunId + " using the "
-				+ visualizerSoftwareIdentification.getSoftwareName() + " visualizer...");
+        Authentication auth = new Authentication();
+        auth.setRequesterId("TutorialUser");
+        auth.setRequesterPassword("TutorialPassword");
+        runVisualizationMessage.setAuthentication(auth);
+        runVisualizationMessage.getSimulationRunIds().add(simulatorRunId);
 
-		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
+        //VisualizerResult visualizerResult = port.runVisualization(runVisualizationMessage);
+        RunVisualizationResult runVisualizationResult = port.runVisualization(runVisualizationMessage);
 
-		runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
+        String visualizationRunId = runVisualizationResult.getVisualizationRunId();
 
-		Authentication auth = new Authentication();
-		auth.setRequesterId("TutorialUser");
-		auth.setRequesterPassword("TutorialPassword");
-		runVisualizationMessage.setAuthentication(auth);
+        RunAndSoftwareIdentification visualizationRunAndSoftwareId = new RunAndSoftwareIdentification();
+        visualizationRunAndSoftwareId.setRunId(visualizationRunId);
+        visualizationRunAndSoftwareId.setSoftwareId(visualizerSoftwareIdentification);
 
-		//VisualizerResult visualizerResult = port.runVisualization(runVisualizationMessage);
-		RunVisualizationResult runVisualizationResult = port.runVisualization(runVisualizationMessage);
+        if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId).getStatus() == MethodCallStatusEnum.COMPLETED) {
 
-		String visualizationRunId = runVisualizationResult.getVisualizationRunId();
+            System.out.println("The following resources were returned from the "
+                    + visualizerSoftwareIdentification.getSoftwareName() + " visualizer:");
+            GetVisualizerOutputResourcesResult results = port.getVisualizerOutputResources(visualizationRunAndSoftwareId);
+            if (results.getMethodCallStatus().getStatus().equals(MethodCallStatusEnum.COMPLETED)) {
+                for (UrlOutputResource r : results.getUrlOutputResources()) {
+                    System.out.println("\t" + r.getURL());
+                }
+            } else {
+                System.out.println("Unable to retrieve visualizer output resources. MethodCallStatus was " + results.getMethodCallStatus().getStatus()
+                        + " with message: " + results.getMethodCallStatus().getMessage());
+            }
+        }
+    }
 
-		RunAndSoftwareIdentification visualizationRunAndSoftwareId = new RunAndSoftwareIdentification();
-		visualizationRunAndSoftwareId.setRunId(visualizationRunId);
-		visualizationRunAndSoftwareId.setSoftwareId(visualizerSoftwareIdentification);
+    protected RunAndSoftwareIdentification runSimulation(RunSimulationMessage runSimulationMessage) {
+        BigInteger simulationRunId = port.runSimulation(runSimulationMessage);
+        System.out.println("The simulator returned a runId of " + simulationRunId);
 
-		if (checkStatusOfWebServiceCall(visualizationRunAndSoftwareId).getStatus() == MethodCallStatusEnum.COMPLETED) {
-			
-			System.out.println("The following resources were returned from the "
-					+ visualizerSoftwareIdentification.getSoftwareName() + " visualizer:");
-			for (UrlOutputResource r : port.getVisualizerOutputResources(visualizationRunAndSoftwareId).getUrlOutputResources()) {
-				System.out.println("\t" + r.getURL());
-			}
-		}
-	}
+        RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
+        runAndSoftwareId.setSoftwareId(runSimulationMessage.getSimulatorIdentification());
+        runAndSoftwareId.setRunId(simulationRunId.toString());
 
-	protected RunAndSoftwareIdentification runSimulation(RunSimulationMessage runSimulationMessage) {
-		BigInteger simulationRunId = port.runSimulation(runSimulationMessage);
-		System.out.println("The simulator returned a runId of " + simulationRunId);
+        MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
+        if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
+            return runAndSoftwareId;
+        } else {
+            System.exit(-1);
+            return null;
+        }
+    }
 
-		RunAndSoftwareIdentification runAndSoftwareId = new RunAndSoftwareIdentification();
-		runAndSoftwareId.setSoftwareId(runSimulationMessage.getSimulatorIdentification());
-		runAndSoftwareId.setRunId(simulationRunId.toString());
+    protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
+        getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
+//		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
+    }
 
-		MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
-		if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
-			return runAndSoftwareId;
-		} else {
-			System.exit(-1);
-			return null;
-		}
-	}
+    protected RunAndSoftwareIdentification runSimulationAndDisplayResults(RunSimulationMessage runSimulationMessage) {
+        RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation(runSimulationMessage);
+        displayResults(simulatorRunAndSoftwareId);
+        return simulatorRunAndSoftwareId;
+    }
 
-	protected void displayResults(RunAndSoftwareIdentification simulatorRunAndSoftwareId) {
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForTimeSeriesVisualizer());
-		getResourcesFromVisualizer(simulatorRunAndSoftwareId.getRunId(), getSoftwareIdentifiationForGaia());
-	}
-
-	protected RunAndSoftwareIdentification runSimulationAndDisplayResults(RunSimulationMessage runSimulationMessage) {
-		RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation(runSimulationMessage);
-		//displayResults(simulatorRunAndSoftwareId);
-		return simulatorRunAndSoftwareId;
-	}
-
-	public static void main(String args[]) throws java.lang.Exception {
-		TutorialChapter2_BasicRunSimulationExample example = new TutorialChapter2_BasicRunSimulationExample();
-		RunSimulationMessage runSimulationMessage = example.config.getRunSimulationMessage();
-		example.runSimulationAndDisplayResults(runSimulationMessage);
-	}
-
+    public static void main(String args[]) throws java.lang.Exception {
+        TutorialChapter2_BasicRunSimulationExample example = new TutorialChapter2_BasicRunSimulationExample();
+        RunSimulationMessage runSimulationMessage = example.config.getRunSimulationMessage();
+        example.runSimulationAndDisplayResults(runSimulationMessage);
+    }
 }
