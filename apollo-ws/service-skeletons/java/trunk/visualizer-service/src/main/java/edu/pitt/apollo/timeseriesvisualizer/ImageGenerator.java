@@ -14,8 +14,9 @@ import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerExcept
 import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
+import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-
 
 /**
  *
@@ -26,7 +27,6 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
  * Class: ImageGenerator
  * IDE: NetBeans 6.9.1
  */
-
 public class ImageGenerator {
 
     private static final ResourceBundle rb = ResourceBundle.getBundle("visualizer");
@@ -34,49 +34,46 @@ public class ImageGenerator {
     private static final String IMAGE_FILE_TYPE = rb.getString("image_file_type");
     private static final String IMAGE_BASE_URL = rb.getString("image_base_url");
     private List<String> runIds;
-    private String visualizerId;
+    private SoftwareIdentification visualizerSoftwareId;
     private Map<String, String> diseaseStateImagePathMap;
     private Map<String, String> incidenceImagePathMap;
-    private Map<String, String> runIdSeriesLabels;
+//    private Map<String, String> runIdSeriesLabels;
     private String combinedIncidenceImagePath;
-    private String runDirectory;
+//    private String runDirectory;
     private boolean multiSimulatorChart;
-    private boolean multiVaccChart;
+    private String visualizerRunId;
+    private boolean multiVaccChart = false;
 
-    public ImageGenerator(List<String> runIds, boolean multiVaccChart, boolean multiSimulatorChart) throws NoSuchAlgorithmException {
+//    public ImageGenerator(List<String> runIds, boolean multiVaccChart, boolean multiSimulatorChart,
+//            SoftwareIdentification visualizerSoftwareId) throws NoSuchAlgorithmException {
+//        this.runIds = runIds;
+//        this.visualizerSoftwareId = visualizerSoftwareId;
+//        // get the visualizer ID from the run ID
+//        visualizerId = getVisualizerId();
+//        runDirectory = IMAGE_FILES_DIRECTORY + File.separator + visualizerId;
+//        // set file paths
+//        diseaseStateImagePathMap = new HashMap<String, String>();
+//        incidenceImagePathMap = new HashMap<String, String>();
+//        if (!multiSimulatorChart) {
+//            diseaseStateImagePathMap.put(runIds.get(0), runDirectory + File.separator + "disease_states" + "." + IMAGE_FILE_TYPE);
+//            if (multiVaccChart) {
+//                combinedIncidenceImagePath = runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE;
+//            } else {
+//                incidenceImagePathMap.put(runIds.get(0), runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE);
+//            }
+//        } else {
+//            combinedIncidenceImagePath = runDirectory + File.separator + "combined_incidence" + "." + IMAGE_FILE_TYPE;
+//        }
+//
+//    }
+    public ImageGenerator(List<String> runIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) {
         this.runIds = runIds;
+        this.visualizerSoftwareId = visualizerSoftwareId;
+        this.visualizerRunId = visualizerRunId;
+        multiSimulatorChart = (runIds.size() > 1);
         // get the visualizer ID from the run ID
-        visualizerId = getVisualizerId();
-        runDirectory = IMAGE_FILES_DIRECTORY + File.separator + visualizerId;
-        // set file paths
-        diseaseStateImagePathMap = new HashMap<String, String>();
-        incidenceImagePathMap = new HashMap<String, String>();
-        if (!multiSimulatorChart) {
-            diseaseStateImagePathMap.put(runIds.get(0), runDirectory + File.separator + "disease_states" + "." + IMAGE_FILE_TYPE);
-            if (multiVaccChart) {
-                combinedIncidenceImagePath = runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE;
-            } else {
-                incidenceImagePathMap.put(runIds.get(0), runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE);
-            }
-        } else {
-            combinedIncidenceImagePath = runDirectory + File.separator + "combined_incidence" + "." + IMAGE_FILE_TYPE;
-        }
+        String runDirectory = getRunDirectory(visualizerRunId);
 
-    }
-
-    public ImageGenerator(List<String> runIds, List<UrlOutputResource> visResourceList, Map<String, String> runIdSeriesLabelMap,
-            boolean multiVaccChart, boolean multiSimulatorChart) throws NoSuchAlgorithmException {
-        this.runIds = runIds;
-        this.multiSimulatorChart = multiSimulatorChart;
-        this.multiVaccChart = multiVaccChart;
-        this.runIdSeriesLabels = runIdSeriesLabelMap;
-        // get the visualizer ID from the run ID
-        visualizerId = getVisualizerId();
-        runDirectory = IMAGE_FILES_DIRECTORY + File.separator + visualizerId;
-
-        // create file urls
-        Map<String, String> diseaseImageUrlMap = new HashMap<String, String>();
-        Map<String, String> incidenceImageUrlMap = new HashMap<String, String>();
         diseaseStateImagePathMap = new HashMap<String, String>();
         incidenceImagePathMap = new HashMap<String, String>();
 
@@ -89,34 +86,22 @@ public class ImageGenerator {
             } else {
                 incidenceImagePathMap.put(runIds.get(0), runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE);
             }
-
-            diseaseImageUrlMap.put(runIds.get(0), IMAGE_BASE_URL + visualizerId + "/" + "disease_states" + "." + IMAGE_FILE_TYPE);
-            incidenceImageUrlMap.put(runIds.get(0), IMAGE_BASE_URL + visualizerId + "/" + "incidence" + "." + IMAGE_FILE_TYPE);
-
-            UrlOutputResource diseaseStatesResource = new UrlOutputResource();
-            diseaseStatesResource.setDescription("Disease states");
-            diseaseStatesResource.setURL(diseaseImageUrlMap.get(runIds.get(0)));
-
-            UrlOutputResource incidenceResource = new UrlOutputResource();
-            incidenceResource.setDescription("Incidence");
-            incidenceResource.setURL(incidenceImageUrlMap.get(runIds.get(0)));
-
-            visResourceList.add(diseaseStatesResource);
-            visResourceList.add(incidenceResource);
         } else {
             combinedIncidenceImagePath = runDirectory + File.separator + "combined_incidence" + "." + IMAGE_FILE_TYPE;
-            String combinedIncidenceImageUrl = IMAGE_BASE_URL + visualizerId + "/" + "combined_incidence" + "." + IMAGE_FILE_TYPE;
-
-            UrlOutputResource combinedIncidenceResource = new UrlOutputResource();
-            combinedIncidenceResource.setDescription("Combined incidence");
-            combinedIncidenceResource.setURL(combinedIncidenceImageUrl);
-
-            visResourceList.add(combinedIncidenceResource);
         }
     }
 
-    public String getRunDirectory() {
-        return runDirectory;
+    public static String getRunDirectory(String visualizerRunId) {
+        return IMAGE_FILES_DIRECTORY + File.separator + visualizerRunId;
+    }
+
+    private String getURLForImage(String imageName) {
+        if (IMAGE_BASE_URL.charAt(IMAGE_BASE_URL.length() - 1) == '/') {
+            return IMAGE_BASE_URL + visualizerRunId + "/" + imageName + "." + IMAGE_FILE_TYPE;
+        } else {
+            return IMAGE_BASE_URL + "/" + visualizerRunId + "/" + imageName + "." + IMAGE_FILE_TYPE;
+        }
+
     }
 
     public void createTimeSeriesImages() throws TimeSeriesVisualizerException {
@@ -131,25 +116,6 @@ public class ImageGenerator {
 
         // for now always generate the first 2 images
         generateImages(createDiseaseStatesChart, createIncidenceChart, createCombinedIncidenceChart);
-    }
-
-    private String getVisualizerId() throws NoSuchAlgorithmException {
-
-        String md5 = null;
-
-        if (runIds == null) {
-            return null;
-        }
-
-        // create new ID string that is the concatenation of the runIDs
-        StringBuilder stBuild = new StringBuilder();
-        for (String runId : runIds) {
-            stBuild.append(runId);
-        }
-
-        String id = stBuild.toString();
-        md5 = DigestUtils.md5Hex(id);
-        return md5;
     }
 
 //    private void adjustGlobalEpidemicSimulatorIncidence(ImageSeriesMap imageSeriesMap) throws TimeSeriesVisualizerException {
@@ -186,41 +152,53 @@ public class ImageGenerator {
 //
 //        }
 //    }
-
     private void generateImages(boolean generateDiseaseStates, boolean generateIncidence, boolean generateCombinedIncidence) throws TimeSeriesVisualizerException {
 
-        DatabaseUtility dbUtil = new DatabaseUtility(runIds);
-        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabase(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
+        DatabaseUtility dbUtil = new DatabaseUtility(runIds, visualizerSoftwareId);
+//        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseTimeSeriesTable(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
+        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseFiles(generateDiseaseStates, (generateIncidence
+                || generateCombinedIncidence));
+
+        Map<String, String> runIdSeriesLabels = dbUtil.getSeriesLabelsForRunIds(runIds);
 
 //        adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
 
         VisualizerChartUtility chartUtility = new VisualizerChartUtility();
 
         System.out.println("Creating images...");
+        Map<String, String> resourceMap = new HashMap<String, String>();
         if (generateDiseaseStates) {
             chartUtility.createSeirTimeSeriesChart(imageSeriesMap, diseaseStateImagePathMap);
+            resourceMap.put("prevalence." + IMAGE_FILE_TYPE, getURLForImage("prevalence"));
         }
         if (generateIncidence) {
             chartUtility.createIncidenceTimeSeriesChart(imageSeriesMap, incidenceImagePathMap);
-        }
-        if (generateCombinedIncidence) {
+            resourceMap.put("incidence." + IMAGE_FILE_TYPE, getURLForImage("incidence"));
+        } else if (generateCombinedIncidence) { // can't generate incidence and comnined incidence
             chartUtility.createCombinedIncidenceTimeSeriesChart(imageSeriesMap, combinedIncidenceImagePath, runIdSeriesLabels);
+            resourceMap.put("incidence." + IMAGE_FILE_TYPE, getURLForImage("incidence"));
         }
+
+        dbUtil.insertURLsIntoDatabase(resourceMap, Integer.parseInt(visualizerRunId));
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
 
-        List<UrlOutputResource> resource = new ArrayList<UrlOutputResource>();
+        SoftwareIdentification visualizerSoftwareId = new SoftwareIdentification();
+        visualizerSoftwareId.setSoftwareDeveloper("UPitt");
+        visualizerSoftwareId.setSoftwareName("Time Series Visualizer");
+        visualizerSoftwareId.setSoftwareVersion("1.0");
+        visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
+
         List<String> runIds = new ArrayList<String>();
-        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393616088");
-//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393534706");
-//        runIds.add("UPitt,PSC,CMU_FRED_2.0.1_i_1393019653");
+        runIds.add("3");
+//        runIds.add("3");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1393616088", "UPitt,PSC,CMU_FRED_2.0.1_i_1393616088");
-//        runIdSeriesLabels.put("UPitt,PSC,CMU_FRED_2.0.1_i_1393534706", "UPitt,PSC,CMU_FRED_2.0.1_i_1393534706");
+        runIdSeriesLabels.put("3", "SEIR");
+//        runIdSeriesLabels.put("3", "SEIR");
 
-        ImageGenerator generator = new ImageGenerator(runIds, resource, runIdSeriesLabels, false, false);
+        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "5");
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {
