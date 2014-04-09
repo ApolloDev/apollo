@@ -41,8 +41,8 @@
 							<directory>${basedir}/../src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>visualizerservice.wsdl</include>
-								<include>apollo-types.xsd</include>
+								<include>visualizerservice201.wsdl</include>
+								<include>apollo-types_2.0.1.xsd</include>
 							</includes>
 						</resource>
 					</webResources>
@@ -50,7 +50,7 @@
 			</plugin>
 		</plugins>
 		<!-- Name of the generated WAR file -->
-		<finalName>visualizerservice2.0</finalName>
+		<finalName>visualizerservice2.0.1</finalName>
 	</build>
 
 	<profiles>
