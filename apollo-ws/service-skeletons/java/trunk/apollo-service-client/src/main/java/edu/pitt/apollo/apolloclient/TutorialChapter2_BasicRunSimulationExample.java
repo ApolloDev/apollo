@@ -90,8 +90,8 @@ public class TutorialChapter2_BasicRunSimulationExample {
 			case UNAUTHORIZED:
 				System.out.println("No authorization for this run! Error message is:" + status.getMessage());
 				return status;
-			case WRITING_LOG_FILES:
-				System.out.println("The simulator is writing the log files!");
+			case LOG_FILES_WRITTEN:
+				System.out.println("The simulator finished writing the log files!");
 				return status;
 			case COMPLETED:
 				System.out.println("Completed!");
@@ -101,6 +101,8 @@ public class TutorialChapter2_BasicRunSimulationExample {
 				return status;
 			case RUNNING:
 			case TRANSLATING:
+			case TRANSLATION_COMPLETED:
+
 			case MOVING:
 			case QUEUED:
 			case HELD:
@@ -112,6 +114,14 @@ public class TutorialChapter2_BasicRunSimulationExample {
 					Thread.sleep(20000);
 				} catch (InterruptedException e) {
 				}
+			case INITIALIZING:
+				break;
+			case STAGING:
+				break;
+			case UNKNOWN_RUNID:
+				break;
+			default:
+				break;
 			}
 		}
 	}
