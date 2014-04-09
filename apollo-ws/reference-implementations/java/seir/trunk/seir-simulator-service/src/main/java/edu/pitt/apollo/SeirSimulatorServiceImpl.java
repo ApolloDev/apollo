@@ -360,6 +360,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         int runId = simulationRunId.intValue();
         try {
             // set the started file for the run
+            RunUtils.createRunDir(getRunDirectory(runId));
             RunUtils.setStatusFile(getRunDirectory(runId), MethodCallStatusEnum.RUNNING);
         } catch (IOException ex) {
             try {
