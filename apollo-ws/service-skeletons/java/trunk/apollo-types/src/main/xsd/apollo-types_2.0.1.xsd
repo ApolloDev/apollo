@@ -55,7 +55,7 @@
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
-			<enumeration value="writing_log_files" />
+			<enumeration value="log_files_written" />
 			<enumeration value="staging" />
 			<enumeration value="running" />
 			<enumeration value="moving" />
