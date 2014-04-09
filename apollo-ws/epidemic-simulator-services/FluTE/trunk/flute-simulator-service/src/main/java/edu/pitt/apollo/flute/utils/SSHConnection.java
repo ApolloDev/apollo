@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,10 +31,31 @@ import java.util.logging.Logger;
 public class SSHConnection {
 
     private static final Logger LOGGER = Logger.getLogger(SSHConnection.class.getName());
+    static final ResourceBundle CONNECTION_PROPERTIES = ResourceBundle.getBundle("flute");
     private JSch jsch = null;
     private Session session = null;
+    static final Properties properties = new Properties();
 
-    public SSHConnection(String host, String user, String password) throws JSchException {
+    static {
+        InputStream input;
+        String fn = CONNECTION_PROPERTIES.getString("flute_ssh_properties_file");
+        try {
+
+            input = new FileInputStream(fn);
+            properties.load(input);
+            System.out.println("Successfully loaded " + fn + " file.");
+        } catch (Exception e) {
+            System.out.println("\n\n\nError loading "
+                    + fn + " file\n\n\n");
+        }
+
+    }
+
+    public SSHConnection() throws JSchException {
+
+        String user = properties.getProperty("ssh_user");
+        String password = properties.getProperty("ssh_password");
+        String host = properties.getProperty("ssh_host");
 
         jsch = new JSch();
         JSch.setConfig("StrictHostKeyChecking", "no");
