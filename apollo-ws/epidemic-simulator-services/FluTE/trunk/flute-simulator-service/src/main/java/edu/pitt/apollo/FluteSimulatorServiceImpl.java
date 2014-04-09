@@ -24,6 +24,13 @@ import edu.pitt.apollo.flute.thread.QueueThread;
 import edu.pitt.apollo.flute.thread.RunIdStoreThread;
 import edu.pitt.apollo.flute.thread.SimulatorThread;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
+import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -36,6 +43,7 @@ import javax.xml.ws.ResponseWrapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -94,7 +102,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatus")
     @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetRunStatusResponse")
-    public RunStatus getRunStatus(
+    public RunStatus getRunStatus2(
             @WebParam(name = "runId", targetNamespace = "") String runId) {
         try {
             // System.out.println("Getting run status for run id " + runId);
@@ -113,7 +121,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     @RequestWrapper(localName = "getSupportedLocations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocations")
     @WebMethod
     @ResponseWrapper(localName = "getSupportedLocationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetSupportedLocationsResponse")
-    public List<SupportedPopulationLocation> getSupportedLocations() {
+    public List<SupportedPopulationLocation> getSupportedLocations2() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -123,7 +131,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     @RequestWrapper(localName = "run", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.Run")
     @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/run")
     @ResponseWrapper(localName = "runResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.RunResponse")
-    public String run(
+    public String run2(
             @WebParam(name = "simulatorConfiguration", targetNamespace = "") SimulatorConfiguration simulatorConfiguration) {
 
         // get simulator config JSON
@@ -152,73 +160,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
         return runId;
     }
 
-    @Override
-    @WebResult(name = "batchRun", targetNamespace = "")
-    @RequestWrapper(localName = "batchRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRun")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/batchRun")
-    @ResponseWrapper(localName = "batchRunResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.BatchRunResponse")
-    public BatchRunResult batchRun(
-            @WebParam(name = "batchRunSimulatorConfiguration", targetNamespace = "") BatchRunSimulatorConfiguration batchRunSimulatorConfiguration) {
+    
 
-//        SoftwareIdentification sid = batchRunSimulatorConfiguration.getSoftwareIdentification();
-//
-//        String runId = "-1";
-//        // try {
-//        runId = sid.getSoftwareDeveloper() + "_" + sid.getSoftwareName() + "_"
-//                + sid.getSoftwareVersion() + "_" + incrementRunId();
-//
-//        String md5RunIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
-//
-//        BatchRunResult result = new BatchRunResult();
-//
-//        result.setCompletedFile("https://betaweb.rods.pitt.edu/jdl50_web_dav-source/"
-//                + md5RunIdHash + "_results.txt");
-//        // result.setErrorFile(md5RunIdHash + "_errors.txt");
-//        result.setRunId(runId);
-//
-//        BatchThread bt = new BatchThread(
-//                batchRunSimulatorConfiguration.getBatchConfigurationFile(),
-//                result, runId, md5RunIdHash);
-//        bt.start();
-//        // bt.run();
-//
-//        System.out.println("RunId is :" + runId);
-//
-//        return result;
-        // } catch (IOException e1) {
-        return null;
-        // }
-    }
-
-    @Override
-    @WebResult(name = "getConfigurationFileForRun", targetNamespace = "")
-    @RequestWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigrationFileForRun")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/getConfigurationFileForRun")
-    @ResponseWrapper(localName = "getConfigurationFileForRun", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/10/28/2013/", className = "edu.pitt.apollo.service.simulatorservice._10._28._2013.GetConfigrationFileForRunResponse")
-    public String getConfigurationFileForRun(String runId) {
-
-//        String[] splitRunId = runId.split("::");
-//        String runIdPart = splitRunId[0];
-//        String configFileType = splitRunId[1];
-//        String runIdHash = RunUtils.getMd5HashFromBytes(runId.getBytes());
-        String newRunId = "";
-        boolean verbose = false;
-        if (runId.contains("verbose")) {
-            newRunId = runId.substring(0, runId.indexOf("verbose") - 1);
-            verbose = true;
-        } else {
-            newRunId = runId;
-        }
-        String runIdHash = RunUtils.getMd5HashFromString(newRunId);
-        String configText = null;
-        try {
-            configText = ConfigurationFileUtils.loadConfigurationFile(runIdHash, verbose);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
-
-        return configText;
-    }
+  
 
     // public static void shutdownAll() {
     // simulatorExecutor.shutdown();
@@ -354,4 +298,56 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 
         System.exit(0);
     }
+
+	@Override
+	@WebResult(name = "runStatus", targetNamespace = "")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getRunStatus")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatusResponse")
+	public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") String runId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "runSimulationsResult", targetNamespace = "")
+	@RequestWrapper(localName = "runSimulations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.RunSimulations")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/runSimulations")
+	@ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.RunSimulationsResponse")
+	public RunSimulationsResult runSimulations(
+			@WebParam(name = "runSimulationsMessage", targetNamespace = "") RunSimulationsMessage runSimulationsMessage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
+	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetPopulationAndEnvironmentCensus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getPopulationAndEnvironmentCensus")
+	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetPopulationAndEnvironmentCensusResponse")
+	public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
+			@WebParam(name = "location", targetNamespace = "") String location) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.RunSimulationResponse")
+	public void runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId,
+			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
+		// TODO Auto-generated method stub
+		
+	}
 }
