@@ -1,5 +1,7 @@
 package edu.pitt.apollo.flute.utils;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,20 +12,39 @@ import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
-public class DbUtils {
+public class ApolloDatabaseConnection {
 
     static Connection dbcon = null;
-    static final ResourceBundle DATABASE_PROPERTIES = ResourceBundle.getBundle("connections");
+    private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
+    static final Properties properties = new Properties();
+
+    static {
+        InputStream input;
+        Map<String, String> env = System.getenv();
+        String dir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        String fn = dir
+                + "/database.properties";
+        try {
+
+            input = new FileInputStream(fn);
+            properties.load(input);
+            System.out.println("Successfully loaded " + fn + " file.");
+        } catch (Exception e) {
+            System.out.println("\n\n\nError loading "
+                    + fn + " file\n\n\n");
+        }
+
+    }
 
     private static void establishDbConn() throws ClassNotFoundException,
             SQLException {
 
-        String dbClass = DATABASE_PROPERTIES.getString("db_class");
-        String url = DATABASE_PROPERTIES.getString("db_url");
-        String user = DATABASE_PROPERTIES.getString("db_user");
-        String password = DATABASE_PROPERTIES.getString("db_password");
+        String dbClass = properties.getProperty("class");
+        String url = properties.getProperty("url");
+        String user = properties.getProperty("user");
+        String password = properties.getProperty("password");
 
         try {
             if (dbcon != null) {
@@ -456,7 +477,7 @@ public class DbUtils {
     }
 
     public static void insertTimeSeries(int runId, int popId,
-            String label, List<Double> ts) throws SQLException,
+            String label, List<Integer> ts) throws SQLException,
             ClassNotFoundException {
 
         try {
@@ -467,7 +488,7 @@ public class DbUtils {
                 pstmt.setInt(1, runId);
                 pstmt.setInt(2, popId);
                 pstmt.setInt(3, i);
-                pstmt.setDouble(4, ts.get(i));
+                pstmt.setInt(4, ts.get(i));
                 pstmt.execute();
             }
             getConn().commit();
@@ -481,12 +502,12 @@ public class DbUtils {
     }
 
     public static void main(String args[]) throws Exception {
-        int dsId = (DbUtils.getAxisId("disease_state"));
+        int dsId = (ApolloDatabaseConnection.getAxisId("disease_state"));
         System.out.println("Disease_State ID is:" + dsId);
         int popId = getOrCreatePopulationId(dsId, "infectious");
         System.out.println("Population ID is:" + popId);
-        // DbUtils.getAllRunIds();
-        // DbUtils.getInternalRunId("JUST_A_TEST2");
+        // ApolloDatabaseConnection.getAllRunIds();
+        // ApolloDatabaseConnection.getInternalRunId("JUST_A_TEST2");
     } // end main
     // public static String isRunCached(SimulatorConfiguration sc) {
     // //create MD5
