@@ -81,7 +81,11 @@ public class TutorialChapter2_BasicRunSimulationExample {
         }
         while (true) {
             MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
-
+            if (status.getStatus() == null) {
+            	System.out.println("Red");
+            	
+            }
+            
             switch (status.getStatus()) {
 
                 case AUTHENTICATION_FAILURE:
@@ -95,6 +99,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("Completed!");
                     return status;
                 case FAILED:
+                case UNKNOWN_RUNID:
                     System.out.println("Run Failed! Error message is:" + status.getMessage());
                     return status;
                 case RUNNING:
@@ -109,14 +114,12 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
                             + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     try {
-                        Thread.sleep(20000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                     }
                 case INITIALIZING:
                     break;
                 case STAGING:
-                    break;
-                case UNKNOWN_RUNID:
                     break;
                 default:
                     break;

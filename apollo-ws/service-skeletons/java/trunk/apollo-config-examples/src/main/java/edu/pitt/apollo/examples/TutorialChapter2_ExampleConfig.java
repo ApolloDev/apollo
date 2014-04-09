@@ -68,7 +68,7 @@ public class TutorialChapter2_ExampleConfig {
 
 	protected SimulatorTimeSpecification getSimulatorTimeSpecification() {
 		SimulatorTimeSpecification timeSpec = new SimulatorTimeSpecification();
-		timeSpec.setRunLength(new BigInteger("90"));
+		timeSpec.setRunLength(new BigInteger("100"));
 		timeSpec.setUnitOfTimeForSimulatorTimeStep(UnitOfTimeEnum.DAY);
 		timeSpec.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(1.0);
 		return timeSpec;
