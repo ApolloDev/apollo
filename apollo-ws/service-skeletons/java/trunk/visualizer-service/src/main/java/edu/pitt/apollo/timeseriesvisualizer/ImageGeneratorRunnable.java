@@ -1,13 +1,7 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
-import edu.pitt.apollo.timeseriesvisualizer.ImageGenerator;
-import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import java.io.File;
-import java.io.FileNotFoundException;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -20,60 +14,64 @@ import java.util.logging.Logger;
  */
 public class ImageGeneratorRunnable implements Runnable {
 
-    public static final String STARTED_FILE = "started.txt";
-    public static final String FINISHED_FILE = "finished.txt";
-    public static final String ERROR_FILE = "error.txt";
     private ImageGenerator ig = null;
+    private String visualizerRunId;
 
-    public void setImageGenerator(ImageGenerator ig) {
+    public ImageGeneratorRunnable(String virualizerRunId, ImageGenerator ig) {
         this.ig = ig;
-    }
-
-    private void writeFile(String fileName, String content) {
-        String runDirectory = ig.getRunDirectory();
-        File file = new File(runDirectory + File.separator + fileName);
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            try {
-                file.createNewFile();
-            } catch (IOException ex) {
-                System.err.println("Started file could not be created");
-            }
-        }
-
-        try {
-            PrintStream ps = new PrintStream(file);
-            ps.println(content);
-            ps.close();
-        } catch (FileNotFoundException ex) {
-            System.err.println("File \"" + file.getAbsolutePath() + "\" could not be found: " + ex.getMessage());
-        }
+        this.visualizerRunId = virualizerRunId;
     }
 
     @Override
     public void run() {
         if (ig != null) {
 
-            String runDirectory = ig.getRunDirectory();
-
-            File finishedFile = new File(runDirectory + File.separator + FINISHED_FILE);
-            if (finishedFile.exists()) {
-                finishedFile.delete(); // delete previous finished file
+            String runDirectory = ImageGenerator.getRunDirectory(visualizerRunId);
+            try {
+                RunUtils.createRunDir(runDirectory);
+            } catch (IOException ex) {
+                try {
+                    RunUtils.setError(runDirectory, "IOException attempting to create run directory for run "
+                            + visualizerRunId + ": " + ex.getMessage());
+                } catch (IOException ex1) {
+                    System.err.println("IOException attempting to create run directory for run " + visualizerRunId + ": " + ex1.getMessage());
+                }
             }
-
-            // create file to show run is started
-            writeFile(STARTED_FILE, "");
+            try {
+                // create file to show run is started
+                RunUtils.setStarted(runDirectory);
+            } catch (IOException ex) {
+                try {
+                    RunUtils.setError(runDirectory, "IOException attempting to create started file for run "
+                            + visualizerRunId + ": " + ex.getMessage());
+                } catch (IOException ex1) {
+                    System.err.println("IOException attempting to create error file for run " + visualizerRunId + ": " + ex1.getMessage());
+                }
+            }
 
             try {
                 ig.createTimeSeriesImages();
             } catch (Exception ex) {
-                writeFile(ERROR_FILE, "Exception running Time-series visualizer: " + ex.getMessage());
+                try {
+                    RunUtils.setError(runDirectory, "Exception running Time-series visualizer: " + ex.getMessage());
+                } catch (IOException ex1) {
+                    System.err.println("IOException attempting to create error file for run " + visualizerRunId + ": " + ex1.getMessage());
+                }
                 return;
             }
 
-            // create file to show run is finished
-            // should only finish if there is no error file
-            writeFile(FINISHED_FILE, "");
+            try {
+                // create file to show run is finished
+                // should only finish if there is no error file
+                RunUtils.setFinished(runDirectory);
+            } catch (IOException ex) {
+                try {
+                    RunUtils.setError(runDirectory, "IOException attempting to create finished file for run "
+                            + visualizerRunId + ": " + ex.getMessage());
+                } catch (IOException ex1) {
+                    System.err.println("IOException attempting to finished error file for run " + visualizerRunId + ": " + ex1.getMessage());
+                }
+            }
         }
 
     }
