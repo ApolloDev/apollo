@@ -172,7 +172,8 @@ public class TutorialChapter2_BasicRunSimulationExample {
         runAndSoftwareId.setRunId(simulationRunId.toString());
 
         MethodCallStatus status = checkStatusOfWebServiceCall(runAndSoftwareId);
-        if (status.getStatus() == MethodCallStatusEnum.COMPLETED) {
+        if (status.getStatus() == MethodCallStatusEnum.COMPLETED
+                || status.getStatus() == MethodCallStatusEnum.LOG_FILES_WRITTEN) {
             return runAndSoftwareId;
         } else {
             System.exit(-1);
