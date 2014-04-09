@@ -1,6 +1,7 @@
-package edu.pitt.apollo.flute.utils;
+package edu.pitt.apollo.flute.thread;
 
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.flute.utils.RunUtils;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
