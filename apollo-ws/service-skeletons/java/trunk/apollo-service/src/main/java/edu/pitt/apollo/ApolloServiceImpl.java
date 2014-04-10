@@ -465,30 +465,36 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			return getErrorMethosCallStatus(message);
 		}
 
+                MethodCallStatus status;
 		// get the webservice WSDL URL for supplied
 		if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.SIMULATOR) {
 			SimulatorServiceEI port = getSimulatorServicePort(url);
-			return port.getRunStatus(runAndSoftwareIdentification.getRunId());
+			status = port.getRunStatus(runAndSoftwareIdentification.getRunId());
+                        if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
+                            status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
+                            status.setMessage("The run was submitted to the simulator.");
+                        }
 		} else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.VISUALIZER) {
 
 			VisualizerServiceEI port = getVisualizerServicePort(url);
-			return port.getRunStatus(runAndSoftwareIdentification.getRunId());
-			// } else if (serviceRecord.getSoftwareIdentification()
-			// .getSoftwareType() ==
-			// ApolloSoftwareType.SYNTHETIC_POPULATION_GENERATOR) {
-			// SyntheticPopulationServiceV20 ss = new
-			// SyntheticPopulationServiceV20(
-			// url);
-			// SyntheticPopulationServiceEI port = ss
-			// .getSyntheticPopulationServiceEndpoint();
-			// return port.getRunStatus(runAndSoftwareIdentification
-			// .getRunId());
+			status = port.getRunStatus(runAndSoftwareIdentification.getRunId());
+                        if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
+                            status.setStatus(MethodCallStatusEnum.CALLED_VISUALIZER);
+                            status.setMessage("The run was submitted to the visualizer.");
+                        }
 		} else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.TRANSLATOR) {
 			TranslatorServiceEI port = getTranslatorServicePort(url);
-			return port.getRunStatus(runAndSoftwareIdentification);
+			status = port.getRunStatus(runAndSoftwareIdentification);
+                                        
+                        if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
+                            status.setStatus(MethodCallStatusEnum.CALLED_TRANSLATOR);
+                            status.setMessage("The run was submitted to the translator.");
+                        }
 		} else {
 			return getErrorMethosCallStatus("Unrecognized software type");
 		}
+                
+                return status;
 	}
 
 	@Override
