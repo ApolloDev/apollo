@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.apache.commons.codec.digest.DigestUtils;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
@@ -16,7 +15,6 @@ import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 /**
  *
@@ -43,6 +41,7 @@ public class ImageGenerator {
     private boolean multiSimulatorChart;
     private String visualizerRunId;
     private boolean multiVaccChart = false;
+    private DatabaseUtility dbUtil;
 
 //    public ImageGenerator(List<String> runIds, boolean multiVaccChart, boolean multiSimulatorChart,
 //            SoftwareIdentification visualizerSoftwareId) throws NoSuchAlgorithmException {
@@ -66,7 +65,7 @@ public class ImageGenerator {
 //        }
 //
 //    }
-    public ImageGenerator(List<String> runIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) {
+    public ImageGenerator(List<String> runIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) throws TimeSeriesVisualizerException {
         this.runIds = runIds;
         this.visualizerSoftwareId = visualizerSoftwareId;
         this.visualizerRunId = visualizerRunId;
@@ -89,6 +88,8 @@ public class ImageGenerator {
         } else {
             combinedIncidenceImagePath = runDirectory + File.separator + "combined_incidence" + "." + IMAGE_FILE_TYPE;
         }
+
+        dbUtil = new DatabaseUtility(runIds, visualizerSoftwareId);
     }
 
     public static String getRunDirectory(String visualizerRunId) {
@@ -110,8 +111,16 @@ public class ImageGenerator {
 //        boolean generateDiseaseStates = !checkFile(diseaseStateImagePath);
 //        boolean generateIncidence = !checkFile(incidenceImagePath);
 
+        boolean simulatorSupportsDiseaseStates = true;
+        if (runIds.size() == 1) {
+            String simulatorName = dbUtil.getSimulatorSoftwareNameForRun(Integer.parseInt(runIds.get(0))).toLowerCase();
+            if (simulatorName.equals("flute")) {
+                simulatorSupportsDiseaseStates = false;
+            }
+        }
+
         boolean createCombinedIncidenceChart = multiSimulatorChart | multiVaccChart;
-        boolean createDiseaseStatesChart = !multiSimulatorChart;
+        boolean createDiseaseStatesChart = !multiSimulatorChart && simulatorSupportsDiseaseStates;
         boolean createIncidenceChart = !multiSimulatorChart && !multiVaccChart;
 
         // for now always generate the first 2 images
@@ -154,7 +163,6 @@ public class ImageGenerator {
 //    }
     private void generateImages(boolean generateDiseaseStates, boolean generateIncidence, boolean generateCombinedIncidence) throws TimeSeriesVisualizerException {
 
-        DatabaseUtility dbUtil = new DatabaseUtility(runIds, visualizerSoftwareId);
 //        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseTimeSeriesTable(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
         ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseFiles(generateDiseaseStates, (generateIncidence
                 || generateCombinedIncidence));
@@ -182,7 +190,7 @@ public class ImageGenerator {
         dbUtil.insertURLsIntoDatabase(resourceMap, Integer.parseInt(visualizerRunId));
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException {
 
         SoftwareIdentification visualizerSoftwareId = new SoftwareIdentification();
         visualizerSoftwareId.setSoftwareDeveloper("UPitt");
@@ -191,11 +199,11 @@ public class ImageGenerator {
         visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
 
         List<String> runIds = new ArrayList<String>();
-        runIds.add("3");
+        runIds.add("1");
 //        runIds.add("3");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("3", "SEIR");
+        runIdSeriesLabels.put("1", "FluTE");
 //        runIdSeriesLabels.put("3", "SEIR");
 
         ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "5");
