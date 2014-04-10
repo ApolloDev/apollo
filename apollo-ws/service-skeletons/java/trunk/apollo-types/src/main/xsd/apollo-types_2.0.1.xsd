@@ -53,6 +53,8 @@
 			<enumeration value="held" />
 			<enumeration value="queued" />
 			<enumeration value="called_translator" />
+			<enumeration value="called_visualizer" />
+			<enumeration value="called_simulator" />
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
@@ -2161,11 +2163,4 @@
 
 
 
-	<complexType name="AaaDummyType">
-		<sequence>
-			<element name="elementIWantToScreenSnapWithoutArrows"
-				type="tns:PlaceClosureControlStrategy">
-			</element>
-		</sequence>
-	</complexType>
 </schema>
