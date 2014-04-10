@@ -58,7 +58,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 //    private static int currentRunIdNumber;
     private static int numRunningSimulatorThreads;
 //    private static Thread storeThread;
-    private static Queue<Thread> simulatorThreadQueue;
+    private static Queue<SimulatorThread> simulatorThreadQueue;
     private static List<Integer> queuedThreads = new ArrayList<Integer>();
     private static String APOLLO_DIR = "";
     // executor for the simulator threads
@@ -71,44 +71,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
     // private static Map<String, String> md5RunIdMap;
 
     static {
-        // create and load the runID map
-
-        // try {
-        // md5RunIdMap = DbUtils.getStoredRunHashes();
-        // } catch (SQLException e) {
-        // System.err.println("Fatal Error enountered retrieving stored run hashes. Specific error message was:\n"
-        // + e.getMessage());
-        // e.printStackTrace();
-        // System.exit(-1);
-        // } catch (ClassNotFoundException e) {
-        // System.err.println("Fatal Error enountered retrieving stored run hashes. Specific error message was:\n"
-        // + e.getMessage());
-        // e.printStackTrace();
-        // System.exit(-1);
-        // }
         // initialize simulator thread queue
-        simulatorThreadQueue = new LinkedList<Thread>();
+        simulatorThreadQueue = new LinkedList<SimulatorThread>();
         numRunningSimulatorThreads = 0;
-
-//        try {
-//            currentRunIdNumber = Integer.parseInt(RunUtils.getNextId());
-//            storeThread = new RunIdStoreThread(false);
-//            storeThread.start();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-
-//        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-//
-//            public void run() {
-//                // what you want to do
-//                try {
-//                    RunUtils.writeCurrentId(currentRunIdNumber);
-//                } catch (IOException ex) {
-//                    System.err.println("IO exception writing current ID to file");
-//                }
-//            }
-//        }));
 
         Map<String, String> env = System.getenv();
         APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
@@ -124,7 +89,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
     }
 
-    public String getRunDirectory(int runId) {
+    public static String getRunDirectory(int runId) {
         return APOLLO_DIR + File.separator + SEIR_OUTPUT_DIRECTORY_NAME + File.separator + Long.valueOf(runId) + File.separator;
     }
 
@@ -132,36 +97,26 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
     }
 
-    private static synchronized void addRunToQueuedList(int runId) {
+    private static synchronized void addRunToQueuedList(Integer runId) {
         if (!queuedThreads.contains(runId)) { // only need to add it if it is
             // not already in the list
             queuedThreads.add(runId);
         }
     }
 
-    public static synchronized void removeRunFromQueuedList(int runId) {
+    public static synchronized void removeRunFromQueuedList(Integer runId) {
         queuedThreads.remove(runId);
     }
 
-    public static synchronized boolean isRunQueued(int runId) {
+    public static synchronized boolean isRunQueued(Integer runId) {
         return queuedThreads.contains(runId);
     }
 
     public static synchronized void simulatorRunFinished() {
         numRunningSimulatorThreads--;
     }
-
-//    public static synchronized int incrementRunId() {
-//
-//        currentRunIdNumber++;
-//        return currentRunIdNumber;
-//    }
-
-//    public static synchronized int getCurrentRunId() {
-//        return currentRunIdNumber;
-//    }
-
-    public static synchronized boolean addSimulatorThread(Thread runnable) {
+    
+    public static synchronized boolean addSimulatorThread(SimulatorThread runnable) {
 
         // System.out.println(System.currentTimeMillis() +
         // "     num threads running: " + numRunningSimulatorThreads + "    " +
@@ -191,8 +146,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
                 && simulatorThreadQueue.size() > 0) {
             // if (simulatorThreadQueue.size() > 0 && numRunningSimulatorThreads
             // < MAX_NUM_SIMULATOR_THREADS) {
-            Thread thread = simulatorThreadQueue.poll();
+            SimulatorThread thread = simulatorThreadQueue.poll();
             numRunningSimulatorThreads++;
+            removeRunFromQueuedList(thread.getRunId());
             // System.out.println("starting run");
             thread.start();
             // }
@@ -282,16 +238,6 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         }
     }
 
-//    @Override
-//    @WebResult(name = "configurationFile", targetNamespace = "")
-//    @RequestWrapper(localName = "getConfigurationFileForSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetConfigurationFileForSimulation")
-//    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getConfigurationFileForSimulation")
-//    @ResponseWrapper(localName = "getConfigurationFileForSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetConfigurationFileForSimulationResponse")
-//    public GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(
-//            @WebParam(name = "runId", targetNamespace = "") String runId) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
 
     @Override
     @WebResult(name = "runSimulationsResult", targetNamespace = "")
@@ -384,9 +330,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
             }
         }
         // create the run thread
-        SimulatorThread worker = new SimulatorThread(runSimulationMessage, dbUtils, this, runId, false, true);
+        SimulatorThread worker = new SimulatorThread(runSimulationMessage, dbUtils, runId, false, true);
 
-        queuedThreads.add(runId);
+        addRunToQueuedList(runId);
         QueueThread queueThread = new QueueThread(worker);
         System.out.println("Starting a queued thread with run ID " + runId);
         queueThread.start();
