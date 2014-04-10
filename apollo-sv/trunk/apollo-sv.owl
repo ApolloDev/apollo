@@ -1479,7 +1479,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
 
     <Class rdf:about="&obo;APOLLO_SV_00000016">
         <rdfs:label xml:lang="en">infectious period duration</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&obo;IAO_0000136"/>
@@ -1509,7 +1509,7 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
 
     <Class rdf:about="&obo;APOLLO_SV_00000017">
         <rdfs:label xml:lang="en">latent period duration</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&obo;IAO_0000136"/>
@@ -3014,9 +3014,9 @@ simulation run length</rdfs:comment>
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000096 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000096">
-        <rdfs:label>unit</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">units</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:label xml:lang="en">unit of measure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">UnitOfMeasure</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">The increments of measurement for a measurable thing</obo:IAO_0000600>
     </Class>
     
@@ -3789,8 +3789,9 @@ An infection is acquired from an infectious organism or a contaminated thing.
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000136 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000136">
-        <rdfs:label xml:lang="en">obsolete_vaccination control strategy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
+        <rdfs:label xml:lang="en">vaccination control strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <deprecated rdf:datatype="&xsd;boolean">true</deprecated>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">vaccination control strategy</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">An infectious disease control strategy in which individuals in a population are vaccinated</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">an infectious disease control strategy that has as part an action specification that is realized in a vaccination process</obo:IAO_0000115>
@@ -4917,9 +4918,10 @@ I checked because an infection and immunity census would involve two different c
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000181 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000181">
-        <rdfs:label xml:lang="en">obsolete_antiviral control strategy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
+        <rdfs:label xml:lang="en">antiviral control strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">antiviral control strategy</apollo_sv:APOLLO_SV_0000040>
+        <deprecated rdf:datatype="&xsd;boolean">true</deprecated>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">an infectious disease control strategy that has as part an action specification that is realized in antiviral treatment</obo:IAO_0000115>
     </Class>
@@ -5537,9 +5539,9 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000226 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000226">
-        <rdfs:label xml:lang="en">infectiousness</rdfs:label>
+        <rdfs:label xml:lang="en">infectiousness profile</rdfs:label>
         <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectiousnesProfile</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectiousnessProfile</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A process profile that specifies the degree to which a host is likely to pass on an infectious disease to a susceptible organism.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">This is probably a &apos;process profile&apos; according to BFO2</rdfs:comment>
@@ -5581,9 +5583,9 @@ can&apos;t recall whether we should use process or processual_entity for future 
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000229 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000229">
-        <rdfs:label xml:lang="en">facility closure control strategy</rdfs:label>
+        <rdfs:label xml:lang="en">place closure control strategy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000086"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">FacilityClosureControlStrategy</apollo_sv:APOLLO_SV_0000040>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">PlaceClosureControlStrategy</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117 rdf:datatype="&xsd;string">William R. Hogan</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">an infectious disease control strategy that has an action specification that is realized in closing facilities where organisms congregate during times when the facilities normally would be open.</obo:IAO_0000115>
     </Class>
@@ -5837,21 +5839,23 @@ can&apos;t recall whether we should use process or processual_entity for future 
 
     <Class rdf:about="&obo;APOLLO_SV_00000243">
         <rdfs:label xml:lang="en">duration</rdfs:label>
-        <equivalentClass>
-            <Class>
-                <intersectionOf rdf:parseType="Collection">
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;BFO_0000156"/>
-                        <someValuesFrom rdf:resource="&span;ProcessualEntity"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&obo;BFO_0000156"/>
-                        <allValuesFrom rdf:resource="&span;ProcessualEntity"/>
-                    </Restriction>
-                </intersectionOf>
-            </Class>
-        </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&span;TemporalRegion"/>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&span;TemporalInterval"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;BFO_0000156"/>
+                                <someValuesFrom rdf:resource="&span;ProcessualEntity"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Duration</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A temporal region that is occupied by a processual entity.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -6030,9 +6034,9 @@ can&apos;t recall whether we should use process or processual_entity for future 
 
     <Class rdf:about="&obo;APOLLO_SV_00000258">
         <rdfs:label xml:lang="en">delay from symptoms to treatment</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&span;TemporalInterval"/>
-        <obo:IAO_0000115 xml:lang="en">A temporal interval between the appearance of symptoms of a disease and the start of a treatment.</obo:IAO_0000115>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The duration between the appearance of symptoms of a disease and the start of a treatment.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">delayFromSymptomsToTreatment</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -6213,7 +6217,253 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">timeDelayToCaseDetection</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The duration it takes to detect a case of a particular disease.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The duration from the infection to the detection of the disease.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000268 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000268">
+        <rdfs:label xml:lang="en">trigger definition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that specifies a trigger for a conditional specification.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">TriggerDefinition</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000269 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000269">
+        <rdfs:label xml:lang="en">disease surveillance trigger definition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">DiseaseSurveillanceTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000270 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000270">
+        <rdfs:label xml:lang="en">treatment surveillance trigger definition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">TreatmentSurveillanceTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000271 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000271">
+        <rdfs:label xml:lang="en">temporal trigger definition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">TemporalTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000273 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000273">
+        <rdfs:label xml:lang="en">seasonal function parameter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">SeasonalityFunctionParameters</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000274 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000274">
+        <rdfs:label xml:lang="en">maximum seasonal latitude</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000273"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">maximumSeasonalLatitude</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000275 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000275">
+        <rdfs:label xml:lang="en">minimum seasonal latitude</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000273"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">minimumSeasonalLatitude</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000276 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000276">
+        <rdfs:label xml:lang="en">seasonal temporal offset</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000273"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">seasonalTemporalOffset</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000277 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000277">
+        <rdfs:label xml:lang="en">sensitivity of case detection</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000266"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">sensitivityOfCaseDetection</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000278 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000278">
+        <rdfs:label xml:lang="en">probability of entry into a country is denied</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">probabilityEntryDenied</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">An information content entity specifying the probability that entry is denied as part of a border control strategy.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000279 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000279">
+        <rdfs:label xml:lang="en">probability of exit from a country is denied</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">probabilityExitDenied</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">An information content entity specifying the probability that exit is denied as part of a border control strategy.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000280 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000280">
+        <rdfs:label xml:lang="en">duration of treatment course</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&span;TemporalInterval"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&obo;BFO_0000156"/>
+                                <someValuesFrom rdf:resource="&obo;OGMS_0000090"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </someValuesFrom>
+            </Restriction>
+        </rdfs:subClassOf>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">durationOfTreatmentCourse</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The duration that measures the temporal interval occupied by a treatment course.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000281 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000281">
+        <rdfs:label xml:lang="en">number of doses in a treatment course</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000032"/>
+        <rdfs:subClassOf>
+            <Restriction>
+                <onProperty rdf:resource="&obo;IAO_0000136"/>
+                <someValuesFrom rdf:resource="&obo;OGMS_0000090"/>
+            </Restriction>
+        </rdfs:subClassOf>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">numDosesInTreatmentCourse</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">The count of the number of doses that are part of a treatment course.</obo:IAO_0000115>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000282 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000282">
+        <rdfs:label xml:lang="en">target populations and prioritizations information</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">targetPopulationsAndPrioritizations</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000283 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000283">
+        <rdfs:label xml:lang="en">school transmission multiplier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">schoolTransmissionMultiplier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000284 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000284">
+        <rdfs:label xml:lang="en">household transmission multiplier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">householdTransmissionMultiplier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000285 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000285">
+        <rdfs:label xml:lang="en">workplace transmission multiplier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">workplaceTransmissionMultiplier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000286 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000286">
+        <rdfs:label xml:lang="en">close individual place independently strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000229"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">closeIndividualPlacesIndependently</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000287 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000287">
+        <rdfs:label xml:lang="en">place closure period</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">closurePeriod</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000288 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000288">
+        <rdfs:label xml:lang="en">community transmission multiplier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000007"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">communityTransmissionMultiplier</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000289 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000289">
+        <rdfs:label xml:lang="en">maximum travel distancein km information</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">communityTransmissionMultiplier</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
 
@@ -7667,7 +7917,7 @@ Mathias Brochhausen</obo:IAO_0000117>
     <!-- http://purl.obolibrary.org/obo/OMRSE_00000062 -->
 
     <Class rdf:about="&obo;OMRSE_00000062">
-        <rdfs:label xml:lang="en">facility</rdfs:label>
+        <rdfs:label xml:lang="en">place</rdfs:label>
         <equivalentClass>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -7680,8 +7930,8 @@ Mathias Brochhausen</obo:IAO_0000117>
             </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000061"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">facility</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">place</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An architectural structure that bears some function.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">see also: 
@@ -8072,15 +8322,15 @@ school facility
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </Class>
     
 
@@ -8474,9 +8724,6 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000572">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;has_agent">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8499,6 +8746,9 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000574">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8702,6 +8952,9 @@ school facility
     <rdf:Description rdf:about="&obo;IAO_0000319">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -8710,6 +8963,9 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8717,6 +8973,12 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8724,18 +8986,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -8861,4 +9111,3 @@ school facility
 
 <!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
 
-ƒ
