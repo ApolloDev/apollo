@@ -60,7 +60,7 @@ public class ApolloDbUtils {
 
     public enum DbContentDataType {
 
-        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE
+        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE
     };
 
     public ApolloDbUtils(File databasePropertiesFile) throws IOException {
