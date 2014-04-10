@@ -13,9 +13,9 @@ import edu.pitt.apollo.FluteSimulatorServiceImpl;
  */
 public class QueueThread extends Thread {
 
-    private Thread simulatorThread;
+    private SimulatorThread simulatorThread;
 
-    public QueueThread(Thread simulatorThread) {
+    public QueueThread(SimulatorThread simulatorThread) {
         this.simulatorThread = simulatorThread;
     }
 

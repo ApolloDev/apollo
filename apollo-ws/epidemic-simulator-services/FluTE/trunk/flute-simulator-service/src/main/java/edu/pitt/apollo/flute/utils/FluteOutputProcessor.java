@@ -1,10 +1,17 @@
 package edu.pitt.apollo.flute.utils;
 
+import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
+import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.flute.exception.FluteSimulatorServiceException;
 import edu.pitt.apollo.flute.thread.SimulatorThread;
+import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +40,12 @@ public class FluteOutputProcessor {
     private List<Integer> tractSumTimeSeries;
     private String location;
     private int runLength;
+    private ApolloDbUtils dbUtils;
+    private String runDirectory;
+    private int runId;
+    private static SoftwareIdentification timeSeriesVisualizerId;
+    private static SoftwareIdentification gaiaVisualizerId;
+    private SoftwareIdentification simulatorIdentification;
 
     static {
         LOCATION_FILES_MAP = new HashMap<String, String>();
@@ -40,8 +53,9 @@ public class FluteOutputProcessor {
         LOCATION_FILES_MAP.put("00000", "one-tracts.txt");
     }
 
-    public FluteOutputProcessor(String fluteOutputFileLocation, String location, int runLength)
-            throws FileNotFoundException, FluteSimulatorServiceException {
+    public FluteOutputProcessor(String fluteOutputFileLocation, SoftwareIdentification simulatorIdentification,
+            String location, int runLength, int runId, String runDirectory, ApolloDbUtils dbUtils)
+            throws FluteSimulatorServiceException {
 
         if (LOCATION_FILES_MAP.get(location) == null) {
             this.location = "00000";
@@ -49,35 +63,90 @@ public class FluteOutputProcessor {
             this.location = location;
         }
         this.runLength = runLength;
+        this.dbUtils = dbUtils;
+        this.runDirectory = runDirectory;
+        this.runId = runId;
+        this.simulatorIdentification = simulatorIdentification;
         processFluteOutputFile(fluteOutputFileLocation);
     }
 
-    public void storeInputFileForGaiaToDatabase() {
-        // this will create the GAIA input file and store it to the apollo database
+    private void addTextDataContentForSeries(String content,
+            String seriesName, SoftwareIdentification visualizerId) throws IOException {
+        int dataContentKey;
+        try {
+            dataContentKey = dbUtils.addTextDataContent(content);
+        } catch (ClassNotFoundException ex) {
+            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to add text data "
+                    + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        } catch (SQLException ex) {
+            RunUtils.setError(runDirectory, "SQLException attempting to add text data "
+                    + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        }
+
+        int runDataDescriptionId;
+        try {
+            runDataDescriptionId = dbUtils.getRunDataDescriptionId(DbContentDataFormatEnum.TEXT, seriesName + ".txt",
+                    DbContentDataType.SIMULATOR_LOG_FILE, simulatorIdentification,
+                    visualizerId);
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to get run data "
+                    + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        } catch (ClassNotFoundException ex) {
+            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to get run data "
+                    + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        } catch (SQLException ex) {
+            RunUtils.setError(runDirectory, "SQLException attempting to get run data "
+                    + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        }
+        try {
+            dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
+        } catch (ClassNotFoundException ex) {
+            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to associate "
+                    + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
+        } catch (SQLException ex) {
+            RunUtils.setError(runDirectory, "SQLException attempting to associate "
+                    + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to associate "
+                    + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+        }
     }
 
-    public void storeFluteTimeSeriesDataToDatabase(String runId, String simConfigHash, String simConfigJson) 
+    public void storeInputFileForGaiaToDatabase() throws FluteSimulatorServiceException, IOException {
+        // this will create the GAIA input file and store it to the apollo database
+
+        String content = createInputFileForVisualizers();
+        addTextDataContentForSeries(content, "newly_exposed", timeSeriesVisualizerId);
+        addTextDataContentForSeries(content, "newly_exposed", gaiaVisualizerId);
+    }
+
+    public void storeFluteTimeSeriesDataToDatabase(int runId)
             throws SQLException, ClassNotFoundException {
         // this will store the flute output to the time series table in the apollo database
 
-        int internalRunId = ApolloDatabaseConnection.getInternalRunId(runId, simConfigHash, simConfigJson);
-        int dsAxisId = ApolloDatabaseConnection.getAxisId("disease_state");
+        int dsAxisId = dbUtils.getAxisId("disease_state");
         if (dsAxisId == -1) {
-            ApolloDatabaseConnection.createAxisId("disease_state");
-            dsAxisId = ApolloDatabaseConnection.getAxisId("disease_state");
+            dbUtils.createAxisId("disease_state");
+            dsAxisId = dbUtils.getAxisId("disease_state");
         }
 
-        int locAxisId = ApolloDatabaseConnection.getAxisId("location");
+        int locAxisId = dbUtils.getAxisId("location");
         if (locAxisId == -1) {
-            ApolloDatabaseConnection.createAxisId("location");
-            locAxisId = ApolloDatabaseConnection.getAxisId("location");
+            dbUtils.createAxisId("location");
+            locAxisId = dbUtils.getAxisId("location");
         }
 
-        int ageRangeAxisId = ApolloDatabaseConnection.getAxisId("age_range");
-        if (ageRangeAxisId == -1) {
-            ApolloDatabaseConnection.createAxisId("age_range");
-            ageRangeAxisId = ApolloDatabaseConnection.getAxisId("age_range");
-        }
+//        int ageRangeAxisId = dbUtils.getAxisId("age_range");
+//        if (ageRangeAxisId == -1) {
+//            dbUtils.createAxisId("age_range");
+//            ageRangeAxisId = dbUtils.getAxisId("age_range");
+//        }
 
         // for each tract listed in the tracts file
         for (String tract : tractTimeSeriesMap.keySet()) {
@@ -85,35 +154,35 @@ public class FluteOutputProcessor {
             // for storing by age range
 //            for (int ageRangeIndex = 0; ageRangeIndex < ageRanges.length; ageRangeIndex++) {
 //
-//                int tractPopIdForAgeRange = ApolloDatabaseConnection.getOrCreatePopulationId(dsAxisId, locAxisId, ageRangeAxisId,
+//                int tractPopIdForAgeRange = dbUtils.getOrCreatePopulationId(dsAxisId, locAxisId, ageRangeAxisId,
 //                        "newly infectious and symptomatic", popLocation + tract, ageRanges[ageRangeIndex]);
 //
 //                // see if this tract has a time series
 //                Map<String, List<Double>> tractTimeSeriesMapForAgeRange = tractTimeSeriesAgeRangeMaps.get(ageRangeIndex);
 //                if (tractTimeSeriesMapForAgeRange.containsKey(tract)) {
 //                    List<Double> timeSeriesForTract = tractTimeSeriesMapForAgeRange.get(tract);
-//                    ApolloDatabaseConnection.insertTimeSeries(internalRunId, tractPopIdForAgeRange,
+//                    dbUtils.insertTimeSeries(internalRunId, tractPopIdForAgeRange,
 //                            "newly infectious and symptomatic in " + popLocation + tract + " age " + ageRanges[ageRangeIndex],
 //                            timeSeriesForTract);
 //                }
 //            }
 
             // for storing by location only
-            int tractPopIdForAgeRange = ApolloDatabaseConnection.getOrCreatePopulationId(dsAxisId, locAxisId,
+            int tractPopIdForAgeRange = dbUtils.getOrCreatePopulationId(dsAxisId, locAxisId,
                     "newly exposed", tract);
 
             // see if this tract has a time series
             if (tractTimeSeriesMap.containsKey(tract)) {
                 List<Integer> timeSeriesForTract = tractTimeSeriesMap.get(tract);
-                ApolloDatabaseConnection.insertTimeSeries(internalRunId, tractPopIdForAgeRange,
+                dbUtils.insertTimeSeries(runId, tractPopIdForAgeRange,
                         "newly exposed in " + tract,
                         timeSeriesForTract);
             }
         }
 
         // store the tract-sum dataset
-        int popId = ApolloDatabaseConnection.getOrCreatePopulationId(dsAxisId, locAxisId, "newly exposed", location);
-        ApolloDatabaseConnection.insertTimeSeries(internalRunId, popId, "newly exposed in " + location, tractSumTimeSeries);
+        int popId = dbUtils.getOrCreatePopulationId(dsAxisId, locAxisId, "newly exposed", location);
+        dbUtils.insertTimeSeries(runId, popId, "newly exposed in " + location, tractSumTimeSeries);
     }
 
     private void processFluteOutputFile(String fluteOutputFileLocation) throws FluteSimulatorServiceException {
@@ -201,7 +270,7 @@ public class FluteOutputProcessor {
         }
     }
 
-    private String createInputFileForGaia() throws FluteSimulatorServiceException {
+    private String createInputFileForVisualizers() throws FluteSimulatorServiceException {
         // this takes the tract time series and creates a GAIA input file,
         // returning the content as a string
 
@@ -216,21 +285,16 @@ public class FluteOutputProcessor {
             county = location.substring(2, 5);
         } else if (location.length() == 2 && !location.toLowerCase().equals("US")) {
             state = location;
-            county = "*";
+            county = "";
         } else if (location.toLowerCase().equals("us")) {
-            state = "*";
-            county = "*";
+            state = "";
+            county = "";
         } else {
             throw new FluteSimulatorServiceException("Location \"" + location + "\" has a string length that is"
                     + " not supported for creating GAIA input files");
         }
 
         StringBuilder stBuild = new StringBuilder();
-        // First print the borders for each time step, e.g.:
-        // USFIPS st42.ct003.tr*.bl* -1 1:-1, all tracts, all blocks, style -1
-        for (int i = 0; i < runLength; i++) {
-            stBuild.append(getGaiaInputFileStringForLocation(state, county, "*", "*", -1, i, -1));
-        }
 
         for (String tract : tractTimeSeriesMap.keySet()) {
             state = tract.substring(0, 2);
@@ -240,20 +304,26 @@ public class FluteOutputProcessor {
             List<Integer> timeSeries = tractTimeSeriesMap.get(tract);
             for (int i = 0; i < timeSeries.size(); i++) {
                 int count = timeSeries.get(i);
-                stBuild.append(getGaiaInputFileStringForLocation(state, county, tractNumber, "*", count, i, 1));
+                stBuild.append(getVisualizerInputFileStringForLocation(state, county, tractNumber, "", count, i, 1));
             }
+        }
+
+        // last print the borders for each time step, e.g.:
+        // USFIPS st42.ct003.tr*.bl* -1 1:-1, all tracts, all blocks, style -1
+        for (int i = 0; i < runLength; i++) {
+            stBuild.append(getVisualizerInputFileStringForLocation(state, county, "*", "", -1, i, -1));
         }
 
         return stBuild.toString();
     }
 
-    private String getGaiaInputFileStringForLocation(String state, String county,
+    private String getVisualizerInputFileStringForLocation(String state, String county,
             String tract, String block, int count, int time, int style) {
         // An example is USFIPS st42.ct003.tr4090.bl2 11 3:1
         // This means state 42, county 003, tract 4090, all block 2, count is 11,
         // time step is 3, style is 1
-        return "USFIPS st" + state + ".ct" + county + ".tr"
-                + tract + ".bl" + block + " " + count + " " + time + ":" + style + "\n";
+        return "US" + state + county
+                + tract + block + " " + count + " " + time + ":" + style + "\n";
     }
 
     /**
@@ -270,12 +340,41 @@ public class FluteOutputProcessor {
         return tractSumTimeSeries;
     }
 
-    public static void main(String[] args) throws FileNotFoundException, FluteSimulatorServiceException {
-        FluteOutputProcessor procesor = new FluteOutputProcessor("C:/cygwin/home/NEM41/flute/Log0", "06037", 10);
-        String content = procesor.createInputFileForGaia();
+    private static void loadVisualizerSoftwareIdentifications() {
 
-        PrintStream ps = new PrintStream(new File("C:/apollo_test/gaia_input.txt"));
-        ps.print(content);
-        ps.close();
+        System.out.println("Loading Time-series visualizer software identification");
+        try {
+            ApolloDbUtils dbUtils = new ApolloDbUtils(new File(FluteSimulatorServiceImpl.getDatabasePropertiesFilename()));
+
+            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
+            for (Integer id : softwareIdMap.keySet()) {
+                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                if (softwareId.getSoftwareName().toLowerCase().equals("time series visualizer")) {
+                    timeSeriesVisualizerId = softwareIdMap.get(id).getSoftwareIdentification();
+                } else if (softwareId.getSoftwareName().toLowerCase().equals("gaia")) {
+                    gaiaVisualizerId = softwareIdMap.get(id).getSoftwareIdentification();
+                }
+
+            }
+
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("ClassNotFoundException attempting to load the visualizer software ID: "
+                    + ex.getMessage());
+        } catch (IOException ex) {
+            throw new RuntimeException("IOException attempting to load the visualizer software ID: " + ex.getMessage());
+        } catch (SQLException ex) {
+            throw new RuntimeException("SQLException attempting to load the visualizer software ID: " + ex.getMessage());
+        }
+
+        if (timeSeriesVisualizerId == null) {
+            throw new RuntimeException("Could not find Time Series Visualizer in the list of registered services");
+        }
+        if (gaiaVisualizerId == null) {
+            throw new RuntimeException("Could not find GAIA Visualizer in the list of registered services");
+        }
+    }
+
+    static {
+        loadVisualizerSoftwareIdentifications();
     }
 }
