@@ -36,7 +36,6 @@ public class ApolloRunSimulationThread extends Thread {
 
     public ApolloRunSimulationThread(int runId, RunSimulationMessage message, ApolloDbUtils dbUtils,
             ApolloServiceImpl apolloServiceImpl) {
-        System.out.println("in constructor");
         this.message = message;
         this.runId = runId;
         this.dbUtils = dbUtils;
