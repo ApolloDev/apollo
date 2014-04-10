@@ -50,15 +50,14 @@ import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.1.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
-	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_20_WORK_DIR";
-	private static final String DB4O_FILENAME = "db4o_db_20";
+	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
+	private static final String DB4O_FILENAME = "db4o_db_201";
 
 	private static ObjectContainer db4o;
 	private static String APOLLO_DIR = "";
-
 
 	static {
 		Map<String, String> env = System.getenv();
@@ -67,17 +66,14 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			if (!APOLLO_DIR.endsWith(File.separator)) {
 				APOLLO_DIR += File.separator;
 			}
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
-					+ APOLLO_DIR);
+			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
-					+ "environment variable not found!");
+			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
 			APOLLO_DIR = "";
 		}
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
 		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/"
-				+ DB4O_FILENAME);
+		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/" + DB4O_FILENAME);
 	}
 
 	@Override
@@ -87,10 +83,100 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	}
 
 	@Override
+	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsGivenType")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getUuidsForLibraryItemsGivenType")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsGivenTypeResponse")
+	public GetLibraryItemUuidsResult getUuidsForLibraryItemsGivenType(@WebParam(name = "type", targetNamespace = "") String type) {
+		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
+		MethodCallStatus status = new MethodCallStatus();
+		status.setMessage("Okay.");
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+		result.setMethodCallStatus(status);
+
+		List<String> resultList = new ArrayList<String>();
+		//
+		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
+
+		for (CatalogEntryForApolloLibraryItem item : allItems) {
+			if (item.getItemType().equals(type)) {
+				resultList.add(item.getItemUuid());
+			}
+		}
+		result.getUuids().addAll(resultList);
+		return result;
+	}
+
+	@Override
+	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsCreatedSinceDateTime")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getUuidsForLibraryItemsCreatedSinceDateTime")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
+	public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
+			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
+		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
+		MethodCallStatus status = new MethodCallStatus();
+		status.setMessage("Okay.");
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+		result.setMethodCallStatus(status);
+
+		List<String> resultList = new ArrayList<String>();
+		//
+		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
+
+		for (CatalogEntryForApolloLibraryItem item : allItems) {
+			int c = item.getItemCreationTime().compare(creationDateTime);
+			if ((c == DatatypeConstants.EQUAL) || (c == DatatypeConstants.GREATER)) {
+				resultList.add(item.getItemUuid());
+			}
+		}
+		result.getUuids().addAll(resultList);
+		return result;
+	}
+
+	@Override
+	@WebResult(name = "getLibraryItemResult", targetNamespace = "")
+	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getLibraryItem")
+	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetLibraryItemResponse")
+	public GetLibraryItemResult getLibraryItem(@WebParam(name = "uuid", targetNamespace = "") String uuid) {
+		// TODO Auto-generated method stub
+		GetLibraryItemResult result = new GetLibraryItemResult();
+		MethodCallStatus status = new MethodCallStatus();
+		status.setMessage("Okay.");
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+
+		long longPart = Long.valueOf(uuid.split(" ")[1]);
+		String sig = uuid.split(" ")[0];
+		byte[] signaturePart = new byte[sig.length()];
+		for (int i = 0; i < sig.length(); i++) {
+			signaturePart[i] = (byte) sig.charAt(i);
+		}
+		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+		Object o = db4o.ext().getByUUID(db4oUuid);
+
+		CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
+		container.setApolloIndexableItem((ApolloIndexableItem) o);
+		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+		cli.setItemUuid(uuid);
+		ObjectSet<Object> r = db4o.queryByExample(cli);
+		CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r.get(0);
+		db4o.activate(item, 100);
+		db4o.activate(o, 100);
+
+		container.setCuratedLibraryItem(item);
+		result.setMethodCallStatus(status);
+		result.setCuratedLibraryItemContainer(container);
+		return result;
+	}
+
+	@Override
 	@WebResult(name = "addLibraryItemResult", targetNamespace = "")
-	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.AddLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0/addLibraryItem")
-	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.AddLibraryItemResponse")
+	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.AddLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/addLibraryItem")
+	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.AddLibraryItemResponse")
 	public AddLibraryItemResult addLibraryItem(
 			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
 			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
@@ -98,13 +184,12 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
 			@WebParam(name = "itemType", targetNamespace = "") String itemType,
 			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
-		
 		AddLibraryItemResult result = new AddLibraryItemResult();
 		MethodCallStatus status = new MethodCallStatus();
 		status.setMessage("Okay.");
 		status.setStatus(MethodCallStatusEnum.COMPLETED);
 		result.setMethodCallStatus(status);
-		
+
 		String apolloUuid = "";
 		db4o.store(apolloIndexableItem);
 		db4o.commit();
@@ -138,148 +223,55 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			e.printStackTrace();
 		}
 		return result;
-	}
 
-	@Override
-	@WebResult(name = "getLibraryItemResult", targetNamespace = "")
-	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0/getLibraryItem")
-	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetLibraryItemResponse")
-	public GetLibraryItemResult getLibraryItem(
-			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
-		// TODO Auto-generated method stub
-		GetLibraryItemResult result = new GetLibraryItemResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-
-		long longPart = Long.valueOf(uuid.split(" ")[1]);
-		String sig = uuid.split(" ")[0];
-		byte[] signaturePart = new byte[sig.length()];
-		for (int i = 0; i < sig.length(); i++) {
-			signaturePart[i] = (byte) sig.charAt(i);
-		}
-		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-		Object o = db4o.ext().getByUUID(db4oUuid);
-
-		CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
-		container.setApolloIndexableItem((ApolloIndexableItem) o);
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		cli.setItemUuid(uuid);
-		ObjectSet<Object> r = db4o.queryByExample(cli);
-		CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r
-				.get(0);
-		db4o.activate(item, 100);
-		db4o.activate(o, 100);
-
-		container.setCuratedLibraryItem(item);
-		result.setMethodCallStatus(status);
-		result.setCuratedLibraryItemContainer(container);
-		return result;
 	}
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "removeLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.RemoveLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0/removeLibraryItem")
-	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.RemoveLibraryItemResponse")
+	@RequestWrapper(localName = "removeLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.RemoveLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/removeLibraryItem")
+	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.RemoveLibraryItemResponse")
 	public MethodCallStatus removeLibraryItem(
 			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
 			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
 		// TODO Auto-generated method stub
-//		GetLibraryItemResult result = new GetLibraryItemResult();
-//		MethodCallStatus status = new MethodCallStatus();
-////		status.setMessage("Okay.");
-////		status.setStatus(MethodCallStatusEnum.COMPLETED);
-//
-//		long longPart = Long.valueOf(uuid.split(" ")[1]);
-//		String sig = uuid.split(" ")[0];
-//		byte[] signaturePart = new byte[sig.length()];
-//		for (int i = 0; i < sig.length(); i++) {
-//			signaturePart[i] = (byte) sig.charAt(i);
-//		}
-//		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-//		Object o = db4o.ext().getByUUID(db4oUuid);
-//                
-//                CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
-//		container.setApolloIndexableItem((ApolloIndexableItem) o);
-//		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-//		cli.setItemUuid(uuid);
-//		ObjectSet<Object> r = db4o.queryByExample(cli);
-//		CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r
-//				.get(0);
-//                
-//                db4o.activate(item, 100);
-//                db4o.activate(o, 100);
-//                db4o.ext().purge(o);
-//                db4o.ext().purge(item);
-//                db4o.delete(o);
-//                db4o.delete(item);
-//                db4o.commit();
-//                
-//                status.setMessage("Deleted object.");
-//                status.setStatus(MethodCallStatusEnum.COMPLETED);
-//                
-//                return status;
-            return null;
-	}
-
-	@Override
-	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsGivenType")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0/getUuidsForLibraryItemsGivenType")
-	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsGivenTypeResponse")
-	public GetLibraryItemUuidsResult getUuidsForLibraryItemsGivenType(
-			@WebParam(name = "type", targetNamespace = "") String type) {
-		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-		result.setMethodCallStatus(status);
-
-		List<String> resultList = new ArrayList<String>();
+		// GetLibraryItemResult result = new GetLibraryItemResult();
+		// MethodCallStatus status = new MethodCallStatus();
+		// // status.setMessage("Okay.");
+		// // status.setStatus(MethodCallStatusEnum.COMPLETED);
 		//
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o
-				.queryByExample(cli);
-
-		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			if (item.getItemType().equals(type)) {
-				resultList.add(item.getItemUuid());
-			}
-		}
-		result.getUuids().addAll(resultList);
-		return result;
-	}
-
-	@Override
-	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsCreatedSinceDateTime")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0/getUuidsForLibraryItemsCreatedSinceDateTime")
-	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0/", className = "edu.pitt.apollo.service.libraryservice.v2_0.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
-	public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
-			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
-		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-		result.setMethodCallStatus(status);
-
-		List<String> resultList = new ArrayList<String>();
+		// long longPart = Long.valueOf(uuid.split(" ")[1]);
+		// String sig = uuid.split(" ")[0];
+		// byte[] signaturePart = new byte[sig.length()];
+		// for (int i = 0; i < sig.length(); i++) {
+		// signaturePart[i] = (byte) sig.charAt(i);
+		// }
+		// Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+		// Object o = db4o.ext().getByUUID(db4oUuid);
 		//
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o
-				.queryByExample(cli);
-
-		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			int c = item.getItemCreationTime().compare(creationDateTime);
-			if ((c == DatatypeConstants.EQUAL)
-					|| (c == DatatypeConstants.GREATER)) {
-				resultList.add(item.getItemUuid());
-			}
-		}
-		result.getUuids().addAll(resultList);
-		return result;
-
+		// CuratedLibraryItemContainer container = new
+		// CuratedLibraryItemContainer();
+		// container.setApolloIndexableItem((ApolloIndexableItem) o);
+		// CatalogEntryForApolloLibraryItem cli = new
+		// CatalogEntryForApolloLibraryItem();
+		// cli.setItemUuid(uuid);
+		// ObjectSet<Object> r = db4o.queryByExample(cli);
+		// CatalogEntryForApolloLibraryItem item =
+		// (CatalogEntryForApolloLibraryItem) r
+		// .get(0);
+		//
+		// db4o.activate(item, 100);
+		// db4o.activate(o, 100);
+		// db4o.ext().purge(o);
+		// db4o.ext().purge(item);
+		// db4o.delete(o);
+		// db4o.delete(item);
+		// db4o.commit();
+		//
+		// status.setMessage("Deleted object.");
+		// status.setStatus(MethodCallStatusEnum.COMPLETED);
+		//
+		// return status;
+		return null;
 	}
 }
