@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * IDE: NetBeans 6.9.1
  */
 public class DatabaseUtility {
-    
+
     private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
     private static final String[] seirTimeSeriesNames = {"susceptible", "exposed", "infectious", "recovered"};
     private Connection connect = null;
@@ -47,7 +47,8 @@ public class DatabaseUtility {
     static final Properties properties = new Properties();
     private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
     private static String APOLLO_DIR;
-    
+    ApolloDbUtils dbUtils;
+
     static {
         InputStream input;
         Map<String, String> env = System.getenv();
@@ -61,7 +62,7 @@ public class DatabaseUtility {
             System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
             APOLLO_DIR = "";
         }
-        
+
         String fn = getDatabasePropertiesFilename();
         try {
             input = new FileInputStream(fn);
@@ -71,16 +72,38 @@ public class DatabaseUtility {
             System.out.println("\n\n\nError loading "
                     + fn + " file\n\n\n");
         }
-        
+
     }
-    
+
     public static String getDatabasePropertiesFilename() {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
     }
-    
-    public DatabaseUtility(List<String> runIds, SoftwareIdentification visualizerSoftwareId) {
+
+    public DatabaseUtility(List<String> runIds, SoftwareIdentification visualizerSoftwareId) throws TimeSeriesVisualizerException {
         this.runIds = runIds;
         this.visuazlierSoftwareId = visualizerSoftwareId;
+
+        try {
+            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+        } catch (IOException ex) {
+            throw new TimeSeriesVisualizerException("IOException creating ApolloDbUtils: " + ex.getMessage());
+        }
+    }
+
+    public String getSimulatorSoftwareNameForRun(int runId) throws TimeSeriesVisualizerException {
+        try {
+            SoftwareIdentification id = dbUtils.getSoftwareIdentificationForRun(runId);
+            return id.getSoftwareName();
+        } catch (ClassNotFoundException ex) {
+            throw new TimeSeriesVisualizerException("ClassNotFoundException attempting to get software identification for run "
+                    + runId + ": " + ex.getMessage());
+        } catch (SQLException ex) {
+            throw new TimeSeriesVisualizerException("SQLException attempting to get software identification for run "
+                    + runId + ": " + ex.getMessage());
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException attempting to get software identification for run "
+                    + runId + ": " + ex.getMessage());
+        }
     }
 
 //    private DatabaseTimeSeriesProcessor getDiseaseStateMapFromResultSet() throws SQLException {
@@ -125,58 +148,58 @@ public class DatabaseUtility {
 //        return container;
 //    }
     public ImageSeriesMap retrieveTimeSeriesFromDatabaseTimeSeriesTable(boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
-        
+
         ImageSeriesMap container = new ImageSeriesMap();
-        
+
         String dbClass = properties.getProperty("class");
         String url = properties.getProperty("url");
         String user = properties.getProperty("user");
         String password = properties.getProperty("password");
-        
+
         StringBuilder timeSeriesQuery = new StringBuilder();
         InputStream queryInput = DatabaseUtility.class.getResourceAsStream("/time_series_query.sql");
-        
+
         Scanner scanner = new Scanner(queryInput);
-        
+
         while (scanner.hasNextLine()) {
             timeSeriesQuery.append(" ").append(scanner.nextLine());
         }
         timeSeriesQuery.deleteCharAt(0); // remove first space
         scanner.close();
-        
+
         try {
             queryInput.close();
         } catch (IOException ex) {
             System.err.println("IO exception closing input stream");
         }
-        
+
         String query = timeSeriesQuery.toString();
-        
+
         for (String runId : runIds) {
             DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
             TimeSeriesContainer timeSeriesContainer = new TimeSeriesContainer();
             try {
                 Class.forName(dbClass);
                 connect = DriverManager.getConnection(url, user, password);
-                
+
                 System.out.println("Retrieving data for run from the database...");
                 statement = connect.prepareStatement(query);
                 statement.setString(1, runId);
                 statement.setString(2, runId);
                 resultSet = statement.executeQuery();
-                
+
                 processor.storeTimeSeriesFromResultSet(resultSet);
-                
+
                 if (getDiseaseStatesData && !runId.toLowerCase().contains("flute")) { // can't make a disease states chart for flute
                     timeSeriesContainer = processor.getTimeSeriesForInfectionStates(getDiseaseStatesData, getIncidenceData);
                 } else {
                     timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
                 }
-                
+
                 timeSeriesContainer.setRunId(runId);
-                
+
                 container.put(runId, timeSeriesContainer);
-                
+
                 resultSet.close();
             } catch (ClassNotFoundException ex) {
                 throw new TimeSeriesVisualizerException("ClassNotFoundException attempting to get data from database: " + ex.getMessage());
@@ -190,26 +213,19 @@ public class DatabaseUtility {
                             + "and resultset: " + ex.getMessage());
                 }
             }
-            
-            
-            
+
+
+
         }
-        
+
         return container;
-        
+
     }
-    
+
     public ImageSeriesMap retrieveTimeSeriesFromDatabaseFiles(boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
-        
+
         ImageSeriesMap container = new ImageSeriesMap();
-        
-        ApolloDbUtils dbUtils;
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            throw new TimeSeriesVisualizerException("IOException creating ApolloDbUtils: " + ex.getMessage());
-        }
-        
+
         int visualizerKey;
         try {
             visualizerKey = dbUtils.getSoftwareIdentificationKey(visuazlierSoftwareId);
@@ -220,29 +236,29 @@ public class DatabaseUtility {
         } catch (ApolloDatabaseKeyNotFoundException ex) {
             throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException getting software identification key for the visualizer: " + ex.getMessage());
         }
-        
+
         for (String runId : runIds) {
             try {
                 int runIdInt = Integer.parseInt(runId);
                 int simulatorKey = dbUtils.getSoftwareIdentificationKeyForRun(runIdInt);
                 Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(runIdInt,
                         simulatorKey, visualizerKey);
-                
+
                 DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
                 TimeSeriesContainer timeSeriesContainer = new TimeSeriesContainer();
-                
+
                 processor.storeTimeSeriesFromDatabaseFiles(map);
-                
-                if (getDiseaseStatesData && !runId.toLowerCase().contains("flute")) { // can't make a disease states chart for flute
+
+                if (getDiseaseStatesData) { // can't make a disease states chart for flute
                     timeSeriesContainer = processor.getTimeSeriesForInfectionStates(getDiseaseStatesData, getIncidenceData);
                 } else {
                     timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
                 }
-                
+
                 timeSeriesContainer.setRunId(runId);
-                
+
                 container.put(runId, timeSeriesContainer);
-                
+
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException for run " + runId
                         + " when attempting to retrieve the time series from database files: " + ex.getMessage());
@@ -260,22 +276,15 @@ public class DatabaseUtility {
                         + " when attempting to retrieve the time series from database files " + ex.getMessage());
             }
         }
-        
+
         return container;
     }
-    
+
     public Map<String, String> getSeriesLabelsForRunIds(List<String> runIds) throws TimeSeriesVisualizerException {
-        
-        ApolloDbUtils dbUtils;
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            throw new TimeSeriesVisualizerException("IOException creating ApolloDbUtils: " + ex.getMessage());
-        }
-        
+
         Map<String, String> labels = new HashMap<String, String>();
         for (String runId : runIds) {
-            
+
             try {
                 int runIdInt = Integer.parseInt(runId);
                 SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runIdInt);
@@ -294,18 +303,12 @@ public class DatabaseUtility {
                         + " attempting to get software identification from database: " + ex.getMessage());
             }
         }
-        
+
         return labels;
     }
-    
+
     private void addTextDataContentForUrl(String url, String imageName, int visualizerRunId) throws TimeSeriesVisualizerException {
-        ApolloDbUtils dbUtils;
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            throw new TimeSeriesVisualizerException("IOException creating ApolloDbUtils: " + ex.getMessage());
-        }
-        
+
         int dataContentKey;
         try {
             dataContentKey = dbUtils.addTextDataContent(url);
@@ -316,7 +319,7 @@ public class DatabaseUtility {
             throw new TimeSeriesVisualizerException("SQLException attempting to add text data "
                     + "content for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
         }
-        
+
         int runDataDescriptionId;
         try {
             runDataDescriptionId = dbUtils.getRunDataDescriptionId(DbContentDataFormatEnum.URL, imageName,
@@ -345,35 +348,35 @@ public class DatabaseUtility {
                     + "content with run ID for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
         }
     }
-    
+
     public void insertURLsIntoDatabase(Map<String, String> resourcesMap, int visualizerRunId) throws TimeSeriesVisualizerException {
-        
+
         for (String imageName : resourcesMap.keySet()) {
-            
+
             String url = resourcesMap.get(imageName);
             addTextDataContentForUrl(url, imageName, visualizerRunId);
         }
     }
-    
+
     private void close() throws SQLException {
-        
+
         try {
             if (resultSet != null) {
                 resultSet.close();
             }
-            
+
             if (connect != null) {
                 connect.close();
             }
-            
+
             if (statement != null) {
                 statement.close();
             }
-            
+
         } catch (SQLException ex) {
             throw ex;
         }
-        
+
     }
 //    public static void main(String[] args) {
 //
