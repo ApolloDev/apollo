@@ -56,8 +56,7 @@ public class ApolloDbUtils {
     // public final int RECORD_NOT_INSERTED = -6;
     public enum DbContentDataFormatEnum {
 
-        TEXT, URL, ZIP,
-    };
+        TEXT, URL, ZIP,};
 
     public enum DbContentDataType {
 
@@ -1084,6 +1083,29 @@ public class ApolloDbUtils {
 
             throw new SQLException("Error inserting disease state time series for internal run id: " + runId
                     + ", disease state: " + disease_state + ".   Specific error was:\n" + e.getMessage());
+        }
+
+    }
+
+    public void insertTimeSeries(int runId, int popId,
+            String label, List<Integer> ts) throws SQLException,
+            ClassNotFoundException {
+
+        try {
+            PreparedStatement pstmt = getConn().prepareStatement(
+                    "INSERT INTO time_series (run_id, population_id, time_step, pop_count) VALUES (?,?,?,?)");
+            for (int i = 0; i < ts.size(); i++) {
+                pstmt.setInt(1, runId);
+                pstmt.setInt(2, popId);
+                pstmt.setInt(3, i);
+                pstmt.setInt(4, ts.get(i));
+                pstmt.execute();
+            }
+        } catch (SQLException e) {
+            throw new SQLException(
+                    "Error inserting disease state time series for internal run id: "
+                    + runId + ", label: " + label
+                    + ".   Specific error was:\n" + e.getMessage());
         }
 
     }
