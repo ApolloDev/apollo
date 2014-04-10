@@ -7,6 +7,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import edu.pitt.apollo.FluteSimulatorServiceImpl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,16 +32,15 @@ import java.util.logging.Logger;
 public class SSHConnection {
 
     private static final Logger LOGGER = Logger.getLogger(SSHConnection.class.getName());
-    static final ResourceBundle CONNECTION_PROPERTIES = ResourceBundle.getBundle("flute");
+    static final String FLUTE_SSH_PROPERTIES_FILENAME = "flute_ssh.properties";
     private JSch jsch = null;
     private Session session = null;
     static final Properties properties = new Properties();
 
     static {
         InputStream input;
-        String fn = CONNECTION_PROPERTIES.getString("flute_ssh_properties_file");
+        String fn = FluteSimulatorServiceImpl.getApolloDir() + FLUTE_SSH_PROPERTIES_FILENAME;
         try {
-
             input = new FileInputStream(fn);
             properties.load(input);
             System.out.println("Successfully loaded " + fn + " file.");
