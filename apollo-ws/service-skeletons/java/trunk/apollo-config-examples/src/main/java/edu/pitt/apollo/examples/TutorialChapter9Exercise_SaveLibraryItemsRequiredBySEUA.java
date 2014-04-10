@@ -1,5 +1,25 @@
 package edu.pitt.apollo.examples;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.Antiviral;
+import edu.pitt.apollo.types.v2_0_1.AntiviralTreatment;
+import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
+import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.ControlStrategyTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v2_0_1.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_0_1.Treatment;
+import edu.pitt.apollo.types.v2_0_1.Vaccination;
+import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types.v2_0_1.Vaccine;
+
 /**
  *
  * Author: Nick Millett
