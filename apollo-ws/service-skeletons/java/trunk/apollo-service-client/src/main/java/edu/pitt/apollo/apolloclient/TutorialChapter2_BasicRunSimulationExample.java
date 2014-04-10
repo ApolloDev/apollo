@@ -75,14 +75,15 @@ public class TutorialChapter2_BasicRunSimulationExample {
     protected MethodCallStatus checkStatusOfWebServiceCall(RunAndSoftwareIdentification runAndSoftwareId) {
         // give the simulator a chance to launch the simulation
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e1) {
             // this is acceptable
         }
         while (true) {
             MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
             if (status.getStatus() == null) {
-            	System.out.println("Red");
+            	
+            	System.out.println(runAndSoftwareId.getSoftwareId().getSoftwareName() + "Return a NULL MethodCallStatus");
             	
             }
             
@@ -93,10 +94,12 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("No authorization for this run! Error message is:" + status.getMessage());
                     return status;
                 case LOG_FILES_WRITTEN:
-                    System.out.println("The simulator finished writing the log files!");
+                	System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is LOG_FILES_WRITTEN ("
+                            + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     return status;
                 case COMPLETED:
-                    System.out.println("Completed!");
+                    System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is COMPLETED ("
+                            + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     return status;
                 case FAILED:
                 case UNKNOWN_RUNID:
@@ -114,7 +117,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
                             + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                     }
                 case INITIALIZING:
