@@ -332,14 +332,6 @@
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">commissions</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -349,6 +341,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -6222,25 +6222,13 @@ can&apos;t recall whether we should use process or processual_entity for future 
     
 
 
-    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000268 -->
-
-    <Class rdf:about="&obo;APOLLO_SV_00000268">
-        <rdfs:label xml:lang="en">trigger definition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
-        <obo:IAO_0000115 xml:lang="en">An information content entity that specifies a trigger for a conditional specification.</obo:IAO_0000115>
-        <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">TriggerDefinition</apollo_sv:APOLLO_SV_0000040>
-    </Class>
-    
-
-
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000269 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000269">
         <rdfs:label xml:lang="en">disease surveillance trigger definition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000261"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">DiseaseSurveillanceTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An infectious disease control trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -6250,9 +6238,9 @@ can&apos;t recall whether we should use process or processual_entity for future 
 
     <Class rdf:about="&obo;APOLLO_SV_00000270">
         <rdfs:label xml:lang="en">treatment surveillance trigger definition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000261"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">TreatmentSurveillanceTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An infectious disease control trigger definition for a reactive control measure  based on the outcome of disease surveillance.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -6262,7 +6250,7 @@ can&apos;t recall whether we should use process or processual_entity for future 
 
     <Class rdf:about="&obo;APOLLO_SV_00000271">
         <rdfs:label xml:lang="en">temporal trigger definition</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000268"/>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000261"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">TemporalTriggerDefinition</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -8322,15 +8310,15 @@ school facility
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -8973,12 +8961,6 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -8986,6 +8968,12 @@ school facility
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000316">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
