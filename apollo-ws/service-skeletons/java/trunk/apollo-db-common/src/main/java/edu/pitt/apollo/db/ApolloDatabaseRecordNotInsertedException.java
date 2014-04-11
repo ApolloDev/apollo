@@ -4,6 +4,11 @@ import edu.pitt.apollo.db.ApolloDatabaseException;
 
 public class ApolloDatabaseRecordNotInsertedException extends ApolloDatabaseException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2901533445932290045L;
+
 	public ApolloDatabaseRecordNotInsertedException() {
 		// TODO Auto-generated constructor stub
 	}

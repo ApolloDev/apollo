@@ -13,7 +13,12 @@ import java.util.HashMap;
  */
 public class ImageSeriesMap extends HashMap<String, TimeSeriesContainer> {
     
-    public ImageSeriesMap() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 70848079721098603L;
+
+	public ImageSeriesMap() {
         super();
     }
     
