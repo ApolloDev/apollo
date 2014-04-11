@@ -118,7 +118,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	public long getErrorRunId() {
-		return System.currentTimeMillis();
+		return -System.currentTimeMillis();
 	}
 
 	private LibraryServiceEI getLibraryServicePort() {
