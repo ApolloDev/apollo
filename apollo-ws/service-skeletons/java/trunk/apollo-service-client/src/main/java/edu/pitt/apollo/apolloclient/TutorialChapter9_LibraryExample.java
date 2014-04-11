@@ -30,6 +30,7 @@ public class TutorialChapter9_LibraryExample extends TutorialChapter8_RunSimulat
 
 	public TutorialChapter9_LibraryExample() throws MalformedURLException {
 		super();
+		chapter8Config = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig();
 	}
 
 	protected Authentication getAuthentication() {
@@ -40,7 +41,9 @@ public class TutorialChapter9_LibraryExample extends TutorialChapter8_RunSimulat
 	}
 
 	public void saveItems() {
+		
 		RunSimulationMessage runSimulationMessage = chapter8Config.getRunSimulationMessage();
+		
 
 		InfectiousDiseaseScenario infectiousDiseaseScenario = runSimulationMessage.getInfectiousDiseaseScenario();
 		ArrayList<String> labels = new ArrayList<String>();
