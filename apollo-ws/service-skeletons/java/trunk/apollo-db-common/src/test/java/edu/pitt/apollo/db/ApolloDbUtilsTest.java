@@ -1,7 +1,6 @@
 package edu.pitt.apollo.db;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -13,8 +12,6 @@ import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 public class ApolloDbUtilsTest extends TestCase {
 
 	// public TutorialChapter2_BasicRunSimulationExample tutorial;
-	private SoftwareIdentification fredSoftwareId;
-	private SoftwareIdentification gaiaSoftwareId;
 	private Authentication authUser1;
 	private Authentication authUser2;
 
@@ -68,68 +65,45 @@ public class ApolloDbUtilsTest extends TestCase {
 		tutorial = null;
 	}
 
-	private void insertUsers() throws ApolloDatabaseException, ApolloDatabaseRecordAlreadyExistsException {
+//	private void insertUsers() throws ApolloDatabaseException, ApolloDatabaseRecordAlreadyExistsException {
+//
+//		int userKey;
+//		try {
+//			userKey = apolloDbUtils.addUser(authUser1.getRequesterId(), authUser1.getRequesterPassword(), "testemail@email.com");
+//			assertEquals(1, userKey);
+//
+//			boolean canRun = true;
+//			boolean canViewCache = true;
+//			apolloDbUtils.addRole(tutorial.getSoftwareIdentificationForSimulator(), canRun, canViewCache);
+//
+//			userKey = apolloDbUtils.getUserKey(authUser1.getRequesterId(), authUser1.getRequesterPassword());
+//			assertEquals(1, userKey);
+//
+//			// userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(),
+//			// authUser2.getRequesterPassword());
+//			// assertEquals(ApolloDbUtils.RECORD_NOT_FOUND, userKey);
+//
+//			userKey = apolloDbUtils
+//					.addUser(authUser2.getRequesterId(), authUser2.getRequesterPassword(), "testemail2@email2.com");
+//			assertEquals(2, userKey);
+//
+//			// userKey = apolloDbUtils.addUser(authUser2.getRequesterId(),
+//			// authUser2.getRequesterPassword(), "hello!@hello.com");
+//			// assertEquals(ApolloDbUtils.RECORD_ALREADY_EXISTS, userKey);
+//
+//			userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(), authUser2.getRequesterPassword());
+//			assertEquals(2, userKey);
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
-		int userKey;
-		try {
-			userKey = apolloDbUtils.addUser(authUser1.getRequesterId(), authUser1.getRequesterPassword(), "testemail@email.com");
-			assertEquals(1, userKey);
-
-			boolean canRun = true;
-			boolean canViewCache = true;
-			apolloDbUtils.addRole(tutorial.getSoftwareIdentificationForSimulator(), canRun, canViewCache);
-
-			userKey = apolloDbUtils.getUserKey(authUser1.getRequesterId(), authUser1.getRequesterPassword());
-			assertEquals(1, userKey);
-
-			// userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(),
-			// authUser2.getRequesterPassword());
-			// assertEquals(ApolloDbUtils.RECORD_NOT_FOUND, userKey);
-
-			userKey = apolloDbUtils
-					.addUser(authUser2.getRequesterId(), authUser2.getRequesterPassword(), "testemail2@email2.com");
-			assertEquals(2, userKey);
-
-			// userKey = apolloDbUtils.addUser(authUser2.getRequesterId(),
-			// authUser2.getRequesterPassword(), "hello!@hello.com");
-			// assertEquals(ApolloDbUtils.RECORD_ALREADY_EXISTS, userKey);
-
-			userKey = apolloDbUtils.getUserKey(authUser2.getRequesterId(), authUser2.getRequesterPassword());
-			assertEquals(2, userKey);
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/* used by AB to build the "run" record */
-	private void insertSoftwareIds() {
-		// test inserting & retrieving
-		int fredKey;
-		try {
-			fredKey = apolloDbUtils.getSoftwareIdentificationKey(fredSoftwareId);
-			assertEquals(1, fredKey);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			fail(e.getMessage());
-		}
-
-		// test inserting new software id
-		int gaiaKey;
-		try {
-			gaiaKey = apolloDbUtils.getSoftwareIdentificationKey(gaiaSoftwareId);
-			assertEquals(2, gaiaKey);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			fail(e.getMessage());
-
-		}
-
-	}
+	
 
 	public void testAddTextDataContent() {
 		int key;
@@ -142,9 +116,6 @@ public class ApolloDbUtilsTest extends TestCase {
 
 	}
 
-	private void insertCfgFile() {
-		// FRED CONFIG FILE
-	}
 
 	public void testGetSoftwareIdentification() {
 		SoftwareIdentification fredSoftwareId;
