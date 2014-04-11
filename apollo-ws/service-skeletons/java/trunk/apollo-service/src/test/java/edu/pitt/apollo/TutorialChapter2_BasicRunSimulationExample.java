@@ -22,7 +22,6 @@ import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI;
 import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
@@ -54,7 +53,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 
 	private ApolloServiceEI port;
 
-	private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0/", "ApolloService_v2.0");
+	//private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0/", "ApolloService_v2.0");
 
 	public TutorialChapter2_BasicRunSimulationExample() throws MalformedURLException {
 		//ApolloServiceV201 ss = new ApolloServiceV201(new URL(WSDL_LOC), SERVICE_NAME);
@@ -279,6 +278,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
 			case UNAUTHORIZED:
 				System.out.println("No authorization for this run! Error message is:" + status.getMessage());
 				return status;
+			case LOG_FILES_WRITTEN:
 			case COMPLETED:
 				System.out.println("Completed!");
 				return status;
@@ -291,12 +291,23 @@ public class TutorialChapter2_BasicRunSimulationExample {
 			case HELD:
 			case EXITING:
 			case WAITING:
+			case CALLED_SIMULATOR:
+			case CALLED_TRANSLATOR:
+			case CALLED_VISUALIZER:
+			case INITIALIZING:
+			case STAGING:
+			case TRANSLATING:
+			case TRANSLATION_COMPLETED:
 				System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active (" +
 						status.getStatus().toString() + "). The status message is: " + status.getMessage());
 				try {
 					Thread.sleep(20000);
 				} catch (InterruptedException e) {
 				}
+			case UNKNOWN_RUNID:
+				break;
+			default:
+				break;
 			}
 		}
 	}

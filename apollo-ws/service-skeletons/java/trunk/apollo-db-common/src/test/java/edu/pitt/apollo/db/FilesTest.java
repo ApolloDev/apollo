@@ -1,14 +1,7 @@
 package edu.pitt.apollo.db;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-
 import junit.framework.TestCase;
 //import edu.pitt.apollo.TutorialChapter2_BasicRunSimulationExample;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
 public class FilesTest extends TestCase {
 
