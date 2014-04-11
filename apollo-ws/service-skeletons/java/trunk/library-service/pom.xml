@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>library-service</artifactId>
-	<name>-- LibraryService Web Service Provider</name>
+	<name>-- LibraryService Web Service </name>
 	<packaging>bundle</packaging>
 
 	<repositories>
