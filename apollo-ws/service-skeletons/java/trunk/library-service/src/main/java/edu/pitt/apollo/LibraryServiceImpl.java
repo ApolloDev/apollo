@@ -50,7 +50,7 @@ import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0.1.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
 	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
@@ -212,7 +212,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			cli.setItemCreationTime(date);
 			cli.setItemDescription(itemDescription);
 			cli.setItemSource(itemSource);
-			cli.setItemType(ApolloIndexableItemTypeEnum.fromValue(itemType));
+			cli.setItemType(ApolloIndexableItemTypeEnum.fromValue(itemType + "Type"));
 			cli.setItemUuid(apolloUuid);
 			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
 			db4o.store(cli);
