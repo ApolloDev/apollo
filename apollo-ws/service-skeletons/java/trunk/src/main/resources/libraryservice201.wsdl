@@ -249,7 +249,7 @@
 	<wsdl:service name="LibraryService_v2.0.1">
 		<wsdl:port binding="tns:LibraryServiceBinding" name="LibraryServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/libraryservice20/services/libraryservice" />
+				location="http://localhost:8080/libraryservice2.0.1/services/libraryservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
