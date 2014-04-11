@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -61,6 +63,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
     private static Queue<SimulatorThread> simulatorThreadQueue;
     private static List<Integer> queuedThreads = new ArrayList<Integer>();
     private static String APOLLO_DIR = "";
+    private static ApolloDbUtils dbUtils;
     // executor for the simulator threads
     // private static ExecutorService simulatorExecutor =
     // Executors.newFixedThreadPool(5);
@@ -86,7 +89,11 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
             System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
             APOLLO_DIR = "";
         }
-
+        try {
+            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+        } catch (IOException ex) {
+            System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
+        }
     }
 
     public static String getRunDirectory(int runId) {
@@ -115,7 +122,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
     public static synchronized void simulatorRunFinished() {
         numRunningSimulatorThreads--;
     }
-    
+
     public static synchronized boolean addSimulatorThread(SimulatorThread runnable) {
 
         // System.out.println(System.currentTimeMillis() +
@@ -167,7 +174,6 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 //        String prettyJsonString = gson.toJson(je);
 //        return prettyJsonString;
 //    }
-
     // public static ByteArrayOutputStream getJSONBytes(
     // SimulatorConfiguration simConfig) {
     // try {
@@ -199,7 +205,6 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 //            return null;
 //        }
 //    }
-
 //    public static synchronized RunIdProperties getOrAddRunId(
 //            String simConfigHash, SoftwareIdentification sid) {
 //
@@ -216,7 +221,6 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 //        return runIdProps;
 //
 //    }
-
     public static void main(String[] args) {
     }
 
@@ -237,7 +241,6 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
             return status;
         }
     }
-
 
     @Override
     @WebResult(name = "runSimulationsResult", targetNamespace = "")
@@ -316,19 +319,19 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
                 System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
             }
         }
-        ApolloDbUtils dbUtils;
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            try {
-                RunUtils.setError(getRunDirectory(runId), "IOException attempting to create ApolloDbUtils for run "
-                        + runId + ": " + ex.getMessage());
-                return;
-            } catch (IOException ex1) {
-                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
-                return;
-            }
-        }
+//        ApolloDbUtils dbUtils;
+//        try {
+//            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+//        } catch (IOException ex) {
+//            try {
+//                RunUtils.setError(getRunDirectory(runId), "IOException attempting to create ApolloDbUtils for run "
+//                        + runId + ": " + ex.getMessage());
+//                return;
+//            } catch (IOException ex1) {
+//                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
+//                return;
+//            }
+//        }
         // create the run thread
         SimulatorThread worker = new SimulatorThread(runSimulationMessage, dbUtils, runId, false, true);
 
