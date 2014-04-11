@@ -1,7 +1,6 @@
 package edu.pitt.apollo.examples;
 
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 
 import edu.pitt.apollo.types.v2_0_1.AgeRangeCategory;
 import edu.pitt.apollo.types.v2_0_1.Category;

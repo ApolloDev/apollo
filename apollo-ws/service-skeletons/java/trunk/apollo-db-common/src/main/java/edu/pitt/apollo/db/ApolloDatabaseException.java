@@ -2,6 +2,11 @@ package edu.pitt.apollo.db;
 
 public class ApolloDatabaseException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 688903643816249612L;
+
 	public ApolloDatabaseException() {
 		// TODO Auto-generated constructor stub
 	}
