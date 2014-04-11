@@ -13,14 +13,6 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>apollo-service</artifactId>
-			<!-- Classifier below used with Maven Assembly Plugin to specify subset 
-				of above artifact needed. -->
-			<classifier>jaxws</classifier>
-			<version>2.0.1-SNAPSHOT</version>
-		</dependency>
  		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
