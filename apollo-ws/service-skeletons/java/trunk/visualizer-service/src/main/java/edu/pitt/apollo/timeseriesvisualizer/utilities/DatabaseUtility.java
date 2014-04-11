@@ -46,7 +46,7 @@ public class DatabaseUtility {
     static final Properties properties = new Properties();
     private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
     private static String APOLLO_DIR;
-    ApolloDbUtils dbUtils;
+    private static ApolloDbUtils dbUtils;
 
     static {
         InputStream input;
@@ -71,7 +71,11 @@ public class DatabaseUtility {
             System.out.println("\n\n\nError loading "
                     + fn + " file\n\n\n");
         }
-
+        try {
+            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+        } catch (IOException ex) {
+            System.out.println("Error creating ApolloDbUtils when initializing the Visualizer database utility: " + ex.getMessage());
+        }
     }
 
     public static String getDatabasePropertiesFilename() {
@@ -82,11 +86,7 @@ public class DatabaseUtility {
         this.runIds = runIds;
         this.visuazlierSoftwareId = visualizerSoftwareId;
 
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            throw new TimeSeriesVisualizerException("IOException creating ApolloDbUtils: " + ex.getMessage());
-        }
+
     }
 
     public String getSimulatorSoftwareNameForRun(int runId) throws TimeSeriesVisualizerException {
