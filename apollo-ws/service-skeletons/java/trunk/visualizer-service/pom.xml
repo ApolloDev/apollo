@@ -9,7 +9,7 @@
         <version>2.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>visualizer-service</artifactId>
-    <name>-- VisualizerService Web Service Provider</name>
+    <name>-- VisualizerService Web Service</name>
     <packaging>bundle</packaging>
 
     <dependencies>
