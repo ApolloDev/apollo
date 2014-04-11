@@ -66,7 +66,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 		RunAndSoftwareIdentification vaccinationRunAndSoftwareId = tutorialChapter8
 				.runSimulationAndDisplayResults(runSimulationMessageWithVaccination);
 
-		tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(tutorialChapter2Config.getAuthentication(),
+		tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(TutorialChapter2_ExampleConfig.getAuthentication(),
 				noVaccinationRunAndSoftwareId.getRunId(), vaccinationRunAndSoftwareId.getRunId());
 	}
 

@@ -32,7 +32,7 @@ public class ImageGenerator {
     private static final String IMAGE_FILE_TYPE = rb.getString("image_file_type");
     private static final String IMAGE_BASE_URL = rb.getString("image_base_url");
     private List<String> runIds;
-    private SoftwareIdentification visualizerSoftwareId;
+    //private SoftwareIdentification visualizerSoftwareId;
     private Map<String, String> diseaseStateImagePathMap;
     private Map<String, String> incidenceImagePathMap;
 //    private Map<String, String> runIdSeriesLabels;
@@ -67,7 +67,7 @@ public class ImageGenerator {
 //    }
     public ImageGenerator(List<String> runIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) throws TimeSeriesVisualizerException {
         this.runIds = runIds;
-        this.visualizerSoftwareId = visualizerSoftwareId;
+        //this.visualizerSoftwareId = visualizerSoftwareId;
         this.visualizerRunId = visualizerRunId;
         multiSimulatorChart = (runIds.size() > 1);
         // get the visualizer ID from the run ID

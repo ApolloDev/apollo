@@ -2,7 +2,6 @@ package edu.pitt.apollo.timeseriesvisualizer.types;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
