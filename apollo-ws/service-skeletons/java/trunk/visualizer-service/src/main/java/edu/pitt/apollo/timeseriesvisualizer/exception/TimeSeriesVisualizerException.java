@@ -11,7 +11,12 @@ package edu.pitt.apollo.timeseriesvisualizer.exception;
  */
 public class TimeSeriesVisualizerException extends Exception {
     
-    public TimeSeriesVisualizerException(String s) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1560160811568073131L;
+
+	public TimeSeriesVisualizerException(String s) {
         super(s);
     }
     

@@ -1,9 +1,5 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
-import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
-import edu.pitt.apollo.timeseriesvisualizer.types.IncidenceTimeSeriesContainer;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,8 +14,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
-import org.apache.commons.lang3.ArrayUtils;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisState;
@@ -29,13 +26,17 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.chart.title.TextTitle;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
+
+import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 
 /**
  *
@@ -48,8 +49,13 @@ import org.jfree.ui.RectangleInsets;
  */
 class SimpleNumberAxis extends NumberAxis implements Serializable {
 
-    @Override
-    public List refreshTicks(Graphics2D g2, AxisState state,
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4979128805460961375L;
+
+	@Override
+    public List<NumberTick> refreshTicks(Graphics2D g2, AxisState state,
             Rectangle2D dataArea, RectangleEdge edge) {
 
         // for a tick interval >= 5, we add a tick for 1 and then keep the default ticks,
@@ -58,8 +64,9 @@ class SimpleNumberAxis extends NumberAxis implements Serializable {
         // for a tick interval < 5, we add a tick for 1 and then start measuring the ticks from there,
         // e.g. for a tick interval of 2, we would have 1, 3, 5, 7,...
         
-        List allTicks = super.refreshTicks(g2, state, dataArea, edge);
-        List myTicks = new ArrayList();
+        @SuppressWarnings("unchecked")
+		List<NumberTick> allTicks = super.refreshTicks(g2, state, dataArea, edge);
+        List<NumberTick> myTicks = new ArrayList<NumberTick>();
 
         // get the default tick interval
         int tickInterval = (int) super.getTickUnit().getSize();
@@ -192,7 +199,7 @@ public class VisualizerChartUtility {
 
         // get greatest data value
         double maxYValue = 0.0, maxXValue = 0.0;
-        int seriesCount = dataset.getSeriesCount();
+        //int seriesCount = dataset.getSeriesCount();
         for (int j = 0; j < dataset.getSeriesCount(); j++) {
             for (int i = 0; i < dataset.getItemCount(j); i++) {
                 if (dataset.getYValue(j, i) > maxYValue) {
@@ -363,10 +370,10 @@ public class VisualizerChartUtility {
         final XYSeriesCollection dataset = new XYSeriesCollection();
 //        Map<String, double[]> incidenceMap = container.getIncidenceTimeSeriesMap();
 
-        int i = 0;
+       
         for (String runId : imageSeriesMap.keySet()) {
             dataset.addSeries(createXYSeries(imageSeriesMap.get(runId).getSeries(InfectionStateEnum.NEWLY_EXPOSED), runIdSeriesLabels.get(runId), 1));
-            i++;
+            
         }
 
         return dataset;

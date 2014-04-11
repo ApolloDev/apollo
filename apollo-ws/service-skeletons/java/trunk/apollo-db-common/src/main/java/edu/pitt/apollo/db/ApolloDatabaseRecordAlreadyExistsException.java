@@ -2,6 +2,11 @@ package edu.pitt.apollo.db;
 
 public class ApolloDatabaseRecordAlreadyExistsException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8723646112504880212L;
+
 	public ApolloDatabaseRecordAlreadyExistsException() {
 		// TODO Auto-generated constructor stub
 	}
