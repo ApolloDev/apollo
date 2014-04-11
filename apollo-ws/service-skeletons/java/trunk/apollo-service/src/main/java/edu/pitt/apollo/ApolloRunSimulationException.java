@@ -11,7 +11,12 @@ package edu.pitt.apollo;
  */
 public class ApolloRunSimulationException extends Exception {
     
-    public ApolloRunSimulationException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -809059993271749431L;
+
+	public ApolloRunSimulationException(String message) {
         super(message);
     }
     

@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>syntheticpopulation-service</artifactId>
-	<name>-- Synthetic Population Web Service Provider</name>
+	<name>-- Synthetic Population Web Service</name>
 	<packaging>bundle</packaging>
 
 	<dependencies>
