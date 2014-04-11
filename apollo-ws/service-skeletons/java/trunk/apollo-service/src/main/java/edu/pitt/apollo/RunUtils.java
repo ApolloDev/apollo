@@ -24,7 +24,7 @@ public class RunUtils {
     }
 
     public static String getErrorRunId() {
-        return ApolloServiceImpl.getRunErrorPrefix()
+        return "-" + ApolloServiceImpl.getRunErrorPrefix()
                 + Long.toString(System.currentTimeMillis());
     }
 
