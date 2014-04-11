@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +22,17 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysql.jdbc.Statement;
 
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.Role;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import java.util.ArrayList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -170,12 +169,12 @@ public class ApolloDbUtils {
         }
     }
 
-    // user key doesn't exist
+//    // user key doesn't exist
     public int addUser(String requesterId, String requesterPassword, String email) throws SQLException, ClassNotFoundException,
             ApolloDatabaseRecordAlreadyExistsException {
         // check authorization?!
         try {
-            int userKey = getUserKey(requesterId, requesterPassword);
+            getUserKey(requesterId, requesterPassword);
             throw new ApolloDatabaseRecordAlreadyExistsException("User " + requesterId + " already exists in the database.");
         } catch (ApolloDatabaseKeyNotFoundException e) {
             // good this means the user doesn't already exist
@@ -366,34 +365,34 @@ public class ApolloDbUtils {
     }
 
     // okay so user A can see...?
-    private List<Role> getUserRoles(int userId) throws SQLException, ClassNotFoundException {
-        // List<Role> roles = new ArrayList<Role>();
-        //
-        // String query =
-        // "SELECT r.software_id, r.can_run, r.can_view_cached_results from roles r, user_roles ur where "
-        // + "r.id = ur.role_id AND ur.user_id = ?";
-        // PreparedStatement pstmt = getConn().prepareStatement(query);
-        // try {
-        // pstmt.setInt(1, userId);
-        // ResultSet rs = pstmt.executeQuery();
-        // while (rs.next()) {
-        // Role r = new Role();
-        // r.setSoftwareIdentification(getSoftwareIdentification(rs.getInt(1)));
-        // r.setCanRun(rs.getBoolean(2));
-        // r.setCanViewCachedResults(rs.getBoolean(3));
-        // roles.add(r);
-        // }
-        // } finally {
-        // pstmt.close();
-        // }
-        // return roles;
-        return null;
-    }
+//    private List<Role> getUserRoles(int userId) throws SQLException, ClassNotFoundException {
+//        // List<Role> roles = new ArrayList<Role>();
+//        //
+//        // String query =
+//        // "SELECT r.software_id, r.can_run, r.can_view_cached_results from roles r, user_roles ur where "
+//        // + "r.id = ur.role_id AND ur.user_id = ?";
+//        // PreparedStatement pstmt = getConn().prepareStatement(query);
+//        // try {
+//        // pstmt.setInt(1, userId);
+//        // ResultSet rs = pstmt.executeQuery();
+//        // while (rs.next()) {
+//        // Role r = new Role();
+//        // r.setSoftwareIdentification(getSoftwareIdentification(rs.getInt(1)));
+//        // r.setCanRun(rs.getBoolean(2));
+//        // r.setCanViewCachedResults(rs.getBoolean(3));
+//        // roles.add(r);
+//        // }
+//        // } finally {
+//        // pstmt.close();
+//        // }
+//        // return roles;
+//        return null;
+//    }
 
-    private int addUserRole(int userId, int roleId) {
-
-        return 0;
-    }
+//    private int addUserRole(int userId, int roleId) {
+//
+//        return 0;
+//    }
 
     public int addTextDataContent(InputStream content) throws SQLException, ClassNotFoundException, IOException {
         return addTextDataContent(IOUtils.toString(content));

@@ -37,8 +37,8 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 public class TutorialChapter2_BasicRunSimulationExample {
 
-    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice201/services/apolloservice?wsdl";
-    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
+    public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
+    //public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
     private ApolloServiceEI port;
     private TutorialChapter2_ExampleConfig config;
     private static final QName SERVICE_NAME = new QName("http://service.apollo.pitt.edu/apolloservice/v2_0_1/",
