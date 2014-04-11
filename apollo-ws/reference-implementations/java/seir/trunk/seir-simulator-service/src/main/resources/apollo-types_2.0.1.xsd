@@ -52,6 +52,9 @@
 			<enumeration value="exiting" />
 			<enumeration value="held" />
 			<enumeration value="queued" />
+			<enumeration value="called_translator" />
+			<enumeration value="called_visualizer" />
+			<enumeration value="called_simulator" />
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
@@ -285,7 +288,7 @@
 	<complexType name="UrlOutputResource">
 		<sequence>
 			<element name="description" type="string" />
-			<element name="URL" type="anySimpleType" />
+			<element name="URL" type="token" />
 		</sequence>
 	</complexType>
 
@@ -1712,18 +1715,18 @@
 
 	<simpleType name="ApolloIndexableItemTypeEnum">
 		<restriction base="string">
-			<enumeration value="infectionType" />
-			<enumeration value="infectionAcquisitionType" />
-			<enumeration value="infectionDiseaseType" />
-			<enumeration value="infectiousDiseaseControlStrategyType" />
-			<enumeration value="infectiousDiseaseScenarioType" />
-			<enumeration value="contaminationType" />
-			<enumeration value="contaminatedThingCensusType" />
-			<enumeration value="populationAndEnvironmentCensusType" />
-			<enumeration value="populationInfectionImmunityCensusType" />
-			<enumeration value="populationTreatmentCensusType" />
-			<enumeration value="vaccinationType" />
-			<enumeration value="antiviralTreatmentType" />
+			<enumeration value="InfectionType" />
+			<enumeration value="InfectionAcquisitionType" />
+			<enumeration value="InfectionDiseaseType" />
+			<enumeration value="InfectiousDiseaseControlStrategyType" />
+			<enumeration value="InfectiousDiseaseScenarioType" />
+			<enumeration value="ContaminationType" />
+			<enumeration value="ContaminatedThingCensusType" />
+			<enumeration value="PopulationAndEnvironmentCensusType" />
+			<enumeration value="PopulationInfectionImmunityCensusType" />
+			<enumeration value="PopulationTreatmentCensusType" />
+			<enumeration value="VaccinationType" />
+			<enumeration value="AntiviralTreatmentType" />
 		</restriction>
 	</simpleType>
 
@@ -2160,11 +2163,4 @@
 
 
 
-	<complexType name="AaaDummyType">
-		<sequence>
-			<element name="elementIWantToScreenSnapWithoutArrows"
-				type="tns:PlaceClosureControlStrategy">
-			</element>
-		</sequence>
-	</complexType>
 </schema>
