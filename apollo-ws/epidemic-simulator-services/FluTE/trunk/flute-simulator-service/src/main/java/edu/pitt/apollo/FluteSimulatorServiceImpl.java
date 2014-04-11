@@ -57,6 +57,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     private static Queue<SimulatorThread> simulatorThreadQueue;
     private static List<Integer> queuedThreads = new ArrayList<Integer>();
     private static String APOLLO_DIR = "";
+    private static ApolloDbUtils dbUtils;
     // executor for the simulator threads
     // private static ExecutorService simulatorExecutor =
     // Executors.newFixedThreadPool(5);
@@ -81,6 +82,12 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
         } else {
             System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
             APOLLO_DIR = "";
+        }
+        
+          try {
+            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+        } catch (IOException ex) {
+            System.out.println("Error creating ApoloDbUtils when initializing FluTE web service: " + ex.getMessage());
         }
     }
 
@@ -216,19 +223,19 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
                 System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
             }
         }
-        ApolloDbUtils dbUtils;
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            try {
-                RunUtils.setError(getRunDirectory(runId), "IOException attempting to create ApolloDbUtils for run "
-                        + runId + ": " + ex.getMessage());
-                return;
-            } catch (IOException ex1) {
-                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
-                return;
-            }
-        }
+//        ApolloDbUtils dbUtils;
+//        try {
+//            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+//        } catch (IOException ex) {
+//            try {
+//                RunUtils.setError(getRunDirectory(runId), "IOException attempting to create ApolloDbUtils for run "
+//                        + runId + ": " + ex.getMessage());
+//                return;
+//            } catch (IOException ex1) {
+//                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
+//                return;
+//            }
+//        }
         // create the run thread
         SimulatorThread worker = new SimulatorThread(runId, runSimulationMessage, dbUtils);
 
