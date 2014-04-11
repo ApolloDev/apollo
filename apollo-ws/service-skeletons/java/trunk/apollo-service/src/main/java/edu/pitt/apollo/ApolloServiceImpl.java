@@ -126,7 +126,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	private LibraryServiceEI getLibraryServicePort() {
 		URL libraryServiceURL;
 		try {
-			libraryServiceURL = new URL("http://localhost:8080/libraryservice2.0/services/libraryservice?wsdl");
+			libraryServiceURL = new URL("http://localhost:8080/libraryservice2.0.1/services/libraryservice?wsdl");
 
 			return new LibraryServiceV201(libraryServiceURL).getLibraryServiceEndpoint();
 
