@@ -10,14 +10,14 @@
 	<artifactId>library-service</artifactId>
 	<name>-- LibraryService Web Service Provider</name>
 	<packaging>bundle</packaging>
-	
-		<repositories>
+
+	<repositories>
 		<repository>
 			<id>source.db4o</id>
 			<url>http://source.db4o.com/maven/</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -25,14 +25,20 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>com.db4o</groupId>
 			<artifactId>db4o-core-java5</artifactId>
 			<version>8.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+		
+			<groupId>edu.pitt.apollo</groupId>
+			<artifactId>apollo-types</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-	
+
 
 
 	<build>
