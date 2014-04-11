@@ -4,6 +4,11 @@ import edu.pitt.apollo.db.ApolloDatabaseException;
 
 public class ApolloDatabaseKeyNotFoundException extends ApolloDatabaseException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1182514340181821837L;
+
 	public ApolloDatabaseKeyNotFoundException() {
 		// TODO Auto-generated constructor stub
 	}

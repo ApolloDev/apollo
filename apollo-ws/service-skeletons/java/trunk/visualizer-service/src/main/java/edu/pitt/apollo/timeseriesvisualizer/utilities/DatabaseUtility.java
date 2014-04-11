@@ -1,13 +1,5 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
-import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
-import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,8 +15,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
+import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
+import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
+import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
  *
@@ -38,7 +37,7 @@ import java.util.logging.Logger;
 public class DatabaseUtility {
 
     private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
-    private static final String[] seirTimeSeriesNames = {"susceptible", "exposed", "infectious", "recovered"};
+    //private static final String[] seirTimeSeriesNames = {"susceptible", "exposed", "infectious", "recovered"};
     private Connection connect = null;
     private ResultSet resultSet = null;
     private PreparedStatement statement = null;
