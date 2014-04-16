@@ -666,12 +666,22 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="getVisualizerOutputResources">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v2_0_1/getVisualizerOutputResources" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
 
 	<wsdl:service name="ApolloService_v2.0.1">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/apolloservice20/services/apolloservice" />
+				location="http://localhost:8080/apolloservice201/services/apolloservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
