@@ -47,7 +47,7 @@ import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration
  */
 public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
-    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0/services/apolloservice?wsdl";
+    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
     public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 
     private static Authentication getAuthentication() {
@@ -412,10 +412,12 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         ApolloServiceEI port = service.getApolloServiceEndpoint();
         System.out.println(port.getRegisteredServices());
 
-        addAcVcm(port);
-        addAcAvt(port);
-        addAllSccm(port);
-        addIndividualSccm(port);
+//        addAcVcm(port);
+//        addAcAvt(port);
+//        addAllSccm(port);
+//        addIndividualSccm(port);
+        
+        System.out.println(port.getUuidsForLibraryItemsGivenType("InfectiousDiseaseControlStrategy").getUuids().size());
 
     }
 }
