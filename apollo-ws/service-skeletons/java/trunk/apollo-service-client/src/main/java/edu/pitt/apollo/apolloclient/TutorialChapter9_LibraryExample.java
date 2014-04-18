@@ -7,6 +7,7 @@ import edu.pitt.apollo.examples.TutorialChapter2_ExampleConfig;
 import edu.pitt.apollo.examples.TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig;
 import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.DiseaseSurveillanceTriggerDefinition;
 import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.IndividualTreatmentControlStrategy;
@@ -16,7 +17,6 @@ import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseControlStrategy;
 import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v2_0_1.TriggerDefinition;
 import edu.pitt.apollo.types.v2_0_1.Vaccination;
 
@@ -109,8 +109,9 @@ public class TutorialChapter9_LibraryExample extends TutorialChapter8_RunSimulat
 					+ ((FixedDuration) vaccinationControlStrategy.getControlStrategyResponseDelay()).getValue());
 		}
 		for (TriggerDefinition trigger : vaccinationControlStrategy.getControlStrategyStartTime()) {
-			System.out.println("\tControl Strategy Start Time: "
-					+ ((TemporalTriggerDefinition) trigger).getTimeSinceTimeScaleZero().getValue());
+			DiseaseSurveillanceTriggerDefinition triggerDefinition = (DiseaseSurveillanceTriggerDefinition) trigger;
+			System.out.println("\tControl Strategy Starts when : " +
+					 triggerDefinition.getReactiveControlStrategyOperator().toString() + " " + triggerDefinition.getReactiveControlStrategyThreshold() + " " + triggerDefinition.getReactiveControlStrategyTest() + " " + triggerDefinition.getUnitOfMeasureForThreshold().toString());
 
 		}
 
