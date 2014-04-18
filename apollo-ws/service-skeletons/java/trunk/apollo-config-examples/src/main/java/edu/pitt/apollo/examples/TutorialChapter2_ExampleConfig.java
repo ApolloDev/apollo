@@ -60,16 +60,16 @@ public class TutorialChapter2_ExampleConfig {
 
 	public static SoftwareIdentification getSoftwareIdentificationForSimulator() {
 
-		 SoftwareIdentification softwareId = new SoftwareIdentification();
-		 softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
-		 softwareId.setSoftwareName("FRED");
-		 softwareId.setSoftwareVersion("2.0.1_i");
-		 softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
-//		SoftwareIdentification softwareId = new SoftwareIdentification();
-//		softwareId.setSoftwareDeveloper("UPitt");
-//		softwareId.setSoftwareName("SEIR");
-//		softwareId.setSoftwareVersion("1.0");
-//		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
+//		 SoftwareIdentification softwareId = new SoftwareIdentification();
+//		 softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
+//		 softwareId.setSoftwareName("FRED");
+//		 softwareId.setSoftwareVersion("2.0.1_i");
+//		 softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
+		SoftwareIdentification softwareId = new SoftwareIdentification();
+		softwareId.setSoftwareDeveloper("UPitt");
+		softwareId.setSoftwareName("SEIR");
+		softwareId.setSoftwareVersion("1.0");
+		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
 		return softwareId;
 	}
 
@@ -219,7 +219,7 @@ public class TutorialChapter2_ExampleConfig {
 	private DiseaseOutcomeWithProbability getProbabilitySymptomaticForDisease() {
 		/* set the disease to have a 70% symptomatic rate */
 		ProbabilisticParameter probabilisticParameter = new ProbabilisticParameter();
-		probabilisticParameter.setProbability(0.7);
+		probabilisticParameter.setProbability(0.7111);
 
 		DiseaseOutcomeWithProbability diseaseOutcomeWithProbability = new DiseaseOutcomeWithProbability();
 		diseaseOutcomeWithProbability.setDiseaseOutcome(DiseaseOutcomeEnum.SYMPTOMATIC);
@@ -239,7 +239,7 @@ public class TutorialChapter2_ExampleConfig {
 
 	protected SimulatorTimeSpecification getSimulatorTimeSpecification() {
 		SimulatorTimeSpecification timeSpec = new SimulatorTimeSpecification();
-		timeSpec.setRunLength(new BigInteger("100"));
+		timeSpec.setRunLength(new BigInteger("90"));
 		timeSpec.setUnitOfTimeForSimulatorTimeStep(UnitOfTimeEnum.DAY);
 		timeSpec.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(1.0);
 		return timeSpec;
