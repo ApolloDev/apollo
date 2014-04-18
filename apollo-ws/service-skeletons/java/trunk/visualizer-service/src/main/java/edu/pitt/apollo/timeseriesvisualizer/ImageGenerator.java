@@ -199,14 +199,14 @@ public class ImageGenerator {
         visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
 
         List<String> runIds = new ArrayList<String>();
-        runIds.add("1");
+        runIds.add("3");
 //        runIds.add("3");
 
         Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("1", "FluTE");
+        runIdSeriesLabels.put("3", "FluTE");
 //        runIdSeriesLabels.put("3", "SEIR");
 
-        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "5");
+        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "20");
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {
