@@ -171,7 +171,26 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
 
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>edu.pitt.apollo.apolloclient.TutorialChapter2_BasicRunSimulationExample</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+					</execution>
+				</executions>
 			</plugin>
 
 
