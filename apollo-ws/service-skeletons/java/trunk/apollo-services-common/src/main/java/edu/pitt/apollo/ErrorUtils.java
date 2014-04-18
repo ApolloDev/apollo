@@ -36,7 +36,7 @@ public class ErrorUtils {
 
 	private static Map<File, FileLocks> filesInUse = new HashMap<File, FileLocks>();
 
-	private synchronized static void getFileLock(File errorFile, FileLockAction action) {
+	private static void getFileLock(File errorFile, FileLockAction action) {
 		FileLocks fileLocks = filesInUse.get(errorFile);
 		if (fileLocks == null) {
 			fileLocks = new FileLocks();
