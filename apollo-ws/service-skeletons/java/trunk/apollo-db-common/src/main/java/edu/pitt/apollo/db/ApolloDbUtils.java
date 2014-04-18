@@ -86,6 +86,7 @@ public class ApolloDbUtils {
         dbcon = null;
         try {
             Class.forName(dbClass);
+            System.out.println("Getting db connection!");
             dbcon = DriverManager.getConnection(url, user, password);
             dbcon.setAutoCommit(true);
         } catch (SQLException e) {
