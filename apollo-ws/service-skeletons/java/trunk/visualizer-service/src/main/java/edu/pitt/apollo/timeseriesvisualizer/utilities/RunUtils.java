@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-
 
 public class RunUtils {
 
@@ -20,7 +20,12 @@ public class RunUtils {
             throws IOException {
 
         File dir = new File(directory);
-        dir.mkdirs();
+
+        if (dir.exists()) {
+            FileUtils.cleanDirectory(dir);
+        } else {
+            dir.mkdirs();
+        }
 
         return dir.getAbsolutePath();
     }
@@ -56,7 +61,7 @@ public class RunUtils {
 
     public static synchronized String getError(String directory) throws IOException {
 
-        File error = new File(directory+ File.separator + "error.txt");
+        File error = new File(directory + File.separator + "error.txt");
 
         BufferedReader br = new BufferedReader(new FileReader(error));
         String errorMsg = br.readLine();
@@ -78,7 +83,7 @@ public class RunUtils {
 
     public static MethodCallStatus getStatus(String directory)
             throws IOException {
-        
+
         MethodCallStatus status = new MethodCallStatus();
         File error = new File(directory + File.separator + "error.txt");
         File finished = new File(directory + File.separator + "finished.txt");
@@ -98,7 +103,7 @@ public class RunUtils {
             return status;
         } else {
             status.setMessage("Unknown run");
-            status.setStatus(MethodCallStatusEnum.FAILED);
+            status.setStatus(MethodCallStatusEnum.UNKNOWN_RUNID);
             return status;
         }
     }
