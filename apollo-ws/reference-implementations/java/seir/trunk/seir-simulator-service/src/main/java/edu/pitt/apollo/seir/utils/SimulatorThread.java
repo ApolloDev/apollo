@@ -53,6 +53,7 @@ public class SimulatorThread extends Thread {
         this.useDatabase = useDatabase;
         this.dbUtils = dbUtils;
         runDirectory = SeirSimulatorServiceImpl.getRunDirectory(runId);
+        translatorSoftwareId = SeirSimulatorServiceImpl.getTranslatorSoftwareId();
     }
 
     public int getRunId() {
@@ -528,33 +529,4 @@ public class SimulatorThread extends Thread {
         }
     }
 
-    private static void loadTimeSeriesVisualizerSoftwareIdentification() {
-
-        System.out.println("Loading Time-series visualizer software identification");
-        try {
-            ApolloDbUtils dbUtils = new ApolloDbUtils(new File(SeirSimulatorServiceImpl.getDatabasePropertiesFilename()));
-
-            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
-            for (Integer id : softwareIdMap.keySet()) {
-                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                if (softwareId.getSoftwareName().toLowerCase().equals("time series visualizer")) {
-                    visualizerId = softwareIdMap.get(id).getSoftwareIdentification();
-                    break;
-                }
-
-            }
-
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException attempting to load the visualizer software ID: "
-                    + ex.getMessage());
-        } catch (IOException ex) {
-            throw new RuntimeException("IOException attempting to load the visualizer software ID: " + ex.getMessage());
-        } catch (SQLException ex) {
-            throw new RuntimeException("SQLException attempting to load the visualizer software ID: " + ex.getMessage());
-        }
-
-        if (visualizerId == null) {
-            throw new RuntimeException("Could not find Time Series Visualizer in the list of registered services");
-        }
-    }
 }
