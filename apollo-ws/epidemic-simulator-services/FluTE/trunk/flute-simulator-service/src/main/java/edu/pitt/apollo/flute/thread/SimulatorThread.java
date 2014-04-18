@@ -12,7 +12,6 @@ import edu.pitt.apollo.flute.utils.SSHConnection;
 import edu.pitt.apollo.types.v2_0_1.Location;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,12 +32,11 @@ import java.util.logging.Logger;
 public class SimulatorThread extends Thread {
 
     private static final Logger LOGGER = Logger.getLogger(SimulatorThread.class.getName());
-    static final ResourceBundle CONNECTION_PROPERTIES = ResourceBundle.getBundle("flute");
     private static final String FLUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_output_util.sh";
     private static final String FLUTE_EXECUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_run_util.sh";
     private static final String FLUTE_CHECK_EXECUTION_COMMAND = "cd /home/flute; ./check_process.sh";
     private static final String FLUTE_RUNS_DIR = "/home/flute/runs_2_0_1/";
-    private static SoftwareIdentification translatorSoftwareId;
+    private SoftwareIdentification translatorSoftwareId;
     private RunSimulationMessage message;
     private int runId;
     private ApolloDbUtils dbUtils;
@@ -53,6 +50,7 @@ public class SimulatorThread extends Thread {
         this.dbUtils = dbUtils;
         runDirectory = FluteSimulatorServiceImpl.getRunDirectory(runId);
         this.remoteRunDirectory = FLUTE_RUNS_DIR + runId;
+        this.translatorSoftwareId = FluteSimulatorServiceImpl.getTranslatorSoftwareId();
     }
 
     private void finalizeRun() {
@@ -237,40 +235,6 @@ public class SimulatorThread extends Thread {
 
         } finally {
             finalizeRun();
-        }
-    }
-
-    static {
-        loadTranslatorSoftwareIdentification();
-    }
-
-    private static void loadTranslatorSoftwareIdentification() {
-
-        System.out.println("Loading translator software identification");
-        try {
-            ApolloDbUtils dbUtils = new ApolloDbUtils(new File(FluteSimulatorServiceImpl.getDatabasePropertiesFilename()));
-
-            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
-            for (Integer id : softwareIdMap.keySet()) {
-                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
-                    translatorSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                    break;
-                }
-
-            }
-
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException attempting to load the translator software ID: "
-                    + ex.getMessage());
-        } catch (IOException ex) {
-            throw new RuntimeException("IOException attempting to load the translator software ID: " + ex.getMessage());
-        } catch (SQLException ex) {
-            throw new RuntimeException("SQLException attempting to load the translator software ID: " + ex.getMessage());
-        }
-
-        if (translatorSoftwareId == null) {
-            throw new RuntimeException("Could not find translator in the list of registered services");
         }
     }
 }
