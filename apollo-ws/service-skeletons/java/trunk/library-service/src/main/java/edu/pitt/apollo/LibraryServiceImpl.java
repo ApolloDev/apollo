@@ -100,7 +100,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
 
 		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			if (item.getItemType().equals(type)) {
+			if (item.getItemType().value().equals(type+"Type")) {
 				resultList.add(item.getItemUuid());
 			}
 		}
