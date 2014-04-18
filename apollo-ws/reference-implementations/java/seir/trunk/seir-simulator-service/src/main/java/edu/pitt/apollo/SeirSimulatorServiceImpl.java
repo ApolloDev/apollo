@@ -64,6 +64,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
     private static List<Integer> queuedThreads = new ArrayList<Integer>();
     private static String APOLLO_DIR = "";
     private static ApolloDbUtils dbUtils;
+    private static SoftwareIdentification translatorSoftwareId;
     // executor for the simulator threads
     // private static ExecutorService simulatorExecutor =
     // Executors.newFixedThreadPool(5);
@@ -94,6 +95,27 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
         } catch (IOException ex) {
             System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
         }
+
+        try {
+            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
+            for (Integer id : softwareIdMap.keySet()) {
+                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
+                    translatorSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                    break;
+                }
+            }
+
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("ClassNotFoundException attempting to load the translator software ID: "
+                    + ex.getMessage());
+        } catch (SQLException ex) {
+            throw new RuntimeException("SQLException attempting to load the translator software ID: " + ex.getMessage());
+        }
+
+        if (translatorSoftwareId == null) {
+            System.out.println("Could not find translator in the list of registered services");
+        }
     }
 
     public static String getRunDirectory(int runId) {
@@ -102,6 +124,10 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 
     public static String getDatabasePropertiesFilename() {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
+    }
+    
+    public static SoftwareIdentification getTranslatorSoftwareId() {
+        return translatorSoftwareId;
     }
 
     private static synchronized void addRunToQueuedList(Integer runId) {
