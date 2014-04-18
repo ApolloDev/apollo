@@ -27,6 +27,8 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
 
+import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,6 +41,7 @@ import javax.xml.ws.ResponseWrapper;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
@@ -58,6 +61,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     private static List<Integer> queuedThreads = new ArrayList<Integer>();
     private static String APOLLO_DIR = "";
     private static ApolloDbUtils dbUtils;
+    private static SoftwareIdentification translatorSoftwareId;
     // executor for the simulator threads
     // private static ExecutorService simulatorExecutor =
     // Executors.newFixedThreadPool(5);
@@ -83,11 +87,32 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
             System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
             APOLLO_DIR = "";
         }
-        
-          try {
+
+        try {
             dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
         } catch (IOException ex) {
             System.out.println("Error creating ApoloDbUtils when initializing FluTE web service: " + ex.getMessage());
+        }
+
+        try {
+            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
+            for (Integer id : softwareIdMap.keySet()) {
+                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
+                    translatorSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                    break;
+                }
+            }
+
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("ClassNotFoundException attempting to load the translator software ID: "
+                    + ex.getMessage());
+        } catch (SQLException ex) {
+            throw new RuntimeException("SQLException attempting to load the translator software ID: " + ex.getMessage());
+        }
+        
+        if (translatorSoftwareId == null) {
+            System.out.println("Could not find translator in the list of registered services");
         }
     }
 
@@ -98,9 +123,13 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     public static String getDatabasePropertiesFilename() {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
     }
-    
+
     public static String getApolloDir() {
         return APOLLO_DIR;
+    }
+    
+    public static SoftwareIdentification getTranslatorSoftwareId() {
+        return translatorSoftwareId;
     }
 
     // public static void shutdownAll() {
@@ -210,6 +239,8 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.RunSimulationResponse")
     public void runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId,
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
+
+        System.out.println("FluTE recieved run request...");
         int runId = simulationRunId.intValue();
         try {
             // set the started file for the run
