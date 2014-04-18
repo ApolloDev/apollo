@@ -1,5 +1,6 @@
 package edu.pitt.apollo.apolloclient;
 
+import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
@@ -47,7 +48,7 @@ import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration
  */
 public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
-    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
+    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0/services/apolloservice?wsdl";
     public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 
     private static Authentication getAuthentication() {
@@ -118,6 +119,12 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         responseDelay.setValue(0d);
 
         vcm.setControlStrategyResponseDelay(responseDelay);
+
+        FixedDuration standDownDelay = new FixedDuration();
+        standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
+        standDownDelay.setValue(0d);
+
+        vcm.setControlStrategyStandDownDelay(standDownDelay);
 
         FixedDuration startTime = new FixedDuration();
         startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -222,6 +229,10 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         responseDelay.setValue(4d);
         atcm.setControlStrategyResponseDelay(responseDelay);
 
+        FixedDuration standDownDelay = new FixedDuration();
+        standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
+        standDownDelay.setValue(4d);
+        atcm.setControlStrategyStandDownDelay(standDownDelay);
 
         FixedDuration startTime = new FixedDuration();
         startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -241,6 +252,8 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
             logistics.getAdministrationCapacityPerDay().add(
                     new BigInteger("2000"));
         }
+
+        atcm.setTreatmentSystemLogistics(logistics);
 
         ArrayList<String> itemIndexingLabels = new ArrayList<String>();
         itemIndexingLabels.add("IndividualTreatmentControlStrategy");
@@ -272,7 +285,7 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
         Location location = new Location();
         location.setApolloLocationCode("42003");
-        
+
         DiseaseSurveillanceTriggerDefinition rt = new DiseaseSurveillanceTriggerDefinition();
 
         DiseaseSurveillanceCapability capability = new DiseaseSurveillanceCapability();
@@ -284,7 +297,7 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         capability.setPathogen(code);
         capability.setSensitivityOfCaseDetection(0.5);
         capability.setSpeciesOfCase("9606");
-        capability.setSpecificityOfCaseDetection(0.5);
+        capability.setSpecificityOfCaseDetection(1.0);
 
         FixedDuration caseDetectionTimeDelay = new FixedDuration();
         caseDetectionTimeDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -304,12 +317,19 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         responseDelay.setValue(2d);
 
         scm.setControlStrategyResponseDelay(responseDelay);
+
+        FixedDuration standDownDelay = new FixedDuration();
+        standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
+        standDownDelay.setValue(2d);
+
+        scm.setControlStrategyStandDownDelay(standDownDelay);
+
         scm.setDescription("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
-        
+
         FixedDuration closurePeriod = new FixedDuration();
         closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
         closurePeriod.setValue(56);
-        
+
         scm.setClosurePeriod(closurePeriod);
         scm.setPlaceClass(PlaceEnum.ALL_SCHOOLS);
         List<String> indexingValues = new ArrayList<String>();
@@ -341,7 +361,7 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
         Location location = new Location();
         location.setApolloLocationCode("42003");
-        
+
         DiseaseSurveillanceTriggerDefinition rt = new DiseaseSurveillanceTriggerDefinition();
 
         DiseaseSurveillanceCapability capability = new DiseaseSurveillanceCapability();
@@ -353,7 +373,7 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         capability.setPathogen(code);
         capability.setSensitivityOfCaseDetection(0.5);
         capability.setSpeciesOfCase("9606");
-        capability.setSpecificityOfCaseDetection(0.5);
+        capability.setSpecificityOfCaseDetection(1.0);
 
         FixedDuration caseDetectionTimeDelay = new FixedDuration();
         caseDetectionTimeDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -372,12 +392,18 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         responseDelay.setValue(2d);
         responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 
+        FixedDuration standDownDelay = new FixedDuration();
+        standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
+        standDownDelay.setValue(2d);
+
+        scm.setControlStrategyStandDownDelay(standDownDelay);
+
         scm.setControlStrategyResponseDelay(responseDelay);
         scm.setDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
         FixedDuration closurePeriod = new FixedDuration();
         closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
         closurePeriod.setValue(56);
-        
+
         scm.setClosurePeriod(closurePeriod);
         scm.setCloseIndividualPlacesIndependently(true);
         scm.setPlaceClass(PlaceEnum.ALL_SCHOOLS);
@@ -410,14 +436,11 @@ public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
         ApolloServiceV201 service = new ApolloServiceV201(new URL(WSDL_LOC));
         ApolloServiceEI port = service.getApolloServiceEndpoint();
-        System.out.println(port.getRegisteredServices());
 
-//        addAcVcm(port);
-//        addAcAvt(port);
-//        addAllSccm(port);
-//        addIndividualSccm(port);
-        
-        System.out.println(port.getUuidsForLibraryItemsGivenType("InfectiousDiseaseControlStrategy").getUuids().size());
+        addAcVcm(port);
+        addAcAvt(port);
+        addAllSccm(port);
+        addIndividualSccm(port);
 
     }
 }
