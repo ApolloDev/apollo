@@ -1088,9 +1088,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
             // check the cache
 
             int runId;
+            int md5CollisionId = 1;
             try {
                 try {
                     runId = dbUtils.getSimulationRunId(runSimulationMessage);
+                    //so if an exception is not thrown then it's a POSSIBLE cache hit
                 } catch (ClassNotFoundException ex) {
                     long errorId = getErrorRunId();
                     ErrorUtils.writeErrorToFile(
@@ -1105,10 +1107,26 @@ class ApolloServiceImpl implements ApolloServiceEI {
                             + ex.getMessage(), getErrorFile(errorId));
                     return new BigInteger(Long.toString(errorId));
                 }
-                // check the status of the run
+                
+                //so if we are here, we think that we have a cache hit, but now we need to verify by:
+                //1.  loading the full (JSON) expression of the runSimulationMessage from the run_data_content table
+                //2.  serializing the runSimulationMessage parameter to JSON
+                //3.  doing a string comparison of the runSimulationMessage from the database to the serialized runSimulationMessage parameter
+                //4.  If the strings are the SAME, it's a "True" cache hit
+                //5.  If the strings differ, it is a "false" cache hit, then this is a new run.  This gets hairy as we need to add the new run with an incremented md5_collision_id
+                //6.  Figure out what the highest md5_collision_id for the md5_hash is and increment md5CollisionId
+                
+                
+                //assuming this is a TRUE cache hit...
+                // check the status of the run, if the run is FAILED, re-run it.  Otherwise, simply return the runId
+                
                 RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+                rasid.setRunId(Integer.toString(runId));
                 try {
+                	//First, we need to know the last service that was called for the run (translator, simulator...)
+                	//If this call results in an exception, there is a bad database configuration for that run (TODO: WE NEED TO DEAL WITH THIS)               	
                     rasid.setSoftwareId(dbUtils.getLastServiceToBeCalledForRun(runId));
+                    
                 } catch (ApolloDatabaseKeyNotFoundException ex) {
                     ErrorUtils.writeErrorToFile(
                             "Apollo database key not found attempting to get the last service called for runId "
@@ -1127,9 +1145,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
                             + runId + ": " + ex.getMessage(),
                             getErrorFile(runId));
                     return new BigInteger(Long.toString(runId));
-                }
-                rasid.setRunId(Integer.toString(runId));
+                }               
 
+                //now get the status of the run...
                 MethodCallStatus status = getRunStatus(rasid);
                 MethodCallStatusEnum statusEnum = status.getStatus();
 
@@ -1163,8 +1181,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
             }
 
             // insert a new run
+            
+           
             try {
-                runId = dbUtils.addSimulationRun(runSimulationMessage);
+                runId = dbUtils.addSimulationRun(runSimulationMessage ,md5CollisionId);
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 long errorId = getErrorRunId();
                 ErrorUtils.writeErrorToFile(
