@@ -50,22 +50,22 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 class SimpleNumberAxis extends NumberAxis implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4979128805460961375L;
+     * 
+     */
+    private static final long serialVersionUID = -4979128805460961375L;
 
-	@Override
+    @Override
     public List<NumberTick> refreshTicks(Graphics2D g2, AxisState state,
             Rectangle2D dataArea, RectangleEdge edge) {
 
         // for a tick interval >= 5, we add a tick for 1 and then keep the default ticks,
         // e.g. 1, 5, 10, 15,...
-        
+
         // for a tick interval < 5, we add a tick for 1 and then start measuring the ticks from there,
         // e.g. for a tick interval of 2, we would have 1, 3, 5, 7,...
-        
+
         @SuppressWarnings("unchecked")
-		List<NumberTick> allTicks = super.refreshTicks(g2, state, dataArea, edge);
+        List<NumberTick> allTicks = super.refreshTicks(g2, state, dataArea, edge);
         List<NumberTick> myTicks = new ArrayList<NumberTick>();
 
         // get the default tick interval
@@ -113,6 +113,46 @@ public class VisualizerChartUtility {
 
     private static BasicStroke seriesStroke = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 
+    private double computeYAxisStep(double maxYValue) {
+        double yAxisStep;
+
+        if (maxYValue <= 6 && maxYValue >= 3) {
+            yAxisStep = 0.5;
+        } else {
+            if (maxYValue > 6) {
+                // this method of computing the step ensures it is a multiple of 10
+                yAxisStep = Math.round(maxYValue / 10.0);
+                yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5))) * 2;
+            } else {
+                // first we transform the maxYValue by mutliplying it by the largest
+                // factor of 10 such that the product is < 1000. This allows the yAxisStep
+                // to be computed using the above method and which is then converted back to
+                // the appropriate scale
+                int power = (int) Math.floor(1 / (10 * maxYValue));
+                int multiplier = (int) Math.round(1000 * Math.pow(10, power));
+                yAxisStep = Math.round(maxYValue * multiplier / 10.0);
+                yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5))) * 2;
+                yAxisStep = yAxisStep / multiplier;
+            }
+
+            if (maxYValue / yAxisStep > 10) {
+                // make sure there are no more than 10 ticks
+                double newYAxisStep = yAxisStep;
+                while (maxYValue / newYAxisStep > 10) {
+                    newYAxisStep += yAxisStep;
+                }
+                yAxisStep = newYAxisStep;
+            } else if (maxYValue / yAxisStep < 4) {
+                // make sure there are at least 4 ticks
+                while (maxYValue / yAxisStep < 4) {
+                    yAxisStep /= 2;
+                }
+            }
+        }
+
+        return yAxisStep;
+    }
+
     private JFreeChart createIncidenceChart(final XYDataset dataset, String mainTitle, String xTitle, String yTitle) {
         // create the chart...
         final JFreeChart chart = ChartFactory.createXYLineChart(
@@ -142,8 +182,8 @@ public class VisualizerChartUtility {
                 maxXValue = dataset.getXValue(0, i);
             }
         }
-        int yAxisStep = (int) Math.round(maxYValue / 10.0);
-        yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5))) * 2;
+
+        double yAxisStep = computeYAxisStep(maxYValue);
 
         NumberAxis axis = (NumberAxis) plot.getRangeAxis();
         axis.setTickUnit(new NumberTickUnit(yAxisStep));
@@ -211,8 +251,7 @@ public class VisualizerChartUtility {
             }
         }
 
-        int yAxisStep = (int) Math.round(maxYValue / 10.0);
-        yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5))) * 2;
+        double yAxisStep = computeYAxisStep(maxYValue);
 
         NumberAxis axis = (NumberAxis) plot.getRangeAxis();
         axis.setTickUnit(new NumberTickUnit(yAxisStep));
@@ -290,8 +329,7 @@ public class VisualizerChartUtility {
                 }
             }
         }
-        int yAxisStep = (int) Math.round(maxYValue / 10.0);
-        yAxisStep = (int) Math.pow(10, Math.floor(Math.log10(yAxisStep) - Math.log10(0.5)));
+        double yAxisStep = computeYAxisStep(maxYValue);
 
         NumberAxis axis = (NumberAxis) plot.getRangeAxis();
         axis.setTickUnit(new NumberTickUnit(yAxisStep));
@@ -360,7 +398,7 @@ public class VisualizerChartUtility {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.NEWLY_EXPOSED), "Incidence", 1));
-        
+
         return dataset;
     }
 
@@ -370,10 +408,10 @@ public class VisualizerChartUtility {
         final XYSeriesCollection dataset = new XYSeriesCollection();
 //        Map<String, double[]> incidenceMap = container.getIncidenceTimeSeriesMap();
 
-       
+
         for (String runId : imageSeriesMap.keySet()) {
             dataset.addSeries(createXYSeries(imageSeriesMap.get(runId).getSeries(InfectionStateEnum.NEWLY_EXPOSED), runIdSeriesLabels.get(runId), 1));
-            
+
         }
 
         return dataset;
@@ -463,4 +501,33 @@ public class VisualizerChartUtility {
         }
 
     }
+
+//    public static void main(String[] args) {
+//
+//        Double[] series = new Double[128];
+//        for (int i = 0; i < 128; i++) {
+//            series[i] = 0.5 + i * 0.015;
+//        }
+//
+//        VisualizerChartUtility utility = new VisualizerChartUtility();
+//        final XYSeriesCollection dataset = new XYSeriesCollection();
+//        dataset.addSeries(utility.createXYSeries(series, "test", 0));
+//
+//        JFreeChart chart = utility.createIncidenceChart(dataset, "test", "simulation time step", "");
+//        BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
+//
+//        File imageFile = new File("./test.png");
+//        if (!imageFile.exists()) {
+//            try {
+//                imageFile.createNewFile();
+//            } catch (IOException ex) {
+//                System.err.println("Incidence image file could not be created" + ex.getMessage());
+//            }
+//        }
+//        try {
+//            ImageIO.write(image, "png", imageFile);
+//        } catch (IOException ex) {
+//            System.err.println("Incidence image file could not be written: " + ex.getMessage());
+//        }
+//    }
 }
