@@ -79,14 +79,14 @@ public class ImageGenerator {
         // set file paths and urls
         if (!multiSimulatorChart) {
             // the first runId is either the only runId, or the no vacc model
-            diseaseStateImagePathMap.put(runIds.get(0), runDirectory + File.separator + "disease_states" + "." + IMAGE_FILE_TYPE);
+            diseaseStateImagePathMap.put(runIds.get(0), runDirectory + File.separator + "prevalence" + "." + IMAGE_FILE_TYPE);
             if (multiVaccChart) {
                 combinedIncidenceImagePath = runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE;
             } else {
                 incidenceImagePathMap.put(runIds.get(0), runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE);
             }
         } else {
-            combinedIncidenceImagePath = runDirectory + File.separator + "combined_incidence" + "." + IMAGE_FILE_TYPE;
+            combinedIncidenceImagePath = runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE;
         }
 
         dbUtil = new DatabaseUtility(runIds, visualizerSoftwareId);
