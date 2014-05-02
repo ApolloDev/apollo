@@ -194,7 +194,9 @@ INSERT INTO run_data_description (label) values ("TSV FRED Simulator log file fo
 INSERT INTO run_data_description (label) values ("GAIA FluTE Simulator log file for newly-exposed, newly_exposed.txt "); /* 37 */
 INSERT INTO run_data_description (label) values ("GAIA FRED Simulator log file for newly-exposed, newly_exposed.txt "); /* 38*/
 INSERT INTO run_data_description (label) values ("GAIA movie, movie.ogg "); /* 39*/
-
+INSERT INTO run_data_description (label) values ("RunSimulationMessage JSON, run_simulation_message.json "); /* 40*/
+INSERT INTO run_data_description (label) values ("RunVisualizationMessage JSON for Time Series Visualizer, run_visualization_message.json "); /* 41*/
+INSERT INTO run_data_description (label) values ("RunVisualizationMessage JSON for GAIA Visualizer, run_visualization_message.json "); /* 42*/
 
 
 
@@ -433,7 +435,25 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(39, 2, "movie.ogg"),
 	(39, 3, "MOVIE"),
 	(39, 4, "5"),
-	(39, 5, "0");
+	(39, 5, "0"),
+	
+	(40, 1, "TEXT"), 
+	(40, 2, "run_simulation_message.json"),
+	(40, 3, "RUN_SIMULATION_MESSAGE"),
+	(40, 4, "0"),
+	(40, 5, "1"),
+	
+	(41, 1, "TEXT"), 
+	(41, 2, "run_visualization_message.json"),
+	(41, 3, "RUN_VISUALIZATION_MESSAGE"),
+	(41, 4, "0"),
+	(41, 5, "4"),
+	
+	(41, 1, "TEXT"), 
+	(41, 2, "run_visualization_message.json"),
+	(41, 3, "RUN_VISUALIZATION_MESSAGE"),
+	(41, 4, "0"),
+	(41, 5, "5");
 
 
 

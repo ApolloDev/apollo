@@ -14,6 +14,7 @@
  */
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -607,107 +608,183 @@ class ApolloServiceImpl implements ApolloServiceEI {
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 
         RunVisualizationResult result = new RunVisualizationResult();
-        try {
-            // check the cache
-            ApolloDbUtils dbUtils;
+        try { // this try statement is for exceptions writing error files
+
+            List<Integer> runIds; // we use a list of run IDs because there may be more than one associated with a given md5 hash
+            Integer runId = null; // this will be the single run ID returned from this method
+            Integer md5CollisionId = 1;
+
             try {
-                dbUtils = new ApolloDbUtils(new File(
-                        getDatabasePropertiesFilename()));
-            } catch (IOException ex) {
+                runIds = dbUtils.getVisualizationRunId(runVisualizationMessage);
+            } catch (ClassNotFoundException ex) {
                 long errorId = getErrorRunId();
                 ErrorUtils.writeErrorToFile(
-                        "IOException creating ApolloDbUtils" + ": "
+                        "ClassNotFoundException attempting to check the run table for the message hash: "
+                        + ex.getMessage(),
+                        getErrorFile(errorId));
+                result.setVisualizationRunId(Long.toString(errorId));
+                return result;
+            } catch (SQLException ex) {
+                long errorId = getErrorRunId();
+                ErrorUtils.writeErrorToFile(
+                        "SQLException attempting to check the run table for the message hash: "
+                        + ex.getMessage(), getErrorFile(errorId));
+                result.setVisualizationRunId(Long.toString(errorId));
+                return result;
+            } catch (ApolloDatabaseKeyNotFoundException ex) {
+                long errorId = getErrorRunId();
+                ErrorUtils.writeErrorToFile(
+                        "ApolloDatabaseKeyNotFoundException attempting to check the run table for the message hash: "
                         + ex.getMessage(), getErrorFile(errorId));
                 result.setVisualizationRunId(Long.toString(errorId));
                 return result;
             }
 
-            int runId;
-            try {
-                try {
-                    runId = dbUtils.getVisualizationRunId(runVisualizationMessage);
-                } catch (ClassNotFoundException ex) {
-                    long errorId = getErrorRunId();
-                    ErrorUtils.writeErrorToFile(
-                            "ClassNotFoundException attempting to check the run table for the message hash: "
-                            + ex.getMessage(),
-                            getErrorFile(errorId));
-                    result.setVisualizationRunId(Long.toString(errorId));
-                    return result;
-                } catch (SQLException ex) {
-                    long errorId = getErrorRunId();
-                    ErrorUtils.writeErrorToFile(
-                            "SQLException attempting to check the run table for the message hash: "
-                            + ex.getMessage(), getErrorFile(errorId));
-                    result.setVisualizationRunId(Long.toString(errorId));
-                    return result;
-                }
-                // check the status of the run
-                RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
-                try {
-                    rasid.setSoftwareId(dbUtils.getLastServiceToBeCalledForRun(runId));
-                } catch (ApolloDatabaseKeyNotFoundException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "Apollo database key not found attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    result.setVisualizationRunId(Integer.toString(runId));
-                    return result;
-                } catch (ClassNotFoundException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "ClassNotFoundException attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    result.setVisualizationRunId(Integer.toString(runId));
-                    return result;
-                } catch (SQLException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "SQLException attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    result.setVisualizationRunId(Integer.toString(runId));
-                    return result;
-                }
-                rasid.setRunId(Integer.toString(runId));
-
-                MethodCallStatus status = getRunStatus(rasid);
-                MethodCallStatusEnum statusEnum = status.getStatus();
-
-                if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
-                    // remove all the run data associated with this run
+            if (runIds.size() > 0) {
+                // check all returned run IDs for a cache hit
+                for (int potentialRunId : runIds) {
                     try {
-                        dbUtils.removeRunData(runId);
+                        //so if we are here, we think that we have a cache hit, but now we need to verify by (for each potential runID):
+                        //1.  loading the full (JSON) expression of the runSimulationMessage from the run_data_content table
+                        Map<String, ByteArrayOutputStream> content = dbUtils.getDataContentForSoftware(potentialRunId, 0,
+                                dbUtils.getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
+                        String previousRunVisualizationMessageJSON = null;
+                        for (String label : content.keySet()) {
+                            if (label.equals("run_visualization_message.json")) {
+                                previousRunVisualizationMessageJSON = content.get(label).toString();
+                            }
+                        }
+
+                        if (previousRunVisualizationMessageJSON == null) {
+                            // this means that no run visualization message JSON was found in the content
+                            // for this run, but there should be if it was corrently inserted, so this
+                            // means there is some error in the database
+                            throw new ApolloDatabaseException("There was no run_visualization_message.json content for run ID " + potentialRunId);
+                        }
+
+                        //2.  serializing the runVisualizationMessage parameter to JSON
+                        String currentRunJSON = dbUtils.getJSONString(runVisualizationMessage);
+
+                        //3.  doing a string comparison of the runVisualizationMessage from the database to the serialized runSimulationMessage parameter
+                        if (currentRunJSON.equals(previousRunVisualizationMessageJSON)) {
+                            //4.  If the strings are the SAME, it's a "True" cache hit
+                            md5CollisionId = null; // null will indicate that there was no collision
+                            runId = potentialRunId;
+                            break;
+                        }
+
+                        // the next 2 steps are handled below when attempting to insert a new run
+                        //5.  If the strings differ, it is a "false" cache hit, then this is a new run.  This gets hairy as we need to add the new run with an incremented md5_collision_id
+                        //6.  Figure out what the highest md5_collision_id for the md5_hash is and increment md5CollisionId
                     } catch (SQLException ex) {
+                        long errorId = getErrorRunId();
                         ErrorUtils.writeErrorToFile(
-                                "SQLException attempting to remove all run data for runId "
+                                "SQLException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        result.setVisualizationRunId(Long.toString(errorId));
+                        return result;
+                    } catch (ClassNotFoundException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "ClassNotFoundException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        result.setVisualizationRunId(Long.toString(errorId));
+                        return result;
+                    } catch (IOException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "IOException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        result.setVisualizationRunId(Long.toString(errorId));
+                        return result;
+                    } catch (ApolloDatabaseException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "ApolloDatabaseException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        result.setVisualizationRunId(Long.toString(errorId));
+                        return result;
+                    }
+                }
+
+                if (md5CollisionId == null) {
+                    // this means that there was no hash collision
+
+                    // check the status of the run, if the run is FAILED, re-run it.  Otherwise, simply return the runId
+                    RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+                    try {
+                        //First, we need to know the last service that was called for the run (translator, simulator...)
+                        //If this call results in an exception, there is a bad database configuration for that run (TODO: WE NEED TO DEAL WITH THIS)               	
+                        rasid.setSoftwareId(dbUtils.getLastServiceToBeCalledForRun(runId));
+                    } catch (ApolloDatabaseKeyNotFoundException ex) {
+                        ErrorUtils.writeErrorToFile(
+                                "Apollo database key not found attempting to get the last service called for runId "
                                 + runId + ": " + ex.getMessage(),
                                 getErrorFile(runId));
                         result.setVisualizationRunId(Integer.toString(runId));
                         return result;
                     } catch (ClassNotFoundException ex) {
                         ErrorUtils.writeErrorToFile(
-                                "ClassNotFoundException attempting to remove all run data for runId "
+                                "ClassNotFoundException attempting to get the last service called for runId "
+                                + runId + ": " + ex.getMessage(),
+                                getErrorFile(runId));
+                        result.setVisualizationRunId(Integer.toString(runId));
+                        return result;
+                    } catch (SQLException ex) {
+                        ErrorUtils.writeErrorToFile(
+                                "SQLException attempting to get the last service called for runId "
                                 + runId + ": " + ex.getMessage(),
                                 getErrorFile(runId));
                         result.setVisualizationRunId(Integer.toString(runId));
                         return result;
                     }
-                } else {
-                    // Note that the status could be AUTHENTICATION_FAILURE,
-                    // but the user will recieve that status when they call
-                    // getStatus with this runID
-                    result.setVisualizationRunId(Integer.toString(runId));
-                    return result;
-                }
+                    rasid.setRunId(Integer.toString(runId));
 
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                // this means the run Id could not be found in the database
-                // so don't do anything special, just let it create the run
+                    MethodCallStatus status = getRunStatus(rasid);
+                    MethodCallStatusEnum statusEnum = status.getStatus();
+
+                    if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
+                        // remove all the run data associated with this run
+                        try {
+                            dbUtils.removeRunData(runId);
+                        } catch (SQLException ex) {
+                            ErrorUtils.writeErrorToFile(
+                                    "SQLException attempting to remove all run data for runId "
+                                    + runId + ": " + ex.getMessage(),
+                                    getErrorFile(runId));
+                            result.setVisualizationRunId(Integer.toString(runId));
+                            return result;
+                        } catch (ClassNotFoundException ex) {
+                            ErrorUtils.writeErrorToFile(
+                                    "ClassNotFoundException attempting to remove all run data for runId "
+                                    + runId + ": " + ex.getMessage(),
+                                    getErrorFile(runId));
+                            result.setVisualizationRunId(Integer.toString(runId));
+                            return result;
+                        }
+
+                        // the run will be inserted below
+                    } else {
+                        // Note that the status could be AUTHENTICATION_FAILURE,
+                        // but the user will recieve that status when they call
+                        // getStatus with this runID
+                        result.setVisualizationRunId(Integer.toString(runId));
+                        return result;
+                    }
+                } // else there was a hash collision and this run needs to be inserted
             }
 
-            // insert a new run
+            // if here then attempt to insert a new run
             try {
-                runId = dbUtils.addVisualizationRun(runVisualizationMessage);
+                // get the highest md5CollisionId to insert with the new run
+                // if no runs exist having a matching md5 hash, the method will return 0
+                md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runVisualizationMessage) + 1;
+                // insert a new run
+                runId = dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId);
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 long errorId = getErrorRunId();
                 ErrorUtils.writeErrorToFile(
@@ -742,7 +819,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
                 return result;
             }
 
-            System.out.println("Starting Apollo run visualization thread...");
             // start the thread to run the translator and then the simulator
             ApolloRunVisualizationThread runThread = new ApolloRunVisualizationThread(
                     runId, runVisualizationMessage, dbUtils, this);
@@ -750,134 +826,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
             result.setVisualizationRunId(Integer.toString(runId));
             return result;
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error writing error file: " + e.getMessage());
             // -1 should just be FATAL ERROR
             result.setVisualizationRunId("-1");
             return result;
         }
-
-        // String runId;
-        // ByteArrayOutputStream baos = getJSONBytes(runVisualizationMessage);
-        // String visConfigHash = getMd5HashFromString(baos.toString());
-        // VisualizerResult result;
-        //
-        // // check the cache
-        // try {
-        // result = DbUtilsTest.checkVisualizerCache(visConfigHash);
-        // if (result != null) {
-        //
-        // // check the status of the run
-        // runId = result.getRunId();
-        // RunAndSoftwareIdentification rasid = new
-        // RunAndSoftwareIdentification();
-        // rasid.setRunId(runId);
-        // rasid.setSoftwareId(runVisualizationMessage
-        // .getVisualizerIdentification());
-        // MethodCallStatus status = getRunStatus(rasid);
-        // MethodCallStatusEnum statusEnum = status.getStatus();
-        //
-        // if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
-        // DbUtilsTest.deleteFromVisualizerCache(visConfigHash);
-        // } else {
-        // return result;
-        // }
-        //
-        // }
-        // } catch (ClassNotFoundException ex) {
-        // runId = RunUtils.getErrorRunId();
-        // RunUtils.reportError(runId,
-        // "Problem with VisualizerService: ClassNotFoundException"
-        // + ex.getMessage());
-        // result = new VisualizerResult();
-        // result.setRunId(runId);
-        // ex.printStackTrace();
-        //
-        // return result;
-        // } catch (SQLException ex) {
-        // runId = RunUtils.getErrorRunId();
-        // RunUtils.reportError(
-        // runId,
-        // "Problem with VisualizerService: SQLException"
-        // + ex.getMessage());
-        // result = new VisualizerResult();
-        // result.setRunId(runId);
-        // ex.printStackTrace();
-        //
-        // return result;
-        // }
-        //
-        // try {
-        // result = new VisualizerResult();
-        // URL url = null;
-        // try {
-        // // get the webservice WSDL URL for supplied
-        // // SimulatorIdentification
-        // url = RegistrationUtils
-        // .getUrlForSoftwareIdentification(runVisualizationMessage
-        // .getVisualizerIdentification());
-        // if (url == null) {
-        // result.setRunId(RunUtils.getErrorRunId());
-        // RunUtils.reportError(result.getRunId(),
-        // "Service not registered.");
-        // return result;
-        // }
-        // } catch (IOException e) {
-        // result.setRunId(RunUtils.getErrorRunId());
-        // RunUtils.reportError(result.getRunId(),
-        // "Error reading registry.");
-        // return result;
-        // }
-        // // run the simulator
-        //
-        // VisualizerServiceEI port = getVisualizerServicePort(url);
-        //
-        // // disable chunking for ZSI
-        // Client client = ClientProxy.getClient(port);
-        // HTTPConduit http = (HTTPConduit) client.getConduit();
-        // HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-        // httpClientPolicy.setConnectionTimeout(36000);
-        // httpClientPolicy.setAllowChunking(false);
-        // http.setClient(httpClientPolicy);
-        //
-        // System.out.println("Running the visualization...");
-        // VisualizerResult visualizerResult = port
-        // .runVisualization(runVisualizationMessage);
-        // runId = visualizerResult.getRunId();
-        //
-        // // cacheVisualizerResult(runId, visConfigHash, visualizerResult,
-        // // cacheFilePath);
-        //
-        // // cache the visualizer result
-        // try {
-        // String cacheId = DbUtilsTest.insertIntoVisualizerCache(runId,
-        // visConfigHash);
-        // DbUtilsTest.insertIntoVisualizerResultsCache(cacheId,
-        // visualizerResult.getVisualizerOutputResource());
-        // } catch (ClassNotFoundException ex) {
-        // RunUtils.reportError(visualizerResult.getRunId(),
-        // "Problem with VisualizerService: ClassNotFoundException"
-        // + ex.getMessage());
-        // ex.printStackTrace();
-        // } catch (SQLException ex) {
-        // RunUtils.reportError(
-        // visualizerResult.getRunId(),
-        // "Problem with VisualizerService: SQLException"
-        // + ex.getMessage());
-        // ex.printStackTrace();
-        // }
-        //
-        // return visualizerResult;
-        // } catch (Exception e) {
-        // VisualizerResult visualizerResult = new VisualizerResult();
-        // visualizerResult.setRunId(RunUtils.getErrorRunId());
-        //
-        // RunUtils.reportError(visualizerResult.getRunId(),
-        // "Problem with VisualizerService:" + e.getMessage());
-        // e.printStackTrace();
-        // return visualizerResult;
-        // }
-        // return null;
     }
 
     @Override
@@ -1084,107 +1038,174 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.RunSimulationResponse")
     public BigInteger runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-        try {
-            // check the cache
+        try { // the try statement to catch exceptions writing to error files
 
-            int runId;
-            int md5CollisionId = 1;
+            List<Integer> runIds; // we use a list of run IDs because there may be more than one associated with a given md5 hash
+            Integer runId = null; // this will be the single run ID returned from this method
+            Integer md5CollisionId = 1;
+
             try {
-                try {
-                    runId = dbUtils.getSimulationRunId(runSimulationMessage);
-                    //so if an exception is not thrown then it's a POSSIBLE cache hit
-                } catch (ClassNotFoundException ex) {
-                    long errorId = getErrorRunId();
-                    ErrorUtils.writeErrorToFile(
-                            "ClassNotFoundException attempting to check the run table for the message hash: "
-                            + ex.getMessage(),
-                            getErrorFile(errorId));
-                    return new BigInteger(Long.toString(errorId));
-                } catch (SQLException ex) {
-                    long errorId = getErrorRunId();
-                    ErrorUtils.writeErrorToFile(
-                            "SQLException attempting to check the run table for the message hash: "
-                            + ex.getMessage(), getErrorFile(errorId));
-                    return new BigInteger(Long.toString(errorId));
-                }
-                
-                //so if we are here, we think that we have a cache hit, but now we need to verify by:
-                //1.  loading the full (JSON) expression of the runSimulationMessage from the run_data_content table
-                //2.  serializing the runSimulationMessage parameter to JSON
-                //3.  doing a string comparison of the runSimulationMessage from the database to the serialized runSimulationMessage parameter
-                //4.  If the strings are the SAME, it's a "True" cache hit
-                //5.  If the strings differ, it is a "false" cache hit, then this is a new run.  This gets hairy as we need to add the new run with an incremented md5_collision_id
-                //6.  Figure out what the highest md5_collision_id for the md5_hash is and increment md5CollisionId
-                
-                
-                //assuming this is a TRUE cache hit...
-                // check the status of the run, if the run is FAILED, re-run it.  Otherwise, simply return the runId
-                
-                RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
-                rasid.setRunId(Integer.toString(runId));
-                try {
-                	//First, we need to know the last service that was called for the run (translator, simulator...)
-                	//If this call results in an exception, there is a bad database configuration for that run (TODO: WE NEED TO DEAL WITH THIS)               	
-                    rasid.setSoftwareId(dbUtils.getLastServiceToBeCalledForRun(runId));
-                    
-                } catch (ApolloDatabaseKeyNotFoundException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "Apollo database key not found attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    return new BigInteger(Long.toString(runId));
-                } catch (ClassNotFoundException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "ClassNotFoundException attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    return new BigInteger(Long.toString(runId));
-                } catch (SQLException ex) {
-                    ErrorUtils.writeErrorToFile(
-                            "SQLException attempting to get the last service called for runId "
-                            + runId + ": " + ex.getMessage(),
-                            getErrorFile(runId));
-                    return new BigInteger(Long.toString(runId));
-                }               
+                // check the cache
+                runIds = dbUtils.getSimulationRunId(runSimulationMessage);
+                // if an exception is not thrown then it's a POSSIBLE cache hit
+            } catch (ClassNotFoundException ex) {
+                long errorId = getErrorRunId();
+                ErrorUtils.writeErrorToFile(
+                        "ClassNotFoundException attempting to check the run table for the message hash: "
+                        + ex.getMessage(),
+                        getErrorFile(errorId));
+                return new BigInteger(Long.toString(errorId));
+            } catch (SQLException ex) {
+                long errorId = getErrorRunId();
+                ErrorUtils.writeErrorToFile(
+                        "SQLException attempting to check the run table for the message hash: "
+                        + ex.getMessage(), getErrorFile(errorId));
+                return new BigInteger(Long.toString(errorId));
+            } catch (ApolloDatabaseKeyNotFoundException ex) {
+                long errorId = getErrorRunId();
+                ErrorUtils.writeErrorToFile(
+                        "ApolloDatabaseKeyNotFoundException attempting to check the run table for the message hash: "
+                        + ex.getMessage(), getErrorFile(errorId));
+                return new BigInteger(Long.toString(errorId));
+            }
 
-                //now get the status of the run...
-                MethodCallStatus status = getRunStatus(rasid);
-                MethodCallStatusEnum statusEnum = status.getStatus();
-
-                if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
-                    // remove all the run data associated with this run
+            if (runIds.size() > 0) { // if there were run IDs which had a matching md5 hash
+                // check all returned run IDs for a cache hit
+                for (int potentialRunId : runIds) {
                     try {
-                        dbUtils.removeRunData(runId);
+                        //so if we are here, we think that we have a cache hit, but now we need to verify by (for each potential runID):
+                        //1.  loading the full (JSON) expression of the runSimulationMessage from the run_data_content table
+                        Map<String, ByteArrayOutputStream> content = dbUtils.getDataContentForSoftware(potentialRunId, 0,
+                                dbUtils.getSoftwareIdentificationKey(translatorServiceRecord.getSoftwareIdentification()));
+                        String previousRunSimulationMessageJSON = null;
+                        for (String label : content.keySet()) {
+                            if (label.equals("run_simulation_message.json")) {
+                                previousRunSimulationMessageJSON = content.get(label).toString();
+                            }
+                        }
+
+                        if (previousRunSimulationMessageJSON == null) {
+                            // this means that no run simulation message JSON was found in the content
+                            // for this run, but there should be if it was corrently inserted, so this
+                            // means there is some error in the database
+                            throw new ApolloDatabaseException("There was no run_simulation_message.json content for run ID " + potentialRunId);
+                        }
+
+                        //2.  serializing the runSimulationMessage parameter to JSON
+                        String currentRunJSON = dbUtils.getJSONString(runSimulationMessage);
+
+                        //3.  doing a string comparison of the runSimulationMessage from the database to the serialized runSimulationMessage parameter
+                        if (currentRunJSON.equals(previousRunSimulationMessageJSON)) {
+                            //4.  If the strings are the SAME, it's a "True" cache hit
+                            md5CollisionId = null; // null will indicate that there was no collision
+                            runId = potentialRunId;
+                            break;
+                        }
+
+                        // the next 2 steps are handled below when attempting to insert a new run
+                        //5.  If the strings differ, it is a "false" cache hit, then this is a new run.  This gets hairy as we need to add the new run with an incremented md5_collision_id
+                        //6.  Figure out what the highest md5_collision_id for the md5_hash is and increment md5CollisionId
                     } catch (SQLException ex) {
+                        long errorId = getErrorRunId();
                         ErrorUtils.writeErrorToFile(
-                                "SQLException attempting to remove all run data for runId "
+                                "SQLException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        return new BigInteger(Long.toString(errorId));
+                    } catch (ClassNotFoundException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "ClassNotFoundException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        return new BigInteger(Long.toString(errorId));
+                    } catch (IOException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "IOException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        return new BigInteger(Long.toString(errorId));
+                    } catch (ApolloDatabaseException ex) {
+                        long errorId = getErrorRunId();
+                        ErrorUtils.writeErrorToFile(
+                                "ApolloDatabaseException checking data content for runId "
+                                + potentialRunId + ": " + ex.getMessage(),
+                                getErrorFile(potentialRunId));
+                        return new BigInteger(Long.toString(errorId));
+                    }
+                }
+
+                if (md5CollisionId == null) {
+                    // this means that there was no hash collision
+
+                    // check the status of the run, if the run is FAILED, re-run it.  Otherwise, simply return the runId
+                    RunAndSoftwareIdentification rasid = new RunAndSoftwareIdentification();
+                    rasid.setRunId(Integer.toString(runId));
+                    try {
+                        //First, we need to know the last service that was called for the run (translator, simulator...)
+                        //If this call results in an exception, there is a bad database configuration for that run (TODO: WE NEED TO DEAL WITH THIS)               	
+                        rasid.setSoftwareId(dbUtils.getLastServiceToBeCalledForRun(runId));
+
+                    } catch (ApolloDatabaseKeyNotFoundException ex) {
+                        ErrorUtils.writeErrorToFile(
+                                "Apollo database key not found attempting to get the last service called for runId "
                                 + runId + ": " + ex.getMessage(),
                                 getErrorFile(runId));
                         return new BigInteger(Long.toString(runId));
                     } catch (ClassNotFoundException ex) {
                         ErrorUtils.writeErrorToFile(
-                                "ClassNotFoundException attempting to remove all run data for runId "
+                                "ClassNotFoundException attempting to get the last service called for runId "
+                                + runId + ": " + ex.getMessage(),
+                                getErrorFile(runId));
+                        return new BigInteger(Long.toString(runId));
+                    } catch (SQLException ex) {
+                        ErrorUtils.writeErrorToFile(
+                                "SQLException attempting to get the last service called for runId "
                                 + runId + ": " + ex.getMessage(),
                                 getErrorFile(runId));
                         return new BigInteger(Long.toString(runId));
                     }
-                } else {
-                    // Note that the status could be AUTHENTICATION_FAILURE,
-                    // but the user will recieve that status when they call
-                    // getStatus with this runID
-                    return new BigInteger(Integer.toString(runId));
-                }
 
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                // this means the run Id could not be found in the database
-                // so don't do anything special, just let it create the run
+                    //now get the status of the run...
+                    MethodCallStatus status = getRunStatus(rasid);
+                    MethodCallStatusEnum statusEnum = status.getStatus();
+
+                    if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
+                        // remove all the run data associated with this run
+                        try {
+                            dbUtils.removeRunData(runId);
+                        } catch (SQLException ex) {
+                            ErrorUtils.writeErrorToFile(
+                                    "SQLException attempting to remove all run data for runId "
+                                    + runId + ": " + ex.getMessage(),
+                                    getErrorFile(runId));
+                            return new BigInteger(Long.toString(runId));
+                        } catch (ClassNotFoundException ex) {
+                            ErrorUtils.writeErrorToFile(
+                                    "ClassNotFoundException attempting to remove all run data for runId "
+                                    + runId + ": " + ex.getMessage(),
+                                    getErrorFile(runId));
+                            return new BigInteger(Long.toString(runId));
+                        }
+
+                        // the run will be inserted below
+                    } else {
+                        // Note that the status could be AUTHENTICATION_FAILURE,
+                        // but the user will recieve that status when they call
+                        // getStatus with this runID
+                        return new BigInteger(Integer.toString(runId));
+                    }
+                } // else there was a hash collision and this run needs to be inserted
             }
 
-            // insert a new run
-            
-           
+            // if here then attempt to insert a new run
             try {
-                runId = dbUtils.addSimulationRun(runSimulationMessage ,md5CollisionId);
+                // get the highest md5CollisionId to insert with the new run
+                // if no runs exist having a matching md5 hash, the method will return 0
+                md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runSimulationMessage) + 1;
+                // insert a new run
+                runId = dbUtils.addSimulationRun(runSimulationMessage, md5CollisionId, translatorServiceRecord.getSoftwareIdentification());
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 long errorId = getErrorRunId();
                 ErrorUtils.writeErrorToFile(
@@ -1214,15 +1235,14 @@ class ApolloServiceImpl implements ApolloServiceEI {
                 return new BigInteger(Long.toString(errorId));
             }
 
-            System.out.println("Starting Apollo run simulation thread...");
             // start the thread to run the translator and then the simulator
             ApolloRunSimulationThread runThread = new ApolloRunSimulationThread(
                     runId, runSimulationMessage, dbUtils, this);
             runThread.start();
 
             return new BigInteger(Long.toString(runId));
-        } catch (Exception e) {
-            System.out.println("Error writing error file: " + e.getMessage());
+        } catch (IOException e) { // this will catch any errors writing to an error file
+            System.out.println("IOException writing error file: " + e.getMessage());
             // -1 should just be FATAL ERROR
             return new BigInteger("-1");
         }
