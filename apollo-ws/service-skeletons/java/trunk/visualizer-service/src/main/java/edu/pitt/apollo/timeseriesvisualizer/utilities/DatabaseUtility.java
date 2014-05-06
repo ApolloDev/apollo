@@ -1,5 +1,6 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -228,12 +229,8 @@ public class DatabaseUtility {
         int visualizerKey;
         try {
             visualizerKey = dbUtils.getSoftwareIdentificationKey(visuazlierSoftwareId);
-        } catch (SQLException ex) {
-            throw new TimeSeriesVisualizerException("SQLException getting software identification key for the visualizer: " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            throw new TimeSeriesVisualizerException("ClassNotFoundException getting software identification key for the visualizer: " + ex.getMessage());
-        } catch (ApolloDatabaseKeyNotFoundException ex) {
-            throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException getting software identification key for the visualizer: " + ex.getMessage());
+        } catch (ApolloDatabaseException ex) {
+            throw new TimeSeriesVisualizerException(ex.getMessage());
         }
 
         for (String runId : runIds) {
@@ -264,14 +261,14 @@ public class DatabaseUtility {
             } catch (ClassNotFoundException ex) {
                 throw new TimeSeriesVisualizerException("ClassNotFoundException for run " + runId
                         + " when attempting to retrieve the time series from database files " + ex.getMessage());
-            } catch (IOException ex) {
-                throw new TimeSeriesVisualizerException("IOException for run " + runId
-                        + " when attempting to retrieve the time series from database files " + ex.getMessage());
             } catch (NumberFormatException ex) {
                 throw new TimeSeriesVisualizerException("NumberFormatException for run " + runId
                         + " when attempting to retrieve the time series from database files " + ex.getMessage());
             } catch (SQLException ex) {
                 throw new TimeSeriesVisualizerException("SQLException for run " + runId
+                        + " when attempting to retrieve the time series from database files " + ex.getMessage());
+            } catch (ApolloDatabaseException ex) {
+                throw new TimeSeriesVisualizerException("ApolloDatabaseException for run " + runId
                         + " when attempting to retrieve the time series from database files " + ex.getMessage());
             }
         }
@@ -317,6 +314,9 @@ public class DatabaseUtility {
         } catch (SQLException ex) {
             throw new TimeSeriesVisualizerException("SQLException attempting to add text data "
                     + "content for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
+        } catch (ApolloDatabaseException ex) {
+            throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to add text data "
+                    + "content for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
         }
 
         int runDataDescriptionId;
@@ -333,7 +333,11 @@ public class DatabaseUtility {
         } catch (SQLException ex) {
             throw new TimeSeriesVisualizerException("SQLException attempting to get run data "
                     + "description ID for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
+        } catch (ApolloDatabaseException ex) {
+            throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to get run data "
+                    + "description ID for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
         }
+        
         try {
             dbUtils.associateContentWithRunId(visualizerRunId, dataContentKey, runDataDescriptionId);
         } catch (ClassNotFoundException ex) {
