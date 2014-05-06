@@ -1,5 +1,6 @@
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceEI;
@@ -101,6 +102,10 @@ public class ApolloRunVisualizationThread extends Thread {
                 return;
             } catch (ClassNotFoundException ex) {
                 ErrorUtils.writeErrorToFile("ClassNotFoundException attempting to update last service" + " call for run id "
+                        + runId + ": " + ex.getMessage(), apolloServiceImpl.getErrorFile(runId));
+                return;
+            } catch (ApolloDatabaseException ex) {
+                ErrorUtils.writeErrorToFile("ApolloDatabaseException attempting to update last service" + " call for run id "
                         + runId + ": " + ex.getMessage(), apolloServiceImpl.getErrorFile(runId));
                 return;
             }
