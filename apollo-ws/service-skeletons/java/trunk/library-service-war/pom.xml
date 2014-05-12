@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>library-service-war</artifactId>
-	<name>-- LibraryService WAR file</name>
+	<name>LibraryService WAR file</name>
 	<packaging>war</packaging>
 
 	<dependencies>
