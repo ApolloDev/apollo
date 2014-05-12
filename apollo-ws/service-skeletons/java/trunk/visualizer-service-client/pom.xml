@@ -9,7 +9,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>visualizer-service-client</artifactId>
-	<name>VisualizerService SOAP Client</name>
+	<name>Time-series Visualizer Service SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

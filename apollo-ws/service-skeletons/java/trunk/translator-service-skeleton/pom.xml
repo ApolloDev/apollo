@@ -8,7 +8,7 @@
         <artifactId>apollo-ws</artifactId>
     </parent>
     <artifactId>translator-service-skeleton</artifactId>
-    <name>TranslatorService Skeleton</name>
+    <name>Translator Service Skeleton</name>
 
     <repositories>
 	

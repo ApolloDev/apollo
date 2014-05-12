@@ -9,7 +9,6 @@
         <version>2.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>visualizer-service</artifactId>
-    <name>VisualizerService Web Service</name>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -178,4 +177,5 @@
             </build>
         </profile>
     </profiles>
+    <name>Time-series Visualizer Service</name>
 </project>
