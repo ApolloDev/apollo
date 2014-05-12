@@ -8,7 +8,7 @@
         <version>2.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>apollo-service</artifactId>
-    <name>-- ApolloService Web Service </name>
+    <name>ApolloService Web Service </name>
     <packaging>bundle</packaging>
 
     <repositories>
@@ -48,11 +48,6 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>visualizer-service-client</artifactId>
-            <version>2.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>translator-service-client</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -115,6 +110,17 @@
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>apollo-db-common</artifactId>
             <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>edu.pitt.apollo</groupId>
+        	<artifactId>apollo-services-common</artifactId>
+        	<version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>edu.pitt.apollo</groupId>
+        	<artifactId>translator-service-skeleton</artifactId>
+        	<version>2.0.1-SNAPSHOT</version>
+        	<type>jar</type>
         </dependency>
     </dependencies>
 
