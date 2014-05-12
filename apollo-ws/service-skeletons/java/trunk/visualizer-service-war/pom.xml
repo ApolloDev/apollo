@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>visualizer-service-war</artifactId>
-	<name>-- VisualizerService WAR file</name>
+	<name>VisualizerService WAR file</name>
 	<packaging>war</packaging>
 
 	<dependencies>
