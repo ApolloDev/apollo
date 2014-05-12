@@ -17,7 +17,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>simulator-service-client</artifactId>
-	<name>-- SimulatorService SOAP Client</name>
+	<name>SimulatorService SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
