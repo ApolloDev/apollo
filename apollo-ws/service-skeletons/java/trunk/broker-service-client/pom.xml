@@ -8,8 +8,8 @@
 		<artifactId>apollo-ws</artifactId>
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>apollo-broker-service-client</artifactId>
-	<name>ApolloService SOAP Client</name>
+	<artifactId>broker-service-client</artifactId>
+	<name>Broker Service SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -31,7 +31,7 @@
 
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>apollo-broker-service</artifactId>
+			<artifactId>broker-service</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 
