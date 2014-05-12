@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>apollo-service-war</artifactId>
-	<name>-- ApolloService WAR file</name>
+	<name>ApolloService WAR file</name>
 	<packaging>war</packaging>
 
 	<dependencies>

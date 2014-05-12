@@ -6,6 +6,14 @@
 	<version>2.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<repositories>
+	  <repository>
+		<id>research.rods.pitt.edu</id>
+		<name>Apollo Repository</name>
+		<url>http://research.rods.pitt.edu/repo</url>
+	  </repository>
+	</repositories>
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -28,6 +36,7 @@
 		<module>apollo-db-common</module>
 		<module>apollo-services-common</module>
 		<module>apollo-config-examples</module>
+		<module>translator-service-skeleton</module>
 
 		<module>apollo-service</module>
 		<module>apollo-service-war</module>
@@ -48,6 +57,9 @@
 		<module>visualizer-service</module>
 		<module>visualizer-service-war</module>
 		<module>visualizer-service-client</module>
+		
+		
+		
 	</modules>
 
 	<dependencies>
