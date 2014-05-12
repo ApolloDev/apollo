@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>syntheticpopulation-service-war</artifactId>
-	<name>Synthetic Population WAR file</name>
+	<name>Synthetic Population WAR</name>
 	<packaging>war</packaging>
 
 	<dependencies>

@@ -8,7 +8,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>simulator-service-war</artifactId>
-	<name>SimulatorService WAR file</name>
+	<name>Simulator Service WAR</name>
 	<packaging>war</packaging>
 
 	<dependencies>
