@@ -38,9 +38,9 @@
 		<module>apollo-config-examples</module>
 		<module>translator-service-skeleton</module>
 
-		<module>apollo-service</module>
-		<module>apollo-service-war</module>
-		<module>apollo-service-client</module>
+		<module>apollo-broker-service</module>
+		<module>apollo-broker-service-war</module>
+		<module>apollo-broker-service-client</module>
 
 		<module>library-service</module>
 		<module>library-service-war</module>
