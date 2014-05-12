@@ -9,7 +9,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>library-service-client</artifactId>
-	<name>-- LibraryService SOAP Client</name>
+	<name>LibraryService SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
