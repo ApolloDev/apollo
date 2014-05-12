@@ -60,15 +60,15 @@ public class TutorialChapter2_ExampleConfig {
 
 	public static SoftwareIdentification getSoftwareIdentificationForSimulator() {
 
-//		 SoftwareIdentification softwareId = new SoftwareIdentification();
-//		 softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
-//		 softwareId.setSoftwareName("FRED");
-//		 softwareId.setSoftwareVersion("2.0.1_i");
+		 SoftwareIdentification softwareId = new SoftwareIdentification();
+		 softwareId.setSoftwareDeveloper("UPitt,PSC,CMU");
+		 softwareId.setSoftwareName("FRED");
+		 softwareId.setSoftwareVersion("2.0.1_i");
 //		 softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
-		SoftwareIdentification softwareId = new SoftwareIdentification();
-		softwareId.setSoftwareDeveloper("UPitt");
-		softwareId.setSoftwareName("SEIR");
-		softwareId.setSoftwareVersion("1.0");
+//		SoftwareIdentification softwareId = new SoftwareIdentification();
+//		softwareId.setSoftwareDeveloper("UPitt");
+//		softwareId.setSoftwareName("SEIR");
+//		softwareId.setSoftwareVersion("1.0");
 		softwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
 		return softwareId;
 	}
@@ -102,6 +102,7 @@ public class TutorialChapter2_ExampleConfig {
 		infectionAcquisition.setSusceptibleHostTaxonId(HUMAN_NCBI_TAXON_ID);
 		infectionAcquisition.setFromInfectiousHost(new InfectionAcquisitionFromInfectiousHost());
 		infectionAcquisition.getFromInfectiousHost().setBasicReproductionNumber(1.3);
+                infectionAcquisition.getFromInfectiousHost().setInfectiousHostTaxonId(HUMAN_NCBI_TAXON_ID);
 		
 		return infectionAcquisition;
 	}
