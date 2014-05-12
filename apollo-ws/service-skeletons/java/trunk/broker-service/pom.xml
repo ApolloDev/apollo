@@ -7,8 +7,8 @@
         <artifactId>apollo-ws</artifactId>
         <version>2.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>apollo-broker-service</artifactId>
-    <name>ApolloService Web Service </name>
+    <artifactId>broker-service</artifactId>
+    <name>Broker Service</name>
     <packaging>bundle</packaging>
 
     <repositories>
