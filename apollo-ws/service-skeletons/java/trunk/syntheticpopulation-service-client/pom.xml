@@ -9,7 +9,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>syntheticpopulation-service-client</artifactId>
-	<name>-- Synthetic Population SOAP Client</name>
+	<name>Synthetic Population SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
