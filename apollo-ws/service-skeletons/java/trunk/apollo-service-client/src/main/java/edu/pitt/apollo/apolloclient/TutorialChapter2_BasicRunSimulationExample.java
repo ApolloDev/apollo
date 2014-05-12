@@ -37,7 +37,7 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 public class TutorialChapter2_BasicRunSimulationExample {
 
-    //public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
+//    public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
     public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
     private ApolloServiceEI port;
     private TutorialChapter2_ExampleConfig config;
@@ -75,18 +75,18 @@ public class TutorialChapter2_BasicRunSimulationExample {
     protected MethodCallStatus checkStatusOfWebServiceCall(RunAndSoftwareIdentification runAndSoftwareId) {
         // give the simulator a chance to launch the simulation
         try {
-            Thread.sleep(500);
+            Thread.sleep(2000);
         } catch (InterruptedException e1) {
             // this is acceptable
         }
         while (true) {
             MethodCallStatus status = port.getRunStatus(runAndSoftwareId);
             if (status.getStatus() == null) {
-            	
-            	System.out.println(runAndSoftwareId.getSoftwareId().getSoftwareName() + "Return a NULL MethodCallStatus");
-            	
+
+                System.out.println(runAndSoftwareId.getSoftwareId().getSoftwareName() + "Return a NULL MethodCallStatus");
+
             }
-            
+
             switch (status.getStatus()) {
 
                 case AUTHENTICATION_FAILURE:
@@ -94,7 +94,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("No authorization for this run! Error message is:" + status.getMessage());
                     return status;
                 case LOG_FILES_WRITTEN:
-                	System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is LOG_FILES_WRITTEN ("
+                    System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is LOG_FILES_WRITTEN ("
                             + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     return status;
                 case COMPLETED:
@@ -117,12 +117,20 @@ public class TutorialChapter2_BasicRunSimulationExample {
                     System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
                             + status.getStatus().toString() + "). The status message is: " + status.getMessage());
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                     }
                 case INITIALIZING:
                     break;
                 case STAGING:
+                    break;
+                case CALLED_TRANSLATOR:
+                    System.out.println("The " + runAndSoftwareId.getSoftwareId().getSoftwareName() + " run is active ("
+                            + status.getStatus().toString() + "). The status message is: " + status.getMessage());
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                    }
                     break;
                 default:
                     break;
@@ -182,7 +190,7 @@ public class TutorialChapter2_BasicRunSimulationExample {
                 || status.getStatus() == MethodCallStatusEnum.LOG_FILES_WRITTEN) {
             return runAndSoftwareId;
         } else {
-            System.exit(-1);
+            System.out.println("The status of the simulator was " + status.getStatus() + " with message: " + status.getMessage());
             return null;
         }
     }
@@ -194,7 +202,9 @@ public class TutorialChapter2_BasicRunSimulationExample {
 
     protected RunAndSoftwareIdentification runSimulationAndDisplayResults(RunSimulationMessage runSimulationMessage) {
         RunAndSoftwareIdentification simulatorRunAndSoftwareId = runSimulation(runSimulationMessage);
-        displayResults(simulatorRunAndSoftwareId);
+        if (simulatorRunAndSoftwareId != null) {
+            displayResults(simulatorRunAndSoftwareId);
+        }
         return simulatorRunAndSoftwareId;
     }
 
