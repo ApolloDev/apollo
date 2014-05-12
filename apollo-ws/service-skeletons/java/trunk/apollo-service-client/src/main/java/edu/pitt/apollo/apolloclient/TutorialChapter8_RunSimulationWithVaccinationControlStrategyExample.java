@@ -67,7 +67,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 				.runSimulationAndDisplayResults(runSimulationMessageWithVaccination);
 
 		tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(TutorialChapter2_ExampleConfig.getAuthentication(),
-				noVaccinationRunAndSoftwareId.getRunId(), vaccinationRunAndSoftwareId.getRunId());
+				noVaccinationRunAndSoftwareId.getRunId() + "@FRED (no vaccination control measure)", vaccinationRunAndSoftwareId.getRunId() + "@FRED (vaccination control measure)");
 	}
 
 }
