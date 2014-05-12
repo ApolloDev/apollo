@@ -9,7 +9,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>apollo-service-client</artifactId>
-	<name>-- ApolloService SOAP Client</name>
+	<name>ApolloService SOAP Client</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
