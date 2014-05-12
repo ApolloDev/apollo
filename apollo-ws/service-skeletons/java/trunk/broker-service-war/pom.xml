@@ -7,14 +7,14 @@
 		<artifactId>apollo-ws</artifactId>
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>apollo-broker-service-war</artifactId>
-	<name>ApolloService WAR file</name>
+	<artifactId>broker-service-war</artifactId>
+	<name>Broker Service WAR</name>
 	<packaging>war</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>apollo-broker-service</artifactId>
+			<artifactId>broker-service</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
