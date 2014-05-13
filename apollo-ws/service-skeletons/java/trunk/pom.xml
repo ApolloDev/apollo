@@ -32,10 +32,10 @@
 	</properties>
 
 	<modules>
-		<module>apollo-types</module>
-		<module>apollo-db-common</module>
-		<module>apollo-services-common</module>
-		<module>apollo-config-examples</module>
+		<module>xsd-types</module>
+		<module>db-common</module>
+		<module>services-common</module>
+		<module>config-examples</module>
 		<module>translator-service-skeleton</module>
 
 		<module>broker-service</module>
@@ -173,4 +173,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<name>Apollo Web Services </name>
 </project>
