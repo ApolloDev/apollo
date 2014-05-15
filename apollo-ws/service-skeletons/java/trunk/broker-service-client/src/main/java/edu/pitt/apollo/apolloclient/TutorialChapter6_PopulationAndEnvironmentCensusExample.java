@@ -3,13 +3,15 @@ package edu.pitt.apollo.apolloclient;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import edu.pitt.apollo.examples.TutorialChapter2_ExampleConfig;
+import edu.pitt.apollo.examples.AbstractCodeExamplesClass.SimulatorIdentificationEnum;
+import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0_1.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.types.v2_0_1.SimulatorTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
-public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends TutorialChapter2_BasicRunSimulationExample {
+public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends AbstractTutorialWebServiceClient {
 
 	public TutorialChapter6_PopulationAndEnvironmentCensusExample() throws MalformedURLException {
 		super();
@@ -17,7 +19,7 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends Tuto
 
 	public void getPopulationAndEnvironmentCensus(String apolloLocationCode) {
 		// first, make sure the apolloLocationCode is supported by the simulator
-		SoftwareIdentification softwareIdentification = TutorialChapter2_ExampleConfig.getSoftwareIdentificationForSimulator(); 
+		SoftwareIdentification softwareIdentification = ExampleRunSimulationMessageFactory.getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED); 
 		GetScenarioLocationCodesSupportedBySimulatorResult result = getPort().getScenarioLocationCodesSupportedBySimulator(softwareIdentification);
 				
 
