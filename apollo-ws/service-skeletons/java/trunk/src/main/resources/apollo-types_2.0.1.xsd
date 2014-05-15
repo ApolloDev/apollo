@@ -915,7 +915,7 @@
 						maxOccurs="1" minOccurs="1" />
 					<element name="vaccinationEfficacyConditionedOnAgeRange" type="tns:ConditionalProbabilityDistribution"
 						maxOccurs="1" minOccurs="0" />
-					<element name="vaccinationEfficaciesByTimeSinceMostRecentDose"
+					<element name="vaccinationEfficaciesConditionedOnTimeSinceMostRecentDose"
 						type="tns:VaccinationEfficacyConditionedOnTimeSinceDose" maxOccurs="1"
 						minOccurs="0" />
 				</sequence>
