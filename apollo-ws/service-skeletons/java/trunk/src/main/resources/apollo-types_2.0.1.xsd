@@ -196,14 +196,24 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
-						maxOccurs="1" minOccurs="1">
+					<element name="pathogenTaxonId"
+						type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="hostTaxonId" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-					<element name="infectionAcquisition" type="tns:InfectionAcquisition"
-						maxOccurs="unbounded" minOccurs="1">
-					</element>
+					<element name="incubationPeriodDuration" type="tns:Duration" maxOccurs="1" minOccurs="0"></element>
+					<choice>
+						<element
+							name="infectionAcquisitionsFromInfectiousHosts"
+							type="tns:InfectionAcquisitionFromInfectiousHost"
+							maxOccurs="unbounded" minOccurs="1">
+						</element>
+						<element
+							name="infectionAcquisitionsFromContaminatedThings"
+							type="tns:InfectionAcquisitionFromContaminatedThing"
+							maxOccurs="unbounded" minOccurs="1">
+						</element>
+					</choice>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1171,26 +1181,6 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="InfectionAcquisition">
-		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
-				<sequence>
-					<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
-						maxOccurs="1" minOccurs="1" />
-					<element name="susceptibleHostTaxonId" type="tns:NcbiTaxonId"
-						maxOccurs="1" minOccurs="1" />
-					<choice>
-						<element name="fromContaminatedThing"
-							type="tns:InfectionAcquisitionFromContaminatedThing" maxOccurs="1"
-							minOccurs="1" />
-						 <element name="fromInfectiousHost" type="tns:InfectionAcquisitionFromInfectiousHost" 
-							maxOccurs="1" minOccurs="1" /> 
-					</choice>
-
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="InfectionAcquisitionFromContaminatedThing">
 		<sequence>
