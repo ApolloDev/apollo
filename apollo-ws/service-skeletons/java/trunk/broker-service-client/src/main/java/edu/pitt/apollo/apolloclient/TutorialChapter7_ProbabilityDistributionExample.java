@@ -2,24 +2,28 @@ package edu.pitt.apollo.apolloclient;
 
 import java.net.MalformedURLException;
 
-import edu.pitt.apollo.examples.TutorialChapter7_ProbabilityDistributionConfig;
+import edu.pitt.apollo.examples.ExampleUseOfConditionalProbabilityDistribution;
+import edu.pitt.apollo.examples.ExampleUseOfUnconditionalProbabilityDistribution;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
 public class TutorialChapter7_ProbabilityDistributionExample extends
-		TutorialChapter2_BasicRunSimulationExample {
+		AbstractTutorialWebServiceClient {
 
-	public TutorialChapter7_ProbabilityDistributionExample() throws MalformedURLException{
+	public TutorialChapter7_ProbabilityDistributionExample() throws MalformedURLException {
 		super();
 	}
 
-	/**
-	 * @param args
-	 * @throws MalformedURLException 
-	 */
 	public static void main(String[] args) throws MalformedURLException {
+		RunSimulationMessage runSimulationMessage = null;
 
-		TutorialChapter7_ProbabilityDistributionConfig tutorial = new TutorialChapter7_ProbabilityDistributionConfig();
-		tutorial.setLatentPeriodToConditionalProbabilityDistribution(tutorial.getConditionalProbabilityDistribution());
-		tutorial.setLatentPeriodToUnconditionalProbabilityDistribution(tutorial.getUnconditionalProbabilityDistribution());
-		//we do not run this example as neither the SEIR, FRED, or FluTE simulators can support this configuration
+		ExampleUseOfConditionalProbabilityDistribution conditionalProbabilityDistributionExample = new ExampleUseOfConditionalProbabilityDistribution();
+
+		runSimulationMessage = conditionalProbabilityDistributionExample.getRunSimulationMessage();
+
+		ExampleUseOfUnconditionalProbabilityDistribution unconditionalProbabilityDistributionExample = new ExampleUseOfUnconditionalProbabilityDistribution();
+		runSimulationMessage = unconditionalProbabilityDistributionExample.getRunSimulationMessage();
+
+		// we do not run this example as neither the SEIR, FRED, or FluTE
+		// simulators can support this configuration
 	}
 }
