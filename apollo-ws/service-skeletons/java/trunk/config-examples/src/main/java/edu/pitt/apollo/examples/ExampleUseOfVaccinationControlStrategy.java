@@ -24,13 +24,13 @@ import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 import edu.pitt.apollo.types.v2_0_1.Vaccination;
 import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration;
 
-public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig extends TutorialChapter2_ExampleConfig {
+public class ExampleUseOfVaccinationControlStrategy extends AbstractCodeExamplesClass {
 
 	public static final String H1N1_NCBI_TAXON_ID = "114727";
 	public static final String HUMAN_NCBI_TAXON_ID = "9606";
 	public static final String H1N1_VACCINE_ONTOLOGY_ID = "0001599";
 
-	public TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig() {
+	public ExampleUseOfVaccinationControlStrategy() {
 		super();
 	}
 
@@ -95,9 +95,9 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig 
 		return responseDelay;
 	}
 
-	@Override
-	public RunSimulationMessage getRunSimulationMessage() {
-		RunSimulationMessage message = super.getRunSimulationMessage();
+	
+	public  RunSimulationMessage getRunSimulationMessage() {
+		RunSimulationMessage message = getRunSimulationMessage();
 		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies().add(getVaccinationControlStrategy());
 		return message;
 	}
@@ -153,7 +153,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyConfig 
 		return vaccination;
 	}
 
-	private IndividualTreatmentControlStrategy getVaccinationControlStrategy() {
+	private  IndividualTreatmentControlStrategy getVaccinationControlStrategy() {
 		IndividualTreatmentControlStrategy vaccinationControlStrategy = new IndividualTreatmentControlStrategy();
 
 		/* inherited from InfectiousDiseaseControlStrategy */
