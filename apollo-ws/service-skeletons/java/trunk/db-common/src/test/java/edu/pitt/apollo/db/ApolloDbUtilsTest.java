@@ -4,12 +4,13 @@ import java.io.File;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+
 import java.sql.SQLException;
 
 public class ApolloDbUtilsTest extends TestCase {
