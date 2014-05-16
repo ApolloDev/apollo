@@ -34,7 +34,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 
-import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 
@@ -402,30 +402,31 @@ public class VisualizerChartUtility {
         return dataset;
     }
 
-    private XYDataset createCombinedIncidenceDataset(ImageSeriesMap imageSeriesMap,
+    private XYDataset createCombinedIncidenceDataset(TimeSeriesContainerList timeSeriesContainerList,
             Map<String, String> runIdSeriesLabels) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
 //        Map<String, double[]> incidenceMap = container.getIncidenceTimeSeriesMap();
 
 
-        for (String runId : imageSeriesMap.keySet()) {
-            dataset.addSeries(createXYSeries(imageSeriesMap.get(runId).getSeries(InfectionStateEnum.NEWLY_EXPOSED), runIdSeriesLabels.get(runId), 1));
+        for (TimeSeriesContainer container : timeSeriesContainerList) {
+            String runId = container.getRunId();
+            dataset.addSeries(createXYSeries(container.getSeries(InfectionStateEnum.NEWLY_EXPOSED), runIdSeriesLabels.get(runId), 1));
 
         }
 
         return dataset;
     }
 
-    public void createSeirTimeSeriesChart(ImageSeriesMap imageSeriesMap, Map<String, String> filepathMap) {
+    public void createSeirTimeSeriesChart(TimeSeriesContainerList timeSeriesContainerList, Map<String, String> filepathMap) {
 
-        for (String runId : filepathMap.keySet()) {
+        for (TimeSeriesContainer container : timeSeriesContainerList) {
 
+            String runId = container.getRunId();
             if (runId.toLowerCase().contains("flute")) { // can't show disease states for flute yet
                 continue;
             }
 
-            TimeSeriesContainer container = imageSeriesMap.get(runId);
             XYDataset dataset = createSeirXYDataset(container);
             JFreeChart chart = createDiseaseStatesChart(dataset, "Disease states over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
@@ -450,11 +451,11 @@ public class VisualizerChartUtility {
         }
     }
 
-    public void createIncidenceTimeSeriesChart(ImageSeriesMap imageSeriesMap, Map<String, String> filepathMap) {
+    public void createIncidenceTimeSeriesChart(TimeSeriesContainerList timeSeriesContainerList, Map<String, String> filepathMap) {
 
-        for (String runId : filepathMap.keySet()) {
+        for (TimeSeriesContainer container : timeSeriesContainerList) {
 
-            TimeSeriesContainer container = imageSeriesMap.get(runId);
+            String runId = container.getRunId();
             XYDataset dataset = createIncidenceDataset(container, runId);
             JFreeChart chart = createIncidenceChart(dataset, "Incidence of newly exposed over time", "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
@@ -477,7 +478,7 @@ public class VisualizerChartUtility {
         }
     }
 
-    public void createCombinedIncidenceTimeSeriesChart(ImageSeriesMap imageSeriesMap, String filepath,
+    public void createCombinedIncidenceTimeSeriesChart(TimeSeriesContainerList imageSeriesMap, String filepath,
             Map<String, String> runIdSeriesLabels) {
 
         XYDataset dataset = createCombinedIncidenceDataset(imageSeriesMap, runIdSeriesLabels);

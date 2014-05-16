@@ -45,9 +45,9 @@ CREATE TABLE software_identification (
 
 INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice201/services/translatorservice?wsdl',1),
 											 (2,'UPitt','SEIR','1.0','simulator','http://betaweb.rods.pitt.edu/seirsimulatorservice2.0.1/services/seirsimulatorservice?wsdl',1),
-											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://warhol-fred.psc.edu:8094/fred?wsdl',1),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://warhol-fred.psc.edu:8045/fred?wsdl',1),
 											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.1/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://warhol-fred.psc.edu:8094/fred?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://warhol-fred.psc.edu:8046/gaia?wsdl',1),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://localhost:8080/flutesimulatorservice2.0.1/services/flutesimulatorservice?wsdl',1);
 
 
