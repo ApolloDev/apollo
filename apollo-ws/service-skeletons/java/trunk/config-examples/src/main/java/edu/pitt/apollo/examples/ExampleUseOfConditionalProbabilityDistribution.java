@@ -2,13 +2,13 @@ package edu.pitt.apollo.examples;
 
 import java.math.BigInteger;
 
-import edu.pitt.apollo.types.v2_0_1.AgeRangeCategory;
+import edu.pitt.apollo.types.v2_0_1.AgeRangeCategoryDefinition;
 import edu.pitt.apollo.types.v2_0_1.Category;
 import edu.pitt.apollo.types.v2_0_1.ConditionalProbabilityDistribution;
 import edu.pitt.apollo.types.v2_0_1.ConditioningVariable;
 import edu.pitt.apollo.types.v2_0_1.ConditioningVariableEnum;
 import edu.pitt.apollo.types.v2_0_1.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v2_0_1.GenderCategory;
+import edu.pitt.apollo.types.v2_0_1.GenderCategoryDefinition;
 import edu.pitt.apollo.types.v2_0_1.GenderEnum;
 import edu.pitt.apollo.types.v2_0_1.ProbabilityValuePair;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
@@ -60,12 +60,12 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 
 		ConditioningVariable gender = new ConditioningVariable();
 		gender.setName(ConditioningVariableEnum.GENDER);
-		Category male = createGenderCategoryAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
-		Category female = createGenderCategoryAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
+		Category male = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
+		Category female = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
 		gender.getCategories().add(male);
 		gender.getCategories().add(female);
 
-		AgeRangeCategory ageGroupRange = new AgeRangeCategory();
+		AgeRangeCategoryDefinition ageGroupRange = new AgeRangeCategoryDefinition();
 		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
 		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
 
@@ -95,14 +95,14 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 
 		ConditioningVariable gender = new ConditioningVariable();
 		gender.setName(ConditioningVariableEnum.GENDER);
-		Category maleGenderCategory = createGenderCategoryAndAssignDistribution(GenderEnum.M,
+		Category maleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M,
 				latentPeriodDurationForMales);
-		Category femaleGenderCategory = createGenderCategoryAndAssignDistribution(GenderEnum.F,
+		Category femaleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F,
 				latentPeriodDurationForFemales);
-		gender.getCategories().add(maleGenderCategory);
-		gender.getCategories().add(femaleGenderCategory);
+		gender.getCategories().add(maleGenderCategoryDefinition);
+		gender.getCategories().add(femaleGenderCategoryDefinition);
 
-		AgeRangeCategory ageGroupRange = new AgeRangeCategory();
+		AgeRangeCategoryDefinition ageGroupRange = new AgeRangeCategoryDefinition();
 		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
 		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
 
@@ -112,14 +112,14 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 		return ageGroup;
 	}
 
-	private Category createGenderCategoryAndAssignDistribution(GenderEnum gender,
+	private Category createGenderCategoryDefinitionAndAssignDistribution(GenderEnum gender,
 			DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution) {
-		Category genderCategory = new Category();
-		GenderCategory genderCategoryDefinition = new GenderCategory();
-		genderCategoryDefinition.setGender(gender);
-		genderCategory.setCategoryDefinition(genderCategoryDefinition);
-		genderCategory.setUnconditionalProbabilityDistribution(discreteNonparametricProbabilityDistribution);
-		return genderCategory;
+		Category GenderCategoryDefinition = new Category();
+		GenderCategoryDefinition GenderCategoryDefinitionDefinition = new GenderCategoryDefinition();
+		GenderCategoryDefinitionDefinition.setGender(gender);
+		GenderCategoryDefinition.setCategoryDefinition(GenderCategoryDefinitionDefinition);
+		GenderCategoryDefinition.setUnconditionalProbabilityDistribution(discreteNonparametricProbabilityDistribution);
+		return GenderCategoryDefinition;
 
 	}
 
@@ -177,7 +177,7 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 	}
 
 	public RunSimulationMessage getDefaultRunSimulationMessageAndSetLatentPeriodToConditionalProbabilityDistribution() {
-		RunSimulationMessage runSimulationMessage = super.getRunSimulationMessage();
+		RunSimulationMessage runSimulationMessage = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
 
 		UncertainDuration uncertainDuration = new UncertainDuration();
 		ConditionalProbabilityDistribution distributionRepresentingLatentPeriodDuration = getDistributionRepresentingLatentPeriodDurationConditionedOnAgeRangeAndGender();
@@ -185,7 +185,7 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 		uncertainDuration.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
-				.setLatentPeriodDuration(uncertainDuration);
+				.getInfectionAcquisitionsFromInfectiousHosts().get(0).setLatentPeriodDuration(uncertainDuration);
 
 		return runSimulationMessage;
 	}

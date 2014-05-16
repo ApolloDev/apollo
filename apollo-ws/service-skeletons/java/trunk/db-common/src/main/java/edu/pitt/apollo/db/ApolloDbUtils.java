@@ -55,7 +55,8 @@ public class ApolloDbUtils {
     // public final int RECORD_NOT_INSERTED = -6;
     public enum DbContentDataFormatEnum {
 
-        TEXT, URL, ZIP,};
+        TEXT, URL, ZIP,
+    };
 
     public enum DbContentDataType {
 
@@ -93,6 +94,16 @@ public class ApolloDbUtils {
             throw new SQLException("Error getting connection to database: "
                     + url + " using username " + user
                     + ".   Specific error was:\n" + e.getMessage());
+        }
+    }
+
+    public void closeConnection() throws ApolloDatabaseException {
+        if (dbcon != null) {
+            try {
+                dbcon.close();
+            } catch (SQLException ex) {
+                throw new ApolloDatabaseException("SQLException attempting to close database connection: " + ex.getMessage());
+            }
         }
     }
 
