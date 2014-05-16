@@ -1,5 +1,9 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.SQLException;
+
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
@@ -14,11 +18,7 @@ import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceV201;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
 
 /**
  *
@@ -38,11 +38,11 @@ public class GetRunStatusMethod {
         return status;
     }
 
-    public static MethodCallStatus getRunStatus(RunAndSoftwareIdentification runAndSoftwareIdentification) {
+    public static MethodCallStatus getRunStatus(String runIdentification) {
 
         ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
         // first check the apollo errors file
-        long runIdAsLong = Long.parseLong(runAndSoftwareIdentification.getRunId());
+        long runIdAsLong = Long.parseLong(runIdentification);
         if (runIdAsLong == -1) {
             return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
         }
@@ -59,7 +59,7 @@ public class GetRunStatusMethod {
             }
         }
 
-        int runId = Integer.parseInt(runAndSoftwareIdentification.getRunId());
+        int runId = Integer.parseInt(runIdentification);
         // get the last called software
 
         SoftwareIdentification softwareId;
@@ -95,7 +95,7 @@ public class GetRunStatusMethod {
         // get the webservice WSDL URL for supplied
         if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.SIMULATOR) {
             SimulatorServiceEI port = new SimulatorServiceV201(url).getSimulatorServiceEndpoint();
-            status = port.getRunStatus(runAndSoftwareIdentification.getRunId());
+            status = port.getRunStatus(runIdentification);
             if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
                 status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
                 status.setMessage("The run was submitted to the simulator.");
@@ -103,14 +103,14 @@ public class GetRunStatusMethod {
         } else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.VISUALIZER) {
 
             VisualizerServiceEI port = new VisualizerServiceV201(url).getVisualizerServiceEndpoint();
-            status = port.getRunStatus(runAndSoftwareIdentification.getRunId());
+            status = port.getRunStatus(runIdentification);
             if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
                 status.setStatus(MethodCallStatusEnum.CALLED_VISUALIZER);
                 status.setMessage("The run was submitted to the visualizer.");
             }
         } else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.TRANSLATOR) {
             TranslatorServiceEI port = new TranslatorServiceV201(url).getTranslatorServiceEndpoint();
-            status = port.getRunStatus(runAndSoftwareIdentification);
+            status = port.getRunStatus(runIdentification);
 
             if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
                 status.setStatus(MethodCallStatusEnum.CALLED_TRANSLATOR);
