@@ -1,44 +1,30 @@
 package edu.pitt.apollo.apolloclient;
 
 import java.net.MalformedURLException;
-import java.util.List;
 
-import edu.pitt.apollo.examples.AbstractCodeExamplesClass.SimulatorIdentificationEnum;
-import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
-import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_0_1.PopulationAndEnvironmentCensus;
-import edu.pitt.apollo.types.v2_0_1.SimulatorTypeEnum;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends TutorialWebServiceClient {
 
-public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends AbstractTutorialWebServiceClient {
-
+	public TutorialChapter6_PopulationAndEnvironmentCensusExample() throws MalformedURLException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+/*
 	public TutorialChapter6_PopulationAndEnvironmentCensusExample() throws MalformedURLException {
 		super();
 	}
 
 	public void getPopulationAndEnvironmentCensus(String apolloLocationCode) {
-		// first, make sure the apolloLocationCode is supported by the simulator
-		SoftwareIdentification softwareIdentification = ExampleRunSimulationMessageFactory.getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED); 
-		GetScenarioLocationCodesSupportedBySimulatorResult result = getPort().getScenarioLocationCodesSupportedBySimulator(softwareIdentification);
-				
+		SoftwareIdentification fredSoftwareIdentification = ExampleRunSimulationMessageFactory
+				.getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED);
 
-		System.out.println("Call to getScenarioLocationCodesSupportedBySimulator() returned with result: "
-				+ result.getMethodCallStatus().getStatus());
+		List<String> locationCodesSupportedBySimulator = getScenarioLocationCodesSupportedBySimulatorOrNull(fredSoftwareIdentification);
 
-		List<String> locationCodes = result.getLocationCodes();
-		for (int i = 0; i < locationCodes.size(); i++) {
-			if (locationCodes.get(i).equals(apolloLocationCode)) { // the
-																	// location
-																	// code is
-																	// supported!
-				System.out.println("PopulationAndEnvironmentCensus for ApolloLocationCode " + apolloLocationCode + " is:");
+		for (int i = 0; i < locationCodesSupportedBySimulator.size(); i++) {
+			if (locationCodesSupportedBySimulator.get(i).equals(apolloLocationCode)) { 
+				System.out.println("PopulationAndEnvironmentCensus for ApolloLocationCode "
+						+ apolloLocationCode + " is:");
 
-				GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensusResult = getPort()
-						.getPopulationAndEnvironmentCensus(softwareIdentification, apolloLocationCode);
-
-				PopulationAndEnvironmentCensus populationAndEnvironmentCensus = getPopulationAndEnvironmentCensusResult
-						.getPopulationAndEnvironmentCensus();
+		
 
 				parsePopululationAndEnvironmentCensus(populationAndEnvironmentCensus, 0);
 			}
@@ -72,4 +58,5 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample extends Abst
 	public static void main(String[] args) throws MalformedURLException {
 		new TutorialChapter6_PopulationAndEnvironmentCensusExample().getPopulationAndEnvironmentCensus("42");
 	}
+	*/
 }
