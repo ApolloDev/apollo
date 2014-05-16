@@ -1,4 +1,4 @@
-package edu.pitt.apollo.examples;
+package edu.pitt.apollo.examples.runsimulationmessages;
 
 import edu.pitt.apollo.types.v2_0_1.DiscreteNonparametricProbabilityDistribution;
 import edu.pitt.apollo.types.v2_0_1.ProbabilityValuePair;
