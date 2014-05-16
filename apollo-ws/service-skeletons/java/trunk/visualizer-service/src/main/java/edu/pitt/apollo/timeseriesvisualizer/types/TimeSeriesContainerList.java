@@ -1,6 +1,6 @@
 package edu.pitt.apollo.timeseriesvisualizer.types;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
@@ -8,17 +8,17 @@ import java.util.HashMap;
  * Email: nick.millett@gmail.com
  * Date: Feb 12, 2013
  * Time: 7:14:53 PM
- * Class: ImageSeriesMap
+ * Class: TimeSeriesContainerList
  * IDE: NetBeans 6.9.1
  */
-public class ImageSeriesMap extends HashMap<String, TimeSeriesContainer> {
+public class TimeSeriesContainerList extends ArrayList<TimeSeriesContainer> {
     
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 70848079721098603L;
 
-	public ImageSeriesMap() {
+	public TimeSeriesContainerList() {
         super();
     }
     

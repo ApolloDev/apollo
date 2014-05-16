@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import edu.pitt.apollo.examples.TutorialChapter2_ExampleConfig;
+import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
@@ -16,7 +17,7 @@ public class ApolloDbUtilsTest extends TestCase {
     // public TutorialChapter2_BasicRunSimulationExample tutorial;
     private Authentication authUser1;
     private Authentication authUser2;
-    TutorialChapter2_ExampleConfig tutorial;
+    RunSimulationMessage message;
     private ApolloDbUtils apolloDbUtils;
     private static String APOLLO_DIR = "";
     private static final String DATABASE_PROPERTIES_FILE = "database.properties";
@@ -48,7 +49,7 @@ public class ApolloDbUtilsTest extends TestCase {
         authUser2.setRequesterId("user2");
         authUser2.setRequesterPassword("pass2");
 
-        tutorial = new TutorialChapter2_ExampleConfig();
+        message = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
         // insertUsers();
 
         // fredSoftwareId = tutorial.getSoftwareIdentificationForSimulator();
@@ -61,7 +62,7 @@ public class ApolloDbUtilsTest extends TestCase {
     protected void tearDown() throws Exception {
         // TODO Auto-generated method stub
         super.tearDown();
-        tutorial = null;
+        message = null;
     }
 
 //	private void insertUsers() throws ApolloDatabaseException, ApolloDatabaseRecordAlreadyExistsException {
@@ -196,7 +197,7 @@ public class ApolloDbUtilsTest extends TestCase {
         }
 
         try {
-            apolloDbUtils.addSimulationRun(tutorial.getRunSimulationMessage(), 1, translatorServiceRecord.getSoftwareIdentification());
+            apolloDbUtils.addSimulationRun(message, 1, translatorServiceRecord.getSoftwareIdentification());
 
         } catch (Exception e) {
             fail(e.getMessage());
@@ -205,7 +206,7 @@ public class ApolloDbUtilsTest extends TestCase {
 
     public void testGetUrlForSoftwareIdentification() {
         try {
-            assertEquals("http://warhol-fred.psc.edu:8094/fred?wsdl", apolloDbUtils.getUrlForSoftwareIdentification(tutorial.getRunSimulationMessage().getSimulatorIdentification()));
+            assertEquals("http://warhol-fred.psc.edu:8094/fred?wsdl", apolloDbUtils.getUrlForSoftwareIdentification(message.getSimulatorIdentification()));
         } catch (Exception e) {
             fail(e.getMessage());
         }
