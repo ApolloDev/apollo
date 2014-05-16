@@ -1,15 +1,15 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Map;
+
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.types.v2_0_1.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
-import java.io.ByteArrayOutputStream;
-import java.util.Map;
 
 /**
  *
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class GetVisualizerOutputResourcesMethod {
 
-    public static GetVisualizerOutputResourcesResult getVisualizerOutputResources(RunAndSoftwareIdentification runId) {
+    public static GetVisualizerOutputResourcesResult getVisualizerOutputResources(String runIdentification) {
 
         GetVisualizerOutputResourcesResult result = new GetVisualizerOutputResourcesResult();
         MethodCallStatus status = new MethodCallStatus();
@@ -30,13 +30,13 @@ public class GetVisualizerOutputResourcesMethod {
 
         try {
             ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
-            Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(Integer.parseInt(runId.getRunId()),
-                    dbUtils.getSoftwareIdentificationKey(runId.getSoftwareId()), 0);
+            Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(Integer.parseInt(runIdentification),
+                    dbUtils.getSoftwareIdentificationKeyForRun(Integer.valueOf(runIdentification)), 0);
 
             if (map.isEmpty()) {
                 status.setStatus(MethodCallStatusEnum.FAILED);
                 status.setMessage("There were no visualizer resources available for run "
-                        + runId);
+                        + runIdentification);
                 return result;
             }
 

@@ -1,37 +1,30 @@
 package edu.pitt.apollo.apolloservice.thread;
 
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
-import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+
+import javax.xml.ws.WebServiceException;
 
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
+import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
+import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
+import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
-
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceV201;
-import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceV201;
-import java.math.BigInteger;
-
-import javax.xml.ws.WebServiceException;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
  * 
