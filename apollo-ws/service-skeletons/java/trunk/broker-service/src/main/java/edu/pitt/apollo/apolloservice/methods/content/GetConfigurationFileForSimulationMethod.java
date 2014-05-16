@@ -1,5 +1,8 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Map;
+
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
@@ -7,9 +10,6 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.types.v2_0_1.GetConfigurationFileForSimulationResult;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
-import java.io.ByteArrayOutputStream;
-import java.util.Map;
 
 /**
  *
@@ -22,20 +22,19 @@ import java.util.Map;
  */
 public class GetConfigurationFileForSimulationMethod {
 
-    public static GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(RunAndSoftwareIdentification runAndSoftwareIdentification) {
+    public static GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(String runIdentification) {
         
         ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
         GetConfigurationFileForSimulationResult result = new GetConfigurationFileForSimulationResult();
         MethodCallStatus status = new MethodCallStatus();
         result.setMethodCallStatus(status);
 
-        int runId = Integer.parseInt(runAndSoftwareIdentification.getRunId());
+        int runId = Integer.parseInt(runIdentification);
         Map<String, ByteArrayOutputStream> map;
         try {
-            map = dbUtils.getDataContentForSoftware(
+            map = dbUtils.getConfigFilesForSimulation(
                     runId,
-                    dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification()),
-                    dbUtils.getSoftwareIdentificationKey(runAndSoftwareIdentification.getSoftwareId()));
+                    dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification()));
         } catch (ApolloDatabaseException ex) {
             status.setStatus(MethodCallStatusEnum.FAILED);
             status.setMessage(ex.getMessage());
