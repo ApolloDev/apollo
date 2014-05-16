@@ -11,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -22,7 +21,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
@@ -42,7 +41,6 @@ public class DatabaseUtility {
     private Connection connect = null;
     private ResultSet resultSet = null;
     private PreparedStatement statement = null;
-    private List<String> runIds;
     private SoftwareIdentification visuazlierSoftwareId;
     static final Properties properties = new Properties();
     private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
@@ -83,8 +81,7 @@ public class DatabaseUtility {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
     }
 
-    public DatabaseUtility(List<String> runIds, SoftwareIdentification visualizerSoftwareId) throws TimeSeriesVisualizerException {
-        this.runIds = runIds;
+    public DatabaseUtility(SoftwareIdentification visualizerSoftwareId) throws TimeSeriesVisualizerException {
         this.visuazlierSoftwareId = visualizerSoftwareId;
 
 
@@ -147,9 +144,9 @@ public class DatabaseUtility {
 //        container.setLength(maxLength);
 //        return container;
 //    }
-    public ImageSeriesMap retrieveTimeSeriesFromDatabaseTimeSeriesTable(boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
+    public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseTimeSeriesTable(List<String> runIds, boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
 
-        ImageSeriesMap container = new ImageSeriesMap();
+        TimeSeriesContainerList container = new TimeSeriesContainerList();
 
         String dbClass = properties.getProperty("class");
         String url = properties.getProperty("url");
@@ -198,7 +195,7 @@ public class DatabaseUtility {
 
                 timeSeriesContainer.setRunId(runId);
 
-                container.put(runId, timeSeriesContainer);
+                container.add(timeSeriesContainer);
 
                 resultSet.close();
             } catch (ClassNotFoundException ex) {
@@ -222,9 +219,9 @@ public class DatabaseUtility {
 
     }
 
-    public ImageSeriesMap retrieveTimeSeriesFromDatabaseFiles(boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
+    public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseFiles(List<String> runIds, boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
 
-        ImageSeriesMap container = new ImageSeriesMap();
+        TimeSeriesContainerList container = new TimeSeriesContainerList();
 
         int visualizerKey;
         try {
@@ -253,7 +250,7 @@ public class DatabaseUtility {
 
                 timeSeriesContainer.setRunId(runId);
 
-                container.put(runId, timeSeriesContainer);
+                container.add(timeSeriesContainer);
 
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException for run " + runId
@@ -276,31 +273,26 @@ public class DatabaseUtility {
         return container;
     }
 
-    public Map<String, String> getSeriesLabelsForRunIds(List<String> runIds) throws TimeSeriesVisualizerException {
+    public String getSoftwareNameForRunId(String runId) throws TimeSeriesVisualizerException {
 
-        Map<String, String> labels = new HashMap<String, String>();
-        for (String runId : runIds) {
 
-            try {
-                int runIdInt = Integer.parseInt(runId);
-                SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runIdInt);
-                labels.put(runId, softwareId.getSoftwareName());
-            } catch (ClassNotFoundException ex) {
-                throw new TimeSeriesVisualizerException("ClassNotFoundException for run " + runId
-                        + " attempting to get software identification from database: " + ex.getMessage());
-            } catch (SQLException ex) {
-                throw new TimeSeriesVisualizerException("SQLException for run " + runId
-                        + " attempting to get software identification from database: " + ex.getMessage());
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException for run " + runId
-                        + " attempting to get software identification from database: " + ex.getMessage());
-            } catch (NumberFormatException ex) {
-                throw new TimeSeriesVisualizerException("NumberFormatException for run " + runId
-                        + " attempting to get software identification from database: " + ex.getMessage());
-            }
+        try {
+            int runIdInt = Integer.parseInt(runId);
+            SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runIdInt);
+            return softwareId.getSoftwareName();
+        } catch (ClassNotFoundException ex) {
+            throw new TimeSeriesVisualizerException("ClassNotFoundException for run " + runId
+                    + " attempting to get software identification from database: " + ex.getMessage());
+        } catch (SQLException ex) {
+            throw new TimeSeriesVisualizerException("SQLException for run " + runId
+                    + " attempting to get software identification from database: " + ex.getMessage());
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException for run " + runId
+                    + " attempting to get software identification from database: " + ex.getMessage());
+        } catch (NumberFormatException ex) {
+            throw new TimeSeriesVisualizerException("NumberFormatException for run " + runId
+                    + " attempting to get software identification from database: " + ex.getMessage());
         }
-
-        return labels;
     }
 
     private void addTextDataContentForUrl(String url, String imageName, int visualizerRunId) throws TimeSeriesVisualizerException {
@@ -337,7 +329,7 @@ public class DatabaseUtility {
             throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to get run data "
                     + "description ID for image " + imageName + " for run " + visualizerRunId + ": " + ex.getMessage());
         }
-        
+
         try {
             dbUtils.associateContentWithRunId(visualizerRunId, dataContentKey, runDataDescriptionId);
         } catch (ClassNotFoundException ex) {
