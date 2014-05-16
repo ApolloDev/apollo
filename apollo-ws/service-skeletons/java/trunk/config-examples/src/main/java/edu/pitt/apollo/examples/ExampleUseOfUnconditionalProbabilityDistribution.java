@@ -43,7 +43,7 @@ public class ExampleUseOfUnconditionalProbabilityDistribution extends
 	}
 
 	public RunSimulationMessage getDefaultRunSimulationMessageAndSetLatentPeriodToUnconditionalProbabilityDistribution() {
-		RunSimulationMessage runSimulationMessage = super.getRunSimulationMessage();
+		RunSimulationMessage runSimulationMessage = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
 
 		UnconditionalProbabilityDistribution distributionRepresentingLatentPeriodDuration = getDistributionRepresentingLatentPeriodDuration();
 		
@@ -53,7 +53,7 @@ public class ExampleUseOfUnconditionalProbabilityDistribution extends
 				.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
-				.setLatentPeriodDuration(uncertainDurationOfLatentPeriod);
+				.getInfectionAcquisitionsFromInfectiousHosts().get(0).setLatentPeriodDuration(uncertainDurationOfLatentPeriod);
 
 		return runSimulationMessage;
 	}
