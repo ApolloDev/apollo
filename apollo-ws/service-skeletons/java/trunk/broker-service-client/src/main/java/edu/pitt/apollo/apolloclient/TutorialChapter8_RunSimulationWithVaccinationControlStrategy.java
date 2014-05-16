@@ -2,27 +2,25 @@ package edu.pitt.apollo.apolloclient;
 
 import java.net.MalformedURLException;
 
-import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
-import edu.pitt.apollo.examples.ExampleUseOfVaccinationControlStrategy;
-import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationResult;
-import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
-public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample extends
-		AbstractTutorialWebServiceClient {
+public class TutorialChapter8_RunSimulationWithVaccinationControlStrategy extends
+		TutorialWebServiceClient {
 
-	public TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample() throws MalformedURLException {
+	public TutorialChapter8_RunSimulationWithVaccinationControlStrategy() throws MalformedURLException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+/*
+	public TutorialChapter8_RunSimulationWithVaccinationControlStrategy() throws MalformedURLException {
 		super();
 	}
 
 	protected void createIncidenceVisualizationForMultipleSimulations(Authentication authentication, String... simulatorRunIds) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 		runVisualizationMessage.setAuthentication(authentication);
-		runVisualizationMessage.setVisualizerIdentification(getSoftwareIdentifiationForTimeSeriesVisualizer());
+		
+		SoftwareIdentification softwareIdentificationForTimeSeriesVisualizer = getSoftwareIdentificationForVisualizer(VisualizerIdentificationEnum.TIME_SERIES);
+		runVisualizationMessage.setVisualizerIdentification(softwareIdentificationForTimeSeriesVisualizer);
 		for (String runId : simulatorRunIds) {
 			runVisualizationMessage.getSimulationRunIds().add(runId);
 		}
@@ -36,12 +34,11 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 		RunVisualizationResult runVisualizationResult = getPort().runVisualization(runVisualizationMessage);
 
 		RunAndSoftwareIdentification runAndSoftwareIdentification = new RunAndSoftwareIdentification();
-		runAndSoftwareIdentification.setSoftwareId(getSoftwareIdentifiationForTimeSeriesVisualizer());
+		runAndSoftwareIdentification.setSoftwareId(softwareIdentificationForTimeSeriesVisualizer);
 		runAndSoftwareIdentification.setRunId(runVisualizationResult.getVisualizationRunId());
 
-		if (getStatusOfWebServiceCall(runAndSoftwareIdentification).getStatus() == MethodCallStatusEnum.COMPLETED) {
-			System.out.println("The following resources were returned from the "
-					+ getSoftwareIdentifiationForTimeSeriesVisualizer().getSoftwareName() + " visualizer:");
+		if (waitForRunToCompleteOrFail(runAndSoftwareIdentification).getStatus() == MethodCallStatusEnum.COMPLETED) {
+			System.out.printf("The following resources were returned from the %s visualizer:\n", softwareIdentificationForTimeSeriesVisualizer.getSoftwareName());
 			for (UrlOutputResource r : getPort().getVisualizerOutputResources(runAndSoftwareIdentification)
 					.getUrlOutputResources()) {
 				System.out.println("\t" + r.getURL());
@@ -51,7 +48,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
-		TutorialChapter2_BasicRunSimulationExample tutorialChapter2Example = new TutorialChapter2_BasicRunSimulationExample();
+		TutorialChapter2_RunSimulationWithNoIntervention tutorialChapter2Example = new TutorialChapter2_RunSimulationWithNoIntervention();
 
 		ExampleRunSimulationMessageFactory tutorialChapter2Config = new ExampleRunSimulationMessageFactory();
 
@@ -59,7 +56,7 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 		RunAndSoftwareIdentification noVaccinationRunAndSoftwareId = tutorialChapter2Example
 				.runSimulation(runSimulationMessageWithoutVaccination);
 
-		TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample();
+		TutorialChapter8_RunSimulationWithVaccinationControlStrategy tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategy();
 		ExampleUseOfVaccinationControlStrategy tutorialChapter8Config = new ExampleUseOfVaccinationControlStrategy();
 
 		RunSimulationMessage runSimulationMessageWithVaccination = tutorialChapter8Config.getRunSimulationMessage();
@@ -69,5 +66,5 @@ public class TutorialChapter8_RunSimulationWithVaccinationControlStrategyExample
 		tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(ExampleRunSimulationMessageFactory.getAuthentication(ExampleRunSimulationMessageFactory.REQUESTER_ID, ExampleRunSimulationMessageFactory.REQUESTER_PASSWORD),
 				noVaccinationRunAndSoftwareId.getRunId(), vaccinationRunAndSoftwareId.getRunId());
 	}
-
+*/
 }
