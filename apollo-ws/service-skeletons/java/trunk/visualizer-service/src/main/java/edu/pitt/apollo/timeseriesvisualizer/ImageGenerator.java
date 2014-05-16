@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.ImageSeriesMap;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
@@ -32,6 +32,7 @@ public class ImageGenerator {
     private static final String IMAGE_FILE_TYPE = rb.getString("image_file_type");
     private static final String IMAGE_BASE_URL = rb.getString("image_base_url");
     private List<String> runIds;
+    private Map<String, String> runIdLabelMap;
     //private SoftwareIdentification visualizerSoftwareId;
     private Map<String, String> diseaseStateImagePathMap;
     private Map<String, String> incidenceImagePathMap;
@@ -65,8 +66,10 @@ public class ImageGenerator {
 //        }
 //
 //    }
-    public ImageGenerator(List<String> runIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) throws TimeSeriesVisualizerException {
-        this.runIds = runIds;
+    public ImageGenerator(List<String> initialRunIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) throws TimeSeriesVisualizerException {
+
+        dbUtil = new DatabaseUtility(visualizerSoftwareId);
+        setRunIdsAndLabels(initialRunIds); // need to do this first
         //this.visualizerSoftwareId = visualizerSoftwareId;
         this.visualizerRunId = visualizerRunId;
         multiSimulatorChart = (runIds.size() > 1);
@@ -89,7 +92,6 @@ public class ImageGenerator {
             combinedIncidenceImagePath = runDirectory + File.separator + "incidence" + "." + IMAGE_FILE_TYPE;
         }
 
-        dbUtil = new DatabaseUtility(runIds, visualizerSoftwareId);
     }
 
     public static String getRunDirectory(String visualizerRunId) {
@@ -103,6 +105,31 @@ public class ImageGenerator {
             return IMAGE_BASE_URL + "/" + visualizerRunId + "/" + imageName + "." + IMAGE_FILE_TYPE;
         }
 
+    }
+
+    private void setRunIdsAndLabels(List<String> initialRunIds) throws TimeSeriesVisualizerException {
+        runIds = new ArrayList<String>();
+        runIdLabelMap = new HashMap<String, String>();
+        int charCode = 65;
+        for (String runId : initialRunIds) {
+//            if (runId.contains("@")) {
+//                String[] splitId = runId.split("@");
+//                String id = splitId[0];
+//                String label = splitId[1];
+//                runIds.add(id);
+//                runIdLabelMap.put(id, label);
+//            } else {
+                runIds.add(runId);
+                
+                String softwareName = dbUtil.getSoftwareNameForRunId(runId);
+                char runChar = (char) charCode;
+                
+                String label = "Scenario " + runChar + " (" + softwareName + " / Run ID: " + runId + ")";
+                runIdLabelMap.put(runId, label);
+                
+                charCode++;
+//            }
+        }
     }
 
     public void createTimeSeriesImages() throws TimeSeriesVisualizerException {
@@ -127,7 +154,7 @@ public class ImageGenerator {
         generateImages(createDiseaseStatesChart, createIncidenceChart, createCombinedIncidenceChart);
     }
 
-//    private void adjustGlobalEpidemicSimulatorIncidence(ImageSeriesMap imageSeriesMap) throws TimeSeriesVisualizerException {
+//    private void adjustGlobalEpidemicSimulatorIncidence(TimeSeriesContainerList imageSeriesMap) throws TimeSeriesVisualizerException {
 //
 ////        Map<String, double[]> incidenceMap = incidenceContainer.getIncidenceTimeSeriesMap();
 //        if (imageSeriesMap.size() > 1) {
@@ -163,11 +190,9 @@ public class ImageGenerator {
 //    }
     private void generateImages(boolean generateDiseaseStates, boolean generateIncidence, boolean generateCombinedIncidence) throws TimeSeriesVisualizerException {
 
-//        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseTimeSeriesTable(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
-        ImageSeriesMap imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseFiles(generateDiseaseStates, (generateIncidence
+//        TimeSeriesContainerList imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseTimeSeriesTable(generateDiseaseStates, (generateIncidence || generateCombinedIncidence));
+        TimeSeriesContainerList imageSeriesMap = dbUtil.retrieveTimeSeriesFromDatabaseFiles(runIds, generateDiseaseStates, (generateIncidence
                 || generateCombinedIncidence));
-
-        Map<String, String> runIdSeriesLabels = dbUtil.getSeriesLabelsForRunIds(runIds);
 
 //        adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
 
@@ -183,7 +208,8 @@ public class ImageGenerator {
             chartUtility.createIncidenceTimeSeriesChart(imageSeriesMap, incidenceImagePathMap);
             resourceMap.put("incidence." + IMAGE_FILE_TYPE, getURLForImage("incidence"));
         } else if (generateCombinedIncidence) { // can't generate incidence and comnined incidence
-            chartUtility.createCombinedIncidenceTimeSeriesChart(imageSeriesMap, combinedIncidenceImagePath, runIdSeriesLabels);
+
+            chartUtility.createCombinedIncidenceTimeSeriesChart(imageSeriesMap, combinedIncidenceImagePath, runIdLabelMap);
             resourceMap.put("incidence." + IMAGE_FILE_TYPE, getURLForImage("incidence"));
         }
 
@@ -199,11 +225,11 @@ public class ImageGenerator {
         visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
 
         List<String> runIds = new ArrayList<String>();
-        runIds.add("3");
-//        runIds.add("3");
+        runIds.add("1");
+        runIds.add("2");
 
-        Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
-        runIdSeriesLabels.put("3", "FluTE");
+//        Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
+//        runIdSeriesLabels.put("3", "FluTE");
 //        runIdSeriesLabels.put("3", "SEIR");
 
         ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "20");
