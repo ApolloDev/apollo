@@ -24,7 +24,7 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
-import edu.pitt.apollo.examples.TutorialChapter2_ExampleConfig;
+import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceV201;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
@@ -58,8 +58,7 @@ public class WSClient {
         httpClientPolicy.setAllowChunking(false);
         http.setClient(httpClientPolicy);
         
-        TutorialChapter2_ExampleConfig config = new TutorialChapter2_ExampleConfig();
-        RunSimulationMessage rsm = config.getRunSimulationMessage();
+        RunSimulationMessage rsm = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
         rsm.setSimulatorIdentification(WSClient.getSoftwareIdentificationForSimulator());
         
         BigInteger simulationRunId = new BigInteger("7");

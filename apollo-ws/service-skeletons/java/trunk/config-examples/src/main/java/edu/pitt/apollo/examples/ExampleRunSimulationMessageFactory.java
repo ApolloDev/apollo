@@ -29,7 +29,6 @@ import edu.pitt.apollo.types.v2_0_1.DiseaseOutcomeEnum;
 import edu.pitt.apollo.types.v2_0_1.DiseaseOutcomeWithProbability;
 import edu.pitt.apollo.types.v2_0_1.FixedDuration;
 import edu.pitt.apollo.types.v2_0_1.Infection;
-import edu.pitt.apollo.types.v2_0_1.InfectionAcquisition;
 import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
 import edu.pitt.apollo.types.v2_0_1.InfectionStateEnum;
 import edu.pitt.apollo.types.v2_0_1.InfectiousDisease;
