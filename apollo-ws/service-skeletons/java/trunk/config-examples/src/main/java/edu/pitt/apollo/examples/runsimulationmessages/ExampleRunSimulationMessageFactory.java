@@ -12,7 +12,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package edu.pitt.apollo.examples;
+package edu.pitt.apollo.examples.runsimulationmessages;
 
 import java.math.BigInteger;
 import java.util.Calendar;

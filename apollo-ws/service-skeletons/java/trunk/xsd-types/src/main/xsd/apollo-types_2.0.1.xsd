@@ -738,15 +738,6 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="RunAndSoftwareIdentification">
-		<sequence>
-			<element name="runId" type="tns:RunIdentification" />
-			<element name="softwareId" type="tns:SoftwareIdentification" />
-		</sequence>
-	</complexType>
-
-
-
 	<complexType name="GetVisualizerOutputResourcesResult">
 		<sequence>
 			<element name="methodCallStatus" type="tns:MethodCallStatus"></element>

@@ -14,6 +14,17 @@
  */
 package edu.pitt.apollo;
 
+import java.math.BigInteger;
+import java.util.List;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+
 import edu.pitt.apollo.apolloservice.methods.census.GetPopulationAndEnvironmentCensusMethod;
 import edu.pitt.apollo.apolloservice.methods.census.GetScenarioLocationCodesSupportedBySimulatorMethod;
 import edu.pitt.apollo.apolloservice.methods.content.GetConfigurationFileForSimulationMethod;
@@ -30,18 +41,6 @@ import edu.pitt.apollo.apolloservice.methods.run.RunVisualizationMethod;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
-import java.math.BigInteger;
-import java.util.List;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
-
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI;
 import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItem;
@@ -53,7 +52,6 @@ import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0_1.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
@@ -140,8 +138,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/getConfigurationFileForSimulation")
     @ResponseWrapper(localName = "getConfigurationFileForSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetConfigurationFileForSimulationResponse")
     public GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(
-            @WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
-        return GetConfigurationFileForSimulationMethod.getConfigurationFileForSimulation(runAndSoftwareIdentification);
+            @WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+        return GetConfigurationFileForSimulationMethod.getConfigurationFileForSimulation(runIdentification);
     }
     
     @Override
@@ -150,8 +148,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetRunStatusResponse")
     public MethodCallStatus getRunStatus(
-            @WebParam(name = "runAndSoftwareIdentification", targetNamespace = "") RunAndSoftwareIdentification runAndSoftwareIdentification) {
-        return GetRunStatusMethod.getRunStatus(runAndSoftwareIdentification);
+            @WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+        return GetRunStatusMethod.getRunStatus(runIdentification);
     }
     
     @Override
@@ -241,7 +239,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod
     @ResponseWrapper(localName = "getVisualizerOutputResourcesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetVisualizerOutputResourcesResponse")
     public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
-            @WebParam(name = "runId", targetNamespace = "") RunAndSoftwareIdentification runId) {
+            @WebParam(name = "runId", targetNamespace = "") String runId) {
         return GetVisualizerOutputResourcesMethod.getVisualizerOutputResources(runId);
     }
     
@@ -250,4 +248,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
         super.finalize();
         // db4o.close();
     }
+
+
+
+
 }
