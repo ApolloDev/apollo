@@ -1,13 +1,5 @@
 package edu.pitt.apollo.apolloclient;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
-import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +9,15 @@ import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
+
 import junit.framework.TestCase;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
  *
@@ -107,19 +107,19 @@ public class ConfigurationFileTest extends TestCase {
     }
 
     public void testRunningFred() {
-        TutorialChapter2_BasicRunSimulationExample example;
+        TutorialChapter2_RunSimulationWithNoIntervention example;
         try {
-            example = new TutorialChapter2_BasicRunSimulationExample();
+            example = new TutorialChapter2_RunSimulationWithNoIntervention();
         } catch (MalformedURLException ex) {
             fail("MalformedURLException creating TutorialChapter2_BasicRunSimulationExample: " + ex.getMessage());
             return;
         }
         try {
-            RunAndSoftwareIdentification runAndSoftwareId = example.runSimulation(message);
-            if (runAndSoftwareId == null) {
+            String runIdAsString = TutorialWebServiceClient.runSimulation(message);
+            if (runIdAsString == null) {
                 assert false;
             } else {
-                runId = Integer.parseInt(runAndSoftwareId.getRunId());
+                runId = Integer.parseInt(runIdAsString);
                 assert true;
             }
         } catch (Exception ex) {

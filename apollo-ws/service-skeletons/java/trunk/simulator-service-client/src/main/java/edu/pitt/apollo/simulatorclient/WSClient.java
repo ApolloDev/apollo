@@ -24,7 +24,7 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
-import edu.pitt.apollo.examples.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceV201;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;

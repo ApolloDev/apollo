@@ -18,7 +18,6 @@ import javax.jws.WebService;
 
 import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_0_1/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI")
@@ -33,7 +32,7 @@ public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 	@Override
 	public MethodCallStatus getRunStatus(
-			RunAndSoftwareIdentification runAndSoftwareIdentification) {
+			String runIdentification) {
 		// TODO Auto-generated method stub
 		return null;
 	}
