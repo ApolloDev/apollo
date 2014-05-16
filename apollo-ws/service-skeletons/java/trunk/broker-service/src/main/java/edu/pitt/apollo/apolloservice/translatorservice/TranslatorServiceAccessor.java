@@ -1,21 +1,23 @@
 package edu.pitt.apollo.apolloservice.translatorservice;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.ws.WebServiceException;
+
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI;
 import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceV201;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunAndSoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.xml.ws.WebServiceException;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 /**
  *
@@ -29,6 +31,7 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 public class TranslatorServiceAccessor {
 
     public static boolean runTranslatorAndReturnIfRunWasSuccessful(int runId, RunSimulationMessage message) throws IOException {
+    	String runIdentification = Integer.toString(runId);
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
@@ -54,7 +57,7 @@ public class TranslatorServiceAccessor {
         http.setClient(httpClientPolicy);
 
         try {
-            translatorPort.translateRunSimulationMessage(Integer.toString(runId), message);
+            translatorPort.translateRunSimulationMessage(runIdentification, message);
         } catch (WebServiceException e) {
             ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to call translateRunSimulationMessage() for runId:  " + runId
                     + ". Error was: " + e.getMessage(),
@@ -63,10 +66,8 @@ public class TranslatorServiceAccessor {
         }
 
         // while translator is running, query the status
-        RunAndSoftwareIdentification translatorRasid = new RunAndSoftwareIdentification();
-        translatorRasid.setRunId(Integer.toString(runId));
-        translatorRasid.setSoftwareId(translatorServiceRecord.getSoftwareIdentification());
-        MethodCallStatusEnum status = GetRunStatusMethod.getRunStatus(translatorRasid).getStatus();
+
+        MethodCallStatusEnum status = GetRunStatusMethod.getRunStatus(runIdentification).getStatus();
         // MethodCallStatusEnum status = MethodCallStatusEnum.QUEUED; //
         // doesn't
         // really
@@ -75,7 +76,7 @@ public class TranslatorServiceAccessor {
             while (!status.equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
 
                 Thread.sleep(1000);
-                status = GetRunStatusMethod.getRunStatus(translatorRasid).getStatus();
+                status = GetRunStatusMethod.getRunStatus(runIdentification).getStatus();
 
                 if (status.equals(MethodCallStatusEnum.FAILED)) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile("Translator service returned status of FAILED for runId " + runId,
