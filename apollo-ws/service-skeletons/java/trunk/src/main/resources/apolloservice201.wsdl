@@ -60,8 +60,8 @@
 			<xsd:element name="getRunStatus">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runAndSoftwareIdentification"
-							type="apollo:RunAndSoftwareIdentification">
+						<xsd:element name="runIdentification"
+							type="apollo:RunIdentification">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -135,8 +135,8 @@
 			<xsd:element name="getConfigurationFileForSimulation">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runAndSoftwareIdentification"
-							type="apollo:RunAndSoftwareIdentification"></xsd:element>
+						<xsd:element name="runIdentification"
+							type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -277,7 +277,7 @@
 			<xsd:element name="getVisualizerOutputResources">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="runIdAndSoftwareIdentification" type="apollo:RunAndSoftwareIdentification"></xsd:element>
+						<xsd:element name="runIdentification" type="apollo:RunIdentification"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
