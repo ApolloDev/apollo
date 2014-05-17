@@ -1,5 +1,6 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -38,33 +39,30 @@ public class GetRunStatusMethod {
         return status;
     }
 
-    public static MethodCallStatus getRunStatus(String runIdentification) {
+    public static MethodCallStatus getRunStatus(BigInteger runIdentification) {
 
         ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
         // first check the apollo errors file
-        long runIdAsLong = Long.parseLong(runIdentification);
-        if (runIdAsLong == -1) {
+        if (runIdentification.intValue() == -1) {
             return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
         }
 
         {
             // long runIdAsLong =
             // Long.parseLong(runAndSoftwareIdentification.getRunId());
-            if (ApolloServiceErrorHandler.checkErrorFileExists(runIdAsLong)) {
+            if (ApolloServiceErrorHandler.checkErrorFileExists(runIdentification.intValue())) {
 
                 MethodCallStatus status = new MethodCallStatus();
                 status.setStatus(MethodCallStatusEnum.FAILED);
-                status.setMessage(ApolloServiceErrorHandler.readErrorFromErrorFile(runIdAsLong));
+                status.setMessage(ApolloServiceErrorHandler.readErrorFromErrorFile(runIdentification.intValue()));
                 return status;
             }
         }
 
-        int runId = Integer.parseInt(runIdentification);
-        // get the last called software
-
+      
         SoftwareIdentification softwareId;
         try {
-            softwareId = dbUtils.getLastServiceToBeCalledForRun(runId);
+            softwareId = dbUtils.getLastServiceToBeCalledForRun(runIdentification);
         } catch (ApolloDatabaseException ex) {
             String message = ex.getMessage();
             return getErrorMethodCallStatus(message);
@@ -75,19 +73,19 @@ public class GetRunStatusMethod {
             url = new URL(dbUtils.getUrlForSoftwareIdentification(softwareId));
         } catch (SQLException ex) {
             String message = "SQLException attempting to get URL for software identification for runId "
-                    + runId + ": " + ex.getMessage();
+                    + runIdentification + ": " + ex.getMessage();
             return getErrorMethodCallStatus(message);
         } catch (ApolloDatabaseKeyNotFoundException ex) {
             String message = "Apollo database key not found attempting to get URL for software identification for runId "
-                    + runId + ": " + ex.getMessage();
+                    + runIdentification + ": " + ex.getMessage();
             return getErrorMethodCallStatus(message);
         } catch (ClassNotFoundException ex) {
             String message = "ClassNotFoundException attempting to get URL for software identification for runId "
-                    + runId + ": " + ex.getMessage();
+                    + runIdentification + ": " + ex.getMessage();
             return getErrorMethodCallStatus(message);
         } catch (MalformedURLException ex) {
             String message = "MalformedURLException attempting to get URL for software identification for runId "
-                    + runId + ": " + ex.getMessage();
+                    + runIdentification + ": " + ex.getMessage();
             return getErrorMethodCallStatus(message);
         }
 

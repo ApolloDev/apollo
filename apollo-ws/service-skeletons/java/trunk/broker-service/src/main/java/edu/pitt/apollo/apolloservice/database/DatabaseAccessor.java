@@ -1,5 +1,7 @@
 package edu.pitt.apollo.apolloservice.database;
 
+import java.math.BigInteger;
+
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 
@@ -20,7 +22,7 @@ public class DatabaseAccessor {
         this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
     }
 
-    public void removeAllDataAssociatedWithRunId(int runId) throws ApolloDatabaseException {
+    public void removeAllDataAssociatedWithRunId(BigInteger runId) throws ApolloDatabaseException {
         dbUtils.removeRunData(runId);
     }
 }

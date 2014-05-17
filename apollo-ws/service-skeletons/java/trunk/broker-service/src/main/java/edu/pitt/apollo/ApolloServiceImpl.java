@@ -138,7 +138,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/getConfigurationFileForSimulation")
     @ResponseWrapper(localName = "getConfigurationFileForSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetConfigurationFileForSimulationResponse")
     public GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(
-            @WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+            @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
         return GetConfigurationFileForSimulationMethod.getConfigurationFileForSimulation(runIdentification);
     }
     
@@ -148,7 +148,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetRunStatusResponse")
     public MethodCallStatus getRunStatus(
-            @WebParam(name = "runIdentification", targetNamespace = "") String runIdentification) {
+            @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
         return GetRunStatusMethod.getRunStatus(runIdentification);
     }
     
@@ -239,8 +239,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @WebMethod
     @ResponseWrapper(localName = "getVisualizerOutputResourcesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", className = "edu.pitt.apollo.service.apolloservice.v2_0_1.GetVisualizerOutputResourcesResponse")
     public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
-            @WebParam(name = "runId", targetNamespace = "") String runId) {
-        return GetVisualizerOutputResourcesMethod.getVisualizerOutputResources(runId);
+            @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
+        return GetVisualizerOutputResourcesMethod.getVisualizerOutputResources(runIdentification);
     }
     
     @Override
