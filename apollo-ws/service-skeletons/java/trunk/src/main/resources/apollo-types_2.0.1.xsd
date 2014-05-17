@@ -118,7 +118,7 @@
 	
 
 	<simpleType name="RunIdentification">
-		<restriction base="token" />
+		<restriction base="unsignedLong" />
 	</simpleType>
 
 

@@ -14,6 +14,8 @@
  */
 package edu.pitt.apollo.translatorserviceskeleton;
 
+import java.math.BigInteger;
+
 import javax.jws.WebService;
 
 import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI;
@@ -23,16 +25,16 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_0_1/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI")
 public class TranslatorServiceImpl implements TranslatorServiceEI {
 
+
 	@Override
-	public void translateRunSimulationMessage(String simulationRunId,
+	public void translateRunSimulationMessage(BigInteger simulationRunId,
 			RunSimulationMessage runSimulationMessage) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(
-			String runIdentification) {
+	public MethodCallStatus getRunStatus(BigInteger runIdentification) {
 		// TODO Auto-generated method stub
 		return null;
 	}

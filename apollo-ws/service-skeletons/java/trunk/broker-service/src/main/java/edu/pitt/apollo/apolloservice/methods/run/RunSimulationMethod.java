@@ -28,9 +28,8 @@ public class RunSimulationMethod extends RunMethod {
             BigInteger runId = databaseAccessorForRunningSimulations.getCachedRunIdFromDatabaseOrNull();
 
             if (runId != null) {
-                int runIdInt = runId.intValue();
-                if (isRunFailed(runIdInt)) {
-                    databaseAccessorForRunningSimulations.removeAllDataAssociatedWithRunId(runIdInt);
+                if (isRunFailed(runId)) {
+                    databaseAccessorForRunningSimulations.removeAllDataAssociatedWithRunId(runId);
                 } else {
                     return runId;
                 }
@@ -38,7 +37,7 @@ public class RunSimulationMethod extends RunMethod {
 
             runId = databaseAccessorForRunningSimulations.insertRunIntoDatabase();
 
-            new RunSimulationThread(runId.intValue(), runSimulationMessage).start();
+            new RunSimulationThread(runId, runSimulationMessage).start();
 
             return runId;
         } catch (ApolloDatabaseException ex) {
@@ -48,7 +47,7 @@ public class RunSimulationMethod extends RunMethod {
             } catch (IOException e) {
                 System.err.println("IOException writing error file: "
                         + e.getMessage());
-                return new BigInteger(ApolloServiceErrorHandler.FATAL_ERROR_CODE);
+                return ApolloServiceErrorHandler.FATAL_ERROR_CODE;
             }
         }
     }
