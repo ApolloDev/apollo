@@ -1,5 +1,16 @@
 package edu.pitt.apollo.apolloservice.thread;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.SQLException;
+
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
@@ -9,14 +20,6 @@ import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceEI;
 import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceV201;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 /**
  *
@@ -30,10 +33,10 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 public class RunVisualizationThread extends Thread {
 
     private RunVisualizationMessage message;
-    private int runId;
+    private BigInteger runId;
     private ApolloDbUtils dbUtils;
 
-    public RunVisualizationThread(int runId, RunVisualizationMessage message) {
+    public RunVisualizationThread(BigInteger runId, RunVisualizationMessage message) {
         this.message = message;
         this.runId = runId;
         this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
@@ -57,7 +60,7 @@ public class RunVisualizationThread extends Thread {
                 httpClientPolicy.setAllowChunking(false);
                 visualizerHttp.setClient(httpClientPolicy);
 
-                visualizerPort.runVisualization(Integer.toString(runId), message);
+                visualizerPort.runVisualization(runId, message);
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 ApolloServiceErrorHandler.writeErrorToErrorFile(
                         "Apollo database key not found attempting to get URL for visualizer: "

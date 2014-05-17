@@ -27,7 +27,7 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
         this.runVisualizationMessage = runVisualizationMessage;
     }
 
-    private String getRunVisualizationMessageAsJsonForRunIdOrNull(int runId) throws ApolloDatabaseException {
+    private String getRunVisualizationMessageAsJsonForRunIdOrNull(BigInteger runId) throws ApolloDatabaseException {
         Map<String, ByteArrayOutputStream> currentRunVisualizationMessageAsJsonMap =
                 dbUtils.getDataContentForSoftware(
                 runId,
@@ -42,7 +42,7 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
     }
 
     private boolean runIdIsAssociatedWithMatchingRunVisualizationMessage(String targetRunVisualizationMessageAsJson,
-            int runIdAssociatedWithRunVisualizationMessageHash) throws ApolloDatabaseException {
+            BigInteger runIdAssociatedWithRunVisualizationMessageHash) throws ApolloDatabaseException {
 
         String runVisualizationMessageAssociatedWithRunIdAsJson =
                 getRunVisualizationMessageAsJsonForRunIdOrNull(runIdAssociatedWithRunVisualizationMessageHash);
@@ -63,14 +63,14 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 
     public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
 
-        List<Integer> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
+        List<BigInteger> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
 
         if (runIds.size() > 0) {
             String targetRunVisualizationMessageAsJson = dbUtils.getJSONString(runVisualizationMessage);
-            for (int runIdAssociatedWithRunVisualizationMessageHash : runIds) {
+            for (BigInteger runIdAssociatedWithRunVisualizationMessageHash : runIds) {
                 if (runIdIsAssociatedWithMatchingRunVisualizationMessage(targetRunVisualizationMessageAsJson,
                         runIdAssociatedWithRunVisualizationMessageHash)) {
-                    return new BigInteger(Integer.toString(runIdAssociatedWithRunVisualizationMessageHash));
+                    return runIdAssociatedWithRunVisualizationMessageHash;
                 }
             }
 

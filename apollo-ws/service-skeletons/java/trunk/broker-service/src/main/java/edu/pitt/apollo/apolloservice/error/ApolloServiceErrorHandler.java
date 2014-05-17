@@ -1,9 +1,11 @@
 package edu.pitt.apollo.apolloservice.error;
 
-import edu.pitt.apollo.ErrorUtils;
-import edu.pitt.apollo.ApolloServiceConstants;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.ErrorUtils;
 
 /**
  *
@@ -16,7 +18,7 @@ import java.io.IOException;
  */
 public class ApolloServiceErrorHandler extends ErrorUtils {
 
-    public static final String FATAL_ERROR_CODE = "-1";
+    public static final BigInteger FATAL_ERROR_CODE = new BigInteger("-1");
     public static final String RUN_ERROR_PREFIX = "ApolloServiceError";
     private static final String ERROR_FILENAME = "run_errors.txt";
     private static final String ERROR_FILE_DIR = "errors";
@@ -55,8 +57,8 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
         return readErrorFromFile(getErrorFile(runId));
     }
     
-    public static void writeErrorToErrorFile(String message, int runId) throws IOException {
-        writeErrorToFile(message, getErrorFile(runId));
+    public static void writeErrorToErrorFile(String message, BigInteger runId) throws IOException {
+        writeErrorToFile(message, getErrorFile(runId.longValue()));
     }
     
 //    public synchronized static String getError(String runId) {
