@@ -64,7 +64,7 @@ public class WSClient {
         BigInteger simulationRunId = new BigInteger("7");
         port.runSimulation(simulationRunId, rsm);
         
-        MethodCallStatus runStatus = port.getRunStatus("7");
+        MethodCallStatus runStatus = port.getRunStatus(new BigInteger("7"));
         System.out.println("RunStatus: " + runStatus.getStatus() + "\n\tMessage: " + runStatus.getMessage());
         while (runStatus.getStatus() != MethodCallStatusEnum.COMPLETED) {
         	System.out.println("RunStatus: " + runStatus.getStatus() + "\n\tMessage: " + runStatus.getMessage());

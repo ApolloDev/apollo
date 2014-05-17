@@ -15,6 +15,7 @@
 package edu.pitt.apollo;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -40,7 +41,7 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
     @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_1.GetRunStatus")
     @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_1.GetRunStatusResponse")
-    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") String runId) {
+    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") BigInteger runId) {
         MethodCallStatus rs = new MethodCallStatus();
         try {
             rs = RunUtils.getStatus(ImageGenerator.getRunDirectory(runId));
@@ -59,10 +60,10 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
     @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_1.RunVisualization")
     @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/runVisualization")
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_1.RunVisualizationResponse")
-    public void runVisualization(@WebParam(name = "visualizationRunId", targetNamespace = "") String visualizationRunId,
+    public void runVisualization(@WebParam(name = "visualizationRunId", targetNamespace = "") BigInteger visualizationRunId,
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 
-        List<String> runIds = runVisualizationMessage.getSimulationRunIds();
+        List<BigInteger> runIds = runVisualizationMessage.getSimulationRunIds();
 
         ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIds, runVisualizationMessage.getVisualizerIdentification());
         Thread thread = new Thread(runnable);
