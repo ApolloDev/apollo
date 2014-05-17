@@ -1,10 +1,12 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
+
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-import java.io.IOException;
-import java.util.List;
 
 /**
  *
@@ -18,11 +20,11 @@ import java.util.List;
 public class ImageGeneratorRunnable implements Runnable {
 
     private ImageGenerator ig = null;
-    private String visualizerRunId;
+    private BigInteger visualizerRunId;
     private SoftwareIdentification visuzlierId;
-    private List<String> runIds;
+    private List<BigInteger> runIds;
 
-    public ImageGeneratorRunnable(String virualizerRunId, List<String> runIds, SoftwareIdentification visualizerIdentification) {
+    public ImageGeneratorRunnable(BigInteger virualizerRunId, List<BigInteger> runIds, SoftwareIdentification visualizerIdentification) {
         this.runIds = runIds;
         this.visuzlierId = visualizerIdentification;
         this.visualizerRunId = virualizerRunId;
