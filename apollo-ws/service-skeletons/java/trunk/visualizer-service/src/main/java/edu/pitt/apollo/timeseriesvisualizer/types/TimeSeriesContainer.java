@@ -1,8 +1,10 @@
 package edu.pitt.apollo.timeseriesvisualizer.types;
 
-import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
+import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.Map;
+
+import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 
 /**
  *
@@ -17,7 +19,7 @@ public class TimeSeriesContainer {
 
     private Map<InfectionStateEnum, Double[]> seriesMap;
     private Integer seriesLength;
-    private String runId;
+    private BigInteger runId;
 
     public TimeSeriesContainer() {
         seriesMap = new EnumMap<InfectionStateEnum, Double[]>(InfectionStateEnum.class);
@@ -47,14 +49,14 @@ public class TimeSeriesContainer {
     /**
      * @return the runId
      */
-    public String getRunId() {
+    public BigInteger getRunId() {
         return runId;
     }
 
     /**
      * @param runId the runId to set
      */
-    public void setRunId(String runId) {
+    public void setRunId(BigInteger runId) {
         this.runId = runId;
     }
 }

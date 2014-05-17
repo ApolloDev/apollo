@@ -1,11 +1,11 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,13 +16,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
@@ -84,7 +85,7 @@ public class DatabaseUtility {
 
 	}
 
-	public String getSimulatorSoftwareNameForRun(int runId) throws TimeSeriesVisualizerException {
+	public String getSimulatorSoftwareNameForRun(BigInteger runId) throws TimeSeriesVisualizerException {
 		try {
 			SoftwareIdentification id = dbUtils.getSoftwareIdentificationForRun(runId);
 			return id.getSoftwareName();
@@ -147,7 +148,7 @@ public class DatabaseUtility {
 	// container.setLength(maxLength);
 	// return container;
 	// }
-	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseTimeSeriesTable(List<String> runIds,
+	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseTimeSeriesTable(List<BigInteger> runIds,
 			boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
@@ -176,7 +177,7 @@ public class DatabaseUtility {
 
 		String query = timeSeriesQuery.toString();
 
-		for (String runId : runIds) {
+		for (BigInteger runId : runIds) {
 			DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
 			TimeSeriesContainer timeSeriesContainer = new TimeSeriesContainer();
 			try {
@@ -185,13 +186,14 @@ public class DatabaseUtility {
 
 				System.out.println("Retrieving data for run from the database...");
 				statement = connect.prepareStatement(query);
-				statement.setString(1, runId);
-				statement.setString(2, runId);
+				statement.setString(1, runId.toString());
+				statement.setString(2, runId.toString());
 				resultSet = statement.executeQuery();
 
 				processor.storeTimeSeriesFromResultSet(resultSet);
 
-				if (getDiseaseStatesData && !runId.toLowerCase().contains("flute")) { // can't
+				//jdl: removing the second condition as this is no longer possible..
+				if (getDiseaseStatesData /* && !runId.toLowerCase().contains("flute")*/) { // can't
 																						// make
 																						// a
 																						// disease
@@ -232,7 +234,7 @@ public class DatabaseUtility {
 
 	}
 
-	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseFiles(List<String> runIds,
+	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseFiles(List<BigInteger> runIds,
 			boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
@@ -244,11 +246,10 @@ public class DatabaseUtility {
 			throw new TimeSeriesVisualizerException(ex.getMessage());
 		}
 
-		for (String runId : runIds) {
+		for (BigInteger runId : runIds) {
 			try {
-				int runIdInt = Integer.parseInt(runId);
-				int simulatorKey = dbUtils.getSoftwareIdentificationKeyForRun(runIdInt);
-				Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(runIdInt,
+				int simulatorKey = dbUtils.getSoftwareIdentificationKeyForRun(runId);
+				Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(runId,
 						simulatorKey, visualizerKey);
 
 				DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
@@ -288,11 +289,11 @@ public class DatabaseUtility {
 		return container;
 	}
 
-	public String getSoftwareNameForRunId(String runId) throws TimeSeriesVisualizerException {
+	public String getSoftwareNameForRunId(BigInteger runId) throws TimeSeriesVisualizerException {
 
 		try {
-			int runIdInt = Integer.parseInt(runId);
-			SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runIdInt);
+			
+			SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runId);
 			return softwareId.getSoftwareName();
 		} catch (ClassNotFoundException ex) {
 			throw new TimeSeriesVisualizerException("ClassNotFoundException for run " + runId
@@ -309,7 +310,7 @@ public class DatabaseUtility {
 		}
 	}
 
-	private void addTextDataContentForUrl(String url, String imageName, int visualizerRunId)
+	private void addTextDataContentForUrl(String url, String imageName, BigInteger visualizerRunId)
 			throws TimeSeriesVisualizerException {
 
 		int dataContentKey;
@@ -370,7 +371,7 @@ public class DatabaseUtility {
 		}
 	}
 
-	public void insertURLsIntoDatabase(Map<String, String> resourcesMap, int visualizerRunId)
+	public void insertURLsIntoDatabase(Map<String, String> resourcesMap, BigInteger visualizerRunId)
 			throws TimeSeriesVisualizerException {
 
 		for (String imageName : resourcesMap.keySet()) {
