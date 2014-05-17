@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class ConfigurationFileTest extends TestCase {
     private static String APOLLO_DIR;
     private static ApolloDbUtils dbUtils;
     private static ServiceRegistrationRecord translatorServiceRecord;
-    private static int runId;
+    private static BigInteger runId;
     private RunSimulationMessage message;
 
     @Override
@@ -115,11 +116,10 @@ public class ConfigurationFileTest extends TestCase {
             return;
         }
         try {
-            String runIdAsString = TutorialWebServiceClient.runSimulation(message);
-            if (runIdAsString == null) {
+            BigInteger runId = TutorialWebServiceClient.runSimulation(message);
+            if (runId == null) {
                 assert false;
             } else {
-                runId = Integer.parseInt(runIdAsString);
                 assert true;
             }
         } catch (Exception ex) {

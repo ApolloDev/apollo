@@ -42,7 +42,7 @@ class SimulatorServiceImpl implements SimulatorServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getRunStatus")
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatusResponse")
 	public MethodCallStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "") String runId) {
+			@WebParam(name = "runId", targetNamespace = "") BigInteger runId) {
 		try {
 			Thread.sleep(120000);
 		} catch (InterruptedException e) {
