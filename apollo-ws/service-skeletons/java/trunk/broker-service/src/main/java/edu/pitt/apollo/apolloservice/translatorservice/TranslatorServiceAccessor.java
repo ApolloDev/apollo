@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.translatorservice;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,8 +31,7 @@ import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
  */
 public class TranslatorServiceAccessor {
 
-    public static boolean runTranslatorAndReturnIfRunWasSuccessful(int runId, RunSimulationMessage message) throws IOException {
-    	String runIdentification = Integer.toString(runId);
+    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, RunSimulationMessage message) throws IOException {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
@@ -57,7 +57,7 @@ public class TranslatorServiceAccessor {
         http.setClient(httpClientPolicy);
 
         try {
-            translatorPort.translateRunSimulationMessage(runIdentification, message);
+            translatorPort.translateRunSimulationMessage(runId, message);
         } catch (WebServiceException e) {
             ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to call translateRunSimulationMessage() for runId:  " + runId
                     + ". Error was: " + e.getMessage(),
@@ -67,7 +67,7 @@ public class TranslatorServiceAccessor {
 
         // while translator is running, query the status
 
-        MethodCallStatusEnum status = GetRunStatusMethod.getRunStatus(runIdentification).getStatus();
+        MethodCallStatusEnum status = GetRunStatusMethod.getRunStatus(runId).getStatus();
         // MethodCallStatusEnum status = MethodCallStatusEnum.QUEUED; //
         // doesn't
         // really
@@ -76,7 +76,7 @@ public class TranslatorServiceAccessor {
             while (!status.equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
 
                 Thread.sleep(1000);
-                status = GetRunStatusMethod.getRunStatus(runIdentification).getStatus();
+                status = GetRunStatusMethod.getRunStatus(runId).getStatus();
 
                 if (status.equals(MethodCallStatusEnum.FAILED)) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile("Translator service returned status of FAILED for runId " + runId,
