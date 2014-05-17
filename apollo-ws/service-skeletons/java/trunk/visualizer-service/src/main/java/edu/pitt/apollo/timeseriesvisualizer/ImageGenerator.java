@@ -1,13 +1,13 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
@@ -31,16 +31,16 @@ public class ImageGenerator {
     private static final String IMAGE_FILES_DIRECTORY = rb.getString("image_files_directory");
     private static final String IMAGE_FILE_TYPE = rb.getString("image_file_type");
     private static final String IMAGE_BASE_URL = rb.getString("image_base_url");
-    private List<String> runIds;
-    private Map<String, String> runIdLabelMap;
+    private List<BigInteger> runIds;
+    private Map<BigInteger, String> runIdLabelMap;
     //private SoftwareIdentification visualizerSoftwareId;
-    private Map<String, String> diseaseStateImagePathMap;
-    private Map<String, String> incidenceImagePathMap;
+    private Map<BigInteger, String> diseaseStateImagePathMap;
+    private Map<BigInteger, String> incidenceImagePathMap;
 //    private Map<String, String> runIdSeriesLabels;
     private String combinedIncidenceImagePath;
 //    private String runDirectory;
     private boolean multiSimulatorChart;
-    private String visualizerRunId;
+    private BigInteger visualizerRunId;
     private boolean multiVaccChart = false;
     private DatabaseUtility dbUtil;
 
@@ -66,7 +66,7 @@ public class ImageGenerator {
 //        }
 //
 //    }
-    public ImageGenerator(List<String> initialRunIds, SoftwareIdentification visualizerSoftwareId, String visualizerRunId) throws TimeSeriesVisualizerException {
+    public ImageGenerator(List<BigInteger> initialRunIds, SoftwareIdentification visualizerSoftwareId, BigInteger visualizerRunId) throws TimeSeriesVisualizerException {
 
         dbUtil = new DatabaseUtility(visualizerSoftwareId);
         setRunIdsAndLabels(initialRunIds); // need to do this first
@@ -76,8 +76,8 @@ public class ImageGenerator {
         // get the visualizer ID from the run ID
         String runDirectory = getRunDirectory(visualizerRunId);
 
-        diseaseStateImagePathMap = new HashMap<String, String>();
-        incidenceImagePathMap = new HashMap<String, String>();
+        diseaseStateImagePathMap = new HashMap<BigInteger, String>();
+        incidenceImagePathMap = new HashMap<BigInteger, String>();
 
         // set file paths and urls
         if (!multiSimulatorChart) {
@@ -94,7 +94,7 @@ public class ImageGenerator {
 
     }
 
-    public static String getRunDirectory(String visualizerRunId) {
+    public static String getRunDirectory(BigInteger visualizerRunId) {
         return IMAGE_FILES_DIRECTORY + File.separator + visualizerRunId;
     }
 
@@ -107,11 +107,11 @@ public class ImageGenerator {
 
     }
 
-    private void setRunIdsAndLabels(List<String> initialRunIds) throws TimeSeriesVisualizerException {
-        runIds = new ArrayList<String>();
-        runIdLabelMap = new HashMap<String, String>();
+    private void setRunIdsAndLabels(List<BigInteger> initialRunIds) throws TimeSeriesVisualizerException {
+        runIds = new ArrayList<BigInteger>();
+        runIdLabelMap = new HashMap<BigInteger, String>();
         int charCode = 65;
-        for (String runId : initialRunIds) {
+        for (BigInteger runId : initialRunIds) {
 //            if (runId.contains("@")) {
 //                String[] splitId = runId.split("@");
 //                String id = splitId[0];
@@ -140,7 +140,7 @@ public class ImageGenerator {
 
         boolean simulatorSupportsDiseaseStates = true;
         if (runIds.size() == 1) {
-            String simulatorName = dbUtil.getSimulatorSoftwareNameForRun(Integer.parseInt(runIds.get(0))).toLowerCase();
+            String simulatorName = dbUtil.getSimulatorSoftwareNameForRun(runIds.get(0)).toLowerCase();
             if (simulatorName.equals("flute")) {
                 simulatorSupportsDiseaseStates = false;
             }
@@ -213,7 +213,7 @@ public class ImageGenerator {
             resourceMap.put("incidence." + IMAGE_FILE_TYPE, getURLForImage("incidence"));
         }
 
-        dbUtil.insertURLsIntoDatabase(resourceMap, Integer.parseInt(visualizerRunId));
+        dbUtil.insertURLsIntoDatabase(resourceMap, visualizerRunId);
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException {
@@ -224,15 +224,15 @@ public class ImageGenerator {
         visualizerSoftwareId.setSoftwareVersion("1.0");
         visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
 
-        List<String> runIds = new ArrayList<String>();
-        runIds.add("1");
-        runIds.add("2");
+        List<BigInteger> runIds = new ArrayList<BigInteger>();
+        runIds.add(new BigInteger("1"));
+        runIds.add(new BigInteger("2"));
 
 //        Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
 //        runIdSeriesLabels.put("3", "FluTE");
 //        runIdSeriesLabels.put("3", "SEIR");
 
-        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, "20");
+        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, new BigInteger("20"));
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {

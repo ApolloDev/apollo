@@ -1,13 +1,14 @@
 package edu.pitt.apollo.apolloservice.database;
 
-import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
 /**
  *
@@ -27,7 +28,7 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
         this.runSimulationMessage = runSimulationMessage;
     }
 
-    private String getRunSimulationMessageAssociatedWithRunIdAsJsonOrNull(int runId) throws ApolloDatabaseException {
+    private String getRunSimulationMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
         Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap =
                 dbUtils.getDataContentForSoftware(
                 runId,
@@ -42,7 +43,7 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
     }
 
     private boolean isRunIdAssociatedWithMatchingRunSimulationMessage(String targetRunSimulationMessageAsJson,
-            int runIdAssociatedWithRunSimulationMessageHash) throws ApolloDatabaseException {
+            BigInteger runIdAssociatedWithRunSimulationMessageHash) throws ApolloDatabaseException {
 
         String runSimulationMessageAssociatedWithRunIdAsJson =
                 getRunSimulationMessageAssociatedWithRunIdAsJsonOrNull(runIdAssociatedWithRunSimulationMessageHash);
@@ -61,14 +62,14 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
     }
 
     public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
-        List<Integer> runIds = dbUtils.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(runSimulationMessage);
+        List<BigInteger> runIds = dbUtils.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(runSimulationMessage);
 
         if (runIds.size() > 0) {
             String targetRunSimulationMessageAsJson = dbUtils.getJSONString(runSimulationMessage);
-            for (int runIdAssociatedWithRunSimulationMessageHash : runIds) {
+            for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
                 if (isRunIdAssociatedWithMatchingRunSimulationMessage(targetRunSimulationMessageAsJson, 
                         runIdAssociatedWithRunSimulationMessageHash)) {
-                    return new BigInteger(Integer.toString(runIdAssociatedWithRunSimulationMessageHash));
+                    return runIdAssociatedWithRunSimulationMessageHash;
                 }
             }
             return null;
