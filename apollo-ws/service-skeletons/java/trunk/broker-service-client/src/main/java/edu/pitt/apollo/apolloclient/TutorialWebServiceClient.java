@@ -74,7 +74,7 @@ public class TutorialWebServiceClient {
 	}
 
 	protected static List<UrlOutputResource> getUrlOutputResourcesForVisualization(
-			String visualizationRunIdentifier) {
+			BigInteger visualizationRunIdentifier) {
 		GetVisualizerOutputResourcesResult results = port
 				.getVisualizerOutputResources(visualizationRunIdentifier);
 		if (results.getMethodCallStatus().getStatus().equals(MethodCallStatusEnum.COMPLETED)) {
@@ -89,14 +89,14 @@ public class TutorialWebServiceClient {
 		return results.getUrlOutputResources();
 	}
 
-	public static String runSimulation(RunSimulationMessage runSimulationMessage) {
+	public static BigInteger runSimulation(RunSimulationMessage runSimulationMessage) {
 		BigInteger simulationRunId = port.runSimulation(runSimulationMessage);
 		System.out.printf("The simulator returned a runId of %s\n", simulationRunId);
 
 		boolean runWasSuccessful = waitForRunToCompleteOrFail(simulationRunId);
 
 		if (runWasSuccessful) {
-			return simulationRunId.toString();
+			return simulationRunId;
 		} else {
 			return null;
 		}
@@ -104,9 +104,9 @@ public class TutorialWebServiceClient {
 
 	
 
-	protected static String runVisualization(RunVisualizationMessage runVisualizationMessage) {
+	protected static BigInteger runVisualization(RunVisualizationMessage runVisualizationMessage) {
 		RunVisualizationResult runVisualizationResult = port.runVisualization(runVisualizationMessage);
-		String visualizationRunId = runVisualizationResult.getVisualizationRunId();
+		BigInteger visualizationRunId = runVisualizationResult.getVisualizationRunId();
 		return visualizationRunId;
 	}
 
@@ -117,7 +117,7 @@ public class TutorialWebServiceClient {
 		while (RUN_IS_NOT_COMPLETED_OR_FAILED) {
 			try {
 				Thread.sleep(TWO_SECONDS);
-				MethodCallStatus callStatus = port.getRunStatus(runIdentification.toString());
+				MethodCallStatus callStatus = port.getRunStatus(runIdentification);
 				MethodCallStatusEnum status = callStatus.getStatus();
 				String message = callStatus.getMessage();
 
