@@ -35,10 +35,10 @@ public class RunSimulationThread extends Thread {
 
     private ApolloDbUtils dbUtils;
     private RunSimulationMessage message;
-    private int runId;
+    private BigInteger runId;
     private ServiceRegistrationRecord translatorServiceRecord;
 
-    public RunSimulationThread(int runId, RunSimulationMessage message) {
+    public RunSimulationThread(BigInteger runId, RunSimulationMessage message) {
         this.message = message;
         this.runId = runId;
         this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
@@ -79,7 +79,7 @@ public class RunSimulationThread extends Thread {
                 simulatorHttpClientPolicy.setAllowChunking(false);
                 simulatorHttp.setClient(simulatorHttpClientPolicy);
                 try {
-                    simulatorPort.runSimulation(new BigInteger(Integer.toString(runId)), message);
+                    simulatorPort.runSimulation(runId, message);
                 } catch (WebServiceException e) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling runSimulation(): " + "\n\tError was: " + e.getMessage(),
                             runId);

@@ -1,5 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
+import java.math.BigInteger;
+
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
@@ -15,8 +17,8 @@ import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
  */
 public abstract class RunMethod {
 
-    protected static boolean isRunFailed(int runId) throws ApolloDatabaseException {
-        MethodCallStatus status = GetRunStatusMethod.getRunStatus(Integer.toString(runId));
+    protected static boolean isRunFailed(BigInteger runId) throws ApolloDatabaseException {
+        MethodCallStatus status = GetRunStatusMethod.getRunStatus(runId);
         MethodCallStatusEnum statusEnum = status.getStatus();
 
         if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
