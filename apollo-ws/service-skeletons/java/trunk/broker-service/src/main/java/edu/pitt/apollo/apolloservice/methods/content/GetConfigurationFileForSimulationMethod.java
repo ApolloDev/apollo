@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigInteger;
 import java.util.Map;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
@@ -22,18 +23,18 @@ import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
  */
 public class GetConfigurationFileForSimulationMethod {
 
-    public static GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(String runIdentification) {
+    public static GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(BigInteger runIdentification) {
         
         ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
         GetConfigurationFileForSimulationResult result = new GetConfigurationFileForSimulationResult();
         MethodCallStatus status = new MethodCallStatus();
         result.setMethodCallStatus(status);
 
-        int runId = Integer.parseInt(runIdentification);
+        
         Map<String, ByteArrayOutputStream> map;
         try {
             map = dbUtils.getConfigFilesForSimulation(
-                    runId,
+            		runIdentification,
                     dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification()));
         } catch (ApolloDatabaseException ex) {
             status.setStatus(MethodCallStatusEnum.FAILED);

@@ -15,9 +15,9 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 public abstract class AbstractRunAndVisualizeSimulationClass {
 	public static final Object ID_NOT_SET_DUE_TO_RUN_FAILURE = null;
 	
-	private String getSimulatorRunIdsAsString(List<String> simulationRunIds) {
+	private String getSimulatorRunIdsAsString(List<BigInteger> simulationRunIds) {
 		String simulatorRuns = "";
-		for (String simulationId : simulationRunIds) {
+		for (BigInteger simulationId : simulationRunIds) {
 			simulatorRuns += simulationId + ", ";
 		}
 		simulatorRuns = simulatorRuns.substring(0, simulatorRuns.length() - 3);
@@ -25,9 +25,9 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 
 	}
 	
-	protected String runSimulationAndDisplayResults(
+	protected BigInteger runSimulationAndDisplayResults(
 			RunSimulationMessage runSimulationMessage) {
-		String simulatorRunId = TutorialWebServiceClient.runSimulation(runSimulationMessage);
+		BigInteger simulatorRunId = TutorialWebServiceClient.runSimulation(runSimulationMessage);
 		if (simulatorRunId != ID_NOT_SET_DUE_TO_RUN_FAILURE) {
 			RunVisualizationMessage runVisualizationMessage = ApolloTypeFactory.getRunVisualizationMessage(
 					simulatorRunId, VisualizerIdentificationEnum.GAIA);
@@ -43,9 +43,9 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 		System.out.printf("Running %s visualizer, visualizing simulator runs: %s\n", visualizer,
 				simulatorRuns);
 
-		String visualizationIdentifier = TutorialWebServiceClient.runVisualization(runVisualizationMessage);
+		BigInteger visualizationIdentifier = TutorialWebServiceClient.runVisualization(runVisualizationMessage);
 
-		boolean runWasSuccessful = TutorialWebServiceClient.waitForRunToCompleteOrFail(new BigInteger(visualizationIdentifier));
+		boolean runWasSuccessful = TutorialWebServiceClient.waitForRunToCompleteOrFail(visualizationIdentifier);
 
 		if (runWasSuccessful) {
 			List<UrlOutputResource> visualizerOutputResources = TutorialWebServiceClient.getUrlOutputResourcesForVisualization(visualizationIdentifier);

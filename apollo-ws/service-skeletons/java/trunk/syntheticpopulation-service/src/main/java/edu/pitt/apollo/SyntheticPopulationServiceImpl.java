@@ -15,6 +15,7 @@
 
 package edu.pitt.apollo;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -53,7 +54,7 @@ class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/getRunStatus")
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v2_0.GetRunStatusResponse")
 	public MethodCallStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/") String runId) {
+			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v2_0/") BigInteger runId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
