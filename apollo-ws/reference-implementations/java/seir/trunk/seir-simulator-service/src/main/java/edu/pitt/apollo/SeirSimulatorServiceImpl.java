@@ -45,7 +45,10 @@ import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
+import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.Map;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI")
@@ -181,7 +184,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
             // < MAX_NUM_SIMULATOR_THREADS) {
             SimulatorThread thread = simulatorThreadQueue.poll();
             numRunningSimulatorThreads++;
-            removeRunFromQueuedList(thread.getRunId());
+            removeRunFromQueuedList(thread.getRunId().intValue());
             // System.out.println("starting run");
             thread.start();
             // }
@@ -255,9 +258,9 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
     @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatus")
     @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatusResponse")
-    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") String runId) {
+    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") BigInteger runId) {
         try {
-            int runIdInt = Integer.parseInt(runId);
+            int runIdInt = runId.intValue();
             return RunUtils.getStatus(getRunDirectory(runIdInt), runIdInt);
         } catch (IOException e) {
             MethodCallStatus status = new MethodCallStatus();
@@ -359,7 +362,7 @@ public class SeirSimulatorServiceImpl implements SimulatorServiceEI {
 //            }
 //        }
         // create the run thread
-        SimulatorThread worker = new SimulatorThread(runSimulationMessage, dbUtils, runId, false, true);
+        SimulatorThread worker = new SimulatorThread(runSimulationMessage, dbUtils, simulationRunId, false, true);
 
         addRunToQueuedList(runId);
         QueueThread queueThread = new QueueThread(worker);
