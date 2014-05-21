@@ -591,20 +591,38 @@ public class ApolloDbUtils {
 		return result;
 
 	}
+        
+        public int getSoftwareIdForRunId(BigInteger runId) throws ApolloDatabaseException {
+            
+            String query = "SELECT software_id FROM run WHERE id = ?";
+            PreparedStatement pstmt = null;
+            try {
+                pstmt = getConn().prepareStatement(query);
+                pstmt.setInt(1, runId.intValue());
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new ApolloDatabaseKeyNotFoundException("No software_id key was found for run_id " + runId);
+                }
+            } catch (ClassNotFoundException ex) {
+                throw new ApolloDatabaseException("ClassNotFoundException attempting to get software_id for run_id " + runId);
+            } catch (SQLException ex) {
+                throw new ApolloDatabaseException("SQLException attempting to get software_id for run_id " + runId);
+            }
+            
+        }
 
 	public Map<String, ByteArrayOutputStream> getConfigFilesForSimulation(BigInteger runKey, int sourceSoftwareIdKey)
 			throws ApolloDatabaseException {
-		Map<String, ByteArrayOutputStream> result = new HashMap<String, ByteArrayOutputStream>();
 
 		// First get ID of simulator...then feet it to param 3 below
 		// destinationSoftwareIdKey = select software_id from run where run_id =
 		// runKey
+                
+                int destinationKey = getSoftwareIdForRunId(runKey);
 
-		return getDataContentForSoftware(runKey, sourceSoftwareIdKey, -51/*
-																		 * ,
-																		 * destinationSoftwareIdKey
-																		 */);
-
+		return getDataContentForSoftware(runKey, sourceSoftwareIdKey, destinationKey);
 	}
 
 	public int associateContentWithRunId(BigInteger runKey, int dataContentKey, int runDataDescriptionId)
