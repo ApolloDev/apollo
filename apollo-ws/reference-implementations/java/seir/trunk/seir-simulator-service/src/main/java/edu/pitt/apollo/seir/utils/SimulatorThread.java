@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.sql.SQLException;
 
 import edu.pitt.apollo.SeirSimulatorServiceImpl;
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
@@ -22,6 +23,7 @@ import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +38,7 @@ import org.apache.commons.lang.ArrayUtils;
 public class SimulatorThread extends Thread {
 
     private RunSimulationMessage message;
-    private int runId;
+    private BigInteger runId;
     private boolean useFile;
     private boolean useDatabase;
     private ApolloDbUtils dbUtils;
@@ -45,21 +47,21 @@ public class SimulatorThread extends Thread {
     private String runDirectory;
 
     public SimulatorThread(RunSimulationMessage message, ApolloDbUtils dbUtils,
-            int runId, boolean useFile, boolean useDatabase) {
+            BigInteger runId, boolean useFile, boolean useDatabase) {
         super();
         this.message = message;
         this.runId = runId;
         this.useFile = useFile;
         this.useDatabase = useDatabase;
         this.dbUtils = dbUtils;
-        runDirectory = SeirSimulatorServiceImpl.getRunDirectory(runId);
+        runDirectory = SeirSimulatorServiceImpl.getRunDirectory(runId.intValue());
         translatorSoftwareId = SeirSimulatorServiceImpl.getTranslatorSoftwareId();
     }
 
-    public int getRunId() {
+    public BigInteger getRunId() {
         return runId;
     }
-    
+
     @Override
     public void run() {
 
@@ -72,21 +74,8 @@ public class SimulatorThread extends Thread {
                 map = dbUtils.getDataContentForSoftware(runId,
                         translatorKey, simulatorKey);
                 // update this
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
-                return;
-            } catch (ClassNotFoundException ex) {
-                RunUtils.setError(runDirectory, "ClassNotFoundException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
-                return;
-            } catch (IOException ex) {
-                RunUtils.setError(runDirectory, "IOException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
-                return;
-            } catch (SQLException ex) {
-                RunUtils.setError(runDirectory, "SQLException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
+            } catch (ApolloDatabaseException ex) {
+                RunUtils.setError(runDirectory, ex.getMessage());
                 return;
             }
 
@@ -182,6 +171,10 @@ public class SimulatorThread extends Thread {
             RunUtils.setError(runDirectory, "SQLException attempting to add text data "
                     + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
+        } catch (ApolloDatabaseException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to add text data "
+                    + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
         }
 
         int runDataDescriptionId;
@@ -201,7 +194,13 @@ public class SimulatorThread extends Thread {
             RunUtils.setError(runDirectory, "SQLException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
+        } catch (ApolloDatabaseException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to get run data "
+                    + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
         }
+
+
         try {
             dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
         } catch (ClassNotFoundException ex) {
@@ -335,6 +334,7 @@ public class SimulatorThread extends Thread {
         List<Double> newE = Arrays.asList(ArrayUtils.toObject(seirOutput.getNewlyExposed()));
         List<Double> newI = Arrays.asList(ArrayUtils.toObject(seirOutput.getNewlyInfectious()));
 
+        int runIdInt = runId.intValue();
         PreparedStatement pstmt;
         int expectedNumRows;
         try {
@@ -371,21 +371,21 @@ public class SimulatorThread extends Thread {
                 pstmt = dbUtils.getConn().prepareStatement(
                         "INSERT INTO time_series (run_id, population_id, time_step, pop_count) VALUES (?,?,?,?)");
 
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, sPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, sPopId,
                         "susceptible in " + location, sB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, ePopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, ePopId,
                         "exposed in " + location, eB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, iPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, iPopId,
                         "infectious in " + location, iB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, rPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, rPopId,
                         "recovered in " + location, rB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, vPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, vPopId,
                         "received vaccination treatment in " + location, vaccB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, avPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, avPopId,
                         "received antiviral treatment in " + location, avB);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, newEPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, newEPopId,
                         "newly exposed in " + location, newE);
-                dbUtils.insertDiseaseStateTimeSeries(pstmt, runId, newIPopId,
+                dbUtils.insertDiseaseStateTimeSeries(pstmt, runIdInt, newIPopId,
                         "newly infectious in " + location, newI);
 
 
@@ -396,7 +396,7 @@ public class SimulatorThread extends Thread {
                     int preVaccPopId = dbUtils.getOrCreatePopulationId(dsAxisId, locAxisId,
                             "received preemptive vaccination treatment", location);
                     List<Double> preVacc = Arrays.asList(ArrayUtils.toObject(seirOutput.getVaccinesGivenBeforeEpidemic()));
-                    dbUtils.insertDiseaseStateTimeSeriesNegative(pstmt, runId, preVaccPopId,
+                    dbUtils.insertDiseaseStateTimeSeriesNegative(pstmt, runIdInt, preVaccPopId,
                             "received preemptive vaccination treatment in " + location, preVacc);
                     expectedNumRows += preVacc.size();
                 }
@@ -420,7 +420,7 @@ public class SimulatorThread extends Thread {
                 // we do this so that we never return "COMPLETED" until the data is
                 // actually
                 // available in the database
-                dbUtils.awaitRowCountForTimeSeriesTable(runId, expectedNumRows);
+                dbUtils.awaitRowCountForTimeSeriesTable(runIdInt, expectedNumRows);
             } catch (SQLException ex) {
                 RunUtils.setError(runDirectory, "SQLException waiting for row count for run "
                         + runId + ": " + ex.getMessage());
@@ -495,38 +495,36 @@ public class SimulatorThread extends Thread {
     }
 
     static {
-        loadTranslatorSoftwareIdentification();
         loadTimeSeriesVisualizerSoftwareIdentification();
     }
 
-    private static void loadTranslatorSoftwareIdentification() {
+    private static void loadTimeSeriesVisualizerSoftwareIdentification() {
 
-        System.out.println("Loading translator software identification");
+        System.out.println("Loading time series visualizer software identification");
         try {
             ApolloDbUtils dbUtils = new ApolloDbUtils(new File(SeirSimulatorServiceImpl.getDatabasePropertiesFilename()));
 
             Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
             for (Integer id : softwareIdMap.keySet()) {
                 SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
-                    translatorSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
+                if (softwareId.getSoftwareName().toLowerCase().equals("time series visualizer")) {
+                    visualizerId = softwareIdMap.get(id).getSoftwareIdentification();
                     break;
                 }
 
             }
 
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException attempting to load the translator software ID: "
+            throw new RuntimeException("ClassNotFoundException attempting to load the time series visualizer software ID: "
                     + ex.getMessage());
         } catch (IOException ex) {
-            throw new RuntimeException("IOException attempting to load the translator software ID: " + ex.getMessage());
+            throw new RuntimeException("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
         } catch (SQLException ex) {
-            throw new RuntimeException("SQLException attempting to load the translator software ID: " + ex.getMessage());
+            throw new RuntimeException("SQLException attempting to load the time series visualizer software ID: " + ex.getMessage());
         }
 
-        if (translatorSoftwareId == null) {
-            throw new RuntimeException("Could not find translator in the list of registered services");
+        if (visualizerId == null) {
+            throw new RuntimeException("Could not find the time series visualizer software id in the list of registered services");
         }
     }
-
 }
