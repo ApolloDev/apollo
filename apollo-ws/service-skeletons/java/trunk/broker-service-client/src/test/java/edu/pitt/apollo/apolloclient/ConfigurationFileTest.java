@@ -172,10 +172,12 @@ public class ConfigurationFileTest extends TestCase {
         Scanner scanner = new Scanner(new File(CONFIG_FILES_DIRECTORY + NATIVE_FILE_LABEL));
         scanner.useDelimiter("\\Z");
         String storedNativeContent = scanner.next();
+        scanner.close();
 
         scanner = new Scanner(new File(CONFIG_FILES_DIRECTORY + NATIVE_FILE_LABEL));
         scanner.useDelimiter("\\Z");
         String nativeContent = scanner.next();
+        scanner.close();
 
         if (!storedNativeContent.equals(nativeContent)) {
             assert false;
@@ -184,10 +186,12 @@ public class ConfigurationFileTest extends TestCase {
         scanner = new Scanner(new File(CONFIG_FILES_DIRECTORY + VERBOSE_FILE_LABEL));
         scanner.useDelimiter("\\Z");
         String storedVerboseContent = scanner.next();
+        scanner.close();
 
         scanner = new Scanner(new File(CONFIG_FILES_DIRECTORY + VERBOSE_FILE_LABEL));
         scanner.useDelimiter("\\Z");
         String verboseContent = scanner.next();
+        scanner.close();
 
         if (!storedVerboseContent.equals(verboseContent)) {
             assert false;
