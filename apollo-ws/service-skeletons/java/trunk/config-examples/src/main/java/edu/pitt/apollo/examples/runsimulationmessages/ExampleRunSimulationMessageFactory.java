@@ -62,7 +62,7 @@ public class ExampleRunSimulationMessageFactory extends AbstractCodeExamplesClas
 		RunSimulationMessage message = new RunSimulationMessage();
 		message.setInfectiousDiseaseScenario(getInfectiousDiseaseScenario());
 		message.setAuthentication(getAuthentication(REQUESTER_ID, REQUESTER_PASSWORD));
-		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED));
+		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.SEIR));
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification(SIMULATION_RUN_LENGTH,
 				UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP, NUMBER_OF_UNITS_OF_TIME_IN_ONE_SIMULATOR_TIME_STEP));
 		return message;
@@ -83,7 +83,7 @@ public class ExampleRunSimulationMessageFactory extends AbstractCodeExamplesClas
 
 		final UnitOfTimeEnum unitOfTimeForDurationVariables = UnitOfTimeEnum.DAY;
 		final double infectiousPeriodDurationForScenarioDisease = 6.0;
-		final double latentPeriodDurationForScenarioDisease = 2.0;
+		final double latentPeriodDurationForScenarioDisease = 2.3;
 		final double reproductionNumberForScenarioDisease = 1.3;
 
 		final double fractionOfHostPopulationSusceptibleToPathogen = 0.94;
