@@ -30,7 +30,7 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 		BigInteger simulatorRunId = TutorialWebServiceClient.runSimulation(runSimulationMessage);
 		if (simulatorRunId != ID_NOT_SET_DUE_TO_RUN_FAILURE) {
 			RunVisualizationMessage runVisualizationMessage = ApolloTypeFactory.getRunVisualizationMessage(
-					simulatorRunId, VisualizerIdentificationEnum.GAIA);
+					simulatorRunId, VisualizerIdentificationEnum.TIME_SERIES);
 			runVisualizationAndDisplayResults(runVisualizationMessage);
 		}
 		return simulatorRunId;
