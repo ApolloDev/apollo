@@ -102,10 +102,11 @@
 
 	<complexType name="RunVisualizationMessage">
 		<sequence>
-			<element name="visualizerIdentification" type="tns:SoftwareIdentification" />
+			<element name="visualizerIdentification"
+				type="tns:SoftwareIdentification" />
 			<element name="authentication" type="tns:Authentication" />
-			<element name="simulationRunIds" type="tns:RunIdentification"
-				maxOccurs="unbounded" minOccurs="1">
+			<element name="simulationRunIds"
+				type="tns:RunIdentificationAndLabel" maxOccurs="unbounded" minOccurs="1">
 			</element>
 		</sequence>
 	</complexType>
@@ -2162,6 +2163,15 @@
 		<sequence>
 			<element name="elementIWantToScreenSnapWithoutArrows" type="tns:TreatmentEfficacy">
 			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RunIdentificationAndLabel">
+		<sequence>
+			<element name="runIdentificaion"
+				type="tns:RunIdentification">
+			</element>
+			<element name="runLabel" type="string"></element>
 		</sequence>
 	</complexType>
 </schema>
