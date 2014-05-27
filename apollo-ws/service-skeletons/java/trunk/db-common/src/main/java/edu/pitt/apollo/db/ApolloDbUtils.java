@@ -31,7 +31,7 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
-
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 
 
 
@@ -1027,11 +1027,12 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public void addRunIdsToSimulationGroup(int simulationGroupId, List<BigInteger> simulationRunIds)
+	public void addRunIdsToSimulationGroup(int simulationGroupId, List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels)
 			throws SQLException, ClassNotFoundException {
 		String query = "INSERT INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
-		for (BigInteger simulationRunId : simulationRunIds) {
+		for (RunIdentificationAndLabel runIdAndLabel : simulationRunIdentificationsAndLabels) {
+                        BigInteger simulationRunId = runIdAndLabel.getRunIdentification();
 			pstmt.setInt(1, simulationGroupId);
 			pstmt.setInt(2, simulationRunId.intValue());
 			pstmt.execute();

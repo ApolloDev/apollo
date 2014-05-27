@@ -2168,7 +2168,7 @@
 
 	<complexType name="RunIdentificationAndLabel">
 		<sequence>
-			<element name="runIdentificaion"
+			<element name="runIdentification"
 				type="tns:RunIdentification">
 			</element>
 			<element name="runLabel" type="string"></element>
