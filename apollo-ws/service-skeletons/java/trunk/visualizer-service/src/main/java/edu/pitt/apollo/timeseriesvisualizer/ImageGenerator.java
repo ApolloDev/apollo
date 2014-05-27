@@ -14,6 +14,7 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
@@ -66,7 +67,7 @@ public class ImageGenerator {
 //        }
 //
 //    }
-    public ImageGenerator(List<BigInteger> initialRunIds, SoftwareIdentification visualizerSoftwareId, BigInteger visualizerRunId) throws TimeSeriesVisualizerException {
+    public ImageGenerator(List<RunIdentificationAndLabel> initialRunIds, SoftwareIdentification visualizerSoftwareId, BigInteger visualizerRunId) throws TimeSeriesVisualizerException {
 
         dbUtil = new DatabaseUtility(visualizerSoftwareId);
         setRunIdsAndLabels(initialRunIds); // need to do this first
@@ -107,28 +108,13 @@ public class ImageGenerator {
 
     }
 
-    private void setRunIdsAndLabels(List<BigInteger> initialRunIds) throws TimeSeriesVisualizerException {
+    private void setRunIdsAndLabels(List<RunIdentificationAndLabel> initialRunIdsAndLabels) throws TimeSeriesVisualizerException {
         runIds = new ArrayList<BigInteger>();
         runIdLabelMap = new HashMap<BigInteger, String>();
-        int charCode = 65;
-        for (BigInteger runId : initialRunIds) {
-//            if (runId.contains("@")) {
-//                String[] splitId = runId.split("@");
-//                String id = splitId[0];
-//                String label = splitId[1];
-//                runIds.add(id);
-//                runIdLabelMap.put(id, label);
-//            } else {
-                runIds.add(runId);
-                
-                String softwareName = dbUtil.getSoftwareNameForRunId(runId);
-                char runChar = (char) charCode;
-                
-                String label = "Scenario " + runChar + " (" + softwareName + " / Run ID: " + runId + ")";
-                runIdLabelMap.put(runId, label);
-                
-                charCode++;
-//            }
+        for (RunIdentificationAndLabel runIdAndLabel : initialRunIdsAndLabels) {
+            BigInteger runId = runIdAndLabel.getRunIdentification();
+            runIds.add(runId);
+            runIdLabelMap.put(runId, runIdAndLabel.getRunLabel());
         }
     }
 
@@ -224,15 +210,24 @@ public class ImageGenerator {
         visualizerSoftwareId.setSoftwareVersion("1.0");
         visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
 
-        List<BigInteger> runIds = new ArrayList<BigInteger>();
-        runIds.add(new BigInteger("1"));
-        runIds.add(new BigInteger("2"));
+        List<RunIdentificationAndLabel> runIdsAndLabels = new ArrayList<RunIdentificationAndLabel>();
 
 //        Map<String, String> runIdSeriesLabels = new HashMap<String, String>();
 //        runIdSeriesLabels.put("3", "FluTE");
 //        runIdSeriesLabels.put("3", "SEIR");
 
-        ImageGenerator generator = new ImageGenerator(runIds, visualizerSoftwareId, new BigInteger("20"));
+        RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+        runIdAndLabel.setRunIdentification(new BigInteger("1"));
+        runIdAndLabel.setRunLabel("LABEL 1");
+        
+        runIdsAndLabels.add(runIdAndLabel);
+        runIdAndLabel = new RunIdentificationAndLabel();
+        runIdAndLabel.setRunIdentification(new BigInteger("2"));
+        runIdAndLabel.setRunLabel("LABEL 2");
+        runIdsAndLabels.add(runIdAndLabel);
+        
+        
+        ImageGenerator generator = new ImageGenerator(runIdsAndLabels, visualizerSoftwareId, new BigInteger("25"));
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {
