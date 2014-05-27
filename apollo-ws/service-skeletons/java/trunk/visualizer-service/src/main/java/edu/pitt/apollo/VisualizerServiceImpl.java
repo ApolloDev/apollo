@@ -31,6 +31,7 @@ import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_1/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceEI")
@@ -63,9 +64,9 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
     public void runVisualization(@WebParam(name = "visualizationRunId", targetNamespace = "") BigInteger visualizationRunId,
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 
-        List<BigInteger> runIds = runVisualizationMessage.getSimulationRunIds();
+        List<RunIdentificationAndLabel> runIdsAndLabels = runVisualizationMessage.getSimulationRunIds();
 
-        ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIds, runVisualizationMessage.getVisualizerIdentification());
+        ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIdsAndLabels, runVisualizationMessage.getVisualizerIdentification());
         Thread thread = new Thread(runnable);
         thread.start();
     }
