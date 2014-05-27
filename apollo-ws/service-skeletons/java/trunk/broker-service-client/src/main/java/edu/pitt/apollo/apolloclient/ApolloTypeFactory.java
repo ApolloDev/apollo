@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import edu.pitt.apollo.apolloclient.TutorialWebServiceClient.VisualizerIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
@@ -21,24 +22,24 @@ public class ApolloTypeFactory {
 
 	
 	private static RunVisualizationMessage getRunVisualizationMessage(Authentication visualizerAuthentication,
-			SoftwareIdentification visualizerSoftwareIdentification, BigInteger... simulatorRunIds) {
+			SoftwareIdentification visualizerSoftwareIdentification, RunIdentificationAndLabel... runIdentificationsAndLabels) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 		runVisualizationMessage.setAuthentication(visualizerAuthentication);
 		runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
-		for (BigInteger simulatorRunId : simulatorRunIds) {
-			runVisualizationMessage.getSimulationRunIds().add(simulatorRunId);
+		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels) {
+			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
 		}
 		return runVisualizationMessage;
 	}
 	
 	protected static RunVisualizationMessage getRunVisualizationMessage(
-			BigInteger runIdentfication,
+			RunIdentificationAndLabel runIdentficationAndLabel,
 			VisualizerIdentificationEnum visualizerIdentificationEnum) {
 		Authentication visualizerAuthentication = getAuthentication(REQUESTER_ID, REQUESTER_PASSWORD);
 
 		return getRunVisualizationMessage(visualizerAuthentication,
 				getSoftwareIdentificationForVisualizer(visualizerIdentificationEnum),
-				runIdentfication);
+				runIdentficationAndLabel);
 
 	}
 	
