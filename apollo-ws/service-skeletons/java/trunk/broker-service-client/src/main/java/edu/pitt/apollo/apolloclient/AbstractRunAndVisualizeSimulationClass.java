@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import edu.pitt.apollo.apolloclient.TutorialWebServiceClient.VisualizerIdentificationEnum;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
@@ -15,10 +16,10 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 public abstract class AbstractRunAndVisualizeSimulationClass {
 	public static final Object ID_NOT_SET_DUE_TO_RUN_FAILURE = null;
 	
-	private String getSimulatorRunIdsAsString(List<BigInteger> simulationRunIds) {
+	private String getSimulatorRunIdsAsString(List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) {
 		String simulatorRuns = "";
-		for (BigInteger simulationId : simulationRunIds) {
-			simulatorRuns += simulationId + ", ";
+		for (RunIdentificationAndLabel runIdentificationAndLabel : simulationRunIdentificationsAndLabels) {
+			simulatorRuns += runIdentificationAndLabel.getRunIdentification() + ", ";
 		}
 		simulatorRuns = simulatorRuns.substring(0, simulatorRuns.length() - 3);
 		return simulatorRuns;
@@ -29,8 +30,11 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 			RunSimulationMessage runSimulationMessage) {
 		BigInteger simulatorRunId = TutorialWebServiceClient.runSimulation(runSimulationMessage);
 		if (simulatorRunId != ID_NOT_SET_DUE_TO_RUN_FAILURE) {
+			RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
+			runIdentificationAndLabel.setRunLabel("test");
+			runIdentificationAndLabel.setRunIdentification(simulatorRunId);
 			RunVisualizationMessage runVisualizationMessage = ApolloTypeFactory.getRunVisualizationMessage(
-					simulatorRunId, VisualizerIdentificationEnum.TIME_SERIES);
+					runIdentificationAndLabel, VisualizerIdentificationEnum.TIME_SERIES);
 			runVisualizationAndDisplayResults(runVisualizationMessage);
 		}
 		return simulatorRunId;
