@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
 /**
@@ -22,10 +23,10 @@ public class ImageGeneratorRunnable implements Runnable {
     private ImageGenerator ig = null;
     private BigInteger visualizerRunId;
     private SoftwareIdentification visuzlierId;
-    private List<BigInteger> runIds;
+    private List<RunIdentificationAndLabel> runIdentificationsAndLabels;
 
-    public ImageGeneratorRunnable(BigInteger virualizerRunId, List<BigInteger> runIds, SoftwareIdentification visualizerIdentification) {
-        this.runIds = runIds;
+    public ImageGeneratorRunnable(BigInteger virualizerRunId, List<RunIdentificationAndLabel> runIds, SoftwareIdentification visualizerIdentification) {
+        this.runIdentificationsAndLabels = runIds;
         this.visuzlierId = visualizerIdentification;
         this.visualizerRunId = virualizerRunId;
     }
@@ -56,7 +57,7 @@ public class ImageGeneratorRunnable implements Runnable {
             }
         }
         try {
-            ig = new ImageGenerator(runIds, visuzlierId, visualizerRunId);
+            ig = new ImageGenerator(runIdentificationsAndLabels, visuzlierId, visualizerRunId);
         } catch (TimeSeriesVisualizerException ex) {
             try {
                 RunUtils.setError(runDirectory, "TimeSeriesVisualizerException creating ImageGenerator: " + ex.getMessage());
