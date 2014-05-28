@@ -44,13 +44,13 @@ public class TutorialWebServiceClient {
         return port;
     }
 
-    private List<String> getScenarioLocationCodesSupportedBySimulatorOrNull(
+    public static List<String> getScenarioLocationCodesSupportedBySimulatorOrNull(
             SoftwareIdentification simulatorIdentification) {
-        GetScenarioLocationCodesSupportedBySimulatorResult resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall = getPort().getScenarioLocationCodesSupportedBySimulator(simulatorIdentification);
+        GetScenarioLocationCodesSupportedBySimulatorResult resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall = port.getScenarioLocationCodesSupportedBySimulator(simulatorIdentification);
 
         MethodCallStatusEnum callStatus = resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall.getMethodCallStatus().getStatus();
         System.out.printf("Call to getScenarioLocationCodesSupportedBySimulator() returned with result: %s\n"
-                + callStatus);
+                ,callStatus);
         if (callStatus == MethodCallStatusEnum.COMPLETED) {
             return resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall.getLocationCodes();
         } else {
@@ -59,8 +59,8 @@ public class TutorialWebServiceClient {
 
     }
 
-    public PopulationAndEnvironmentCensus getPopulationAndEnvironmentCensus(SoftwareIdentification simulatorSoftwareIdentification, String apolloLocationCode) {
-        GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensusResult = getPort().getPopulationAndEnvironmentCensus(simulatorSoftwareIdentification, apolloLocationCode);
+    public static PopulationAndEnvironmentCensus getPopulationAndEnvironmentCensus(SoftwareIdentification simulatorSoftwareIdentification, String apolloLocationCode) {
+        GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensusResult = port.getPopulationAndEnvironmentCensus(simulatorSoftwareIdentification, apolloLocationCode);
 
         return getPopulationAndEnvironmentCensusResult.getPopulationAndEnvironmentCensus();
     }
