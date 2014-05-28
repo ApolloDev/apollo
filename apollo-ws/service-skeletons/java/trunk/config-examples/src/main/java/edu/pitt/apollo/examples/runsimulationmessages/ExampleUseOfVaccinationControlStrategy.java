@@ -97,7 +97,7 @@ public class ExampleUseOfVaccinationControlStrategy extends AbstractCodeExamples
 
 	
 	public  RunSimulationMessage getRunSimulationMessage() {
-		RunSimulationMessage message = getRunSimulationMessage();
+		RunSimulationMessage message = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
 		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies().add(getVaccinationControlStrategy());
 		return message;
 	}
