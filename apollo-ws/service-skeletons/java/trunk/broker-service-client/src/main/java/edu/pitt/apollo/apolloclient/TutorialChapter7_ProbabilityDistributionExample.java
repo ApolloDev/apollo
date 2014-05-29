@@ -2,12 +2,11 @@ package edu.pitt.apollo.apolloclient;
 
 import java.net.MalformedURLException;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleUseOfConditionalProbabilityDistribution;
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleUseOfUnconditionalProbabilityDistribution;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleConditionalProbabilityDistribution;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleUnconditionalProbabilityDistribution;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
-public class TutorialChapter7_ProbabilityDistributionExample extends
-		TutorialWebServiceClient {
+public class TutorialChapter7_ProbabilityDistributionExample extends TutorialWebServiceClient {
 
 	public TutorialChapter7_ProbabilityDistributionExample() throws MalformedURLException {
 		super();
@@ -16,12 +15,16 @@ public class TutorialChapter7_ProbabilityDistributionExample extends
 	public static void main(String[] args) throws MalformedURLException {
 		RunSimulationMessage runSimulationMessage = null;
 
-		ExampleUseOfConditionalProbabilityDistribution conditionalProbabilityDistributionExample = new ExampleUseOfConditionalProbabilityDistribution();
+		ExampleConditionalProbabilityDistribution conditionalProbabilityDistributionExample = new ExampleConditionalProbabilityDistribution();
 
-		runSimulationMessage = conditionalProbabilityDistributionExample.getRunSimulationMessage();
+		runSimulationMessage = conditionalProbabilityDistributionExample
+				.setLatentPeriodToConditionalProbabilityDistribution(ApolloServiceTypeFactory
+						.getDefaultRunSimulationMessage());
 
-		ExampleUseOfUnconditionalProbabilityDistribution unconditionalProbabilityDistributionExample = new ExampleUseOfUnconditionalProbabilityDistribution();
-		runSimulationMessage = unconditionalProbabilityDistributionExample.getRunSimulationMessage();
+		ExampleUnconditionalProbabilityDistribution unconditionalProbabilityDistributionExample = new ExampleUnconditionalProbabilityDistribution();
+		runSimulationMessage = unconditionalProbabilityDistributionExample
+				.setLatentPeriodToUnconditionalProbabilityDistribution(ApolloServiceTypeFactory
+						.getDefaultRunSimulationMessage());
 
 		// we do not run this example as neither the SEIR, FRED, or FluTE
 		// simulators can support this configuration
