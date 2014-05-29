@@ -15,13 +15,13 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.UncertainDuration;
 import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 
-public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSimulationMessageFactory {
+public class ExampleConditionalProbabilityDistribution {
 
 	static final double ONE_DAY_LATENT_PERIOD = 1d;
 	static final double TWO_DAY_LATENT_PERIOD = 2d;
 	static final double THREE_DAY_LATENT_PERIOD = 3d;
 
-	public ExampleUseOfConditionalProbabilityDistribution() {
+	public ExampleConditionalProbabilityDistribution() {
 		super();
 	}
 
@@ -176,11 +176,11 @@ public class ExampleUseOfConditionalProbabilityDistribution extends ExampleRunSi
 		return distributionRepresentingLatentPeriodDurationConditionedOnAgeRangeAndGender;
 	}
 
-	public RunSimulationMessage getDefaultRunSimulationMessageAndSetLatentPeriodToConditionalProbabilityDistribution() {
-		RunSimulationMessage runSimulationMessage = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
-
-		UncertainDuration uncertainDuration = new UncertainDuration();
+	public RunSimulationMessage setLatentPeriodToConditionalProbabilityDistribution(RunSimulationMessage runSimulationMessage) {
+		
 		ConditionalProbabilityDistribution distributionRepresentingLatentPeriodDuration = getDistributionRepresentingLatentPeriodDurationConditionedOnAgeRangeAndGender();
+		
+		UncertainDuration uncertainDuration = new UncertainDuration();
 		uncertainDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
 		uncertainDuration.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
 
