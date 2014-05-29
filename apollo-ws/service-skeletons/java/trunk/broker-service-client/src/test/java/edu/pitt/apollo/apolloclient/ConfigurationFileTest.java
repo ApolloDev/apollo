@@ -14,7 +14,6 @@ import java.util.Scanner;
 import junit.framework.TestCase;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
@@ -95,7 +94,7 @@ public class ConfigurationFileTest extends TestCase {
         fredSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
         fredSoftwareId.setSoftwareVersion("2.0.1_i");
 
-        message = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
+        message = ApolloServiceTypeFactory.getDefaultRunSimulationMessage();
         message.setSimulatorIdentification(fredSoftwareId);
 
     }

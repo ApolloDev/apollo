@@ -3,8 +3,7 @@ package edu.pitt.apollo.apolloclient;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import edu.pitt.apollo.examples.runsimulationmessages.AbstractCodeExamplesClass.SimulatorIdentificationEnum;
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.apolloclient.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_1.PopulationAndEnvironmentCensus;
 import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 
@@ -27,7 +26,7 @@ public class TutorialChapter6_PopulationAndEnvironmentCensusExample {
 	}
 
 	public void getPopulationAndEnvironmentCensus(String apolloLocationCode) {
-		SoftwareIdentification fredSoftwareIdentification = ExampleRunSimulationMessageFactory
+		SoftwareIdentification fredSoftwareIdentification = ApolloServiceTypeFactory
 				.getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED);
 
 		if (isLocationCodeSupportedBySimulator(fredSoftwareIdentification, apolloLocationCode)) {
