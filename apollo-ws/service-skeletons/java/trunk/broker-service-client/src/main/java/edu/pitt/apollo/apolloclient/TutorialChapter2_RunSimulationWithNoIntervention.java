@@ -16,7 +16,6 @@ package edu.pitt.apollo.apolloclient;
 
 import java.net.MalformedURLException;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
 public class TutorialChapter2_RunSimulationWithNoIntervention extends AbstractRunAndVisualizeSimulationClass {
@@ -26,8 +25,8 @@ public class TutorialChapter2_RunSimulationWithNoIntervention extends AbstractRu
 
 	public static void main(String args[]) throws java.lang.Exception {
 		TutorialChapter2_RunSimulationWithNoIntervention tutorialChapter2 = new TutorialChapter2_RunSimulationWithNoIntervention();
-		RunSimulationMessage runSimulationMessage = ExampleRunSimulationMessageFactory
-				.getRunSimulationMessage();
+		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
+				.getDefaultRunSimulationMessage();
 		tutorialChapter2.runSimulationAndDisplayResults(runSimulationMessage);
 	}
 }
