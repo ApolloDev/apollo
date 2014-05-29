@@ -1,14 +1,28 @@
 package edu.pitt.apollo.apolloclient;
 
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleRunSimulationMessageFactory;
+import edu.pitt.apollo.examples.runsimulationmessages.ExampleUseOfVaccinationControlStrategy;
+import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v2_0_1.FixedDuration;
+import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_0_1.Infection;
+import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseControlStrategy;
+import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_1.TriggerDefinition;
+import edu.pitt.apollo.types.v2_0_1.Vaccination;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TutorialChapter9_LibraryExample extends TutorialWebServiceClient {
-
-	public TutorialChapter9_LibraryExample() throws MalformedURLException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
     public String infectionUuid = "";
     public String infectiousDiseaseScenarioUuid = "";
@@ -149,14 +163,25 @@ public class TutorialChapter9_LibraryExample extends TutorialWebServiceClient {
 
         TutorialChapter8_RunSimulationWithVaccinationControlStrategy tutorialChapter8 = new TutorialChapter8_RunSimulationWithVaccinationControlStrategy();
         RunSimulationMessage runSimulationMessageWithNormalR0 = tutorialChapter9.chapter8Config.getRunSimulationMessage();
-        RunAndSoftwareIdentification normalR0runAndSoftwareId = tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithNormalR0);
 
+        List<RunIdentificationAndLabel> runIdentificationsAndLabels = new ArrayList<RunIdentificationAndLabel>();
+        
+        RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+        BigInteger normalR0RunId = tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithNormalR0);
+        runIdAndLabel.setRunIdentification(normalR0RunId);
+        runIdAndLabel.setRunLabel("Normal R0");
+        runIdentificationsAndLabels.add(runIdAndLabel);
+        
         RunSimulationMessage runSimulationMessageWithHighR0 = tutorialChapter9.chapter8Config.getRunSimulationMessage();
         runSimulationMessageWithHighR0.setInfectiousDiseaseScenario(infectiousDiseaseScenarioWithHighR0);
-        RunAndSoftwareIdentification highR0RunAndSoftwareId = tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithHighR0);
-
+        BigInteger highR0RunId = tutorialChapter8.runSimulationAndDisplayResults(runSimulationMessageWithHighR0);
+        runIdAndLabel = new RunIdentificationAndLabel();
+        runIdAndLabel.setRunIdentification(highR0RunId);
+        runIdAndLabel.setRunLabel("High R0");
+        runIdentificationsAndLabels.add(runIdAndLabel);
+        
         tutorialChapter8.createIncidenceVisualizationForMultipleSimulations(ExampleRunSimulationMessageFactory.getAuthentication(ExampleRunSimulationMessageFactory.REQUESTER_ID,
-                ExampleRunSimulationMessageFactory.REQUESTER_PASSWORD), normalR0runAndSoftwareId.getRunId(), highR0RunAndSoftwareId.getRunId());
+                ExampleRunSimulationMessageFactory.REQUESTER_PASSWORD), runIdentificationsAndLabels);
     }
     
 }
