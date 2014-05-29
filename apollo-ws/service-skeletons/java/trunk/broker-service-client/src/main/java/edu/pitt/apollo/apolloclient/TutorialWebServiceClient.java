@@ -3,12 +3,17 @@ package edu.pitt.apollo.apolloclient;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v2_0_1.ApolloServiceV201;
+import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_0_1.Authentication;
+import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0_1.GetVisualizerOutputResourcesResult;
@@ -23,10 +28,7 @@ import edu.pitt.apollo.types.v2_0_1.UrlOutputResource;
 
 public class TutorialWebServiceClient {
 
-    enum VisualizerIdentificationEnum {
-
-        GAIA, TIME_SERIES
-    }
+    
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
 //    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
     private static final QName SERVICE_NAME = new QName(
@@ -144,4 +146,15 @@ public class TutorialWebServiceClient {
             throw new ExceptionInInitializerError("MalformedURLException: " + ex.getMessage());
         }
     }
+
+	public static GetLibraryItemResult getLibraryItem(String uuid) {
+		return port.getLibraryItem(uuid);
+	}
+
+	public static AddLibraryItemResult addLibraryItem(Authentication authentication, ApolloIndexableItem apolloIndexableItem, String itemDescription,
+			String itemSource, String itemType, ArrayList<String> itemIndexingLabels) {
+		return port.addLibraryItem(authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
+	}
+
+	
 }

@@ -24,13 +24,13 @@ import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 import edu.pitt.apollo.types.v2_0_1.Vaccination;
 import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration;
 
-public class ExampleUseOfVaccinationControlStrategy extends AbstractCodeExamplesClass {
+public class ExampleVaccinationControlStrategy {
 
 	public static final String H1N1_NCBI_TAXON_ID = "114727";
 	public static final String HUMAN_NCBI_TAXON_ID = "9606";
 	public static final String H1N1_VACCINE_ONTOLOGY_ID = "0001599";
 
-	public ExampleUseOfVaccinationControlStrategy() {
+	public ExampleVaccinationControlStrategy() {
 		super();
 	}
 
@@ -96,8 +96,7 @@ public class ExampleUseOfVaccinationControlStrategy extends AbstractCodeExamples
 	}
 
 	
-	public  RunSimulationMessage getRunSimulationMessage() {
-		RunSimulationMessage message = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
+	public  RunSimulationMessage addVaccinationControlStrategyToRunSimulationMessage(RunSimulationMessage message) {
 		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies().add(getVaccinationControlStrategy());
 		return message;
 	}
