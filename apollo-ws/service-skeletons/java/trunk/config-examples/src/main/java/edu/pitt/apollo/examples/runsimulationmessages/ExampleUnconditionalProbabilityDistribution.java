@@ -7,8 +7,7 @@ import edu.pitt.apollo.types.v2_0_1.UncertainDuration;
 import edu.pitt.apollo.types.v2_0_1.UnconditionalProbabilityDistribution;
 import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 
-public class ExampleUseOfUnconditionalProbabilityDistribution extends
-		ExampleRunSimulationMessageFactory {
+public class ExampleUnconditionalProbabilityDistribution  {
 	
 	static final double ONE_DAY_LATENT_PERIOD = 1d;
 	static final double TWO_DAY_LATENT_PERIOD = 2d;
@@ -42,9 +41,7 @@ public class ExampleUseOfUnconditionalProbabilityDistribution extends
 		return latentPeriodDuration;
 	}
 
-	public RunSimulationMessage getDefaultRunSimulationMessageAndSetLatentPeriodToUnconditionalProbabilityDistribution() {
-		RunSimulationMessage runSimulationMessage = ExampleRunSimulationMessageFactory.getRunSimulationMessage();
-
+	public RunSimulationMessage setLatentPeriodToUnconditionalProbabilityDistribution(RunSimulationMessage runSimulationMessage) {
 		UnconditionalProbabilityDistribution distributionRepresentingLatentPeriodDuration = getDistributionRepresentingLatentPeriodDuration();
 		
 		UncertainDuration uncertainDurationOfLatentPeriod = new UncertainDuration();
