@@ -12,21 +12,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package edu.pitt.apollo.apolloclient;
+package edu.pitt.apollo.apolloclient.tutorial;
 
-import java.net.MalformedURLException;
-
+import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 
-public class TutorialChapter2_RunSimulationWithNoIntervention extends AbstractRunAndVisualizeSimulationClass {
-	public TutorialChapter2_RunSimulationWithNoIntervention() throws MalformedURLException {
+public class Chapter2_RunSimulationWithNoIntervention extends AbstractRunAndVisualizeSimulationClass {
+	public Chapter2_RunSimulationWithNoIntervention() {
 		super();
 	}
 
-	public static void main(String args[]) throws java.lang.Exception {
-		TutorialChapter2_RunSimulationWithNoIntervention tutorialChapter2 = new TutorialChapter2_RunSimulationWithNoIntervention();
+	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
-				.getDefaultRunSimulationMessage();
-		tutorialChapter2.runSimulationAndDisplayResults(runSimulationMessage);
+				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.FRED);
+		runScenarioAndDisplayResults(runSimulationMessage);
+	}
+
+	public static void main(String args[]) throws java.lang.Exception {
+		Chapter2_RunSimulationWithNoIntervention tutorialChapter2 = new Chapter2_RunSimulationWithNoIntervention();
+		tutorialChapter2.runExample();
+
 	}
 }
