@@ -1,12 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
-import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
-import java.net.URL;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
 
 /**
  *
