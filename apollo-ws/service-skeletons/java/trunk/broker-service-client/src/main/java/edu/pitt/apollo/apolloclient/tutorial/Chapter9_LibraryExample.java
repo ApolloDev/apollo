@@ -1,8 +1,24 @@
-package edu.pitt.apollo.apolloclient;
+/* Copyright 2012 University of Pittsburgh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy of
+ * the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package edu.pitt.apollo.apolloclient.tutorial;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleVaccinationControlStrategy;
 import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
@@ -18,14 +34,14 @@ import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_1.TriggerDefinition;
 import edu.pitt.apollo.types.v2_0_1.Vaccination;
 
-public class TutorialChapter9_LibraryExample extends AbstractRunAndVisualizeSimulationClass {
+public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationClass {
 
 	public String infectionUuid = "";
 	public String infectiousDiseaseScenarioUuid = "";
 	public String vaccinationControlStrategyUuid = "";
 	public ExampleVaccinationControlStrategy vaccinationControlStrategy;
 
-	public TutorialChapter9_LibraryExample() throws MalformedURLException {
+	public Chapter9_LibraryExample() throws MalformedURLException {
 		super();
 		vaccinationControlStrategy = new ExampleVaccinationControlStrategy();
 	}
@@ -40,7 +56,7 @@ public class TutorialChapter9_LibraryExample extends AbstractRunAndVisualizeSimu
 	public void savePredefinedItemsToApolloLibrary() {
 
 		RunSimulationMessage runSimulationMessage = vaccinationControlStrategy
-				.addVaccinationControlStrategyToRunSimulationMessage(ApolloServiceTypeFactory.getDefaultRunSimulationMessage());
+				.addVaccinationControlStrategyToRunSimulationMessage(ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
 
 		InfectiousDiseaseScenario infectiousDiseaseScenario = runSimulationMessage.getInfectiousDiseaseScenario();
 		ArrayList<String> labels = new ArrayList<String>();
@@ -167,10 +183,10 @@ public class TutorialChapter9_LibraryExample extends AbstractRunAndVisualizeSimu
 		InfectiousDiseaseScenario infectiousDiseaseScenarioWithIncreasedR0 = setR0(loadInfectiousDiseaseScenario(),
 				getR0(infectiousDiseaseScenario) + 0.5);
 
-		RunSimulationMessage runSimulationMessageWithStoredR0 = ApolloServiceTypeFactory.getDefaultRunSimulationMessage();
+		RunSimulationMessage runSimulationMessageWithStoredR0 = ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 		runSimulationMessageWithStoredR0.setInfectiousDiseaseScenario(infectiousDiseaseScenario);
 
-		RunSimulationMessage runSimulationMessageWithIncreasedR0 = ApolloServiceTypeFactory.getDefaultRunSimulationMessage();
+		RunSimulationMessage runSimulationMessageWithIncreasedR0 = ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 		runSimulationMessageWithIncreasedR0.setInfectiousDiseaseScenario(infectiousDiseaseScenarioWithIncreasedR0);
 
 		runScenariosAndDisplayResults("Baseline R0", runSimulationMessageWithStoredR0, "Baseline R0 + 0.5",
@@ -182,7 +198,7 @@ public class TutorialChapter9_LibraryExample extends AbstractRunAndVisualizeSimu
 	 * @throws MalformedURLException
 	 */
 	public static void main(String[] args) throws MalformedURLException {
-		TutorialChapter9_LibraryExample tutorialChapter9 = new TutorialChapter9_LibraryExample();
+		Chapter9_LibraryExample tutorialChapter9 = new Chapter9_LibraryExample();
 		tutorialChapter9.runExample();
 
 	}
