@@ -104,7 +104,7 @@ public class ApolloServiceTypeFactory {
 		RunSimulationMessage message = new RunSimulationMessage();
 		message.setInfectiousDiseaseScenario(ExampleInfectiousDiseaseScenario.getScenario());
 		message.setAuthentication(getAuthentication(REQUESTER_ID, REQUESTER_PASSWORD));
-		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.SEIR));
+		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(SimulatorIdentificationEnum.FRED));
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification(SIMULATION_RUN_LENGTH,
 				UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP, NUMBER_OF_UNITS_OF_TIME_IN_ONE_SIMULATOR_TIME_STEP));
 		return message;
