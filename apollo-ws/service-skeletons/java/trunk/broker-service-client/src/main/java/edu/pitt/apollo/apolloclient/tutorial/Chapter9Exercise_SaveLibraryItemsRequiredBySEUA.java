@@ -1,6 +1,20 @@
-package edu.pitt.apollo.apolloclient;
+/* Copyright 2012 University of Pittsburgh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy of
+ * the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 
-import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
+package edu.pitt.apollo.apolloclient.tutorial;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
@@ -46,7 +60,7 @@ import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration
  * Class: TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA
  * IDE: NetBeans 6.9.1
  */
-public class TutorialChapter9Exercise_SaveLibraryItemsRequiredBySEUA {
+public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
     public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
 //    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
