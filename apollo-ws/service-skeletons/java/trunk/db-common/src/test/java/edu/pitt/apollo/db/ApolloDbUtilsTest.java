@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import edu.pitt.apollo.apolloclient.ApolloServiceTypeFactory;
+import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_1.Authentication;
 import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
@@ -49,7 +49,7 @@ public class ApolloDbUtilsTest extends TestCase {
         authUser2.setRequesterId("user2");
         authUser2.setRequesterPassword("pass2");
 
-        message = ApolloServiceTypeFactory.getDefaultRunSimulationMessage();
+        message = ApolloServiceTypeFactory.getDefaultRunSimulationMessage(SimulatorIdentificationEnum.FRED);
         // insertUsers();
 
         // fredSoftwareId = tutorial.getSoftwareIdentificationForSimulator();
