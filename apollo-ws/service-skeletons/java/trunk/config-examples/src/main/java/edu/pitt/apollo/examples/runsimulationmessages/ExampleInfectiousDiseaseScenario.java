@@ -26,12 +26,13 @@ import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
 public class ExampleInfectiousDiseaseScenario {
 
 	public static final String INCITS_CODE_FOR_ALLEGHENY_COUNTY = "42003";
-	public static final String H1N1 = "114727";
-	public static final String HUMAN = "9606";
+	
 	public static final String H1N1_VACCINE_ONTOLOGY_ID = "0001599";
 
-	private static Infection getInfection(String pathogenTaxonId, String hostTaxonId, UnitOfTimeEnum unitOfTimeEnum,
-			double infectiousPeriod, double latentPeriod, double reproductionNumber) {
+	private static Infection getInfection(String pathogenTaxonId, String hostTaxonId, 
+			UnitOfTimeEnum unitOfTimeEnum, double infectiousPeriod, double latentPeriod, 
+			double reproductionNumber) {
+		
 		Infection infection = new Infection();
 
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
@@ -39,8 +40,10 @@ public class ExampleInfectiousDiseaseScenario {
 		infection.setPathogenTaxonId(pathogen);
 		infection.setHostTaxonId(hostTaxonId);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost = getInfectionAcquisitionFromInfectiousHost(
-				hostTaxonId, reproductionNumber, latentPeriod, infectiousPeriod, unitOfTimeEnum);
+		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost =
+						getInfectionAcquisitionFromInfectiousHost(
+								hostTaxonId, reproductionNumber, latentPeriod, 
+								infectiousPeriod, unitOfTimeEnum);
 		infection.getInfectionAcquisitionsFromInfectiousHosts().add(infectionAcquisitionFromInfectiousHost);
 
 		return infection;
@@ -58,7 +61,8 @@ public class ExampleInfectiousDiseaseScenario {
 		latentPeriodDuration.setUnitOfTime(unitOfTimeEnum);
 		latentPeriodDuration.setValue(latentPeriod);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiouHost = new InfectionAcquisitionFromInfectiousHost();
+		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiouHost =
+				new InfectionAcquisitionFromInfectiousHost();
 		infectionAcquisitionFromInfectiouHost.setBasicReproductionNumber(reproductionNumber);
 		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
 		infectionAcquisitionFromInfectiouHost.setInfectiousPeriodDuration(infectiousPeriodDuration);
@@ -178,8 +182,8 @@ public class ExampleInfectiousDiseaseScenario {
 	}
 
 	public static InfectiousDiseaseScenario getScenario() {
-		final String pathogenTaxonIdForScenario = H1N1;
-		final String hostTaxonIdForScenario = HUMAN;
+		final String pathogenTaxonIdForScenario = "114727"; //H1N1
+		final String hostTaxonIdForScenario = "9606"; //human
 
 		final String descriptionOfScenarioLocation = "Allegheny County, Pennsylvania";
 		final String apolloLocationCodeForScenario = INCITS_CODE_FOR_ALLEGHENY_COUNTY;
@@ -200,9 +204,9 @@ public class ExampleInfectiousDiseaseScenario {
 		final double fractionOfHostPopulationInfectedWithPathogenAndInfectious = 0.01;
 		final double fractionOfHostPopulationImmuneToPathogen = 0.05;
 
-		Location scenarioLocation = getLocationGivenApolloLocationCode(apolloLocationCodeForScenario);
-
 		XMLGregorianCalendar scenarioDate = getXmlDateGivenYearMonthDay(scenarioYear, scenarioMonth, scenarioDay);
+		
+		Location scenarioLocation = getLocationGivenApolloLocationCode(apolloLocationCodeForScenario);
 
 		Infection scenarioInfection = getInfection(pathogenTaxonIdForScenario, hostTaxonIdForScenario,
 				unitOfTimeForDurationVariables, infectiousPeriodDurationForScenarioDisease,
@@ -211,11 +215,13 @@ public class ExampleInfectiousDiseaseScenario {
 		InfectiousDisease scenarioInfectiousDisease = getInfectiousDisease(scenarioDisease, pathogenTaxonIdForScenario,
 				hostTaxonIdForScenario, symptomaticDiseaseOutcome, probabilityHostBecomesSymptomaticDuringInfection);
 
-		PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus = getPopulationInfectionAndImmunityCensus(
-				descriptionOfScenarioLocation, INCITS_CODE_FOR_ALLEGHENY_COUNTY, scenarioDate, pathogenTaxonIdForScenario,
-				hostTaxonIdForScenario, fractionOfHostPopulationSusceptibleToPathogen,
-				fractionOfHostPopulationInfectedWithPathogenButNotInfectious,
-				fractionOfHostPopulationInfectedWithPathogenAndInfectious, fractionOfHostPopulationImmuneToPathogen);
+		PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus = 
+						getPopulationInfectionAndImmunityCensus(descriptionOfScenarioLocation,
+								INCITS_CODE_FOR_ALLEGHENY_COUNTY, scenarioDate, pathogenTaxonIdForScenario,
+								hostTaxonIdForScenario, fractionOfHostPopulationSusceptibleToPathogen,
+								fractionOfHostPopulationInfectedWithPathogenButNotInfectious,
+								fractionOfHostPopulationInfectedWithPathogenAndInfectious,
+								fractionOfHostPopulationImmuneToPathogen);
 
 		return getInfectiousDiseaseScenario(scenarioLocation, scenarioDate, scenarioInfection, scenarioInfectiousDisease,
 				scenarioPopulationInfectionAndImmunityCensus);
