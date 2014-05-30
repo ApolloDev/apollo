@@ -1,4 +1,19 @@
-package edu.pitt.apollo.apolloclient;
+/* Copyright 2012 University of Pittsburgh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy of
+ * the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package edu.pitt.apollo.apolloclient.tutorial;
 
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -30,7 +45,7 @@ public class TutorialWebServiceClient {
 
     
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-//    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
+    //public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
     private static final QName SERVICE_NAME = new QName(
             "http://service.apollo.pitt.edu/apolloservice/v2_0_1/", "ApolloService_v2.0.1");
     public static final long TWO_SECONDS = 2000;
@@ -40,10 +55,6 @@ public class TutorialWebServiceClient {
     private static ApolloServiceEI port;
 
     public TutorialWebServiceClient() {
-    }
-
-    public ApolloServiceEI getPort() {
-        return port;
     }
 
     public static List<String> getScenarioLocationCodesSupportedBySimulatorOrNull(
@@ -109,7 +120,7 @@ public class TutorialWebServiceClient {
                 MethodCallStatusEnum status = callStatus.getStatus();
                 String message = callStatus.getMessage();
 
-                System.out.printf("The status of run %s is: %s\n", status, message);
+                System.out.printf("The status of run %s is: %s\n", runIdentification, message);
 
                 if (status == null) {
                     System.out.printf("Fatal Web Service Error: The Web service did not return a status for run: %s\n",
