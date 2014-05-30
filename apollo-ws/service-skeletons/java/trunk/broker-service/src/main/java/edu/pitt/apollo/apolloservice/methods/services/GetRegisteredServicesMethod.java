@@ -21,7 +21,7 @@ public class GetRegisteredServicesMethod {
     public static List<ServiceRecord> getRegisteredServices() {
         try {
             ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
-            return new ArrayList(dbUtils.getRegisteredSoftware().values());
+            return new ArrayList<ServiceRecord>(dbUtils.getRegisteredSoftware().values());
         } catch (SQLException ex) {
             System.out.println("SQLException attempting to get registered services: "
                     + ex.getMessage());
