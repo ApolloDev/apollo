@@ -2,7 +2,6 @@ package edu.pitt.apollo.apolloservice.methods.services;
 
 import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import java.util.List;
 
 /**
  *
