@@ -355,14 +355,6 @@
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">commissions</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A relation between two entities where the first entity formally requests a third party to create or execute the second entity.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">a commissions b, iff a does not participate in the creation or execution of b and participates in a legal agreement that c participates on the creation or execution of b and c getting something in exchange for that participation.</obo:IAO_0000115>
-        <rdfs:domain>
-            <Class>
-                <unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
-                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
-                </unionOf>
-            </Class>
-        </rdfs:domain>
         <rdfs:range>
             <Class>
                 <unionOf rdf:parseType="Collection">
@@ -372,6 +364,14 @@
                 </unionOf>
             </Class>
         </rdfs:range>
+        <rdfs:domain>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;NCBITaxon_9606"/>
+                    <rdf:Description rdf:about="&obo;OBI_0000245"/>
+                </unionOf>
+            </Class>
+        </rdfs:domain>
     </ObjectProperty>
     
 
@@ -1337,7 +1337,7 @@
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">epidemic model</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117>William Hogan and Michael Wagner</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">An algorithm the concretizations of which models the transmission of transmissible disease.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">an algorithm whose concretization is realized as a simulating of Infectious disease epidemic or Infectious disease pandemic.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An algorithm whose concretization is realized as a simulating of Infectious disease epidemic or Infectious disease pandemic.</obo:IAO_0000115>
     </Class>
     
 
@@ -3227,7 +3227,7 @@ simulation run length</rdfs:comment>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Ecosystem</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">Ecosystem is the sum of all biotic and abiotic entities in a geographical region. </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The sum of all biotic and abiotic entities in a geographical region. </obo:IAO_0000115>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
     </Class>
     
@@ -3315,8 +3315,10 @@ simulation run length</rdfs:comment>
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">controlStrategyReactiveEndpointFraction</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A rule that is part of an infectious disease control strategy specification and specifies the fraction of the population, that has participated in the control strategy, at which the control strategy is to be discontinued.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">The fraction of a population that is targeted for treatment at which the control measure is discontinued.   The concept derives from the epidemiological notion of ‘herd immunity,’ which is a level of immunity in a population at which there are not enough susceptible individuals for a contagious disease to maintain the chain reaction.   Technically, it is when the effective reproduction rate &lt;= 1, which means that infectious individuals at most infect one person during the course of their illness.</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A fraction of a population that is targeted for treatment at which the control strategy is discontinued.
+
+The concept derives from the epidemiological notion of ‘herd immunity,’ which is a level of immunity in a population at which there are not enough susceptible individuals for a contagious disease to maintain the chain reaction.   Technically, it is when the effective reproduction rate &lt;= 1, which means that infectious individuals at most infect one person during the course of their illness.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A rule that is part of an infectious disease control strategy specification and specifies at which fraction of a population a control strategy is to be discontinued.</obo:IAO_0000115>
     </Class>
     
 
@@ -3937,8 +3939,8 @@ The event could be infection acquisition, vaccination, antiviral treatment, etc.
         <rdfs:label xml:lang="en">control strategy response delay</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">controlStrategyResponseDelay</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval from the decision to implement an infectious disease control strategy to the start of the control strategy expressed in number of time intervals.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">The period from the initiation of a control strategy until its disease-controlling actions actually begin.
+        <obo:IAO_0000115 xml:lang="en">A measurement datum of the time interval from the decision to implement an infectious disease control strategy to the start of the control strategy expressed in number of time intervals.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A period from the initiation of a control strategy until its disease-controlling actions actually begin.
 
 For example, once a vaccination control strategy starts, individual vaccinations may not occur right away: it might take some time until workers and vaccines are deployed and ready to begin.</obo:IAO_0000600>
     </Class>
@@ -4031,7 +4033,7 @@ For example, once a vaccination control strategy starts, individual vaccinations
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">compliance</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A fraction of eligible individuals in a population who receive an intervention or participate in a control strategy.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The measurement datum about the fraction of individuals in a population that accept to participate in a control strategy when offered.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A measurement datum about the fraction of individuals in a population that elect to participate in a control strategy when offered.</obo:IAO_0000115>
         <rdfs:comment xml:lang="en">the class restriction can be made more precise AH</rdfs:comment>
         <rdfs:comment xml:lang="en">the fraction of some population that is targeted for a control strategy that accepts it.  It can obviously also be interpreted as a probability that the average individual in the targeted population accepts/complies with the control strategy.  It is not simulated</rdfs:comment>
     </Class>
@@ -4808,8 +4810,8 @@ I checked because an infection and immunity census would involve two different c
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ContaminationAcquisition</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A biological process whereby an entity that does not contain a pathogen becomes a contaminated thing.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">a biological process whereby an entity that does not contain a pathogen becomes a contaminated thing</obo:IAO_0000115>
     </Class>
     
 
@@ -4988,7 +4990,7 @@ I checked because an infection and immunity census would involve two different c
         <rdfs:label xml:lang="en">disease transmission model</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000064"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">disease transmission model</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">An algorithm that models the progress of a transmissible disease.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An algorithm that models the progress of a transmissible disease in a population.</obo:IAO_0000115>
     </Class>
     
 
@@ -5959,7 +5961,7 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <obo:IAO_0000600 xml:lang="en">An organism of a particular species whose tissue is the location of the reproduction of an organism of a different species, in an infection.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">An organism that has as  a part some tissue that is the location of an infection.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An organism that has as a part some tissue that is the location of an infection.</obo:IAO_0000115>
         <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Host</apollo_sv:APOLLO_SV_0000040>
     </Class>
     
@@ -6312,8 +6314,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <rdfs:label xml:lang="en">control strategy stand-down delay</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">controlStrategyStandDownDelay</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">The measurement datum of the time interval from the decision to cease an infectious disease control strategy to the time the control strategy ends expressed in number of time intervals.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">The period from the conclusion of a control strategy until its disease-controlling activities actually end.
+        <obo:IAO_0000115 xml:lang="en">A measurement datum of the time interval from the decision to cease an infectious disease control strategy to the time the control strategy ends expressed in number of time intervals.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A period from the conclusion of a control strategy until its disease-controlling activities actually end.
 
 For example, it may take time to communicate to workers to stop vaccinating and thus they keep vaccinating for some time after the control strategy is concluded.</obo:IAO_0000600>
         <dc:creator xml:lang="en">William R. Hogan</dc:creator>
@@ -6611,9 +6613,9 @@ For example, the trigger could occur once the incidence or prevalence of the inf
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">durationOfTreatmentCourse</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A duration that measures the temporal interval occupied by a treatment course.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A period from the start to the end of a treatment course.</obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The duration that measures the temporal interval occupied by a treatment course.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">The period from the start to the end of a treatment course.</obo:IAO_0000600>
     </Class>
     
 
@@ -6698,7 +6700,7 @@ For example, the trigger could occur once the incidence or prevalence of the inf
         <rdfs:label xml:lang="en">place closure period</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">closurePeriod</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">The period from the closure of a place until it is reopened.</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A period from the closure of a place until the time when it is reopened.</obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
@@ -6821,7 +6823,7 @@ The abnormal state could be having a disease, carrier status, a syndrome, a stru
         <rdfs:label xml:lang="en">quarantine period</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000243"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">quarantinePeriod</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">The period during which an infectious host organism is isolated from contact with other organisms in the ecosystem as part of a quarantine control strategy.</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A period during which an infectious host organism is isolated from contact with other organisms in the ecosystem as part of a quarantine control strategy.</obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
@@ -7113,13 +7115,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -7212,13 +7214,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -10038,58 +10040,58 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
