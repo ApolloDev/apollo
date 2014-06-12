@@ -441,6 +441,8 @@
         <rdfs:label xml:lang="en">is realized by</rdfs:label>
         <obo:IAO_0000118 xml:lang="en">realized by</obo:IAO_0000118>
         <obo:IAO_0000118 xml:lang="en">realized_by</obo:IAO_0000118>
+        <rdfs:domain rdf:resource="&snap;RealizableEntity"/>
+        <rdfs:range rdf:resource="&span;ProcessualEntity"/>
     </ObjectProperty>
     
 
@@ -619,6 +621,7 @@
 
     <ObjectProperty rdf:about="&obo;OBI_0000300">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+        <inverseOf rdf:resource="&obo;OBI_0000308"/>
     </ObjectProperty>
     
 
@@ -628,7 +631,6 @@
     <ObjectProperty rdf:about="&obo;OBI_0000308">
         <rdfs:label xml:lang="en">realizes</rdfs:label>
         <obo:IAO_0000111 xml:lang="en">realizes</obo:IAO_0000111>
-        <rdfs:range rdf:resource="&snap;RealizableEntity"/>
     </ObjectProperty>
     
 
@@ -4199,20 +4201,20 @@ For example, once a vaccination control strategy starts, individual vaccinations
     <Class rdf:about="&obo;APOLLO_SV_00000145">
         <rdfs:label xml:lang="en">resistance to infection</rdfs:label>
         <equivalentClass>
-            <Restriction>
-                <onProperty rdf:resource="&obo;OBI_0000300"/>
-                <allValuesFrom>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;Disposition"/>
                     <Restriction>
-                        <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
-                        <someValuesFrom>
+                        <onProperty rdf:resource="&obo;BFO_0000054"/>
+                        <allValuesFrom>
                             <Restriction>
-                                <onProperty rdf:resource="&obo;OBI_0000308"/>
-                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                                <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
                             </Restriction>
-                        </someValuesFrom>
+                        </allValuesFrom>
                     </Restriction>
-                </allValuesFrom>
-            </Restriction>
+                </intersectionOf>
+            </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -4288,28 +4290,28 @@ For example, once a vaccination control strategy starts, individual vaccinations
     <Class rdf:about="&obo;APOLLO_SV_00000151">
         <rdfs:label xml:lang="en">immune resistance to infection</rdfs:label>
         <equivalentClass>
-            <Restriction>
-                <onProperty rdf:resource="&obo;OBI_0000300"/>
-                <allValuesFrom>
-                    <Class>
-                        <intersectionOf rdf:parseType="Collection">
-                            <Restriction>
-                                <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
-                                <someValuesFrom>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&snap;Disposition"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000054"/>
+                        <allValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
                                     <Restriction>
-                                        <onProperty rdf:resource="&obo;OBI_0000308"/>
-                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                                        <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
                                     </Restriction>
-                                </someValuesFrom>
-                            </Restriction>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;has_participant"/>
-                                <someValuesFrom rdf:resource="&obo;UBERON_0002405"/>
-                            </Restriction>
-                        </intersectionOf>
-                    </Class>
-                </allValuesFrom>
-            </Restriction>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom rdf:resource="&obo;UBERON_0002405"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </allValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000145"/>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
@@ -4911,7 +4913,7 @@ I checked because an infection and immunity census would involve two different c
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&snap;Disposition"/>
                     <Restriction>
-                        <onProperty rdf:resource="&obo;OBI_0000300"/>
+                        <onProperty rdf:resource="&obo;BFO_0000054"/>
                         <allValuesFrom rdf:resource="&obo;APOLLO_SV_00000115"/>
                     </Restriction>
                     <Restriction>
@@ -7115,13 +7117,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
