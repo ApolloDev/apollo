@@ -61,7 +61,7 @@
         <dc:title xml:lang="en">Apollo Structured Vocabulary (Apollo-SV)</dc:title>
         <rdfs:comment xml:lang="en">When citing Apollo-SV, use the permanent URL of the ontology: http://purl.obolibrary.org/obo/apollo_sv.owl.  When referencing a specific component of the Apollo-SV such as a class, object property, or individual, use the component&apos;s Uniform Resource Identifier (URI).</rdfs:comment>
         <dc:license xml:lang="en">https://creativecommons.org/licenses/by/3.0/</dc:license>
-        <imports rdf:resource="https://code.google.com/p/apollo/source/browse/apollo-sv/tags/release-2.0.1/geo.owl"/>
+        <imports rdf:resource="http://apollo.googlecode.com/svn/apollo-sv/tags/release-2.0.1/geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
     </Ontology>
     
