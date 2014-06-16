@@ -1586,11 +1586,11 @@ Please consider this advise to hold for all usages of the term &quot;concept&quo
         <rdfs:label xml:lang="en">simulation time step value</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000029"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">numberOfUnitsOfTimeInOneSimulatorStep</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">The number of time step units in a time step of a simulation.  
+        <obo:IAO_0000600 xml:lang="en">A number of time step units in a time step of a simulation.  
 
 For example, if the time step is 6 hours, then this value is 6.
 </obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The numeral that is part of a simulation time step action specification.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A numeral that is part of a simulation time step action specification.</obo:IAO_0000115>
     </Class>
     
 
@@ -1619,8 +1619,8 @@ For example, if the time step is 6 hours, then this value is 6.
         <rdfs:label xml:lang="en">simulation time step unit</rdfs:label>
         <rdfs:subClassOf rdf:resource="&UO;UO_0000003"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">unitOfTimeForSimulatorTimeStep</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">The duration of one time step of a simulation measured in Units of Time for Simulator Time Step.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">The time unit that is part of a simulation time step action specification.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A time unit that is part of a simulation time step action specification.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A unit of time for each time step of a simulation, such as “hours” or “days”.</obo:IAO_0000600>
     </Class>
     
 
@@ -1668,13 +1668,12 @@ For example, if run length is 10 and the time step is 6 hours, then the simulato
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectiousPeriodDuration</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A period when an individual of a particular species, who is infected with a particular pathogen, is able to infect susceptible individuals of a particular species.  
+        <obo:IAO_0000115 xml:lang="en">A duration of the parts of an infection during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A period when an individual of a particular species, who is infected with a particular pathogen, is able to infect susceptible organisms of a particular species.
 
-Note that the susceptible and infectious individuals can be of different species.
-</obo:IAO_0000600>
+Note that the susceptible and infectious organisms can be of different species.</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs.</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The duration of the parts of an infection during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
     </Class>
     
 
@@ -1701,15 +1700,15 @@ Note that the susceptible and infectious individuals can be of different species
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">latentPeriodDuration</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A period during which an individual of a particular species, who is infected with a particular pathogen, is not yet able to infect susceptible individuals of a particular species.  
-
-Note that the susceptible and infected individuals can be of different species.
-
-</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A duration of the time interval between the host acquiring an infection and the host bearing a contagiousness disposition during the same disease course within a population of hosts.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A period during which an organism of a particular species, who is infected with a particular pathogen, is not yet able to infect susceptible organisms of a particular species.  
+
+Note that the susceptible and infected organisms can be of different species.
+
+</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">The duration of the time interval between the host acquiring an infection and the host bearing a contagiousness disposition during the same disease course within a population of hosts.</obo:IAO_0000115>
     </Class>
     
 
@@ -3010,9 +3009,9 @@ simulation run length</rdfs:comment>
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDiseaseControlStrategy</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A plan specification whose objective specification is an infectious disease control objective specification.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A plan with the goal of preventing or mitigating the effects of infections in a population due to one or more pathogens.</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">The essential goal of an infectious disease control strategy is to protect the susceptible organisms in a population.</rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">a plan specification whose objective specification is an epidemic control objective specification</obo:IAO_0000115>
     </Class>
     
 
@@ -3084,8 +3083,8 @@ simulation run length</rdfs:comment>
 
 2. Apollo-SV also considers the use of ‘vaccine’ in both terms a misnomer.
 </rdfs:comment>
-        <obo:IAO_0000115 xml:lang="en">a measurement datum that is about a vaccination efficacy and is the specified output of a vaccination efficacy study</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">a vaccination efficacy resulting from a vaccination efficacy study</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A measurement datum that is about a vaccination efficacy and is the specified output of a vaccination efficacy study.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A vaccination efficacy that results from a vaccination efficacy study.</obo:IAO_0000600>
     </Class>
     
 
@@ -3597,7 +3596,7 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Infection</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A process of reproduction of a particular pathogen species inside some tissue of a particular host species.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">An infection is the reproduction of a pathogen in (a part of) the tissue of a host organism from another species.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A reproduction of a pathogen in (a part of) the tissue of a host organism from another species.</obo:IAO_0000115>
         <dc:creator xml:lang="en">M. Brochhausen</dc:creator>
         <rdfs:comment xml:lang="en">infection is reproduction of a pathogen inside some tissue of a host.  By associating infection with the classes latent period and infectious period, which are associated with specific pathogen species and host species, Apollo-SV defines infection further as reproduction of a particular pathogen species inside some tissue of a particular host species.</rdfs:comment>
     </Class>
@@ -3654,9 +3653,9 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;GO_0044409"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectionAcquisition</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A process where a susceptible individual from a particular species becomes infected by a particular pathogen.  The infection is acquired from an infected individual of a particular species or from a contaminated thing.  
+        <obo:IAO_0000600 xml:lang="en">A process where a susceptible organism from a particular species becomes infected by a particular pathogen.  The infection is acquired from an infected organism of a particular species or from a contaminated thing.  
 
-Note that the susceptible and infectious individuals can be of different species.
+Note that the susceptible and infectious organisms can be of different species.
 
 </obo:IAO_0000600>
         <rdfs:comment xml:lang="en">Apollo-SV defines infection acquisition rather than infection transmission, which is the direction of movement of a pathogen in current use.  The Apollo-SV conceptualization is simpler when accounting for infections acquired from contaminated things.
@@ -4209,7 +4208,12 @@ For example, once a vaccination control strategy starts, individual vaccinations
                         <allValuesFrom>
                             <Restriction>
                                 <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
-                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                <someValuesFrom>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&obo;OBI_0000308"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                                    </Restriction>
+                                </someValuesFrom>
                             </Restriction>
                         </allValuesFrom>
                     </Restriction>
@@ -4300,7 +4304,12 @@ For example, once a vaccination control strategy starts, individual vaccinations
                                 <intersectionOf rdf:parseType="Collection">
                                     <Restriction>
                                         <onProperty rdf:resource="&OBO_REL;negatively_regulates"/>
-                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                        <someValuesFrom>
+                                            <Restriction>
+                                                <onProperty rdf:resource="&obo;OBI_0000308"/>
+                                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000172"/>
+                                            </Restriction>
+                                        </someValuesFrom>
                                     </Restriction>
                                     <Restriction>
                                         <onProperty rdf:resource="&ro;has_participant"/>
@@ -4567,7 +4576,7 @@ I checked because an infection and immunity census would involve two different c
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">PopulationInfectionAndImmunityCensus</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A census of the infection status (e.g., susceptible, infected, infectious, and immune/resistant) of individuals in a population, with respect to a particular pathogen.</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A census of the infection status (e.g., susceptible, infected, infectious, and immune/resistant) of organisms in a population, with respect to a particular pathogen.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A data set that is the result of a population infection survey and a population immunity survey.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">PII Census</obo:IAO_0000118>
@@ -4689,7 +4698,6 @@ I checked because an infection and immunity census would involve two different c
     <Class rdf:about="&obo;APOLLO_SV_00000163">
         <rdfs:label xml:lang="en">recovered population</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;PCO_0000001"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">recovered</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117 xml:lang="en">A population of organisms that have been infected, but are no longer able to transmit the disease and to acquire the infection again.</obo:IAO_0000117>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5109,9 +5117,9 @@ I checked because an infection and immunity census would involve two different c
         <rdfs:label xml:lang="en">antiviral control strategy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000194"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">antiviral control strategy</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">An infectious disease control strategy that has as part an action specification that is realized in antiviral treatment.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An infectious disease control strategy that uses medications to treat infected hosts in an attempt to limit their infectiousness and/or infectious period.</obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">an infectious disease control strategy that has as part an action specification that is realized in antiviral treatment</obo:IAO_0000115>
     </Class>
     
 
@@ -5145,7 +5153,7 @@ I checked because an infection and immunity census would involve two different c
             </Class>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">SimulatorTimeSpecification</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">an information content entity that specifies the length in time of a single simulator step (e.g., 1 day) and the requested run length of the simulation (number of steps)</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that specifies the length in time of a single simulator step (e.g., 1 day) and the requested run length of the simulation (number of steps).</obo:IAO_0000115>
     </Class>
     
 
@@ -5156,7 +5164,7 @@ I checked because an infection and immunity census would involve two different c
         <rdfs:label xml:lang="en">infectious disease scenario information</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000030"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDiseaseScenario</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">An information content entity that includes data about populations, abiotic ecosystem elements, and infections and that includes knowledge about how infections propagate through the ecosystem.   </obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An information content entity that includes (1) data about at least one host population and the infections with at least one particular pathogen in that population and (2) knowledge about how those infections propagate through the ecosystem.   </obo:IAO_0000115>
     </Class>
     
 
@@ -5191,7 +5199,8 @@ I checked because an infection and immunity census would involve two different c
         <rdfs:label xml:lang="en">population treatment census</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">PopulationTreatmentCensus</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A census about the medical treatment of a population.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A census about a particular medical treatment of a population.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A census of a population that determines for a particular treatment whether each organism in the population has undergone that treatment.</obo:IAO_0000600>
     </Class>
     
 
@@ -5203,7 +5212,7 @@ I checked because an infection and immunity census would involve two different c
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000173"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">PopulationAndEnvironmentCensus</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">A census that represents the biotic and abiotic elements of an ecosystem at simulator time zero.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">This census should exclude infection, immunity, treatment, or contamination.  </obo:IAO_0000600>
+        <rdfs:comment xml:lang="en">This census should exclude infection, immunity, treatment, or contamination.  </rdfs:comment>
     </Class>
     
 
@@ -5282,7 +5291,7 @@ Note that the infected and susceptible organisms may be of different species.</o
         <rdfs:label xml:lang="en">individual treatment control strategy</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000086"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">IndividualTreatmentControlStrategy</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">An infectious disease strategy that immediately targets individuals.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An infectious disease control strategy that immediately targets individuals.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000112 xml:lang="en">vaccination control strategy, antiviral control strategy</obo:IAO_0000112>
     </Class>
@@ -5432,8 +5441,8 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">susceptible</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">An organism of a particular species that can undergo infection with a particular pathogen.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">An organism that is the bearer of a susceptibility disposition.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">an organism that is the bearer of a susceptibility disposition</obo:IAO_0000115>
     </Class>
     
 
@@ -5456,8 +5465,8 @@ So I am comfortable with disease outcome as a process.  It is also consistent wi
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">An organism of a particular species that has developed immune resistance to infection with a pathogen of a particular species.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">An organism that is the bearer of an immune resistance disposition.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">an organism that is the bearer of an immune disposition</obo:IAO_0000115>
     </Class>
     
 
@@ -5618,7 +5627,7 @@ Note that the infected and sucseptible organisms may be of different species.</o
         <rdfs:label xml:lang="en">infection state data item</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000027"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectionState</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A data item that specifies the epidemiological relevant state of an organism at a specific time.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A data item that specifies the epidemiologically-relevant state of a host organism at a specific time with respect to infection with a particular pathogen.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
@@ -5686,7 +5695,6 @@ The clade name is a string in XSD version 2.0.1.</obo:IAO_0000600>
     <Class rdf:about="&obo;APOLLO_SV_00000221">
         <rdfs:label xml:lang="en">immune population acting like immune</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneAndActsLikeImmune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members know they are immune (do not seek vaccination/antiviral treatment, etc.).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5698,7 +5706,6 @@ The clade name is a string in XSD version 2.0.1.</obo:IAO_0000600>
     <Class rdf:about="&obo;APOLLO_SV_00000222">
         <rdfs:label xml:lang="en">immune population acting like not immune</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000235"/>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneButActsLikeNotImmune</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000115 xml:lang="en">An immune population that acts as the members assume they are not immune (e.g. seek vaccination/antiviral treatment).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
     </Class>
@@ -5747,7 +5754,7 @@ The clade name is a string in XSD version 2.0.1.</obo:IAO_0000600>
         <rdfs:label xml:lang="en">infectiousness profile</rdfs:label>
         <rdfs:subClassOf rdf:resource="&bfo;Entity"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectiousnessProfile</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A process profile that specifies the degree to which a host is likely to pass on an infectious disease to a susceptible organism.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A process profile that specifies the degree to which a host is likely to pass on an infection to a susceptible organism.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">This is probably a &apos;process profile&apos; according to BFO2</rdfs:comment>
     </Class>
@@ -6004,8 +6011,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000031"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDisease</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A disease that when it inheres, inheres in a host and when it is realized, realizes as a disease course that is causally preceded by an infection.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">An infectious disease is a disease that is caused by an infection.</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A disease that is caused by an infection.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">A disease that when it inheres, inheres in a host and when it is realized, is realized as a disease course that is causally preceded by an infection.</obo:IAO_0000115>
     </Class>
     
 
@@ -6459,7 +6466,7 @@ The individual acquiring the infection can be of a different species than the on
 
 In epidemic simulation, it can be &apos;simulator time&apos; where time zero is the starting point of an infectious disease scenario, or it can be &apos;control strategy time&apos; where time zero is the time at which the control strategy is initiated.
 </obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">An identifer that designates a scale according to which time is measured (e.g., Gregorian Calendar).</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">An identifier that designates a scale according to which time is measured (e.g., Gregorian Calendar).</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
@@ -6862,6 +6869,67 @@ The constant rate may be zero.  The period of an epidemic may be defined using s
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000299 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000299">
+        <rdfs:label xml:lang="en">immune organism that acts like it is immune</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000206"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneAndActsLikeImmune</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">An immune organism that acts as if it is immune (i.e., it does not seek vaccination or avoid contact with infectious organisms).</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">An organism of a particular species who is immune to infection with a pathogen of a particular species, and that acts as if it is immune (that is, it does not seek vaccination, avoid contact with infectious organisms, etc.)</obo:IAO_0000600>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000300 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000300">
+        <rdfs:label xml:lang="en">immune organism that acts like it is not immune</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000206"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">immuneButActsLikeNotImmune</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">An immune organism that acts as if it is NOT immune (i.e., it seeks vaccination and/or avoids contact with infectious organisms).</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">An organism of a particular species who is immune to infection with a pathogen of a particular species, and that acts as if it is NOT immune (that is, it does seeks vaccination, avoids contact with infectious organisms, etc.)</obo:IAO_0000600>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000301 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000301">
+        <rdfs:label xml:lang="en">naturally-acquired active immune resistance</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000151"/>
+        <obo:IAO_0000115 xml:lang="en">An immune resistance to infection that is causally preceded by an infection and an immune response to that infection with the production of antibodies to antigens from the pathogen population participating in the infection.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000302 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000302">
+        <rdfs:label xml:lang="en">recovered organism</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&obo;OBI_0100026"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;BFO_0000053"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000301"/>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
+        <obo:IAO_0000600 xml:lang="en">An organism that has recovered from infection with a particular pathogen, is no longer infectious to other organisms of any species, and is not able to be infected again with that pathogen.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">An organism that is the bearer of a naturally-acquired, active immune resistance to infection.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">recovered</apollo_sv:APOLLO_SV_0000040>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00001008">
@@ -7216,13 +7284,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -9278,9 +9346,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     <rdf:Description rdf:about="&dc;coverage">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;description">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
     <rdf:Description rdf:about="&ro;has_agent">
         <oboInOwl:hasDefinition>
             <rdf:Description>
@@ -9331,6 +9396,9 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;description">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&UO;UO_0000002">
         <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
@@ -10042,58 +10110,58 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
