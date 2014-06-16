@@ -61,7 +61,7 @@
         <dc:title xml:lang="en">Apollo Structured Vocabulary (Apollo-SV)</dc:title>
         <rdfs:comment xml:lang="en">When citing Apollo-SV, use the permanent URL of the ontology: http://purl.obolibrary.org/obo/apollo_sv.owl.  When referencing a specific component of the Apollo-SV such as a class, object property, or individual, use the component&apos;s Uniform Resource Identifier (URI).</rdfs:comment>
         <dc:license xml:lang="en">https://creativecommons.org/licenses/by/3.0/</dc:license>
-        <imports rdf:resource="&obo;geo.owl"/>
+        <imports rdf:resource="https://code.google.com/p/apollo/source/browse/apollo-sv/tags/release-2.0.1/geo.owl"/>
         <imports rdf:resource="&obo;iao/pno.owl"/>
     </Ontology>
     
@@ -2894,7 +2894,7 @@ simulation run length</rdfs:comment>
         <rdfs:label xml:lang="en">uniform distribution</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ContinuousUniformDistribution</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
     </Class>
     
 
