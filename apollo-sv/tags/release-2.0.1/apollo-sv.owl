@@ -49,7 +49,7 @@
      xmlns:span="http://www.ifomis.org/bfo/1.1/span#"
      xmlns:snap="http://www.ifomis.org/bfo/1.1/snap#"
      xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <Ontology rdf:about="&obo;apollo_sv/dev/apollo_sv.owl">
+    <Ontology rdf:about="&obo;apollo_sv.owl">
         <dc:contributor>Amanda Hicks</dc:contributor>
         <dc:contributor>William R. Hogan</dc:contributor>
         <dc:contributor>Mike Wagner</dc:contributor>
