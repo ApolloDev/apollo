@@ -16,12 +16,6 @@ package edu.pitt.apollo.simulatorclient;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import edu.pitt.apollo.types._10._28._2013.ApolloSoftwareType;
-import edu.pitt.apollo.types._10._28._2013.Authentication;
-import edu.pitt.apollo.types._10._28._2013.ControlMeasures;
-import edu.pitt.apollo.types._10._28._2013.ServiceRegistrationRecord;
-import edu.pitt.apollo.types._10._28._2013.SimulatorConfiguration;
-import edu.pitt.apollo.types._10._28._2013.SoftwareIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
