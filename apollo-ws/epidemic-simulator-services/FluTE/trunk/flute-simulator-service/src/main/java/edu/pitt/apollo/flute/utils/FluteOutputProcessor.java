@@ -1,6 +1,7 @@
 package edu.pitt.apollo.flute.utils;
 
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
@@ -12,6 +13,7 @@ import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +44,7 @@ public class FluteOutputProcessor {
     private int runLength;
     private ApolloDbUtils dbUtils;
     private String runDirectory;
-    private int runId;
+    private BigInteger runId;
     private static SoftwareIdentification timeSeriesVisualizerId;
     private static SoftwareIdentification gaiaVisualizerId;
     private SoftwareIdentification simulatorIdentification;
@@ -54,7 +56,7 @@ public class FluteOutputProcessor {
     }
 
     public FluteOutputProcessor(String fluteOutputFileLocation, SoftwareIdentification simulatorIdentification,
-            String location, int runLength, int runId, String runDirectory, ApolloDbUtils dbUtils)
+            String location, int runLength, BigInteger runId, String runDirectory, ApolloDbUtils dbUtils)
             throws FluteSimulatorServiceException {
 
         if (LOCATION_FILES_MAP.get(location) == null) {
@@ -83,6 +85,10 @@ public class FluteOutputProcessor {
             RunUtils.setError(runDirectory, "SQLException attempting to add text data "
                     + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
+        } catch (ApolloDatabaseException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to add text data "
+                    + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
         }
 
         int runDataDescriptionId;
@@ -102,7 +108,13 @@ public class FluteOutputProcessor {
             RunUtils.setError(runDirectory, "SQLException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
+        } catch (ApolloDatabaseException ex) {
+            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to get run data "
+                    + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+            return;
         }
+        
+        
         try {
             dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
         } catch (ClassNotFoundException ex) {
@@ -304,7 +316,7 @@ public class FluteOutputProcessor {
             List<Integer> timeSeries = tractTimeSeriesMap.get(tract);
             for (int i = 0; i < timeSeries.size(); i++) {
                 int count = timeSeries.get(i);
-                stBuild.append(getVisualizerInputFileStringForLocation(state, county, tractNumber, "", count, i, 1));
+                stBuild.append(getVisualizerInputFileStringForLocation(state, county, tractNumber, "*", count, i, 1));
             }
         }
 

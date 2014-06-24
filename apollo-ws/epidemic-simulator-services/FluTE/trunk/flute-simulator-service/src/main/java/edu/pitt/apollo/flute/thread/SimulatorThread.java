@@ -5,6 +5,7 @@ import com.jcraft.jsch.SftpException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.flute.exception.FluteSimulatorServiceException;
 import edu.pitt.apollo.FluteSimulatorServiceImpl;
+import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.flute.utils.FluteOutputProcessor;
 import edu.pitt.apollo.flute.utils.RunUtils;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,23 +34,23 @@ import java.util.logging.Logger;
 public class SimulatorThread extends Thread {
 
     private static final Logger LOGGER = Logger.getLogger(SimulatorThread.class.getName());
-    private static final String FLUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_output_util.sh";
-    private static final String FLUTE_EXECUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_run_util.sh";
+    private static final String FLUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_output_util_2_0_1.sh";
+    private static final String FLUTE_EXECUTE_SCRIPT_COMMAND = "cd /home/flute; ./flute_run_util_2_0_1.sh";
     private static final String FLUTE_CHECK_EXECUTION_COMMAND = "cd /home/flute; ./check_process.sh";
     private static final String FLUTE_RUNS_DIR = "/home/flute/runs_2_0_1/";
     private SoftwareIdentification translatorSoftwareId;
     private RunSimulationMessage message;
-    private int runId;
+    private BigInteger runId;
     private ApolloDbUtils dbUtils;
     private String runDirectory;
     private String remoteRunDirectory;
 
-    public SimulatorThread(int runId, RunSimulationMessage message, ApolloDbUtils dbUtils) {
+    public SimulatorThread(BigInteger runId, RunSimulationMessage message, ApolloDbUtils dbUtils) {
         super();
         this.message = message;
         this.runId = runId;
         this.dbUtils = dbUtils;
-        runDirectory = FluteSimulatorServiceImpl.getRunDirectory(runId);
+        runDirectory = FluteSimulatorServiceImpl.getRunDirectory(runId.intValue());
         this.remoteRunDirectory = FLUTE_RUNS_DIR + runId;
         this.translatorSoftwareId = FluteSimulatorServiceImpl.getTranslatorSoftwareId();
     }
@@ -61,7 +63,7 @@ public class SimulatorThread extends Thread {
     }
 
     public int getRunId() {
-        return runId;
+        return runId.intValue();
     }
 
     @Override
@@ -81,16 +83,8 @@ public class SimulatorThread extends Thread {
                 RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to get data content map"
                         + " for run " + runId + ": " + ex.getMessage());
                 return;
-            } catch (ClassNotFoundException ex) {
-                RunUtils.setError(runDirectory, "ClassNotFoundException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
-                return;
-            } catch (IOException ex) {
-                RunUtils.setError(runDirectory, "IOException attempting to get data content map"
-                        + " for run " + runId + ": " + ex.getMessage());
-                return;
-            } catch (SQLException ex) {
-                RunUtils.setError(runDirectory, "SQLException attempting to get data content map"
+            } catch (ApolloDatabaseException ex) {
+                RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to get data content map"
                         + " for run " + runId + ": " + ex.getMessage());
                 return;
             }
@@ -209,7 +203,7 @@ public class SimulatorThread extends Thread {
                 }
 
                 LOGGER.log(Level.INFO, "Storing time-series output in database...");
-                fluteOutputProcessor.storeFluteTimeSeriesDataToDatabase(runId);
+                fluteOutputProcessor.storeFluteTimeSeriesDataToDatabase(runId.intValue());
             } catch (FluteSimulatorServiceException ex) {
                 RunUtils.setError(runDirectory, "FluteSimulatorServiceException attempting to "
                         + "process the FluTE output: " + ex.getMessage());
