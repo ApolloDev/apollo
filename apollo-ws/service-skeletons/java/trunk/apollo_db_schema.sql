@@ -1,4 +1,5 @@
 DROP VIEW IF EXISTS run_data_description_view;
+DROP VIEW IF EXISTS translator_output_content_view;
 DROP VIEW IF EXISTS software_input;
 
 DROP TABLE IF EXISTS simulation_group_definition;
@@ -44,10 +45,10 @@ CREATE TABLE software_identification (
 );
 
 INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice201/services/translatorservice?wsdl',1),
-											 (2,'UPitt','SEIR','1.0','simulator','http://betaweb.rods.pitt.edu/seirsimulatorservice2.0.1/services/seirsimulatorservice?wsdl',1),
+											 (2,'UPitt','SEIR','3.0','simulator','http://betaweb.rods.pitt.edu/seirsimulatorservice2.0.1/services/seirsimulatorservice?wsdl',1),
 											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://warhol-fred.psc.edu:8045/fred?wsdl',1),
 											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.1/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://warhol-fred.psc.edu:8046/gaia?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.psc.edu:8046/gaia?wsdl',1),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://localhost:8080/flutesimulatorservice2.0.1/services/flutesimulatorservice?wsdl',1);
 
 
@@ -455,10 +456,7 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(41, 4, "0"),
 	(41, 5, "5");
 
-
-
 CREATE VIEW run_data_description_view AS
-
 SELECT
 	des.id as run_data_description_id,
 	axis_value1.value AS format,
@@ -496,6 +494,21 @@ WHERE
 	axis5.id = 5;
 	
 
+CREATE VIEW translator_output_content_view AS
+SELECT
+    rd.run_id,
+	rddv.label,
+    rddv.source_software,
+    rddv.destination_software,
+	rdc.text_content 
+FROM
+	run_data_content rdc,
+	run_data rd,
+	run_data_description_view rddv 
+WHERE
+	rd.content_id = rdc.id AND
+	rddv.run_data_description_id = rd.description_id AND
+	rddv.source_software = 1;
 
 CREATE TABLE simulated_population (
   id               INT(8) NOT NULL AUTO_INCREMENT,
