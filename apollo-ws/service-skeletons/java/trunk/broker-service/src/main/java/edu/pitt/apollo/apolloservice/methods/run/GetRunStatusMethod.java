@@ -95,6 +95,8 @@ public class GetRunStatusMethod {
             SimulatorServiceEI port = new SimulatorServiceV201(url).getSimulatorServiceEndpoint();
             status = port.getRunStatus(runIdentification);
             if (status.getStatus().equals(MethodCallStatusEnum.UNKNOWN_RUNID)) {
+                
+                
                 status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
                 status.setMessage("The run was submitted to the simulator.");
             }
