@@ -188,9 +188,9 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
     @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatus")
     @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/getRunStatus")
     @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_1/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_1.GetRunStatusResponse")
-    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") String runId) {
+    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") BigInteger runId) {
         try {
-            int runIdInt = Integer.parseInt(runId);
+            int runIdInt = runId.intValue();
             return RunUtils.getStatus(getRunDirectory(runIdInt), runIdInt);
         } catch (IOException e) {
             MethodCallStatus status = new MethodCallStatus();
@@ -268,7 +268,7 @@ public class FluteSimulatorServiceImpl implements SimulatorServiceEI {
 //            }
 //        }
         // create the run thread
-        SimulatorThread worker = new SimulatorThread(runId, runSimulationMessage, dbUtils);
+        SimulatorThread worker = new SimulatorThread(simulationRunId, runSimulationMessage, dbUtils);
 
         addRunToQueuedList(runId);
         QueueThread queueThread = new QueueThread(worker);
