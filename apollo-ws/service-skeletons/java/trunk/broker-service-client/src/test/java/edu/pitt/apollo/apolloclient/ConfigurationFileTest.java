@@ -17,10 +17,10 @@ import edu.pitt.apollo.apolloclient.tutorial.Chapter2_RunSimulationWithNoInterve
 import edu.pitt.apollo.apolloclient.tutorial.TutorialWebServiceClient;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  * 

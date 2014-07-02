@@ -6,8 +6,8 @@ import java.util.List;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
-import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  *
