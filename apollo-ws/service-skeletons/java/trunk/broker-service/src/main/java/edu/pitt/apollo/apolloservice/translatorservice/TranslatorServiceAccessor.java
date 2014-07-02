@@ -14,11 +14,11 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
-import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceEI;
-import edu.pitt.apollo.service.translatorservice.v2_0_1.TranslatorServiceV201;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceV202;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 
 /**
  *
@@ -35,7 +35,7 @@ public class TranslatorServiceAccessor {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
-            translatorPort = new TranslatorServiceV201(new URL(translatorServiceRecord.getUrl())).getTranslatorServiceEndpoint();
+            translatorPort = new TranslatorServiceV202(new URL(translatorServiceRecord.getUrl())).getTranslatorServiceEndpoint();
         } catch (WebServiceException e) {
             ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to get the translator port for runId " + runId
                     + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + e.getMessage(),
