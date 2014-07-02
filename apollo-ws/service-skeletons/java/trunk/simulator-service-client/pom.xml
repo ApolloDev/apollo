@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>2.0.1-SNAPSHOT</version>
+		<version>2.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>simulator-service-client</artifactId>
 	<name>Simulator Service SOAP Client</name>
@@ -24,12 +24,12 @@
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>config-examples</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<version>2.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>simulator-service</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<version>2.0.2-SNAPSHOT</version>
 
 		</dependency>
 

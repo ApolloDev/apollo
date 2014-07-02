@@ -1,11 +1,11 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v2_0_1.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v2_0_1.ProbabilityValuePair;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.UncertainDuration;
-import edu.pitt.apollo.types.v2_0_1.UnconditionalProbabilityDistribution;
-import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v2_0_2.DiscreteNonparametricProbabilityDistribution;
+import edu.pitt.apollo.types.v2_0_2.ProbabilityValuePair;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.UncertainDuration;
+import edu.pitt.apollo.types.v2_0_2.UnconditionalProbabilityDistribution;
+import edu.pitt.apollo.types.v2_0_2.UnitOfTimeEnum;
 
 public class ExampleUnconditionalProbabilityDistribution  {
 	
