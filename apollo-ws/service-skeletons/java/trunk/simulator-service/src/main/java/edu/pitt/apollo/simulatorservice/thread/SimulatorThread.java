@@ -1,22 +1,23 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import edu.pitt.apollo.SimulatorServiceImpl;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
-import edu.pitt.apollo.simulatorservice.util.RunUtils;
-import edu.pitt.apollo.types.v2_0_1.Location;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.Map;
+
+import edu.pitt.apollo.SimulatorServiceImpl;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
+import edu.pitt.apollo.simulatorservice.util.RunUtils;
+import edu.pitt.apollo.types.v2_0_2.Location;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  *

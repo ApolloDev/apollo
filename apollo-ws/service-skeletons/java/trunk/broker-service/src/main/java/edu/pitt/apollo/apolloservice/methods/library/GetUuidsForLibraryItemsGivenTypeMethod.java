@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
+import edu.pitt.apollo.types.v2_0_2.GetLibraryItemUuidsResult;
 
 /**
  *

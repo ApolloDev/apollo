@@ -20,11 +20,11 @@ import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordCo
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v2_0_1.SimulatorServiceV201;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceV202;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  * 
@@ -63,7 +63,7 @@ public class RunSimulationThread extends Thread {
                 url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
                 SimulatorServiceEI simulatorPort = null;
                 try {
-                    simulatorPort = new SimulatorServiceV201(new URL(url)).getSimulatorServiceEndpoint();
+                    simulatorPort = new SimulatorServiceV202(new URL(url)).getSimulatorServiceEndpoint();
                 } catch (WebServiceException e) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile(
                             "Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
@@ -79,7 +79,7 @@ public class RunSimulationThread extends Thread {
                 simulatorHttpClientPolicy.setAllowChunking(false);
                 simulatorHttp.setClient(simulatorHttpClientPolicy);
                 try {
-                    simulatorPort.runSimulation(runId, message);
+                    simulatorPort.runSimulation(runId /*, message*/);
                 } catch (WebServiceException e) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling runSimulation(): " + "\n\tError was: " + e.getMessage(),
                             runId);

@@ -2,7 +2,7 @@ package edu.pitt.apollo.apolloservice.methods.services;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_1.ServiceRecord;
+import edu.pitt.apollo.types.v2_0_2.ServiceRecord;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
