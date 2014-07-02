@@ -13,9 +13,9 @@ import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerExcept
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
-import edu.pitt.apollo.types.v2_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_1.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  *

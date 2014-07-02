@@ -7,8 +7,8 @@ import edu.pitt.apollo.apolloservice.database.DatabaseAccessorForRunningVisualiz
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.thread.RunVisualizationThread;
 import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationResult;
+import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunVisualizationResult;
 
 /**
  *
