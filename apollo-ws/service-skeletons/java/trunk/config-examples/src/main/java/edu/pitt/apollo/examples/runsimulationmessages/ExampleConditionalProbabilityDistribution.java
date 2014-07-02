@@ -2,18 +2,18 @@ package edu.pitt.apollo.examples.runsimulationmessages;
 
 import java.math.BigInteger;
 
-import edu.pitt.apollo.types.v2_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v2_0_1.Category;
-import edu.pitt.apollo.types.v2_0_1.ConditionalProbabilityDistribution;
-import edu.pitt.apollo.types.v2_0_1.ConditioningVariable;
-import edu.pitt.apollo.types.v2_0_1.ConditioningVariableEnum;
-import edu.pitt.apollo.types.v2_0_1.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v2_0_1.GenderCategoryDefinition;
-import edu.pitt.apollo.types.v2_0_1.GenderEnum;
-import edu.pitt.apollo.types.v2_0_1.ProbabilityValuePair;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.UncertainDuration;
-import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v2_0_2.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v2_0_2.Category;
+import edu.pitt.apollo.types.v2_0_2.ConditionalProbabilityDistribution;
+import edu.pitt.apollo.types.v2_0_2.ConditioningVariable;
+import edu.pitt.apollo.types.v2_0_2.ConditioningVariableEnum;
+import edu.pitt.apollo.types.v2_0_2.DiscreteNonparametricProbabilityDistribution;
+import edu.pitt.apollo.types.v2_0_2.GenderCategoryDefinition;
+import edu.pitt.apollo.types.v2_0_2.GenderEnum;
+import edu.pitt.apollo.types.v2_0_2.ProbabilityValuePair;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.UncertainDuration;
+import edu.pitt.apollo.types.v2_0_2.UnitOfTimeEnum;
 
 public class ExampleConditionalProbabilityDistribution {
 

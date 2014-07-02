@@ -25,10 +25,10 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v2_0_1.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.types.v2_0_1.ServiceResult;
+import edu.pitt.apollo.service.syntheticpopulationservice.v2_0_2.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceResult;
 
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
