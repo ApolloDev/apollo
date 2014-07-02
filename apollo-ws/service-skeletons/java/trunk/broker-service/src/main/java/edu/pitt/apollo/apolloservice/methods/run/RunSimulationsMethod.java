@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
-import edu.pitt.apollo.types.v2_0_1.RunSimulationsMessage;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationsResult;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
 
 /**
  *
@@ -39,7 +39,7 @@ public class RunSimulationsMethod {
 //            }
 //            // run the simulator
 //
-//            SimulatorServiceEI port = new SimulatorServiceV201(url).getSimulatorServiceEndpoint();
+//            SimulatorServiceEI port = new SimulatorServiceV202(url).getSimulatorServiceEndpoint();
 //
 //            // disable chunking for ZSI
 //            Client client = ClientProxy.getClient(port);
