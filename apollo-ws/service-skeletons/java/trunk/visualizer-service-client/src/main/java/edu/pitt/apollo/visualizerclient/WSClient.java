@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 public class WSClient {
 
     public static void main(String[] args) throws MalformedURLException, InterruptedException {
-//        VisualizerServiceV201 service = new VisualizerServiceV201(new URL("http://warhol-fred.psc.edu:8092/gaia?wsdl"));
+//        VisualizerServiceV202 service = new VisualizerServiceV202(new URL("http://warhol-fred.psc.edu:8092/gaia?wsdl"));
 //        VisualizerServiceEI port = service.getVisualizerServiceEndpoint();
 //
 //        RunVisualizationMessage vizConfig = new RunVisualizationMessage();

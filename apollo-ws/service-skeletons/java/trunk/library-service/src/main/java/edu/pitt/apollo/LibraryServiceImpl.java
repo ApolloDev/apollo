@@ -38,19 +38,19 @@ import com.db4o.config.ConfigScope;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ext.Db4oUUID;
 
-import edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceEI;
-import edu.pitt.apollo.types.v2_0_1.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_0_1.ApolloIndexableItemTypeEnum;
-import edu.pitt.apollo.types.v2_0_1.Authentication;
-import edu.pitt.apollo.types.v2_0_1.CatalogEntryForApolloLibraryItem;
-import edu.pitt.apollo.types.v2_0_1.CuratedLibraryItemContainer;
-import edu.pitt.apollo.types.v2_0_1.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_1.GetLibraryItemUuidsResult;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI;
+import edu.pitt.apollo.types.v2_0_2.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItemTypeEnum;
+import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.CatalogEntryForApolloLibraryItem;
+import edu.pitt.apollo.types.v2_0_2.CuratedLibraryItemContainer;
+import edu.pitt.apollo.types.v2_0_2.GetLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_2.GetLibraryItemUuidsResult;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_1.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
 	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
@@ -84,9 +84,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsGivenType")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getUuidsForLibraryItemsGivenType")
-	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsGivenTypeResponse")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsGivenType")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getUuidsForLibraryItemsGivenType")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsGivenTypeResponse")
 	public GetLibraryItemUuidsResult getUuidsForLibraryItemsGivenType(@WebParam(name = "type", targetNamespace = "") String type) {
 		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
 		MethodCallStatus status = new MethodCallStatus();
@@ -110,9 +110,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	@WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsCreatedSinceDateTime")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getUuidsForLibraryItemsCreatedSinceDateTime")
-	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
+	@RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsCreatedSinceDateTime")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getUuidsForLibraryItemsCreatedSinceDateTime")
+	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
 	public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
 			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
 		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
@@ -138,9 +138,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	@WebResult(name = "getLibraryItemResult", targetNamespace = "")
-	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/getLibraryItem")
-	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.GetLibraryItemResponse")
+	@RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getLibraryItem")
+	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetLibraryItemResponse")
 	public GetLibraryItemResult getLibraryItem(@WebParam(name = "uuid", targetNamespace = "") String uuid) {
 		// TODO Auto-generated method stub
 		GetLibraryItemResult result = new GetLibraryItemResult();
@@ -174,9 +174,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	@WebResult(name = "addLibraryItemResult", targetNamespace = "")
-	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.AddLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/addLibraryItem")
-	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.AddLibraryItemResponse")
+	@RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.AddLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/addLibraryItem")
+	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.AddLibraryItemResponse")
 	public AddLibraryItemResult addLibraryItem(
 			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
 			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
@@ -228,9 +228,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "removeLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.RemoveLibraryItem")
-	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/removeLibraryItem")
-	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_1/", className = "edu.pitt.apollo.service.libraryservice.v2_0_1.RemoveLibraryItemResponse")
+	@RequestWrapper(localName = "removeLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.RemoveLibraryItem")
+	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/removeLibraryItem")
+	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.RemoveLibraryItemResponse")
 	public MethodCallStatus removeLibraryItem(
 			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
 			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
