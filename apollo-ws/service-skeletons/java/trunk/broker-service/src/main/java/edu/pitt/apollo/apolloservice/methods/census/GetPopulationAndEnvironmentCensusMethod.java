@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
-import edu.pitt.apollo.types.v2_0_1.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0_2.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  *

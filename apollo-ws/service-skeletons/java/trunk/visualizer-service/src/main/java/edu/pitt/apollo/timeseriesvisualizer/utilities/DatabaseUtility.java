@@ -24,7 +24,7 @@ import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  * 

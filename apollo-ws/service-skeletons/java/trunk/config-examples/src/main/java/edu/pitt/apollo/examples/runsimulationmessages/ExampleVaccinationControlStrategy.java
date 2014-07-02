@@ -2,27 +2,27 @@ package edu.pitt.apollo.examples.runsimulationmessages;
 
 import java.math.BigInteger;
 
-import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
-import edu.pitt.apollo.types.v2_0_1.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v2_0_1.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v2_0_1.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v2_0_1.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v2_0_1.Duration;
-import edu.pitt.apollo.types.v2_0_1.FixedDuration;
-import edu.pitt.apollo.types.v2_0_1.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v2_0_1.Location;
-import edu.pitt.apollo.types.v2_0_1.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v2_0_1.OperatorEnum;
-import edu.pitt.apollo.types.v2_0_1.ProbabilisticParameter;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_1.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v2_0_1.TimeScaleEnum;
-import edu.pitt.apollo.types.v2_0_1.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v2_0_1.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v2_0_1.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v2_0_1.Vaccination;
-import edu.pitt.apollo.types.v2_0_1.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types.v2_0_2.ApolloPathogenCode;
+import edu.pitt.apollo.types.v2_0_2.ControlStrategyTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v2_0_2.DiseaseOutcomeEnum;
+import edu.pitt.apollo.types.v2_0_2.DiseaseSurveillanceCapability;
+import edu.pitt.apollo.types.v2_0_2.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v2_0_2.Duration;
+import edu.pitt.apollo.types.v2_0_2.FixedDuration;
+import edu.pitt.apollo.types.v2_0_2.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_0_2.Location;
+import edu.pitt.apollo.types.v2_0_2.NamedPrioritizationSchemeEnum;
+import edu.pitt.apollo.types.v2_0_2.OperatorEnum;
+import edu.pitt.apollo.types.v2_0_2.ProbabilisticParameter;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v2_0_2.TimeScaleEnum;
+import edu.pitt.apollo.types.v2_0_2.TreatmentPreventableOutcomeEnum;
+import edu.pitt.apollo.types.v2_0_2.TreatmentSystemLogistics;
+import edu.pitt.apollo.types.v2_0_2.UnitOfMeasureEnum;
+import edu.pitt.apollo.types.v2_0_2.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v2_0_2.Vaccination;
+import edu.pitt.apollo.types.v2_0_2.VaccinationEfficacyForSimulatorConfiguration;
 
 public class ExampleVaccinationControlStrategy {
 

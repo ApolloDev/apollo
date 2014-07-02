@@ -7,21 +7,21 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.types.v2_0_1.ApolloPathogenCode;
-import edu.pitt.apollo.types.v2_0_1.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v2_0_1.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v2_0_1.FixedDuration;
-import edu.pitt.apollo.types.v2_0_1.Infection;
-import edu.pitt.apollo.types.v2_0_1.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v2_0_1.InfectionStateEnum;
-import edu.pitt.apollo.types.v2_0_1.InfectiousDisease;
-import edu.pitt.apollo.types.v2_0_1.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v2_0_1.Location;
-import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensus;
-import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v2_0_1.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v2_0_1.ProbabilisticParameter;
-import edu.pitt.apollo.types.v2_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v2_0_2.ApolloPathogenCode;
+import edu.pitt.apollo.types.v2_0_2.DiseaseOutcomeEnum;
+import edu.pitt.apollo.types.v2_0_2.DiseaseOutcomeWithProbability;
+import edu.pitt.apollo.types.v2_0_2.FixedDuration;
+import edu.pitt.apollo.types.v2_0_2.Infection;
+import edu.pitt.apollo.types.v2_0_2.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.types.v2_0_2.InfectionStateEnum;
+import edu.pitt.apollo.types.v2_0_2.InfectiousDisease;
+import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_0_2.Location;
+import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensus;
+import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensusData;
+import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensusDataCell;
+import edu.pitt.apollo.types.v2_0_2.ProbabilisticParameter;
+import edu.pitt.apollo.types.v2_0_2.UnitOfTimeEnum;
 
 public class ExampleInfectiousDiseaseScenario {
 
