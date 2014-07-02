@@ -7,7 +7,7 @@ import edu.pitt.apollo.apolloservice.database.DatabaseAccessorForRunningSimulati
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.thread.RunSimulationThread;
 import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
 /**
  *

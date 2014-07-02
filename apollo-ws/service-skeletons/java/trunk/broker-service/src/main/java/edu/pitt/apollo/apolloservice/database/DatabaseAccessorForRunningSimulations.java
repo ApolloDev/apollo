@@ -8,7 +8,7 @@ import java.util.Map;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
 /**
  *
