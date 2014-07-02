@@ -11,8 +11,8 @@ import java.util.Scanner;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 
 public class RunUtils {
 

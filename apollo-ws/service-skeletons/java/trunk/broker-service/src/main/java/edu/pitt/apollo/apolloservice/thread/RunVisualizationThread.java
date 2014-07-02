@@ -16,10 +16,10 @@ import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v2_0_1.VisualizerServiceV201;
-import edu.pitt.apollo.types.v2_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_1.SoftwareIdentification;
+import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceV202;
+import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  *
@@ -50,7 +50,7 @@ public class RunVisualizationThread extends Thread {
             try {
 
                 url = dbUtils.getUrlForSoftwareIdentification(visualizerIdentification);
-                VisualizerServiceEI visualizerPort = new VisualizerServiceV201(new URL(url)).getVisualizerServiceEndpoint();
+                VisualizerServiceEI visualizerPort = new VisualizerServiceV202(new URL(url)).getVisualizerServiceEndpoint();
 
                 // disable chunking for ZSI
                 Client visualizerClient = ClientProxy.getClient(visualizerPort);
