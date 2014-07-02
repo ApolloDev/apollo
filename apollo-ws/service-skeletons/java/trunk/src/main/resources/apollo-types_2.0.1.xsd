@@ -67,7 +67,7 @@
 			<enumeration value="failed" />
 			<enumeration value="unauthorized" />
 			<enumeration value="unknown_runid" />
-			
+			<enumeration value="run_terminated" />
 			<enumeration value="authentication_failure" />
 		</restriction>
 	</simpleType>
@@ -2172,6 +2172,21 @@
 				type="tns:RunIdentification">
 			</element>
 			<element name="runLabel" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TerminateRunRequest">
+		<sequence>
+			<element name="runIdentification"
+				type="tns:RunIdentification">
+			</element>
+			<element name="authentication" type="tns:Authentication"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TerminteRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus"></element>
 		</sequence>
 	</complexType>
 </schema>

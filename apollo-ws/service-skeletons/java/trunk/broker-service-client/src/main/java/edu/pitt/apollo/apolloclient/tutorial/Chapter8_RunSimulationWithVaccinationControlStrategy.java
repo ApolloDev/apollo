@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleVaccinationControlStrategy;
-import edu.pitt.apollo.types.v2_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
 public class Chapter8_RunSimulationWithVaccinationControlStrategy extends AbstractRunAndVisualizeSimulationClass {
 
