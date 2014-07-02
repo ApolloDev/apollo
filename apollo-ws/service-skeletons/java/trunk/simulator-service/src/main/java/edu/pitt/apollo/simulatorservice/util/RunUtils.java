@@ -7,10 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
+
 import org.apache.commons.codec.digest.DigestUtils;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_1.MethodCallStatusEnum;
+
+import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 
 public class RunUtils {
 
