@@ -2,6 +2,8 @@ DROP VIEW IF EXISTS run_data_description_view;
 DROP VIEW IF EXISTS translator_output_content_view;
 DROP VIEW IF EXISTS software_input;
 
+DROP TABLE IF EXISTS run_status;
+DROP TABLE IF EXISTS run_status_description;
 DROP TABLE IF EXISTS simulation_group_definition;
 DROP TABLE IF EXISTS run_data;
 DROP TABLE IF EXISTS run;
@@ -114,6 +116,44 @@ CREATE TABLE run (
   CONSTRAINT FOREIGN KEY (last_service_to_be_called) REFERENCES software_identification (id),
   CONSTRAINT run_data_unique UNIQUE (md5_hash_of_run_message, md5_collision_id)
 );
+
+CREATE TABLE run_status_description (
+  id INT NOT NULL AUTO_INCREMENT,
+  status VARCHAR(32) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO run_status_description (status) VALUES ("exiting");
+INSERT INTO run_status_description (status) VALUES ("held");
+INSERT INTO run_status_description (status) VALUES ("queued");
+INSERT INTO run_status_description (status) VALUES ("called_translator");
+INSERT INTO run_status_description (status) VALUES ("called_visualizer");
+INSERT INTO run_status_description (status) VALUES ("called_simulator");
+INSERT INTO run_status_description (status) VALUES ("translating");
+INSERT INTO run_status_description (status) VALUES ("translation_completed");
+INSERT INTO run_status_description (status) VALUES ("initializing");
+INSERT INTO run_status_description (status) VALUES ("log_files_written");
+INSERT INTO run_status_description (status) VALUES ("staging");
+INSERT INTO run_status_description (status) VALUES ("running");
+INSERT INTO run_status_description (status) VALUES ("moving");
+INSERT INTO run_status_description (status) VALUES ("waiting");
+INSERT INTO run_status_description (status) VALUES ("completed");
+INSERT INTO run_status_description (status) VALUES ("failed");
+INSERT INTO run_status_description (status) VALUES ("unauthorized");
+INSERT INTO run_status_description (status) VALUES ("unknown_runid");
+INSERT INTO run_status_description (status) VALUES ("run_terminated");
+INSERT INTO run_status_description (status) VALUES ("authentication_failure");
+
+CREATE TABLE run_status (
+  id INT NOT NULL AUTO_INCREMENT,
+  run_id INT NOT NULL REFERENCES run (id),
+  status_id INT NOT NULL REFERENCES run_status_description(id),
+  PRIMARY KEY (id),
+  CONSTRAINT FOREIGN KEY (run_id) REFERENCES run (id),
+  CONSTRAINT FOREIGN KEY (status_id) REFERENCES run_status_description(id)
+);
+
+
 
 CREATE TABLE simulation_group_definition (
   simulation_group_id INT NOT NULL REFERENCES simulation_groups(id),
