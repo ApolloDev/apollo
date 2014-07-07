@@ -37,25 +37,7 @@ import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
-    @Override
-    @WebResult(name = "runStatus", targetNamespace = "")
-    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_2.GetRunStatus")
-    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/getRunStatus")
-    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_2.GetRunStatusResponse")
-    public MethodCallStatus getRunStatus(@WebParam(name = "runId", targetNamespace = "") BigInteger runId) {
-        MethodCallStatus rs = new MethodCallStatus();
-        try {
-            rs = RunUtils.getStatus(ImageGenerator.getRunDirectory(runId));
-        } catch (IOException ex) {
-            MethodCallStatus status = new MethodCallStatus();
-            status.setMessage("Error getting runStatus from web service, error is: "
-                    + ex.getMessage());
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            return status;
-        }
-        
-        return rs;
-    }
+   
 
     @Override
     @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", className = "edu.pitt.apollo.service.visualizerservice.v2_0_2.RunVisualization")

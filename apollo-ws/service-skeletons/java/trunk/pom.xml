@@ -12,6 +12,16 @@
 		<name>Apollo Repository</name>
 		<url>http://research.rods.pitt.edu/repo</url>
 	  </repository>
+	  
+	  
+	
+		<repository>
+			<id>oss.sonatype.org</id>
+			<name>OSS Sonatype Staging</name>
+			<url>https://oss.sonatype.org/content/groups/staging</url>
+		</repository>
+	
+ 
 	</repositories>
 
 	<licenses>
@@ -60,7 +70,18 @@
 	</modules>
 
 	<dependencies>
-		<dependency>
+	<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.5.0-RC1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.persistence</groupId>
+					<artifactId>commonj.sdo</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	<!--  	<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
 			<version>2.2.6</version>
@@ -70,7 +91,7 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 			<version>2.2.6</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>jaxb2-maven-plugin</artifactId>
