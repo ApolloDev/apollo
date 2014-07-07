@@ -19,10 +19,9 @@ import java.math.BigInteger;
 import javax.jws.WebService;
 
 import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_0_2/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_0_2/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI")
 public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 
@@ -32,11 +31,4 @@ public class TranslatorServiceImpl implements TranslatorServiceEI {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public MethodCallStatus getRunStatus(BigInteger runIdentification) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
