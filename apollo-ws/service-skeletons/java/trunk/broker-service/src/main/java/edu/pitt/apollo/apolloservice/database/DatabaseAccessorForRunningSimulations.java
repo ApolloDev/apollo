@@ -65,7 +65,7 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
         List<BigInteger> runIds = dbUtils.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(runSimulationMessage);
 
         if (runIds.size() > 0) {
-            String targetRunSimulationMessageAsJson = dbUtils.getJSONString(runSimulationMessage);
+            String targetRunSimulationMessageAsJson = dbUtils.getJSONString(runSimulationMessage, RunSimulationMessage.class);
             for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
                 if (isRunIdAssociatedWithMatchingRunSimulationMessage(targetRunSimulationMessageAsJson, 
                         runIdAssociatedWithRunSimulationMessageHash)) {
