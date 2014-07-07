@@ -28,23 +28,7 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getRunStatus">
-
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getRunStatusResponse">
-
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="runStatus" type="apollo:MethodCallStatus">
-						</xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+		
 			<xsd:element name="getScenarioLocationCodesSupportedBySimulator">
 
 				<xsd:complexType>
