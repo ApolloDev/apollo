@@ -14,6 +14,21 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
+
+import org.eclipse.persistence.internal.oxm.Unmarshaller;
+import org.eclipse.persistence.jaxb.JAXBContext;
+import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.eclipse.persistence.jaxb.JAXBMarshaller;
+import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
+import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
+
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
@@ -22,9 +37,51 @@ public class Chapter2_RunSimulationWithNoIntervention extends AbstractRunAndVisu
 		super();
 	}
 
+	public String getJSONString(Object obj) {
+		try {
+			Map<String, Object> properties = new HashMap<String, Object>(2);
+	        properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+	        properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+	        JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[] {RunSimulationMessage.class, ObjectFactory.class}, properties);
+	        JAXBMarshaller marshaller = jc.createMarshaller();
+	        marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	     
+
+	        
+	        
+	        marshaller.marshal(obj, baos);
+	        System.out.println(baos.toString());
+	        return baos.toString();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "hello";
+	}
+
 	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.FRED);
+		String contentForRun = getJSONString(runSimulationMessage);
+		Map<String, Object> properties = new HashMap<String, Object>(2);
+        properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+        properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		 JAXBContext jc;
+		try {
+			jc = (JAXBContext) JAXBContext.newInstance(new Class[] {RunSimulationMessage.class, ObjectFactory.class}, properties);
+	
+		 JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
+	        StreamSource json = new StreamSource(new ByteArrayInputStream(contentForRun.getBytes()));
+	        RunSimulationMessage runSimulationMessage2 = (RunSimulationMessage) unmarshaller.unmarshal(json, RunSimulationMessage.class).getValue();
+	        System.out.println(runSimulationMessage2.getInfectiousDiseaseScenario().getScenarioDate());
+	        System.out.printf("Nick the fucking R0 is %s\n", runSimulationMessage2.getInfectiousDiseaseScenario().getInfections().get(0).getInfectionAcquisitionsFromInfectiousHosts().get(0).getBasicReproductionNumber());
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.exit(-1);
 		runScenarioAndDisplayResults(runSimulationMessage);
 	}
 
