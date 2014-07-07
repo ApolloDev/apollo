@@ -63,10 +63,6 @@
 			<wsdl:input message="tns:translateRunSimulationMessageRequest" />
 			<wsdl:output message="tns:translateRunSimulationMessageResponse" />
 		</wsdl:operation>
-		<wsdl:operation name="getRunStatus">
-			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
-			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
-		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="TranslatorServiceBinding"
 		type="tns:TranslatorServiceEI">
@@ -76,16 +72,6 @@
 		<wsdl:operation name="translateRunSimulationMessage">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/translatorservice/v2_0_2/translateRunSimulationMessage" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getRunStatus">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/translatorservice/v2_0_2/getRunStatus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
