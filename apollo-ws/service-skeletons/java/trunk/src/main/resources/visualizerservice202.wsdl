@@ -25,20 +25,7 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getRunStatus">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="runId" type="apollo:RunIdentification"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="getRunStatusResponse">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="runStatus" type="apollo:MethodCallStatus"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+		
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="runVisualizationRequest">
@@ -64,10 +51,6 @@
 			<wsdl:input message="tns:runVisualizationRequest" />
 			<wsdl:output message="tns:runVisualizationResponse" />
 		</wsdl:operation>
-		<wsdl:operation name="getRunStatus">
-			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
-			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
-		</wsdl:operation>
 	</wsdl:portType>
 
 	<wsdl:binding name="VisualizerServiceBinding"
@@ -77,16 +60,6 @@
 		<wsdl:operation name="runVisualization">
 			<soap:operation
 				soapAction="http://service.apollo.pitt.edu/visualizerservice/v2_0_2/runVisualization" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getRunStatus">
-			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/visualizerservice/v2_0_2/getRunStatus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
