@@ -66,7 +66,7 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
         List<BigInteger> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
 
         if (runIds.size() > 0) {
-            String targetRunVisualizationMessageAsJson = dbUtils.getJSONString(runVisualizationMessage);
+            String targetRunVisualizationMessageAsJson = dbUtils.getJSONString(runVisualizationMessage, RunVisualizationMessage.class);
             for (BigInteger runIdAssociatedWithRunVisualizationMessageHash : runIds) {
                 if (runIdIsAssociatedWithMatchingRunVisualizationMessage(targetRunVisualizationMessageAsJson,
                         runIdAssociatedWithRunVisualizationMessageHash)) {

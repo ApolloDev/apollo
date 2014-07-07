@@ -18,10 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.eclipse.persistence.jaxb.JAXBContext;
+import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.eclipse.persistence.jaxb.JAXBMarshaller;
+import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
+import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +40,12 @@ import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
-
-
 /**
  * 
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 17, 2013 Time:
  * 4:35:10 PM Class: DbUtils IDE: NetBeans 6.9.1
+ * 
+
  */
 public class ApolloDbUtils {
 
@@ -123,17 +130,57 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public String getJSONString(Object obj) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, obj);
+	// public String old_getJSONString(Object obj) {
+	// try {
+	// ObjectMapper mapper = new ObjectMapper();
+	// mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+	// mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+	// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	// mapper.writeValue(baos, obj);
+	//
+	// return baos.toString();
+	// } catch (IOException ex) {
+	// System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage");
+	// return null;
+	// }
+	// }
 
+	public String getJSONString(Object obj, Class clazz) {
+		try {
+			Map<String, Object> properties = new HashMap<String, Object>(2);
+			properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+			properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[] { clazz, ObjectFactory.class },
+					properties);
+			JAXBMarshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+			marshaller.marshal(obj, baos);
+			System.out.println(baos.toString());
 			return baos.toString();
-		} catch (IOException ex) {
-			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage");
+		} catch (Exception e) {
+			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
+					+ e.getMessage());
+			return null;
+		}
+
+	}
+
+	public Object getObjectFromJSON(InputStream json, Class clazz) {
+		Map<String, Object> properties = new HashMap<String, Object>(2);
+		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		JAXBContext jc;
+		try {
+			jc = (JAXBContext) JAXBContext
+					.newInstance(new Class[] { clazz, ObjectFactory.class }, properties);
+			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
+			StreamSource ss = new StreamSource(json);
+			return unmarshaller.unmarshal(ss, clazz).getValue();
+		} catch (Exception e) {
+			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
+					+ e.getMessage());
 			return null;
 		}
 	}
@@ -547,8 +594,8 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public Map<String, ByteArrayOutputStream> getDataContentForSoftware(BigInteger runKey, int sourceSoftwareIdKey,
-			int destinationSoftwareIdKey) throws ApolloDatabaseException {
+	public Map<String, ByteArrayOutputStream> getDataContentForSoftware(BigInteger runKey,
+			int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws ApolloDatabaseException {
 		Map<String, ByteArrayOutputStream> result = new HashMap<String, ByteArrayOutputStream>();
 
 		String query = "SELECT " + "rddv.label, " + "rdc.text_content " + "FROM " + "run_data_content rdc, "
@@ -591,36 +638,39 @@ public class ApolloDbUtils {
 		return result;
 
 	}
-        
-        public int getSoftwareIdForRunId(BigInteger runId) throws ApolloDatabaseException {
-            
-            String query = "SELECT software_id FROM run WHERE id = ?";
-            PreparedStatement pstmt = null;
-            try {
-                pstmt = getConn().prepareStatement(query);
-                pstmt.setInt(1, runId.intValue());
-                ResultSet rs = pstmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt(1);
-                } else {
-                    throw new ApolloDatabaseKeyNotFoundException("No software_id key was found for run_id " + runId);
-                }
-            } catch (ClassNotFoundException ex) {
-                throw new ApolloDatabaseException("ClassNotFoundException attempting to get software_id for run_id " + runId);
-            } catch (SQLException ex) {
-                throw new ApolloDatabaseException("SQLException attempting to get software_id for run_id " + runId);
-            }
-            
-        }
 
-	public Map<String, ByteArrayOutputStream> getConfigFilesForSimulation(BigInteger runKey, int sourceSoftwareIdKey)
-			throws ApolloDatabaseException {
+	public int getSoftwareIdForRunId(BigInteger runId) throws ApolloDatabaseException {
+
+		String query = "SELECT software_id FROM run WHERE id = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = getConn().prepareStatement(query);
+			pstmt.setInt(1, runId.intValue());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			} else {
+				throw new ApolloDatabaseKeyNotFoundException("No software_id key was found for run_id "
+						+ runId);
+			}
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException(
+					"ClassNotFoundException attempting to get software_id for run_id " + runId);
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException attempting to get software_id for run_id "
+					+ runId);
+		}
+
+	}
+
+	public Map<String, ByteArrayOutputStream> getConfigFilesForSimulation(BigInteger runKey,
+			int sourceSoftwareIdKey) throws ApolloDatabaseException {
 
 		// First get ID of simulator...then feet it to param 3 below
 		// destinationSoftwareIdKey = select software_id from run where run_id =
 		// runKey
-                
-                int destinationKey = getSoftwareIdForRunId(runKey);
+
+		int destinationKey = getSoftwareIdForRunId(runKey);
 
 		return getDataContentForSoftware(runKey, sourceSoftwareIdKey, destinationKey);
 	}
@@ -740,8 +790,8 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId) throws ClassNotFoundException,
-			SQLException, ApolloDatabaseKeyNotFoundException {
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId)
+			throws ClassNotFoundException, SQLException, ApolloDatabaseKeyNotFoundException {
 
 		String query = "SELECT software_id from run WHERE " + "id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
@@ -841,13 +891,15 @@ public class ApolloDbUtils {
 			// ALSO NEED TO ADD serialized runSimulationMessage(JSON) to
 			// run_data_content table...
 			// use insertDataContentForRun for this
-			int dataContentKey = addTextDataContent(getJSONString(runSimulationMessage));
+			int dataContentKey = addTextDataContent(getJSONString(runSimulationMessage,
+					RunSimulationMessage.class));
 			int runDataDescriptionId = getRunDataDescriptionId(DbContentDataFormatEnum.TEXT,
 					"run_simulation_message.json", DbContentDataType.RUN_SIMULATION_MESSAGE, 0,
 					getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
 			// int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
-			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey, runDataDescriptionId);
+			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey,
+					runDataDescriptionId);
 
 			return runId;
 		} catch (ClassNotFoundException ex) {
@@ -955,14 +1007,15 @@ public class ApolloDbUtils {
 
 	}
 
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification)
-			throws ApolloDatabaseException, SQLException, ClassNotFoundException {
+	public int updateLastServiceToBeCalledForRun(BigInteger runId,
+			SoftwareIdentification softwareIdentification) throws ApolloDatabaseException, SQLException,
+			ClassNotFoundException {
 		int softwareIdentificationKey = getSoftwareIdentificationKey(softwareIdentification);
 		return updateLastServiceToBeCalledForRun(runId, softwareIdentificationKey);
 	}
 
-	public int getIdOfLastServiceToBeCalledForRun(BigInteger runId) throws ApolloDatabaseKeyNotFoundException,
-			SQLException, ClassNotFoundException {
+	public int getIdOfLastServiceToBeCalledForRun(BigInteger runId)
+			throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
 		String query = "SELECT last_service_to_be_called FROM run WHERE id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, runId.intValue());
@@ -1027,12 +1080,13 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public void addRunIdsToSimulationGroup(int simulationGroupId, List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels)
-			throws SQLException, ClassNotFoundException {
+	public void addRunIdsToSimulationGroup(int simulationGroupId,
+			List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws SQLException,
+			ClassNotFoundException {
 		String query = "INSERT INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		for (RunIdentificationAndLabel runIdAndLabel : simulationRunIdentificationsAndLabels) {
-                        BigInteger simulationRunId = runIdAndLabel.getRunIdentification();
+			BigInteger simulationRunId = runIdAndLabel.getRunIdentification();
 			pstmt.setInt(1, simulationGroupId);
 			pstmt.setInt(2, simulationRunId.intValue());
 			pstmt.execute();
@@ -1068,13 +1122,15 @@ public class ApolloDbUtils {
 			// ALSO NEED TO ADD serialized runVisualizationMessage(JSON) to
 			// run_data_content table...
 			// use insertDataContentForRun for this
-			int dataContentKey = addTextDataContent(getJSONString(runVisualizationMessage));
+			int dataContentKey = addTextDataContent(getJSONString(runVisualizationMessage,
+					RunVisualizationMessage.class));
 			int runDataDescriptionId = getRunDataDescriptionId(DbContentDataFormatEnum.TEXT,
 					"run_visualization_message.json", DbContentDataType.RUN_VISUALIZATION_MESSAGE, 0,
 					getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
 			// int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
-			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey, runDataDescriptionId);
+			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey,
+					runDataDescriptionId);
 
 			return runId;
 		} catch (ClassNotFoundException ex) {
