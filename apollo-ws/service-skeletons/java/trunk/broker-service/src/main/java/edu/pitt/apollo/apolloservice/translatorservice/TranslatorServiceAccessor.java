@@ -14,24 +14,22 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI;
 import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceV202;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import java.sql.SQLException;
 
 /**
  *
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: May 9, 2014
- * Time: 2:49:06 PM
- * Class: TranslatorServiceAccessor
- * IDE: NetBeans 6.9.1
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: May 9, 2014 Time: 2:49:06 PM Class: TranslatorServiceAccessor IDE: NetBeans 6.9.1
  */
 public class TranslatorServiceAccessor {
 
-    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, RunSimulationMessage message) throws IOException {
+    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, RunSimulationMessage message, ApolloDbUtils dbUtils) throws IOException {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
@@ -65,8 +63,26 @@ public class TranslatorServiceAccessor {
             return false;
         }
 
-        // while translator is running, query the status
+        try {
+            dbUtils.updateLastServiceToBeCalledForRun(runId, translatorServiceRecord.getSoftwareIdentification());
+        } catch (ApolloDatabaseException ex) {
+            ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service to be called to translator for runId " + runId
+                    + ". Error message was: " + ex.getMessage(),
+                    runId);
+            return false;
+        } catch (ClassNotFoundException ex) {
+            ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service to be called to translator for runId " + runId
+                    + ". Error message was: " + ex.getMessage(),
+                    runId);
+            return false;
+        } catch (SQLException ex) {
+            ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service to be called to translator for runId " + runId
+                    + ". Error message was: " + ex.getMessage(),
+                    runId);
+            return false;
+        }
 
+        // while translator is running, query the status
         MethodCallStatusEnum status = GetRunStatusMethod.getRunStatus(runId).getStatus();
         // MethodCallStatusEnum status = MethodCallStatusEnum.QUEUED; //
         // doesn't
@@ -89,7 +105,7 @@ public class TranslatorServiceAccessor {
                     + runId + ": " + ex.getMessage(), runId);
             return false;
         }
-        
+
         return true;
     }
 }
