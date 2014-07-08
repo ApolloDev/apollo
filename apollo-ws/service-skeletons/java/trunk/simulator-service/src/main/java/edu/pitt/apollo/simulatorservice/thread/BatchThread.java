@@ -1,20 +1,5 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.map.ObjectMapper;
-
 //import com.googlecode.sardine.Sardine;
 //import com.googlecode.sardine.SardineFactory;
 
