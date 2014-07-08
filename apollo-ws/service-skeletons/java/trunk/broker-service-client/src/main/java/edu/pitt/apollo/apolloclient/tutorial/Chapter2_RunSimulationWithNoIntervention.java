@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.persistence.internal.oxm.Unmarshaller;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
