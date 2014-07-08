@@ -1172,7 +1172,7 @@ public class ApolloDbUtils {
                 if (rs.next()) {
                     return rs.getInt(1);
                 } else {
-                    throw new ApolloDatabaseKeyNotFoundException(
+                    throw new ApolloDatabaseStatusNotFoundForRunIdException(
                                     "No status was found in the run_status table for run ID " + runId.intValue());
                 }
             } catch (ClassNotFoundException ex) {

@@ -1,9 +1,14 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
-import java.math.BigInteger;
-
+import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.ApolloDatabaseStatusNotFoundForRunIdException;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import java.math.BigInteger;
 
 /**
  *
@@ -24,13 +29,45 @@ public class GetRunStatusMethod {
     }
 
     public static MethodCallStatus getRunStatus(BigInteger runIdentification) {
-    	return getErrorMethodCallStatus("Method not yet implemented!");
 
-//        ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
-//        // first check the apollo errors file
-//        if (runIdentification.intValue() == -1) {
-//            return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
-//        }
+        ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+        // first check the apollo errors file
+        if (runIdentification.intValue() == -1) {
+            return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
+        }
+
+        MethodCallStatusEnum statusEnum;
+        MethodCallStatus status = new MethodCallStatus();
+        try {
+            statusEnum = dbUtils.getStatusOfLastServiceToBeCalledForRun(runIdentification);
+
+            status.setStatus(statusEnum);
+        } catch (ApolloDatabaseStatusNotFoundForRunIdException ex) {
+
+            SoftwareIdentification softwareId;
+            try {
+                softwareId = dbUtils.getLastServiceToBeCalledForRun(runIdentification);
+            } catch (ApolloDatabaseException ex1) {
+                String message = ex1.getMessage();
+                return getErrorMethodCallStatus(message);
+            }
+            if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.SIMULATOR) {
+                status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
+                status.setMessage("The run was submitted to the simulator.");
+            } else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.VISUALIZER) {
+                status.setStatus(MethodCallStatusEnum.CALLED_VISUALIZER);
+                status.setMessage("The run was submitted to the visualizer.");
+            } else if (softwareId.getSoftwareType() == ApolloSoftwareTypeEnum.TRANSLATOR) {
+                status.setStatus(MethodCallStatusEnum.CALLED_TRANSLATOR);
+                status.setMessage("The run was submitted to the translator.");
+            } else {
+                return getErrorMethodCallStatus("Unrecognized software type");
+            }
+        } catch (ApolloDatabaseException ex) {
+            return getErrorMethodCallStatus(ex.getMessage());
+        }
+        
+        return status;
 //
 //        {
 //            // long runIdAsLong =
