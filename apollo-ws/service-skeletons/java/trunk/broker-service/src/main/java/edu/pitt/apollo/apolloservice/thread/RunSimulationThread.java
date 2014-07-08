@@ -49,7 +49,7 @@ public class RunSimulationThread extends Thread {
     public void run() {
         try {
             // first call the translator and translate the runSimulationMessage
-            boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, message);
+            boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, message, dbUtils);
             if (!translatorRunSuccessful) {
                 return;
             }
