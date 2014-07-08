@@ -66,19 +66,18 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
     public MethodCallStatus runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId) {
         System.out.println("running simulation");
         int runId = simulationRunId.intValue();
-        try {
+//        try {
             // set the started file for the run
-            System.out.println("creating run directory: " + getRunDirectory(runId));
-            RunUtils.createRunDir(getRunDirectory(runId));
-            RunUtils.setStatusFile(getRunDirectory(runId), MethodCallStatusEnum.QUEUED);
-        } catch (IOException ex) {
-            try {
-                RunUtils.setError(getRunDirectory(runId), "IOException attempting to create started file for run "
-                        + runId + ": " + ex.getMessage());
-            } catch (IOException ex1) {
-                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
-            }
-        }
+//            System.out.println("creating run directory: " + getRunDirectory(runId));
+            RunUtils.updateStatus(dbUtils, simulationRunId, MethodCallStatusEnum.QUEUED, "The simulator run is queued");
+//        } catch (IOException ex) {
+//            try {
+//                RunUtils.updateStatus(dbUtils, MethodCallStatusEnum.FAILED, "IOException attempting to create started file for run "
+//                        + runId + ": " + ex.getMessage());
+//            } catch (IOException ex1) {
+//                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
+//            }
+//        }
         // create the run thread
         SimulatorThread worker = createSimulatorThread(simulationRunId);
         System.out.println("Starting an AddSimulatorToQueueThread with run ID " + runId);
@@ -118,7 +117,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
         return null;
     }
 
-    protected abstract String getRunDirectory(int runId);
+//    protected abstract String getRunDirectory(int runId);
 
     @Override
     public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
@@ -156,10 +155,10 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
             }
 
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException attempting to load the translator software ID: "
+            throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the translator software ID: "
                     + ex.getMessage());
         } catch (SQLException ex) {
-            throw new RuntimeException("SQLException attempting to load the translator software ID: " + ex.getMessage());
+            throw new ExceptionInInitializerError("SQLException attempting to load the translator software ID: " + ex.getMessage());
         }
 
         if (translatorSoftwareId == null) {
