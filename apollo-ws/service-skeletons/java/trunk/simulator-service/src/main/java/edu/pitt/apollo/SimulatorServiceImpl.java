@@ -14,19 +14,6 @@
  */
 package edu.pitt.apollo;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.sql.SQLException;
-import java.util.Map;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceEI;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
@@ -37,11 +24,22 @@ import edu.pitt.apollo.types.v2_0_2.GetScenarioLocationCodesSupportedBySimulator
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_2.TerminateRunRequest;
 import edu.pitt.apollo.types.v2_0_2.TerminteRunResult;
-
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.SQLException;
+import java.util.Map;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
@@ -53,10 +51,15 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
     protected static ApolloDbUtils dbUtils;
     protected static SoftwareIdentification translatorSoftwareId;
 
-   
-  
-
-
+    @Override
+    @WebResult(name = "runSimulationsResult", targetNamespace = "")
+    @RequestWrapper(localName = "runSimulations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.RunSimulations")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/runSimulations")
+    @ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.RunSimulationsResponse")
+    public RunSimulationsResult runSimulations(
+            @WebParam(name = "runSimulationsMessage", targetNamespace = "") edu.pitt.apollo.types.v2_0_2.RunSimulationsMessage runSimulationsMessage) {
+        throw new UnsupportedOperationException("Run simulations is not yet implemented");
+    }
 
     @Override
     @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.RunSimulation")
@@ -85,21 +88,21 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
         return null;
     }
 
-
     public static String getDatabasePropertiesFilename() {
         return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
     }
 
-	@Override
-	@WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
-	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetPopulationAndEnvironmentCensus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/getPopulationAndEnvironmentCensus")
-	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetPopulationAndEnvironmentCensusResponse")
-	public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
-			@WebParam(name = "location", targetNamespace = "") String location) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    @WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
+    @RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetPopulationAndEnvironmentCensus")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/getPopulationAndEnvironmentCensus")
+    @ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetPopulationAndEnvironmentCensusResponse")
+    public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
+            @WebParam(name = "location", targetNamespace = "") String location) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public static SoftwareIdentification getTranslatorSoftwareId() {
         return translatorSoftwareId;
     }
@@ -107,28 +110,25 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
     protected abstract SimulatorThread createSimulatorThread(
             BigInteger runId);
 
-	@Override
-	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetScenarioLocationCodesSupportedBySimulator")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/getScenarioLocationCodesSupportedBySimulator")
-	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetScenarioLocationCodesSupportedBySimulatorResponse")
-	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    @WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+    @RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetScenarioLocationCodesSupportedBySimulator")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/getScenarioLocationCodesSupportedBySimulator")
+    @ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_0_2/", className = "edu.pitt.apollo.service.simulatorservice.v2_0_2.GetScenarioLocationCodesSupportedBySimulatorResponse")
+    public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     protected abstract String getRunDirectory(int runId);
 
-	@Override
-	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
+    @Override
+    public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     static {
-
 
         Map<String, String> env = System.getenv();
         APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
