@@ -148,6 +148,7 @@ CREATE TABLE run_status (
   id INT NOT NULL AUTO_INCREMENT,
   run_id INT NOT NULL REFERENCES run (id),
   status_id INT NOT NULL REFERENCES run_status_description(id),
+  message VARCHAR(255),
   PRIMARY KEY (id),
   CONSTRAINT FOREIGN KEY (run_id) REFERENCES run (id),
   CONSTRAINT FOREIGN KEY (status_id) REFERENCES run_status_description(id)

@@ -36,14 +36,10 @@ public class GetRunStatusMethod {
             return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
         }
 
-        MethodCallStatusEnum statusEnum;
         MethodCallStatus status = new MethodCallStatus();
         try {
-            statusEnum = dbUtils.getStatusOfLastServiceToBeCalledForRun(runIdentification);
-
-            status.setStatus(statusEnum);
+            status = dbUtils.getStatusOfLastServiceToBeCalledForRun(runIdentification);
         } catch (ApolloDatabaseStatusNotFoundForRunIdException ex) {
-
             SoftwareIdentification softwareId;
             try {
                 softwareId = dbUtils.getLastServiceToBeCalledForRun(runIdentification);
