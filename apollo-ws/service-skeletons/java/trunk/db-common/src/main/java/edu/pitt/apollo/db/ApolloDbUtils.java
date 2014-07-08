@@ -2,6 +2,7 @@ package edu.pitt.apollo.db;
 
 import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
@@ -1020,7 +1021,7 @@ public class ApolloDbUtils {
 
 	}
 
-        public void updateStatusOfRun(BigInteger runId, int statusId) {
+        public void updateStatusOfRun(BigInteger runId, int statusId, String message) {
            String query = "SELECT id FROM run_status WHERE run_id = " + runId.intValue();
            PreparedStatement pstmt;
            ResultSet rs;     
@@ -1030,14 +1031,15 @@ public class ApolloDbUtils {
                 rs = pstmt.executeQuery();
                 
                 if (rs.next()) {
-                    query = "UPDATE run_status SET status_id = ? WHERE run_id = ?";
+                    query = "UPDATE run_status SET status_id = ?, message = ? WHERE run_id = ?";
                 } else {
-                    query = "INSERT INTO run_status (status_id, run_id) VALUES (?,?)";
+                    query = "INSERT INTO run_status (status_id, message, run_id) VALUES (?,?,?)";
                 }
                 pstmt = getConn().prepareStatement(query);
 
                 pstmt.setInt(1, statusId);
-                pstmt.setInt(2, runId.intValue());
+                pstmt.setString(2, message);
+                pstmt.setInt(3, runId.intValue());
                 pstmt.execute();
             } catch (ClassNotFoundException ex) {
                 
@@ -1046,10 +1048,10 @@ public class ApolloDbUtils {
             }
         }
         
-        public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum) throws ApolloDatabaseException {
+        public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum, String message) throws ApolloDatabaseException {
             
             int statusId = getIdOfStatusEnum(statusEnum);
-            updateStatusOfRun(runId, statusId);
+            updateStatusOfRun(runId, statusId, message);
  
         }
         
@@ -1134,8 +1136,8 @@ public class ApolloDbUtils {
             }
         }
         
-        public MethodCallStatusEnum getStatusEnumForStatusId(int statusId) throws ApolloDatabaseException {
-            String query = "SELECT status FROM run_status_description WHERE id = " + statusId;
+        public MethodCallStatus getStatusEnumForStatusId(int statusId) throws ApolloDatabaseException {
+            String query = "SELECT status, message FROM run_status_description WHERE id = " + statusId;
             
             PreparedStatement pstmt;
             ResultSet rs;
@@ -1145,9 +1147,13 @@ public class ApolloDbUtils {
                 pstmt.execute();
                 rs = pstmt.getGeneratedKeys();
                 if (rs.next()) {
-                    String status = rs.getString(1);
-                    MethodCallStatusEnum statusEnum = MethodCallStatusEnum.fromValue(status);
-                    return statusEnum;
+                    String statusEnumString = rs.getString(1);
+                    String message = rs.getString(2);
+                    MethodCallStatusEnum statusEnum = MethodCallStatusEnum.fromValue(statusEnumString);
+                    MethodCallStatus status = new MethodCallStatus();
+                    status.setStatus(statusEnum);
+                    status.setMessage(message);
+                    return status;
                 } else {
                     throw new ApolloDatabaseKeyNotFoundException(
                                     "No status was found in the run_status_description table for status ID " + statusId);
@@ -1181,7 +1187,7 @@ public class ApolloDbUtils {
                 throw new ApolloDatabaseException("SQLException attempting to get status of last service to be called for run ID " + runId.intValue());
             }
         }
-        public MethodCallStatusEnum getStatusOfLastServiceToBeCalledForRun(BigInteger runId) throws ApolloDatabaseException {
+        public MethodCallStatus getStatusOfLastServiceToBeCalledForRun(BigInteger runId) throws ApolloDatabaseException {
             
             int statusId = getStatusIdOfLastServiceToBeCalledForRun(runId);
             return getStatusEnumForStatusId(statusId);
