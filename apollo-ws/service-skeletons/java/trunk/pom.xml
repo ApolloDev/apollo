@@ -97,6 +97,19 @@
 			<artifactId>jaxb2-maven-plugin</artifactId>
 			<version>1.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>edu.pitt.apollo</groupId>
+			<artifactId>services-common</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>edu.pitt.apollo</groupId>
+			<artifactId>xsd-types</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
