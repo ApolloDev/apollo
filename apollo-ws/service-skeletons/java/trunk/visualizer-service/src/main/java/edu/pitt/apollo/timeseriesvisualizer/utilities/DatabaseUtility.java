@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -41,21 +42,20 @@ public class DatabaseUtility {
 	private PreparedStatement statement = null;
 	private SoftwareIdentification visuazlierSoftwareId;
 	static final Properties properties = new Properties();
-	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
 	private static String APOLLO_DIR;
-	private static ApolloDbUtils dbUtils;
+	protected static ApolloDbUtils dbUtils;
 
 	static {
 		InputStream input;
 		Map<String, String> env = System.getenv();
-		APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (APOLLO_DIR != null) {
 			if (!APOLLO_DIR.endsWith(File.separator)) {
 				APOLLO_DIR += File.separator;
 			}
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
 			APOLLO_DIR = "";
 		}
 
@@ -74,6 +74,10 @@ public class DatabaseUtility {
 					.println("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
 							+ ex.getMessage());
 		}
+	}
+	
+	public static ApolloDbUtils getDbUtils() {
+		return dbUtils;
 	}
 
 	public static String getDatabasePropertiesFilename() {
