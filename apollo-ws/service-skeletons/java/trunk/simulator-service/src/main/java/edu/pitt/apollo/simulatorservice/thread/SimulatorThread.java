@@ -25,7 +25,7 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
  */
 public abstract class SimulatorThread extends Thread {
 
-    protected final RunSimulationMessage message;
+    protected RunSimulationMessage message;
     protected final BigInteger runId;
     private final boolean useFile;
     private final boolean useDatabase;
@@ -34,17 +34,18 @@ public abstract class SimulatorThread extends Thread {
     protected static SoftwareIdentification visualizerId;
     protected final String runDirectory;
 
-    public SimulatorThread(RunSimulationMessage message, ApolloDbUtils dbUtils,
+    public SimulatorThread(ApolloDbUtils dbUtils,
             BigInteger runId, String runDirectory, SoftwareIdentification translatorSoftwareId,
             boolean useFile, boolean useDatabase) {
         super();
-        this.message = message;
         this.runId = runId;
         this.useFile = useFile;
         this.useDatabase = useDatabase;
         this.dbUtils = dbUtils;
         this.runDirectory = runDirectory;
         this.translatorSoftwareId = translatorSoftwareId;
+        
+        message = getRunSimulationMessage();
     }
 
     public BigInteger getRunId() {
@@ -72,6 +73,16 @@ public abstract class SimulatorThread extends Thread {
             finalizeRun();
         }
 
+    }
+    
+    private RunSimulationMessage getRunSimulationMessage() {
+        try {
+            return dbUtils.getRunSimulationMessageForRun(runId);
+        } catch (ApolloDatabaseException ex) {
+            // write error status
+        } catch (IOException ex) {
+            // write error status
+        }
     }
 
     protected void storeOutput() throws IOException {
