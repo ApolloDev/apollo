@@ -53,7 +53,6 @@ import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
-	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
 	private static final String DB4O_FILENAME = "db4o_db_201";
 
 	private static ObjectContainer db4o;
@@ -61,14 +60,14 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	static {
 		Map<String, String> env = System.getenv();
-		APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (APOLLO_DIR != null) {
 			if (!APOLLO_DIR.endsWith(File.separator)) {
 				APOLLO_DIR += File.separator;
 			}
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
 			APOLLO_DIR = "";
 		}
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
