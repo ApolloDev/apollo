@@ -14,23 +14,17 @@
  */
 package edu.pitt.apollo;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI;
-import edu.pitt.apollo.timeseriesvisualizer.ImageGenerator;
 import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
-import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 
