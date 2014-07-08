@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
@@ -21,7 +22,7 @@ public class ApolloDbUtilsTest extends TestCase {
     private ApolloDbUtils apolloDbUtils;
     private static String APOLLO_DIR = "";
     private static final String DATABASE_PROPERTIES_FILE = "database.properties";
-    public static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
+
 
     public ApolloDbUtilsTest() {
         // TODO Auto-generated constructor stub
@@ -39,7 +40,7 @@ public class ApolloDbUtilsTest extends TestCase {
         // TODO Auto-generated method stub
         super.setUp();
         Map<String, String> env = System.getenv();
-        APOLLO_DIR = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
         apolloDbUtils = new ApolloDbUtils(new File(APOLLO_DIR + "/" + DATABASE_PROPERTIES_FILE));
 
         authUser1 = new Authentication();
