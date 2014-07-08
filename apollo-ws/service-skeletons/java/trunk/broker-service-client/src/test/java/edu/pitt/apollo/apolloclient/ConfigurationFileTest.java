@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import junit.framework.TestCase;
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.apolloclient.tutorial.Chapter2_RunSimulationWithNoIntervention;
@@ -34,7 +35,6 @@ public class ConfigurationFileTest extends TestCase {
 	private static final String OUTPUT_DIRECTORY = RES_DIR + "/output/";
 	private static final String NATIVE_FILE_LABEL = "config.txt";
 	private static final String VERBOSE_FILE_LABEL = "verbose.html";
-	private static final String APOLLO_WORKDIR_ENVIRONMENT_VARIABLE = "APOLLO_201_WORK_DIR";
 	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 	private static String APOLLO_DIR;
 	private static ApolloDbUtils dbUtils;
@@ -46,15 +46,15 @@ public class ConfigurationFileTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (apolloDir != null) {
 			if (!apolloDir.endsWith(File.separator)) {
 				apolloDir += File.separator;
 			}
 			APOLLO_DIR = apolloDir;
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
 			APOLLO_DIR = "";
 		}
 
