@@ -1,12 +1,5 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.sql.SQLException;
-import java.util.Map;
-
 import edu.pitt.apollo.SimulatorServiceImpl;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
@@ -18,6 +11,12 @@ import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.SQLException;
+import java.util.Map;
 
 /**
  *
@@ -32,20 +31,17 @@ public abstract class SimulatorThread extends Thread {
     protected final ApolloDbUtils dbUtils;
     private final SoftwareIdentification translatorSoftwareId;
     protected static SoftwareIdentification visualizerId;
-    protected final String runDirectory;
 
-    public SimulatorThread(ApolloDbUtils dbUtils,
-            BigInteger runId, String runDirectory, SoftwareIdentification translatorSoftwareId,
+    public SimulatorThread(ApolloDbUtils dbUtils, BigInteger runId, SoftwareIdentification translatorSoftwareId,
             boolean useFile, boolean useDatabase) {
         super();
         this.runId = runId;
         this.useFile = useFile;
         this.useDatabase = useDatabase;
         this.dbUtils = dbUtils;
-        this.runDirectory = runDirectory;
         this.translatorSoftwareId = translatorSoftwareId;
-        
-        message = getRunSimulationMessage();
+
+        loadRunSimulationMessage();
     }
 
     public BigInteger getRunId() {
@@ -64,9 +60,14 @@ public abstract class SimulatorThread extends Thread {
     public void run() {
 
         try {
+
+            if (message == null) {
+                return;
+            }
+            setRunStartedStatus();
             runSimulator();
             storeOutput();
-            setRunFinishedFile();
+            setRunCompletedStatus();
         } catch (IOException ex) {
             System.err.println("IOException running simulator: " + ex.getMessage());
         } finally {
@@ -74,15 +75,23 @@ public abstract class SimulatorThread extends Thread {
         }
 
     }
-    
-    private RunSimulationMessage getRunSimulationMessage() {
+
+    private void loadRunSimulationMessage() {
         try {
-            return dbUtils.getRunSimulationMessageForRun(runId);
+            message = dbUtils.getRunSimulationMessageForRun(runId);
+            if (message == null) {
+                updateStatus(MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
+            }
+
         } catch (ApolloDatabaseException ex) {
-            // write error status
+            updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
         } catch (IOException ex) {
-            // write error status
+            updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
         }
+    }
+
+    protected void updateStatus(MethodCallStatusEnum statusEnum, String message) {
+        RunUtils.updateStatus(dbUtils, runId, statusEnum, message);
     }
 
     protected void storeOutput() throws IOException {
@@ -97,13 +106,7 @@ public abstract class SimulatorThread extends Thread {
                 locationString = location.getLocationDefinition().getLocationsIncluded().get(0);
             }
             storeFileOutputToDatabase(locationString);
-
-            try {
-                RunUtils.setStatusFile(runDirectory, MethodCallStatusEnum.LOG_FILES_WRITTEN);
-            } catch (IOException ex) {
-                RunUtils.setError(runDirectory, "IOException attempting to write \"log files written\" "
-                        + "file for run " + runId + ": " + ex.getMessage());
-            }
+            updateStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN, "The simulator log files were written");
 
             storeTimeSeriesOutputToDatabase(locationString);
         }
@@ -112,13 +115,12 @@ public abstract class SimulatorThread extends Thread {
         }
     }
 
-    protected final void setRunFinishedFile() throws IOException {
-        try {
-            RunUtils.setStatusFile(runDirectory, MethodCallStatusEnum.COMPLETED);
-        } catch (IOException ex) {
-            RunUtils.setError(runDirectory, "IOException attempting to write finished file for run "
-                    + runId + ": " + ex.getMessage());
-        }
+    private void setRunCompletedStatus() {
+        updateStatus(MethodCallStatusEnum.COMPLETED, "The run is complete");
+    }
+    
+    private void setRunStartedStatus() {
+        updateStatus(MethodCallStatusEnum.RUNNING, "The simulator is running");
     }
 
     private void finalizeRun() {
@@ -131,15 +133,15 @@ public abstract class SimulatorThread extends Thread {
         try {
             dataContentKey = dbUtils.addTextDataContent(content);
         } catch (ClassNotFoundException ex) {
-            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to add text data "
+            updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to add text data "
                     + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         } catch (SQLException ex) {
-            RunUtils.setError(runDirectory, "SQLException attempting to add text data "
+            updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to add text data "
                     + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         } catch (ApolloDatabaseException ex) {
-            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to add text data "
+            updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
                     + "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         }
@@ -150,19 +152,19 @@ public abstract class SimulatorThread extends Thread {
                     ApolloDbUtils.DbContentDataType.SIMULATOR_LOG_FILE, message.getSimulatorIdentification(),
                     visualizerId);
         } catch (ApolloDatabaseKeyNotFoundException ex) {
-            RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to get run data "
+            updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         } catch (ClassNotFoundException ex) {
-            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to get run data "
+            updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         } catch (SQLException ex) {
-            RunUtils.setError(runDirectory, "SQLException attempting to get run data "
+            updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         } catch (ApolloDatabaseException ex) {
-            RunUtils.setError(runDirectory, "ApolloDatabaseException attempting to get run data "
+            updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to get run data "
                     + "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
             return;
         }
@@ -170,13 +172,13 @@ public abstract class SimulatorThread extends Thread {
         try {
             dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
         } catch (ClassNotFoundException ex) {
-            RunUtils.setError(runDirectory, "ClassNotFoundException attempting to associate "
+            updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to associate "
                     + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
         } catch (SQLException ex) {
-            RunUtils.setError(runDirectory, "SQLException attempting to associate "
+            updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to associate "
                     + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
         } catch (ApolloDatabaseKeyNotFoundException ex) {
-            RunUtils.setError(runDirectory, "ApolloDatabaseKeyNotFoundException attempting to associate "
+            updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to associate "
                     + "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
         }
     }
@@ -191,7 +193,7 @@ public abstract class SimulatorThread extends Thread {
                     translatorKey, simulatorKey);
             // update this
         } catch (ApolloDatabaseException ex) {
-            RunUtils.setError(runDirectory, ex.getMessage());
+            updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
             return null;
         }
 
@@ -204,7 +206,7 @@ public abstract class SimulatorThread extends Thread {
         }
 
         if (configurationFileContent == null) {
-            RunUtils.setError(runDirectory, "No label \"config.txt\" was found in the data content map"
+            updateStatus(MethodCallStatusEnum.FAILED, "No label \"config.txt\" was found in the data content map"
                     + " for run " + runId);
             return null;
         }
@@ -229,16 +231,16 @@ public abstract class SimulatorThread extends Thread {
             }
 
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException attempting to load the time series visualizer software ID: "
+            throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the time series visualizer software ID: "
                     + ex.getMessage());
         } catch (IOException ex) {
-            throw new RuntimeException("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
+            throw new ExceptionInInitializerError("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
         } catch (SQLException ex) {
-            throw new RuntimeException("SQLException attempting to load the time series visualizer software ID: " + ex.getMessage());
+            throw new ExceptionInInitializerError("SQLException attempting to load the time series visualizer software ID: " + ex.getMessage());
         }
 
         if (visualizerId == null) {
-            throw new RuntimeException("Could not find the time series visualizer software id in the list of registered services");
+            throw new ExceptionInInitializerError("Could not find the time series visualizer software id in the list of registered services");
         }
     }
 
