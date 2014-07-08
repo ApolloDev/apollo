@@ -1,5 +1,14 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,9 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonGenerator;
@@ -31,14 +38,6 @@ import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 
 /**
  * 
@@ -184,6 +183,20 @@ public class ApolloDbUtils {
 			return null;
 		}
 	}
+        
+        public RunSimulationMessage getRunSimulationMessageForRun(BigInteger runId) throws ApolloDatabaseException, IOException {
+                
+            Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId, 0, 1);
+            for (String name : contentForRun.keySet()) {
+                if (name.equals("run_simulation_message.json")) {
+                    InputStream contentInputStream = new ByteArrayInputStream(contentForRun.get(name).toByteArray());
+
+                    return (RunSimulationMessage) getObjectFromJSON(contentInputStream, RunSimulationMessage.class);
+                }
+            }
+            
+            throw new ApolloDatabaseException("Could not find run_simulation_message.json content associated with run ID" + runId);
+        }
 
 	public Connection getConn() throws ClassNotFoundException, SQLException {
 		if (dbcon == null) {
@@ -394,7 +407,7 @@ public class ApolloDbUtils {
 	private int getRoleKey(int softwareIdKey, boolean canRun, boolean canViewCache) throws SQLException,
 			ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
 		if (softwareIdKey >= 1) {
-			// software id found...now lets see if this specific role exists...
+			// software statusId found...now lets see if this specific role exists...
 			String query = "SELECT id FROM roles WHERE software_id = ? AND can_run = ? AND can_view_cached_results = ?";
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			try {
@@ -476,7 +489,7 @@ public class ApolloDbUtils {
 	// // String query =
 	// //
 	// "SELECT r.software_id, r.can_run, r.can_view_cached_results from roles r, user_roles ur where "
-	// // + "r.id = ur.role_id AND ur.user_id = ?";
+	// // + "r.statusId = ur.role_id AND ur.user_id = ?";
 	// // PreparedStatement pstmt = getConn().prepareStatement(query);
 	// // try {
 	// // pstmt.setInt(1, userId);
@@ -528,7 +541,7 @@ public class ApolloDbUtils {
 
 		// if here then no cache hit
 		// false cache hit, so insert the new content with an incremented
-		// collision id
+		// collision statusId
 		int highestMD5CollisionId = getHighestMD5CollisionIdForRunDataContent(content);
 		int md5CollisionId = highestMD5CollisionId + 1; // increment the ID to
 														// insert with the new
@@ -929,7 +942,7 @@ public class ApolloDbUtils {
 
 			// if (runIds.isEmpty()) {
 			// throw new ApolloDatabaseKeyNotFoundException(
-			// "No id found for simulation run where md5_hash_of_run_message = "
+			// "No statusId found for simulation run where md5_hash_of_run_message = "
 			// + md5Hash + " and softare_id = " + softwareKey
 			// + " and requester_id = 1");
 			// }
@@ -974,7 +987,7 @@ public class ApolloDbUtils {
 			}
 			// else {
 			// throw new ApolloDatabaseKeyNotFoundException(
-			// "No id found for simulation run where md5_hash_of_run_message = "
+			// "No statusId found for simulation run where md5_hash_of_run_message = "
 			// + md5Hash + " and softare_id = " + softwareKey
 			// + " and requester_id = 1");
 			// }
@@ -1007,6 +1020,39 @@ public class ApolloDbUtils {
 
 	}
 
+        public void updateStatusOfRun(BigInteger runId, int statusId) {
+           String query = "SELECT id FROM run_status WHERE run_id = " + runId.intValue();
+           PreparedStatement pstmt;
+           ResultSet rs;     
+            
+            try {
+                pstmt = getConn().prepareStatement(query);
+                rs = pstmt.executeQuery();
+                
+                if (rs.next()) {
+                    query = "UPDATE run_status SET status_id = ? WHERE run_id = ?";
+                } else {
+                    query = "INSERT INTO run_status (status_id, run_id) VALUES (?,?)";
+                }
+                pstmt = getConn().prepareStatement(query);
+
+                pstmt.setInt(1, statusId);
+                pstmt.setInt(2, runId.intValue());
+                pstmt.execute();
+            } catch (ClassNotFoundException ex) {
+                
+            } catch (SQLException ex) {
+                
+            }
+        }
+        
+        public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum) throws ApolloDatabaseException {
+            
+            int statusId = getIdOfStatusEnum(statusEnum);
+            updateStatusOfRun(runId, statusId);
+ 
+        }
+        
 	public int updateLastServiceToBeCalledForRun(BigInteger runId,
 			SoftwareIdentification softwareIdentification) throws ApolloDatabaseException, SQLException,
 			ClassNotFoundException {
@@ -1065,6 +1111,81 @@ public class ApolloDbUtils {
 		}
 
 	}
+        
+        private int getIdOfStatusEnum(MethodCallStatusEnum statusEnum) throws ApolloDatabaseException {
+            String query = "SELECT id FROM run_status_description WHERE status = " + statusEnum.toString().toLowerCase();
+            PreparedStatement pstmt;
+            ResultSet rs;
+            
+            try {
+                pstmt = getConn().prepareStatement(query);
+                rs = pstmt.executeQuery();
+                
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new ApolloDatabaseException("There was no status in the run_status_description table corresponding to status enum\"" + statusEnum + "\"");
+                }
+
+            } catch (ClassNotFoundException ex) {
+                throw new ApolloDatabaseException("ClassNotFoundException attempting to get status ID of status " + statusEnum + ": " + ex.getMessage());
+            } catch (SQLException ex) {
+                throw new ApolloDatabaseException("SQLException attempting to get status ID of status  " + statusEnum + ": " + ex.getMessage());
+            }
+        }
+        
+        public MethodCallStatusEnum getStatusEnumForStatusId(int statusId) throws ApolloDatabaseException {
+            String query = "SELECT status FROM run_status_description WHERE id = " + statusId;
+            
+            PreparedStatement pstmt;
+            ResultSet rs;
+            
+            try {
+                pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                pstmt.execute();
+                rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    String status = rs.getString(1);
+                    MethodCallStatusEnum statusEnum = MethodCallStatusEnum.fromValue(status);
+                    return statusEnum;
+                } else {
+                    throw new ApolloDatabaseKeyNotFoundException(
+                                    "No status was found in the run_status_description table for status ID " + statusId);
+                }
+            } catch (ClassNotFoundException ex) {
+                throw new ApolloDatabaseException("ClassNotFoundException attempting to get status enum of status ID " + statusId + ": " + ex.getMessage());
+            } catch (SQLException ex) {
+                throw new ApolloDatabaseException("SQLException attempting to get status enum of status ID " + statusId + ": " + ex.getMessage());
+            }
+        }
+        
+        private int getStatusIdOfLastServiceToBeCalledForRun(BigInteger runId) throws ApolloDatabaseException {
+            
+            String query = "SELECT status_id FROM run_status WHERE run_id = " + runId.intValue();
+            PreparedStatement pstmt;
+            ResultSet rs;
+            
+            try {
+                pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                pstmt.execute();
+                rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new ApolloDatabaseKeyNotFoundException(
+                                    "No status was found in the run_status table for run ID " + runId.intValue());
+                }
+            } catch (ClassNotFoundException ex) {
+                throw new ApolloDatabaseException("ClassNotFoundException attempting to get status of last service to be called for run ID " + runId.intValue());
+            } catch (SQLException ex) {
+                throw new ApolloDatabaseException("SQLException attempting to get status of last service to be called for run ID " + runId.intValue());
+            }
+        }
+        public MethodCallStatusEnum getStatusOfLastServiceToBeCalledForRun(BigInteger runId) throws ApolloDatabaseException {
+            
+            int statusId = getStatusIdOfLastServiceToBeCalledForRun(runId);
+            return getStatusEnumForStatusId(statusId);
+        }
 
 	public int getNewSimulationGroupId() throws SQLException, ClassNotFoundException,
 			ApolloDatabaseRecordNotInsertedException {
@@ -1152,9 +1273,10 @@ public class ApolloDbUtils {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int content_id = rs.getInt(1);
-				String innerQuery = "SELECT content_id FROM run_data WHERE run_id <> ?";
+				String innerQuery = "SELECT content_id FROM run_data WHERE run_id <> ? AND content_id = ?";
 				PreparedStatement innerPstmt = getConn().prepareStatement(innerQuery);
 				innerPstmt.setInt(1, runId.intValue());
+                                innerPstmt.setInt(2, content_id);
 				ResultSet innerRs = innerPstmt.executeQuery();
 				if (!innerRs.next()) {
 					// content_id is not used by any other run, delete it!
@@ -1244,7 +1366,7 @@ public class ApolloDbUtils {
 				while (rs.next()) {
 					id = rs.getInt(1);
 					populationAxisCache.put(label, new Integer(id));
-					// System.out.println(id);
+					// System.out.println(statusId);
 				} // end while
 			} catch (SQLException e) {
 				throw new SQLException("Error retreiving axis id for label: " + label
@@ -1280,7 +1402,7 @@ public class ApolloDbUtils {
 				ResultSet rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					// System.out.println("Internal id is:" + rs.getInt(1));
+					// System.out.println("Internal statusId is:" + rs.getInt(1));
 					popId = rs.getInt(1);
 
 					simulatedPopulationCache.put(disease_state, popId);
@@ -1317,7 +1439,7 @@ public class ApolloDbUtils {
 				ResultSet rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					// System.out.println("Population id is:" +
+					// System.out.println("Population statusId is:" +
 					// rs.getInt(1));
 					popId = rs.getInt(1);
 					simulatedPopulationCache.put(disease_state, popId);
@@ -1369,7 +1491,7 @@ public class ApolloDbUtils {
 				ResultSet rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					// System.out.println("Population id is:" +
+					// System.out.println("Population statusId is:" +
 					// rs.getInt(1));
 					popId = rs.getInt(1);
 				} // end while
