@@ -1,7 +1,6 @@
 package edu.pitt.apollo.apolloclient.tutorial;
 
 import java.math.BigInteger;
-import java.util.List;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.VisualizerIdentificationEnum;
 import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
@@ -18,16 +17,6 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
  */
 public abstract class AbstractRunAndVisualizeSimulationClass {
 	public static final Object ID_NOT_SET_DUE_TO_RUN_FAILURE = null;
-
-	private static String getSimulatorRunIdsAsString(List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) {
-		String simulatorRuns = "";
-		for (RunIdentificationAndLabel runIdentificationAndLabel : simulationRunIdentificationsAndLabels) {
-			simulatorRuns += runIdentificationAndLabel.getRunIdentification() + ", ";
-		}
-		simulatorRuns = simulatorRuns.substring(0, simulatorRuns.length() - 3);
-		return simulatorRuns;
-
-	}
 
 	protected static void runScenariosAndDisplayResults(String simulation1Label, RunSimulationMessage runSimulationMessage1,
 			String simulation2Label, RunSimulationMessage runSimulationMessage2) {
