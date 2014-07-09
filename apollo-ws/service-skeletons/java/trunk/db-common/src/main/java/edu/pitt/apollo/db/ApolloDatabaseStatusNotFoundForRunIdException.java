@@ -10,7 +10,12 @@ package edu.pitt.apollo.db;
  */
 public class ApolloDatabaseStatusNotFoundForRunIdException extends ApolloDatabaseException {
 
-    public ApolloDatabaseStatusNotFoundForRunIdException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3683785032688079479L;
+
+	public ApolloDatabaseStatusNotFoundForRunIdException(String message) {
         super(message);
     }
     

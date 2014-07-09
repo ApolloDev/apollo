@@ -29,11 +29,12 @@ public class Chapter7_ProbabilityDistributionExample extends TutorialWebServiceC
 	}
 
 	public void runExample() {
-		RunSimulationMessage runSimulationMessage = null;
+		
 
 		ExampleConditionalProbabilityDistribution conditionalProbabilityDistributionExample = new ExampleConditionalProbabilityDistribution();
 
-		runSimulationMessage = conditionalProbabilityDistributionExample
+		@SuppressWarnings("unused")
+		RunSimulationMessage runSimulationMessage = conditionalProbabilityDistributionExample
 				.setLatentPeriodToConditionalProbabilityDistribution(ApolloServiceTypeFactory
 						.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
 

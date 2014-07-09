@@ -1,11 +1,15 @@
 package edu.pitt.apollo.apolloservice.methods.services;
 
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_2.ServiceRecord;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.types.v2_0_2.ServiceRecord;
 
 /**
  *
@@ -17,19 +21,21 @@ import java.util.List;
  * IDE: NetBeans 6.9.1
  */
 public class GetRegisteredServicesMethod {
+	
+	static Logger logger = LoggerFactory.getLogger(GetRegisteredServicesMethod.class);
 
     public static List<ServiceRecord> getRegisteredServices() {
         try {
             ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
             return new ArrayList<ServiceRecord>(dbUtils.getRegisteredSoftware().values());
         } catch (SQLException ex) {
-            System.out.println("SQLException attempting to get registered services: "
+            logger.error("SQLException attempting to get registered services: "
                     + ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            System.out.println("ClassNotFoundException attempting to get registered services: "
+           logger.error("ClassNotFoundException attempting to get registered services: "
                     + ex.getMessage());
         } catch (Exception ex) {
-            System.out.println("Exception attempting to get registered services: "
+            logger.error("Exception attempting to get registered services: "
                     + ex.getMessage());
         }
 
