@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.apolloclient.tutorial.Chapter2_RunSimulationWithNoIntervention;
 import edu.pitt.apollo.apolloclient.tutorial.TutorialWebServiceClient;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -104,9 +103,7 @@ public class ConfigurationFileTest extends TestCase {
 	}
 
 	public void testRunningFred() {
-		Chapter2_RunSimulationWithNoIntervention example = null;
-
-		example = new Chapter2_RunSimulationWithNoIntervention();
+		
 
 		try {
 			BigInteger runId = TutorialWebServiceClient.runSimulation(message);
