@@ -14,6 +14,22 @@
  */
 package edu.pitt.apollo;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.SQLException;
+import java.util.Map;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceEI;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
@@ -28,21 +44,12 @@ import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_2.TerminateRunRequest;
 import edu.pitt.apollo.types.v2_0_2.TerminteRunResult;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.sql.SQLException;
-import java.util.Map;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
+	static Logger logger = LoggerFactory.getLogger(SimulatorServiceImpl.class);
+	
     private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 
     protected static String APOLLO_DIR = "";
