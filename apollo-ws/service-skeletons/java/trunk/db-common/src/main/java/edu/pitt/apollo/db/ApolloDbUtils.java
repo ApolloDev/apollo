@@ -157,7 +157,6 @@ public class ApolloDbUtils {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 			marshaller.marshal(obj, baos);
-			System.out.println(baos.toString());
 			return baos.toString();
 		} catch (Exception e) {
 			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
@@ -1021,7 +1020,7 @@ public class ApolloDbUtils {
 
 	}
 
-        public void updateStatusOfRun(BigInteger runId, int statusId, String message) {
+        public void updateStatusOfRun(BigInteger runId, int statusId, String message) throws ApolloDatabaseException {
            String query = "SELECT id FROM run_status WHERE run_id = " + runId.intValue();
            PreparedStatement pstmt;
            ResultSet rs;     
@@ -1042,9 +1041,9 @@ public class ApolloDbUtils {
                 pstmt.setInt(3, runId.intValue());
                 pstmt.execute();
             } catch (ClassNotFoundException ex) {
-                
+                throw new ApolloDatabaseException("ClassNotFoundException attempting to insert or update status of run for run ID "+ runId + ": " + ex.getMessage());
             } catch (SQLException ex) {
-                
+                throw new ApolloDatabaseException("SQLException attempting to insert or update status of run for run ID "+ runId + ": " + ex.getMessage());
             }
         }
         
