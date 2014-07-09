@@ -12,18 +12,18 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceV202;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 import java.rmi.RemoteException;
 import org.apache.cxf.binding.soap.SoapFault;
@@ -35,16 +35,17 @@ import org.apache.cxf.binding.soap.SoapFault;
  */
 public class RunSimulationThread extends Thread {
 
+	static Logger logger = LoggerFactory.getLogger(RunSimulationThread.class);
     private ApolloDbUtils dbUtils;
     private RunSimulationMessage message;
     private BigInteger runId;
-    private ServiceRegistrationRecord translatorServiceRecord;
+    
 
     public RunSimulationThread(BigInteger runId, RunSimulationMessage message) {
         this.message = message;
         this.runId = runId;
         this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
-        translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
+        
     }
 
     @Override
@@ -139,7 +140,7 @@ public class RunSimulationThread extends Thread {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("Error writing error file!: " + e.getMessage());
+            logger.error("Error writing error file!: " + e.getMessage());
         }
     }
 }
