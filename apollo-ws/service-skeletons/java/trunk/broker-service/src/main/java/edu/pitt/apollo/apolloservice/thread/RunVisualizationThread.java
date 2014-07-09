@@ -10,6 +10,8 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
@@ -32,6 +34,7 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
  */
 public class RunVisualizationThread extends Thread {
 
+	static Logger logger = LoggerFactory.getLogger(RunVisualizationThread.class);
     private RunVisualizationMessage message;
     private BigInteger runId;
     private ApolloDbUtils dbUtils;
@@ -113,7 +116,7 @@ public class RunVisualizationThread extends Thread {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("Error writing error file!: " + e.getMessage());
+            logger.error("Error writing error file!: " + e.getMessage());
         }
     }
 }
