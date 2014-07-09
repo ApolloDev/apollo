@@ -3,6 +3,9 @@ package edu.pitt.apollo;
 import java.io.File;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * Author: Nick Millett
@@ -17,6 +20,7 @@ public class ApolloServiceConstants {
     public static final String APOLLO_DIR;
     public static final int END_USER_APPLICATION_SOURCE_ID = 0;
 
+    static Logger logger = LoggerFactory.getLogger(ApolloServiceConstants.class);
     static {
 
         Map<String, String> env = System.getenv();
@@ -26,10 +30,10 @@ public class ApolloServiceConstants {
                 apolloDir += File.separator;
             }
             APOLLO_DIR = apolloDir;
-            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
+            logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
                     + APOLLO_DIR);
         } else {
-            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+            logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
                     + " environment variable not found!");
             APOLLO_DIR = "";
         }
