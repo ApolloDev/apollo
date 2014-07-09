@@ -289,7 +289,7 @@ public class ImageGenerator {
 			IMAGE_FILE_TYPE = errored ? "" : properties.getProperty(IMAGE_FILE_TYPE_PARAM);
 			IMAGE_BASE_URL = errored ? "" : properties.getProperty(IMAGE_BASE_URL_PARAM);
 		} else {
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
 					+ " environment variable not found!");
 			APOLLO_DIR = "";
 			IMAGE_FILES_DIRECTORY = "";
