@@ -31,6 +31,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -53,6 +56,7 @@ import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
+	static Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
 	private static final String DB4O_FILENAME = "db4o_db_201";
 
 	private static ObjectContainer db4o;
@@ -65,9 +69,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			if (!APOLLO_DIR.endsWith(File.separator)) {
 				APOLLO_DIR += File.separator;
 			}
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
+			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
 			APOLLO_DIR = "";
 		}
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
@@ -200,7 +204,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		apolloUuid += " " + uuid.getLongPart();
 
 		// Db4oUUId u = new Db4oUUID(longPart_, signaturePart_)
-		System.out.println("uuid is " + apolloUuid);
+		logger.info("uuid is " + apolloUuid);
 
 		GregorianCalendar c = new GregorianCalendar();
 		XMLGregorianCalendar date;
