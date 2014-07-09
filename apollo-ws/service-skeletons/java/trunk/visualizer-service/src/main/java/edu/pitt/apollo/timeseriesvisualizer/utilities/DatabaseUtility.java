@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
@@ -34,6 +37,7 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
  */
 public class DatabaseUtility {
 
+	static Logger logger = LoggerFactory.getLogger(DatabaseUtility.class);
 	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 	// private static final String[] seirTimeSeriesNames = {"susceptible",
 	// "exposed", "infectious", "recovered"};
@@ -53,9 +57,9 @@ public class DatabaseUtility {
 			if (!APOLLO_DIR.endsWith(File.separator)) {
 				APOLLO_DIR += File.separator;
 			}
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
 		} else {
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
+			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
 			APOLLO_DIR = "";
 		}
 
@@ -63,15 +67,14 @@ public class DatabaseUtility {
 		try {
 			input = new FileInputStream(fn);
 			properties.load(input);
-			System.out.println("Successfully loaded " + fn + " file.");
+			logger.info("Successfully loaded " + fn + " file.");
 		} catch (Exception e) {
-			System.out.println("\n\n\nError loading " + fn + " file\n\n\n");
+			logger.error("\n\n\nError loading " + fn + " file\n\n\n");
 		}
 		try {
 			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
 		} catch (IOException ex) {
-			System.out
-					.println("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
+			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
 							+ ex.getMessage());
 		}
 	}
@@ -188,7 +191,7 @@ public class DatabaseUtility {
 				Class.forName(dbClass);
 				connect = DriverManager.getConnection(url, user, password);
 
-				System.out.println("Retrieving data for run from the database...");
+				logger.info("Retrieving data for run from the database...");
 				statement = connect.prepareStatement(query);
 				statement.setString(1, runId.toString());
 				statement.setString(2, runId.toString());

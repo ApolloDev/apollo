@@ -15,7 +15,7 @@ import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
 public class RunSimulationsMethod {
 
     public static RunSimulationsResult runSimulations(RunSimulationsMessage runSimulationsMessage) {
-        RunSimulationsResult bsr = new RunSimulationsResult();
+ //       RunSimulationsResult bsr = new RunSimulationsResult();
 
         // this method needs to be updated
         

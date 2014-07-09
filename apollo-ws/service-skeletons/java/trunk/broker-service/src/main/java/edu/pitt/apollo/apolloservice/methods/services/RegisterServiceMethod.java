@@ -15,7 +15,7 @@ import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 public class RegisterServiceMethod extends RegisteredServicesMethod {
 
     public static MethodCallStatus registerService(ServiceRegistrationRecord serviceRegistrationRecord) {
-        MethodCallStatus result = new MethodCallStatus();
+ //       MethodCallStatus result = new MethodCallStatus();
 
         // this method needs to be updated
         
