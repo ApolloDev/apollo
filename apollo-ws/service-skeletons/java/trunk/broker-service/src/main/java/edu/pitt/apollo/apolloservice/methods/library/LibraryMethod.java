@@ -28,7 +28,7 @@ public abstract class LibraryMethod {
 
         } catch (MalformedURLException ex) {
             try {
-                long runId = ApolloServiceErrorHandler.writeErrorWithErrorId("MalformedURLException attempting to get Library port: " 
+                ApolloServiceErrorHandler.writeErrorWithErrorId("MalformedURLException attempting to get Library port: " 
                         + ex.getMessage());
             } catch (IOException e) {
                 System.err.println("IOException writing error file: "

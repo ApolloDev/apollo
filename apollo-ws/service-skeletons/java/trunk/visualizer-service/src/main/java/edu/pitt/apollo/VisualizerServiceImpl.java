@@ -28,7 +28,7 @@ import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
 import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_0_2/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
    
