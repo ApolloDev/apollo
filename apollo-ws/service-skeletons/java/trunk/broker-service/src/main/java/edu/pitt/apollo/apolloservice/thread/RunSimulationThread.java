@@ -25,6 +25,8 @@ import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceV202;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import java.rmi.RemoteException;
+import org.apache.cxf.binding.soap.SoapFault;
 
 /**
  * 
@@ -64,7 +66,7 @@ public class RunSimulationThread extends Thread {
                 SimulatorServiceEI simulatorPort = null;
                 try {
                     simulatorPort = new SimulatorServiceV202(new URL(url)).getSimulatorServiceEndpoint();
-                } catch (WebServiceException e) {
+                } catch (Exception e) {
                     ApolloServiceErrorHandler.writeErrorToErrorFile(
                             "Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
                             runId);
