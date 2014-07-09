@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
+import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -32,6 +33,13 @@ public class GetRunStatusMethod {
 
         ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
         // first check the apollo errors file
+        if (ApolloServiceErrorHandler.checkErrorFileExists(runIdentification.intValue())) {
+
+            MethodCallStatus status = new MethodCallStatus();
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            status.setMessage(ApolloServiceErrorHandler.readErrorFromErrorFile(runIdentification.intValue()));
+            return status;
+        }
         if (runIdentification.intValue() == -1) {
             return getErrorMethodCallStatus("Unable to write error file on server (disk full?).");
         }
@@ -62,7 +70,7 @@ public class GetRunStatusMethod {
         } catch (ApolloDatabaseException ex) {
             return getErrorMethodCallStatus(ex.getMessage());
         }
-        
+
         return status;
 //
 //        {
