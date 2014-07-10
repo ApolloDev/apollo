@@ -178,8 +178,7 @@ public class DatabaseTimeSeriesProcessor {
         largestLocations.add(DEFAULT_LOCATION);
     }
     
-    public TimeSeriesContainer getTimeSeriesForInfectionStates(
-            boolean getPrevalenceStates, boolean getIncidenceStates)
+    public TimeSeriesContainer getTimeSeriesForInfectionStates(List<InfectionStateEnum> statesToUse)
             throws TimeSeriesVisualizerException {
         
         if (map == null || map.isEmpty()) {
@@ -193,23 +192,23 @@ public class DatabaseTimeSeriesProcessor {
         Iterator<String> itr = largestLocations.iterator();
         String largestLocation = itr.next();
         
-        List<InfectionStateEnum> statesToUse = null;
-        if (getPrevalenceStates) {
-            statesToUse = new ArrayList<InfectionStateEnum>(
-                    Arrays.asList(InfectionStateEnum.PREVALENCE_INFECTION_STATES));
-        }
-        if (getIncidenceStates) {
-            if (statesToUse == null) {
-                statesToUse = new ArrayList<InfectionStateEnum>(
-                        Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
-            } else {
-                statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
-            }
-
-            // statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ?
-            // Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES) :
-            // statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES)));
-        }
+//        List<InfectionStateEnum> statesToUse = null;
+//        if (getPrevalenceStates) {
+//            statesToUse = new ArrayList<InfectionStateEnum>(
+//                    Arrays.asList(InfectionStateEnum.PREVALENCE_INFECTION_STATES));
+//        }
+//        if (getIncidenceStates) {
+//            if (statesToUse == null) {
+//                statesToUse = new ArrayList<InfectionStateEnum>(
+//                        Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+//            } else {
+//                statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+//            }
+//
+//            // statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ?
+//            // Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES) :
+//            // statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES)));
+//        }
         
         for (InfectionStateEnum diseaseState : statesToUse) {
             
