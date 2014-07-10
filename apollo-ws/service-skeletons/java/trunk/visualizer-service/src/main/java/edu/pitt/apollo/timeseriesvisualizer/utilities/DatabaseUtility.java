@@ -26,6 +26,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
+import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
@@ -156,7 +157,7 @@ public class DatabaseUtility {
 	// return container;
 	// }
 	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseTimeSeriesTable(List<BigInteger> runIds,
-			boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
+			List<InfectionStateEnum> infectionStatesToUse) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
 
@@ -186,7 +187,7 @@ public class DatabaseUtility {
 
 		for (BigInteger runId : runIds) {
 			DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
-			TimeSeriesContainer timeSeriesContainer = new TimeSeriesContainer();
+			TimeSeriesContainer timeSeriesContainer;
 			try {
 				Class.forName(dbClass);
 				connect = DriverManager.getConnection(url, user, password);
@@ -200,7 +201,7 @@ public class DatabaseUtility {
 				processor.storeTimeSeriesFromResultSet(resultSet);
 
 				//jdl: removing the second condition as this is no longer possible..
-				if (getDiseaseStatesData /* && !runId.toLowerCase().contains("flute")*/) { // can't
+//				if (getDiseaseStatesData /* && !runId.toLowerCase().contains("flute")*/) { // can't
 																						// make
 																						// a
 																						// disease
@@ -208,11 +209,10 @@ public class DatabaseUtility {
 																						// chart
 																						// for
 																						// flute
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(getDiseaseStatesData,
-							getIncidenceData);
-				} else {
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
-				}
+					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionStatesToUse);
+//				} else {
+//					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
+//				}
 
 				timeSeriesContainer.setRunId(runId);
 
@@ -242,7 +242,7 @@ public class DatabaseUtility {
 	}
 
 	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseFiles(List<BigInteger> runIds,
-			boolean getDiseaseStatesData, boolean getIncidenceData) throws TimeSeriesVisualizerException {
+			List<InfectionStateEnum> infectionSatesToRetrieve) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
 
@@ -260,17 +260,16 @@ public class DatabaseUtility {
 						simulatorKey, visualizerKey);
 
 				DatabaseTimeSeriesProcessor processor = new DatabaseTimeSeriesProcessor();
-				TimeSeriesContainer timeSeriesContainer = new TimeSeriesContainer();
+				TimeSeriesContainer timeSeriesContainer;
 
 				processor.storeTimeSeriesFromDatabaseFiles(map);
 
-				if (getDiseaseStatesData) { // can't make a disease states chart
+//				if (getDiseaseStatesData) { // can't make a disease states chart
 											// for flute
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(getDiseaseStatesData,
-							getIncidenceData);
-				} else {
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
-				}
+					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionSatesToRetrieve);
+//				} else {
+//					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
+//				}
 
 				timeSeriesContainer.setRunId(runId);
 
