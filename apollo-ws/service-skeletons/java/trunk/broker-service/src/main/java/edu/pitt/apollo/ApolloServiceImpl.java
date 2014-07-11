@@ -65,7 +65,7 @@ import edu.pitt.apollo.types.v2_0_2.SyntheticPopulationGenerationResult;
 import edu.pitt.apollo.types.v2_0_2.TerminateRunRequest;
 import edu.pitt.apollo.types.v2_0_2.TerminteRunResult;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.apolloservice.v2_0_2.ApolloServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.apolloservice.v2_0_2.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
     
     @Override
