@@ -119,8 +119,9 @@ class SimpleNumberAxis extends NumberAxis implements Serializable {
 public class VisualizerChartUtility {
 
     static Logger logger = LoggerFactory.getLogger(VisualizerChartUtility.class);
-
-    private static BasicStroke seriesStroke = new BasicStroke(3f, BasicStroke.CAP_BUTT,
+    private static final String INFECTION_STATES_CHART_TITLE = "Infection states over time";
+    private static final String INCIDENCE_CHART_TITLE = "Incidence of newly exposed over time";
+    private static final BasicStroke SERIES_STROKE = new BasicStroke(3f, BasicStroke.CAP_BUTT,
             BasicStroke.JOIN_MITER);
 
     private double computeYAxisStep(double maxYValue) {
@@ -224,7 +225,7 @@ public class VisualizerChartUtility {
 
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        renderer.setSeriesStroke(0, seriesStroke);
+        renderer.setSeriesStroke(0, SERIES_STROKE);
         renderer.setSeriesPaint(0, new Color(235, 33, 33)); // RED
         renderer.setSeriesShapesVisible(0, false);
 
@@ -289,16 +290,16 @@ public class VisualizerChartUtility {
         title.setFont(new Font("Calibri", Font.BOLD, 37));
 
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesStroke(0, seriesStroke);
+        renderer.setSeriesStroke(0, SERIES_STROKE);
         renderer.setSeriesPaint(0, new Color(235, 33, 33)); // RED
         renderer.setSeriesShapesVisible(0, false);
-        renderer.setSeriesStroke(1, seriesStroke);
+        renderer.setSeriesStroke(1, SERIES_STROKE);
         renderer.setSeriesPaint(1, new Color(55, 83, 196));
         renderer.setSeriesShapesVisible(1, false);
-        renderer.setSeriesStroke(2, seriesStroke);
+        renderer.setSeriesStroke(2, SERIES_STROKE);
         renderer.setSeriesPaint(2, new Color(5, 158, 61)); // GREEN
         renderer.setSeriesShapesVisible(2, false);
-        renderer.setSeriesStroke(3, seriesStroke);
+        renderer.setSeriesStroke(3, SERIES_STROKE);
         renderer.setSeriesPaint(3, new Color(216, 56, 224)); // PURPLE
         renderer.setSeriesShapesVisible(3, false);
         // for (int i = 0; i < seriesCount; i++) {
@@ -377,7 +378,7 @@ public class VisualizerChartUtility {
                 renderer.setSeriesPaint(i, new Color(5, 158, 61)); // GREEN - RECOVERED
             }
 
-            renderer.setSeriesStroke(i, seriesStroke);
+            renderer.setSeriesStroke(i, SERIES_STROKE);
             renderer.setSeriesShapesVisible(i, false);
         }
 
@@ -449,8 +450,8 @@ public class VisualizerChartUtility {
         return dataset;
     }
 
-    public void createSeirTimeSeriesChart(TimeSeriesContainerList timeSeriesContainerList,
-            Map<BigInteger, String> filepathMap) {
+    public void createInfectionStatesTimeSeriesChart(TimeSeriesContainerList timeSeriesContainerList,
+            Map<BigInteger, String> filepathMap, String chartXAxisLabel) {
 
         for (TimeSeriesContainer container : timeSeriesContainerList) {
 
@@ -463,8 +464,8 @@ public class VisualizerChartUtility {
             XYDatasetAndInfectionStates xyDatasetAndLabels = createSeirXYDataset(container);
             XYDataset dataset = xyDatasetAndLabels.getXyDataset();
             List<InfectionStateEnum> infectionStatesForDataset = xyDatasetAndLabels.getInfectionStatesForDataset();
-            JFreeChart chart = createDiseaseStatesChart(dataset, "Disease states over time",
-                    "simulation time step", "", infectionStatesForDataset);
+            JFreeChart chart = createDiseaseStatesChart(dataset, INFECTION_STATES_CHART_TITLE,
+                    chartXAxisLabel, "", infectionStatesForDataset);
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
             File imageFile = new File(filepathMap.get(runId));
@@ -494,7 +495,7 @@ public class VisualizerChartUtility {
 
             BigInteger runId = container.getRunId();
             XYDataset dataset = createIncidenceDataset(container, runId);
-            JFreeChart chart = createIncidenceChart(dataset, "Incidence of newly exposed over time",
+            JFreeChart chart = createIncidenceChart(dataset, INCIDENCE_CHART_TITLE,
                     "simulation time step", "");
             BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
@@ -520,7 +521,7 @@ public class VisualizerChartUtility {
             String filepath, Map<BigInteger, String> runIdSeriesLabels) {
 
         XYDataset dataset = createCombinedIncidenceDataset(imageSeriesMap, runIdSeriesLabels);
-        JFreeChart chart = createCombinedIncidenceChart(dataset, "Incidence of newly exposed over time",
+        JFreeChart chart = createCombinedIncidenceChart(dataset, INCIDENCE_CHART_TITLE,
                 "simulation time step", "");
         BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
@@ -541,37 +542,4 @@ public class VisualizerChartUtility {
         }
 
     }
-
-	// public static void main(String[] args) {
-    //
-    // Double[] series = new Double[128];
-    // for (int i = 0; i < 128; i++) {
-    // series[i] = 0.5 + i * 0.015;
-    // }
-    //
-    // VisualizerChartUtility utility = new VisualizerChartUtility();
-    // final XYSeriesCollection dataset = new XYSeriesCollection();
-    // dataset.addSeries(utility.createXYSeries(series, "test", 0));
-    //
-    // JFreeChart chart = utility.createIncidenceChart(dataset, "test",
-    // "simulation time step", "");
-    // BufferedImage image = chart.createBufferedImage(1750, 1000,
-    // BufferedImage.TYPE_INT_RGB, null);
-    //
-    // File imageFile = new File("./test.png");
-    // if (!imageFile.exists()) {
-    // try {
-    // imageFile.createNewFile();
-    // } catch (IOException ex) {
-    // System.err.println("Incidence image file could not be created" +
-    // ex.getMessage());
-    // }
-    // }
-    // try {
-    // ImageIO.write(image, "png", imageFile);
-    // } catch (IOException ex) {
-    // System.err.println("Incidence image file could not be written: " +
-    // ex.getMessage());
-    // }
-    // }
 }
