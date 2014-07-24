@@ -116,10 +116,7 @@ public class ImageGenerator {
 
     public void createTimeSeriesImages() throws TimeSeriesVisualizerException {
 
-		// if a file does not exist we want to generate the image, so we use the
-        // negation
-        // boolean generateDiseaseStates = !checkFile(diseaseStateImagePath);
-        // boolean generateIncidence = !checkFile(incidenceImagePath);
+        String chartXAxisLabel = "simulation time step (days)"; // this is a hack for now, should change in the future
         List<InfectionStateEnum> infectionStatesToUse = new ArrayList<InfectionStateEnum>();
 
         boolean simulatorSupportsDiseaseStates = true;
@@ -131,6 +128,7 @@ public class ImageGenerator {
                 infectionStatesToUse.add(InfectionStateEnum.NEWLY_EXPOSED);
 
             } else if (simulatorName.equals("anthrax")) {
+                chartXAxisLabel = "simulation time step (hours)";
                 simulatorSupportsIncidence = false;
                 infectionStatesToUse.add(InfectionStateEnum.SUSCEPTIBLE);
                 infectionStatesToUse.add(InfectionStateEnum.EXPOSED);
@@ -149,7 +147,7 @@ public class ImageGenerator {
         boolean createIncidenceChart = simulatorSupportsIncidence && !multiSimulatorChart && !multiVaccChart;
 
         // for now always generate the first 2 images
-        generateImages(createDiseaseStatesChart, createIncidenceChart, createCombinedIncidenceChart, infectionStatesToUse);
+        generateImages(createDiseaseStatesChart, createIncidenceChart, createCombinedIncidenceChart, infectionStatesToUse, chartXAxisLabel);
     }
 
 	// private void
@@ -194,7 +192,7 @@ public class ImageGenerator {
     // }
     // }
     private void generateImages(boolean generateDiseaseStates, boolean generateIncidence,
-            boolean generateCombinedIncidence, List<InfectionStateEnum> infectionStatesToUse) throws TimeSeriesVisualizerException {
+            boolean generateCombinedIncidence, List<InfectionStateEnum> infectionStatesToUse, String chartXAxisLabel) throws TimeSeriesVisualizerException {
 
 		// TimeSeriesContainerList imageSeriesMap =
         // dbUtil.retrieveTimeSeriesFromDatabaseTimeSeriesTable(generateDiseaseStates,
@@ -208,7 +206,7 @@ public class ImageGenerator {
         logger.info("Creating images...");
         Map<String, String> resourceMap = new HashMap<String, String>();
         if (generateDiseaseStates) {
-            chartUtility.createSeirTimeSeriesChart(imageSeriesMap, diseaseStateImagePathMap);
+            chartUtility.createInfectionStatesTimeSeriesChart(imageSeriesMap, diseaseStateImagePathMap, chartXAxisLabel);
             resourceMap.put("prevalence." + IMAGE_FILE_TYPE, getURLForImage("prevalence"));
         }
         if (generateIncidence) {
@@ -250,7 +248,7 @@ public class ImageGenerator {
 //		runIdsAndLabels.add(runIdAndLabel);
 
         ImageGenerator generator = new ImageGenerator(runIdsAndLabels, visualizerSoftwareId, new BigInteger(
-                "31"));
+                "37"));
         try {
             generator.createTimeSeriesImages();
         } catch (Exception ex) {
