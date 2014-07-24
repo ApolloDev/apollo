@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>2.0.2-SNAPSHOT</version>
+		<version>${apollo.version}${apollo.snapshot}</version>
 	</parent>
 	<artifactId>syntheticpopulation-service-client</artifactId>
 	<name>Synthetic Population SOAP Client</name>
@@ -19,7 +19,7 @@
 			<!-- Classifier below used with Maven Assembly Plugin to specify subset 
 				of above artifact needed. -->
 			<classifier>jaxws</classifier>
-			<version>2.0.2-SNAPSHOT</version>
+			<version>${apollo.version}${apollo.snapshot}</version>
 		</dependency>
 	</dependencies>
 

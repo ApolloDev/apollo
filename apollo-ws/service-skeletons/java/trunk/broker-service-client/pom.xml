@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>2.0.2-SNAPSHOT</version>
+		<version>${apollo.version}${apollo.snapshot}</version>
 	</parent>
 	<artifactId>broker-service-client</artifactId>
 	<name>Broker Service SOAP Client</name>
@@ -26,13 +26,13 @@
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>config-examples</artifactId>
-			<version>2.0.2-SNAPSHOT</version>
+			<version>${apollo.version}${apollo.snapshot}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
 			<artifactId>broker-service</artifactId>
-			<version>2.0.2-SNAPSHOT</version>
+			<version>${apollo.version}${apollo.snapshot}</version>
 		</dependency>
 
 	</dependencies>
