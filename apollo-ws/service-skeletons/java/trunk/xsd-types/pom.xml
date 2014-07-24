@@ -181,5 +181,5 @@
 	</build>
 	<name>Apollo XSD types</name>
 	<groupId>edu.pitt.apollo</groupId>
-	<version>2.0.2-SNAPSHOT</version>
+	<version>${apollo.version}${apollo.snapshot}</version>
 </project>
