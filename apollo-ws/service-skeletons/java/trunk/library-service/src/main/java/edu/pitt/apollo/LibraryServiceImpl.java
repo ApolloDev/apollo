@@ -53,7 +53,7 @@ import edu.pitt.apollo.types.v2_0_2.GetLibraryItemUuidsResult;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.1", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
 	static Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
