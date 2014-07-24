@@ -25,8 +25,6 @@ import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v2_0_2.SimulatorServiceV202;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
-import java.rmi.RemoteException;
-import org.apache.cxf.binding.soap.SoapFault;
 
 /**
  * 
