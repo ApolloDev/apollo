@@ -9,8 +9,6 @@ DROP TABLE IF EXISTS run_data;
 DROP TABLE IF EXISTS run;
 DROP TABLE IF EXISTS software_identification;
 DROP TABLE IF EXISTS run_data_content;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS run_data_description;
 DROP TABLE IF EXISTS run_data_description_axis_value;
 DROP TABLE IF EXISTS run_data_description_axis;
@@ -23,17 +21,6 @@ DROP TABLE IF EXISTS apollo_service_simulator_run_cache;
 DROP TABLE IF EXISTS apollo_service_visualizer_cache_results;
 DROP TABLE IF EXISTS apollo_service_visualizer_cache;
 DROP TABLE IF EXISTS simulation_groups;
-DROP TABLE IF EXISTS user_roles;
-
-CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT,
-  requester_id VARCHAR(255) NOT NULL,
-  requester_password VARCHAR(255) NOT NULL,
-  requester_email VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
-);
-
-INSERT INTO users (requester_id, requester_password, requester_email) VALUES ('test_user', 'test_password', 'test_email');
 
 CREATE TABLE software_identification (
   id INT NOT NULL AUTO_INCREMENT,
@@ -54,6 +41,11 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://localhost:8080/flutesimulatorservice2.0.1/services/flutesimulatorservice?wsdl',1);
 
 
+CREATE TABLE software_to_test (
+	software_id INT REFERENCES software_identification(id)
+);
+
+INSERT INTO `software_to_test` VALUES (2),(3),(4);
 
 
 CREATE TABLE run_data_content
@@ -65,30 +57,6 @@ CREATE TABLE run_data_content
   md5_collision_id INT NOT NULL DEFAULT 1,
   PRIMARY KEY(id),
   CONSTRAINT run_data_content_unique UNIQUE (md5_hash_of_content, md5_collision_id)
-);
-
-
-
-CREATE TABLE roles (
-  id INT NOT NULL AUTO_INCREMENT,
-  software_id INT NOT NULL REFERENCES software_identification(id),
-  can_run BIT,
-  can_view_cached_results BIT,
-  PRIMARY KEY(id),
-  CONSTRAINT role_unique UNIQUE (software_id, can_run, can_view_cached_results)
-);
-
-/* user can run fred */
-INSERT INTO roles (software_id, can_run, can_view_cached_results) values (1, 1, 1);
-/* user can run time series visualizer */
-INSERT INTO roles (software_id, can_run, can_view_cached_results) values (2, 1, 1);
-/* user can run gaia */
-INSERT INTO roles (software_id, can_run, can_view_cached_results) values (3, 1, 1);
-
-CREATE TABLE user_roles (
-  user_id INT NOT NULL REFERENCES users(id),
-  role_id INT NOT NULL REFERENCES roles(id),
-  CONSTRAINT user_role_unique UNIQUE (user_id, role_id)
 );
 
 
@@ -239,7 +207,11 @@ INSERT INTO run_data_description (label) values ("GAIA movie, movie.ogg "); /* 3
 INSERT INTO run_data_description (label) values ("RunSimulationMessage JSON, run_simulation_message.json "); /* 40*/
 INSERT INTO run_data_description (label) values ("RunVisualizationMessage JSON for Time Series Visualizer, run_visualization_message.json "); /* 41*/
 INSERT INTO run_data_description (label) values ("RunVisualizationMessage JSON for GAIA Visualizer, run_visualization_message.json "); /* 42*/
-
+INSERT INTO run_data_description (label) values ("Anthrax text configuration file, config.txt "); /* 43*/
+INSERT INTO run_data_description (label) values ("Anthrax verbose configuration file, verbose.html"); /* 44 */
+INSERT INTO run_data_description (label) values ("Anthrax Simulator log file for susceptible, susceptible.txt "); /* 45*/
+INSERT INTO run_data_description (label) values ("Anthrax Simulator log file for exposed, exposed.txt "); /* 46*/
+INSERT INTO run_data_description (label) values ("Anthrax Simulator log file for recovered, recovered.txt "); /* 47*/
 
 
 
@@ -491,12 +463,42 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(41, 4, "0"),
 	(41, 5, "4"),
 	
-	(41, 1, "TEXT"), 
-	(41, 2, "run_visualization_message.json"),
-	(41, 3, "RUN_VISUALIZATION_MESSAGE"),
-	(41, 4, "0"),
-	(41, 5, "5");
+	(42, 1, "TEXT"), 
+	(42, 2, "run_visualization_message.json"),
+	(42, 3, "RUN_VISUALIZATION_MESSAGE"),
+	(42, 4, "0"),
+	(42, 5, "5"),
+	
+	(43, 1, "TEXT"), 
+	(43, 2, "config.txt"),
+	(43, 3, "CONFIGURATION_FILE"),
+	(43, 4, "1"),
+	(43, 5, "7"),
+	
+	(44, 1, "TEXT"), 
+	(44, 2, "verbose.html"),
+	(44, 3, "CONFIGURATION_FILE"),
+	(44, 4, "1"),
+	(44, 5, "7"),
 
+	(45, 1, "TEXT"), 
+	(45, 2, "susceptible.txt"),
+	(45, 3, "SIMULATOR_LOG_FILE"),
+	(45, 4, "7"),
+	(45, 5, "4"),
+	
+	(46, 1, "TEXT"), 
+	(46, 2, "exposed.txt"),
+	(46, 3, "SIMULATOR_LOG_FILE"),
+	(46, 4, "7"),
+	(46, 5, "4"),
+	
+	(47, 1, "TEXT"), 
+	(47, 2, "recovered.txt"),
+	(47, 3, "SIMULATOR_LOG_FILE"),
+	(47, 4, "7"),
+	(47, 5, "4");
+	
 CREATE VIEW run_data_description_view AS
 SELECT
 	des.id as run_data_description_id,
