@@ -41,13 +41,6 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://localhost:8080/flutesimulatorservice2.0.1/services/flutesimulatorservice?wsdl',1);
 
 
-CREATE TABLE software_to_test (
-	software_id INT REFERENCES software_identification(id)
-);
-
-INSERT INTO `software_to_test` VALUES (2),(3),(4);
-
-
 CREATE TABLE run_data_content
  (
   id INT NOT NULL AUTO_INCREMENT,
