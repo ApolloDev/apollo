@@ -21,7 +21,8 @@ ServiceCodes = {
     'CALLING_GAIA':117,
     'GAIA_FAILED':118,
     'GAIA_SUCCESS':119,
-    'FILE_MOVE_FAILED':120
+    'FILE_MOVE_FAILED':120,
+    'FAILED':121
     }
 
 ServiceDescriptions = {
@@ -44,7 +45,8 @@ ServiceDescriptions = {
     ServiceCodes['CALLING_GAIA']:'Sent Call to the GAIA webservice',
     ServiceCodes['GAIA_FAILED']:'GAIA Service Call failed',
     ServiceCodes['GAIA_SUCCESS']:'GAIA Service return successfully',
-    ServiceCodes['FILE_MOVE_FAILED']:'Moving movie file to web directory failed'
+    ServiceCodes['FILE_MOVE_FAILED']:'Moving movie file to web directory failed',
+    ServiceCodes['FAILED']:'Service failed'
     }
 
 ServiceTypes = {
@@ -67,7 +69,8 @@ ServiceTypes = {
     ServiceCodes['CALLING_GAIA']:'running',
     ServiceCodes['GAIA_FAILED']:'failed',
     ServiceCodes['GAIA_SUCCESS']:'running',
-    ServiceCodes['FILE_MOVE_FAILED']:'failed'
+    ServiceCodes['FILE_MOVE_FAILED']:'failed',
+    ServiceCodes['FAILED']:'failed'
     }
 class Log:
     def __init__(self, logFileName_=None,logLevel_ = "Normal", buffered_=False,append_=False):
@@ -98,37 +101,49 @@ class Log:
         self.moniker = moniker
         
     def update(self,status = "NOTHING",  message = None):
-        thisServiceCode = ServiceCodes['UNKNOWN']
-        
-        if ServiceCodes.has_key(status):
-            thisServiceCode = ServiceCodes[status]
-            
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        thisMessage = ""
-        if message is None:
-            thisMessage = "%s %s Code: %d, %s\n"%(timestamp,self.moniker,
-                                                  thisServiceCode,
-                                                  ServiceDescriptions[thisServiceCode])
-        else:
-            thisMessage = "%s %s Code: %d, %s message: %s\n"%(timestamp,self.moniker,
-                                                              thisServiceCode,
-                                                              ServiceDescriptions[thisServiceCode],
-                                                              message)
-        self.logFile.write("%s"%thisMessage)
-        self.lastMessage = (status,thisMessage)
-        
-        if not self.buffered: self.logFile.flush()
+        try:
+            thisServiceCode = ServiceCodes['UNKNOWN']
+
+            if ServiceCodes.has_key(status):
+                thisServiceCode = ServiceCodes[status]
+
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            thisMessage = ""
+            if message is None:
+                thisMessage = "%s %s Code: %d, %s\n"%(timestamp,self.moniker,
+                                                      thisServiceCode,
+                                                      ServiceDescriptions[thisServiceCode])
+            else:
+                thisMessage = "%s %s Code: %d, %s message: %s\n"%(timestamp,self.moniker,
+                                                                  thisServiceCode,
+                                                                  ServiceDescriptions[thisServiceCode],
+                                                                  message)
+            self.logFile.write("%s"%thisMessage)
+            self.lastMessage = (status,thisMessage)
+
+            if not self.buffered: self.logFile.flush()
+        except Exception as e:
+            print str(e)
+            raise e
 
     def updateAndExit(self,status = "NOTHING"):
         self.update(status)
         sys.exit()
 
     def pollStatus(self):
-        return self.lastMessage
-
+        try:
+            return self.lastMessage
+        except Exception as e:
+            print str(e)
+            raise e
+        
     def pollStatusCode(self):
-        return ServiceCodes[self.lastMessage[0]]
-
+        try:
+            return ServiceCodes[self.lastMessage[0]]
+        except Exception as e:
+            print str(e)
+            raise e
+        
     def pollStatusType(self):
         return ServiceTypes[self.pollStatusCode()]
     
