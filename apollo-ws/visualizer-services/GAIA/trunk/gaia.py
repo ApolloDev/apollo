@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# $Id: gaia.py,v 1.3 2013/02/18 12:51:13 stbrown Exp $ #
+# $Id: gaia.py,v 1.6 2014/05/19 11:35:08 stbrown Exp $ #
 
 # Copyright 2009, Pittsburgh Supercomputing Center (PSC).  
 # See the file 'COPYRIGHT.txt' for any restrictions.
@@ -23,14 +23,15 @@ class GAIA:
             self.confInfo = conf_info_
 
     def call(self):
+	xmlMessage = self.plotInfo.printXMLMessage()
         httpConn = httplib.HTTPConnection(self.confInfo.serverURL,self.confInfo.serverPort,True)
         if self.confInfo.debug:
             httpConn.set_debuglevel(2)
         httpConn.connect()
 
-        xmlMessage = self.plotInfo.printXMLMessage()
-	with open("out.xml","wb") as f:
-	    f.write(xmlMessage)
+        #xmlMessage = self.plotInfo.printXMLMessage()
+	#with open("out.xml","wb") as f:
+	#    f.write(xmlMessage)
 
         headers = { Constants.MIME_CONTENT_TYPE: Constants.MIME_TEXT_XML,
                     Constants.MIME_CONTENT_LENGTH: '%d; %s="%s"'\
@@ -51,9 +52,9 @@ class GAIA:
             print 'WARNING: Unrecognized File Type returned from GAIA Server\n'\
                   'File Statistics:\n'\
                   '\tFile Type:%s\n'\
-                  '\tFile Size:%d\n'\
+                  '\tFile Size:%s\n'\
                   '\tSaving to:%s'\
-                  %(responseFileType,int(responseLength),self.plotInfo.output_filename+".gaia")
+                  %(responseFileType,str(responseLength),self.plotInfo.output_filename+".gaia")
             responseFileExt = ".gaia"
 
         responseOutFile = self.plotInfo.output_filename + responseFileExt
@@ -70,7 +71,7 @@ class Constants:
     minimum_ABGR_value = int(0)
     kNormalizedGeometry = float(1000.0)
     supportedOutputFormats = ['gif','png']
-    supportedBundleFormats = ['tar','mpg','mov','mp4']
+    supportedBundleFormats = ['tar','ogg','mpg','mov','mp4']
     supportedWrapperTypes = {'fips':5,'hasc':5,'usfips':5,'lonlat':6,'lonlat-label':7,'lonlat-path':-1,
                              'lonlat-poly':-1}
     GAIA_DEFAULT_STYLE = 0
@@ -262,6 +263,9 @@ class PlotInfo:
                 elif elemType == "usfips":
                     element = USFips()
                     element.parseRec(line[len('usfips '):])
+                elif elemType[:2] == "us":
+                    element = USApolloCode()
+                    element.parseRec(line[len('US'):])
                 elif elemType == "hasc":
                     element = HASC()
                     element.parseRec(line[len('hasc '):])
@@ -402,14 +406,13 @@ class PlotInfo:
                 wrapperCount = len(elementStr)
             xmlString += elementStr
            
-        xmlString += xmlString[:-1] + '</wrapper-raw>'
-
+        xmlString = xmlString[:-1] + '</wrapper-raw>'
         xmlString += '</gaia>'
         
         return xmlString
 
 class ConfInfo:
-    def __init__(self,serverURL_="gaia.psc.edu",serverPort_="13500",logInfo_=None,debug_=False):
+    def __init__(self,serverURL_="gaia.pha.psc.edu",serverPort_="13500",logInfo_=None,debug_=False):
         self.serverURL = serverURL_
         self.serverPort = serverPort_
         self.logInfo = logInfo_
@@ -461,8 +464,8 @@ class LonLat(Wrapper):
             raise RuntimeError("ERROR: lonlat element input has the incorrect number of fields")
         
         ## First look for a styleID parameter
-        self.latitude = float(recSplit.pop(0))
-        self.longitude = float(recSplit.pop(0))
+        self.latitude = float(recSplit.pop(0).strip('"').strip("'").strip())
+        self.longitude = float(recSplit.pop(0).strip('"').strip("'").strip())
 
         ### can have multiple values associated with styles
         foundFlag = False
@@ -475,35 +478,17 @@ class LonLat(Wrapper):
                 self.styleID = int(styleSplit[1])
                 ### eliminate this from the record
                 recSplit[recSplit.index(record)] = str(styleSplit[0])
-        self.value = float(recSplit.pop(0))
+        self.value = float(recSplit.pop(0).strip('"').strip("'").strip())
 
         ### is there a time sequence value
         
         if len(recSplit) > 0:
-            self.time = float(recSplit.pop(0))
+            self.time = float(recSplit.pop(0).strip('"').strip("'").strip())
 
     def __str__(self):
         return 'lonlat %f %f %g %d %g'%(self.longitude,self.latitude,\
                                         self.value,self.styleID,self.time)
-
-def FIPSToUSFips(fipsStr):
-    fipsSymb = ["st","ct","tr","bl"]
-    print "Fips = " + fipsStr
-    fipsList = []
-    fipsList.append(fipsStr[0:2])
-    if len(fipsStr) > 2:  fipsList.append(fipsStr[2:5])
-    if len(fipsStr) > 5:
-	tr = fipsStr[5:11]
-	if tr[4:] == "00": tr = tr[:4]
-	fipsList.append(tr)
-    if len(fipsStr) > 11:
-	fipsList.append(fipsStr[11:12])
-
-    returnString = ""
-    for iFips in range(0,len(fipsList)):
-	returnString += "%s%s."%(fipsSymb[iFips],fipsList[iFips])
-    return returnString[:-1]
-		       
+        
 class USFips(Wrapper):
     def __init__(self,fipsString_=None,value_=0.0,time_=Constants.GAIA_DEFAULT_TIME_SEQ,
                  styleID_=Constants.GAIA_DEFAULT_STYLE):
@@ -518,24 +503,145 @@ class USFips(Wrapper):
         if len(recSplit) < 2 or len(recSplit) > 3:
             raise RuntimeError("ERROR: usfips element input has the incorrect number of fields")
         
-        self.fipsString = recSplit.pop(0)
+        self.fipsString = recSplit.pop(0).strip('"').strip("'").strip()
 
         foundFlag = False
         for record in recSplit:
             if Constants.WRAPPER_VALUE_STYLE_DELIMITER in record:
                 if foundFlag:
-                    raise RuntimeError("ERROR: Format of LonLat Wrapper has more than one Style parameter specified")
+                    raise RuntimeError("ERROR: Format of USFips Wrapper has more than one Style parameter specified")
                 foundFlag = True
                 styleSplit = record.split(Constants.WRAPPER_VALUE_STYLE_DELIMITER)
                 self.styleID = int(styleSplit[1])
                 ### eliminate this from the record
                 recSplit[recSplit.index(record)] = str(styleSplit[0])
-        self.value = float(recSplit.pop(0))
+        self.value = float(recSplit.pop(0).strip('"').strip("'").strip("\n"))
 
          ### is there a time sequence value
         if len(recSplit) > 0:
-            self.time = float(recSplit.pop(0))
+            
+            self.time = float(recSplit.pop(0).strip('"').strip("'").strip("\n"))
 
+    def __str__(self):
+        return "usfips %s %g %d %g"%(self.fipsString,self.value,self.styleID,self.time)
+
+class USApolloCode(Wrapper):
+    def __init__(self,fipsString_=None,value_=0.0,time_=Constants.GAIA_DEFAULT_TIME_SEQ,
+                 styleID_=Constants.GAIA_DEFAULT_STYLE):
+        Wrapper.__init__(self,"usfips",time_,styleID_)
+        self.fipsString = fipsString_
+        self.value = float(value_)
+
+    def parseRec(self,rec):
+        ## split by space
+        recSplit = rec.split()
+        #print str(recSplit)
+
+        if len(recSplit) < 2 or len(recSplit) > 3:
+            raise RuntimeError("ERROR: usfips element input has the incorrect number of fields")
+        
+        self.fipsString = self.convertFIPSToGaiaFips(recSplit.pop(0).strip('"').strip("'").strip())
+
+        foundFlag = False
+        for record in recSplit:
+            if Constants.WRAPPER_VALUE_STYLE_DELIMITER in record:
+                if foundFlag:
+                    raise RuntimeError("ERROR: Format of USFipsApolloCode Wrapper has more than one Style parameter specified")
+                foundFlag = True
+                styleSplit = record.split(Constants.WRAPPER_VALUE_STYLE_DELIMITER)
+                self.styleID = int(styleSplit[1])
+                ### eliminate this from the record
+                recSplit[recSplit.index(record)] = str(styleSplit[0])
+        val = recSplit.pop(0).strip('"').strip("'").strip("\n")
+        self.value = float(val)
+         ### is there a time sequence value
+        if len(recSplit) > 0:
+            tim = recSplit.pop(0)
+            self.time = float(tim.strip('"').strip("'").strip("\n"))
+
+    def convertFIPSToGaiaFips(self,fips_):
+        fipsWOAsterix = fips_.strip('*')
+
+        astCount = fips_.count('*')
+        if astCount > 4:
+            raise RuntimeError("ERROR: USApolloCode::convertFipsToGaiaFips %s has %d asterices, can only have 4"%(str(fips_),astCount))
+
+        if len(fipsWOAsterix) < 2:
+            raise RuntimeError("ERROR: USApolloCode::convertFipsToGaiaFips is less than 2 in length")
+
+        if len(fipsWOAsterix) != 2 and len(fipsWOAsterix) != 5 and len(fipsWOAsterix) != 9 and len(fipsWOAsterix) != 11 and len(fipsWOAsterix) < 12:
+            raise RuntimeError("ERROR: USApolloCode::convertFipsToGaiaFips %s, %d is not an standard length"%(str(fipsWOAsterix),len(fipsWOAsterix)))
+        
+        if len(fipsWOAsterix) == 0:
+            returnString = self.asterixToCode("all",astCount)
+        else:
+            returnString = "st%s"%fipsWOAsterix[0:2]
+
+        if len(fipsWOAsterix) == 2:
+            returnString += self.asterixToCode("st",astCount)
+                
+        if len(fipsWOAsterix) > 2:
+            returnString += ".ct%s"%fips_[2:5]
+            if len(fipsWOAsterix) == 5: 
+                returnString += self.asterixToCode("ct",astCount)
+        
+        if len(fipsWOAsterix) > 5:
+	    fips_tr = fipsWOAsterix[5:11]
+	    if fips_tr[-2:] == "00":
+		fips_tr = fipsWOAsterix[5:9]
+            returnString += ".tr%s"%fips_tr
+            
+            if len(fipsWOAsterix) == 9 or len(fipsWOAsterix) == 11:
+                returnString += self.asterixToCode("tr",astCount)
+        
+        if len(fipsWOAsterix) == 10 or len(fipsWOAsterix) == 12:
+            returnString += ".bl%s"%fipsWOAsterix[11:]
+                
+        if returnString.count('ct') > 1 or returnString.count('st') > 1 or returnString.count('tr') > 1 or returnString.count('bl') > 1:
+            raise RuntimeError("ERROR: USApolloCode::convetFipsToGaiaFips %s has and incorrect format in parsing asterices"%(returnString))
+
+        return returnString
+    
+    def asterixToCode(self,level,astCount):
+        if level not in ["all","st","ct","tr"]:
+            raise RuntimeError("ERROR: USApolloCode::asterixToCode: invalid level %s"%str(level))
+        
+        print "Level: %s count %d"%(level,astCount)
+        if level == "all":
+            if astCount > 4:
+                astCount = 4
+            if astCount == 4:
+                return "st*.ct*.tr*.bl*"
+            elif astCount == 3:
+                return "st*.ct*.tr*"
+            elif astCount == 2:
+                return "st*.ct*"
+            elif astCount == 1:
+                return "st*"
+        elif level == "st":
+            if astCount > 3:
+                astCount = 3
+            if astCount == 3:
+                return ".ct*.tr*.bl*"
+            elif astCount == 2:
+                return ".ct*.tr*"
+            elif astCount == 1:
+                return ".ct*"
+        elif level == "ct":
+            if astCount > 2:
+                astCount = 2
+            if astCount == 2:
+                return ".tr*.bl*"
+            if astCount ==1:
+                return ".tr*"
+        elif level == "tr":
+            if astCount > 1:
+                astCount = 1
+            if astCount == 1:
+                return ".bl*"
+        
+        return ""
+                
     def __str__(self):
         return "usfips %s %g %d %g"%(self.fipsString,self.value,self.styleID,self.time)
 
@@ -553,7 +659,7 @@ class HASC(Wrapper):
         if len(recSplit) < 2 or len(recSplit) > 3:
             raise RuntimeError("ERROR: hasc element input has the incorrect number of fields")
         
-        self.fipsString = recSplit.pop(0)
+        self.fipsString = recSplit.pop(0).strip('"').strip("'").strip()
 
         foundFlag = False
         for record in recSplit:
@@ -565,11 +671,11 @@ class HASC(Wrapper):
                 self.styleID = int(styleSplit[1])
                 ### eliminate this from the record
                 recSplit[recSplit.index(record)] = str(styleSplit[0])
-        self.value = float(recSplit.pop(0))
+        self.value = float(recSplit.pop(0).strip('"').strip("'").strip())
         
         ### is there a time sequence value
         if len(recSplit) > 0:
-            self.time = float(recSplit.pop(0))
+            self.time = float(recSplit.pop(0).strip('"').strip("'").strip())
 
     def __str__(self):
             return "hasc %s %g %d %g"%(self.fipsString,self.value,self.styleID,self.time)
@@ -601,8 +707,8 @@ class LonLatLabel(Wrapper):
         if len(recSplit) < 3 or len(recSplit) > 4:
             raise RuntimeError("ERROR: lonlat-label element input has the incorrect number of fields")
         
-        self.latitude = float(recSplit.pop(0))
-        self.longitude = float(recSplit.pop(0))
+        self.latitude = float(recSplit.pop(0).strip('"').strip("'").strip())
+        self.longitude = float(recSplit.pop(0).strip('"').strip("'").strip())
 
         foundFlag = False
         for record in recSplit:
@@ -614,10 +720,10 @@ class LonLatLabel(Wrapper):
                 self.styleID = int(styleSplit[1])
                 ### eliminate this from the record
                 recSplit[recSplit.index(record)] = str(styleSplit[0])
-        self.value = float(recSplit.pop(0))
+        self.value = float(recSplit.pop(0).strip('"').strip("'").strip())
 
         if len(recSplit) > 0:
-            self.time = float(recSplit.pop(0))
+            self.time = float(recSplit.pop(0).strip('"').strip("'").strip())
 
     def __str__(self):
         return 'lonlat-label %f %f "%s" %g %d %g'%(self.longitude,self.latitude,self.label,\
@@ -647,9 +753,9 @@ class LonLatPath(Wrapper):
             ## split by space
             recSplit = rec.split()
 
-            pathID = int(recSplit.pop(0))
-            latitude = float(recSplit.pop(0))
-            longitude = float(recSplit.pop(0))
+            pathID = int(recSplit.pop(0).strip('"').strip("'").strip())
+            latitude = float(recSplit.pop(0).strip('"').strip("'").strip())
+            longitude = float(recSplit.pop(0).strip('"').strip("'").strip())
             styleID = Constants.GAIA_DEFAULT_STYLE
             time = Constants.GAIA_DEFAULT_TIME_SEQ
             
@@ -663,10 +769,10 @@ class LonLatPath(Wrapper):
                     styleID = int(styleSplit[1])
                     ### eliminate this from the record
                     recSplit[recSplit.index(record)] = str(styleSplit[0])
-            value = float(recSplit.pop(0))
+            value = float(recSplit.pop(0).strip('"').strip("'").strip())
 
             if len(recSplit) > 0:
-                time = float(recSplit.pop(0))
+                time = float(recSplit.pop(0).strip('"').strip("'").strip())
 
             if second_pass:
                 # If this is the second entry or greater... just error check
@@ -712,9 +818,9 @@ class LonLatPoly(Wrapper):
             ## split by space
             recSplit = rec.split()
 
-            polyID = int(recSplit.pop(0))
-            latitude = float(recSplit.pop(0))
-            longitude = float(recSplit.pop(0))
+            polyID = int(recSplit.pop(0).strip('"').strip("'").strip())
+            latitude = float(recSplit.pop(0).strip('"').strip("'").strip())
+            longitude = float(recSplit.pop(0).strip('"').strip("'").strip())
             styleID = Constants.GAIA_DEFAULT_STYLE
             time = Constants.GAIA_DEFAULT_TIME_SEQ
             
@@ -728,10 +834,10 @@ class LonLatPoly(Wrapper):
                     styleID = int(styleSplit[1])
                     ### eliminate this from the record
                     recSplit[recSplit.index(record)] = str(styleSplit[0])
-            value = float(recSplit.pop(0))
+            value = float(recSplit.pop(0).strip('"').strip("'").strip())
 
             if len(recSplit) > 0:
-                time = float(recSplit.pop(0))
+                time = float(recSplit.pop(0).strip('"').strip("'").strip())
 
             if second_pass:
                 # If this is the second entry or greater... just error check
@@ -951,6 +1057,17 @@ def main():
     print 'Test LonLatPoly:'
     for llp in testLonLatPolys:
         print '\t%s'%(str(llp))
+
+    testUSApolloCodeRec = ["06037191710* 1.0","34 11 123:2",
+                           "21023000600245 3.234:1"]
+    testUSApolloCodes = [USApolloCode() for i in range(len(testUSApolloCodeRec))]
+    for i in range(0,len(testUSApolloCodeRec)):
+        testUSApolloCodes[i].parseRec(testUSApolloCodeRec[i])
+    
+    print 'Test USApolloCodeRec:'
+    for up in testUSApolloCodes:
+        print '\t%s'%(str(up))
+                             
     #test_plotInfo = PlotInfo(input_filename_="../../samples/CA-usfips.samp")
     #gaia = GAIA(test_plotInfo)
     #print test_plotInfo.output_filename
