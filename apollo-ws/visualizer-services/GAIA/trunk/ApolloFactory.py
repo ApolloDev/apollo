@@ -19,13 +19,13 @@ Created on Nov 29, 2012
 @author: John Levander
 '''
 
-from VisualizerService_v2_0_services_types import *
+from VisualizerService_v2_0_2_types import *
 
 class ApolloFactory:
     
    
-    def new_VisualizerResult(self):
-        vr = ns1.VisualizerResult_Def(None).pyclass
+    def new_RunVisualizationResult(self):
+        vr = ns1.RunVisualizationResult_Def(None).pyclass
         return vr
     
     def new_UrlOutputResource_Def(self):
