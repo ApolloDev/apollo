@@ -21,39 +21,47 @@ import edu.pitt.apollo.types.v2_0_2.RunVisualizationResult;
  */
 public class RunVisualizationMethod extends RunMethod {
 
-    public static RunVisualizationResult runVisualization(RunVisualizationMessage runVisualizationMessage) {
-        DatabaseAccessorForRunningVisualizations databaseAccessorForRunningVisualizations =
-                new DatabaseAccessorForRunningVisualizations(runVisualizationMessage);
-        RunVisualizationResult result = new RunVisualizationResult();
-        try {
-            BigInteger runId = databaseAccessorForRunningVisualizations.getCachedRunIdFromDatabaseOrNull();
+	private final RunVisualizationMessage runVisualizationMessage;
 
-            if (runId != null) {
-                if (isRunFailed(runId)) {
-                    databaseAccessorForRunningVisualizations.removeAllDataAssociatedWithRunId(runId);
-                } else {
-                    result.setVisualizationRunId(runId);
-                    return result;
-                }
-            }
+	public RunVisualizationMethod(RunVisualizationMessage runVisualizationMessage) {
+		super(runVisualizationMessage.getAuthentication(), runVisualizationMessage.getVisualizerIdentification());
+		this.runVisualizationMessage = runVisualizationMessage;
+		databaseAccessor = new DatabaseAccessorForRunningVisualizations(runVisualizationMessage);
+	}
 
-            runId = databaseAccessorForRunningVisualizations.insertRunIntoDatabase(runVisualizationMessage);
+	public RunVisualizationResult runVisualization() {
 
-            new RunVisualizationThread(runId, runVisualizationMessage).start();
+		// check authorization
+		RunVisualizationResult result = new RunVisualizationResult();
+		try {
+			BigInteger runId = databaseAccessor.getCachedRunIdFromDatabaseOrNull();
 
-            result.setVisualizationRunId(runId);
-            return result;
-        } catch (ApolloDatabaseException ex) {
-            try {
-                long runId = ApolloServiceErrorHandler.writeErrorWithErrorId(ex.getMessage());
-                result.setVisualizationRunId(new BigInteger(String.valueOf(runId)));
-                return result;
-            } catch (IOException e) {
-                System.err.println("IOException writing error file: "
-                        + e.getMessage());
-                result.setVisualizationRunId(ApolloServiceErrorHandler.FATAL_ERROR_CODE);
-                return result;
-            }
-        }
-    }
+			if (runId != null) {
+				if (isRunFailed(runId)) {
+					databaseAccessor.removeAllDataAssociatedWithRunId(runId);
+				} else {
+					result.setVisualizationRunId(runId);
+					return result;
+				}
+			}
+
+			runId = databaseAccessor.insertRunIntoDatabase();
+
+			new RunVisualizationThread(runId, runVisualizationMessage).start();
+
+			result.setVisualizationRunId(runId);
+			return result;
+		} catch (ApolloDatabaseException ex) {
+			try {
+				long runId = ApolloServiceErrorHandler.writeErrorWithErrorId(ex.getMessage());
+				result.setVisualizationRunId(new BigInteger(String.valueOf(runId)));
+				return result;
+			} catch (IOException e) {
+				System.err.println("IOException writing error file: "
+					+ e.getMessage());
+				result.setVisualizationRunId(ApolloServiceErrorHandler.FATAL_ERROR_CODE);
+				return result;
+			}
+		}
+	}
 }

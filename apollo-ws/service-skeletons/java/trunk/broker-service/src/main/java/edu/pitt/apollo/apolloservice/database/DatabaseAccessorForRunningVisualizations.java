@@ -20,71 +20,52 @@ import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
  */
 public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 
-    private RunVisualizationMessage runVisualizationMessage;
+	private final RunVisualizationMessage runVisualizationMessage;
 
-    public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage) {
-        super();
-        this.runVisualizationMessage = runVisualizationMessage;
-    }
+	public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage) {
+		super();
+		this.runVisualizationMessage = runVisualizationMessage;
+	}
 
-    private String getRunVisualizationMessageAsJsonForRunIdOrNull(BigInteger runId) throws ApolloDatabaseException {
-        Map<String, ByteArrayOutputStream> currentRunVisualizationMessageAsJsonMap =
-                dbUtils.getDataContentForSoftware(
-                runId,
-                ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-                dbUtils.getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
-        for (String label : currentRunVisualizationMessageAsJsonMap.keySet()) {
-            if (label.equals("run_visualization_message.json")) {
-                return currentRunVisualizationMessageAsJsonMap.get(label).toString();
-            }
-        }
-        return null;
-    }
+	@Override
+	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
+		Map<String, ByteArrayOutputStream> currentRunVisualizationMessageAsJsonMap
+			= dbUtils.getDataContentForSoftware(
+				runId,
+				ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
+				dbUtils.getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
+		for (String label : currentRunVisualizationMessageAsJsonMap.keySet()) {
+			if (label.equals("run_visualization_message.json")) {
+				return currentRunVisualizationMessageAsJsonMap.get(label).toString();
+			}
+		}
+		return null;
+	}
 
-    private boolean runIdIsAssociatedWithMatchingRunVisualizationMessage(String targetRunVisualizationMessageAsJson,
-            BigInteger runIdAssociatedWithRunVisualizationMessageHash) throws ApolloDatabaseException {
+	@Override
+	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
 
-        String runVisualizationMessageAssociatedWithRunIdAsJson =
-                getRunVisualizationMessageAsJsonForRunIdOrNull(runIdAssociatedWithRunVisualizationMessageHash);
+		List<BigInteger> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
 
-        if (runVisualizationMessageAssociatedWithRunIdAsJson == null) {
-            throw new ApolloDatabaseException(
-                    "There was no run_visualization_message.json content for run ID "
-                    + runIdAssociatedWithRunVisualizationMessageHash);
-        }
+		if (runIds.size() > 0) {
+			String targetRunVisualizationMessageAsJson = dbUtils.getJSONString(runVisualizationMessage, RunVisualizationMessage.class);
+			for (BigInteger runIdAssociatedWithRunVisualizationMessageHash : runIds) {
+				if (isRunIdAssociatedWithMatchingRunMessage(targetRunVisualizationMessageAsJson,
+					runIdAssociatedWithRunVisualizationMessageHash)) {
+					return runIdAssociatedWithRunVisualizationMessageHash;
+				}
+			}
 
-        if (targetRunVisualizationMessageAsJson.equals(runVisualizationMessageAssociatedWithRunIdAsJson)) {
-            return true;
-        } else {
-            return false;
-        }
+			return null;
+		} else {
+			return null;
+		}
+	}
 
-    }
-
-    public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
-
-        List<BigInteger> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
-
-        if (runIds.size() > 0) {
-            String targetRunVisualizationMessageAsJson = dbUtils.getJSONString(runVisualizationMessage, RunVisualizationMessage.class);
-            for (BigInteger runIdAssociatedWithRunVisualizationMessageHash : runIds) {
-                if (runIdIsAssociatedWithMatchingRunVisualizationMessage(targetRunVisualizationMessageAsJson,
-                        runIdAssociatedWithRunVisualizationMessageHash)) {
-                    return runIdAssociatedWithRunVisualizationMessageHash;
-                }
-            }
-
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    public BigInteger insertRunIntoDatabase(
-            RunVisualizationMessage runVisualizationMessage)
-            throws ApolloDatabaseException {
-        int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runVisualizationMessage) + 1;
-        BigInteger runId = new BigInteger(Integer.toString(dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId)));
-        return runId;
-    }
+	@Override
+	public BigInteger insertRunIntoDatabase() throws ApolloDatabaseException {
+		int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runVisualizationMessage) + 1;
+		BigInteger runId = new BigInteger(Integer.toString(dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId)));
+		return runId;
+	}
 }
