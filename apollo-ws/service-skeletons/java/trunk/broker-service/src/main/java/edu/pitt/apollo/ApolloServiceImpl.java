@@ -191,7 +191,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunVisualizationResponse")
     public RunVisualizationResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-        return RunVisualizationMethod.runVisualization(runVisualizationMessage);
+		RunVisualizationMethod runVisualizationMethod = new RunVisualizationMethod(runVisualizationMessage);
+        return runVisualizationMethod.runVisualization();
     }
     
     @Override
@@ -232,7 +233,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunSimulationResponse")
     public BigInteger runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-        return RunSimulationMethod.runSimulation(runSimulationMessage);
+		RunSimulationMethod runSimulationMethod = new RunSimulationMethod(runSimulationMessage);
+        return runSimulationMethod.runSimulation();
     }
     
     @Override
