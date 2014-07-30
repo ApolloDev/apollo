@@ -1,14 +1,25 @@
-import os,sys,string
-import math
-import optparse
-from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Household_Set,FRED_People_Set
-import apollo
-import time
-import glob,hashlib
-import datetime
-import random
+try:
+	import os,sys,string
+	import math
+	import optparse
+
+        if 'FRED_HOME' not in os.environ.keys():
+		raise RuntimeError("Environment Variable 'FRED_HOME' must be set to run the fred to apollo translator")
+	fred_home = os.environ['FRED_HOME']
+	sys.path.append(fred_home+'/bin')
+ 	
+	from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Household_Set,FRED_People_Set
+	import apollo
+	import time
+	import glob,hashlib
+	import datetime
+	import random
 #from threading import Thread
-from multiprocessing import Process,Queue
+#from multiprocessing import Process,Queue
+except Exception as e:
+	import sys
+	sys.stderr.write(str(e))
+	sys.exit(1)
 
 def statusUpdate(status,message):
 	statusFile = './starttime'
@@ -210,7 +221,7 @@ if __name__ == '__main__':
 	    SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')"%(simulationRunId,runDataDescriptionIdTS,runDataContentId)
 	    apolloDB.query(SQLString)
 	    
- 	    runDataDescriptionIdGAIA = apolloDB.getRunDataDescriptionId(label_="newly_exposed.txt",destination_software=5) 
+ 	    runDataDescriptionIdGAIA = apolloDB.getRunDataDescriptionId(label_="newly_exposed.txt",destination_software_=5) 
 	    SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')"%(simulationRunId,runDataDescriptionIdGAIA,runDataContentId)
 	    print "GAIA ID = " + str(runDataDescriptionIdGAIA)
             apolloDB.query(SQLString)
