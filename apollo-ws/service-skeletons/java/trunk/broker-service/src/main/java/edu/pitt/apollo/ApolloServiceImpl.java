@@ -52,6 +52,7 @@ import edu.pitt.apollo.types.v2_0_2.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.types.v2_0_2.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.types.v2_0_2.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
+import edu.pitt.apollo.types.v2_0_2.RunResult;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
@@ -189,7 +190,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunVisualization")
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/runVisualization")
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunVisualizationResponse")
-    public RunVisualizationResult runVisualization(
+    public RunResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 		RunVisualizationMethod runVisualizationMethod = new RunVisualizationMethod(runVisualizationMessage);
         return runVisualizationMethod.runVisualization();
@@ -231,7 +232,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunSimulation")
     @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/runSimulation")
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunSimulationResponse")
-    public BigInteger runSimulation(
+    public RunResult runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
 		RunSimulationMethod runSimulationMethod = new RunSimulationMethod(runSimulationMessage);
         return runSimulationMethod.runSimulation();

@@ -19,7 +19,7 @@
 				
                 <xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="simulationRunId" type="xsd:positiveInteger">
+						<xsd:element name="simulationResult" type="apollo:RunResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -37,7 +37,7 @@
 				
                 <xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="visualizationResult" type="apollo:RunVisualizationResult">
+						<xsd:element name="visualizationResult" type="apollo:RunResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
