@@ -7,6 +7,7 @@ import edu.pitt.apollo.apolloservice.database.DatabaseAccessorForRunningVisualiz
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.thread.RunVisualizationThread;
 import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.types.v2_0_2.RunResult;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationResult;
 
@@ -29,10 +30,10 @@ public class RunVisualizationMethod extends RunMethod {
 		databaseAccessor = new DatabaseAccessorForRunningVisualizations(runVisualizationMessage);
 	}
 
-	public RunVisualizationResult runVisualization() {
+	public RunResult runVisualization() {
 
 		// check authorization
-		RunVisualizationResult result = new RunVisualizationResult();
+		RunResult result = new RunResult();
 		try {
 			BigInteger runId = databaseAccessor.getCachedRunIdFromDatabaseOrNull();
 
@@ -40,7 +41,7 @@ public class RunVisualizationMethod extends RunMethod {
 				if (isRunFailed(runId)) {
 					databaseAccessor.removeAllDataAssociatedWithRunId(runId);
 				} else {
-					result.setVisualizationRunId(runId);
+					result.setRunId(runId);
 					return result;
 				}
 			}
@@ -49,17 +50,17 @@ public class RunVisualizationMethod extends RunMethod {
 
 			new RunVisualizationThread(runId, runVisualizationMessage).start();
 
-			result.setVisualizationRunId(runId);
+			result.setRunId(runId);
 			return result;
 		} catch (ApolloDatabaseException ex) {
 			try {
 				long runId = ApolloServiceErrorHandler.writeErrorWithErrorId(ex.getMessage());
-				result.setVisualizationRunId(new BigInteger(String.valueOf(runId)));
+				result.setRunId(new BigInteger(String.valueOf(runId)));
 				return result;
 			} catch (IOException e) {
 				System.err.println("IOException writing error file: "
 					+ e.getMessage());
-				result.setVisualizationRunId(ApolloServiceErrorHandler.FATAL_ERROR_CODE);
+				result.setRunId(ApolloServiceErrorHandler.FATAL_ERROR_CODE);
 				return result;
 			}
 		}

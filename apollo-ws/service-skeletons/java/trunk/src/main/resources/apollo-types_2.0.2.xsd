@@ -102,21 +102,38 @@
 
 	<complexType name="RunVisualizationMessage">
 		<sequence>
-			<element name="visualizerIdentification"
-				type="tns:SoftwareIdentification" />
+			<element name="visualizerIdentification" type="tns:SoftwareIdentification" />
 			<element name="authentication" type="tns:Authentication" />
-			<element name="simulationRunIds"
-				type="tns:RunIdentificationAndLabel" maxOccurs="unbounded" minOccurs="1">
+			<element name="simulationRunIds" type="tns:RunIdentificationAndLabel"
+				maxOccurs="unbounded" minOccurs="1">
 			</element>
 		</sequence>
 	</complexType>
-	
+
 	<complexType name="RunVisualizationResult">
 		<sequence>
 			<element name="visualizationRunId" type="tns:RunIdentification" />
 		</sequence>
 	</complexType>
-	
+
+	<!--we are going to want this in 2.0.3 -->
+	<complexType name="RunStatus">
+		<sequence>
+			<element name="runId" type="tns:RunIdentification" />
+			<element name="status" type="tns:MethodCallStatusEnum"
+				maxOccurs="1" minOccurs="1" />
+			<element name="message" type="string" maxOccurs="1"
+				minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="RunResult">
+		<sequence>
+			<element name="runId" type="tns:RunIdentification" />
+			<element name="methodCallStatus" type="tns:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+
 
 	<simpleType name="RunIdentification">
 		<restriction base="unsignedLong" />
@@ -197,22 +214,21 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonId"
-						type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="1">
+					<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
+						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="hostTaxonId" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
-					<element name="incubationPeriodDuration" type="tns:Duration" maxOccurs="1" minOccurs="0"></element>
+					<element name="incubationPeriodDuration" type="tns:Duration"
+						maxOccurs="1" minOccurs="0"></element>
 					<choice>
-						<element
-							name="infectionAcquisitionsFromInfectiousHosts"
-							type="tns:InfectionAcquisitionFromInfectiousHost"
-							maxOccurs="unbounded" minOccurs="1">
+						<element name="infectionAcquisitionsFromInfectiousHosts"
+							type="tns:InfectionAcquisitionFromInfectiousHost" maxOccurs="unbounded"
+							minOccurs="1">
 						</element>
-						<element
-							name="infectionAcquisitionsFromContaminatedThings"
-							type="tns:InfectionAcquisitionFromContaminatedThing"
-							maxOccurs="unbounded" minOccurs="1">
+						<element name="infectionAcquisitionsFromContaminatedThings"
+							type="tns:InfectionAcquisitionFromContaminatedThing" maxOccurs="unbounded"
+							minOccurs="1">
 						</element>
 					</choice>
 				</sequence>
@@ -742,7 +758,8 @@
 	<complexType name="GetVisualizerOutputResourcesResult">
 		<sequence>
 			<element name="methodCallStatus" type="tns:MethodCallStatus"></element>
-			<element name="urlOutputResources" type="tns:UrlOutputResource" maxOccurs="unbounded" minOccurs="0"/>
+			<element name="urlOutputResources" type="tns:UrlOutputResource"
+				maxOccurs="unbounded" minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -915,11 +932,13 @@
 				<sequence>
 					<element name="averageVaccinationEfficacy" type="tns:Probability"
 						maxOccurs="1" minOccurs="1" />
-					<element name="vaccinationEfficacyConditionedOnAgeRange" type="tns:ConditionalProbabilityDistribution"
-						maxOccurs="1" minOccurs="0" />
-					<element name="vaccinationEfficaciesConditionedOnTimeSinceMostRecentDose"
-						type="tns:VaccinationEfficacyConditionedOnTimeSinceDose" maxOccurs="1"
+					<element name="vaccinationEfficacyConditionedOnAgeRange"
+						type="tns:ConditionalProbabilityDistribution" maxOccurs="1"
 						minOccurs="0" />
+					<element
+						name="vaccinationEfficaciesConditionedOnTimeSinceMostRecentDose"
+						type="tns:VaccinationEfficacyConditionedOnTimeSinceDose"
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1198,10 +1217,8 @@
 					maxOccurs="1" minOccurs="1" />
 				<element name="beta" type="tns:Rate" maxOccurs="1"
 					minOccurs="1" />
-					<!--
-				<element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission"
-					maxOccurs="1" minOccurs="1" />
-					-->
+				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
+					maxOccurs="1" minOccurs="1" /> -->
 			</choice>
 		</sequence>
 	</complexType>
@@ -2168,8 +2185,7 @@
 
 	<complexType name="RunIdentificationAndLabel">
 		<sequence>
-			<element name="runIdentification"
-				type="tns:RunIdentification">
+			<element name="runIdentification" type="tns:RunIdentification">
 			</element>
 			<element name="runLabel" type="string"></element>
 		</sequence>
@@ -2177,8 +2193,7 @@
 
 	<complexType name="TerminateRunRequest">
 		<sequence>
-			<element name="runIdentification"
-				type="tns:RunIdentification">
+			<element name="runIdentification" type="tns:RunIdentification">
 			</element>
 			<element name="authentication" type="tns:Authentication"></element>
 		</sequence>
