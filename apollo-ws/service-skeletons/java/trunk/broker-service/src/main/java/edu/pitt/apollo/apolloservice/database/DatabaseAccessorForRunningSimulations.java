@@ -21,14 +21,15 @@ import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
  */
 public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
 
-    private RunSimulationMessage runSimulationMessage;
+    private final RunSimulationMessage runSimulationMessage;
 
     public DatabaseAccessorForRunningSimulations(RunSimulationMessage runSimulationMessage) {
         super();
         this.runSimulationMessage = runSimulationMessage;
     }
 
-    private String getRunSimulationMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
+	@Override
+    protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
         Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap =
                 dbUtils.getDataContentForSoftware(
                 runId,
@@ -42,32 +43,14 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
         return null;
     }
 
-    private boolean isRunIdAssociatedWithMatchingRunSimulationMessage(String targetRunSimulationMessageAsJson,
-            BigInteger runIdAssociatedWithRunSimulationMessageHash) throws ApolloDatabaseException {
-
-        String runSimulationMessageAssociatedWithRunIdAsJson =
-                getRunSimulationMessageAssociatedWithRunIdAsJsonOrNull(runIdAssociatedWithRunSimulationMessageHash);
-
-        if (runSimulationMessageAssociatedWithRunIdAsJson == null) {
-            throw new ApolloDatabaseException(
-                    "There was no run_simulation_message.json content for run ID "
-                    + runIdAssociatedWithRunSimulationMessageHash);
-        }
-
-        if (targetRunSimulationMessageAsJson.equals(runSimulationMessageAssociatedWithRunIdAsJson)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+	@Override
     public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
         List<BigInteger> runIds = dbUtils.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(runSimulationMessage);
 
         if (runIds.size() > 0) {
             String targetRunSimulationMessageAsJson = dbUtils.getJSONString(runSimulationMessage, RunSimulationMessage.class);
             for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
-                if (isRunIdAssociatedWithMatchingRunSimulationMessage(targetRunSimulationMessageAsJson, 
+                if (isRunIdAssociatedWithMatchingRunMessage(targetRunSimulationMessageAsJson, 
                         runIdAssociatedWithRunSimulationMessageHash)) {
                     return runIdAssociatedWithRunSimulationMessageHash;
                 }
@@ -78,8 +61,8 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
         }
     }
 
-    public BigInteger insertRunIntoDatabase()
-            throws ApolloDatabaseException {
+	@Override
+    public BigInteger insertRunIntoDatabase() throws ApolloDatabaseException {
         int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runSimulationMessage) + 1;
         BigInteger runId = new BigInteger(Integer.toString(dbUtils.addSimulationRun(runSimulationMessage, md5CollisionId,
                 TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification())));
