@@ -32,7 +32,13 @@ class ApolloDB:
         else:
             self.logger = logger_
 
+        self.stateToPopulationDict = {'S':'susceptible','E':'exposed','I':'infectious',
+                                      'R':'recovered','C':'newly exposed','V':'received vaccine control measure',
+                                      'Av':'received antiviral control measure','ScCl':'school that is closed'}
 
+        self.stateToDataFileDict = {'S':'susceptible.txt','E':'exposed.txt','I':'infectious.txt',
+                                    'R':'recovered.txt','C':'newly_exposed.txt','V':'vacc_administered.txt',
+                                    'Av':'av_administered.txt'}
     def connect(self):
         if self._conn is not None:
             print "Connection to Apollo Database has already been established"
