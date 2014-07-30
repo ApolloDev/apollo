@@ -20,35 +20,56 @@ import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
  */
 public class RunSimulationMethod extends RunMethod {
 
-    public static BigInteger runSimulation(RunSimulationMessage runSimulationMessage) {
+	private final RunSimulationMessage runSimulationMessage;
 
-        DatabaseAccessorForRunningSimulations databaseAccessorForRunningSimulations =
-                new DatabaseAccessorForRunningSimulations(runSimulationMessage);
-        try {
-            BigInteger runId = databaseAccessorForRunningSimulations.getCachedRunIdFromDatabaseOrNull();
+	public RunSimulationMethod(RunSimulationMessage runSimulationMessage) {
+		super(runSimulationMessage.getAuthentication(), runSimulationMessage.getSimulatorIdentification());
+		this.runSimulationMessage = runSimulationMessage;
+		databaseAccessor = new DatabaseAccessorForRunningSimulations(runSimulationMessage);
+	}
 
-            if (runId != null) {
-                if (isRunFailed(runId)) {
-                    databaseAccessorForRunningSimulations.removeAllDataAssociatedWithRunId(runId);
-                } else {
-                    return runId;
-                }
-            }
+	public BigInteger runSimulation() {
 
-            runId = databaseAccessorForRunningSimulations.insertRunIntoDatabase();
+		try {
+			BigInteger userAuthenticated = userAuthenticated(databaseAccessor);
+			if (userAuthenticated.intValue() != 0) {
+				return userAuthenticated;
+			}
 
-            new RunSimulationThread(runId, runSimulationMessage).start();
+			BigInteger userAuthorizedForCachedRun = userAuthorizedForCachedResults(databaseAccessor);
+			if (userAuthorizedForCachedRun.intValue() != 0) {
+				return userAuthorizedForCachedRun;
+			}
 
-            return runId;
-        } catch (ApolloDatabaseException ex) {
-            try {
-                long runId = ApolloServiceErrorHandler.writeErrorWithErrorId(ex.getMessage());
-                return new BigInteger(Long.toString(runId));
-            } catch (IOException e) {
-                System.err.println("IOException writing error file: "
-                        + e.getMessage());
-                return ApolloServiceErrorHandler.FATAL_ERROR_CODE;
-            }
-        }
-    }
+			BigInteger runId = databaseAccessor.getCachedRunIdFromDatabaseOrNull();
+			if (runId != null) {
+				if (!isRunFailed(runId)) {
+					return runId;
+				}
+			}
+
+			BigInteger userAuthorizedToRunSoftware = userAuthorizedToRunSoftware(databaseAccessor);
+			if (userAuthorizedToRunSoftware.intValue() != 0) {
+				return userAuthorizedToRunSoftware;
+			}
+
+			if (isRunFailed(runId)) {
+				databaseAccessor.removeAllDataAssociatedWithRunId(runId);
+			}
+			runId = databaseAccessor.insertRunIntoDatabase();
+
+			new RunSimulationThread(runId, runSimulationMessage).start();
+
+			return runId;
+		} catch (ApolloDatabaseException ex) {
+			try {
+				long runId = ApolloServiceErrorHandler.writeErrorWithErrorId(ex.getMessage());
+				return new BigInteger(Long.toString(runId));
+			} catch (IOException e) {
+				System.err.println("IOException writing error file: "
+					+ e.getMessage());
+				return ApolloServiceErrorHandler.FATAL_ERROR_CODE;
+			}
+		}
+	}
 }
