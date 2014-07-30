@@ -35,9 +35,9 @@ import edu.pitt.apollo.types.v2_0_2.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.types.v2_0_2.RunResult;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationResult;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_0_2.UrlOutputResource;
 
@@ -93,21 +93,21 @@ public class TutorialWebServiceClient {
     }
 
     public static BigInteger runSimulation(RunSimulationMessage runSimulationMessage) {
-        BigInteger simulationRunId = port.runSimulation(runSimulationMessage);
-        System.out.printf("The simulator returned a runId of %s\n", simulationRunId);
+        RunResult simulationRunResult = port.runSimulation(runSimulationMessage);
+        System.out.printf("The simulator returned a runId of %s\n", simulationRunResult.getRunId());
 
-        boolean runWasSuccessful = waitForRunToCompleteOrFail(simulationRunId);
+        boolean runWasSuccessful = waitForRunToCompleteOrFail(simulationRunResult.getRunId());
 
         if (runWasSuccessful) {
-            return simulationRunId;
+            return simulationRunResult.getRunId();
         } else {
             return null;
         }
     }
 
     protected static BigInteger runVisualization(RunVisualizationMessage runVisualizationMessage) {
-        RunVisualizationResult runVisualizationResult = port.runVisualization(runVisualizationMessage);
-        BigInteger visualizationRunId = runVisualizationResult.getVisualizationRunId();
+        RunResult runVisualizationResult = port.runVisualization(runVisualizationMessage);
+        BigInteger visualizationRunId = runVisualizationResult.getRunId();
         return visualizationRunId;
     }
 
