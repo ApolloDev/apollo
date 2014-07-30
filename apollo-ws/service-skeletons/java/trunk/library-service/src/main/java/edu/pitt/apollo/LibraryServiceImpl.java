@@ -103,7 +103,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
 
 		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			if (item.getItemType().value().equals(type+"Type")) {
+			if (item.getItemType().value().equals(type + "Type")) {
 				resultList.add(item.getItemUuid());
 			}
 		}
@@ -117,7 +117,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getUuidsForLibraryItemsCreatedSinceDateTime")
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
 	public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
-			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
+	@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
 		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
 		MethodCallStatus status = new MethodCallStatus();
 		status.setMessage("Okay.");
@@ -181,12 +181,12 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/addLibraryItem")
 	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.AddLibraryItemResponse")
 	public AddLibraryItemResult addLibraryItem(
-			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
-			@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
-			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
-			@WebParam(name = "itemType", targetNamespace = "") String itemType,
-			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
+	@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
+	@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
+	@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
+	@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
+	@WebParam(name = "itemType", targetNamespace = "") String itemType,
+	@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
 		AddLibraryItemResult result = new AddLibraryItemResult();
 		MethodCallStatus status = new MethodCallStatus();
 		status.setMessage("Okay.");
@@ -235,46 +235,43 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/removeLibraryItem")
 	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.RemoveLibraryItemResponse")
 	public MethodCallStatus removeLibraryItem(
-			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
+	@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
+	@WebParam(name = "uuid", targetNamespace = "") String uuid) {
 		// TODO Auto-generated method stub
-		// GetLibraryItemResult result = new GetLibraryItemResult();
-		// MethodCallStatus status = new MethodCallStatus();
-		// // status.setMessage("Okay.");
-		// // status.setStatus(MethodCallStatusEnum.COMPLETED);
-		//
-		// long longPart = Long.valueOf(uuid.split(" ")[1]);
-		// String sig = uuid.split(" ")[0];
-		// byte[] signaturePart = new byte[sig.length()];
-		// for (int i = 0; i < sig.length(); i++) {
-		// signaturePart[i] = (byte) sig.charAt(i);
-		// }
-		// Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-		// Object o = db4o.ext().getByUUID(db4oUuid);
-		//
-		// CuratedLibraryItemContainer container = new
-		// CuratedLibraryItemContainer();
-		// container.setApolloIndexableItem((ApolloIndexableItem) o);
-		// CatalogEntryForApolloLibraryItem cli = new
-		// CatalogEntryForApolloLibraryItem();
-		// cli.setItemUuid(uuid);
-		// ObjectSet<Object> r = db4o.queryByExample(cli);
-		// CatalogEntryForApolloLibraryItem item =
-		// (CatalogEntryForApolloLibraryItem) r
-		// .get(0);
-		//
-		// db4o.activate(item, 100);
-		// db4o.activate(o, 100);
-		// db4o.ext().purge(o);
-		// db4o.ext().purge(item);
-		// db4o.delete(o);
-		// db4o.delete(item);
-		// db4o.commit();
-		//
-		// status.setMessage("Deleted object.");
+		GetLibraryItemResult result = new GetLibraryItemResult();
+		MethodCallStatus status = new MethodCallStatus();
+		 // status.setMessage("Okay.");
 		// status.setStatus(MethodCallStatusEnum.COMPLETED);
-		//
-		// return status;
-		return null;
+
+		long longPart = Long.valueOf(uuid.split(" ")[1]);
+		String sig = uuid.split(" ")[0];
+		byte[] signaturePart = new byte[sig.length()];
+		for (int i = 0; i < sig.length(); i++) {
+			signaturePart[i] = (byte) sig.charAt(i);
+		}
+		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
+		Object o = db4o.ext().getByUUID(db4oUuid);
+
+		CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
+		container.setApolloIndexableItem((ApolloIndexableItem) o);
+		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
+		cli.setItemUuid(uuid);
+		ObjectSet<Object> r = db4o.queryByExample(cli);
+		CatalogEntryForApolloLibraryItem item
+		= (CatalogEntryForApolloLibraryItem) r
+		.get(0);
+
+		db4o.activate(item, 100);
+		db4o.activate(o, 100);
+		db4o.ext().purge(o);
+		db4o.ext().purge(item);
+		db4o.delete(o);
+		db4o.delete(item);
+		db4o.commit();
+
+		status.setMessage("Deleted object.");
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+
+		return status;
 	}
 }
