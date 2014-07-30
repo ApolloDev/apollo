@@ -103,11 +103,11 @@ class ApolloDB:
     
     def getSoftwareIdentificationId(self,name_="SEIR",version_="3.0"):
         SQLStatement = 'SELECT id from %s where name = "%s" and version = "%s"'%(_softwareIdentificationTable,name_,version_)
-        results = self.query(SQLStatement)
+        result = self.query(SQLStatement)
         if len(result) == 0:
             self.logger.update('DB_QUERY_NO_RESULTS',message=SQLString)
             return -1
-        return row['id']
+        return result[0]['id']
     
     def getSoftwareIdentificationForRunId(self,runId):
         SQLStatement = 'SELECT t1.name,t1.developer,t1.version from software_identification t1, '\
