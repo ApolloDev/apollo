@@ -5219,7 +5219,7 @@ Note that the infected and susceptible organisms may be of different species.</o
                                         <someValuesFrom>
                                             <Restriction>
                                                 <onProperty rdf:resource="&obo;BFO_0000054"/>
-                                                <someValuesFrom rdf:resource="&obo;OGMS_0000090"/>
+                                                <allValuesFrom rdf:resource="&obo;OGMS_0000090"/>
                                             </Restriction>
                                         </someValuesFrom>
                                     </Restriction>
