@@ -110,7 +110,7 @@ public class ApolloDbUtils {
 			dbcon.setAutoCommit(true);
 		} catch (SQLException e) {
 			throw new SQLException("Error getting connection to database: " + url + " using username " + user
-				+ ".   Specific error was:\n" + e.getMessage());
+					+ ".   Specific error was:\n" + e.getMessage());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class ApolloDbUtils {
 				dbcon.close();
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException attempting to close database connection: "
-					+ ex.getMessage());
+						+ ex.getMessage());
 			}
 		}
 	}
@@ -160,7 +160,7 @@ public class ApolloDbUtils {
 			properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 			properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz, ObjectFactory.class},
-				properties);
+					properties);
 			JAXBMarshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -169,7 +169,7 @@ public class ApolloDbUtils {
 			return baos.toString();
 		} catch (Exception e) {
 			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
-				+ e.getMessage());
+					+ e.getMessage());
 			return null;
 		}
 
@@ -182,13 +182,13 @@ public class ApolloDbUtils {
 		JAXBContext jc;
 		try {
 			jc = (JAXBContext) JAXBContext
-				.newInstance(new Class[]{clazz, ObjectFactory.class}, properties);
+					.newInstance(new Class[]{clazz, ObjectFactory.class}, properties);
 			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
 			StreamSource ss = new StreamSource(json);
 			return unmarshaller.unmarshal(ss, clazz).getValue();
 		} catch (Exception e) {
 			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
-				+ e.getMessage());
+					+ e.getMessage());
 			return null;
 		}
 	}
@@ -262,12 +262,11 @@ public class ApolloDbUtils {
 					return rs.getInt("id");
 				} else {
 					throw new ApolloDatabaseUserPasswordException(
-						"No entry in the users table where user_id = " + userId
-						+ " for the given password.");
+							"Incorrect password");
 				}
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException("No entry in the users table where user_id = "
-					+ userId);
+						+ userId);
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to get user key: " + ex.getMessage());
@@ -278,13 +277,13 @@ public class ApolloDbUtils {
 
 	// // user key doesn't exist
 	public int addUser(String userId, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
-		ApolloDatabaseUserPasswordException, ApolloDatabaseException {
+			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
 		// check authorization?!
 
 		try {
 			getUserKey(userId, userPassword);
 			throw new ApolloDatabaseRecordAlreadyExistsException("User " + userId
-				+ " already exists in the database.");
+					+ " already exists in the database.");
 		} catch (ApolloDatabaseKeyNotFoundException e) {
 			// good this means the user doesn't already exist
 		} catch (ApolloDatabaseUserPasswordException e) {
@@ -347,12 +346,16 @@ public class ApolloDbUtils {
 	}
 
 	public boolean authenticateUser(Authentication authentication) throws
-		ApolloDatabaseUserPasswordException, ApolloDatabaseException {
+			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
 
 		String userId = authentication.getRequesterId();
 		String userPassword = authentication.getRequesterPassword();
+
+		String[] userIdTokens = parseUserId(userId);
+		String userName = userIdTokens[0];
+
 		try {
-			getUserKey(userId, userPassword);
+			getUserKey(userName, userPassword);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			return false;
 		}
@@ -376,7 +379,7 @@ public class ApolloDbUtils {
 
 	private int getRoleDescriptionId(int softwareId, boolean requestToRunSoftware, boolean requestPrivileged) throws ApolloDatabaseException {
 		String query = "SELECT role_id FROM role_description WHERE software_id = " + softwareId + " AND "
-			+ "can_run_software = " + requestToRunSoftware + " AND allow_privileged_request = " + requestPrivileged;
+				+ "can_run_software = " + requestToRunSoftware + " AND allow_privileged_request = " + requestPrivileged;
 
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(query);
@@ -386,7 +389,7 @@ public class ApolloDbUtils {
 				return roleId;
 			} else {
 				throw new ApolloDatabaseException("No role exists with software_id = " + softwareId + ", can_run_software = " + requestToRunSoftware
-					+ ", and allow_privileged_request = " + requestPrivileged);
+						+ ", and allow_privileged_request = " + requestPrivileged);
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to authorize user: " + ex.getMessage());
@@ -402,35 +405,37 @@ public class ApolloDbUtils {
 	}
 
 	public boolean authorizeUser(int userId, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware,
-		boolean requestPrivileged) throws ApolloDatabaseException {
+			boolean requestPrivileged) throws ApolloDatabaseException {
 
 		int softwareId = getSoftwareIdentificationKey(softwareIdentification);
 		return authorizeUser(userId, softwareId, requestToRunSoftware, requestPrivileged);
 	}
 
 	public boolean authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification,
-		boolean requestToRunSoftware) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
+			boolean requestToRunSoftware) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
 
 		String userId = authentication.getRequesterId();
 		String userPassword = authentication.getRequesterPassword();
-		
+
 		String[] userIdTokens = parseUserId(userId);
 		String userName = userIdTokens[0];
 		boolean requestPrivileged = false;
-		if (userIdTokens.length > 1) {
-			for (String token : userIdTokens) {
-				if (token.equals(PRIVILEGED_REQUEST_TOKEN)) {
-					requestPrivileged = true;
-					break;
+		if (requestToRunSoftware) {
+			if (userIdTokens.length > 1) {
+				for (String token : userIdTokens) {
+					if (token.equals(PRIVILEGED_REQUEST_TOKEN)) {
+						requestPrivileged = true;
+						break;
+					}
 				}
 			}
 		}
-		
+
 		int userKey = getUserKey(userName, userPassword);
 		return authorizeUser(userKey, softwareIdentification, requestToRunSoftware, requestPrivileged);
 
 	}
-	
+
 	private String[] parseUserId(String userId) {
 		return userId.split(USER_ID_TOKEN_SEPERATOR);
 	}
@@ -452,7 +457,7 @@ public class ApolloDbUtils {
 	}
 
 	public void addUserRole(String userId, String userPassword, SoftwareIdentification softwareIdentification,
-		boolean canRunSoftware, boolean canRequestPrivileged) throws ApolloDatabaseException {
+			boolean canRunSoftware, boolean canRequestPrivileged) throws ApolloDatabaseException {
 
 		int softwareId = getSoftwareIdentificationKey(softwareIdentification);
 		int roleId = getRoleDescriptionId(softwareId, canRunSoftware, canRequestPrivileged);
@@ -461,7 +466,7 @@ public class ApolloDbUtils {
 	}
 
 	public int getSoftwareIdentificationKey(SoftwareIdentification softwareIdentification)
-		throws ApolloDatabaseException {
+			throws ApolloDatabaseException {
 
 		String query = "SELECT id FROM software_identification where developer = ? and name = ? and version = ? and service_type = ?";
 		try {
@@ -477,24 +482,24 @@ public class ApolloDbUtils {
 				return softwareIdKey;
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException(
-					"No entry in the software_identification table where developer = "
-					+ softwareIdentification.getSoftwareDeveloper() + " and name = "
-					+ softwareIdentification.getSoftwareName() + " and version = "
-					+ softwareIdentification.getSoftwareVersion() + " and service_type = "
-					+ softwareIdentification.getSoftwareType().toString());
+						"No entry in the software_identification table where developer = "
+						+ softwareIdentification.getSoftwareDeveloper() + " and name = "
+						+ softwareIdentification.getSoftwareName() + " and version = "
+						+ softwareIdentification.getSoftwareVersion() + " and service_type = "
+						+ softwareIdentification.getSoftwareType().toString());
 
 			}
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ApolloDatabaseKeyNotFoundException attempting to get software identification key: "
-				+ ex.getMessage());
+					"ApolloDatabaseKeyNotFoundException attempting to get software identification key: "
+					+ ex.getMessage());
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get software identification key: "
-				+ ex.getMessage());
+					"ClassNotFoundException attempting to get software identification key: "
+					+ ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to get software identification key: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		}
 	}
 
@@ -507,7 +512,7 @@ public class ApolloDbUtils {
 	}
 
 	public int getRunKey(RunSimulationMessage runSimulationMessage) throws SQLException,
-		ClassNotFoundException, ApolloDatabaseException {
+			ClassNotFoundException, ApolloDatabaseException {
 		Authentication auth = runSimulationMessage.getAuthentication();
 
 		int userKey = getUserKey(auth.getRequesterId(), auth.getRequesterPassword());
@@ -522,7 +527,7 @@ public class ApolloDbUtils {
 		if (rs.next()) {
 			return rs.getInt(1);
 		} else {
-			query = "INSERT INTO run (user_id, software_id, md5_hash_of_run_message) VALUES (?,?,?)";
+			query = "INSERT INTO run (requester_id, software_id, md5_hash_of_run_message) VALUES (?,?,?)";
 			pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, userKey);
 			pstmt.setInt(2, softwareKey);
@@ -535,15 +540,15 @@ public class ApolloDbUtils {
 	}
 
 	public int addRole(SoftwareIdentification softwareIdentification, boolean canRun, boolean canViewCache)
-		throws SQLException, ClassNotFoundException, ApolloDatabaseException {
+			throws SQLException, ClassNotFoundException, ApolloDatabaseException {
 
 		int softwareIdKey;
 		try {
 			softwareIdKey = getSoftwareIdentificationKey(softwareIdentification);
 		} catch (ApolloDatabaseKeyNotFoundException e) {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"The softwareIdentifiation object provided to addRole() does not have an entry in the software_identification table. Error was: "
-				+ e.getMessage());
+					"The softwareIdentifiation object provided to addRole() does not have an entry in the software_identification table. Error was: "
+					+ e.getMessage());
 		}
 
 		int roleKey;
@@ -576,7 +581,7 @@ public class ApolloDbUtils {
 	}
 
 	private int getRoleKey(int softwareIdKey, boolean canRun, boolean canViewCache) throws SQLException,
-		ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
+			ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
 		if (softwareIdKey >= 1) {
 			// software statusId found...now lets see if this specific role exists...
 			String query = "SELECT id FROM roles WHERE software_id = ? AND can_run = ? AND can_view_cached_results = ?";
@@ -588,9 +593,9 @@ public class ApolloDbUtils {
 				ResultSet rs = pstmt.executeQuery();
 				if (rs.next()) {
 					throw new ApolloDatabaseKeyNotFoundException(
-						"No entry found in the roles table where software_id = " + softwareIdKey
-						+ " and can_run = " + canRun + " and can_view_cached_resuls = "
-						+ canViewCache);
+							"No entry found in the roles table where software_id = " + softwareIdKey
+							+ " and can_run = " + canRun + " and can_view_cached_resuls = "
+							+ canViewCache);
 				} else {
 					return rs.getInt(1);
 				}
@@ -599,17 +604,17 @@ public class ApolloDbUtils {
 			}
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException("getRoleKey() called with invalid softwareIdKey: "
-				+ softwareIdKey);
+					+ softwareIdKey);
 		}
 	}
 
 	public Map<Integer, ServiceRegistrationRecord> getRegisteredSoftware() throws SQLException,
-		ClassNotFoundException {
+			ClassNotFoundException {
 		Map<Integer, ServiceRegistrationRecord> result = new HashMap<Integer, ServiceRegistrationRecord>();
 
 		// get all of the users that are an admin of a software
 		String query = "SELECT u.id, u.requester_id FROM users u, software_identification s WHERE "
-			+ "s.admin_id = u.id";
+				+ "s.admin_id = u.id";
 
 		Map<Integer, String> userIdMap = new HashMap<Integer, String>();
 
@@ -639,7 +644,7 @@ public class ApolloDbUtils {
 				srr.getSoftwareIdentification().setSoftwareName(rs.getString(3));
 				srr.getSoftwareIdentification().setSoftwareVersion(rs.getString(4));
 				srr.getSoftwareIdentification().setSoftwareType(
-					ApolloSoftwareTypeEnum.fromValue(rs.getString(5)));
+						ApolloSoftwareTypeEnum.fromValue(rs.getString(5)));
 				srr.setUrl(rs.getString(6));
 				srr.getAuthentication().setRequesterId(userIdMap.get(rs.getInt(7)));
 				srr.getAuthentication().setRequesterPassword("");
@@ -683,12 +688,12 @@ public class ApolloDbUtils {
 	// return 0;
 	// }
 	public int addTextDataContent(InputStream content, int md5CollisionId) throws SQLException,
-		ClassNotFoundException, IOException, ApolloDatabaseException {
+			ClassNotFoundException, IOException, ApolloDatabaseException {
 		return addTextDataContent(IOUtils.toString(content));
 	}
 
 	public int addTextDataContent(String content) throws SQLException, ClassNotFoundException,
-		ApolloDatabaseException {
+			ApolloDatabaseException {
 
 		String md5 = DigestUtils.md5Hex(content);
 		// is the data already in the table?
@@ -746,11 +751,11 @@ public class ApolloDbUtils {
 
 	public int getHighestMD5CollisionIdForRunDataContent(String content) throws ApolloDatabaseException {
 		return getHighestMD5CollisionIdForTable("run_data_content", "md5_hash_of_content",
-			getMd5FromString(content));
+				getMd5FromString(content));
 	}
 
 	private int getHighestMD5CollisionIdForTable(String tableName, String md5ColumnName, String md5Hash)
-		throws ApolloDatabaseException {
+			throws ApolloDatabaseException {
 		String query = "SELECT md5_collision_id FROM " + tableName + " where " + md5ColumnName + " = ?";
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(query);
@@ -768,24 +773,24 @@ public class ApolloDbUtils {
 			return highestMd5CollisionId;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get highest MD5 collision ID for table "
-				+ tableName + " and hash " + md5Hash + ": " + ex.getMessage());
+					"ClassNotFoundException attempting to get highest MD5 collision ID for table "
+					+ tableName + " and hash " + md5Hash + ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException(
-				"SQLException attempting to get highest MD5 collision ID for table " + tableName
-				+ " and hash " + md5Hash + ": " + ex.getMessage());
+					"SQLException attempting to get highest MD5 collision ID for table " + tableName
+					+ " and hash " + md5Hash + ": " + ex.getMessage());
 		}
 	}
 
 	public Map<String, ByteArrayOutputStream> getDataContentForSoftware(BigInteger runKey,
-		int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws ApolloDatabaseException {
+			int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws ApolloDatabaseException {
 		Map<String, ByteArrayOutputStream> result = new HashMap<String, ByteArrayOutputStream>();
 
 		String query = "SELECT " + "rddv.label, " + "rdc.text_content " + "FROM " + "run_data_content rdc, "
-			+ "run_data rd, " + "run_data_description_view rddv " + "WHERE "
-			+ "rd.content_id = rdc.id AND " + "rd.run_id = ? AND "
-			+ "rddv.run_data_description_id = rd.description_id AND " + "rddv.source_software = ? AND "
-			+ "rddv.destination_software = ?";
+				+ "run_data rd, " + "run_data_description_view rddv " + "WHERE "
+				+ "rd.content_id = rdc.id AND " + "rd.run_id = ? AND "
+				+ "rddv.run_data_description_id = rd.description_id AND " + "rddv.source_software = ? AND "
+				+ "rddv.destination_software = ?";
 		PreparedStatement pstmt = null;
 		try {
 			try {
@@ -806,16 +811,16 @@ public class ApolloDbUtils {
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get data content for software for run ID " + runKey
-				+ ": " + ex.getMessage());
+					"ClassNotFoundException attempting to get data content for software for run ID " + runKey
+					+ ": " + ex.getMessage());
 		} catch (IOException ex) {
 			throw new ApolloDatabaseException(
-				"IOException attempting to get data content for software for run ID " + runKey + ": "
-				+ ex.getMessage());
+					"IOException attempting to get data content for software for run ID " + runKey + ": "
+					+ ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException(
-				"SQLException attempting to get data content for software for run ID " + runKey + ": "
-				+ ex.getMessage());
+					"SQLException attempting to get data content for software for run ID " + runKey + ": "
+					+ ex.getMessage());
 		}
 
 		return result;
@@ -834,20 +839,20 @@ public class ApolloDbUtils {
 				return rs.getInt(1);
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException("No software_id key was found for run_id "
-					+ runId);
+						+ runId);
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get software_id for run_id " + runId);
+					"ClassNotFoundException attempting to get software_id for run_id " + runId);
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to get software_id for run_id "
-				+ runId);
+					+ runId);
 		}
 
 	}
 
 	public Map<String, ByteArrayOutputStream> getConfigFilesForSimulation(BigInteger runKey,
-		int sourceSoftwareIdKey) throws ApolloDatabaseException {
+			int sourceSoftwareIdKey) throws ApolloDatabaseException {
 
 		// First get ID of simulator...then feet it to param 3 below
 		// destinationSoftwareIdKey = select software_id from run where run_id =
@@ -858,7 +863,7 @@ public class ApolloDbUtils {
 	}
 
 	public int associateContentWithRunId(BigInteger runKey, int dataContentKey, int runDataDescriptionId)
-		throws ClassNotFoundException, SQLException, ApolloDatabaseKeyNotFoundException {
+			throws ClassNotFoundException, SQLException, ApolloDatabaseKeyNotFoundException {
 
 		if (runDataDescriptionId >= 0) {
 			String query = "SELECT id FROM run_data WHERE run_id = ? AND description_id = ? and content_id = ?";
@@ -892,16 +897,16 @@ public class ApolloDbUtils {
 			}
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"associateContentWithRunId() called with an invalid key: " + runKey);
+					"associateContentWithRunId() called with an invalid key: " + runKey);
 		}
 
 	}
 
 	public int getRunDataDescriptionId(DbContentDataFormatEnum dataFormat, String dataLabel,
-		DbContentDataType dataType, int dataSourceSoftwareIdKey, int dataDestinationSoftwareIdKey)
-		throws SQLException, ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
+			DbContentDataType dataType, int dataSourceSoftwareIdKey, int dataDestinationSoftwareIdKey)
+			throws SQLException, ClassNotFoundException, ApolloDatabaseKeyNotFoundException {
 		String query = "SELECT v.run_data_description_id FROM run_data_description_view v WHERE "
-			+ "v.format = ? AND v.label = ? and v.type = ? and v.source_software = ? and v.destination_software = ?";
+				+ "v.format = ? AND v.label = ? and v.type = ? and v.source_software = ? and v.destination_software = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setString(1, dataFormat.toString());
 		pstmt.setString(2, dataLabel);
@@ -913,25 +918,25 @@ public class ApolloDbUtils {
 			return rs.getInt(1);
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"No entry found in run_data_description_view where format = " + dataFormat.toString()
-				+ " and label = " + dataLabel + " and type = " + dataType.toString()
-				+ " and source_software = " + dataSourceSoftwareIdKey
-				+ " and destination_software = " + dataDestinationSoftwareIdKey);
+					"No entry found in run_data_description_view where format = " + dataFormat.toString()
+					+ " and label = " + dataLabel + " and type = " + dataType.toString()
+					+ " and source_software = " + dataSourceSoftwareIdKey
+					+ " and destination_software = " + dataDestinationSoftwareIdKey);
 		}
 	}
 
 	public int getRunDataDescriptionId(DbContentDataFormatEnum dataFormat, String dataLabel,
-		DbContentDataType dataType, SoftwareIdentification dataSourceSoftwareIdentification,
-		SoftwareIdentification dataDestinationSoftwareIdentification) throws ApolloDatabaseException,
-		SQLException, ClassNotFoundException {
+			DbContentDataType dataType, SoftwareIdentification dataSourceSoftwareIdentification,
+			SoftwareIdentification dataDestinationSoftwareIdentification) throws ApolloDatabaseException,
+			SQLException, ClassNotFoundException {
 		return getRunDataDescriptionId(dataFormat, dataLabel, dataType,
-			getSoftwareIdentificationKey(dataSourceSoftwareIdentification),
-			getSoftwareIdentificationKey(dataDestinationSoftwareIdentification));
+				getSoftwareIdentificationKey(dataSourceSoftwareIdentification),
+				getSoftwareIdentificationKey(dataDestinationSoftwareIdentification));
 	}
 
 	public int addRunDataDescription(String description, String dataFormat, String dataLabel,
-		String dataType, String dataSourceSoftware, String dataDestinationSoftware) throws SQLException,
-		ClassNotFoundException {
+			String dataType, String dataSourceSoftware, String dataDestinationSoftware) throws SQLException,
+			ClassNotFoundException {
 		int runDataDescriptionKey = -1;
 		String query = "INSERT INTO run_data_description SET label = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query, Statement.NO_GENERATED_KEYS);
@@ -950,9 +955,9 @@ public class ApolloDbUtils {
 	}
 
 	public SoftwareIdentification getSoftwareIdentification(int i) throws ApolloDatabaseKeyNotFoundException,
-		SQLException, ClassNotFoundException {
+			SQLException, ClassNotFoundException {
 		String query = "SELECT developer, name, version, service_type FROM software_identification WHERE "
-			+ "id = ?";
+				+ "id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, i);
 		ResultSet rs = pstmt.executeQuery();
@@ -965,12 +970,12 @@ public class ApolloDbUtils {
 			return softwareIdentification;
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"No entry found in software_identification where id = " + i);
+					"No entry found in software_identification where id = " + i);
 		}
 	}
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId)
-		throws ClassNotFoundException, SQLException, ApolloDatabaseKeyNotFoundException {
+			throws ClassNotFoundException, SQLException, ApolloDatabaseKeyNotFoundException {
 
 		String query = "SELECT software_id from run WHERE " + "id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
@@ -1008,7 +1013,7 @@ public class ApolloDbUtils {
 	}
 
 	public String getUrlForSoftwareIdentification(SoftwareIdentification softwareIdentification)
-		throws SQLException, ApolloDatabaseKeyNotFoundException, ClassNotFoundException {
+			throws SQLException, ApolloDatabaseKeyNotFoundException, ClassNotFoundException {
 		String query = "SELECT wsdl_url FROM software_identification WHERE developer = ? and name = ? and version = ? and service_type = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setString(1, softwareIdentification.getSoftwareDeveloper());
@@ -1020,17 +1025,17 @@ public class ApolloDbUtils {
 			return rs.getString(1);
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"Unable to get wsdl_url from software_identification where developer = "
-				+ softwareIdentification.getSoftwareDeveloper() + " and name = "
-				+ softwareIdentification.getSoftwareName() + " and version = "
-				+ softwareIdentification.getSoftwareVersion() + " and service_type = "
-				+ softwareIdentification.getSoftwareType().toString());
+					"Unable to get wsdl_url from software_identification where developer = "
+					+ softwareIdentification.getSoftwareDeveloper() + " and name = "
+					+ softwareIdentification.getSoftwareName() + " and version = "
+					+ softwareIdentification.getSoftwareVersion() + " and service_type = "
+					+ softwareIdentification.getSoftwareType().toString());
 		}
 
 	}
 
 	public String getUrlForSoftwareIdentification(int softwareIdentificaitonKey)
-		throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
+			throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
 		String query = "SELECT wsdl_url FROM software_identification WHERE id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, softwareIdentificaitonKey);
@@ -1039,25 +1044,30 @@ public class ApolloDbUtils {
 			return rs.getString(1);
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"Unable to get wsdl_url from software_identification where software_identification.id = "
-				+ softwareIdentificaitonKey);
+					"Unable to get wsdl_url from software_identification where software_identification.id = "
+					+ softwareIdentificaitonKey);
 		}
 
 	}
 
 	public int addSimulationRun(RunSimulationMessage runSimulationMessage, int md5CollisionId,
-		SoftwareIdentification destinationSoftwareForRunSimulationMessage) throws ApolloDatabaseException {
+			SoftwareIdentification destinationSoftwareForRunSimulationMessage, Authentication authentication) throws ApolloDatabaseException {
 
-		runSimulationMessage.getAuthentication().setRequesterPassword(""); // need to blank out the password since we store it
+		String userName = authentication.getRequesterId();
+		String password = authentication.getRequesterPassword();
 
+		String[] userIdTokens = parseUserId(userName);
+		userName = userIdTokens[0];
+		
 		int softwareKey = getSoftwareIdentificationKey(runSimulationMessage.getSimulatorIdentification());
+		int userKey = getUserKey(userName, password);
 
 		try {
 			String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, md5_collision_id) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, getMd5(runSimulationMessage));
 			pstmt.setInt(2, softwareKey);
-			pstmt.setInt(3, 1);
+			pstmt.setInt(3, userKey);
 			pstmt.setInt(4, 1);
 			pstmt.setInt(5, md5CollisionId);
 			pstmt.execute();
@@ -1074,34 +1084,34 @@ public class ApolloDbUtils {
 			// run_data_content table...
 			// use insertDataContentForRun for this
 			int dataContentKey = addTextDataContent(getJSONString(runSimulationMessage,
-				RunSimulationMessage.class));
+					RunSimulationMessage.class));
 			int runDataDescriptionId = getRunDataDescriptionId(DbContentDataFormatEnum.TEXT,
-				"run_simulation_message.json", DbContentDataType.RUN_SIMULATION_MESSAGE, 0,
-				getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
+					"run_simulation_message.json", DbContentDataType.RUN_SIMULATION_MESSAGE, 0,
+					getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
 			// int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
 			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey,
-				runDataDescriptionId);
+					runDataDescriptionId);
 
 			return runId;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to add simulation run: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to add simulation run: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		}
 	}
 
 	private List<BigInteger> getSimulationRunIdsAssociatedWithHash(String hash, int softwareKey)
-		throws ApolloDatabaseException {
-		String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ? and user_id = ?";
+			throws ApolloDatabaseException {
+		String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ?";
 
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			pstmt.setString(1, hash);
 			pstmt.setInt(2, softwareKey);
-			pstmt.setInt(3, 1);
+//			pstmt.setInt(3, 1);
 			ResultSet rs = pstmt.executeQuery();
 
 			List<BigInteger> runIds = new ArrayList<BigInteger>();
@@ -1118,32 +1128,32 @@ public class ApolloDbUtils {
 			return runIds;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get run IDs associated with hash " + hash + ": "
-				+ ex.getMessage());
+					"ClassNotFoundException attempting to get run IDs associated with hash " + hash + ": "
+					+ ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to get run IDs associated with hash "
-				+ hash + ": " + ex.getMessage());
+					+ hash + ": " + ex.getMessage());
 		}
 	}
 
 	public List<BigInteger> getSimulationRunIdsAssociatedWithRunSimulationMessageHash(
-		RunSimulationMessage runSimulationMessageToHash) throws ApolloDatabaseException {
+			RunSimulationMessage runSimulationMessageToHash) throws ApolloDatabaseException {
 
 		int softwareKey = getSoftwareIdentificationKey(runSimulationMessageToHash
-			.getSimulatorIdentification());
+				.getSimulatorIdentification());
 		String md5Hash = getMd5(runSimulationMessageToHash);
 
 		return getSimulationRunIdsAssociatedWithHash(md5Hash, softwareKey);
 	}
 
 	public List<BigInteger> getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(
-		RunVisualizationMessage runVisualizationMessageToHash) throws ApolloDatabaseException {
+			RunVisualizationMessage runVisualizationMessageToHash) throws ApolloDatabaseException {
 		int softwareKey = getSoftwareIdentificationKey(runVisualizationMessageToHash
-			.getVisualizerIdentification());
+				.getVisualizerIdentification());
 		String md5Hash = getMd5(runVisualizationMessageToHash);
 
 		try {
-			String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ? and user_id = ?";
+			String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ? and requester_id = ?";
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			pstmt.setString(1, md5Hash);
 			pstmt.setInt(2, softwareKey);
@@ -1163,10 +1173,10 @@ public class ApolloDbUtils {
 			return runIds;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundEXception attempting to get visualization run ID: " + ex.getMessage());
+					"ClassNotFoundEXception attempting to get visualization run ID: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to get visualization run ID: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		}
 	}
 
@@ -1179,7 +1189,7 @@ public class ApolloDbUtils {
 	 * @throws ClassNotFoundException
 	 */
 	public int updateLastServiceToBeCalledForRun(BigInteger runId, Integer softwareIdentificationKey)
-		throws SQLException, ClassNotFoundException {
+			throws SQLException, ClassNotFoundException {
 		String query = "UPDATE run SET last_service_to_be_called = ? WHERE id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, softwareIdentificationKey);
@@ -1223,14 +1233,14 @@ public class ApolloDbUtils {
 	}
 
 	public int updateLastServiceToBeCalledForRun(BigInteger runId,
-		SoftwareIdentification softwareIdentification) throws ApolloDatabaseException, SQLException,
-		ClassNotFoundException {
+			SoftwareIdentification softwareIdentification) throws ApolloDatabaseException, SQLException,
+			ClassNotFoundException {
 		int softwareIdentificationKey = getSoftwareIdentificationKey(softwareIdentification);
 		return updateLastServiceToBeCalledForRun(runId, softwareIdentificationKey);
 	}
 
 	public int getIdOfLastServiceToBeCalledForRun(BigInteger runId)
-		throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
+			throws ApolloDatabaseKeyNotFoundException, SQLException, ClassNotFoundException {
 		String query = "SELECT last_service_to_be_called FROM run WHERE id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, runId.intValue());
@@ -1239,12 +1249,12 @@ public class ApolloDbUtils {
 			return rs.getInt(1);
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
-				"No last_service_to_be_called found for simulation run where id = " + runId);
+					"No last_service_to_be_called found for simulation run where id = " + runId);
 		}
 	}
 
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId)
-		throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
+			throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
 
 		try {
 			int softwareId = getIdOfLastServiceToBeCalledForRun(runId);
@@ -1267,16 +1277,16 @@ public class ApolloDbUtils {
 				return softwareIdentification;
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException("No software identification found for id = "
-					+ softwareId);
+						+ softwareId);
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
-				"ClassNotFoundException attempting to get last service to be called for run " + runId
-				+ ": " + ex.getMessage());
+					"ClassNotFoundException attempting to get last service to be called for run " + runId
+					+ ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException(
-				"SQLException attempting to get last service to be called for run " + runId + ": "
-				+ ex.getMessage());
+					"SQLException attempting to get last service to be called for run " + runId + ": "
+					+ ex.getMessage());
 		}
 
 	}
@@ -1318,7 +1328,7 @@ public class ApolloDbUtils {
 				return statusEnum;
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException(
-					"No status was found in the run_status_description table for status ID " + statusId);
+						"No status was found in the run_status_description table for status ID " + statusId);
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to get status enum of status ID " + statusId + ": " + ex.getMessage());
@@ -1347,7 +1357,7 @@ public class ApolloDbUtils {
 				return status;
 			} else {
 				throw new ApolloDatabaseStatusNotFoundForRunIdException(
-					"No status was found in the run_status table for run ID " + runId.intValue());
+						"No status was found in the run_status table for run ID " + runId.intValue());
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundExceptionattempting  to get status and message for run ID " + runId.intValue() + ": " + ex.getMessage());
@@ -1357,7 +1367,7 @@ public class ApolloDbUtils {
 	}
 
 	public int getNewSimulationGroupId() throws SQLException, ClassNotFoundException,
-		ApolloDatabaseRecordNotInsertedException {
+			ApolloDatabaseRecordNotInsertedException {
 		String query = "INSERT INTO simulation_groups VALUES ()";
 		PreparedStatement pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		pstmt.execute();
@@ -1366,13 +1376,13 @@ public class ApolloDbUtils {
 			return rs.getInt(1);
 		} else {
 			throw new ApolloDatabaseRecordNotInsertedException(
-				"Unable to create new simulation group, insert failed.");
+					"Unable to create new simulation group, insert failed.");
 		}
 	}
 
 	public void addRunIdsToSimulationGroup(int simulationGroupId,
-		List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws SQLException,
-		ClassNotFoundException {
+			List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws SQLException,
+			ClassNotFoundException {
 		String query = "INSERT INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		for (RunIdentificationAndLabel runIdAndLabel : simulationRunIdentificationsAndLabels) {
@@ -1383,19 +1393,27 @@ public class ApolloDbUtils {
 		}
 	}
 
-	public int addVisualizationRun(RunVisualizationMessage runVisualizationMessage, int md5CollisionId)
-		throws ApolloDatabaseException, ApolloDatabaseRecordNotInsertedException {
+	public int addVisualizationRun(RunVisualizationMessage runVisualizationMessage, int md5CollisionId, Authentication authentication)
+			throws ApolloDatabaseException, ApolloDatabaseRecordNotInsertedException {
+
+		String userName = authentication.getRequesterId();
+		String password = authentication.getRequesterPassword();
+
+		String[] userIdTokens = parseUserId(userName);
+		userName = userIdTokens[0];
+		
+		int userKey = getUserKey(userName, password);
 
 		int softwareKey = getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification());
 		try {
 			int simulationGroupId = getNewSimulationGroupId();
 			addRunIdsToSimulationGroup(simulationGroupId, runVisualizationMessage.getSimulationRunIds());
 
-			String query = "INSERT INTO run (md5_hash_of_run_message, software_id, user_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, getMd5(runVisualizationMessage));
 			pstmt.setInt(2, softwareKey);
-			pstmt.setInt(3, 1);
+			pstmt.setInt(3, userKey);
 			pstmt.setInt(4, 4); // 4 is translator
 			pstmt.setInt(5, simulationGroupId);
 			pstmt.setInt(6, md5CollisionId);
@@ -1413,22 +1431,22 @@ public class ApolloDbUtils {
 			// run_data_content table...
 			// use insertDataContentForRun for this
 			int dataContentKey = addTextDataContent(getJSONString(runVisualizationMessage,
-				RunVisualizationMessage.class));
+					RunVisualizationMessage.class));
 			int runDataDescriptionId = getRunDataDescriptionId(DbContentDataFormatEnum.TEXT,
-				"run_visualization_message.json", DbContentDataType.RUN_VISUALIZATION_MESSAGE, 0,
-				getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
+					"run_visualization_message.json", DbContentDataType.RUN_VISUALIZATION_MESSAGE, 0,
+					getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification()));
 			// int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
 			associateContentWithRunId(new BigInteger(String.valueOf(runId)), dataContentKey,
-				runDataDescriptionId);
+					runDataDescriptionId);
 
 			return runId;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to add visualization run: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to add visualization run: "
-				+ ex.getMessage());
+					+ ex.getMessage());
 		}
 	}
 
@@ -1473,6 +1491,11 @@ public class ApolloDbUtils {
 
 			}
 
+			query = "DELETE FROM run_status WHERE run_id = ?";
+			pstmt = getConn().prepareStatement(query);
+			pstmt.setInt(1, runId.intValue());
+			pstmt.execute();
+
 			query = "DELETE FROM time_series WHERE run_id = ?";
 			pstmt = getConn().prepareStatement(query);
 			pstmt.setInt(1, runId.intValue());
@@ -1498,10 +1521,10 @@ public class ApolloDbUtils {
 			}
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to remove all data for run "
-				+ runId + ": " + ex.getMessage());
+					+ runId + ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to remove all data for run " + runId
-				+ ": " + ex.getMessage());
+					+ ": " + ex.getMessage());
 		}
 
 	}
@@ -1515,7 +1538,7 @@ public class ApolloDbUtils {
 			pstmt.execute();
 		} catch (SQLException e) {
 			throw new SQLException("Error creating axis id for label: " + label + ".   Specific error was:\n"
-				+ e.getMessage());
+					+ e.getMessage());
 		}
 
 	}
@@ -1539,7 +1562,7 @@ public class ApolloDbUtils {
 				} // end while
 			} catch (SQLException e) {
 				throw new SQLException("Error retreiving axis id for label: " + label
-					+ ".   Specific error was:\n" + e.getMessage());
+						+ ".   Specific error was:\n" + e.getMessage());
 
 			}
 			try {
@@ -1551,7 +1574,7 @@ public class ApolloDbUtils {
 				}
 			} catch (SQLException e) {
 				throw new SQLException("Error creating axis id for label: " + label
-					+ ".   Specific error was:\n" + e.getMessage());
+						+ ".   Specific error was:\n" + e.getMessage());
 
 			}
 		}
@@ -1579,7 +1602,7 @@ public class ApolloDbUtils {
 
 			} catch (SQLException e) {
 				throw new SQLException("Error retreiving population id for: " + disease_state
-					+ " from simulated_population.  Specific error was:\n" + e.getMessage());
+						+ " from simulated_population.  Specific error was:\n" + e.getMessage());
 			}
 		}
 		return popId;
@@ -1587,7 +1610,7 @@ public class ApolloDbUtils {
 	}
 
 	public int getOrCreatePopulationId(int axisId, String disease_state) throws ClassNotFoundException,
-		SQLException {
+			SQLException {
 		Integer popId = getPopulationId(disease_state);
 
 		if (popId == null) {
@@ -1598,7 +1621,7 @@ public class ApolloDbUtils {
 				pstmt.execute();
 			} catch (SQLException e) {
 				throw new SQLException("Error inserting disease state: " + disease_state
-					+ " into simulated_population." + " Specific error was:\n" + e.getMessage());
+						+ " into simulated_population." + " Specific error was:\n" + e.getMessage());
 			}
 
 			try {
@@ -1615,7 +1638,7 @@ public class ApolloDbUtils {
 				} // end while
 			} catch (SQLException e) {
 				throw new SQLException("Error retreiving ID from simulated_population for label: "
-					+ disease_state + "." + "   Specific error was:\n" + e.getMessage());
+						+ disease_state + "." + "   Specific error was:\n" + e.getMessage());
 			}
 
 			try {
@@ -1627,8 +1650,8 @@ public class ApolloDbUtils {
 				pstmt.execute();
 			} catch (SQLException e) {
 				throw new SQLException("Error inserting value: " + disease_state
-					+ " into simulated_population_axis_value." + " Specific error was:\n"
-					+ e.getMessage());
+						+ " into simulated_population_axis_value." + " Specific error was:\n"
+						+ e.getMessage());
 			}
 		}
 
@@ -1636,7 +1659,7 @@ public class ApolloDbUtils {
 	}
 
 	public int getOrCreatePopulationId(int diseaseStateAxisId, int locationAxisId, String disease_state,
-		String location) throws ClassNotFoundException, SQLException {
+			String location) throws ClassNotFoundException, SQLException {
 		Integer popId = -1;
 
 		popId = getPopulationId(disease_state + " in " + location);
@@ -1644,13 +1667,13 @@ public class ApolloDbUtils {
 		if (popId == null || popId == -1) {
 			try {
 				String query = "INSERT INTO simulated_population (LABEL) VALUES ('" + disease_state + " in "
-					+ location + "')";
+						+ location + "')";
 
 				PreparedStatement pstmt = getConn().prepareStatement(query);
 				pstmt.execute();
 			} catch (SQLException e) {
 				throw new SQLException("Error inserting disease state: " + disease_state
-					+ " into simulated_population." + " Specific error was:\n" + e.getMessage());
+						+ " into simulated_population." + " Specific error was:\n" + e.getMessage());
 			}
 
 			try {
@@ -1666,7 +1689,7 @@ public class ApolloDbUtils {
 				} // end while
 			} catch (SQLException e) {
 				throw new SQLException("Error retreiving ID from simulated_population for label: "
-					+ disease_state + "." + "   Specific error was:\n" + e.getMessage());
+						+ disease_state + "." + "   Specific error was:\n" + e.getMessage());
 			}
 
 			// there needs to be 2 inserts, one for the disease state, and one
@@ -1691,8 +1714,8 @@ public class ApolloDbUtils {
 
 			} catch (SQLException e) {
 				throw new SQLException("Error inserting value: " + disease_state
-					+ " into simulated_population_axis_value." + " Specific error was:\n"
-					+ e.getMessage());
+						+ " into simulated_population_axis_value." + " Specific error was:\n"
+						+ e.getMessage());
 			}
 		}
 
@@ -1700,10 +1723,10 @@ public class ApolloDbUtils {
 	}
 
 	public void insertDiseaseStateTimeSeries(PreparedStatement pstmt, int runId, int popId,
-		String disease_state, List<Double> ts) throws SQLException, ClassNotFoundException {
+			String disease_state, List<Double> ts) throws SQLException, ClassNotFoundException {
 
 		logger.info("In insertDiseaseStateTimeSeries, runId={}, popId={}, disease_state={}", runId, popId,
-			disease_state);
+				disease_state);
 		// logger.info("Time Series is:");
 
 		try {
@@ -1717,21 +1740,21 @@ public class ApolloDbUtils {
 			}
 		} catch (SQLException e) {
 			logger.error(
-				"Error inserting disease state time series for runId={}, popId={}, disease_state={}",
-				runId, popId, disease_state);
+					"Error inserting disease state time series for runId={}, popId={}, disease_state={}",
+					runId, popId, disease_state);
 
 			throw new SQLException("Error inserting disease state time series for internal run id: " + runId
-				+ ", disease state: " + disease_state + ".   Specific error was:\n" + e.getMessage());
+					+ ", disease state: " + disease_state + ".   Specific error was:\n" + e.getMessage());
 		}
 
 	}
 
 	public void insertTimeSeries(int runId, int popId, String label, List<Integer> ts) throws SQLException,
-		ClassNotFoundException {
+			ClassNotFoundException {
 
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(
-				"INSERT INTO time_series (run_id, population_id, time_step, pop_count) VALUES (?,?,?,?)");
+					"INSERT INTO time_series (run_id, population_id, time_step, pop_count) VALUES (?,?,?,?)");
 			for (int i = 0; i < ts.size(); i++) {
 				pstmt.setInt(1, runId);
 				pstmt.setInt(2, popId);
@@ -1741,16 +1764,16 @@ public class ApolloDbUtils {
 			}
 		} catch (SQLException e) {
 			throw new SQLException("Error inserting disease state time series for internal run id: " + runId
-				+ ", label: " + label + ".   Specific error was:\n" + e.getMessage());
+					+ ", label: " + label + ".   Specific error was:\n" + e.getMessage());
 		}
 
 	}
 
 	public void insertDiseaseStateTimeSeriesNegative(PreparedStatement pstmt, int runId, int popId,
-		String disease_state, List<Double> ts) throws SQLException, ClassNotFoundException {
+			String disease_state, List<Double> ts) throws SQLException, ClassNotFoundException {
 
 		logger.info("In insertDiseaseStateTimeSeries, runId={}, popId={}, disease_state={}", runId, popId,
-			disease_state);
+				disease_state);
 		// logger.info("Time Series is:");
 
 		try {
@@ -1766,22 +1789,22 @@ public class ApolloDbUtils {
 			}
 		} catch (SQLException e) {
 			logger.error(
-				"Error inserting disease state time series for runId={}, popId={}, disease_state={}",
-				runId, popId, disease_state);
+					"Error inserting disease state time series for runId={}, popId={}, disease_state={}",
+					runId, popId, disease_state);
 
 			throw new SQLException("Error inserting disease state time series for internal run id: " + runId
-				+ ", disease state: " + disease_state + ".   Specific error was:\n" + e.getMessage());
+					+ ", disease state: " + disease_state + ".   Specific error was:\n" + e.getMessage());
 		}
 
 	}
 
 	public void awaitRowCountForTimeSeriesTable(int runId, int totalRowCount) throws SQLException,
-		ClassNotFoundException {
+			ClassNotFoundException {
 		PreparedStatement pstmt = getConn().prepareStatement(
-			"select count(*) from time_series where run_id = ?");
+				"select count(*) from time_series where run_id = ?");
 		int actualCount = -1;
 		for (int sleepSeconds = 0; actualCount != totalRowCount; sleepSeconds = Math
-			.min(sleepSeconds + 1, 10)) {
+				.min(sleepSeconds + 1, 10)) {
 			if (actualCount != -1) {
 				try {
 					Thread.sleep(sleepSeconds * 1000);
@@ -1796,7 +1819,7 @@ public class ApolloDbUtils {
 			rs.close();
 		}
 		System.out.printf("Confirmed that %d expected rows are in the database for run id %d.\n",
-			actualCount, runId);
+				actualCount, runId);
 	}
 
 	static {
@@ -1809,10 +1832,10 @@ public class ApolloDbUtils {
 			}
 			APOLLO_DIR = apolloDir;
 			logger.info(APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE + " is now:"
-				+ APOLLO_DIR);
+					+ APOLLO_DIR);
 		} else {
 			logger.error(APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE
-				+ " environment variable not found!");
+					+ " environment variable not found!");
 			APOLLO_DIR = "";
 		}
 
