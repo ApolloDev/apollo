@@ -1,14 +1,14 @@
 package edu.pitt.apollo.apolloservice.database;
 
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-
-import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 
 /**
  *
@@ -23,8 +23,8 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
 
     private final RunSimulationMessage runSimulationMessage;
 
-    public DatabaseAccessorForRunningSimulations(RunSimulationMessage runSimulationMessage) {
-        super();
+    public DatabaseAccessorForRunningSimulations(RunSimulationMessage runSimulationMessage, Authentication authentication) {
+        super(authentication);
         this.runSimulationMessage = runSimulationMessage;
     }
 
@@ -65,7 +65,7 @@ public class DatabaseAccessorForRunningSimulations extends DatabaseAccessor {
     public BigInteger insertRunIntoDatabase() throws ApolloDatabaseException {
         int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runSimulationMessage) + 1;
         BigInteger runId = new BigInteger(Integer.toString(dbUtils.addSimulationRun(runSimulationMessage, md5CollisionId,
-                TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification())));
+                TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification(), authentication)));
         return runId;
     }
 }
