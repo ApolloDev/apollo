@@ -35,9 +35,8 @@ import edu.pitt.apollo.apolloservice.methods.library.GetUuidsForLibraryItemsCrea
 import edu.pitt.apollo.apolloservice.methods.library.GetUuidsForLibraryItemsGivenTypeMethod;
 import edu.pitt.apollo.apolloservice.methods.library.RemoveLibraryItemMethod;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
-import edu.pitt.apollo.apolloservice.methods.run.RunSimulationMethod;
+import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunSimulationsMethod;
-import edu.pitt.apollo.apolloservice.methods.run.RunVisualizationMethod;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
@@ -58,7 +57,6 @@ import edu.pitt.apollo.types.v2_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
 import edu.pitt.apollo.types.v2_0_2.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationResult;
 import edu.pitt.apollo.types.v2_0_2.ServiceRecord;
 import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
@@ -192,8 +190,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunVisualizationResponse")
     public RunResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-		RunVisualizationMethod runVisualizationMethod = new RunVisualizationMethod(runVisualizationMessage);
-        return runVisualizationMethod.runVisualization();
+		RunMethod runMethod = new RunMethod(runVisualizationMessage.getAuthentication(), runVisualizationMessage.getVisualizerIdentification(), 
+				runVisualizationMessage);
+        return runMethod.run();
     }
     
     @Override
@@ -234,8 +233,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_0_2/", className = "edu.pitt.apollo.service.apolloservice.v2_0_2.RunSimulationResponse")
     public RunResult runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-		RunSimulationMethod runSimulationMethod = new RunSimulationMethod(runSimulationMessage);
-        return runSimulationMethod.runSimulation();
+		RunMethod runMethod = new RunMethod(runSimulationMessage.getAuthentication(), runSimulationMessage.getSimulatorIdentification(), 
+				runSimulationMessage);
+		
+        return runMethod.run();
     }
     
     @Override
