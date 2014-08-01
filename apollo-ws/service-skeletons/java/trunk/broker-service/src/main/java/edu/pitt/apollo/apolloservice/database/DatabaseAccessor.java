@@ -18,9 +18,11 @@ import java.math.BigInteger;
 public abstract class DatabaseAccessor {
 
 	protected ApolloDbUtils dbUtils;
+	protected final Authentication authentication;
 
-	public DatabaseAccessor() {
+	public DatabaseAccessor(Authentication authentication) {
 		this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+		this.authentication = authentication;
 	}
 
 	public void removeAllDataAssociatedWithRunId(BigInteger runId) throws ApolloDatabaseException {
@@ -42,15 +44,15 @@ public abstract class DatabaseAccessor {
 	}
 
 	protected final boolean isRunIdAssociatedWithMatchingRunMessage(String targetRunMessageAsJson,
-		BigInteger runIdAssociatedWithRunMessageHash) throws ApolloDatabaseException {
+			BigInteger runIdAssociatedWithRunMessageHash) throws ApolloDatabaseException {
 
 		String runSimulationMessageAssociatedWithRunIdAsJson
-			= getRunMessageAssociatedWithRunIdAsJsonOrNull(runIdAssociatedWithRunMessageHash);
+				= getRunMessageAssociatedWithRunIdAsJsonOrNull(runIdAssociatedWithRunMessageHash);
 
 		if (runSimulationMessageAssociatedWithRunIdAsJson == null) {
 			throw new ApolloDatabaseException(
-				"There was no run_simulation_message.json content for run ID "
-				+ runIdAssociatedWithRunMessageHash);
+					"There was no run_simulation_message.json content for run ID "
+					+ runIdAssociatedWithRunMessageHash);
 		}
 
 		return targetRunMessageAsJson.equals(runSimulationMessageAssociatedWithRunIdAsJson);
