@@ -6,8 +6,9 @@ DROP TABLE IF EXISTS run_status;
 DROP TABLE IF EXISTS run_status_description;
 DROP TABLE IF EXISTS simulation_group_definition;
 DROP TABLE IF EXISTS run_data;
-DROP TABLE IF EXISTS run;
-DROP TABLE IF EXISTS software_identification;
+
+DROP TABLE IF EXISTS role_description;
+
 DROP TABLE IF EXISTS run_data_content;
 DROP TABLE IF EXISTS run_data_description;
 DROP TABLE IF EXISTS run_data_description_axis_value;
@@ -16,11 +17,95 @@ DROP TABLE IF EXISTS simulated_population;
 DROP TABLE IF EXISTS population_axis;
 DROP TABLE IF EXISTS simulated_population_axis_value;
 DROP TABLE IF EXISTS time_series;
-DROP TABLE IF EXISTS visualizer_output;
-DROP TABLE IF EXISTS apollo_service_simulator_run_cache;
-DROP TABLE IF EXISTS apollo_service_visualizer_cache_results;
-DROP TABLE IF EXISTS apollo_service_visualizer_cache;
+DROP TABLE IF EXISTS run;
+
+
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+
+DROP TABLE IF EXISTS software_identification;
 DROP TABLE IF EXISTS simulation_groups;
+
+CREATE TABLE users (
+  id INT NOT NULL AUTO_INCREMENT,
+  requester_id VARCHAR(255) NOT NULL,
+  hash_of_user_password_and_salt VARCHAR(255) NOT NULL,
+  salt VARCHAR(255) NOT NULL,
+  user_email VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+
+CREATE TABLE roles (
+  id INT NOT NULL AUTO_INCREMENT,
+  description VARCHAR(255),
+  PRIMARY KEY(id)
+);
+
+INSERT INTO roles VALUES (1, 'Can run SEIR without privileged request');
+INSERT INTO roles VALUES (2, 'Can run SEIR with privileged request');
+INSERT INTO roles VALUES (3, 'Cannot SEIR');
+
+INSERT INTO roles VALUES (4, 'Can run FRED without privileged request');
+INSERT INTO roles VALUES (5, 'Can run FRED with privileged request');
+INSERT INTO roles VALUES (6, 'Cannot run FRED');
+
+INSERT INTO roles VALUES (7, 'Can run FluTE without privileged request');
+INSERT INTO roles VALUES (8, 'Can run FluTE with privileged request');
+INSERT INTO roles VALUES (9, 'Cannot run FluTE');
+
+INSERT INTO roles VALUES (10, 'Can run TSV without privileged request');
+INSERT INTO roles VALUES (11, 'Can run TSV with privileged request');
+INSERT INTO roles VALUES (12, 'Cannot run TSV');
+
+INSERT INTO roles VALUES (13, 'Can run GAIA without privileged request');
+INSERT INTO roles VALUES (14, 'Can run GAIA with privileged request');
+INSERT INTO roles VALUES (15, 'Cannot run GAIA');
+
+INSERT INTO roles VALUES (16, 'Can run Anthrax without privileged request');
+INSERT INTO roles VALUES (17, 'Can run Anthrax with privileged request');
+INSERT INTO roles VALUES (18, 'Cannot run Anthrax');
+
+
+CREATE TABLE role_description (
+  role_id INT REFERENCES roles(id),
+  software_id INT REFERENCES software_identification(id),
+  can_run_software BIT,
+  allow_privileged_request BIT,
+  CONSTRAINT role_description UNIQUE(role_id, software_id)
+);
+
+INSERT INTO role_description VALUES(1, 2, 1, 0);
+INSERT INTO role_description VALUES(2, 2, 1, 1);
+INSERT INTO role_description VALUES(3, 2, 0, 0);
+
+INSERT INTO role_description VALUES(4, 3, 1, 0);
+INSERT INTO role_description VALUES(5, 3, 1, 1);
+INSERT INTO role_description VALUES(6, 3, 0, 0);
+
+INSERT INTO role_description VALUES(7, 6, 1, 0);
+INSERT INTO role_description VALUES(8, 6, 1, 1);
+INSERT INTO role_description VALUES(9, 6, 0, 0);
+
+INSERT INTO role_description VALUES(10, 4, 1, 0);
+INSERT INTO role_description VALUES(11, 4, 1, 1);
+INSERT INTO role_description VALUES(12, 4, 0, 0);
+
+INSERT INTO role_description VALUES(13, 5, 1, 0);
+INSERT INTO role_description VALUES(14, 5, 1, 1);
+INSERT INTO role_description VALUES(15, 5, 0, 0);
+
+INSERT INTO role_description VALUES(13, 7, 1, 0);
+INSERT INTO role_description VALUES(14, 7, 1, 1);
+INSERT INTO role_description VALUES(15, 7, 0, 0);
+
+CREATE TABLE user_roles (
+  user_id INT NOT NULL REFERENCES users(id),
+  role_id INT NOT NULL REFERENCES roles(id),
+  CONSTRAINT user_role_unique UNIQUE (user_id, role_id)
+);
+
 
 CREATE TABLE software_identification (
   id INT NOT NULL AUTO_INCREMENT,
@@ -33,12 +118,13 @@ CREATE TABLE software_identification (
   PRIMARY KEY (id)
 );
 
-INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice201/services/translatorservice?wsdl',1),
-											 (2,'UPitt','SEIR','3.0','simulator','http://betaweb.rods.pitt.edu/seirsimulatorservice2.0.1/services/seirsimulatorservice?wsdl',1),
-											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://warhol-fred.psc.edu:8045/fred?wsdl',1),
-											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.1/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.psc.edu:8046/gaia?wsdl',1),
-											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://localhost:8080/flutesimulatorservice2.0.1/services/flutesimulatorservice?wsdl',1);
+INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice202/services/translatorservice?wsdl',1),
+											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.2/services/visualizerservice?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8092/gaia?wsdl',1),
+											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1);
 
 
 CREATE TABLE run_data_content

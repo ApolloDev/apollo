@@ -1,7 +1,6 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -10,14 +9,9 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI;
 import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceV202;
 import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
@@ -32,17 +26,13 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
  * Class: RunVisualizationThread
  * IDE: NetBeans 6.9.1
  */
-public class RunVisualizationThread extends Thread {
+public class RunVisualizationThread extends RunApolloServiceThread {
 
-	static Logger logger = LoggerFactory.getLogger(RunVisualizationThread.class);
-    private RunVisualizationMessage message;
-    private BigInteger runId;
-    private ApolloDbUtils dbUtils;
+    private final RunVisualizationMessage message;
 
-    public RunVisualizationThread(BigInteger runId, RunVisualizationMessage message) {
+    public RunVisualizationThread(RunVisualizationMessage message) {
+		super();
         this.message = message;
-        this.runId = runId;
-        this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
     }
 
     @Override
@@ -119,4 +109,9 @@ public class RunVisualizationThread extends Thread {
             logger.error("Error writing error file!: " + e.getMessage());
         }
     }
+
+	@Override
+	public void setAuthenticationPasswordFieldToBlank() {
+		message.getAuthentication().setRequesterPassword("");
+	}
 }
