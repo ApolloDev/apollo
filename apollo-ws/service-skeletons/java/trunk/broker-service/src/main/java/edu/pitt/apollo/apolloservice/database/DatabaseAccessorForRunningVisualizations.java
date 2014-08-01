@@ -1,13 +1,13 @@
 package edu.pitt.apollo.apolloservice.database;
 
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-
-import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
 
 /**
  *
@@ -22,8 +22,8 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 
 	private final RunVisualizationMessage runVisualizationMessage;
 
-	public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage) {
-		super();
+	public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage, Authentication authentication) {
+		super(authentication);
 		this.runVisualizationMessage = runVisualizationMessage;
 	}
 
@@ -65,7 +65,7 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 	@Override
 	public BigInteger insertRunIntoDatabase() throws ApolloDatabaseException {
 		int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runVisualizationMessage) + 1;
-		BigInteger runId = new BigInteger(Integer.toString(dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId)));
+		BigInteger runId = new BigInteger(Integer.toString(dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId, authentication)));
 		return runId;
 	}
 }
