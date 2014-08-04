@@ -12,6 +12,11 @@
 	<version>2.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	   <scm>
+        <connection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</connection>
+        <developerConnection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</developerConnection>
+    </scm>
+	
 	<repositories>
 		<repository>
 			<id>research.rods.pitt.edu</id>
