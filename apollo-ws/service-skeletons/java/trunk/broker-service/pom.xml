@@ -12,8 +12,8 @@
 
     <repositories>
         <repository>
-            <id>source.db4o</id>
-            <url>http://source.db4o.com/maven/</url>
+            <id>sonatype-forge</id>
+            <url>https://repository.sonatype.org/content/groups/forge/</url>
         </repository>
     </repositories>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.db4o</groupId>
             <artifactId>db4o-core-java5</artifactId>
-            <version>8.1-SNAPSHOT</version>
+            <version>8.0.184.15484</version>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
@@ -37,22 +37,22 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>simulator-service-client</artifactId>
-         			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>library-service-client</artifactId>
-        			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>visualizer-service-client</artifactId>
-          			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>syntheticpopulation-service-client</artifactId>
-			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -104,14 +104,14 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>db-common</artifactId>
-			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
        
         <dependency>
-        	<groupId>edu.pitt.apollo</groupId>
-        	<artifactId>translator-service-skeleton</artifactId>
-        	<type>jar</type>
-        				<version>${project.version}</version>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>translator-service-skeleton</artifactId>
+            <type>jar</type>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -123,7 +123,7 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-						<!-- here the phase you need -->
+                        <!-- here the phase you need -->
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -142,9 +142,9 @@
             </plugin>
 
 
-			<!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
-				the objects created by running wsdl2java or wsimport), as this JAR will also 
-				be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
+            <!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
+            the objects created by running wsdl2java or wsimport), as this JAR will also 
+            be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -175,14 +175,14 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-		<!-- Name of the generated WAR file -->
+        <!-- Name of the generated WAR file -->
         <finalName>apollo-service202</finalName>
     </build>
 
     <profiles>
         <profile>
             <id>CXF</id>
-			<!-- To use Metro by default, move activation element to its profile below -->
+            <!-- To use Metro by default, move activation element to its profile below -->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -196,12 +196,12 @@
                             <execution>
                                 <configuration>
                                     <sourceRoot>
-										${basedir}/target/generated-sources
+                                        ${basedir}/target/generated-sources
                                     </sourceRoot>
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-												${basedir}/../src/main/resources/apolloservice202.wsdl
+                                                ${basedir}/../src/main/resources/apolloservice202.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:apolloservice202.wsdl</wsdlLocation>
                                         </wsdlOption>
