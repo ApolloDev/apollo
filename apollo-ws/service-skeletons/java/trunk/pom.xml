@@ -16,6 +16,14 @@
         <connection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</connection>
         <developerConnection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</developerConnection>
     </scm>
+
+<distributionManagement>
+		<repository>
+			<id>research.rods.pitt.edu</id>
+			<name>Apollo Repository</name>
+			<url>http://research.rods.pitt.edu/repo</url>
+		</repository>
+  </distributionManagement>
 	
 	<repositories>
 		<repository>
@@ -23,7 +31,6 @@
 			<name>Apollo Repository</name>
 			<url>http://research.rods.pitt.edu/repo</url>
 		</repository>
-
 
 
 		<repository>
