@@ -80,7 +80,7 @@
 			</plugins>
 		</pluginManagement>
 		<!-- Name of the generated WAR file -->
-		<finalName>syntheticpopulation-service</finalName>
+		<!--<finalName>syntheticpopulation-service</finalName>-->
 	</build>
 
 	<profiles>
