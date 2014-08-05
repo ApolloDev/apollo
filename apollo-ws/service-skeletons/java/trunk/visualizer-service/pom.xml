@@ -129,7 +129,7 @@
             </plugins>
         </pluginManagement>
 		<!-- Name of the generated WAR file -->
-        <finalName>visualizer-service</finalName>
+        <!--<finalName>visualizer-service</finalName>-->
     </build>
 
     <profiles>

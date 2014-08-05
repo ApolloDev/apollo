@@ -102,7 +102,7 @@
             </plugins>
         </pluginManagement>
         <!-- Name of the generated WAR file -->
-        <finalName>library-service</finalName>
+        <!--<finalName>library-service</finalName>-->
     </build>
 
     <profiles>
