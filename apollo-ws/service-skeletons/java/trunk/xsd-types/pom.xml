@@ -3,6 +3,14 @@
 	<artifactId>xsd-types</artifactId>
 	<packaging>jar</packaging>
 
+	<distributionManagement>
+		<repository>
+			<id>research.rods.pitt.edu</id>
+			<name>Apollo Repository</name>
+			<url>http://research.rods.pitt.edu/repo</url>
+		</repository>
+  </distributionManagement>
+	
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
