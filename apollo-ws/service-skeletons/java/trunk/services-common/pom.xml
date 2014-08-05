@@ -138,5 +138,5 @@
 	</build>
 	<name>Common Service Module</name>
 	<groupId>edu.pitt.apollo</groupId>
-	<version>2.0.2.2</version>
+	<version>2.0.2.3-SNAPSHOT</version>
 </project>
