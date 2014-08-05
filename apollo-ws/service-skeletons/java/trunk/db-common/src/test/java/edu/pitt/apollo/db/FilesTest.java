@@ -15,7 +15,9 @@ public class FilesTest extends TestCase {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public void testTemp() {
+		assert(true);
+	}
 
 //	@Override
 //	protected void setUp() throws Exception {
