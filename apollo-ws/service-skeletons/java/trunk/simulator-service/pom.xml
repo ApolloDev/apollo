@@ -86,7 +86,7 @@
             </plugins>
         </pluginManagement>
         <!-- Name of the generated WAR file -->
-        <finalName>simulator-service</finalName>
+        <!--<finalName>simulator-service</finalName>-->
     </build>
 
 
