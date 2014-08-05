@@ -133,7 +133,7 @@
             </plugins>
         </pluginManagement>
 		<!-- Name of the generated WAR file -->
-        <finalName>translator-service-skeleton</finalName>
+        <!--<finalName>translator-service-skeleton</finalName>-->
     </build>
 
     <profiles>
