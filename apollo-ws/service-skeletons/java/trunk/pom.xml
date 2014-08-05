@@ -17,9 +17,9 @@
 
 <distributionManagement>
 		<repository>
-			<id>research.rods.pitt.edu</id>
-			<name>Apollo Repository</name>
-			<url>http://research.rods.pitt.edu/repo</url>
+			<id>local_repo</id>
+			<name>Local Repository</name>
+			<url>file:${user.home}/.m2/repository</url>
 		</repository>
   </distributionManagement>
 	
