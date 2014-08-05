@@ -82,10 +82,17 @@ public class ApolloDbUtils {
 	}
 
 	public ApolloDbUtils(File databasePropertiesFile) throws IOException {
-		FileInputStream fis = new FileInputStream(databasePropertiesFile);
+		InputStream fis = new FileInputStream(databasePropertiesFile);
 		properties = new Properties();
 		properties.load(fis);
 		fis.close();
+	}
+
+	public ApolloDbUtils(InputStream databasePropertiesInputStream) throws IOException {
+
+		properties = new Properties();
+		properties.load(databasePropertiesInputStream);
+		databasePropertiesInputStream.close();
 	}
 
 	private void establishDbConn() throws ClassNotFoundException, SQLException {
@@ -1058,7 +1065,7 @@ public class ApolloDbUtils {
 
 		String[] userIdTokens = parseUserId(userName);
 		userName = userIdTokens[0];
-		
+
 		int softwareKey = getSoftwareIdentificationKey(runSimulationMessage.getSimulatorIdentification());
 		int userKey = getUserKey(userName, password);
 
@@ -1401,7 +1408,7 @@ public class ApolloDbUtils {
 
 		String[] userIdTokens = parseUserId(userName);
 		userName = userIdTokens[0];
-		
+
 		int userKey = getUserKey(userName, password);
 
 		int softwareKey = getSoftwareIdentificationKey(runVisualizationMessage.getVisualizerIdentification());
