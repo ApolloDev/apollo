@@ -1,14 +1,14 @@
 set -e
 echo -n "enter release version: "
 read release_version
-echo -n "enter new development version: "
+echo -n "enter new development version (-SNAPSHOT will be appended): "
 read development_version
 echo -n "enter subversion username: "
 read svn_username
 echo -n "enter subversion password: "
 read -s svn_password
 
-mvn release:prepare -DreleaseVersion=$release_version -DdevelopmentVersion=$development_version -Dtag=$release_version -Dusername=$svn_username -Dpassword=$svn_password  -DautoVersionSubmodules=true
+mvn release:prepare -DreleaseVersion=$release_version -DdevelopmentVersion="$development_version-SNAPSHOT" -Dtag=$release_version -Dusername=$svn_username -Dpassword=$svn_password  -DautoVersionSubmodules=true
 
 mvn release:perform -Dgoals=deploy -DuseReleaseProfile=false
 
@@ -41,5 +41,7 @@ mvn deploy:deploy-file -DgroupId=edu.pitt.apollo -DartifactId=visualizer-service
 mvn deploy:deploy-file -DgroupId=edu.pitt.apollo -DartifactId=visualizer-service-client -Dversion=$release_version -Dpackaging=jar -Dfile=./target/checkout/visualizer-service-client/target/visualizer-service-client-$release_version-jar-with-dependencies.jar -DrepositoryId=research.rods.pitt.edu -Durl=scp://research.rods.pitt.edu:/home/jdl/repo/
 
 mvn deploy:deploy-file -DgroupId=edu.pitt.apollo -DartifactId=xsd-types -Dversion=$release_version -Dpackaging=jar -Dfile=./target/checkout/xsd-types/target/xsd-types-$release_version-jar-with-dependencies.jar -DrepositoryId=research.rods.pitt.edu -Durl=scp://research.rods.pitt.edu:/home/jdl/repo/
+
+mvn clean
 
 echo "You have successfully released and deployed Apollo Web Services v$release_version."
