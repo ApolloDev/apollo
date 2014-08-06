@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!--         <link rel="stylesheet" type="text/css" media="screen"
+                      href="template-css.css" />-->
+        <style type="text/css">
+            .warning {
+                font-style: italic;
+            }
+
+
+            .no-native-param {
+                color: red;
+            }
+
+            .no-one-to-one-mapping {
+                color: blue;
+            }
+
+            .no-apollo-param {
+                /*                color: #9933CC;*/
+                color: blue;
+            }
+
+            .native-param {
+                color: black;
+                font-weight: bold;
+            }
+
+            .header {
+                font-weight: bold;
+            }
+
+            .none {
+
+            }
+            
+            .indent {
+                margin-left: 24px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <p style="font-style: italic"><span style="color: green"># This file is a trace of a process that translates a scenario represented in Apollo 2.0.1 syntax into
+                into FRED ver. 2.0.1_i configuration-file syntax. This file, if it was stripped of HTML and lines beginning with hash marks, would be a valid FRED ver. 2.0.1_i configuration-file.
+
+                <br/><br/># Comments in <span style="color: black">BLACK CAPS</span> are section headers inserted for readability.
+                <br/><br/># Comments in <span style="color: black">black lowercase</span> are statements in Apollo 2.0.1 syntax.
+                <br/><br/># Text in <span style="font-weight: bold; color: black">black bold</span> is FRED ver. 2.0.1_i syntax.
+                <br/><br/># Comments in <span style="color: red">RED</span> indicate an aspect of the scenario that could not be translated.
+                <br/><br/># Comments in <span style="color: blue">BLUE</span> explain selected aspects of the translation.
+
+
+
+                <!--                As I process an Apollo 1.3 simulatorConfiguration 
+                                section, I write <span class="no-one-to-one-mapping">'Explanation'</span> messages in blue when there weren't one-to-one correspondences between Apollo 1.3 and FRED ver. 2.0.1_i. I also write
+                                <span class="no-native-param">Explanation </span>
+                                messages in red when mappings lose important information.-->
+            </span>
+        </p>
+       <div id="translation-div">
+            #     INFECTIOUS DISEASE SCENARIO SECTION<br># infectiousDiseaseScenario.scenarioDate = 2009-09-08T12:00:00.000-04:00<br><br>#     LOCATION SECTION<br># infectiousDiseaseScenario.location.locationCode = 42003<br><br>#     DISEASES SECTION<br># infectiousDiseaseScenario.diseases[0].diseaseIi = Influenza<br># infectiousDiseaseScenario.diseases[0].speciesWithDisease = 9606<br># infectiousDiseaseScenario.diseases[0].causalPathogen.ncbiTaxonId = 114727<br># infectiousDiseaseScenario.diseases[0].diseaseOutcomesWithProbabilities = (list values described below)<br># infectiousDiseaseScenario.diseases[0].diseaseOutcomesWithProbabilities[0].diseaseOutcome = SYMPTOMATIC<br># infectiousDiseaseScenario.diseases[0].diseaseOutcomesWithProbabilities[0].probability.probability = 0.7111<br><br>#     INFECTIONS SECTION<br># infectiousDiseaseScenario.infections = (list values described below)<br><span class="native-param">primary_cases_file[0] = fred_initial_population_0.txt</span><br><br># infectiousDiseaseScenario.infections[0].hostTaxonId = 9606<br># infectiousDiseaseScenario.infections[0].infectiousPeriodDuration.unitOfTime = DAY<br># infectiousDiseaseScenario.infections[0].infectiousPeriodDuration.value = 6.0<br><span class="warning no-one-to-one-mapping">#&nbsp;Explanation: The infectiousDisease.infectiousPeriod.timeStepValue is used to create a shifted Weibull distribution and used as the "days_infectious[0]" parameter in FRED.  The mean of the fitted Weibull distribution is 4.4, the gamma parameter is 2.378084, the lambda parameter is 2.405191, the shift is 2.0 and the threshold is 0.05.</span><br><span class="native-param">days_infectious[0] = 8 0.00 0.00 0.00 0.00 0.08 0.44 0.80 1.00</span><br><span class="warning no-one-to-one-mapping">#&nbsp;Explanation: The infectiousDisease.infectiousPeriod.timeStepValue is used to create a shifted Weibull distribution and used as the "days_symptomatic[0]" parameter in FRED.  The mean of the fitted Weibull distribution is 4.4, the gamma parameter is 2.378084, the lambda parameter is 2.405191, the shift is 2.0 and the threshold is 0.05.</span><br><span class="native-param">days_symptomatic[0] = 8 0.00 0.00 0.00 0.00 0.08 0.44 0.80 1.00</span><br><br># infectiousDiseaseScenario.infections[0].latentPeriodDuration.unitOfTime = DAY<br># infectiousDiseaseScenario.infections[0].latentPeriodDuration.value = 2.0<br><span class="warning no-one-to-one-mapping">#&nbsp;Explanation: The infectiousDisease.latentPeriod.timeStepValue is used to create a shifted Weibull distribution and used as the "days_latent[0]" parameter in FRED.  The mean of the fitted Weibull distribution is 1.984, the gamma parameter is 2.2126752, the lambda parameter is 1.67, the shift is 0.5 and the threshold is 0.05.</span><br><span class="native-param">days_latent[0] = 4 0.00 0.28 0.81 1.00</span><br><br># infectiousDiseaseScenario.infections[0].pathogenTaxonId.ncbiTaxonId = 114727<br># infectiousDiseaseScenario.infections[0].infectionAcquisition = (list values described below)<br># infectiousDiseaseScenario.infections[0].infectionAcquisition[0].pathogenTaxonId.ncbiTaxonId = 114727<br># infectiousDiseaseScenario.infections[0].infectionAcquisition[0].susceptibleHostTaxonId = 9606<br># infectiousDiseaseScenario.infections[0].infectionAcquisition[0].fromInfectiousHost.infectiousHostTaxonId = 9606<br># infectiousDiseaseScenario.infections[0].infectionAcquisition[0].fromInfectiousHost.basicReproductionNumber = 1.3<br><span class="native-param">R0 = 1.3</span><br><br>#     POPULATION INFECTION AND IMMUNITY CENSUSES SECTION<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses = (list values described below)<br><span class="native-param">residual_immunity_ages[0] = 2 0 100</span><br><span class="native-param">pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110</span><br><span class="native-param">pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0</span><br><span class="native-param">at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110</span><br><span class="native-param">at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701</span><br><span class="native-param">#line_format</span><br><span class="native-param">0 0 11648</span><br><br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].description = Population of Allegheny County, Pennsylvania<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].referenceDate = 2009-09-01T12:00:00.000-04:00<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].populationSpecies = 9606<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].pathogen.ncbiTaxonId = 114727<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.location = (non-Apollo default parameters)<br><span class="native-param">fips = 42003</span><br><br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.location.locationCode = 42003<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells = (list values described below)<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[0].infectionState = susceptible<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[0].fractionInInfectionState = 0.94<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[1].infectionState = exposed<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[1].fractionInInfectionState = 0.0<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[2].infectionState = infectious<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[2].fractionInInfectionState = 0.01<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[3].infectionState = recovered<br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.censusDataCells[3].fractionInInfectionState = 0.05<br><span class="native-param">residual_immunity_values[0] = 1 0.05</span><br><span class="warning no-one-to-one-mapping">#&nbsp;Explanation: The "exposed" value is the ratio of the fraction of exposed individuals over the fraction of sick individuals.  The "infectious" value is the ratio of the fraction of infectious individuals over the fraction of sick individuals.</span><br><span class="native-param">advanced_seeding = exposed:0.00;infectious:1.00</span><br><br># infectiousDiseaseScenario.populationInfectionAndImmunityCensuses[0].censusData.exceptionSubPopulations = (none specified)<br><br>#     SIMULATOR TIME SPECIFICATION SECTION<br># simulatorTimeSpecification.runLength = 90<br><span class="native-param">days = 90</span><br><br># simulatorTimeSpecification.unitOfTimeForSimulatorTimeStep = day<br># simulatorTimeSpecification.numberOfUnitsOfTimeInOneSimulatorTimeStep = 1.0<br><br>#     NON-SCENARIO PARAMETERS USED TO RUN SIMULATOR SECTION<br><span class="native-param">#FRED PARAM FILE</span><br><br><span class="native-param">track_infection_events = 1</span><br><br><br>
+        </div>
+<!--        <p>TRANSLATION_REPORT</p>-->
+
+ 
+    </body>
+</html>
