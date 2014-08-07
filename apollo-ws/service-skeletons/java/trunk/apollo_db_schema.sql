@@ -45,6 +45,8 @@ CREATE TABLE users (
 
 -- HSQLDB: ALTER TABLE users ALTER COLUMN id RESTART WITH 1;
 
+INSERT INTO users VALUES (1, 'default_software_admin', 'dummy_hash', 'dummy_salt', 'dummy_email');
+
 CREATE TABLE software_identification (
   id INT NOT NULL AUTO_INCREMENT,
   developer VARCHAR(255) NOT NULL,
@@ -57,6 +59,14 @@ CREATE TABLE software_identification (
 );
 
 -- HSQLDB: ALTER TABLE software_identification ALTER COLUMN id RESTART WITH 1;
+
+INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice202/services/translatorservice?wsdl',1),
+											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.2/services/visualizerservice?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8092/gaia?wsdl',1),
+											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -98,6 +108,29 @@ CREATE TABLE role_description (
   CONSTRAINT role_description UNIQUE(role_id, software_id)
 );
 
+INSERT INTO role_description VALUES(1, 2, 1, 0);
+INSERT INTO role_description VALUES(2, 2, 1, 1);
+INSERT INTO role_description VALUES(3, 2, 0, 0);
+
+INSERT INTO role_description VALUES(4, 3, 1, 0);
+INSERT INTO role_description VALUES(5, 3, 1, 1);
+INSERT INTO role_description VALUES(6, 3, 0, 0);
+
+INSERT INTO role_description VALUES(7, 6, 1, 0);
+INSERT INTO role_description VALUES(8, 6, 1, 1);
+INSERT INTO role_description VALUES(9, 6, 0, 0);
+
+INSERT INTO role_description VALUES(10, 4, 1, 0);
+INSERT INTO role_description VALUES(11, 4, 1, 1);
+INSERT INTO role_description VALUES(12, 4, 0, 0);
+
+INSERT INTO role_description VALUES(13, 5, 1, 0);
+INSERT INTO role_description VALUES(14, 5, 1, 1);
+INSERT INTO role_description VALUES(15, 5, 0, 0);
+
+INSERT INTO role_description VALUES(13, 7, 1, 0);
+INSERT INTO role_description VALUES(14, 7, 1, 1);
+INSERT INTO role_description VALUES(15, 7, 0, 0);
 
 CREATE TABLE user_roles (
   user_id INT NOT NULL REFERENCES users(id),
