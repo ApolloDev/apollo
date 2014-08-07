@@ -78,27 +78,27 @@ CREATE TABLE roles (
 
 INSERT INTO roles VALUES (1, 'Can run SEIR without privileged request');
 INSERT INTO roles VALUES (2, 'Can run SEIR with privileged request');
-INSERT INTO roles VALUES (3, 'Cannot SEIR');
+INSERT INTO roles VALUES (3, 'Can view cached SEIR results');
 
 INSERT INTO roles VALUES (4, 'Can run FRED without privileged request');
 INSERT INTO roles VALUES (5, 'Can run FRED with privileged request');
-INSERT INTO roles VALUES (6, 'Cannot run FRED');
+INSERT INTO roles VALUES (6, 'Can view cached FRED results');
 
 INSERT INTO roles VALUES (7, 'Can run FluTE without privileged request');
 INSERT INTO roles VALUES (8, 'Can run FluTE with privileged request');
-INSERT INTO roles VALUES (9, 'Cannot run FluTE');
+INSERT INTO roles VALUES (9, 'Can view cached FluTE results');
 
 INSERT INTO roles VALUES (10, 'Can run TSV without privileged request');
 INSERT INTO roles VALUES (11, 'Can run TSV with privileged request');
-INSERT INTO roles VALUES (12, 'Cannot run TSV');
+INSERT INTO roles VALUES (12, 'Can view cached TSV results');
 
 INSERT INTO roles VALUES (13, 'Can run GAIA without privileged request');
 INSERT INTO roles VALUES (14, 'Can run GAIA with privileged request');
-INSERT INTO roles VALUES (15, 'Cannot run GAIA');
+INSERT INTO roles VALUES (15, 'Can view cached GAIA results');
 
 INSERT INTO roles VALUES (16, 'Can run Anthrax without privileged request');
 INSERT INTO roles VALUES (17, 'Can run Anthrax with privileged request');
-INSERT INTO roles VALUES (18, 'Cannot run Anthrax');
+INSERT INTO roles VALUES (18, 'Can view cached Anthrax results');
 
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
