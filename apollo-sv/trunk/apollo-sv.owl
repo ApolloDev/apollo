@@ -112,6 +112,7 @@
 
     <AnnotationProperty rdf:about="&obo;IAO_0000115">
         <rdfs:label rdf:datatype="&xsd;string">definition</rdfs:label>
+        <rdfs:label rdf:datatype="&xsd;string">textual definition</rdfs:label>
         <rdfs:label>definition</rdfs:label>
         <rdfs:label xml:lang="en">definition</rdfs:label>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
@@ -6782,8 +6783,8 @@ The abnormal state could be having a disease, carrier status, a syndrome, a stru
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000298 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00000298">
-        <rdfs:label xml:lang="en">epidemic infection</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
+        <rdfs:label xml:lang="en">epidemic</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000306"/>
         <rdfs:subClassOf>
             <Class>
                 <intersectionOf rdf:parseType="Collection">
@@ -6805,7 +6806,7 @@ The abnormal state could be having a disease, carrier status, a syndrome, a stru
 The constant rate may be zero.  The period of an epidemic may be defined using statistical criteria based on incidence rates or causal models based on their fit to incidence data.</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">An example of multiple host species is foot and mouth disease (such as the 2001 epidemic in the UK, see: http://www.sciencemag.org/content/292/5519/1155.long) and swine flu.  The foot and mouth disease epidemic affected sheep, pigs, and cattle.</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
-        <obo:IAO_0000118 xml:lang="en">epidemic</obo:IAO_0000118>
+        <obo:IAO_0000118 xml:lang="en">epidemic of infection</obo:IAO_0000118>
     </Class>
     
 
@@ -6903,6 +6904,28 @@ The constant rate may be zero.  The period of an epidemic may be defined using s
         <obo:IAO_0000115 xml:lang="en">An anti-infective individual treatment control strategy that has as part an action specification that is realized in antibacterial treatment.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">An anti-infective individual treatment control strategy that uses anti-bacterial medications to treat infected hosts in an attempt to limit their infectiousness and/or infectious period.</obo:IAO_0000600>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000306 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000306">
+        <rdfs:label xml:lang="en">infection in population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
+        <obo:IAO_0000115 xml:lang="en">A process comprised of numerous infections and infection acquisitions with a particular pathogen in a population of a particular host.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">A process of ongoing infection and infection acquisition in individuals in a population.</obo:IAO_0000600>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">infection in a population</obo:IAO_0000111>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000307 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000307">
+        <rdfs:label xml:lang="en">endemic</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000306"/>
     </Class>
     
 
@@ -7162,13 +7185,13 @@ Previous. An information content entity is a non-realizable information entity t
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000109"/>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000004"/>
+                <onProperty rdf:resource="&obo;IAO_0000039"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
-                <onProperty rdf:resource="&obo;IAO_0000039"/>
+                <onProperty rdf:resource="&obo;IAO_0000004"/>
                 <minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</minCardinality>
             </Restriction>
         </rdfs:subClassOf>
@@ -7474,6 +7497,15 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_1056966 -->
+
+    <Class rdf:about="&obo;NCBITaxon_1056966">
+        <rdfs:label xml:lang="en">Aedini</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_43817"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_11018 -->
 
     <Class rdf:about="&obo;NCBITaxon_11018">
@@ -7575,6 +7607,15 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_1206794 -->
+
+    <Class rdf:about="&obo;NCBITaxon_1206794">
+        <rdfs:label xml:lang="en">Ecdysozoa</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33317"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_1239 -->
 
     <Class rdf:about="&obo;NCBITaxon_1239">
@@ -7658,6 +7699,24 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_197562 -->
+
+    <Class rdf:about="&obo;NCBITaxon_197562">
+        <rdfs:label xml:lang="en">Pancrustacea</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_197563"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_197563 -->
+
+    <Class rdf:about="&obo;NCBITaxon_197563">
+        <rdfs:label xml:lang="en">Mandibulata</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_6656"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_197911 -->
 
     <Class rdf:about="&obo;NCBITaxon_197911">
@@ -7676,11 +7735,65 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33154 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33154">
+        <rdfs:label xml:lang="en">Opisthokonta</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&NCBITaxon;NCBITaxon_2759"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33208 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33208">
+        <rdfs:label xml:lang="en">Metazoa</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33154"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33213 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33213">
+        <rdfs:label xml:lang="en">Bilateria</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_6072"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33317 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33317">
+        <rdfs:label xml:lang="en">Protostomia</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33213"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_333278 -->
 
     <Class rdf:about="&obo;NCBITaxon_333278">
         <rdfs:label xml:lang="en">H7N9 subtype</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_11320"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33340 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33340">
+        <rdfs:label xml:lang="en">Neoptera</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_7496"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33392 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33392">
+        <rdfs:label xml:lang="en">Endopterygota</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33340"/>
     </Class>
     
 
@@ -7723,11 +7836,74 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_41827 -->
+
+    <Class rdf:about="&obo;NCBITaxon_41827">
+        <rdfs:label xml:lang="en">Culicoidea</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_43786"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_43786 -->
+
+    <Class rdf:about="&obo;NCBITaxon_43786">
+        <rdfs:label xml:lang="en">Culicomorpha</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_7148"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_43817 -->
+
+    <Class rdf:about="&obo;NCBITaxon_43817">
+        <rdfs:label xml:lang="en">Culicinae</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_7157"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_439488 -->
 
     <Class rdf:about="&obo;NCBITaxon_439488">
         <rdfs:label xml:lang="en">ssRNA virus</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_10239"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_50557 -->
+
+    <Class rdf:about="&obo;NCBITaxon_50557">
+        <rdfs:label xml:lang="en">Insecta</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_6960"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_53541 -->
+
+    <Class rdf:about="&obo;NCBITaxon_53541">
+        <rdfs:label xml:lang="en">Stegomyia</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_7158"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_6072 -->
+
+    <Class rdf:about="&obo;NCBITaxon_6072">
+        <rdfs:label xml:lang="en">Eumetazoa</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33208"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_6656 -->
+
+    <Class rdf:about="&obo;NCBITaxon_6656">
+        <rdfs:label xml:lang="en">Arthropoda</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_88770"/>
     </Class>
     
 
@@ -7750,6 +7926,71 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_6960 -->
+
+    <Class rdf:about="&obo;NCBITaxon_6960">
+        <rdfs:label xml:lang="en">Hexapoda</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_197562"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7147 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7147">
+        <rdfs:label xml:lang="en">Diptera</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33392"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7148 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7148">
+        <rdfs:label xml:lang="en">Nematocera</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_7147"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7157 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7157">
+        <rdfs:label xml:lang="en">Culicidae</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_41827"/>
+        <obo:IAO_0000118 xml:lang="en">mosquitos</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7158 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7158">
+        <rdfs:label xml:lang="en">Aedes</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_1056966"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7159 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7159">
+        <rdfs:label xml:lang="en">Aedes aegypti</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_53541"/>
+        <obo:IAO_0000118 xml:lang="en">Stegomyia aegypti</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_7496 -->
+
+    <Class rdf:about="&obo;NCBITaxon_7496">
+        <rdfs:label xml:lang="en">Pterygota</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_85512"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_76804 -->
 
     <Class rdf:about="&obo;NCBITaxon_76804">
@@ -7761,11 +8002,29 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_85512 -->
+
+    <Class rdf:about="&obo;NCBITaxon_85512">
+        <rdfs:label xml:lang="en">Dicondylia</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_50557"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_86661 -->
 
     <Class rdf:about="&obo;NCBITaxon_86661">
         <rdfs:label xml:lang="en">Bacillus cereus group</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_1386"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_88770 -->
+
+    <Class rdf:about="&obo;NCBITaxon_88770">
+        <rdfs:label xml:lang="en">Panarthropoda</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_1206794"/>
     </Class>
     
 
@@ -7783,6 +8042,7 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_9606 -->
 
     <rdf:Description rdf:about="&obo;NCBITaxon_9606">
+        <rdfs:subClassOf rdf:resource="&NCBITaxon;NCBITaxon_2759"/>
         <obo:IAO_0000412 rdf:resource="&obo;ncbitaxon.owl"/>
     </rdf:Description>
     
@@ -7838,6 +8098,22 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <obo:IAO_0000117 xml:lang="en">PERSON: Alan Ruttenberg</obo:IAO_0000117>
         <obo:IAO_0000111 xml:lang="en">processed material</obo:IAO_0000111>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0000115 -->
+
+    <Class rdf:about="&obo;OBI_0000115">
+        <rdfs:label xml:lang="en">intervention design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">An intervention design is a study design in which a controlled process applied to the subjects (the intervention) serves as the independent variable manipulated by the experimentalist. The treatment (perturbation or intervention) defined can be defined as a combination of values taken by independent variable manipulated by the experimentalists are applied to the recruited subjects assigned (possibly by applying specific methods) to treatment groups. The specificity of intervention design is the fact that independent variables are being manipulated and a response of the biological system is evaluated via response variables as monitored by possibly a series of assays.</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">OBI branch derived</obo:IAO_0000119>
+        <obo:IAO_0000112 xml:lang="en">PMID: 18208636.Br J Nutr. 2008 Jan 22;:1-11.Effect of vitamin D supplementation on bone and vitamin D status among Pakistani immigrants in Denmark: a randomised double-blinded placebo-controlled intervention study.</obo:IAO_0000112>
+        <obo:IAO_0000117 xml:lang="en">Philppe Rocca-Serra</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">intervention design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </Class>
     
 
@@ -7959,6 +8235,51 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0001226 -->
+
+    <Class rdf:about="&obo;OBI_0001226">
+        <rdfs:label xml:lang="en">environmental history design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000119 rdf:datatype="&xsd;string">MO_698 environmental_history_design</obo:IAO_0000119>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">Person: Chris Stoeckert, Jie Zheng</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A study design in which some aspect of the organism&apos;s environmental history is studied, such as exposure to teratogen, radiation, climate etc.</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">environmental history design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0001293 -->
+
+    <Class rdf:about="&obo;OBI_0001293">
+        <rdfs:label xml:lang="en">disease state design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">Person: Chris Stoeckert, Jie Zheng</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A study design in which the pathological condition of a part, organ, or system of an organism is studied. The etiology may be from infection, genetic defect, or environmental stress.</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">MO_902 disease_state_design</obo:IAO_0000119>
+        <obo:IAO_0000111 xml:lang="en">disease state design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0001454 -->
+
+    <Class rdf:about="&obo;OBI_0001454">
+        <rdfs:label xml:lang="en">pathogenicity design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">Person: Chris Stoeckert, Jie Zheng</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A study design in which an infective agent such as a bacterium, virus, protozoan, fungus etc. infects a host organism(s) and the infective agent is assayed.</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">MO_807 pathogenicity_design</obo:IAO_0000119>
+        <obo:IAO_0000111 xml:lang="en">pathogenicity design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OBI_0100026 -->
 
     <Class rdf:about="&obo;OBI_0100026">
@@ -8047,6 +8368,22 @@ for now.</obo:IAO_0000116>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/OBI_0300311 -->
+
+    <Class rdf:about="&obo;OBI_0300311">
+        <rdfs:label xml:lang="en">observation design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000119 xml:lang="en">OBI branch derived</obo:IAO_0000119>
+        <obo:IAO_0000112 xml:lang="en">PMID: 12387964.Lancet. 2002 Oct 12;360(9340):1144-9.Deficiency of antibacterial peptides in patients with morbus Kostmann: an observation study.</obo:IAO_0000112>
+        <obo:IAO_0000117 xml:lang="en">Philippe Rocca-Serra</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">observation design</obo:IAO_0000111>
+        <obo:IAO_0000115 xml:lang="en">observation design is a study design in which subjects are monitored in the absence of any active intervention by experimentalists.</obo:IAO_0000115>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OBI_0302867 -->
 
     <Class rdf:about="&obo;OBI_0302867">
@@ -8076,6 +8413,41 @@ for now.</obo:IAO_0000116>
         <obo:IAO_0000111 xml:lang="en">computer</obo:IAO_0000111>
         <obo:IAO_0000119 xml:lang="en">http://en.wikipedia.org/wiki/Computer</obo:IAO_0000119>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0500000 -->
+
+    <Class rdf:about="&obo;OBI_0500000">
+        <rdfs:label xml:lang="en">study design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;IAO_0000104"/>
+        <obo:IAO_0000115 rdf:datatype="&xsd;string">A plan specification comprised of protocols (which may specify how and what kinds of data will be gathered) that are executed as part of an investigation and is realized during a study design execution.</obo:IAO_0000115>
+        <obo:IAO_0000116 rdf:datatype="&xsd;string">Editor note: there is at least an implicit restriction on the kind of data transformations that can be done based on the measured data available.</obo:IAO_0000116>
+        <obo:IAO_0000117 rdf:datatype="&xsd;string">PERSON: Chris Stoeckert</obo:IAO_0000117>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000112 xml:lang="en">a matched pairs study design describes criteria by which subjects are identified as pairs which then undergo the same protocols, and the data generated is analyzed by comparing the differences between the paired subjects, which constitute the results of the executed study design.</obo:IAO_0000112>
+        <obo:IAO_0000118 xml:lang="en">experimental design</obo:IAO_0000118>
+        <obo:IAO_0000232 xml:lang="en">rediscussed at length (MC/JF/BP). 12/9/08). The definition was clarified to differentiate it from protocol.</obo:IAO_0000232>
+        <obo:IAO_0000111 xml:lang="en">study design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+        <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/OBI_0500020 -->
+
+    <Class rdf:about="&obo;OBI_0500020">
+        <rdfs:label xml:lang="en">time series design</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">Groups of assays that are related as part of a time series.</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">MO_887</obo:IAO_0000119>
+        <obo:IAO_0000112 xml:lang="en">PMID: 14744830-Microarrays are powerful tools for surveying the expression levels of many thousands of genes simultaneously. They belong to the new genomics technologies which have important applications in the biological, agricultural and pharmaceutical sciences. There are myriad sources of uncertainty in microarray experiments, and rigorous experimental design is essential for fully realizing the potential of these valuable resources. Two questions frequently asked by biologists on the brink of conducting cDNA or two-colour, spotted microarray experiments are &apos;Which mRNA samples should be competitively hybridized together on the same slide?&apos; and &apos;How many times should each slide be replicated?&apos; Early experience has shown that whilst the field of classical experimental design has much to offer this emerging multi-disciplinary area, new approaches which accommodate features specific to the microarray context are needed. In this paper, we propose optimal designs for factorial and time course experiments, which are special designs arising quite frequently in microarray experimentation. Our criterion for optimality is statistical efficiency based on a new notion of admissible designs; our approach enables efficient designs to be selected subject to the information available on the effects of most interest to biologists, the number of arrays available for the experiment, and other resource or practical constraints, including limitations on the amount of mRNA probe. We show that our designs are superior to both the popular reference designs, which are highly inefficient, and to designs incorporating all possible direct pairwise comparisons. Moreover, our proposed designs represent a substantial practical improvement over classical experimental designs which work in terms of standard interactions and main effects. The latter do not provide a basis for meaningful inference on the effects of most interest to biologists, nor make the most efficient use of valuable and limited resources.</obo:IAO_0000112>
+        <obo:IAO_0000117 xml:lang="en">Philippe Rocca-Serra on behalf of MO</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">time series design</obo:IAO_0000111>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </Class>
     
 
@@ -9256,17 +9628,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     
 
 
-    <!-- http://purl.org/obo/owl/NCBITaxon#NCBITaxon_33154 -->
-
-    <Class rdf:about="&NCBITaxon;NCBITaxon_33154">
-        <rdfs:label xml:lang="en">Fungi/Metazoa group</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&NCBITaxon;NCBITaxon_2759"/>
-        <obo:IAO_0000111 xml:lang="en">Fungi/Metazoa group</obo:IAO_0000111>
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/NCBITaxon"/>
-    </Class>
-    
-
-
     <!-- http://purl.org/obo/owl/UO#UO_0000003 -->
 
     <Class rdf:about="&UO;UO_0000003">
@@ -9710,9 +10071,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000327">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;OBI_0500000">
-        <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000328">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -10184,6 +10542,9 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -10236,9 +10597,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
