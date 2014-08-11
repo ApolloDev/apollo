@@ -22,7 +22,7 @@ public abstract class LibraryMethod {
         URL libraryServiceURL;
         try {
             libraryServiceURL = new URL(
-                    "http://localhost:8080/library-service-war-2.0.2/services/libraryservice?wsdl");
+                    "http://localhost:8080/libraryservice2.0.2/services/libraryservice?wsdl");
 
             return new LibraryServiceV202(libraryServiceURL).getLibraryServiceEndpoint();
 
