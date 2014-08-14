@@ -1729,7 +1729,7 @@
 		<restriction base="string">
 			<enumeration value="InfectionType" />
 			<enumeration value="InfectionAcquisitionType" />
-			<enumeration value="InfectionDiseaseType" />
+			<enumeration value="InfectiousDiseaseType" />
 			<enumeration value="InfectiousDiseaseControlStrategyType" />
 			<enumeration value="InfectiousDiseaseScenarioType" />
 			<enumeration value="ContaminationType" />
