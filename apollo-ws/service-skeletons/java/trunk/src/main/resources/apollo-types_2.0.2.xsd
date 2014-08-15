@@ -467,11 +467,17 @@
 			<element name="gender" type="tns:GenderEnum" maxOccurs="1"
 				minOccurs="0">
 			</element>
-			<element name="infectionState" type="tns:InfectionStateEnum"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="fractionInInfectionState" type="tns:Fraction"
+			<choice>
+				<element name="infectionState" type="tns:InfectionStateEnum"
+					maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="diseaseState" type="tns:DiseaseOutcomeEnum"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
+			<element name="fractionInState" type="tns:Fraction"
 				maxOccurs="1" minOccurs="1" />
+
 		</sequence>
 	</complexType>
 
@@ -507,7 +513,8 @@
 	<simpleType name="InfectionStateEnum">
 		<restriction base="string">
 			<enumeration value="susceptible" />
-			<enumeration value="exposed" />
+			<enumeration value="greaterThanOrEqualToId50Exposure" />
+			<enumeration value="latent" />
 			<enumeration value="infectious" />
 			<enumeration value="recovered" />
 			<enumeration value="immuneAndActsLikeImmune" />
@@ -1220,6 +1227,7 @@
 			<enumeration value="asymptomatic" />
 			<enumeration value="symptomatic" />
 			<enumeration value="severely symptomatic" />
+			<enumeration value="fulminant" />
 			<enumeration value="hospitalization" />
 			<enumeration value="death" />
 		</restriction>
@@ -1570,6 +1578,14 @@
 						maxOccurs="1" minOccurs="1" />
 					<element name="causalPathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
+					<element name="incubationPeriod" type="tns:Duration"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="prodromalPeriod" type="tns:Duration"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="fulminantPeriod" type="tns:Duration"
+						maxOccurs="1" minOccurs="0"></element>
 					<element name="diseaseOutcomesWithProbabilities" type="tns:DiseaseOutcomeWithProbability"
 						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
