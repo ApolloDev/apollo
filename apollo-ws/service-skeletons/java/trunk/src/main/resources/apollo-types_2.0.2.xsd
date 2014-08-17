@@ -1268,6 +1268,8 @@
 					maxOccurs="1" minOccurs="1" />
 				<element name="beta" type="tns:Rate" maxOccurs="1"
 					minOccurs="1" />
+				<element name="transmissionProbability" type="tns:TransmissionProbability"
+					maxOccurs="1" minOccurs="1" />
 				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
 					maxOccurs="1" minOccurs="1" /> -->
 			</choice>
@@ -1425,14 +1427,13 @@
 					<element name="populationInfectionAndImmunityCensuses"
 						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
 						minOccurs="1" />
+					<element name="individualDevelopmentAndAgingModelsParameters" type="tns:IndividualDevelopmentAndAgingModelParameters" maxOccurs="unbounded" minOccurs="0" />
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
 						minOccurs="1" />
-
 					<element name="contaminations" type="tns:Contamination"
 						maxOccurs="unbounded" minOccurs="0" />
 					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
 						maxOccurs="unbounded" minOccurs="0" />
-
 					<element name="nonApolloParameters" type="tns:NonApolloParameter"
 						maxOccurs="unbounded" minOccurs="0"></element>
 				</sequence>
@@ -2098,12 +2099,6 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="probabilityEntryDenied" type="tns:Probability"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="probabilityExitDenied" type="tns:Probability"
-						maxOccurs="1" minOccurs="1">
-					</element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2157,6 +2152,8 @@
 				<sequence>
 					<element name="wolbachia-sites-every-nth" type="positiveInteger"
 						maxOccurs="1" minOccurs="1" />
+					<element name="efficacy" type="tns:Fraction" maxOccurs="1"
+						minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2168,6 +2165,8 @@
 				<sequence>
 					<element name="wolbachia-sites-every-nth" type="positiveInteger"
 						maxOccurs="1" minOccurs="1" />
+					<element name="efficacy" type="tns:Fraction" maxOccurs="1"
+						minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2335,7 +2334,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="IndividualDevelopmentAndAging">
+	<complexType name="IndividualDevelopmentAndAgingModelParameters">
 		<sequence>
 			<element name="taxonID" type="tns:NcbiTaxonId" maxOccurs="1"
 				minOccurs="1"></element>
@@ -2452,4 +2451,13 @@
     
 
     <complexType name="ParameterValue"></complexType>
+
+    <complexType name="TransmissionProbability">
+    	<sequence>
+    		<element name="contactDefinition" type="string"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="probability" type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
 </schema>
