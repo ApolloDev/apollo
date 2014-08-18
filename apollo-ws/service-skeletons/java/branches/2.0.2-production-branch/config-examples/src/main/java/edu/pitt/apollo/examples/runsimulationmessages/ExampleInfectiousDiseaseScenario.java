@@ -37,7 +37,7 @@ public class ExampleInfectiousDiseaseScenario {
 
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId(pathogenTaxonId);
-		infection.setPathogenTaxonId(pathogen);
+		infection.setPathogen(pathogen);
 		infection.setHostTaxonId(hostTaxonId);
 
 		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost =
@@ -119,7 +119,7 @@ public class ExampleInfectiousDiseaseScenario {
 		scenario.setLocation(scenarioLocation);
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
-		scenario.getDiseases().add(scenarioInfectiousDisease);
+		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);
 		scenario.getPopulationInfectionAndImmunityCensuses().add(scenarioPopulationInfectionAndImmunityCensus);
 		return scenario;
 	}
@@ -128,7 +128,7 @@ public class ExampleInfectiousDiseaseScenario {
 			InfectionStateEnum infectionStateEnum, double fractionInInfectionState) {
 		PopulationInfectionAndImmunityCensusDataCell populationInfectionAndImmunityCensusDataCell = new PopulationInfectionAndImmunityCensusDataCell();
 		populationInfectionAndImmunityCensusDataCell.setInfectionState(infectionStateEnum);
-		populationInfectionAndImmunityCensusDataCell.setFractionInInfectionState(fractionInInfectionState);
+		populationInfectionAndImmunityCensusDataCell.setFractionInState(fractionInInfectionState);
 		return populationInfectionAndImmunityCensusDataCell;
 	}
 
@@ -145,8 +145,8 @@ public class ExampleInfectiousDiseaseScenario {
 
 		PopulationInfectionAndImmunityCensusDataCell susceptibleCell = getPopulationInfectionAndImmunityCensusDataCell(
 				InfectionStateEnum.SUSCEPTIBLE, fractionSusceptible);
-		PopulationInfectionAndImmunityCensusDataCell exposedCell = getPopulationInfectionAndImmunityCensusDataCell(
-				InfectionStateEnum.EXPOSED, fractionExposed);
+		PopulationInfectionAndImmunityCensusDataCell latentCell = getPopulationInfectionAndImmunityCensusDataCell(
+				InfectionStateEnum.LATENT, fractionExposed);
 		PopulationInfectionAndImmunityCensusDataCell infectiousCell = getPopulationInfectionAndImmunityCensusDataCell(
 				InfectionStateEnum.INFECTIOUS, fractionInfectious);
 		PopulationInfectionAndImmunityCensusDataCell recoveredCell = getPopulationInfectionAndImmunityCensusDataCell(
@@ -155,7 +155,7 @@ public class ExampleInfectiousDiseaseScenario {
 		PopulationInfectionAndImmunityCensusData populationInfectionAndImmunityCensusData = new PopulationInfectionAndImmunityCensusData();
 		populationInfectionAndImmunityCensusData.setLocation(locationDescribedByCensus);
 		populationInfectionAndImmunityCensusData.getCensusDataCells().add(susceptibleCell);
-		populationInfectionAndImmunityCensusData.getCensusDataCells().add(exposedCell);
+		populationInfectionAndImmunityCensusData.getCensusDataCells().add(latentCell);
 		populationInfectionAndImmunityCensusData.getCensusDataCells().add(infectiousCell);
 		populationInfectionAndImmunityCensusData.getCensusDataCells().add(recoveredCell);
 
