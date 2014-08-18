@@ -95,7 +95,7 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 		Infection infection = (Infection) infectionItem.getCuratedLibraryItemContainer().getApolloIndexableItem();
 		System.out.println("Infection instance retrieved from the library!  Here are the attributes:");
 		System.out.println("\tHost Taxon ID: " + infection.getHostTaxonId());
-		System.out.println("\tPathogen Taxon ID: " + infection.getPathogenTaxonId().getNcbiTaxonId());
+		System.out.println("\tPathogen Taxon ID: " + infection.getPathogen().getNcbiTaxonId());
 
 		System.out.println("\tInfectionAcquisitionFromInfectiousHost:");
 		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost = infection
