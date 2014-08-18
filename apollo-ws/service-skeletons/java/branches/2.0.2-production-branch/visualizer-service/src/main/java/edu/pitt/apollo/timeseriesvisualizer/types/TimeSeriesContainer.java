@@ -17,15 +17,15 @@ import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerExcept
  */
 public class TimeSeriesContainer {
 
-    private Map<InfectionStateEnum, Double[]> seriesMap;
+    private Map<TimeSeriesCurveTypeEnum, Double[]> seriesMap;
     private Integer seriesLength;
     private BigInteger runId;
 
     public TimeSeriesContainer() {
-        seriesMap = new EnumMap<InfectionStateEnum, Double[]>(InfectionStateEnum.class);
+        seriesMap = new EnumMap<TimeSeriesCurveTypeEnum, Double[]>(TimeSeriesCurveTypeEnum.class);
     }
 
-    public void setSeries(InfectionStateEnum state, Double[] series) throws TimeSeriesVisualizerException {
+    public void setSeries(TimeSeriesCurveTypeEnum state, Double[] series) throws TimeSeriesVisualizerException {
         if (seriesLength == null) {
             seriesLength = series.length;
         } else if (series.length != seriesLength) {
@@ -35,7 +35,7 @@ public class TimeSeriesContainer {
         seriesMap.put(state, series);
     }
 
-    public Double[] getSeries(InfectionStateEnum state) {
+    public Double[] getSeries(TimeSeriesCurveTypeEnum state) {
         return seriesMap.get(state);
     }
     
