@@ -2,7 +2,7 @@ package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
-import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -144,21 +144,21 @@ public class TimeSeriesResultSetProcessor {
         Iterator<String> itr = largestLocations.iterator();
         String largestLocation = itr.next();
 
-        List<InfectionStateEnum> statesToUse = null;
+        List<TimeSeriesCurveTypeEnum> statesToUse = null;
         if (getPrevalenceStates) {
-            statesToUse = new ArrayList<InfectionStateEnum>(Arrays.asList(InfectionStateEnum.PREVALENCE_INFECTION_STATES));
+            statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_PREVALENCE_CHART));
         }
         if (getIncidenceStates) {
             if (statesToUse == null) {
-                statesToUse = new ArrayList<InfectionStateEnum>(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+                statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART));
             } else {
-                statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+                statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART));
             }
             
-//            statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ? Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES) : statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES)));
+//            statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ? Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART) : statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART)));
         }
 
-        for (InfectionStateEnum diseaseState : statesToUse) {
+        for (TimeSeriesCurveTypeEnum diseaseState : statesToUse) {
 
             String diseaseStateValue = diseaseState.getValue();
             if (map.containsKey(diseaseStateValue)) {
