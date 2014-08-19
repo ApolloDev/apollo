@@ -1786,6 +1786,7 @@
 			<enumeration value="gender" />
 			<enumeration value="ageRange" />
 			<enumeration value="timeSpan" />
+      <enumeration value="diseaseOutcome" />
 		</restriction>
 	</simpleType>
 
