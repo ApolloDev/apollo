@@ -2,7 +2,7 @@ package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
-import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import java.io.ByteArrayOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -178,7 +178,7 @@ public class DatabaseTimeSeriesProcessor {
         largestLocations.add(DEFAULT_LOCATION);
     }
     
-    public TimeSeriesContainer getTimeSeriesForInfectionStates(List<InfectionStateEnum> statesToUse)
+    public TimeSeriesContainer getTimeSeriesForInfectionStates(List<TimeSeriesCurveTypeEnum> statesToUse)
             throws TimeSeriesVisualizerException {
         
         if (map == null || map.isEmpty()) {
@@ -195,22 +195,22 @@ public class DatabaseTimeSeriesProcessor {
 //        List<InfectionStateEnum> statesToUse = null;
 //        if (getPrevalenceStates) {
 //            statesToUse = new ArrayList<InfectionStateEnum>(
-//                    Arrays.asList(InfectionStateEnum.PREVALENCE_INFECTION_STATES));
+//                    Arrays.asList(TimeSeriesCurveTypeEnum.PREVALENCE_INFECTION_STATES));
 //        }
 //        if (getIncidenceStates) {
 //            if (statesToUse == null) {
 //                statesToUse = new ArrayList<InfectionStateEnum>(
-//                        Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+//                        Arrays.asList(TimeSeriesCurveTypeEnum.INCIDENCE_INFECTION_STATES));
 //            } else {
-//                statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES));
+//                statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.INCIDENCE_INFECTION_STATES));
 //            }
 //
 //            // statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ?
-//            // Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES) :
-//            // statesToUse.addAll(Arrays.asList(InfectionStateEnum.INCIDENCE_INFECTION_STATES)));
+//            // Arrays.asList(TimeSeriesCurveTypeEnum.INCIDENCE_INFECTION_STATES) :
+//            // statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.INCIDENCE_INFECTION_STATES)));
 //        }
         
-        for (InfectionStateEnum diseaseState : statesToUse) {
+        for (TimeSeriesCurveTypeEnum diseaseState : statesToUse) {
             
             String diseaseStateValue = diseaseState.getValue();
             if (map.containsKey(diseaseStateValue)) {
