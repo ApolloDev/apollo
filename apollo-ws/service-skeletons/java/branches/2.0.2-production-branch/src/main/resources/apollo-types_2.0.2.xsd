@@ -1427,7 +1427,12 @@
 					<element name="populationInfectionAndImmunityCensuses"
 						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
 						minOccurs="1" />
-					<element name="individualDevelopmentAndAgingModelsParameters" type="tns:IndividualDevelopmentAndAgingModelParameters" maxOccurs="unbounded" minOccurs="0" />
+					<element name="individualDevelopmentAndAgingModelsParameters"
+						type="tns:IndividualDevelopmentAndAgingModelParameters" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="individualBehaviorModelsParameters" type="tns:IndividualBehaviorModelParameters"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="contaminations" type="tns:Contamination"
@@ -1435,7 +1440,8 @@
 					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
 						maxOccurs="unbounded" minOccurs="0" />
 					<element name="nonApolloParameters" type="tns:NonApolloParameter"
-						maxOccurs="unbounded" minOccurs="0"></element>
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1663,9 +1669,9 @@
 					<element name="standardDeviation" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1" />
 					<element name="shiftRight" type="tns:NonNegativeDouble"
-						maxOccurs="1" minOccurs="1" />
+						maxOccurs="1" minOccurs="0" />
 					<element name="cutTailAt" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1" />
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2374,90 +2380,91 @@
 		</sequence>
 	</complexType>
 
-    <complexType name="IndividualBehaviorModelParameters"></complexType>
+	<complexType name="IndividualBehaviorModelParameters"></complexType>
 
-    <complexType name="IndividualMosquitoBehaviorParameters">
-    <complexContent>
-    <extension base="tns:IndividualBehaviorModelParameters">
-    	<sequence>
-    		<element name="mosquito-bite-probability" type="tns:ProbabilisticParameter"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-bite-radius" type="tns:Distance"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-time-between-bites" type="tns:Duration"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-migration-speed" type="tns:Rate"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-house-affinity" type="tns:Fraction"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-male-mating-radius" type="tns:Distance"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-mating-probability" type="tns:Probability"
-    			maxOccurs="1" minOccurs="0" />
-			<element name="mosquito-straight-travel-after-ovi" type="tns:Distance"
-    			maxOccurs="1" minOccurs="0" />
-    	</sequence>
-    	</extension>
-    	   </complexContent>
-    </complexType>
+	<complexType name="IndividualMosquitoBehaviorParameters">
+		<complexContent>
+			<extension base="tns:IndividualBehaviorModelParameters">
+				<sequence>
+					<element name="mosquito-bite-probability" type="tns:ProbabilisticParameter"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-bite-radius" type="tns:Distance"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-time-between-bites" type="tns:Duration"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-migration-speed" type="tns:Rate"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-house-affinity" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-male-mating-radius" type="tns:Distance"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-mating-probability" type="tns:Probability"
+						maxOccurs="1" minOccurs="0" />
+					<element name="mosquito-straight-travel-after-ovi" type="tns:Distance"
+						maxOccurs="1" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
-    <complexType name="IndividualHumanBehaviorParameters">
-    <complexContent>
-    <extension base="tns:IndividualBehaviorModelParameters">
-    	<sequence>
-    		<element name="human-migration-speed" type="tns:Rate"
-    			maxOccurs="1" minOccurs="0">
-    		</element>
-    		<element name="human-building-affinity" type="tns:Fraction"
-    			maxOccurs="1" minOccurs="0">
-    		</element>
-    	</sequence>
-    	</extension>
-    	   </complexContent>
-    </complexType>
+	<complexType name="IndividualHumanBehaviorParameters">
+		<complexContent>
+			<extension base="tns:IndividualBehaviorModelParameters">
+				<sequence>
+					<element name="human-migration-speed" type="tns:Rate"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="human-building-affinity" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
 
-	    <complexType name="ParameterValueWithUnitOfMeasure">
-    <complexContent>
-    <extension base="tns:ParameterValue">
-    	<sequence>
-    		<element name="unitOfMeasure" type="tns:UnitOfMeasureEnum"
-    			maxOccurs="1" minOccurs="1">
-    		</element>
-    		<element name="value" type="double"
-    			maxOccurs="1" minOccurs="1">
-    		</element>
-    	</sequence>
-    	</extension>
-    	   </complexContent>
-    </complexType>
-	
-		    <complexType name="Distance">
-    <complexContent>
-    <extension base="tns:ParameterValue">
-    	<sequence>
-    		<element name="unitOfMeasure" type="tns:UnitOfDistanceEnum"
-    			maxOccurs="1" minOccurs="1">
-    		</element>
-    		<element name="value" type="double"
-    			maxOccurs="1" minOccurs="1">
-    		</element>
-    	</sequence>
-    	</extension>
-    	   </complexContent>
-    </complexType>
-    
-    
-    
+	<complexType name="ParameterValueWithUnitOfMeasure">
+		<complexContent>
+			<extension base="tns:ParameterValue">
+				<sequence>
+					<element name="unitOfMeasure" type="tns:UnitOfMeasureEnum"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="value" type="double" maxOccurs="1"
+						minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
-    <complexType name="ParameterValue"></complexType>
+	<complexType name="Distance">
+		<complexContent>
+			<extension base="tns:ParameterValue">
+				<sequence>
+					<element name="unitOfMeasure" type="tns:UnitOfDistanceEnum"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="value" type="double" maxOccurs="1"
+						minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
-    <complexType name="TransmissionProbability">
-    	<sequence>
-    		<element name="contactDefinition" type="string"
-    			maxOccurs="1" minOccurs="1">
-    		</element>
-    		<element name="probability" type="tns:Probability" maxOccurs="1" minOccurs="1"></element>
-    	</sequence>
-    </complexType>
+
+
+
+	<complexType name="ParameterValue"></complexType>
+
+	<complexType name="TransmissionProbability">
+		<sequence>
+			<element name="contactDefinition" type="string" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="probability" type="tns:Probability" maxOccurs="1"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
 </schema>
