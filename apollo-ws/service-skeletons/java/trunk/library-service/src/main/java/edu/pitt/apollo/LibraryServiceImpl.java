@@ -14,75 +14,51 @@
  */
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.libraryservice.methods.AddLibraryItemMethod;
+import edu.pitt.apollo.libraryservice.methods.GetLibraryItemMethod;
+import edu.pitt.apollo.libraryservice.methods.GetUuidsForLibraryItemsCreatedSinceDateTimeMethod;
+import edu.pitt.apollo.libraryservice.methods.GetUuidsForLibraryItemsGivenTypeMethod;
+import edu.pitt.apollo.libraryservice.methods.RemoveLibraryItemMethod;
+import edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI;
+import edu.pitt.apollo.types.v2_0_2.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_0_2.GetLibraryItemResult;
+import edu.pitt.apollo.types.v2_0_2.GetLibraryItemUuidsResult;
+import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.db4o.Db4oEmbedded;
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
-import com.db4o.config.ConfigScope;
-import com.db4o.config.EmbeddedConfiguration;
-import com.db4o.ext.Db4oUUID;
-
-import edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI;
-import edu.pitt.apollo.types.v2_0_2.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItemTypeEnum;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.CatalogEntryForApolloLibraryItem;
-import edu.pitt.apollo.types.v2_0_2.CuratedLibraryItemContainer;
-import edu.pitt.apollo.types.v2_0_2.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.GetLibraryItemUuidsResult;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_0_2.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
-	static Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
-	private static final String DB4O_FILENAME = "db4o_db_201";
-
-	private static ObjectContainer db4o;
-	private static String APOLLO_DIR = "";
+	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
+	private static final String DB4O_FILENAME = "db4o_db_202";
+	private static final Db4oDatabaseAccessor db4oAccessor;
 
 	static {
 		Map<String, String> env = System.getenv();
-		APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-		if (APOLLO_DIR != null) {
-			if (!APOLLO_DIR.endsWith(File.separator)) {
-				APOLLO_DIR += File.separator;
+		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		if (apolloDir != null) {
+			if (!apolloDir.endsWith(File.separator)) {
+				apolloDir += File.separator;
 			}
-			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
+			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + apolloDir);
 		} else {
 			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
-			APOLLO_DIR = "";
 		}
-		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
-		configuration.file().generateUUIDs(ConfigScope.GLOBALLY);
-		db4o = Db4oEmbedded.openFile(configuration, APOLLO_DIR + "/" + DB4O_FILENAME);
-	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		db4o.close();
+		db4oAccessor = new Db4oDatabaseAccessor(apolloDir + File.separator + DB4O_FILENAME);
 	}
 
 	@Override
@@ -91,24 +67,8 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getUuidsForLibraryItemsGivenType")
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsGivenTypeResponse")
 	public GetLibraryItemUuidsResult getUuidsForLibraryItemsGivenType(@WebParam(name = "type", targetNamespace = "") String type) {
-		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-		result.setMethodCallStatus(status);
 
-		List<String> resultList = new ArrayList<String>();
-		//
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
-
-		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			if (item.getItemType().value().equals(type + "Type")) {
-				resultList.add(item.getItemUuid());
-			}
-		}
-		result.getUuids().addAll(resultList);
-		return result;
+		return GetUuidsForLibraryItemsGivenTypeMethod.getUuidsForLibraryItemsGivenType(db4oAccessor, type);
 	}
 
 	@Override
@@ -117,26 +77,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getUuidsForLibraryItemsCreatedSinceDateTime")
 	@ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
 	public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
-	@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
-		GetLibraryItemUuidsResult result = new GetLibraryItemUuidsResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-		result.setMethodCallStatus(status);
+			@WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
 
-		List<String> resultList = new ArrayList<String>();
-		//
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		final ObjectSet<CatalogEntryForApolloLibraryItem> allItems = db4o.queryByExample(cli);
-
-		for (CatalogEntryForApolloLibraryItem item : allItems) {
-			int c = item.getItemCreationTime().compare(creationDateTime);
-			if ((c == DatatypeConstants.EQUAL) || (c == DatatypeConstants.GREATER)) {
-				resultList.add(item.getItemUuid());
-			}
-		}
-		result.getUuids().addAll(resultList);
-		return result;
+		return GetUuidsForLibraryItemsCreatedSinceDateTimeMethod.getUuidsForLibraryItemsCreatedSinceDateTime(db4oAccessor, creationDateTime);
 	}
 
 	@Override
@@ -145,34 +88,8 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/getLibraryItem")
 	@ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.GetLibraryItemResponse")
 	public GetLibraryItemResult getLibraryItem(@WebParam(name = "uuid", targetNamespace = "") String uuid) {
-		// TODO Auto-generated method stub
-		GetLibraryItemResult result = new GetLibraryItemResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
 
-		long longPart = Long.valueOf(uuid.split(" ")[1]);
-		String sig = uuid.split(" ")[0];
-		byte[] signaturePart = new byte[sig.length()];
-		for (int i = 0; i < sig.length(); i++) {
-			signaturePart[i] = (byte) sig.charAt(i);
-		}
-		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-		Object o = db4o.ext().getByUUID(db4oUuid);
-
-		CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
-		container.setApolloIndexableItem((ApolloIndexableItem) o);
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		cli.setItemUuid(uuid);
-		ObjectSet<Object> r = db4o.queryByExample(cli);
-		CatalogEntryForApolloLibraryItem item = (CatalogEntryForApolloLibraryItem) r.get(0);
-		db4o.activate(item, 100);
-		db4o.activate(o, 100);
-
-		container.setCuratedLibraryItem(item);
-		result.setMethodCallStatus(status);
-		result.setCuratedLibraryItemContainer(container);
-		return result;
+		return GetLibraryItemMethod.getLibraryItemMethod(db4oAccessor, uuid);
 	}
 
 	@Override
@@ -181,52 +98,14 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/addLibraryItem")
 	@ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.AddLibraryItemResponse")
 	public AddLibraryItemResult addLibraryItem(
-	@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-	@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
-	@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
-	@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
-	@WebParam(name = "itemType", targetNamespace = "") String itemType,
-	@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
-		AddLibraryItemResult result = new AddLibraryItemResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-		result.setMethodCallStatus(status);
+			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
+			@WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
+			@WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
+			@WebParam(name = "itemSource", targetNamespace = "") String itemSource,
+			@WebParam(name = "itemType", targetNamespace = "") String itemType,
+			@WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
 
-		String apolloUuid = "";
-		db4o.store(apolloIndexableItem);
-		db4o.commit();
-		Db4oUUID uuid = db4o.ext().getObjectInfo(apolloIndexableItem).getUUID();
-
-		for (int i = 0; i < uuid.getSignaturePart().length; i++) {
-			apolloUuid += (char) uuid.getSignaturePart()[i];
-		}
-		apolloUuid += " " + uuid.getLongPart();
-
-		// Db4oUUId u = new Db4oUUID(longPart_, signaturePart_)
-		logger.info("uuid is " + apolloUuid);
-
-		GregorianCalendar c = new GregorianCalendar();
-		XMLGregorianCalendar date;
-		try {
-			date = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
-			CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-			cli.setItemCreationTime(date);
-			cli.setItemDescription(itemDescription);
-			cli.setItemSource(itemSource);
-			cli.setItemType(ApolloIndexableItemTypeEnum.fromValue(itemType + "Type"));
-			cli.setItemUuid(apolloUuid);
-			cli.getItemIndexingLabels().addAll(itemIndexingLabels);
-			db4o.store(cli);
-			db4o.commit();
-			result.setUuid(apolloUuid);
-		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-
+		return AddLibraryItemMethod.addLibraryItem(db4oAccessor, authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
 	}
 
 	@Override
@@ -235,43 +114,9 @@ class LibraryServiceImpl implements LibraryServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/removeLibraryItem")
 	@ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_0_2/", className = "edu.pitt.apollo.service.libraryservice.v2_0_2.RemoveLibraryItemResponse")
 	public MethodCallStatus removeLibraryItem(
-	@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-	@WebParam(name = "uuid", targetNamespace = "") String uuid) {
-		// TODO Auto-generated method stub
-		GetLibraryItemResult result = new GetLibraryItemResult();
-		MethodCallStatus status = new MethodCallStatus();
-		 // status.setMessage("Okay.");
-		// status.setStatus(MethodCallStatusEnum.COMPLETED);
+			@WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
+			@WebParam(name = "uuid", targetNamespace = "") String uuid) {
 
-		long longPart = Long.valueOf(uuid.split(" ")[1]);
-		String sig = uuid.split(" ")[0];
-		byte[] signaturePart = new byte[sig.length()];
-		for (int i = 0; i < sig.length(); i++) {
-			signaturePart[i] = (byte) sig.charAt(i);
-		}
-		Db4oUUID db4oUuid = new Db4oUUID(longPart, signaturePart);
-		Object o = db4o.ext().getByUUID(db4oUuid);
-
-		CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
-		container.setApolloIndexableItem((ApolloIndexableItem) o);
-		CatalogEntryForApolloLibraryItem cli = new CatalogEntryForApolloLibraryItem();
-		cli.setItemUuid(uuid);
-		ObjectSet<Object> r = db4o.queryByExample(cli);
-		CatalogEntryForApolloLibraryItem item
-		= (CatalogEntryForApolloLibraryItem) r
-		.get(0);
-
-		db4o.activate(item, 100);
-		db4o.activate(o, 100);
-		db4o.ext().purge(o);
-		db4o.ext().purge(item);
-		db4o.delete(o);
-		db4o.delete(item);
-		db4o.commit();
-
-		status.setMessage("Deleted object.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
-
-		return status;
+		return RemoveLibraryItemMethod.removeLibraryItem(db4oAccessor, authentication, uuid);
 	}
 }
