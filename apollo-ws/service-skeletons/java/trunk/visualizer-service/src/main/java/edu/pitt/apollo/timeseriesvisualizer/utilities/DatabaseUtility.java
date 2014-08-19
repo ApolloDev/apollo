@@ -26,7 +26,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.InfectionStateEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
@@ -157,7 +157,7 @@ public class DatabaseUtility {
 	// return container;
 	// }
 	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseTimeSeriesTable(List<BigInteger> runIds,
-			List<InfectionStateEnum> infectionStatesToUse) throws TimeSeriesVisualizerException {
+			List<TimeSeriesCurveTypeEnum> infectionStatesToUse) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
 
@@ -242,7 +242,7 @@ public class DatabaseUtility {
 	}
 
 	public TimeSeriesContainerList retrieveTimeSeriesFromDatabaseFiles(List<BigInteger> runIds,
-			List<InfectionStateEnum> infectionSatesToRetrieve) throws TimeSeriesVisualizerException {
+			List<TimeSeriesCurveTypeEnum> infectionSatesToRetrieve) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
 
