@@ -1669,9 +1669,9 @@
 					<element name="standardDeviation" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1" />
 					<element name="shiftRight" type="tns:NonNegativeDouble"
-						maxOccurs="1" minOccurs="1" />
+						maxOccurs="1" minOccurs="0" />
 					<element name="cutTailAt" type="tns:PositiveDouble"
-						maxOccurs="1" minOccurs="1" />
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1793,7 +1793,7 @@
 		<restriction base="string">
 			<enumeration value="InfectionType" />
 			<enumeration value="InfectionAcquisitionType" />
-			<enumeration value="InfectionDiseaseType" />
+			<enumeration value="InfectiousDiseaseType" />
 			<enumeration value="InfectiousDiseaseControlStrategyType" />
 			<enumeration value="InfectiousDiseaseScenarioType" />
 			<enumeration value="ContaminationType" />
