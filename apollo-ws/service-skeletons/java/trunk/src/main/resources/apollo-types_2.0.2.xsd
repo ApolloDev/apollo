@@ -1428,9 +1428,9 @@
 						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="individualDevelopmentAndAgingModelsParameters"
-						type="tns:IndividualDevelopmentAndAgingModelParameters" maxOccurs="unbounded"
+						type="tns:IndividualDevelopmentAndAging" maxOccurs="unbounded"
 						minOccurs="0" />
-					<element name="individualBehaviorModelsParameters" type="tns:IndividualBehaviorModelParameters"
+					<element name="individualBehaviorModelsParameters" type="tns:IndividualBehaviorModel"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
@@ -2341,7 +2341,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="IndividualDevelopmentAndAgingModelParameters">
+	<complexType name="IndividualDevelopmentAndAging">
 		<sequence>
 			<element name="taxonID" type="tns:NcbiTaxonId" maxOccurs="1"
 				minOccurs="1"></element>
@@ -2381,11 +2381,11 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="IndividualBehaviorModelParameters"></complexType>
+	<complexType name="IndividualBehaviorModel"></complexType>
 
-	<complexType name="IndividualMosquitoBehaviorParameters">
+	<complexType name="IndividualMosquitoBehavior">
 		<complexContent>
-			<extension base="tns:IndividualBehaviorModelParameters">
+			<extension base="tns:IndividualBehaviorModel">
 				<sequence>
 					<element name="mosquito-bite-probability" type="tns:ProbabilisticParameter"
 						maxOccurs="1" minOccurs="0" />
@@ -2408,9 +2408,9 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="IndividualHumanBehaviorParameters">
+	<complexType name="IndividualHumanBehavior">
 		<complexContent>
-			<extension base="tns:IndividualBehaviorModelParameters">
+			<extension base="tns:IndividualBehaviorModel">
 				<sequence>
 					<element name="human-migration-speed" type="tns:Rate"
 						maxOccurs="1" minOccurs="0">
