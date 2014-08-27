@@ -150,12 +150,12 @@ public class TimeSeriesResultSetProcessor {
         }
         if (getIncidenceStates) {
             if (statesToUse == null) {
-                statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART));
+                statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART));
             } else {
-                statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART));
+                statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART));
             }
             
-//            statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ? Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART) : statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART)));
+//            statesToUse = (List<InfectionStateEnum>) ((statesToUse == null) ? Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART) : statesToUse.addAll(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART)));
         }
 
         for (TimeSeriesCurveTypeEnum diseaseState : statesToUse) {

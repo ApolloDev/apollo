@@ -210,7 +210,7 @@ CREATE TABLE run_status (
   id INT NOT NULL AUTO_INCREMENT,
   run_id INT NOT NULL,
   status_id INT NOT NULL,
-  message VARCHAR(255),
+  message TEXT,
   PRIMARY KEY (id),
   CONSTRAINT fk_run_id FOREIGN KEY (run_id) REFERENCES run (id),
   CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id)
@@ -315,6 +315,7 @@ INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for newly_deceased, newly_deceased.txt '); /* 48*/
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for prophylactics_given, prophylactics_given.txt ');/* 49*/
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, treatment.png'); /* 50 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, newly_deceased.png'); /* 51 */
 
 
 
@@ -619,6 +620,12 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(50, 3, 'IMAGE'),
 	(50, 4, '4'),
 	(50, 5, '0'),
+    
+	(51, 1, 'URL'), 
+	(51, 2, 'newly_deceased.png'),
+	(51, 3, 'IMAGE'),
+	(51, 4, '4'),
+	(51, 5, '0');
 
 CREATE VIEW run_data_description_view AS
 SELECT
