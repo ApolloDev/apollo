@@ -13,11 +13,13 @@ import java.util.ArrayList;
 public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> {
 
 	private boolean containsPrevalenceCurveTypes;
-	private boolean containsRatesCurveTypes;
+	private boolean containsIncidenceCurveTypes;
 	private boolean containsTreatmentCurveTypes;
+	private boolean containsNewlyDeceasedCurveTypes;
 	private String titleForPrevalenceChart;
-	private String titleForRatesChart;
+	private String titleForIncidenceChart;
 	private String titleForTreatmentChart;
+	private String titleForNewlyDeceasedChart;
 
 	public TimeSeriesCurveTypeList() {
 		super();
@@ -33,10 +35,10 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 			}
 		}
 
-		containsRatesCurveTypes = false;
-		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_RATES_CHART) {
+		containsIncidenceCurveTypes = false;
+		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART) {
 			if (this.contains(enumVal)) {
-				containsRatesCurveTypes = true;
+				containsIncidenceCurveTypes = true;
 				break;
 			}
 		}
@@ -48,18 +50,30 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 				break;
 			}
 		}
+
+		containsNewlyDeceasedCurveTypes = false;
+		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_NEWLY_DECEASED_CHART) {
+			if (this.contains(enumVal)) {
+				containsNewlyDeceasedCurveTypes = true;
+				break;
+			}
+		}
 	}
-	
+
 	public boolean listContainsPrevalenceCurveTypes() {
 		return containsPrevalenceCurveTypes;
 	}
-	
-	public boolean listContainsRatesCurveTypes() {
-		return containsRatesCurveTypes;
+
+	public boolean listContainsIncidenceCurveTypes() {
+		return containsIncidenceCurveTypes;
 	}
-	
+
 	public boolean listContainsTreatmentCurveTypes() {
 		return containsTreatmentCurveTypes;
+	}
+
+	public boolean listContainsNewlyDeceasedCurveTypes() {
+		return containsNewlyDeceasedCurveTypes;
 	}
 
 	/**
@@ -77,17 +91,17 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	}
 
 	/**
-	 * @return the titleForRatesChart
+	 * @return the titleForIncidenceChart
 	 */
-	public String getTitleForRatesChart() {
-		return titleForRatesChart;
+	public String getTitleForIncidenceChart() {
+		return titleForIncidenceChart;
 	}
 
 	/**
-	 * @param titleForRatesChart the titleForRatesChart to set
+	 * @param titleForIncidenceChart the titleForIncidenceChart to set
 	 */
-	public void setTitleForRatesChart(String titleForRatesChart) {
-		this.titleForRatesChart = titleForRatesChart;
+	public void setTitleForIncidenceChart(String titleForIncidenceChart) {
+		this.titleForIncidenceChart = titleForIncidenceChart;
 	}
 
 	/**
@@ -102,5 +116,19 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	 */
 	public void setTitleForTreatmentChart(String titleForTreatmentChart) {
 		this.titleForTreatmentChart = titleForTreatmentChart;
+	}
+
+	/**
+	 * @return the titleForNewlyDeceasedChart
+	 */
+	public String getTitleForNewlyDeceasedChart() {
+		return titleForNewlyDeceasedChart;
+	}
+
+	/**
+	 * @param titleForNewlyDeceasedChart the titleForNewlyDeceasedChart to set
+	 */
+	public void setTitleForNewlyDeceasedChart(String titleForNewlyDeceasedChart) {
+		this.titleForNewlyDeceasedChart = titleForNewlyDeceasedChart;
 	}
 }
