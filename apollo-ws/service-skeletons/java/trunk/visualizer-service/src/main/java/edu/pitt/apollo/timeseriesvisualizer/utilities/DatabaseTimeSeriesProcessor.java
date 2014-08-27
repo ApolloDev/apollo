@@ -154,6 +154,11 @@ public class DatabaseTimeSeriesProcessor {
         for (String label : map.keySet()) {
             
             String diseaseState = label.substring(0, label.indexOf(".txt")).replace("_", " ");
+			
+			if (diseaseState.contains("exposed")) {
+				diseaseState = diseaseState.replace("exposed", "latent");
+			}
+			
             String content = map.get(label).toString();
             Scanner scanner = new Scanner(content);
             try {
