@@ -1160,11 +1160,11 @@ public class ApolloDbUtils {
 		String md5Hash = getMd5(runVisualizationMessageToHash);
 
 		try {
-			String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ? and requester_id = ?";
+			String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ?";
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			pstmt.setString(1, md5Hash);
 			pstmt.setInt(2, softwareKey);
-			pstmt.setInt(3, 1);
+//			pstmt.setInt(3, 1);
 			ResultSet rs = pstmt.executeQuery();
 			List<BigInteger> runIds = new ArrayList<BigInteger>();
 			while (rs.next()) {
