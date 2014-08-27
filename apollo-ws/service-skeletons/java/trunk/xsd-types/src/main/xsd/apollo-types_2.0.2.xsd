@@ -805,7 +805,7 @@
 
 	<complexType name="DiscreteNonparametricProbabilityDistribution">
 		<complexContent>
-			<extension base="tns:UnconditionalProbabilityDistribution">
+			<extension base="tns:NonparametricProbabilityDistribution">
 				<sequence>
 					<element name="probabilityValuePairs" type="tns:ProbabilityValuePair"
 						maxOccurs="unbounded" minOccurs="1" />
@@ -1637,7 +1637,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="NonparametricDiscreteProbabilityDistribution">
+	<complexType name="NonparametricProbabilityDistribution">
 		<complexContent>
 			<extension base="tns:UnconditionalProbabilityDistribution" />
 		</complexContent>
@@ -1786,6 +1786,7 @@
 			<enumeration value="gender" />
 			<enumeration value="ageRange" />
 			<enumeration value="timeSpan" />
+      <enumeration value="diseaseOutcome" />
 		</restriction>
 	</simpleType>
 

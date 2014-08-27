@@ -317,9 +317,9 @@ public class VisualizerChartUtility {
 			TimeSeriesCurveTypeEnum isEnum = curveTypeEnumsForDataset.get(i);
 			if (isEnum.equals(TimeSeriesCurveTypeEnum.SUSCEPTIBLE)) {
 				renderer.setSeriesPaint(i, new Color(55, 83, 196)); // BLUE -
-			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.EXPOSED)
-					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_EXPOSED))) {
-				renderer.setSeriesPaint(i, new Color(235, 33, 33)); // RED - EXPOSED
+			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.LATENT)
+					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_LATENT))) {
+				renderer.setSeriesPaint(i, new Color(235, 33, 33)); // RED - LATENT
 			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.INFECTIOUS)
 					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_DECEASED))) {
 				renderer.setSeriesPaint(i, new Color(216, 56, 224)); // PURPLE -
@@ -373,7 +373,7 @@ public class VisualizerChartUtility {
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		for (TimeSeriesContainer container : timeSeriesContainerList) {
 			BigInteger runId = container.getRunId();
-			dataset.addSeries(createXYSeries(container.getSeries(TimeSeriesCurveTypeEnum.NEWLY_EXPOSED),
+			dataset.addSeries(createXYSeries(container.getSeries(TimeSeriesCurveTypeEnum.NEWLY_LATENT),
 					runIdSeriesLabels.get(runId), 1));
 
 		}
