@@ -257,7 +257,7 @@ public class ImageGenerator {
 		// runIdSeriesLabels.put("3", "FluTE");
 		// runIdSeriesLabels.put("3", "SEIR");
 		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-		runIdAndLabel.setRunIdentification(new BigInteger("1"));
+		runIdAndLabel.setRunIdentification(new BigInteger("880"));
 		runIdAndLabel.setRunLabel("LABEL 1");
 
 		runIdsAndLabels.add(runIdAndLabel);
@@ -267,7 +267,7 @@ public class ImageGenerator {
 //		runIdsAndLabels.add(runIdAndLabel);
 
 		ImageGenerator generator = new ImageGenerator(runIdsAndLabels, visualizerSoftwareId, new BigInteger(
-				"7"));
+				"9"));
 		try {
 			generator.createTimeSeriesImages();
 		} catch (Exception ex) {
