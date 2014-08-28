@@ -1,6 +1,5 @@
 package edu.pitt.apollo.timeseriesvisualizer.types;
 
-import java.util.List;
 import org.jfree.data.xy.XYDataset;
 
 /**
@@ -14,7 +13,7 @@ import org.jfree.data.xy.XYDataset;
 public class XYDatasetAndTimeSeriesCurveTypes {
 
     private XYDataset xyDataset;
-    private List<TimeSeriesCurveTypeEnum> timeSeriesCurveTypesForDataset;
+    private TimeSeriesCurveTypeList timeSeriesCurveTypesForDataset;
 
     /**
      * @return the xyDataset
@@ -33,14 +32,14 @@ public class XYDatasetAndTimeSeriesCurveTypes {
     /**
      * @return the timeSeriesCurveTypesForDataset
      */
-    public List<TimeSeriesCurveTypeEnum> getTimeSeriesCurveTypesForDataset() {
+    public TimeSeriesCurveTypeList getTimeSeriesCurveTypesForDataset() {
         return timeSeriesCurveTypesForDataset;
     }
 
     /**
      * @param timeSeriesCurveTypesForDataset the timeSeriesCurveTypesForDataset to set
      */
-    public void setTimeSeriesCurveTypesForDataset(List<TimeSeriesCurveTypeEnum> timeSeriesCurveTypesForDataset) {
+    public void setTimeSeriesCurveTypesForDataset(TimeSeriesCurveTypeList timeSeriesCurveTypesForDataset) {
         this.timeSeriesCurveTypesForDataset = timeSeriesCurveTypesForDataset;
     }
 

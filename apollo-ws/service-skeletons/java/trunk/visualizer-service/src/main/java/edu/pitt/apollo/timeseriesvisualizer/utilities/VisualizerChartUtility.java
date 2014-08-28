@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
 import edu.pitt.apollo.timeseriesvisualizer.types.XYDatasetAndTimeSeriesCurveTypes;
 
 /**
@@ -255,7 +256,7 @@ public class VisualizerChartUtility {
 			String yTitle) {
 
 		final XYDataset dataset = datasetAndCurveTypes.getXyDataset();
-		final List<TimeSeriesCurveTypeEnum> curveTypeEnumsForDataset = datasetAndCurveTypes.getTimeSeriesCurveTypesForDataset();
+		final TimeSeriesCurveTypeList curveTypeEnumsForDataset = datasetAndCurveTypes.getTimeSeriesCurveTypesForDataset();
 
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createXYLineChart(mainTitle, // chart
@@ -295,11 +296,22 @@ public class VisualizerChartUtility {
 		axis.setTickLabelFont(new Font("calibri", Font.PLAIN, 20));
 		axis.setLabelFont(new Font("calibri", Font.PLAIN, 30));
 
-		NumberAxis xaxis = (NumberAxis) plot.getDomainAxis();
+		NumberAxis xaxis;
+
+		if (curveTypeEnumsForDataset.listContainsIncidenceCurveTypes()
+				|| curveTypeEnumsForDataset.listContainsNewlyDeceasedCurveTypes()) {
+			xaxis = new SimpleNumberAxis();
+			plot.setDomainAxis(xaxis);
+			
+			xaxis.setRange(1, maxXValue);
+		} else {
+			xaxis = (NumberAxis) plot.getDomainAxis();
+			xaxis.setRange(0.0, maxXValue);
+		}
+
 		xaxis.setTickLabelFont(new Font("calibri", Font.PLAIN, 20));
 		xaxis.setLabelFont(new Font("calibri", Font.PLAIN, 30));
 		xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		xaxis.setRange(0.0, maxXValue);
 
 		LegendTitle legend = (LegendTitle) chart.getLegend();
 		legend.setItemFont(new Font("calibri", Font.PLAIN, 20));
@@ -349,7 +361,7 @@ public class VisualizerChartUtility {
 	private XYDatasetAndTimeSeriesCurveTypes createXYDataset(TimeSeriesContainer container, TimeSeriesCurveTypeEnum[] curveTypes) {
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 
-		List<TimeSeriesCurveTypeEnum> curveTypeEnumsForSeries = new ArrayList<TimeSeriesCurveTypeEnum>();
+		TimeSeriesCurveTypeList curveTypeEnumsForSeries = new TimeSeriesCurveTypeList();
 		for (TimeSeriesCurveTypeEnum curveTypeEnum : curveTypes) {
 			if (container.getSeries(curveTypeEnum) != null) {
 				String name = curveTypeEnum.toString().toLowerCase();
@@ -360,6 +372,7 @@ public class VisualizerChartUtility {
 			}
 		}
 
+		curveTypeEnumsForSeries.processAddedCurveTypes();
 		XYDatasetAndTimeSeriesCurveTypes xyDatasetAndLabels = new XYDatasetAndTimeSeriesCurveTypes();
 		xyDatasetAndLabels.setXyDataset(dataset);
 		xyDatasetAndLabels.setTimeSeriesCurveTypesForDataset(curveTypeEnumsForSeries);
