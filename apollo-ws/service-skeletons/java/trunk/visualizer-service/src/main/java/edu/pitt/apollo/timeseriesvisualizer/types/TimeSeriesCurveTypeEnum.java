@@ -17,12 +17,17 @@ public enum TimeSeriesCurveTypeEnum {
     RECOVERED("recovered"),
     NEWLY_LATENT("newly latent"),
 	NEWLY_DECEASED("newly deceased"),
-	PROPHYLACTICS_GIVEN("prophylactics given");
+	PROPHYLACTICS_GIVEN("prophylactics given"),
+	ASYMPTOMATIC("asymptomatic"),
+	SYMPTOMATIC("symptomatic"),
+	FULMINANT("fulminant"),
+	DEAD("dead");
     
-    public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_PREVALENCE_CHART = {SUSCEPTIBLE, LATENT, INFECTIOUS, RECOVERED};
+    public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_INFECTION_STATES_CHART = {SUSCEPTIBLE, LATENT, INFECTIOUS, RECOVERED};
     public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_INCIDENCE_CHART = {NEWLY_LATENT};
 	public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_NEWLY_DECEASED_CHART = {NEWLY_DECEASED};
 	public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_TREATMENT_COUNTS_CHART = {PROPHYLACTICS_GIVEN};
+	public static final TimeSeriesCurveTypeEnum[] CURVE_TYPES_FOR_DISEASE_STATES_CHART = {ASYMPTOMATIC, SYMPTOMATIC, FULMINANT, DEAD};
 	
     private final String value;
 
