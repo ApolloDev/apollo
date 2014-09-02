@@ -146,7 +146,7 @@ public class TimeSeriesResultSetProcessor {
 
         List<TimeSeriesCurveTypeEnum> statesToUse = null;
         if (getPrevalenceStates) {
-            statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_PREVALENCE_CHART));
+            statesToUse = new ArrayList<TimeSeriesCurveTypeEnum>(Arrays.asList(TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INFECTION_STATES_CHART));
         }
         if (getIncidenceStates) {
             if (statesToUse == null) {
