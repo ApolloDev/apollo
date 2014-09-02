@@ -41,17 +41,19 @@ public class ImageGenerator {
 	private static final String IMAGE_FILE_TYPE_PARAM = "image_file_type";
 	private static final String IMAGE_BASE_URL_PARAM = "image_base_url";
 	private static final String IMAGE_FILES_DIRECTORY, IMAGE_FILE_TYPE, IMAGE_BASE_URL;
-	private static final String PREVALENCE_IMAGE_NAME = "prevalence";
+	private static final String INFECTION_STATES_IMAGE_NAME = "prevalence";
 	private static final String INCIDENCE_IMAGE_NAME = "incidence";
 	private static final String NEWLY_DECEASED_IMAGE_NAME = "newly_deceased";
 	private static final String TREATMENT_COUNTS_IMAGE_NAME = "treatment";
+	private static final String DISEASE_STATES_IMAGE_NAME = "disease_states";
 
 	private List<BigInteger> runIds;
 	private Map<BigInteger, String> runIdLabelMap;
-	private final String prevalenceImagePath;
+	private final String infectionStatesImagePath;
 	private final String incidenceImagePath;
 	private final String newlyDeceasedImagePath;
 	private final String treatmentImagePath;
+	private final String diseaseStatesImagePath;
 	private String combinedIncidenceImagePath;
 	private final boolean multipleRunsSpecified;
 	private final BigInteger visualizerRunId;
@@ -74,7 +76,7 @@ public class ImageGenerator {
 		// set file paths and urls
 		if (!multipleRunsSpecified) {
 			// the first runId is either the only runId, or the no vacc model
-			prevalenceImagePath = runDirectory + File.separator + PREVALENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
+			infectionStatesImagePath = runDirectory + File.separator + INFECTION_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 //			if (multiVaccChart) {
 //				combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "."
 //						+ IMAGE_FILE_TYPE;
@@ -82,12 +84,14 @@ public class ImageGenerator {
 			incidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 			treatmentImagePath = runDirectory + File.separator + TREATMENT_COUNTS_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 			newlyDeceasedImagePath = runDirectory + File.separator + NEWLY_DECEASED_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
+			diseaseStatesImagePath = runDirectory + File.separator + DISEASE_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 //			}
 		} else {
-			prevalenceImagePath = null;
+			infectionStatesImagePath = null;
 			incidenceImagePath = null;
 			treatmentImagePath = null;
 			newlyDeceasedImagePath = null;
+			diseaseStatesImagePath = null;
 			combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 		}
 	}
@@ -134,10 +138,15 @@ public class ImageGenerator {
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.RECOVERED);
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_DECEASED);
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.PROPHYLACTICS_GIVEN);
+				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.ASYMPTOMATIC);
+				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.SYMPTOMATIC);
+				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.FULMINANT);
+				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.DEAD);
 
-				timeSeriesCurveTypesToUse.setTitleForPrevalenceChart("Infection states over time");
+				timeSeriesCurveTypesToUse.setTitleForInfectionStatesChart("Infection states over time");
 				timeSeriesCurveTypesToUse.setTitleForNewlyDeceasedChart("Count of newly deceased over time");
 				timeSeriesCurveTypesToUse.setTitleForTreatmentChart("Prophylactics given over time");
+				timeSeriesCurveTypesToUse.setTitleForDiseaseStatesChart("Disease states over time");
 			} else {
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.LATENT);
@@ -145,7 +154,7 @@ public class ImageGenerator {
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.RECOVERED);
 				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
 
-				timeSeriesCurveTypesToUse.setTitleForPrevalenceChart("Infection states over time");
+				timeSeriesCurveTypesToUse.setTitleForInfectionStatesChart("Infection states over time");
 				timeSeriesCurveTypesToUse.setTitleForIncidenceChart("Incidence of newly latent over time");
 			}
 		} else {
@@ -210,11 +219,17 @@ public class ImageGenerator {
 
 		logger.info("Creating images...");
 		Map<String, String> resourceMap = new HashMap<String, String>();
-		if (timeSeriesCurveTypeList.listContainsPrevalenceCurveTypes()) {
-			chartUtility.createTimeSeriesChart(prevalenceImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForPrevalenceChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_PREVALENCE_CHART);
+		if (timeSeriesCurveTypeList.listContainsInfectionStateCurveTypes()) {
+			chartUtility.createTimeSeriesChart(infectionStatesImagePath, chartXAxisLabel,
+					timeSeriesCurveTypeList.getTitleForInfectionStatesChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INFECTION_STATES_CHART);
 
-			resourceMap.put(PREVALENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(PREVALENCE_IMAGE_NAME));
+			resourceMap.put(INFECTION_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INFECTION_STATES_IMAGE_NAME));
+		}
+		if (timeSeriesCurveTypeList.listContainsDiseaseStatesCurveTypes()) {
+			chartUtility.createTimeSeriesChart(diseaseStatesImagePath, chartXAxisLabel,
+					timeSeriesCurveTypeList.getTitleForDiseaseStatesChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_DISEASE_STATES_CHART);
+
+			resourceMap.put(DISEASE_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(DISEASE_STATES_IMAGE_NAME));
 		}
 		if (timeSeriesCurveTypeList.listContainsTreatmentCurveTypes()) {
 			chartUtility.createTimeSeriesChart(treatmentImagePath, chartXAxisLabel,
@@ -257,7 +272,7 @@ public class ImageGenerator {
 		// runIdSeriesLabels.put("3", "FluTE");
 		// runIdSeriesLabels.put("3", "SEIR");
 		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-		runIdAndLabel.setRunIdentification(new BigInteger("880"));
+		runIdAndLabel.setRunIdentification(new BigInteger("1"));
 		runIdAndLabel.setRunLabel("LABEL 1");
 
 		runIdsAndLabels.add(runIdAndLabel);

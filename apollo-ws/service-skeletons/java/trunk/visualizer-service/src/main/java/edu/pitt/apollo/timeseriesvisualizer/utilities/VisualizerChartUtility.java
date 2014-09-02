@@ -42,6 +42,7 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
 import edu.pitt.apollo.timeseriesvisualizer.types.XYDatasetAndTimeSeriesCurveTypes;
+import java.util.EnumMap;
 
 /**
  * 
@@ -124,6 +125,7 @@ public class VisualizerChartUtility {
 	private static final BasicStroke SERIES_STROKE = new BasicStroke(3f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_MITER);
 	private final TimeSeriesContainerList timeSeriesContainerList;
+	private static final Map<TimeSeriesCurveTypeEnum, Color> colorsForTimeSeriesCurveTypes;
 
 	public VisualizerChartUtility(TimeSeriesContainerList timeSeriesContainerList) {
 		this.timeSeriesContainerList = timeSeriesContainerList;
@@ -302,7 +304,7 @@ public class VisualizerChartUtility {
 				|| curveTypeEnumsForDataset.listContainsNewlyDeceasedCurveTypes()) {
 			xaxis = new SimpleNumberAxis();
 			plot.setDomainAxis(xaxis);
-			
+
 			xaxis.setRange(1, maxXValue);
 		} else {
 			xaxis = (NumberAxis) plot.getDomainAxis();
@@ -326,18 +328,19 @@ public class VisualizerChartUtility {
 
 		for (int i = 0; i < curveTypeEnumsForDataset.size(); i++) {
 
-			TimeSeriesCurveTypeEnum isEnum = curveTypeEnumsForDataset.get(i);
-			if (isEnum.equals(TimeSeriesCurveTypeEnum.SUSCEPTIBLE)) {
-				renderer.setSeriesPaint(i, new Color(55, 83, 196)); // BLUE -
-			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.LATENT)
-					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_LATENT))) {
-				renderer.setSeriesPaint(i, new Color(235, 33, 33)); // RED - LATENT
-			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.INFECTIOUS)
-					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_DECEASED))) {
-				renderer.setSeriesPaint(i, new Color(216, 56, 224)); // PURPLE -
-			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.RECOVERED)) {
-				renderer.setSeriesPaint(i, new Color(5, 158, 61)); // GREEN - RECOVERED
-			}
+			TimeSeriesCurveTypeEnum seriesCurveTypeEnum = curveTypeEnumsForDataset.get(i);
+			renderer.setSeriesPaint(i, colorsForTimeSeriesCurveTypes.get(seriesCurveTypeEnum));
+//			if (isEnum.equals(TimeSeriesCurveTypeEnum.SUSCEPTIBLE)) {
+//				renderer.setSeriesPaint(i, new Color(55, 83, 196)); // BLUE -
+//			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.LATENT)
+//					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_LATENT))) {
+//				renderer.setSeriesPaint(i, new Color(235, 33, 33)); // RED - LATENT
+//			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.INFECTIOUS)
+//					|| (isEnum.equals(TimeSeriesCurveTypeEnum.NEWLY_DECEASED))) {
+//				renderer.setSeriesPaint(i, new Color(216, 56, 224)); // PURPLE -
+//			} else if (isEnum.equals(TimeSeriesCurveTypeEnum.RECOVERED)) {
+//				renderer.setSeriesPaint(i, new Color(5, 158, 61)); // GREEN - RECOVERED
+//			}
 
 			renderer.setSeriesStroke(i, SERIES_STROKE);
 			renderer.setSeriesShapesVisible(i, false);
@@ -450,5 +453,22 @@ public class VisualizerChartUtility {
 		} catch (IOException ex) {
 			System.err.println("Incidence image file could not be written: " + ex.getMessage());
 		}
+	}
+
+	static {
+		
+		colorsForTimeSeriesCurveTypes = new EnumMap<TimeSeriesCurveTypeEnum, Color>(TimeSeriesCurveTypeEnum.class);
+		
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.SUSCEPTIBLE, new Color(55, 83, 196)); // BLUE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.LATENT, new Color(235, 33, 33)); // RED
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.INFECTIOUS, new Color(216, 56, 224)); // PURPLE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.RECOVERED, new Color(5, 158, 61)); // GREEN
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.NEWLY_DECEASED, new Color(216, 56, 224)); // PURPLE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.PROPHYLACTICS_GIVEN, new Color(55, 83, 196)); // BLUE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.ASYMPTOMATIC, new Color(55, 83, 196)); // BLUE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.SYMPTOMATIC, new Color(235, 33, 33)); // RED
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.FULMINANT, new Color(216, 56, 224)); // PURPLE
+		colorsForTimeSeriesCurveTypes.put(TimeSeriesCurveTypeEnum.DEAD, Color.ORANGE); // ORANGE
+		
 	}
 }
