@@ -316,6 +316,11 @@ INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for prophylactics_given, prophylactics_given.txt ');/* 49*/
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, treatment.png'); /* 50 */
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, newly_deceased.png'); /* 51 */
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for asymptomatic, asymptomatic.txt '); /* 52*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for symptomatic, symptomatic.txt '); /* 53*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for fulminant, fulminant.txt '); /* 54*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for dead, dead.txt '); /* 55*/
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 56 */
 
 
 
@@ -625,7 +630,37 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(51, 2, 'newly_deceased.png'),
 	(51, 3, 'IMAGE'),
 	(51, 4, '4'),
-	(51, 5, '0');
+	(51, 5, '0'),
+    
+   	(52, 1, 'TEXT'), 
+	(52, 2, 'asymptomatic.txt'),
+	(52, 3, 'SIMULATOR_LOG_FILE'),
+	(52, 4, '7'),
+	(52, 5, '4'),
+    
+   	(53, 1, 'TEXT'), 
+	(53, 2, 'symptomatic.txt'),
+	(53, 3, 'SIMULATOR_LOG_FILE'),
+	(53, 4, '7'),
+	(53, 5, '4'),
+    
+   	(54, 1, 'TEXT'), 
+	(54, 2, 'fulminant.txt'),
+	(54, 3, 'SIMULATOR_LOG_FILE'),
+	(54, 4, '7'),
+	(54, 5, '4'),  
+    
+   	(55, 1, 'TEXT'), 
+	(55, 2, 'dead.txt'),
+	(55, 3, 'SIMULATOR_LOG_FILE'),
+	(55, 4, '7'),
+	(55, 5, '4'),
+    
+	(56, 1, 'URL'), 
+	(56, 2, 'disease_states.png'),
+	(56, 3, 'IMAGE'),
+	(56, 4, '4'),
+	(56, 5, '0');
 
 CREATE VIEW run_data_description_view AS
 SELECT
