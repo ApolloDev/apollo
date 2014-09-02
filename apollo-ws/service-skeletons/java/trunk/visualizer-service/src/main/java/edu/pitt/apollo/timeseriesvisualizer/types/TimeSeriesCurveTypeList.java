@@ -12,14 +12,16 @@ import java.util.ArrayList;
  */
 public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> {
 
-	private boolean containsPrevalenceCurveTypes;
+	private boolean containsInfectionStateCurveTypes;
 	private boolean containsIncidenceCurveTypes;
 	private boolean containsTreatmentCurveTypes;
 	private boolean containsNewlyDeceasedCurveTypes;
-	private String titleForPrevalenceChart;
+	private boolean containsDiseaseStateCurveTypes;
+	private String titleForInfectionStatesChart;
 	private String titleForIncidenceChart;
 	private String titleForTreatmentChart;
 	private String titleForNewlyDeceasedChart;
+	private String titleForDiseaseStatesChart;
 
 	public TimeSeriesCurveTypeList() {
 		super();
@@ -27,10 +29,10 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 
 	public void processAddedCurveTypes() {
 
-		containsPrevalenceCurveTypes = false;
-		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_PREVALENCE_CHART) {
+		containsInfectionStateCurveTypes = false;
+		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INFECTION_STATES_CHART) {
 			if (this.contains(enumVal)) {
-				containsPrevalenceCurveTypes = true;
+				containsInfectionStateCurveTypes = true;
 				break;
 			}
 		}
@@ -58,10 +60,19 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 				break;
 			}
 		}
+
+		containsDiseaseStateCurveTypes = false;
+		for (TimeSeriesCurveTypeEnum enumVal : TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_DISEASE_STATES_CHART) {
+			if (this.contains(enumVal)) {
+				containsDiseaseStateCurveTypes = true;
+				break;
+			}
+		}
+
 	}
 
-	public boolean listContainsPrevalenceCurveTypes() {
-		return containsPrevalenceCurveTypes;
+	public boolean listContainsInfectionStateCurveTypes() {
+		return containsInfectionStateCurveTypes;
 	}
 
 	public boolean listContainsIncidenceCurveTypes() {
@@ -75,19 +86,23 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	public boolean listContainsNewlyDeceasedCurveTypes() {
 		return containsNewlyDeceasedCurveTypes;
 	}
-
-	/**
-	 * @return the titleForPrevalenceChart
-	 */
-	public String getTitleForPrevalenceChart() {
-		return titleForPrevalenceChart;
+	
+	public boolean listContainsDiseaseStatesCurveTypes() {
+		return containsDiseaseStateCurveTypes;
 	}
 
 	/**
-	 * @param titleForPrevalenceChart the titleForPrevalenceChart to set
+	 * @return the titleForInfectionStatesChart
 	 */
-	public void setTitleForPrevalenceChart(String titleForPrevalenceChart) {
-		this.titleForPrevalenceChart = titleForPrevalenceChart;
+	public String getTitleForInfectionStatesChart() {
+		return titleForInfectionStatesChart;
+	}
+
+	/**
+	 * @param titleForInfectionStatesChart the titleForInfectionStatesChart to set
+	 */
+	public void setTitleForInfectionStatesChart(String titleForInfectionStatesChart) {
+		this.titleForInfectionStatesChart = titleForInfectionStatesChart;
 	}
 
 	/**
@@ -130,5 +145,19 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	 */
 	public void setTitleForNewlyDeceasedChart(String titleForNewlyDeceasedChart) {
 		this.titleForNewlyDeceasedChart = titleForNewlyDeceasedChart;
+	}
+
+	/**
+	 * @return the titleForDiseaseStatesChart
+	 */
+	public String getTitleForDiseaseStatesChart() {
+		return titleForDiseaseStatesChart;
+	}
+
+	/**
+	 * @param titleForDiseaseStatesChart the titleForDiseaseStatesChart to set
+	 */
+	public void setTitleForDiseaseStatesChart(String titleForDiseaseStatesChart) {
+		this.titleForDiseaseStatesChart = titleForDiseaseStatesChart;
 	}
 }
