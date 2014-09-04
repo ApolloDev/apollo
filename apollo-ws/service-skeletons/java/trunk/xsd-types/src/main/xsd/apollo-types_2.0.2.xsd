@@ -1078,7 +1078,7 @@
 
 	<complexType name="AbioticEcosystem">
 		<sequence>
-			<element name="homes" type="string" maxOccurs="unbounded"
+			<element name="houses" type="string" maxOccurs="unbounded"
 				minOccurs="0" />
 			<element name="schools" type="token" maxOccurs="unbounded"
 				minOccurs="0" />
@@ -1270,8 +1270,11 @@
 					minOccurs="1" />
 				<element name="transmissionProbability" type="tns:TransmissionProbability"
 					maxOccurs="1" minOccurs="1" />
-				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
-					maxOccurs="1" minOccurs="1" /> -->
+				<!--
+					<element name="forGlobalEpidemicSimulator"
+					type="tns:GesParametersForContactAndTransmission" maxOccurs="1"
+					minOccurs="1" />
+				-->
 			</choice>
 		</sequence>
 	</complexType>
@@ -1420,28 +1423,67 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="scenarioDate" type="dateTime" maxOccurs="1"
+					<element name="scenarioDate" type="dateTime"
+						maxOccurs="1" minOccurs="1" />
+					<element name="location"
+						type="tns:InfectiousDiseaseScenarioLocation" maxOccurs="1"
 						minOccurs="1" />
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1" />
-					<element name="populationInfectionAndImmunityCensuses"
-						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="individualDevelopmentAndAgingModelsParameters"
-						type="tns:IndividualDevelopmentAndAgingModelParameters" maxOccurs="unbounded"
+					<element name="individualLifeCycles"
+						type="tns:IndividualLifeCycle" maxOccurs="unbounded"
 						minOccurs="0" />
-					<element name="individualBehaviorModelsParameters" type="tns:IndividualBehaviorModelParameters"
-						maxOccurs="unbounded" minOccurs="0">
+					<element name="individualBehaviors"
+						type="tns:IndividualBehavior" maxOccurs="unbounded"
+						minOccurs="0">
 					</element>
-					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="contaminations" type="tns:Contamination"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="nonApolloParameters" type="tns:NonApolloParameter"
-						maxOccurs="unbounded" minOccurs="0">
+					<element name="individualReproductions"
+						type="tns:IndividualMosquitoReproduction" maxOccurs="1"
+						minOccurs="0">
 					</element>
+					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus" maxOccurs="1" minOccurs="0"></element>
+					<element
+						name="populationInfectionAndImmunityCensuses"
+						type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="infections" type="tns:Infection"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="contaminations"
+						type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
+					<element name="infectiousDiseaseControlStrategies"
+						type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="nonApolloParameters"
+						type="tns:NonApolloParameter" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="InfectiousDiseaseScenarioWithMosquitoVector">
+		<complexContent>
+			<extension base="tns:InfectiousDiseaseScenario">
+				<sequence>
+					<element name="mosquitoInfection" type="tns:Infection"
+						maxOccurs="1" minOccurs="1" />
+					<element name="mosquitoInfectionAndImmunityCensus" type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="1" minOccurs="1" />
+					<element name="individualMosquitoBehavior" type="tns:IndividualMosquitoBehavior"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="individualMosquitoReproduction" type="tns:IndividualMosquitoReproduction"
+						maxOccurs="1" minOccurs="1"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="AbioticEcosystemCensus">
+		<complexContent>
+			<extension base="tns:Census">
+				<sequence>
+					<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
+						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1451,7 +1493,7 @@
 		<sequence>
 			<element name="bioticEcosystemParts" type="tns:PopulationInfectionAndImmunityCensusData"
 				maxOccurs="unbounded" minOccurs="1" />
-			<element name="abioticEcosystemParts" type="tns:AbioticEcosystemPartCensus"
+			<element name="abioticEcosystemParts" type="tns:AbioticEcosystemCensus"
 				maxOccurs="unbounded" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1540,12 +1582,7 @@
 	</complexType>
 
 
-	<complexType name="AbioticEcosystemPartCensus">
-		<sequence>
-			<element name="abioticEcosystemElementID" type="token"
-				maxOccurs="1" minOccurs="1" />
-		</sequence>
-	</complexType>
+
 
 	<complexType name="PopulationAndEnvironmentCensus">
 		<complexContent>
@@ -1777,6 +1814,7 @@
 			<enumeration value="chickenFarm" />
 			<enumeration value="household" />
 			<enumeration value="community" />
+			<enumeration value="ovipositionSite" />
 		</restriction>
 	</simpleType>
 
@@ -1786,7 +1824,7 @@
 			<enumeration value="gender" />
 			<enumeration value="ageRange" />
 			<enumeration value="timeSpan" />
-      <enumeration value="diseaseOutcome" />
+			<enumeration value="diseaseOutcome" />
 		</restriction>
 	</simpleType>
 
@@ -1847,25 +1885,6 @@
 				maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
-
-	<complexType name="IndividualDevelopmentOrAgingOutcomeWithProbability">
-		<sequence>
-			<element name="developmentOrAgingOutcome" type="tns:IndividualDevelopmentOrAgingOutcomeEnum"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="probability" type="tns:ProbabilisticParameter"
-				maxOccurs="1" minOccurs="1"></element>
-		</sequence>
-	</complexType>
-
-	<simpleType name="IndividualDevelopmentOrAgingOutcomeEnum">
-		<restriction base="string">
-			<enumeration value="durationOfEggStage" />
-			<enumeration value="durationOfLarvalStage" />
-			<enumeration value="death" />
-		</restriction>
-	</simpleType>
-
 
 	<complexType name="SeasonalityFunctionParameters">
 		<sequence>
@@ -2106,6 +2125,8 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
+									<element name="vectorTaxonId" type="tns:NcbiTaxonId"
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2115,30 +2136,34 @@
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
-					<element name="wolbachia-sites-every-nth" type="positiveInteger"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolbachia-seed-adults-per-house" type="nonNegativeInteger"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-egg-mortality-rate" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-adult-mortality-rate" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-Larva-mortality-rate" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-fecundity" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-mating-probability" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-leakage-rate" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolb-effect-vectorial-capacity" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="clear-wolbachia-on-migration" type="boolean"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolbachia-release-interval" type="tns:FixedDuration"
-						maxOccurs="1" minOccurs="1" />
-					<element name="wolbachia-release-on" type="tns:WolbachiaReleaseSiteEnum"
-						maxOccurs="1" minOccurs="1" />
+					<element name="wolbachiaSitesEveryNth" type="positiveInteger"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaSeedAdultsPerHouse" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0" />
+					<element name="clearWolbachiaOnMigration" type="boolean"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaReleaseInterval" type="tns:FixedDuration"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaReleaseSites" type="tns:WolbachiaReleaseSiteEnum"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnEggMortalityRate"
+						type="tns:Fraction" maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnAdultMortalityRate" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnLarvalMortalityRate" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnFecundity" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnMatingProbability" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnLeakageRate" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnVectorialCapacity" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+                    <element name="wolbachiaPreReleaseAdultSuppressionEfficacy" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+                    <element name="wolbachiaPreReleaseLarvalSuppressionEfficacy" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2153,27 +2178,15 @@
 	</simpleType>
 
 
-	<complexType name="VectorLarvalStageSuppressionControlStrategy">
-		<complexContent>
-			<extension base="tns:VectorControlStrategy">
-				<sequence>
-					<element name="wolbachia-sites-every-nth" type="positiveInteger"
-						maxOccurs="1" minOccurs="1" />
-					<element name="efficacy" type="tns:Fraction" maxOccurs="1"
-						minOccurs="1" />
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
-	<complexType name="VectorAdultStageSuppressionControlStrategy">
+	<complexType name="VectorSuppressionControlStrategy">
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
-					<element name="wolbachia-sites-every-nth" type="positiveInteger"
-						maxOccurs="1" minOccurs="1" />
-					<element name="efficacy" type="tns:Fraction" maxOccurs="1"
+					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
 						minOccurs="1" />
+					<element name="efficacies" type="tns:VectorSuppressionEfficacy"
+						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2341,12 +2354,12 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="IndividualDevelopmentAndAgingModelParameters">
+	<complexType name="IndividualLifeCycle">
 		<sequence>
-			<element name="taxonID" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="1"></element>
-			<element name="developmentAndAgingOutcomesAndProbabilities"
-				type="tns:IndividualDevelopmentOrAgingOutcomeWithProbability"
+			<element name="speciesId" type="tns:NcbiTaxonId" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="lifeStagesWithDurationsAndMortalities" type="tns:LifeStageWithDurationAndMortality"
 				maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
@@ -2381,41 +2394,41 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="IndividualBehaviorModelParameters"></complexType>
+	<complexType name="IndividualBehavior"></complexType>
 
-	<complexType name="IndividualMosquitoBehaviorParameters">
+	<complexType name="IndividualMosquitoBehavior">
 		<complexContent>
-			<extension base="tns:IndividualBehaviorModelParameters">
+			<extension base="tns:IndividualBehavior">
 				<sequence>
-					<element name="mosquito-bite-probability" type="tns:ProbabilisticParameter"
+					<element name="biteProbability" type="tns:ProbabilisticParameter"
 						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-bite-radius" type="tns:Distance"
+					<element name="biteRadius" type="tns:Distance" maxOccurs="1"
+						minOccurs="0" />
+					<element name="timeBetweenBites" type="tns:Duration"
 						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-time-between-bites" type="tns:Duration"
+					<element name="migrationSpeed" type="tns:Rate" maxOccurs="1"
+						minOccurs="0" />
+					<element name="shadeAffinity" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-migration-speed" type="tns:Rate"
+					<element name="maleMatingRadius" type="tns:Distance"
 						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-house-affinity" type="tns:Fraction"
+					<element name="matingProbability" type="tns:Probability"
 						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-male-mating-radius" type="tns:Distance"
-						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-mating-probability" type="tns:Probability"
-						maxOccurs="1" minOccurs="0" />
-					<element name="mosquito-straight-travel-after-ovi" type="tns:Distance"
+					<element name="straightTravelAfterOviposit" type="tns:Distance"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
-	<complexType name="IndividualHumanBehaviorParameters">
+	<complexType name="IndividualHumanBehavior">
 		<complexContent>
-			<extension base="tns:IndividualBehaviorModelParameters">
+			<extension base="tns:IndividualBehavior">
 				<sequence>
-					<element name="human-migration-speed" type="tns:Rate"
-						maxOccurs="1" minOccurs="0">
+					<element name="speedOfMovement" type="tns:Rate" maxOccurs="1"
+						minOccurs="0">
 					</element>
-					<element name="human-building-affinity" type="tns:Fraction"
+					<element name="buildingAffinity" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0">
 					</element>
 				</sequence>
@@ -2443,7 +2456,7 @@
 		<complexContent>
 			<extension base="tns:ParameterValue">
 				<sequence>
-					<element name="unitOfMeasure" type="tns:UnitOfDistanceEnum"
+					<element name="unitOfDistance" type="tns:UnitOfDistanceEnum"
 						maxOccurs="1" minOccurs="1">
 					</element>
 					<element name="value" type="double" maxOccurs="1"
@@ -2468,4 +2481,183 @@
 				minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
+	<complexType name="IndividualMosquitoReproduction">
+		<sequence>
+			<element name="gonotrophicPeriodDuration" type="tns:Duration"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="eggsPerBrood" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="minimumEggsPerOviposition" type="positiveInteger"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="ageDependentFecundityReduction" type="tns:Rate"
+				maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="LifeStageWithDurationAndMortality">
+		<sequence>
+			<element name="stage" type="tns:DevelopmentalStageEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="duration" type="tns:Duration" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<choice>
+				<element name="mortalityRate" type="tns:Rate" maxOccurs="1"
+					minOccurs="1">
+				</element>
+				<element name="mortalityFunction" type="tns:MortalityFunction"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="MortalityFunction"></complexType>
+
+	<complexType name="ClaraDensityDependentMortalityFunction">
+		<complexContent>
+			<extension base="tns:MortalityFunction">
+				<sequence>
+					<element name="description" type="string" maxOccurs="1"
+						minOccurs="0" />
+					<element name="theta" type="tns:NonNegativeDouble"
+						maxOccurs="1" minOccurs="1" />
+					<element name="sigma" type="tns:NonNegativeDouble"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MortalityFunction2">
+		<complexContent>
+			<extension base="tns:MortalityFunction">
+				<sequence>
+					<element name="description" type="string" maxOccurs="1"
+						minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<simpleType name="DevelopmentalStageEnum">
+		<restriction base="string">
+			<enumeration value="egg" />
+			<enumeration value="larval" />
+			<enumeration value="pupal" />
+			<enumeration value="larvalAndPupal" />
+			<enumeration value="adultForm" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="VectorSuppressionEfficacy">
+		<sequence>
+			<element name="developmentalStage" type="tns:DevelopmentalStageEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="efficacy" type="tns:Fraction" maxOccurs="1"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="LocationAbstractType"></complexType>
+
+	<complexType name="JurisdictionAggregateDefinition">
+		<complexContent>
+			<extension base="tns:LocationAbstractType">
+				<sequence>
+					<element name="description" type="string" maxOccurs="1"
+						minOccurs="1" />
+					<element name="locationsIncluded" type="tns:ApolloLocationCode"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="locationsExcluded" type="tns:ApolloLocationCode"
+						maxOccurs="unbounded" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="CartesianCircleLocationDefinition">
+		<complexContent>
+			<extension base="tns:LocationAbstractType">
+				<sequence>
+					<element name="eastWestOffsetFromCartesianCenter" type="tns:Distance"
+						maxOccurs="1" minOccurs="1" />
+					<element name="northSouthOffsetFromCartesianCenter" type="tns:Distance"
+						maxOccurs="1" minOccurs="1" />
+					<element name="altitudeRelativeToCartesianCenter" type="tns:Distance"
+						maxOccurs="1" minOccurs="1" />
+					<element name="radius" type="tns:Distance" maxOccurs="1"
+						minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="Longitude">
+		<sequence>
+			<element name="edit" type="string" maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="Latitude">
+		<sequence>
+			<element name="edit" type="string" maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="InfectiousDiseaseScenarioLocation">
+		<sequence>
+			<element name="scenarioCartesianReferencePoint" type="tns:ScenarioCartesianReferencePoint"
+				maxOccurs="1" minOccurs="0" />
+			<choice>
+				<element name="jurisdictionCode" type="tns:ApolloLocationCode"
+					maxOccurs="1" minOccurs="1" />
+				<element name="aggregateJurisdictionDefinition" type="tns:JurisdictionAggregateDefinition"
+					maxOccurs="1" minOccurs="1" />
+				<element name="cartesianCircleLocationDefinition" type="tns:CartesianCircleLocationDefinition"
+					maxOccurs="1" minOccurs="1"></element>
+			</choice>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="ScenarioCartesianReferencePoint">
+		<sequence>
+			<element name="cartesianReferenceLongitude" type="tns:Longitude"
+				maxOccurs="1" minOccurs="1" />
+			<element name="cartesianReferenceLatitude" type="tns:Latitude"
+				maxOccurs="1" minOccurs="1" />
+			<element name="cartesianReferenceAltitude" type="tns:Distance"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+
+	<complexType name="OvipositionSiteCensus">
+		<complexContent>
+			<extension base="tns:AbioticEcosystemCensus">
+				<sequence>
+					<element name="breteauIndex" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0" />
+					<element name="carryingCapacityPerHouse" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0" />
+					<element name="heterogenousCarryingCapacity" type="boolean" maxOccurs="1"
+						minOccurs="0" />
+					<element name="outdoorOvisiteNumberRatio" type="tns:Rate"
+						maxOccurs="1" minOccurs="0" />
+					<element name="outdoorOvisiteRatioMax" type="tns:Rate"
+						maxOccurs="1" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
 </schema>
