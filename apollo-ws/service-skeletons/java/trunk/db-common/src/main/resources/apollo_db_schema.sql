@@ -320,7 +320,7 @@ INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for symptomatic, symptomatic.txt '); /* 53*/
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for fulminant, fulminant.txt '); /* 54*/
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for dead, dead.txt '); /* 55*/
-
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 56 */
 
 
 
@@ -654,7 +654,13 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(55, 2, 'dead.txt'),
 	(55, 3, 'SIMULATOR_LOG_FILE'),
 	(55, 4, '7'),
-	(55, 5, '4');
+	(55, 5, '4'),
+    
+	(56, 1, 'URL'), 
+	(56, 2, 'disease_states.png'),
+	(56, 3, 'IMAGE'),
+	(56, 4, '4'),
+	(56, 5, '0');
 
 CREATE VIEW run_data_description_view AS
 SELECT
