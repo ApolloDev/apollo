@@ -2156,9 +2156,13 @@
 						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaEffectOnMatingProbability" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
-					<element name="wolbachiaEffectOnLeakagRate" type="tns:Fraction"
+					<element name="wolbachiaEffectOnLeakageRate" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaEffectOnVectorialCapacity" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+                    <element name="wolbachiaPreReleaseAdultSuppressionEfficacy" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
+                    <element name="wolbachiaPreReleaseLarvalSuppressionEfficacy" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
