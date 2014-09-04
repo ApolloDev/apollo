@@ -6,6 +6,7 @@ import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
+import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenarioLocation;
 import edu.pitt.apollo.types.v2_0_2.Location;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
@@ -97,13 +98,13 @@ public abstract class SimulatorThread extends Thread {
 	protected void storeOutput() throws IOException {
 		if (useDatabase) {
 			// get location
-			Location location = message.getInfectiousDiseaseScenario().getLocation();
+			InfectiousDiseaseScenarioLocation location = message.getInfectiousDiseaseScenario().getLocation();
 			String locationString;
-			if (location.getApolloLocationCode() != null) {
-				locationString = location.getApolloLocationCode();
+			if (location.getJurisdictionCode() != null) {
+				locationString = location.getJurisdictionCode();
 			} else {
 				// else use first location included
-				locationString = location.getLocationDefinition().getLocationsIncluded().get(0);
+				locationString = location.getJurisdictionCode();
 			}
 			storeFileOutputToDatabase(locationString);
 			updateStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN, "The simulator log files were written");
