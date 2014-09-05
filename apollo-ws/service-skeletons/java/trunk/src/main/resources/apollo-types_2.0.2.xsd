@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0_2/"
 	xmlns:tns="http://types.apollo.pitt.edu/v2_0_2/" elementFormDefault="qualified">
-	<simpleType name="Probability">
+    <include schemaLocation=""></include>
+    <simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
 			<maxInclusive value="1" />
@@ -1423,9 +1424,9 @@
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1" />
-					<element name="scenarioCartesianOrigin" type="string"
+					<element name="location" type="tns:Location"
+						maxOccurs="1" minOccurs="1" />
+					<element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin"
 						maxOccurs="1" minOccurs="0"></element>
 					<element name="individualLifeCycles" type="tns:IndividualLifeCycle"
 						maxOccurs="unbounded" minOccurs="0" />
@@ -2192,7 +2193,7 @@
 				<sequence>
 					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
 						minOccurs="1" />
-					<element name="increaseInAdultMortality" type="tns:Percent"
+					<element name="fractionOfAdultsAffected" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
@@ -2200,15 +2201,15 @@
 	</complexType>
 
 
-	<complexType name="ContainerReductionStrategy">
+	<complexType name="ContainerReductionControlStrategy">
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
 					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
 						minOccurs="1" />
-					<element name="increaseInEggMortality" type="tns:Percent"
-						maxOccurs="1" minOccurs="1" />
-					<element name="increaseInLarvalMortality" type="tns:Percent"
+					<element name="fractionReductionOfEggs"
+						type="tns:Fraction" maxOccurs="1" minOccurs="1" />
+					<element name="fractionReductionOfLarvae" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
@@ -2587,7 +2588,7 @@
 	</complexType>
 
 
-	<complexType name="ScenarioCartesianReferencePoint">
+	<complexType name="ScenarioCartesianOrigin">
 		<sequence>
 			<element name="cartesianReferenceLongitude" type="tns:Longitude"
 				maxOccurs="1" minOccurs="1" />
