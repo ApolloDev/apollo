@@ -2007,7 +2007,7 @@
 					<element name="simulatorTime" type="int" maxOccurs="1"
 						minOccurs="1"></element>
 					<element name="referenceDate" type="dateTime" maxOccurs="1"
-						minOccurs="1">
+						minOccurs="0">
 					</element>
 				</sequence>
 			</extension>
@@ -2646,7 +2646,7 @@
 				<sequence>
 					<element name="breteauIndex" type="nonNegativeInteger"
 						maxOccurs="1" minOccurs="0" />
-					<element name="carryingCapacityPerHouse" type="nonNegativeInteger"
+					<element name="carryingCapacityPerHouse" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="0" />
 					<element name="heterogenousCarryingCapacity" type="boolean" maxOccurs="1"
 						minOccurs="0" />
