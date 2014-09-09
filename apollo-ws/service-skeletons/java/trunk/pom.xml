@@ -7,12 +7,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.pitt.apollo</groupId>
 	<artifactId>apollo-ws</artifactId>
-	<version>2.0.2a.6-rc</version>
+	<version>2.0.2a.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	   <scm>
-        <connection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/tags/2.0.2a.6-rc</connection>
-        <developerConnection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/tags/2.0.2a.6-rc</developerConnection>
+        <connection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</connection>
+        <developerConnection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</developerConnection>
     </scm>
 
 <distributionManagement>
