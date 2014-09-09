@@ -16,7 +16,6 @@ import edu.pitt.apollo.types.v2_0_2.InfectionAcquisitionFromInfectiousHost;
 import edu.pitt.apollo.types.v2_0_2.InfectionStateEnum;
 import edu.pitt.apollo.types.v2_0_2.InfectiousDisease;
 import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenarioLocation;
 import edu.pitt.apollo.types.v2_0_2.Location;
 import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensusData;
@@ -118,10 +117,7 @@ public class ExampleInfectiousDiseaseScenario {
 			PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus) {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 		
-		InfectiousDiseaseScenarioLocation scenarioLocation = new InfectiousDiseaseScenarioLocation();
-		scenarioLocation.setJurisdictionCode(location.getApolloLocationCode());
-		
-		scenario.setLocation(scenarioLocation);
+		scenario.setLocation(location);
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);
