@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0_2/"
 	xmlns:tns="http://types.apollo.pitt.edu/v2_0_2/" elementFormDefault="qualified">
-	<simpleType name="Probability">
+    <simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
 			<maxInclusive value="1" />
@@ -587,6 +587,7 @@
 	<simpleType name="TimeScaleEnum">
 		<restriction base="string">
 			<enumeration value="simulatorTimeScale" />
+			<enumeration value="decsisionTimeScale" />
 			<enumeration value="controlStrategyTimeScale" />
 			<enumeration value="individualTreatmentTimeScale" />
 			<enumeration value="gregorianCalendar" />
@@ -1270,11 +1271,8 @@
 					minOccurs="1" />
 				<element name="transmissionProbability" type="tns:TransmissionProbability"
 					maxOccurs="1" minOccurs="1" />
-				<!--
-					<element name="forGlobalEpidemicSimulator"
-					type="tns:GesParametersForContactAndTransmission" maxOccurs="1"
-					minOccurs="1" />
-				-->
+				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
+					maxOccurs="1" minOccurs="1" /> -->
 			</choice>
 		</sequence>
 	</complexType>
@@ -1423,37 +1421,34 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="scenarioDate" type="dateTime"
-						maxOccurs="1" minOccurs="1" />
-					<element name="location"
-						type="tns:InfectiousDiseaseScenarioLocation" maxOccurs="1"
+					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
-					<element name="individualLifeCycles"
-						type="tns:IndividualLifeCycle" maxOccurs="unbounded"
-						minOccurs="0" />
-					<element name="individualBehaviors"
-						type="tns:IndividualBehavior" maxOccurs="unbounded"
-						minOccurs="0">
+					<element name="location" type="tns:Location"
+						maxOccurs="1" minOccurs="1" />
+					<element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin"
+						maxOccurs="1" minOccurs="0"></element>
+					<element name="individualLifeCycles" type="tns:IndividualLifeCycle"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="individualBehaviors" type="tns:IndividualBehavior"
+						maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<element name="individualReproductions"
-						type="tns:IndividualMosquitoReproduction" maxOccurs="1"
-						minOccurs="0">
+					<element name="individualReproductions" type="tns:IndividualMosquitoReproduction"
+						maxOccurs="1" minOccurs="0">
 					</element>
-					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus" maxOccurs="1" minOccurs="0"></element>
-					<element
-						name="populationInfectionAndImmunityCensuses"
-						type="tns:PopulationInfectionAndImmunityCensus"
-						maxOccurs="unbounded" minOccurs="1" />
-					<element name="infections" type="tns:Infection"
-						maxOccurs="unbounded" minOccurs="1" />
-					<element name="contaminations"
-						type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
-					<element name="infectiousDiseaseControlStrategies"
-						type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
-						minOccurs="0" />
-					<element name="nonApolloParameters"
-						type="tns:NonApolloParameter" maxOccurs="unbounded"
-						minOccurs="0">
+					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="populationInfectionAndImmunityCensuses"
+						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
+						minOccurs="1" />
+					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
+						minOccurs="1" />
+					<element name="contaminations" type="tns:Contamination"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="nonApolloParameters" type="tns:NonApolloParameter"
+						maxOccurs="unbounded" minOccurs="0">
 					</element>
 				</sequence>
 			</extension>
@@ -1977,6 +1972,8 @@
 				<element name="locationDefinition" type="tns:LocationDefinition"
 					maxOccurs="1" minOccurs="1">
 				</element>
+				<element name="cartesianCircleLocationDefinition" type="tns:CartesianCircleLocationDefinition"
+					maxOccurs="1" minOccurs="1"></element>
 			</choice>
 		</sequence>
 	</complexType>
@@ -2125,7 +2122,7 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-									<element name="vectorTaxonId" type="tns:NcbiTaxonId"
+					<element name="vectorTaxonId" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
@@ -2146,8 +2143,8 @@
 						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaReleaseSites" type="tns:WolbachiaReleaseSiteEnum"
 						maxOccurs="1" minOccurs="0" />
-					<element name="wolbachiaEffectOnEggMortalityRate"
-						type="tns:Fraction" maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaEffectOnEggMortalityRate" type="tns:Fraction"
+						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaEffectOnAdultMortalityRate" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaEffectOnLarvalMortalityRate" type="tns:Fraction"
@@ -2160,10 +2157,10 @@
 						maxOccurs="1" minOccurs="0" />
 					<element name="wolbachiaEffectOnVectorialCapacity" type="tns:Fraction"
 						maxOccurs="1" minOccurs="0" />
-                    <element name="wolbachiaPreReleaseAdultSuppressionEfficacy" type="tns:Fraction"
-						maxOccurs="1" minOccurs="0" />
-                    <element name="wolbachiaPreReleaseLarvalSuppressionEfficacy" type="tns:Fraction"
-						maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaPreReleaseAdultSuppressionEfficacy"
+						type="tns:Fraction" maxOccurs="1" minOccurs="0" />
+					<element name="wolbachiaPreReleaseLarvalSuppressionEfficacy"
+						type="tns:Fraction" maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2178,20 +2175,65 @@
 	</simpleType>
 
 
-
-	<complexType name="VectorSuppressionControlStrategy">
+	<complexType name="LarvicideControlStrategy">
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
 					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
 						minOccurs="1" />
-					<element name="efficacies" type="tns:VectorSuppressionEfficacy"
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="IndoorResidualSprayingVectorControlStrategy">
+		<complexContent>
+			<extension base="tns:VectorControlStrategy">
+				<sequence>
+					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
+						minOccurs="1" />
+					<element name="fractionOfAdultsAffected" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
+
+	<complexType name="ContainerReductionControlStrategy">
+		<complexContent>
+			<extension base="tns:VectorControlStrategy">
+				<sequence>
+					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
+						minOccurs="1" />
+					<element name="fractionReductionOfEggs"
+						type="tns:Fraction" maxOccurs="1" minOccurs="1" />
+					<element name="fractionReductionOfLarvae" type="tns:Fraction"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<simpleType name="Percent">
+		<restriction base="nonNegativeInteger">
+			<minInclusive value="0" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Latitude">
+		<restriction base="double">
+			<minInclusive value="-90" />
+			<maxInclusive value="90" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Longitude">
+		<restriction base="double">
+			<minInclusive value="-180" />
+			<maxInclusive value="180" />
+		</restriction>
+	</simpleType>
 
 	<complexType name="TravelRestrictionControlStrategy">
 		<complexContent>
@@ -2437,20 +2479,6 @@
 	</complexType>
 
 
-	<complexType name="ParameterValueWithUnitOfMeasure">
-		<complexContent>
-			<extension base="tns:ParameterValue">
-				<sequence>
-					<element name="unitOfMeasure" type="tns:UnitOfMeasureEnum"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="value" type="double" maxOccurs="1"
-						minOccurs="1">
-					</element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="Distance">
 		<complexContent>
@@ -2466,7 +2494,6 @@
 			</extension>
 		</complexContent>
 	</complexType>
-
 
 
 
@@ -2525,7 +2552,7 @@
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="0" />
-					<element name="theta" type="tns:NonNegativeDouble"
+					<element name="omega" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1" />
 					<element name="sigma" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1" />
@@ -2534,16 +2561,6 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="MortalityFunction2">
-		<complexContent>
-			<extension base="tns:MortalityFunction">
-				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<simpleType name="DevelopmentalStageEnum">
 		<restriction base="string">
@@ -2555,80 +2572,22 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="VectorSuppressionEfficacy">
-		<sequence>
-			<element name="developmentalStage" type="tns:DevelopmentalStageEnum"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="efficacy" type="tns:Fraction" maxOccurs="1"
-				minOccurs="1">
-			</element>
-		</sequence>
-	</complexType>
-
-	<complexType name="LocationAbstractType"></complexType>
-
-	<complexType name="JurisdictionAggregateDefinition">
-		<complexContent>
-			<extension base="tns:LocationAbstractType">
-				<sequence>
-					<element name="description" type="string" maxOccurs="1"
-						minOccurs="1" />
-					<element name="locationsIncluded" type="tns:ApolloLocationCode"
-						maxOccurs="unbounded" minOccurs="1" />
-					<element name="locationsExcluded" type="tns:ApolloLocationCode"
-						maxOccurs="unbounded" minOccurs="0" />
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="CartesianCircleLocationDefinition">
-		<complexContent>
-			<extension base="tns:LocationAbstractType">
-				<sequence>
-					<element name="eastWestOffsetFromCartesianCenter" type="tns:Distance"
-						maxOccurs="1" minOccurs="1" />
-					<element name="northSouthOffsetFromCartesianCenter" type="tns:Distance"
-						maxOccurs="1" minOccurs="1" />
-					<element name="altitudeRelativeToCartesianCenter" type="tns:Distance"
-						maxOccurs="1" minOccurs="1" />
-					<element name="radius" type="tns:Distance" maxOccurs="1"
-						minOccurs="1" />
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
-
-	<complexType name="Longitude">
 		<sequence>
-			<element name="edit" type="string" maxOccurs="1" minOccurs="1" />
-		</sequence>
-	</complexType>
-
-	<complexType name="Latitude">
-		<sequence>
-			<element name="edit" type="string" maxOccurs="1" minOccurs="1" />
-		</sequence>
-	</complexType>
-
-	<complexType name="InfectiousDiseaseScenarioLocation">
-		<sequence>
-			<element name="scenarioCartesianReferencePoint" type="tns:ScenarioCartesianReferencePoint"
-				maxOccurs="1" minOccurs="0" />
-			<choice>
-				<element name="jurisdictionCode" type="tns:ApolloLocationCode"
-					maxOccurs="1" minOccurs="1" />
-				<element name="aggregateJurisdictionDefinition" type="tns:JurisdictionAggregateDefinition"
-					maxOccurs="1" minOccurs="1" />
-				<element name="cartesianCircleLocationDefinition" type="tns:CartesianCircleLocationDefinition"
-					maxOccurs="1" minOccurs="1"></element>
-			</choice>
+			<element name="eastWestOffsetFromCartesianCenter" type="tns:Distance"
+				maxOccurs="1" minOccurs="1" />
+			<element name="northSouthOffsetFromCartesianCenter" type="tns:Distance"
+				maxOccurs="1" minOccurs="1" />
+			<element name="altitudeRelativeToCartesianCenter" type="tns:Distance"
+				maxOccurs="1" minOccurs="1" />
+			<element name="radius" type="tns:Distance" maxOccurs="1"
+				minOccurs="1" />
 		</sequence>
 	</complexType>
 
 
-	<complexType name="ScenarioCartesianReferencePoint">
+	<complexType name="ScenarioCartesianOrigin">
 		<sequence>
 			<element name="cartesianReferenceLongitude" type="tns:Longitude"
 				maxOccurs="1" minOccurs="1" />
@@ -2648,8 +2607,8 @@
 						maxOccurs="1" minOccurs="0" />
 					<element name="carryingCapacityPerHouse" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="0" />
-					<element name="heterogenousCarryingCapacity" type="boolean" maxOccurs="1"
-						minOccurs="0" />
+					<element name="heterogenousCarryingCapacity" type="boolean"
+						maxOccurs="1" minOccurs="0" />
 					<element name="outdoorOvisiteNumberRatio" type="tns:Rate"
 						maxOccurs="1" minOccurs="0" />
 					<element name="outdoorOvisiteRatioMax" type="tns:Rate"
