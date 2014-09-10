@@ -2565,6 +2565,9 @@
 			<element name="contactDefinition" type="tns:ContactDefinitionEnum"
 				maxOccurs="1" minOccurs="1">
 			</element>
+			<element name="contactDefinitionText" type="token" maxOccurs="1"
+				minOccurs="0">
+			</element>
 			<element name="probability" type="tns:Probability" maxOccurs="1"
 				minOccurs="1"></element>
 		</sequence>
@@ -2573,8 +2576,12 @@
 
 	<simpleType name="ContactDefinitionEnum">
 		<restriction base="string">
-			<enumeration value="infectMosquitoBitesSusceptibleHuman" />
+			<enumeration value="infectedMosquitoBitesSusceptibleHuman" />
 			<enumeration value="susceptibleMosquitoBitesInfectiousHuman" />
+			<enumeration value="parenteralInjection" />
+			<enumeration value="physicalContact" />
+			<enumeration value="contactWithBodyFluids" />
+			<enumeration value="assistedChildbirthOfInfectedMother" />
 		</restriction>
 	</simpleType>
 
@@ -2691,25 +2698,36 @@
 
 	<complexType name="CaseDefinition">
 		<sequence>
-			<element name="apolloLabel" type="tns:apolloCaseDefinitionLabelEnum"
+			<element name="investigation" type="string"></element>
+			<element name="apolloLabel" type="tns:CaseDefinitionEnum"
 				maxOccurs="1" minOccurs="1">
 			</element>
 			<element name="investigationLabel" type="token" maxOccurs="1"
-				minOccurs="0"></element>
-			<element name="textDefinition" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="investigationDefinition" type="token"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="CaseListing">
+		<sequence>
+			<element name="cases" type="tns:Case" maxOccurs="unbounded"
 				minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="CaseListing"></complexType>
-
-    <simpleType name="apolloCaseDefinitionLabelEnum">
-    <restriction base="string"> <enumeration value="confirmedCase" />
-         <enumeration value="probableCase" />
-          <enumeration value="suspectedCase" />
-    </restriction>
-    </simpleType>
+	<simpleType name="CaseDefinitionEnum">
+		<restriction base="string">
+			<enumeration value="confirmedCase" />
+			<enumeration value="probableCase" />
+			<enumeration value="suspectedCase" />
+		</restriction>
+	</simpleType>
     
 
     <complexType name="CaseCounts"></complexType>
+
+    <complexType name="Case"></complexType>
 </schema>
