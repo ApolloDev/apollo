@@ -585,6 +585,23 @@
 			</extension>
 		</complexContent>
 	</complexType>
+	
+	
+	<complexType name="RealTimeSpanCategoryDefinition">
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="offsetFromUtc" type="integer"
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="beginningTime" type="dateTime"
+						maxOccurs="1" minOccurs="1"></element>
+					<element name="endingTime" type="dateTime"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
 
 	<simpleType name="TimeScaleEnum">
 		<restriction base="string">
@@ -1462,53 +1479,66 @@
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
 					<choice>
-						<element name="causalPathogenId" type="tns:NcbiTaxonId"
-							maxOccurs="1" minOccurs="1" />
+						<element name="causalPathogenId"
+							type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="1" />
 						<element name="unknownPathogenName" type="token"
 							maxOccurs="1" minOccurs="1" />
 					</choice>
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1" />
-					<element name="dateOfFirstCase" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
-					<element name="caseDefinitionForFirstCase" type="tns:CaseDefinition"
+					<element name="locationCode" type="tns:Location"
 						maxOccurs="1" minOccurs="1" />
-					<element name="dateOfLastCase" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
-					<element name="caseDefinitionForLastCase" type="tns:CaseDefinition"
-						maxOccurs="1" minOccurs="1" />
-					<element name="infectionsAndTheirDiseases" type="tns:Infection"
-						maxOccurs="unbounded" minOccurs="1" />
-					<element name="caseCounts" type="tns:CaseCounts" maxOccurs="unbounded"
-						minOccurs="1">
+					<element name="locationDescription" type="token" maxOccurs="1" minOccurs="0"></element>
+					<element name="epidemicPeriod"
+						type="tns:EpidemicPeriod" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="infectionsAndTheirDiseases"
+						type="tns:Infection" maxOccurs="unbounded" minOccurs="1" />
+					<element name="caseDefinitions"
+						type="tns:CaseDefinition" maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="contactDefinitions"
+						type="tns:ContactDefinition" maxOccurs="unbounded"
+						minOccurs="0">
 					</element>
 					<element name="caseListings" type="tns:CaseListing"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<element name="source" type="string" maxOccurs="1"
-						minOccurs="0">
-					</element>
-					<element name="transmissionTrees" type="string" maxOccurs="unbounded"
-						minOccurs="0">
-					</element>
-					<element name="populationCensuses" type="tns:PopulationAndEnvironmentCensus"
-						maxOccurs="unbounded" minOccurs="1" />
-					<element name="preexistingImmunityCensuses" type="tns:PopulationInfectionAndImmunityCensus"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="infectionCensuses" type="tns:PopulationInfectionAndImmunityCensus"
+					<element name="caseCounts" type="tns:CaseCounts"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus"
-						maxOccurs="1" minOccurs="0">
+					<element name="transmissionTrees"
+						type="tns:TransmissionTree" maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<element name="contaminations" type="tns:Contamination"
+					<element name="relativeRiskDataSets"
+						type="tns:RelativeRiskDataSet" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+					<element name="preEpidemicCensuses"
+						type="tns:PopulationAndEnvironmentCensus" maxOccurs="1"
+						minOccurs="0" />
+					<element name="preexistingImmunities"
+						type="tns:PopulationInfectionAndImmunityCensus"
 						maxOccurs="unbounded" minOccurs="0" />
-					<element name="contaminatedThingsCensuses" type="tns:ContaminatedThingCensus"
-						maxOccurs="unbounded" minOccurs="0"></element>
-					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="references" type="string" maxOccurs="unbounded"
-						minOccurs="1">
+					<element name="populationInfectionSamples"
+						type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="contaminations"
+						type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
+					<element name="contaminatedThingsCensuses"
+						type="tns:ContaminatedThingCensus" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+					<element name="infectiousDiseaseControlStrategies"
+						type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="references" type="string"
+						maxOccurs="unbounded" minOccurs="1">
+					</element>
+					<element name="curator" type="string" maxOccurs="1"
+						minOccurs="0">
+					</element>
+					<element name="editHistory" type="string"
+						maxOccurs="unbounded" minOccurs="0">
 					</element>
 				</sequence>
 			</extension>
@@ -1516,23 +1546,6 @@
 	</complexType>
 
 
-	<complexType name="InfectiousDiseaseScenarioWithMosquitoVector">
-		<complexContent>
-			<extension base="tns:InfectiousDiseaseScenario">
-				<sequence>
-					<element name="mosquitoInfection" type="tns:Infection"
-						maxOccurs="1" minOccurs="1" />
-					<element name="mosquitoInfectionAndImmunityCensus" type="tns:PopulationInfectionAndImmunityCensus"
-						maxOccurs="1" minOccurs="1" />
-					<element name="individualMosquitoBehavior" type="tns:IndividualMosquitoBehavior"
-						maxOccurs="1" minOccurs="1">
-					</element>
-					<element name="individualMosquitoReproduction" type="tns:IndividualMosquitoReproduction"
-						maxOccurs="1" minOccurs="1"></element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="AbioticEcosystemCensus">
 		<complexContent>
@@ -1827,8 +1840,8 @@
 			</extension>
 		</complexContent>
 	</complexType>
-
-	<complexType name="ConditioningVariable">
+	
+		<complexType name="ConditioningVariable">
 		<sequence>
 			<element name="name" type="tns:ConditioningVariableEnum"
 				maxOccurs="1" minOccurs="1" />
@@ -1836,7 +1849,7 @@
 				minOccurs="1" />
 		</sequence>
 	</complexType>
-
+	
 	<complexType name="Category">
 		<sequence>
 			<element name="categoryDefinition" type="tns:CategoryDefinition"
@@ -1849,6 +1862,37 @@
 			</choice>
 		</sequence>
 	</complexType>
+	
+		<complexType name="CaseCountArray">
+				<sequence>
+					<element name="firstArrayAxis" type="tns:ArrayAxis"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+	</complexType>
+
+	<complexType name="ArrayAxis">
+		<sequence>
+			<element name="name" type="tns:ConditioningVariableEnum"
+				maxOccurs="1" minOccurs="1" />
+			<element name="categories" type="tns:CaseCountCategory" maxOccurs="unbounded"
+				minOccurs="1" />
+		</sequence>
+	</complexType>
+	
+		<complexType name="CaseCountCategory">
+		<sequence>
+			<element name="categoryDefinition" type="tns:CategoryDefinition"
+				maxOccurs="1" minOccurs="1" />
+			<choice>
+				<element name="count" type="nonNegativeInteger"
+					maxOccurs="1" minOccurs="1" />
+				<element name="arrayAxis" type="tns:ArrayAxis"
+					maxOccurs="1" minOccurs="1" />
+			</choice>
+		</sequence>
+	</complexType>
+
+
 
 	<complexType name="VariableCategoryDefinition">
 		<sequence>
@@ -2713,8 +2757,12 @@
 
 	<complexType name="CaseListing">
 		<sequence>
-			<element name="cases" type="tns:Case" maxOccurs="unbounded"
-				minOccurs="1"></element>
+			<element name="speciesOfCases" type="tns:NcbiTaxonId"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="cases" type="tns:CaseRecord" maxOccurs="unbounded"
+				minOccurs="1">
+			</element>
 		</sequence>
 	</complexType>
 
@@ -2723,11 +2771,70 @@
 			<enumeration value="confirmedCase" />
 			<enumeration value="probableCase" />
 			<enumeration value="suspectedCase" />
+			<enumeration value="neonatalCase" />
 		</restriction>
 	</simpleType>
-    
 
-    <complexType name="CaseCounts"></complexType>
 
-    <complexType name="Case"></complexType>
+	<complexType name="CaseCounts">
+		<sequence>
+			<element name="caseDefinitionEnum" type="tns:CaseDefinitionEnum"
+				maxOccurs="1" minOccurs="1" />
+			<element name="totalCases" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="0" />
+			<element name="casesOverTime" type="string" maxOccurs="1"
+				minOccurs="0" />
+			<element name="casesCountArrays" type="tns:CaseCountArray" maxOccurs="1"
+				minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<complexType name="CaseRecord">
+		<sequence>
+            <element name="caseInvestigationId" type="token"></element>
+            <element name="pathogenGeneSequence" type="string" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="NewElement" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="EpidemicPeriod">
+		<sequence>
+			<element name="dateOfFirstInfection" type="dateTime"
+				maxOccurs="1" minOccurs="1" />
+			<element name="caseDefinitionForFirstCase" type="tns:CaseDefinition"
+				maxOccurs="1" minOccurs="1" />
+			<element name="dateOfLastCase" type="dateTime" maxOccurs="1"
+				minOccurs="1" />
+			<element name="caseDefinitionForLastCase" type="tns:CaseDefinition"
+				maxOccurs="1" minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ContactDefinition">
+		<sequence>
+			<element name="investigation" type="string"></element>
+			<element name="apolloLabel" type="tns:ContactDefinitionEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="investigationLabel" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="investigationDefinition" type="token"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TransmissionTree">
+		<sequence>
+			<element name="parentCase" type="tns:CaseRecord" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="childrenCases" type="tns:TransmissionTree" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+    <complexType name="RelativeRiskDataSet"></complexType>
 </schema>
