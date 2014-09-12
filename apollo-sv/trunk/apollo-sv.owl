@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 
+
 <!DOCTYPE rdf:RDF [
     <!ENTITY UO "http://purl.org/obo/owl/UO#" >
     <!ENTITY GO "http://purl.org/obo/owl/GO#" >
@@ -3066,7 +3067,7 @@ simulation run length</rdfs:comment>
         <rdfs:label xml:lang="en">uniform distribution</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00001008"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ContinuousUniformDistribution</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
+        <obo:IAO_0000600 xml:lang="en">A continous probability distribution whose parameters a and b, denote its minimum and maximum values</obo:IAO_0000600>
     </Class>
     
 
