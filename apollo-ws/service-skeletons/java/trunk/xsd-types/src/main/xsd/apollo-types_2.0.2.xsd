@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v2_0_2/"
 	xmlns:tns="http://types.apollo.pitt.edu/v2_0_2/" elementFormDefault="qualified">
-    <simpleType name="Probability">
+
+
+	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
 			<maxInclusive value="1" />
@@ -1423,8 +1425,8 @@
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
-					<element name="location" type="tns:Location"
-						maxOccurs="1" minOccurs="1" />
+					<element name="location" type="tns:Location" maxOccurs="1"
+						minOccurs="1" />
 					<element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin"
 						maxOccurs="1" minOccurs="0"></element>
 					<element name="individualLifeCycles" type="tns:IndividualLifeCycle"
@@ -1454,6 +1456,65 @@
 			</extension>
 		</complexContent>
 	</complexType>
+
+	<complexType name="Epidemic">
+		<complexContent>
+			<extension base="tns:ApolloIndexableItem">
+				<sequence>
+					<choice>
+						<element name="causalPathogenId" type="tns:NcbiTaxonId"
+							maxOccurs="1" minOccurs="1" />
+						<element name="unknownPathogenName" type="token"
+							maxOccurs="1" minOccurs="1" />
+					</choice>
+					<element name="location" type="tns:Location" maxOccurs="1"
+						minOccurs="1" />
+					<element name="dateOfFirstCase" type="dateTime" maxOccurs="1"
+						minOccurs="1" />
+					<element name="caseDefinitionForFirstCase" type="tns:CaseDefinition"
+						maxOccurs="1" minOccurs="1" />
+					<element name="dateOfLastCase" type="dateTime" maxOccurs="1"
+						minOccurs="1" />
+					<element name="caseDefinitionForLastCase" type="tns:CaseDefinition"
+						maxOccurs="1" minOccurs="1" />
+					<element name="infectionsAndTheirDiseases" type="tns:Infection"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="caseCounts" type="tns:CaseCounts" maxOccurs="unbounded"
+						minOccurs="1">
+					</element>
+					<element name="caseListings" type="tns:CaseListing"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="source" type="string" maxOccurs="1"
+						minOccurs="0">
+					</element>
+					<element name="transmissionTrees" type="string" maxOccurs="unbounded"
+						minOccurs="0">
+					</element>
+					<element name="populationCensuses" type="tns:PopulationAndEnvironmentCensus"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="preexistingImmunityCensuses" type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="infectionCensuses" type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="contaminations" type="tns:Contamination"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="contaminatedThingsCensuses" type="tns:ContaminatedThingCensus"
+						maxOccurs="unbounded" minOccurs="0"></element>
+					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
+						maxOccurs="unbounded" minOccurs="0" />
+					<element name="references" type="string" maxOccurs="unbounded"
+						minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
 
 	<complexType name="InfectiousDiseaseScenarioWithMosquitoVector">
 		<complexContent>
@@ -2206,8 +2267,8 @@
 				<sequence>
 					<element name="coverRadius" type="tns:Distance" maxOccurs="1"
 						minOccurs="1" />
-					<element name="fractionReductionOfEggs"
-						type="tns:Fraction" maxOccurs="1" minOccurs="1" />
+					<element name="fractionReductionOfEggs" type="tns:Fraction"
+						maxOccurs="1" minOccurs="1" />
 					<element name="fractionReductionOfLarvae" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1" />
 				</sequence>
@@ -2501,13 +2562,21 @@
 
 	<complexType name="TransmissionProbability">
 		<sequence>
-			<element name="contactDefinition" type="string" maxOccurs="1"
-				minOccurs="1">
+			<element name="contactDefinition" type="tns:ContactDefinitionEnum"
+				maxOccurs="1" minOccurs="1">
 			</element>
 			<element name="probability" type="tns:Probability" maxOccurs="1"
 				minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
+
+	<simpleType name="ContactDefinitionEnum">
+		<restriction base="string">
+			<enumeration value="infectMosquitoBitesSusceptibleHuman" />
+			<enumeration value="susceptibleMosquitoBitesInfectiousHuman" />
+		</restriction>
+	</simpleType>
 
 	<complexType name="IndividualMosquitoReproduction">
 		<sequence>
@@ -2609,14 +2678,38 @@
 						maxOccurs="1" minOccurs="0" />
 					<element name="heterogenousCarryingCapacity" type="boolean"
 						maxOccurs="1" minOccurs="0" />
-					<element name="outdoorOvisiteNumberRatio" type="tns:Rate"
+					<element name="ratioOfOutdoorToIndoorOvisites" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="0" />
-					<element name="outdoorOvisiteRatioMax" type="tns:Rate"
-						maxOccurs="1" minOccurs="0" />
+					<element name="maximumRatioOfOutdoorCarryingCapacityToIndoor"
+						type="tns:NonNegativeDouble" maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
 
+
+	<complexType name="CaseDefinition">
+		<sequence>
+			<element name="apolloLabel" type="tns:apolloCaseDefinitionLabelEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="investigationLabel" type="token" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="textDefinition" type="token" maxOccurs="1"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="CaseListing"></complexType>
+
+    <simpleType name="apolloCaseDefinitionLabelEnum">
+    <restriction base="string"> <enumeration value="confirmedCase" />
+         <enumeration value="probableCase" />
+          <enumeration value="suspectedCase" />
+    </restriction>
+    </simpleType>
+    
+
+    <complexType name="CaseCounts"></complexType>
 </schema>
