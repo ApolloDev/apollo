@@ -36,6 +36,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
@@ -136,13 +137,14 @@ public class ApolloDbUtils {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			mapper.writeValue(baos, obj);
 
 			return baos;
 		} catch (IOException ex) {
-			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage");
+			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: " + ex.getMessage());
 			return null;
 		}
 	}
