@@ -66,7 +66,8 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.2/services/visualizerservice?wsdl',1),
 											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8092/gaia?wsdl',1),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
-											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1);
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1),
+                                             (8,'PSC','CLARA','1.0','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -100,6 +101,10 @@ INSERT INTO roles VALUES (16, 'Can run Anthrax without privileged request');
 INSERT INTO roles VALUES (17, 'Can run Anthrax with privileged request');
 INSERT INTO roles VALUES (18, 'Can view cached Anthrax results');
 
+INSERT INTO roles VALUES (19, 'Can run CLARA without privileged request');
+INSERT INTO roles VALUES (20, 'Can run CLARA with privileged request');
+INSERT INTO roles VALUES (21, 'Can view cached CLARA results');
+
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
   software_id INT REFERENCES software_identification(id),
@@ -128,9 +133,13 @@ INSERT INTO role_description VALUES(13, 5, 1, 0);
 INSERT INTO role_description VALUES(14, 5, 1, 1);
 INSERT INTO role_description VALUES(15, 5, 0, 0);
 
-INSERT INTO role_description VALUES(13, 7, 1, 0);
-INSERT INTO role_description VALUES(14, 7, 1, 1);
-INSERT INTO role_description VALUES(15, 7, 0, 0);
+INSERT INTO role_description VALUES(16, 7, 1, 0);
+INSERT INTO role_description VALUES(17, 7, 1, 1);
+INSERT INTO role_description VALUES(18, 7, 0, 0);
+
+INSERT INTO role_description VALUES(19, 8, 1, 0);
+INSERT INTO role_description VALUES(20, 8, 1, 1);
+INSERT INTO role_description VALUES(21, 8, 0, 0);
 
 CREATE TABLE user_roles (
   user_id INT NOT NULL REFERENCES users(id),
@@ -321,6 +330,8 @@ INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for fulminant, fulminant.txt '); /* 54*/
 INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for dead, dead.txt '); /* 55*/
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 56 */
+INSERT INTO run_data_description (label) values ('CLARA text configuration file, config.txt '); /* 57*/
+INSERT INTO run_data_description (label) values ('CLARA verbose configuration file, verbose.html'); /* 58 */
 
 
 
@@ -660,7 +671,19 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(56, 2, 'disease_states.png'),
 	(56, 3, 'IMAGE'),
 	(56, 4, '4'),
-	(56, 5, '0');
+	(56, 5, '0'),
+    
+    (57, 1, 'TEXT'), 
+	(57, 2, 'config.txt'),
+	(57, 3, 'CONFIGURATION_FILE'),
+	(57, 4, '1'),
+	(57, 5, '8'),
+    
+    (58, 1, 'TEXT'), 
+	(58, 2, 'verbose.html'),
+	(58, 3, 'CONFIGURATION_FILE'),
+	(58, 4, '1'),
+	(58, 5, '8');
 
 CREATE VIEW run_data_description_view AS
 SELECT
