@@ -625,6 +625,7 @@
 			<enumeration value="decsisionTimeScale" />
 			<enumeration value="controlStrategyTimeScale" />
 			<enumeration value="individualTreatmentTimeScale" />
+						<enumeration value="epidemicTimeScale" />
 			<enumeration value="gregorianCalendar" />
 		</restriction>
 	</simpleType>
