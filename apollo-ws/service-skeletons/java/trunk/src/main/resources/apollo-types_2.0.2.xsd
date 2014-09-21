@@ -91,6 +91,14 @@
 		</restriction>
 	</simpleType>
 
+	<simpleType name="SourceOfInfectionEnum">
+		<restriction base="string">
+			<enumeration value="syringe" />
+			<enumeration value="infectiousHost" />
+			<enumeration value="eitherSyringeOrInfectiousHost" />
+		</restriction>
+	</simpleType>
+
 	<complexType name="Authentication">
 		<sequence>
 			<element name="requesterId" type="token" maxOccurs="1"
@@ -625,7 +633,7 @@
 			<enumeration value="decsisionTimeScale" />
 			<enumeration value="controlStrategyTimeScale" />
 			<enumeration value="individualTreatmentTimeScale" />
-						<enumeration value="epidemicTimeScale" />
+			<enumeration value="epidemicTimeScale" />
 			<enumeration value="gregorianCalendar" />
 		</restriction>
 	</simpleType>
@@ -647,6 +655,17 @@
 				<sequence>
 					<element name="gender" type="tns:GenderEnum" maxOccurs="1"
 						minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="SourceOfInfectionCategoryDefinition">
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="sourceOfInfection" type="tns:SourceOfInfectionEnum"
+						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1501,7 +1520,7 @@
 						<element name="unknownPathogenName" type="token"
 							maxOccurs="1" minOccurs="1" />
 					</choice>
-					<element name="locationCode" type="tns:Location" maxOccurs="1"
+					<element name="location" type="tns:Location" maxOccurs="1"
 						minOccurs="1" />
 					<element name="locationDescription" type="token" maxOccurs="1"
 						minOccurs="0"></element>
@@ -1951,6 +1970,7 @@
 			<enumeration value="ageRange" />
 			<enumeration value="timeSpan" />
 			<enumeration value="diseaseOutcome" />
+			<enumeration value="sourceOfInfection" />
 		</restriction>
 	</simpleType>
 
@@ -2781,8 +2801,9 @@
 			<element name="investigationDefinition" type="token"
 				maxOccurs="1" minOccurs="1">
 			</element>
-            <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"></element>
-        </sequence>
+			<element name="referenceId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
 	</complexType>
 
 	<complexType name="CaseList">
@@ -2795,8 +2816,8 @@
 			</element>
 		</sequence>
 	</complexType>
-	
-	
+
+
 	<complexType name="CaseRecord">
 		<sequence>
 			<element name="caseId" type="token" maxOccurs="1" minOccurs="0">
@@ -2822,6 +2843,7 @@
 
 	<simpleType name="CaseDefinitionEnum">
 		<restriction base="string">
+			<enumeration value="case" />
 			<enumeration value="confirmedCase" />
 			<enumeration value="probableCase" />
 			<enumeration value="suspectedCase" />
@@ -2843,9 +2865,10 @@
 				<element name="caseCountArray" type="tns:CaseCountArray"
 					maxOccurs="1" minOccurs="1" />
 			</choice>
-            <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="1">
+			<element name="referenceId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1">
 			</element>
-        </sequence>
+		</sequence>
 	</complexType>
 
 	<complexType name="CaseCountArray">
@@ -2881,14 +2904,14 @@
 
 	<complexType name="EpidemicPeriod">
 		<sequence>
-			<element name="dateOfFirstCase" type="date"
-				maxOccurs="1" minOccurs="1" />
-			<element name="caseDefinitionForFirstCase" type="tns:CaseDefinition"
-				maxOccurs="1" minOccurs="1" />
-			<element name="dateOfLastCase" type="date" maxOccurs="1"
-				minOccurs="0" />
-			<element name="caseDefinitionForLastCase" type="tns:CaseDefinition"
-				maxOccurs="1" minOccurs="1" />
+			<element name="startDate" type="date" maxOccurs="1"
+				minOccurs="1" />
+			<element name="startDateDefinition"
+				type="tns:EpidemicPeriodBoundaryDefinitionEnum" maxOccurs="1"
+				minOccurs="1" />
+			<element name="endDate" type="date" maxOccurs="1" minOccurs="0" />
+			<element name="endDateDefinition" type="tns:EpidemicPeriodBoundaryDefinitionEnum"
+				maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -2903,8 +2926,9 @@
 			<element name="investigationDefinition" type="token"
 				maxOccurs="1" minOccurs="1">
 			</element>
-            <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"></element>
-        </sequence>
+			<element name="referenceId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1"></element>
+		</sequence>
 	</complexType>
 
 	<complexType name="TransmissionTree">
@@ -2931,28 +2955,43 @@
 
 	<complexType name="PopulationInfectionSurvey">
 		<sequence>
-								<element name="speciesSampled" type="token" maxOccurs="1" minOccurs="1" />
-								<element name="speciesSampledNcbiTaxonId" type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1" />
-			<element name="numberSampled" type="positiveInteger" maxOccurs="1" minOccurs="1" />
-					<element name="whereSampled" type="token" maxOccurs="1" minOccurs="0" />	
-										<element name="testName" type="token" maxOccurs="1" minOccurs="0" />	
-											<element name="numberOfSamplesPositive" type="token" maxOccurs="1" minOccurs="0" />	
+			<element name="speciesSampled" type="token" maxOccurs="1"
+				minOccurs="1" />
+			<element name="speciesSampledNcbiTaxonId" type="tns:NcbiTaxonId"
+				maxOccurs="1" minOccurs="1" />
+			<element name="numberSampled" type="positiveInteger"
+				maxOccurs="1" minOccurs="1" />
+			<element name="whereSampled" type="token" maxOccurs="1"
+				minOccurs="0" />
+			<element name="testName" type="token" maxOccurs="1"
+				minOccurs="0" />
+			<element name="numberOfSamplesPositive" type="token"
+				maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
-	
-    <complexType name="Reference">
-    	<sequence>
-    		<element name="id" type="nonNegativeInteger" maxOccurs="1"
-    			minOccurs="1" />
-    		<element name="title" type="string" maxOccurs="1"
-    			minOccurs="1" />
-    		<element name="publication" type="string" maxOccurs="1" minOccurs="0"></element>
-    		<element name="url" type="string" maxOccurs="1"
-    			minOccurs="1" />
-    		<element name="pubMedId" type="nonNegativeInteger"
-    			maxOccurs="1" minOccurs="0" />
-    		<element name="obcIdeId" type="nonNegativeInteger"
-    			maxOccurs="1" minOccurs="0" />
-    	</sequence>
-    </complexType>
+
+	<complexType name="Reference">
+		<sequence>
+			<element name="id" type="nonNegativeInteger" maxOccurs="1"
+				minOccurs="1" />
+			<element name="title" type="string" maxOccurs="1" minOccurs="1" />
+			<element name="publication" type="string" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="url" type="string" maxOccurs="1" minOccurs="1" />
+			<element name="pubMedId" type="nonNegativeInteger" maxOccurs="1"
+				minOccurs="0" />
+			<element name="orcId" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="obcIdeId" type="nonNegativeInteger" maxOccurs="1"
+				minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<simpleType name="EpidemicPeriodBoundaryDefinitionEnum">
+		<restriction base="string">
+			<enumeration value="symptomOnsetFirstCase" />
+			<enumeration value="deathOfLastCase" />
+			<enumeration value="administrativeDeclaration" />
+			</restriction>
+	</simpleType>
 </schema>
