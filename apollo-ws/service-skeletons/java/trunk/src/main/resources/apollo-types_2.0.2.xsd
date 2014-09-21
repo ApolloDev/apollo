@@ -741,7 +741,11 @@
 						maxOccurs="1" minOccurs="1" />
 
 					<element name="controlStrategyStandDownDelay" type="tns:Duration"
-						maxOccurs="1" minOccurs="1"></element>
+						maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="referenceId" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0">
+					</element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1960,6 +1964,7 @@
 			<enumeration value="community" />
 			<enumeration value="ovipositionSite" />
 			<enumeration value="syringe" />
+			<enumeration value="bushMeat" />
 		</restriction>
 	</simpleType>
 
@@ -2848,6 +2853,7 @@
 			<enumeration value="probableCase" />
 			<enumeration value="suspectedCase" />
 			<enumeration value="neonatalCase" />
+			<enumeration value="epidemiologicallyLinkedCase" />
 		</restriction>
 	</simpleType>
 
@@ -2906,9 +2912,8 @@
 		<sequence>
 			<element name="startDate" type="date" maxOccurs="1"
 				minOccurs="1" />
-			<element name="startDateDefinition"
-				type="tns:EpidemicPeriodBoundaryDefinitionEnum" maxOccurs="1"
-				minOccurs="1" />
+			<element name="startDateDefinition" type="tns:EpidemicPeriodBoundaryDefinitionEnum"
+				maxOccurs="1" minOccurs="1" />
 			<element name="endDate" type="date" maxOccurs="1" minOccurs="0" />
 			<element name="endDateDefinition" type="tns:EpidemicPeriodBoundaryDefinitionEnum"
 				maxOccurs="1" minOccurs="0" />
@@ -2990,8 +2995,9 @@
 	<simpleType name="EpidemicPeriodBoundaryDefinitionEnum">
 		<restriction base="string">
 			<enumeration value="symptomOnsetFirstCase" />
+			<enumeration value="symptomOnsetLastCase" />
 			<enumeration value="deathOfLastCase" />
 			<enumeration value="administrativeDeclaration" />
-			</restriction>
+		</restriction>
 	</simpleType>
 </schema>
