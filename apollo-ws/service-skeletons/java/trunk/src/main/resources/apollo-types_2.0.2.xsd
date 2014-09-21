@@ -2998,6 +2998,8 @@
 			<enumeration value="symptomOnsetLastCase" />
 			<enumeration value="deathOfLastCase" />
 			<enumeration value="administrativeDeclaration" />
+			<enumeration value="firstLabCaseConfirmation" />
+			<enumeration value="lastLabCaseConfirmation" />
 		</restriction>
 	</simpleType>
 </schema>
