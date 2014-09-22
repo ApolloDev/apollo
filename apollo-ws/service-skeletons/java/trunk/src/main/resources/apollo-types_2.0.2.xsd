@@ -1993,6 +1993,7 @@
 			<enumeration value="PopulationTreatmentCensusType" />
 			<enumeration value="VaccinationType" />
 			<enumeration value="AntiviralTreatmentType" />
+			<enumeration value="EpidemicType"/>
 		</restriction>
 	</simpleType>
 
