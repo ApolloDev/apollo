@@ -60,14 +60,14 @@ CREATE TABLE software_identification (
 
 -- HSQLDB: ALTER TABLE software_identification ALTER COLUMN id RESTART WITH 1;
 
-INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice202/services/translatorservice?wsdl',1),
-											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1),
-											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
-											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice2.0.2/services/visualizerservice?wsdl',1),
+INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translatorservice-2.0.2a.7-SNAPSHOT/services/translatorservice?wsdl',1),
+											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice-2.0.2a.7-SNAPSHOT/services/visualizerservice?wsdl',1),
 											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8092/gaia?wsdl',1),
-											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1),
-											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice2.0.2/services/pittsimulatorservice?wsdl',1),
-                                             (8,'PSC','CLARA','1.0','simulator','http://gaia.pha.psc.edu:8098/pscsimu?wsdl',1);
+											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
+                                             (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -332,8 +332,19 @@ INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 56 */
 INSERT INTO run_data_description (label) values ('CLARA text configuration file, config.txt '); /* 57*/
 INSERT INTO run_data_description (label) values ('CLARA verbose configuration file, verbose.html'); /* 58 */
-
-
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for susceptible, susceptible.txt '); /* 59 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for exposed, exposed.txt '); /* 60 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for infectious, infectious.txt '); /* 61 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for temp_immuned, temp_immuned.txt '); /* 62 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for recovered, recovered.txt '); /* 63 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for immuned, immuned.txt '); /* 64 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for newly_exposed, newly_exposed.txt '); /* 65 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_susceptible, mosquito_susceptible.txt '); /* 66 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_exposed, mosquito_exposed.txt '); /* 67 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_infectious, mosquito_infectious.txt '); /* 68 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_newly_exposed, mosquito_newly_exposed.txt '); /* 69 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, prevalence_mosquito.png'); /* 70 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, incidence_mosquito.png'); /* 71 */
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
 	(1, 1, 'TEXT'), 
@@ -683,8 +694,86 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(58, 2, 'verbose.html'),
 	(58, 3, 'CONFIGURATION_FILE'),
 	(58, 4, '1'),
-	(58, 5, '8');
-
+	(58, 5, '8'),
+    
+   	(59, 1, 'TEXT'), 
+	(59, 2, 'susceptible.txt'),
+	(59, 3, 'SIMULATOR_LOG_FILE'),
+	(59, 4, '8'),
+	(59, 5, '4'),
+    
+   	(60, 1, 'TEXT'), 
+	(60, 2, 'exposed.txt'),
+	(60, 3, 'SIMULATOR_LOG_FILE'),
+	(60, 4, '8'),
+	(60, 5, '4'),
+	
+   	(61, 1, 'TEXT'), 
+	(61, 2, 'infectious.txt'),
+	(61, 3, 'SIMULATOR_LOG_FILE'),
+	(61, 4, '8'),
+	(61, 5, '4'),
+    
+   	(62, 1, 'TEXT'), 
+	(62, 2, 'temp_immuned.txt'),
+	(62, 3, 'SIMULATOR_LOG_FILE'),
+	(62, 4, '8'),
+	(62, 5, '4'),
+    
+   	(63, 1, 'TEXT'), 
+	(63, 2, 'recovered.txt'),
+	(63, 3, 'SIMULATOR_LOG_FILE'),
+	(63, 4, '8'),
+	(63, 5, '4'),
+    
+   	(64, 1, 'TEXT'), 
+	(64, 2, 'immuned.txt'),
+	(64, 3, 'SIMULATOR_LOG_FILE'),
+	(64, 4, '8'),
+	(64, 5, '4'),
+    
+   	(65, 1, 'TEXT'), 
+	(65, 2, 'newly_exposed.txt'),
+	(65, 3, 'SIMULATOR_LOG_FILE'),
+	(65, 4, '8'),
+	(65, 5, '4'),
+    
+   	(66, 1, 'TEXT'), 
+	(66, 2, 'mosquito_susceptible.txt'),
+	(66, 3, 'SIMULATOR_LOG_FILE'),
+	(66, 4, '8'),
+	(66, 5, '4'),
+    
+   	(67, 1, 'TEXT'), 
+	(67, 2, 'mosquito_exposed.txt'),
+	(67, 3, 'SIMULATOR_LOG_FILE'),
+	(67, 4, '8'),
+	(67, 5, '4'),
+    
+   	(68, 1, 'TEXT'), 
+	(68, 2, 'mosquito_infectious.txt'),
+	(68, 3, 'SIMULATOR_LOG_FILE'),
+	(68, 4, '8'),
+	(68, 5, '4'),
+    
+   	(69, 1, 'TEXT'), 
+	(69, 2, 'mosquito_newly_exposed.txt'),
+	(69, 3, 'SIMULATOR_LOG_FILE'),
+	(69, 4, '8'),
+	(69, 5, '4'),
+    
+   	(70, 1, 'URL'), 
+	(70, 2, 'prevalence_mosquito.png'),
+	(70, 3, 'IMAGE'),
+	(70, 4, '4'),
+	(70, 5, '0'),
+    
+   	(71, 1, 'URL'), 
+	(71, 2, 'incidence_mosquito.png'),
+	(71, 3, 'IMAGE'),
+	(71, 4, '4'),
+	(71, 5, '0');
+    
 CREATE VIEW run_data_description_view AS
 SELECT
 	des.id as run_data_description_id,
