@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
+import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
@@ -49,11 +51,6 @@ public class ImageGenerator {
 
 	private List<BigInteger> runIds;
 	private Map<BigInteger, String> runIdLabelMap;
-	private final String infectionStatesImagePath;
-	private final String incidenceImagePath;
-	private final String newlyDeceasedImagePath;
-	private final String treatmentImagePath;
-	private final String diseaseStatesImagePath;
 	private String combinedIncidenceImagePath;
 	private final boolean multipleRunsSpecified;
 	private final BigInteger visualizerRunId;
@@ -75,29 +72,17 @@ public class ImageGenerator {
 
 		// set file paths and urls
 		if (!multipleRunsSpecified) {
-			// the first runId is either the only runId, or the no vacc model
-			infectionStatesImagePath = runDirectory + File.separator + INFECTION_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
-//			if (multiVaccChart) {
-//				combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "."
-//						+ IMAGE_FILE_TYPE;
-//			} else {
-			incidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
-			treatmentImagePath = runDirectory + File.separator + TREATMENT_COUNTS_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
-			newlyDeceasedImagePath = runDirectory + File.separator + NEWLY_DECEASED_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
-			diseaseStatesImagePath = runDirectory + File.separator + DISEASE_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
-//			}
 		} else {
-			infectionStatesImagePath = null;
-			incidenceImagePath = null;
-			treatmentImagePath = null;
-			newlyDeceasedImagePath = null;
-			diseaseStatesImagePath = null;
 			combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
 		}
 	}
 
 	public final String getRunDirectory(BigInteger visualizerRunId) {
 		return IMAGE_FILES_DIRECTORY + File.separator + visualizerRunId;
+	}
+
+	private String getImageFileName(String imageFileName) {
+		return imageFileName + "." + IMAGE_FILE_TYPE;
 	}
 
 	private String getURLForImage(String imageName) {
@@ -120,51 +105,125 @@ public class ImageGenerator {
 		}
 	}
 
+	private ChartTypeProperties getChartTypeProperties(ChartTypeEnum chartType, String title, String name, String url) {
+
+		ChartTypeProperties props = new ChartTypeProperties();
+		props.setChartTypeEnum(chartType);
+		props.setDirectoryForChart(getRunDirectory(visualizerRunId));
+		props.setFileNameForChart(name);
+		props.setTitleForChart(title);
+		props.setUrlForChart(url);
+		return props;
+	}
+
+	private TimeSeriesCurveTypeList getTimeSeriesCurveTypeListForMosquito() {
+		// this is only for CLARA right now
+		TimeSeriesCurveTypeList timeSeriesCurveTypesToUseForMosquito = new TimeSeriesCurveTypeList();
+		timeSeriesCurveTypesToUseForMosquito.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE_MOSQUITO);
+		timeSeriesCurveTypesToUseForMosquito.add(TimeSeriesCurveTypeEnum.LATENT_MOSQUITO);
+		timeSeriesCurveTypesToUseForMosquito.add(TimeSeriesCurveTypeEnum.INFECTIOUS_MOSQUITO);
+		timeSeriesCurveTypesToUseForMosquito.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT_MOSQUITO);
+
+		timeSeriesCurveTypesToUseForMosquito.setChartTypePropertiesForChart(ChartTypeEnum.INFECTION_STATES,
+				getChartTypeProperties(ChartTypeEnum.INFECTION_STATES, "Mosquito infection states over time",
+						getImageFileName(INFECTION_STATES_IMAGE_NAME + "_mosquito"), getURLForImage(INFECTION_STATES_IMAGE_NAME + "_mosquito")));
+
+		timeSeriesCurveTypesToUseForMosquito.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+				getChartTypeProperties(ChartTypeEnum.INCIDENCE, "Incidence of newly latent mosquitoes over time",
+						getImageFileName(INCIDENCE_IMAGE_NAME + "_mosquito"), getURLForImage(INCIDENCE_IMAGE_NAME + "_mosquito")));
+
+		return timeSeriesCurveTypesToUseForMosquito;
+	}
+
+	private TimeSeriesCurveTypeList getTimeSeriesCurveTypeListForHuman(String simulatorName) {
+		TimeSeriesCurveTypeList timeSeriesCurveTypesToUseForHuman = new TimeSeriesCurveTypeList();
+		if (simulatorName.equals("flute")) {
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+					getChartTypeProperties(ChartTypeEnum.INCIDENCE, "Incidence of newly latent over time",
+							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
+		} else if (simulatorName.equals("anthrax")) {
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.RECOVERED);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_DECEASED);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.PROPHYLACTICS_GIVEN);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.ASYMPTOMATIC);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SYMPTOMATIC);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.FULMINANT);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.DEAD);
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INFECTION_STATES,
+					getChartTypeProperties(ChartTypeEnum.INFECTION_STATES, "Infection states over time",
+							getImageFileName(INFECTION_STATES_IMAGE_NAME), getURLForImage(INFECTION_STATES_IMAGE_NAME)));
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.NEWLY_DECEASED,
+					getChartTypeProperties(ChartTypeEnum.NEWLY_DECEASED, "Count of newly deceased over time",
+							getImageFileName(NEWLY_DECEASED_IMAGE_NAME), getURLForImage(NEWLY_DECEASED_IMAGE_NAME)));
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.TREATMENT,
+					getChartTypeProperties(ChartTypeEnum.TREATMENT, "Prophylactics given over time",
+							getImageFileName(TREATMENT_COUNTS_IMAGE_NAME), getURLForImage(TREATMENT_COUNTS_IMAGE_NAME)));
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.DISEASE_STATES,
+					getChartTypeProperties(ChartTypeEnum.DISEASE_STATES, "Disease states over time",
+							getImageFileName(DISEASE_STATES_IMAGE_NAME), getURLForImage(DISEASE_STATES_IMAGE_NAME)));
+
+		} else {
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.RECOVERED);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+
+			String infectionStatesTitle = "Infection states over time";
+			String incidenceTitle = "Incidence of newly latent over time";
+			if (simulatorName.equals("clara")) {
+				infectionStatesTitle = "Human infection states over time";
+				incidenceTitle = "Incidence of newly latent humans over time";
+			}
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INFECTION_STATES,
+					getChartTypeProperties(ChartTypeEnum.INFECTION_STATES, infectionStatesTitle,
+							getImageFileName(INFECTION_STATES_IMAGE_NAME), getURLForImage(INFECTION_STATES_IMAGE_NAME)));
+
+			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+					getChartTypeProperties(ChartTypeEnum.INCIDENCE, incidenceTitle,
+							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
+		}
+
+		return timeSeriesCurveTypesToUseForHuman;
+	}
+
 	public void createTimeSeriesImages() throws TimeSeriesVisualizerException {
 
 		String chartXAxisLabel = "simulation time step (days)"; // this is a hack for now, should change in the future
-		TimeSeriesCurveTypeList timeSeriesCurveTypesToUse = new TimeSeriesCurveTypeList();
+		Map<String, TimeSeriesCurveTypeList> timeSeriesCurveTypesBySpecies = new HashMap<String, TimeSeriesCurveTypeList>();
+		TimeSeriesCurveTypeList timeSeriesCurveTypesToUseForHuman = new TimeSeriesCurveTypeList();
 
 		if (runIds.size() == 1) {
 			String simulatorName = dbUtil.getSimulatorSoftwareNameForRun(runIds.get(0)).toLowerCase();
-			if (simulatorName.equals("flute")) {
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
-				timeSeriesCurveTypesToUse.setTitleForIncidenceChart("Incidence of newly latent over time");
-
-			} else if (simulatorName.equals("anthrax")) {
+			if (simulatorName.equals("anthrax")) {
 				chartXAxisLabel = "simulation time step (hours)";
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.LATENT);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.RECOVERED);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_DECEASED);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.PROPHYLACTICS_GIVEN);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.ASYMPTOMATIC);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.SYMPTOMATIC);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.FULMINANT);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.DEAD);
+			}
 
-				timeSeriesCurveTypesToUse.setTitleForInfectionStatesChart("Infection states over time");
-				timeSeriesCurveTypesToUse.setTitleForNewlyDeceasedChart("Count of newly deceased over time");
-				timeSeriesCurveTypesToUse.setTitleForTreatmentChart("Prophylactics given over time");
-				timeSeriesCurveTypesToUse.setTitleForDiseaseStatesChart("Disease states over time");
-			} else {
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.LATENT);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.RECOVERED);
-				timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+			timeSeriesCurveTypesToUseForHuman = getTimeSeriesCurveTypeListForHuman(simulatorName);
+			timeSeriesCurveTypesToUseForHuman.processAddedCurveTypes();
+			timeSeriesCurveTypesBySpecies.put("human", timeSeriesCurveTypesToUseForHuman);
 
-				timeSeriesCurveTypesToUse.setTitleForInfectionStatesChart("Infection states over time");
-				timeSeriesCurveTypesToUse.setTitleForIncidenceChart("Incidence of newly latent over time");
+			if (simulatorName.equals("clara")) {
+				TimeSeriesCurveTypeList timeSeriesCurveTypeForMosquito = getTimeSeriesCurveTypeListForMosquito();
+				timeSeriesCurveTypeForMosquito.processAddedCurveTypes();
+				timeSeriesCurveTypesBySpecies.put("mosquito", timeSeriesCurveTypeForMosquito);
 			}
 		} else {
-			timeSeriesCurveTypesToUse.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+			timeSeriesCurveTypesToUseForHuman.processAddedCurveTypes();
+			timeSeriesCurveTypesBySpecies.put("human", timeSeriesCurveTypesToUseForHuman);
 		}
 
-		timeSeriesCurveTypesToUse.processAddedCurveTypes();
-
 		boolean createCombinedIncidenceChart = multipleRunsSpecified;
-		generateImages(createCombinedIncidenceChart, timeSeriesCurveTypesToUse, chartXAxisLabel);
+		generateImages(createCombinedIncidenceChart, timeSeriesCurveTypesBySpecies, chartXAxisLabel);
 	}
 
 	// private void
@@ -208,50 +267,44 @@ public class ImageGenerator {
 	//
 	// }
 	// }
-	private void generateImages(boolean generateCombinedIncidence, TimeSeriesCurveTypeList timeSeriesCurveTypeList,
+	private void generateImages(boolean generateCombinedIncidence, Map<String, TimeSeriesCurveTypeList> timeSeriesCurveTypeListBySpecies,
 			String chartXAxisLabel) throws TimeSeriesVisualizerException {
-
-		TimeSeriesContainerList timeSeriesContainerList = dbUtil.retrieveTimeSeriesFromDatabaseFiles(runIds,
-				timeSeriesCurveTypeList);
-
-		// adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
-		VisualizerChartUtility chartUtility = new VisualizerChartUtility(timeSeriesContainerList);
 
 		logger.info("Creating images...");
 		Map<String, String> resourceMap = new HashMap<String, String>();
-		if (timeSeriesCurveTypeList.listContainsInfectionStateCurveTypes()) {
-			chartUtility.createTimeSeriesChart(infectionStatesImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForInfectionStatesChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INFECTION_STATES_CHART);
+		for (String species : timeSeriesCurveTypeListBySpecies.keySet()) {
 
-			resourceMap.put(INFECTION_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INFECTION_STATES_IMAGE_NAME));
-		}
-		if (timeSeriesCurveTypeList.listContainsDiseaseStatesCurveTypes()) {
-			chartUtility.createTimeSeriesChart(diseaseStatesImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForDiseaseStatesChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_DISEASE_STATES_CHART);
+			TimeSeriesCurveTypeList timeSeriesCurveTypeListForSpecies = timeSeriesCurveTypeListBySpecies.get(species);
 
-			resourceMap.put(DISEASE_STATES_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(DISEASE_STATES_IMAGE_NAME));
-		}
-		if (timeSeriesCurveTypeList.listContainsTreatmentCurveTypes()) {
-			chartUtility.createTimeSeriesChart(treatmentImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForTreatmentChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_TREATMENT_COUNTS_CHART);
+			TimeSeriesContainerList timeSeriesContainerList = dbUtil.retrieveTimeSeriesFromDatabaseFiles(runIds,
+					timeSeriesCurveTypeListForSpecies);
 
-			resourceMap.put(TREATMENT_COUNTS_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(TREATMENT_COUNTS_IMAGE_NAME));
-		}
-		if (timeSeriesCurveTypeList.listContainsNewlyDeceasedCurveTypes()) {
-			chartUtility.createTimeSeriesChart(newlyDeceasedImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForNewlyDeceasedChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_NEWLY_DECEASED_CHART);
-
-			resourceMap.put(NEWLY_DECEASED_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(NEWLY_DECEASED_IMAGE_NAME));
-		}
-		if (timeSeriesCurveTypeList.listContainsIncidenceCurveTypes()) {
-			chartUtility.createTimeSeriesChart(incidenceImagePath, chartXAxisLabel,
-					timeSeriesCurveTypeList.getTitleForIncidenceChart(), TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART);
-
-			resourceMap.put(INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INCIDENCE_IMAGE_NAME));
-		} else if (generateCombinedIncidence) { // can't generate incidence and
-			// comnined incidence
-			chartUtility.createCombinedIncidenceTimeSeriesChart(combinedIncidenceImagePath, runIdLabelMap);
-			resourceMap.put(INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INCIDENCE_IMAGE_NAME));
+			// adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
+			VisualizerChartUtility chartUtility = new VisualizerChartUtility(timeSeriesContainerList);
+			if (timeSeriesCurveTypeListForSpecies.listContainsInfectionStateCurveTypes()) {
+				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.INFECTION_STATES), chartXAxisLabel,
+						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INFECTION_STATES_CHART, resourceMap);
+			}
+			if (timeSeriesCurveTypeListForSpecies.listContainsDiseaseStatesCurveTypes()) {
+				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.DISEASE_STATES), chartXAxisLabel,
+						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_DISEASE_STATES_CHART, resourceMap);
+			}
+			if (timeSeriesCurveTypeListForSpecies.listContainsTreatmentCurveTypes()) {
+				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.TREATMENT), chartXAxisLabel,
+						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_TREATMENT_COUNTS_CHART, resourceMap);
+			}
+			if (timeSeriesCurveTypeListForSpecies.listContainsNewlyDeceasedCurveTypes()) {
+				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.NEWLY_DECEASED), chartXAxisLabel,
+						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_NEWLY_DECEASED_CHART, resourceMap);
+			}
+			if (generateCombinedIncidence) {
+				// comnined incidence
+				chartUtility.createCombinedIncidenceTimeSeriesChart(combinedIncidenceImagePath, runIdLabelMap);
+				resourceMap.put(INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INCIDENCE_IMAGE_NAME));
+			} else if (timeSeriesCurveTypeListForSpecies.listContainsIncidenceCurveTypes()) {
+				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.INCIDENCE), chartXAxisLabel,
+						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART, resourceMap);
+			}
 		}
 
 		dbUtil.insertURLsIntoDatabase(resourceMap, visualizerRunId);
@@ -272,17 +325,17 @@ public class ImageGenerator {
 		// runIdSeriesLabels.put("3", "FluTE");
 		// runIdSeriesLabels.put("3", "SEIR");
 		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-		runIdAndLabel.setRunIdentification(new BigInteger("1"));
+		runIdAndLabel.setRunIdentification(new BigInteger("22"));
 		runIdAndLabel.setRunLabel("LABEL 1");
 
 		runIdsAndLabels.add(runIdAndLabel);
-//		runIdAndLabel = new RunIdentificationAndLabel();
-//		runIdAndLabel.setRunIdentification(new BigInteger("2"));
-//		runIdAndLabel.setRunLabel("LABEL 2");
-//		runIdsAndLabels.add(runIdAndLabel);
+		runIdAndLabel = new RunIdentificationAndLabel();
+		runIdAndLabel.setRunIdentification(new BigInteger("25"));
+		runIdAndLabel.setRunLabel("LABEL 2");
+		runIdsAndLabels.add(runIdAndLabel);
 
 		ImageGenerator generator = new ImageGenerator(runIdsAndLabels, visualizerSoftwareId, new BigInteger(
-				"9"));
+				"11"));
 		try {
 			generator.createTimeSeriesImages();
 		} catch (Exception ex) {
