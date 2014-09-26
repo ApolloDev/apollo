@@ -1,6 +1,8 @@
 package edu.pitt.apollo.timeseriesvisualizer.types;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  *
@@ -17,14 +19,12 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	private boolean containsTreatmentCurveTypes;
 	private boolean containsNewlyDeceasedCurveTypes;
 	private boolean containsDiseaseStateCurveTypes;
-	private String titleForInfectionStatesChart;
-	private String titleForIncidenceChart;
-	private String titleForTreatmentChart;
-	private String titleForNewlyDeceasedChart;
-	private String titleForDiseaseStatesChart;
+
+	private final Map<ChartTypeEnum, ChartTypeProperties> propertiesForCharts;
 
 	public TimeSeriesCurveTypeList() {
 		super();
+		propertiesForCharts = new EnumMap<ChartTypeEnum, ChartTypeProperties>(ChartTypeEnum.class);
 	}
 
 	public void processAddedCurveTypes() {
@@ -86,78 +86,16 @@ public class TimeSeriesCurveTypeList extends ArrayList<TimeSeriesCurveTypeEnum> 
 	public boolean listContainsNewlyDeceasedCurveTypes() {
 		return containsNewlyDeceasedCurveTypes;
 	}
-	
+
 	public boolean listContainsDiseaseStatesCurveTypes() {
 		return containsDiseaseStateCurveTypes;
 	}
 
-	/**
-	 * @return the titleForInfectionStatesChart
-	 */
-	public String getTitleForInfectionStatesChart() {
-		return titleForInfectionStatesChart;
+	public ChartTypeProperties getChartTypePropertiesForChartType(ChartTypeEnum chartType) {
+		return propertiesForCharts.get(chartType);
 	}
-
-	/**
-	 * @param titleForInfectionStatesChart the titleForInfectionStatesChart to set
-	 */
-	public void setTitleForInfectionStatesChart(String titleForInfectionStatesChart) {
-		this.titleForInfectionStatesChart = titleForInfectionStatesChart;
-	}
-
-	/**
-	 * @return the titleForIncidenceChart
-	 */
-	public String getTitleForIncidenceChart() {
-		return titleForIncidenceChart;
-	}
-
-	/**
-	 * @param titleForIncidenceChart the titleForIncidenceChart to set
-	 */
-	public void setTitleForIncidenceChart(String titleForIncidenceChart) {
-		this.titleForIncidenceChart = titleForIncidenceChart;
-	}
-
-	/**
-	 * @return the titleForTreatmentChart
-	 */
-	public String getTitleForTreatmentChart() {
-		return titleForTreatmentChart;
-	}
-
-	/**
-	 * @param titleForTreatmentChart the titleForTreatmentChart to set
-	 */
-	public void setTitleForTreatmentChart(String titleForTreatmentChart) {
-		this.titleForTreatmentChart = titleForTreatmentChart;
-	}
-
-	/**
-	 * @return the titleForNewlyDeceasedChart
-	 */
-	public String getTitleForNewlyDeceasedChart() {
-		return titleForNewlyDeceasedChart;
-	}
-
-	/**
-	 * @param titleForNewlyDeceasedChart the titleForNewlyDeceasedChart to set
-	 */
-	public void setTitleForNewlyDeceasedChart(String titleForNewlyDeceasedChart) {
-		this.titleForNewlyDeceasedChart = titleForNewlyDeceasedChart;
-	}
-
-	/**
-	 * @return the titleForDiseaseStatesChart
-	 */
-	public String getTitleForDiseaseStatesChart() {
-		return titleForDiseaseStatesChart;
-	}
-
-	/**
-	 * @param titleForDiseaseStatesChart the titleForDiseaseStatesChart to set
-	 */
-	public void setTitleForDiseaseStatesChart(String titleForDiseaseStatesChart) {
-		this.titleForDiseaseStatesChart = titleForDiseaseStatesChart;
+	
+	public void setChartTypePropertiesForChart(ChartTypeEnum chartType, ChartTypeProperties props) {
+		propertiesForCharts.put(chartType, props);
 	}
 }

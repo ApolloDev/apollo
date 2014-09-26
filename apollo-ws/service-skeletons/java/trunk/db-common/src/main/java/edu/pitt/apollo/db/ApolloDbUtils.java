@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ApolloDbUtils {
 
-	private static final String APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE = "APOLLO_202_WORK_DIR";
+	private static final String APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE = "APOLLO_2027_WORK_DIR";
 	static Logger logger = LoggerFactory.getLogger(ApolloDbUtils.class);
 	static Map<String, Integer> populationAxisCache = new HashMap<String, Integer>();
 	static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
@@ -164,6 +164,7 @@ public class ApolloDbUtils {
 	// }
 	// }
 	public String getJSONString(Object obj, Class clazz) {
+
 		try {
 			Map<String, Object> properties = new HashMap<String, Object>(2);
 			properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
@@ -173,7 +174,7 @@ public class ApolloDbUtils {
 			JAXBMarshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+		
 			marshaller.marshal(obj, baos);
 			return baos.toString();
 		} catch (Exception e) {
@@ -513,6 +514,7 @@ public class ApolloDbUtils {
 	}
 
 	public String getMd5(Object object) {
+
 		return DigestUtils.md5Hex(getJsonBytes(object).toString());
 	}
 
