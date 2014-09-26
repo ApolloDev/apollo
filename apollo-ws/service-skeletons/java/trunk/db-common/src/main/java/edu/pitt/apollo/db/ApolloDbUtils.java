@@ -1,5 +1,6 @@
 package edu.pitt.apollo.db;
 
+import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
@@ -54,7 +55,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ApolloDbUtils {
 
-	private static final String APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE = "APOLLO_2027_WORK_DIR";
 	static Logger logger = LoggerFactory.getLogger(ApolloDbUtils.class);
 	static Map<String, Integer> populationAxisCache = new HashMap<String, Integer>();
 	static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
@@ -1836,16 +1836,16 @@ public class ApolloDbUtils {
 	static {
 
 		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE);
+		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (apolloDir != null) {
 			if (!apolloDir.endsWith(File.separator)) {
 				apolloDir += File.separator;
 			}
 			APOLLO_DIR = apolloDir;
-			logger.info(APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE + " is now:"
+			logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
 					+ APOLLO_DIR);
 		} else {
-			logger.error(APOLLO_WORK_DIR_ENVIRONMENT_VARIABLE
+			logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
 					+ " environment variable not found!");
 			APOLLO_DIR = "";
 		}
