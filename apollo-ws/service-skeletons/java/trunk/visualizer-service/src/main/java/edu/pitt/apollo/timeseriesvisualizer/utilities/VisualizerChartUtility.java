@@ -1,5 +1,7 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
+import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
+import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -121,7 +123,7 @@ class SimpleNumberAxis extends NumberAxis implements Serializable {
 public class VisualizerChartUtility {
 
 	static Logger logger = LoggerFactory.getLogger(VisualizerChartUtility.class);
-	private static final String COMBINED_INCIDENCE_CHART_TITLE = "Incidence of newly exposed over time";
+	private static final String COMBINED_INCIDENCE_CHART_TITLE = "Incidence of newly latent over time";
 	private static final BasicStroke SERIES_STROKE = new BasicStroke(3f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_MITER);
 	private final TimeSeriesContainerList timeSeriesContainerList;
@@ -218,6 +220,7 @@ public class VisualizerChartUtility {
 		xaxis.setLabelFont(new Font("Calibri", Font.PLAIN, 30));
 		xaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		xaxis.setRange(1, maxXValue);
+		xaxis.setLabel(xTitle);
 		// xaxis.setLowerBound(1.0);
 		plot.setDomainAxis(xaxis);
 
@@ -306,6 +309,7 @@ public class VisualizerChartUtility {
 			plot.setDomainAxis(xaxis);
 
 			xaxis.setRange(1, maxXValue);
+			xaxis.setLabel(xTitle);
 		} else {
 			xaxis = (NumberAxis) plot.getDomainAxis();
 			xaxis.setRange(0.0, maxXValue);
@@ -422,20 +426,25 @@ public class VisualizerChartUtility {
 		}
 	}
 
-	public void createTimeSeriesChart(String filePath, String chartXAxisLabel,
-			String chartTitle, TimeSeriesCurveTypeEnum[] allCurveTypesForImage) {
+	public void createTimeSeriesChart(ChartTypeProperties chartTypeProps, String chartXAxisLabel,
+			TimeSeriesCurveTypeEnum[] allCurveTypesForImage, Map<String, String> resourceMap) {
 
+		String fileName = chartTypeProps.getFileNameForChart();
+		String filePath = chartTypeProps.getDirectoryForChart() + File.separator + fileName;
+		String chartTitle = chartTypeProps.getTitleForChart();
 		for (TimeSeriesContainer container : timeSeriesContainerList) {
 			XYDatasetAndTimeSeriesCurveTypes xyDatasetAndLabels = createXYDataset(container, allCurveTypesForImage);
 			createTimeSeriesChart(xyDatasetAndLabels, filePath, chartXAxisLabel, chartTitle);
 		}
+		
+		resourceMap.put(fileName, chartTypeProps.getUrlForChart());
 	}
 
 	public void createCombinedIncidenceTimeSeriesChart(String filepath, Map<BigInteger, String> runIdSeriesLabels) {
 
 		XYDataset dataset = createCombinedIncidenceDataset(timeSeriesContainerList, runIdSeriesLabels);
 		JFreeChart chart = createCombinedIncidenceChart(dataset, COMBINED_INCIDENCE_CHART_TITLE,
-				"simulation time step", "");
+				"simulation time step (days)", "");
 		BufferedImage image = chart.createBufferedImage(1750, 1000, BufferedImage.TYPE_INT_RGB, null);
 
 		File imageFile = new File(filepath);
