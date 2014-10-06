@@ -1185,8 +1185,7 @@
 
 	<complexType name="LocationDefinition">
 		<sequence>
-			<element name="textualDescription" type="string" maxOccurs="1"
-				minOccurs="1" />
+
 			<element name="locationsIncluded" type="tns:ApolloLocationCode"
 				maxOccurs="unbounded" minOccurs="1" />
 			<element name="locationsExcluded" type="tns:ApolloLocationCode"
@@ -1905,16 +1904,16 @@
 		<complexContent>
 			<extension base="tns:ProbabilityDistribution">
 				<sequence>
-					<element name="mean" type="double" maxOccurs="1"
+					<element name="mean" type="double" maxOccurs="1" minOccurs="1" />
+					<element name="lowerBound" type="double" maxOccurs="1"
 						minOccurs="1" />
-					<element name="lowerBound" type="double"
-						maxOccurs="1" minOccurs="1" />
-					<element name="upperBound" type="double"
-						maxOccurs="1" minOccurs="1" />
-					<element name="confidence" type="tns:Percent"
-						maxOccurs="1" minOccurs="1">
+					<element name="upperBound" type="double" maxOccurs="1"
+						minOccurs="1" />
+					<element name="confidence" type="tns:Percent" maxOccurs="1"
+						minOccurs="1">
 					</element>
-					<element name="sampleSize" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"></element>
+					<element name="sampleSize" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1924,11 +1923,11 @@
 		<complexContent>
 			<extension base="tns:ProbabilityDistribution">
 				<sequence>
-					<element name="mean" type="double" maxOccurs="1"
-						minOccurs="1" />
+					<element name="mean" type="double" maxOccurs="1" minOccurs="1" />
 					<element name="standardDeviation" type="tns:NonNegativeDouble"
 						maxOccurs="1" minOccurs="1" />
-						<element name="sampleSize" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"></element>
+					<element name="sampleSize" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2185,6 +2184,8 @@
 				<element name="cartesianCircleLocationDefinition" type="tns:CartesianCircleLocationDefinition"
 					maxOccurs="1" minOccurs="1"></element>
 			</choice>
+			<element name="textualDescription" type="string" maxOccurs="1"
+				minOccurs="1" />
 		</sequence>
 	</complexType>
 
@@ -3066,8 +3067,8 @@
 	<simpleType name="EpidemicPeriodBoundaryDefinitionEnum">
 		<restriction base="string">
 			<enumeration value="symptomOnsetFirstCase" />
-			<enumeration value="dateOfFirstCaseFatality" />		
-			<enumeration value="firstLabCaseConfirmation" />	
+			<enumeration value="dateOfFirstCaseFatality" />
+			<enumeration value="firstLabCaseConfirmation" />
 			<enumeration value="symptomOnsetLastCase" />
 			<enumeration value="hospitalizationLastCase" />
 			<enumeration value="deathOfLastCase" />
