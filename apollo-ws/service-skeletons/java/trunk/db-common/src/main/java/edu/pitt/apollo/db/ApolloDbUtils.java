@@ -1,6 +1,5 @@
 package edu.pitt.apollo.db;
 
-import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
 import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
@@ -13,14 +12,11 @@ import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,9 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
-import java.util.Scanner;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -43,8 +37,6 @@ import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
 import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -53,18 +45,12 @@ import org.slf4j.LoggerFactory;
  * 
 
  */
-public class ApolloDbUtils {
+public class ApolloDbUtils extends BaseApolloDbUtils {
 
-	static Logger logger = LoggerFactory.getLogger(ApolloDbUtils.class);
 	static Map<String, Integer> populationAxisCache = new HashMap<String, Integer>();
 	static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
-	private static final String APOLLO_DIR;
-	private static final String SALT_FILE_NAME = "salt.txt";
-	private static final String SYSTEM_SALT;
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
-	Connection dbcon = null;
-	Properties properties;
 
 	// public final int RECORD_NOT_FOUND = -1;
 	// public final int PASSWORD_NOT_CORRECT = -2;
@@ -83,70 +69,11 @@ public class ApolloDbUtils {
 	}
 
 	public ApolloDbUtils(File databasePropertiesFile) throws IOException {
-		InputStream fis = new FileInputStream(databasePropertiesFile);
-		properties = new Properties();
-		properties.load(fis);
-		fis.close();
+		super(databasePropertiesFile);
 	}
 
 	public ApolloDbUtils(InputStream databasePropertiesInputStream) throws IOException {
-
-		properties = new Properties();
-		properties.load(databasePropertiesInputStream);
-		databasePropertiesInputStream.close();
-	}
-
-	private void establishDbConn() throws ClassNotFoundException, SQLException {
-
-		String dbClass = properties.getProperty("class");
-		String url = properties.getProperty("url");
-		String user = properties.getProperty("user");
-		String password = properties.getProperty("password");
-
-		try {
-			if (dbcon != null) {
-				dbcon.close();
-			}
-		} catch (SQLException e) {
-			// who cares, making a new one anyway
-		}
-		dbcon = null;
-		try {
-			Class.forName(dbClass);
-			logger.debug("Getting DB connection");
-			dbcon = DriverManager.getConnection(url, user, password);
-			dbcon.setAutoCommit(true);
-		} catch (SQLException e) {
-			throw new SQLException("Error getting connection to database: " + url + " using username " + user
-					+ ".   Specific error was:\n" + e.getMessage());
-		}
-	}
-
-	public void closeConnection() throws ApolloDatabaseException {
-		if (dbcon != null) {
-			try {
-				dbcon.close();
-			} catch (SQLException ex) {
-				throw new ApolloDatabaseException("SQLException attempting to close database connection: "
-						+ ex.getMessage());
-			}
-		}
-	}
-
-	private ByteArrayOutputStream getJsonBytes(Object obj) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, obj);
-
-			return baos;
-		} catch (IOException ex) {
-			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: " + ex.getMessage());
-			return null;
-		}
+		super(databasePropertiesInputStream);
 	}
 
 	// public String old_getJSONString(Object obj) {
@@ -174,7 +101,7 @@ public class ApolloDbUtils {
 			JAXBMarshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		
+
 			marshaller.marshal(obj, baos);
 			return baos.toString();
 		} catch (Exception e) {
@@ -217,23 +144,6 @@ public class ApolloDbUtils {
 		throw new ApolloDatabaseException("Could not find run_simulation_message.json content associated with run ID" + runId);
 	}
 
-	public Connection getConn() throws ClassNotFoundException, SQLException {
-		if (dbcon == null) {
-			establishDbConn();
-		} else {
-			boolean connIsValid = false;
-			try {
-				connIsValid = dbcon.isValid(1000);
-			} catch (SQLException e1) {
-				// who cares, we are making a new one anyway!
-			}
-			if (!connIsValid) {
-				establishDbConn();
-			}
-		}
-		return dbcon;
-	}
-
 	// public Map<String, String> getStoredRuns() throws SQLException,
 	// ClassNotFoundException {
 	// try {
@@ -256,134 +166,19 @@ public class ApolloDbUtils {
 	// + e.getMessage());
 	// }
 	// }
-	public int getUserKey(String userId, String userPassword) throws ApolloDatabaseUserPasswordException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
-
+	protected ByteArrayOutputStream getJsonBytes(Object obj) {
 		try {
-			String query = "SELECT id, hash_of_user_password_and_salt, salt FROM users WHERE requester_id = ?";
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.setString(1, userId);
-			ResultSet rs = pstmt.executeQuery();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			mapper.writeValue(baos, obj);
 
-			if (rs.next()) {
-				String storedSaltedPasswordHash = rs.getString("hash_of_user_password_and_salt");
-				String salt = rs.getString("salt");
-				String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
-				if (saltedPasswordHash.equals(storedSaltedPasswordHash)) {
-					return rs.getInt("id");
-				} else {
-					throw new ApolloDatabaseUserPasswordException(
-							"Incorrect password");
-				}
-			} else {
-				throw new ApolloDatabaseKeyNotFoundException("No entry in the users table where user_id = "
-						+ userId);
-			}
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException attempting to get user key: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException attempting to get user key: " + ex.getMessage());
-		}
-	}
-
-	// // user key doesn't exist
-	public int addUser(String userId, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
-			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
-		// check authorization?!
-
-		try {
-			getUserKey(userId, userPassword);
-			throw new ApolloDatabaseRecordAlreadyExistsException("User " + userId
-					+ " already exists in the database.");
-		} catch (ApolloDatabaseKeyNotFoundException e) {
-			// good this means the user doesn't already exist
-		} catch (ApolloDatabaseUserPasswordException e) {
-			throw new ApolloDatabaseUserPasswordException("A user with userID \"" + userId + "\" already exists.");
-		}
-
-		String query = "INSERT INTO users (requester_id,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
-		String salt = getSaltForPassword();
-		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, saltedPasswordHash);
-			pstmt.setString(3, salt);
-			pstmt.setString(4, userEmail);
-			pstmt.execute();
-
-			query = "SELECT LAST_INSERT_ID()";
-			pstmt = getConn().prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
-			rs.next();
-			return rs.getInt(1);
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotfoundException attempting to add user: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException attempting to add user: " + ex.getMessage());
-		}
-	}
-
-	public void deleteUser(String userId, String userPassword) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
-
-		int userKey = getUserKey(userId, userPassword);
-		try {
-			String query = "DELETE FROM user_roles WHERE user_id = " + userKey;
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.executeUpdate();
-
-			query = "DELETE FROM users WHERE id = " + userKey;
-			pstmt = getConn().prepareStatement(query);
-			pstmt.executeUpdate();
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException attempting to delete user: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException attempting to delete user: " + ex.getMessage());
-		}
-	}
-
-	private String getSaltForPassword() {
-		Random random = new SecureRandom();
-		byte[] bytes = new byte[20];
-		random.nextBytes(bytes);
-		return new String(bytes);
-	}
-
-	private String getHashOfUserPasswordAndSalt(String password, String salt) {
-
-		String passwordAndSalt = password + salt + SYSTEM_SALT;
-
-		return getMd5FromString(passwordAndSalt);
-	}
-
-	public boolean authenticateUser(Authentication authentication) throws
-			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
-
-		String userId = authentication.getRequesterId();
-		String userPassword = authentication.getRequesterPassword();
-
-		String[] userIdTokens = parseUserId(userId);
-		String userName = userIdTokens[0];
-
-		try {
-			getUserKey(userName, userPassword);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean authorizeUser(int userId, int roleId) throws ApolloDatabaseException {
-
-		String query = "SELECT * FROM user_roles where user_id = " + userId + " AND role_id = " + roleId;
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next();
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException attempting to authorize user: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException attempting to authorize user: " + ex.getMessage());
+			return baos;
+		} catch (IOException ex) {
+			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: " + ex.getMessage());
+			return null;
 		}
 	}
 
@@ -444,10 +239,6 @@ public class ApolloDbUtils {
 		int userKey = getUserKey(userName, userPassword);
 		return authorizeUser(userKey, softwareIdentification, requestToRunSoftware, requestPrivileged);
 
-	}
-
-	private String[] parseUserId(String userId) {
-		return userId.split(USER_ID_TOKEN_SEPERATOR);
 	}
 
 	private void addUserRole(int userId, int roleId) throws ApolloDatabaseException {
@@ -511,15 +302,6 @@ public class ApolloDbUtils {
 			throw new ApolloDatabaseException("SQLException attempting to get software identification key: "
 					+ ex.getMessage());
 		}
-	}
-
-	public String getMd5(Object object) {
-
-		return DigestUtils.md5Hex(getJsonBytes(object).toString());
-	}
-
-	public String getMd5FromString(String string) {
-		return DigestUtils.md5Hex(string);
 	}
 
 	public int getRunKey(RunSimulationMessage runSimulationMessage) throws SQLException,
@@ -666,6 +448,128 @@ public class ApolloDbUtils {
 		}
 		return result;
 
+	}
+
+	public int getUserKey(String userId, String userPassword) throws ApolloDatabaseUserPasswordException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
+
+		try {
+			String query = "SELECT id, hash_of_user_password_and_salt, salt FROM users WHERE requester_id = ?";
+			PreparedStatement pstmt = getConn().prepareStatement(query);
+			pstmt.setString(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				String storedSaltedPasswordHash = rs.getString("hash_of_user_password_and_salt");
+				String salt = rs.getString("salt");
+				String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
+				if (saltedPasswordHash.equals(storedSaltedPasswordHash)) {
+					return rs.getInt("id");
+				} else {
+					throw new ApolloDatabaseUserPasswordException(
+							"Incorrect password");
+				}
+			} else {
+				throw new ApolloDatabaseKeyNotFoundException("No entry in the users table where user_id = "
+						+ userId);
+			}
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException("ClassNotFoundException attempting to get user key: " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException attempting to get user key: " + ex.getMessage());
+		}
+	}
+
+	// // user key doesn't exist
+	@Override
+	public int addUser(String userId, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
+			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
+		// check authorization?!
+
+		try {
+			getUserKey(userId, userPassword);
+			throw new ApolloDatabaseRecordAlreadyExistsException("User " + userId
+					+ " already exists in the database.");
+		} catch (ApolloDatabaseKeyNotFoundException e) {
+			// good this means the user doesn't already exist
+		} catch (ApolloDatabaseUserPasswordException e) {
+			throw new ApolloDatabaseUserPasswordException("A user with userID \"" + userId + "\" already exists.");
+		}
+
+		String query = "INSERT INTO users (requester_id,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
+		String salt = getSaltForPassword();
+		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
+		try {
+			PreparedStatement pstmt = getConn().prepareStatement(query);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, saltedPasswordHash);
+			pstmt.setString(3, salt);
+			pstmt.setString(4, userEmail);
+			pstmt.execute();
+
+			query = "SELECT LAST_INSERT_ID()";
+			pstmt = getConn().prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			return rs.getInt(1);
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException("ClassNotfoundException attempting to add user: " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException attempting to add user: " + ex.getMessage());
+		}
+	}
+
+	public boolean authenticateUser(Authentication authentication) throws
+			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
+
+		String userId = authentication.getRequesterId();
+		String userPassword = authentication.getRequesterPassword();
+
+		String[] userIdTokens = parseUserId(userId);
+		String userName = userIdTokens[0];
+
+		try {
+			getUserKey(userName, userPassword);
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected String[] parseUserId(String userId) {
+		return userId.split(USER_ID_TOKEN_SEPERATOR);
+	}
+
+	protected boolean authorizeUser(int userId, int roleId) throws ApolloDatabaseException {
+
+		String query = "SELECT * FROM user_roles where user_id = " + userId + " AND role_id = " + roleId;
+		try {
+			PreparedStatement pstmt = getConn().prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException("ClassNotFoundException attempting to authorize user: " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException attempting to authorize user: " + ex.getMessage());
+		}
+	}
+
+	public void deleteUser(String userId, String userPassword) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
+
+		int userKey = getUserKey(userId, userPassword);
+		try {
+			String query = "DELETE FROM user_roles WHERE user_id = " + userKey;
+			PreparedStatement pstmt = getConn().prepareStatement(query);
+			pstmt.executeUpdate();
+
+			query = "DELETE FROM users WHERE id = " + userKey;
+			pstmt = getConn().prepareStatement(query);
+			pstmt.executeUpdate();
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException("ClassNotFoundException attempting to delete user: " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException attempting to delete user: " + ex.getMessage());
+		}
 	}
 
 	// okay so user A can see...?
@@ -1831,35 +1735,6 @@ public class ApolloDbUtils {
 		}
 		System.out.printf("Confirmed that %d expected rows are in the database for run id %d.\n",
 				actualCount, runId);
-	}
-
-	static {
-
-		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-		if (apolloDir != null) {
-			if (!apolloDir.endsWith(File.separator)) {
-				apolloDir += File.separator;
-			}
-			APOLLO_DIR = apolloDir;
-			logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
-					+ APOLLO_DIR);
-		} else {
-			logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
-					+ " environment variable not found!");
-			APOLLO_DIR = "";
-		}
-
-		File saltFile = new File(APOLLO_DIR + SALT_FILE_NAME);
-		Scanner saltFileScanner;
-		try {
-			saltFileScanner = new Scanner(saltFile);
-		} catch (FileNotFoundException ex) {
-			throw new ExceptionInInitializerError("File \"" + saltFile.getAbsolutePath() + "\" could not be found");
-		}
-
-		SYSTEM_SALT = saltFileScanner.nextLine();
-		saltFileScanner.close();
 	}
 
 }
