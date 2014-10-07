@@ -1,10 +1,8 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleInfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v2_0_2.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
 import edu.pitt.apollo.types.v2_0_2.Epidemic;
-import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenario;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ser.StdSerializerProvider;
 
 /**
  *
@@ -46,10 +43,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	protected ByteArrayOutputStream getJsonBytes(Object obj) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			StdSerializerProvider sp = new StdSerializerProvider();
-			sp.setDefaultKeySerializer(new ObjectSerializer());
-			mapper.setSerializerProvider(sp);
-
 //			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 //			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 //			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
