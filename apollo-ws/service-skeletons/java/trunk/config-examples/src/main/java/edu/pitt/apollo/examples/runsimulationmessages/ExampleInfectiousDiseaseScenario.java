@@ -21,6 +21,7 @@ import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensus;
 import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensusData;
 import edu.pitt.apollo.types.v2_0_2.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v2_0_2.ProbabilisticParameter;
+import edu.pitt.apollo.types.v2_0_2.ReproductionNumber;
 import edu.pitt.apollo.types.v2_0_2.UnitOfTimeEnum;
 
 public class ExampleInfectiousDiseaseScenario {
@@ -63,7 +64,12 @@ public class ExampleInfectiousDiseaseScenario {
 
 		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiouHost =
 				new InfectionAcquisitionFromInfectiousHost();
-		infectionAcquisitionFromInfectiouHost.setBasicReproductionNumber(reproductionNumber);
+		
+		
+		ReproductionNumber reproNum = new ReproductionNumber();
+		reproNum.setExactValue(reproductionNumber);
+		
+		infectionAcquisitionFromInfectiouHost.getBasicReproductionNumbers().add(reproNum);
 		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
 		infectionAcquisitionFromInfectiouHost.setInfectiousPeriodDuration(infectiousPeriodDuration);
 		infectionAcquisitionFromInfectiouHost.setLatentPeriodDuration(latentPeriodDuration);
