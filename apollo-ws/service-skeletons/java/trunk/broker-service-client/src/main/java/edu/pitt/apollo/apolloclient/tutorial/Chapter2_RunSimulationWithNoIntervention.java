@@ -80,12 +80,6 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 					.unmarshal(json, RunSimulationMessage.class).getValue();
 			System.out.println(runSimulationMessage2
 					.getInfectiousDiseaseScenario().getScenarioDate());
-			System.out.printf(
-					"Nick the fucking R0 is %s\n",
-					runSimulationMessage2.getInfectiousDiseaseScenario()
-							.getInfections().get(0)
-							.getInfectionAcquisitionsFromInfectiousHosts()
-							.get(0).getBasicReproductionNumber());
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
