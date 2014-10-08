@@ -30,6 +30,7 @@ import edu.pitt.apollo.types.v2_0_2.Infection;
 import edu.pitt.apollo.types.v2_0_2.InfectionAcquisitionFromInfectiousHost;
 import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseControlStrategy;
 import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_0_2.ReproductionNumber;
 import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_0_2.TriggerDefinition;
 import edu.pitt.apollo.types.v2_0_2.Vaccination;
@@ -110,7 +111,7 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 		System.out.println("\t\tLatentPeriodDuration: " + latentPeriodDuration.getValue());
 
 		System.out.println("\t\tBasic Reproduction Number: "
-				+ infectionAcquisitionFromInfectiousHost.getBasicReproductionNumber());
+				+ infectionAcquisitionFromInfectiousHost.getBasicReproductionNumbers().get(0).getExactValue());
 		System.out.println();
 	}
 
@@ -153,7 +154,7 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 				.getInfections().get(0).getInfectionAcquisitionsFromInfectiousHosts().get(0);
 		if (infectionAcquisitionFromInfectiousHost != null) {
 			System.out.println("The existing Basic Reproduction Number in the InfectionDiseaseScenario is: "
-					+ infectionAcquisitionFromInfectiousHost.getBasicReproductionNumber());
+					+ infectionAcquisitionFromInfectiousHost.getBasicReproductionNumbers().get(0).getExactValue());
 		}
 		return infectiousDiseaseScenario;
 	}
@@ -162,13 +163,16 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 		System.out.println("Changing the Basic Reproduction Number to " +  value + "...");
 		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost = infectiousDiseaseScenario
 				.getInfections().get(0).getInfectionAcquisitionsFromInfectiousHosts().get(0);
-		infectionAcquisitionFromInfectiousHost.setBasicReproductionNumber(1.7);
+		
+		ReproductionNumber reproductionNumber = new ReproductionNumber();
+		reproductionNumber.setExactValue(1.7);
+		infectionAcquisitionFromInfectiousHost.getBasicReproductionNumbers().add(reproductionNumber);
 		return infectiousDiseaseScenario;
 	}
 
 	private Double getR0(InfectiousDiseaseScenario infectiousDiseaseScenario) {
 		return infectiousDiseaseScenario.getInfections().get(0).getInfectionAcquisitionsFromInfectiousHosts().get(0)
-				.getBasicReproductionNumber();
+				.getBasicReproductionNumbers().get(0).getExactValue();
 	}
 
 	
