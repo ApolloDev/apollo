@@ -3,6 +3,8 @@ package edu.pitt.apollo.db;
 import edu.pitt.apollo.types.v2_0_2.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_0_2.Authentication;
 import edu.pitt.apollo.types.v2_0_2.Epidemic;
+import edu.pitt.apollo.types.v2_0_2.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseControlStrategy;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -121,7 +123,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	public int addCatalogItem(String description, Object item, Authentication authentication) throws ApolloDatabaseException {
 		// user has already been authenticated
 
-		String sql = "INSERT INTO catalog (description) VALUES (?);";
+		String sql = "INSERT INTO catalog_of_uuids (description) VALUES (?);";
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, description);
@@ -139,22 +141,22 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			return catalogId;
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException adding catalog item: " + ex.getMessage());
+			throw new ApolloDatabaseException("ClassNotFoundException adding catalog_of_uuids item: " + ex.getMessage());
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException adding catalog item: " + ex.getMessage());
+			throw new ApolloDatabaseException("SQLException adding catalog_of_uuids item: " + ex.getMessage());
 		}
 	}
 
 	public int addItemVersion(int catalogId, Object item, Authentication authentication) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
 
-		// check catalog version
+		// check catalog_of_uuids version
 		try {
 			checkCatalogId(catalogId);
 
 			int userKey = getUserKey(authentication.getRequesterId(), authentication.getRequesterPassword());
 
 			String itemJson = getJSONStringForLibraryItem(item);
-			String sql = "INSERT INTO library_objects (catalog_id,library_object_as_json,user_id) VALUES (?,?,?)";
+			String sql = "INSERT INTO library_objects (catalog_uuid,json_of_library_object,user_id) VALUES (?,?,?)";
 			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
 			pstmt.setString(2, itemJson);
@@ -172,7 +174,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding item version: " + ex.getMessage());
 		}
-
 	}
 
 	public void addComment(int catalogId, int version, String comment, Authentication authentication) throws ApolloDatabaseException {
@@ -189,17 +190,17 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			pstmt.execute();
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException adding comment for catalog_id " + catalogId + " and version " + version + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("ClassNotFoundException adding comment for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException adding comment for catalog_id " + catalogId + " and version " + version + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("SQLException adding comment for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		}
 	}
 	
 	public void setPublicVersion(int catalogId, int version) throws ApolloDatabaseException {
 
 		int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version);
-		String insert = "INSERT INTO public_versions (catalog_id, item_id) SELECT " + catalogId + "," + itemId;
-		String upsert = "UPDATE public_versions SET item_id = " + itemId + " WHERE catalog_id = " + catalogId;
+		String insert = "INSERT INTO public_versions (catalog_uuid, item_id) SELECT " + catalogId + "," + itemId;
+		String upsert = "UPDATE public_versions SET item_id = " + itemId + " WHERE catalog_uuid = " + catalogId;
 		String sql = "BEGIN; LOCK TABLE public_versions IN SHARE ROW EXCLUSIVE MODE; "
 				+ "WITH upsert AS (" + upsert + " RETURNING *) " + insert + " WHERE NOT EXISTS (SELECT * FROM upsert);"
 				+ "COMMIT;";
@@ -208,15 +209,15 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			pstmt.execute();
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException setting public version for catalog_id " + catalogId + " and version " + version + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("ClassNotFoundException setting public version for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException setting public version for catalog_id " + catalogId + " and version " + version + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("SQLException setting public version for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		}
 	}
 
 	public int getPublicVersion(int catalogId) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
 
-		String sql = "SELECT item_id FROM public_versions WHERE catalog_id = " + catalogId;
+		String sql = "SELECT item_id FROM public_versions WHERE catalog_uuid = " + catalogId;
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
@@ -225,7 +226,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			if (rs.next()) {
 				itemId = rs.getInt(1);
 			} else {
-				throw new ApolloDatabaseKeyNotFoundException("There was no public version for the catalog_id " + catalogId);
+				throw new ApolloDatabaseKeyNotFoundException("There was no public version for the catalog_uuid " + catalogId);
 			}
 
 			sql = "SELECT version FROM library_objects WHERE id = " + itemId;
@@ -235,47 +236,47 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			if (rs.next()) {
 				return rs.getInt(1);
 			} else {
-				throw new ApolloDatabaseKeyNotFoundException("No item exists with catalog_id " + catalogId);
+				throw new ApolloDatabaseKeyNotFoundException("No item exists with catalog_uuid " + catalogId);
 			}
 
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException getting public version for catalog_id " + catalogId + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("ClassNotFoundException getting public version for catalog_uuid " + catalogId + ": " + ex.getMessage());
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException getting public version for catalog_id " + catalogId + ": " + ex.getMessage());
+			throw new ApolloDatabaseException("SQLException getting public version for catalog_uuid " + catalogId + ": " + ex.getMessage());
 		}
 
 	}
 
 	private int getItemIdFromCatalogIdAndVersion(int catalogId, int versionId) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
-		String sql = "SELECT id FROM library_objects WHERE catalog_id = " + catalogId + " AND version = " + versionId;
+		String sql = "SELECT id FROM library_objects WHERE catalog_uuid = " + catalogId + " AND version = " + versionId;
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			if (!rs.next()) {
-				throw new ApolloDatabaseKeyNotFoundException("No library_objects entry with catalog_id " + catalogId + " and version " + versionId + " exists");
+				throw new ApolloDatabaseKeyNotFoundException("No library_objects entry with catalog_uuid " + catalogId + " and version " + versionId + " exists");
 			}
 
 			int itemId = rs.getInt(1);
 			return itemId;
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException checking catalog table");
+			throw new ApolloDatabaseException("ClassNotFoundException checking catalog_of_uuids table");
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException checking catalog table");
+			throw new ApolloDatabaseException("SQLException checking catalog_of_uuids table");
 		}
 	}
 
 	private void checkCatalogId(int catalogId) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
-		String sql = "SELECT * FROM catalog WHERE id = " + catalogId;
+		String sql = "SELECT * FROM catalog_of_uuids WHERE uuid = " + catalogId;
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			if (!rs.next()) {
-				throw new ApolloDatabaseKeyNotFoundException("No catalog entry with id " + catalogId + " exists");
+				throw new ApolloDatabaseKeyNotFoundException("No catalog_of_uuids entry with uuid " + catalogId + " exists");
 			}
 		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseException("ClassNotFoundException checking catalog table");
+			throw new ApolloDatabaseException("ClassNotFoundException checking catalog_of_uuids table");
 		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException checking catalog table");
+			throw new ApolloDatabaseException("SQLException checking catalog_of_uuids table");
 		}
 	}
 
@@ -293,8 +294,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			List<T> list = new ArrayList<T>();
 			while (rs.next()) {
-				String library_object_as_json = rs.getString("library_object_as_json");
-				T object = getObjectFromJson(library_object_as_json, type);
+				String json_of_library_object = rs.getString("json_of_library_object");
+				T object = getObjectFromJson(json_of_library_object, type);
 				list.add(object);
 			}
 
@@ -325,6 +326,10 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		authentication.setRequesterPassword("password");
 
 		Epidemic epidemic = getEpidemic();
+		InfectiousDiseaseControlStrategy strategy = new IndividualTreatmentControlStrategy();
+		strategy.setDescription("test strategy");
+		epidemic.getInfectiousDiseaseControlStrategies().add(strategy);
+		
 		int catalogId = dbUtils.addCatalogItem("scenario", epidemic, authentication);
 		System.out.println("Catalog ID: " + catalogId);
 
@@ -349,17 +354,17 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //		int publicVersion = dbUtils.getPublicVersion(catalogId);
 //		System.out.println("Public version: " + publicVersion);
 		String sql = "SELECT\n"
-				+ "	library_object_as_json \n"
+				+ "	json_of_library_object \n"
 				+ "FROM\n"
 				+ "	(	SELECT\n"
-				+ "			library_object_as_json,\n"
-				+ "			json_array_elements(library_object_as_json->'causalPathogens') AS pathogen \n"
+				+ "			json_of_library_object,\n"
+				+ "			json_array_elements(json_of_library_object->'causalPathogens') AS pathogen \n"
 				+ "		FROM\n"
 				+ "			library_objects \n"
 				+ "		WHERE\n"
-				+ "			library_object_as_json->>'class' = 'edu.pitt.apollo.types.v2_0_2.Epidemic' ) t \n"
+				+ "			json_of_library_object->>'class' = 'edu.pitt.apollo.types.v2_0_2.Epidemic' ) t \n"
 				+ "WHERE\n"
-				+ "	t.pathogen->>'ncbiTaxonId' = '15'";
+				+ "	t.pathogen->>'ncbiTaxonId' = '12'";
 		List<Epidemic> objects = dbUtils.queryObjects(sql, Epidemic.class);
 		System.out.println("list size: " + objects.size());
 	}
