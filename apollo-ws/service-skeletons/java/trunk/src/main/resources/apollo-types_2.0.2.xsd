@@ -916,9 +916,8 @@
 				<sequence>
 					<element name="unitOfTime" type="tns:UnitOfTimeEnum"
 						maxOccurs="1" minOccurs="1" />
-					<element name="sourceId" type="nonNegativeInteger"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
+					<element name="referenceId" type="nonNegativeInteger"
+						maxOccurs="1" minOccurs="0" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1759,6 +1758,9 @@
 					</element>
 					<element name="fulminantPeriod" type="tns:Duration"
 						maxOccurs="1" minOccurs="0"></element>
+					<element name="otherIntervals" type="tns:Interval"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
 					<element name="diseaseOutcomesWithProbabilities" type="tns:DiseaseOutcomeWithProbability"
 						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
@@ -1805,7 +1807,13 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ProbabilityDistribution" />
+	<complexType name="ProbabilityDistribution">
+		<sequence>
+			<element name="referenceId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="0" />
+		</sequence>
+	</complexType>
+
 
 	<complexType name="UnconditionalProbabilityDistribution">
 		<complexContent>
@@ -2992,8 +3000,8 @@
 
 	<complexType name="TransmissionTree">
 		<sequence>
-			<element name="thisCase" type="tns:CaseRecordCategoricalVariables"
-				maxOccurs="1" minOccurs="1">
+			<element name="thisCase" type="tns:CaseRecord" maxOccurs="1"
+				minOccurs="1">
 			</element>
 			<element name="casesThisCaseInfected" type="tns:TransmissionTree"
 				maxOccurs="unbounded" minOccurs="0"></element>
@@ -3026,12 +3034,14 @@
 				minOccurs="0" />
 			<element name="numberOfSamplesPositive" type="token"
 				maxOccurs="1" minOccurs="0" />
+			<element name="referenceId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
 
 	<complexType name="PopulationSerologySurvey">
 		<sequence>
-			<element name="speciesSampledX" type="token" maxOccurs="1"
+			<element name="speciesSampled" type="token" maxOccurs="1"
 				minOccurs="1" />
 			<element name="speciesSampledNcbiTaxonId" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
@@ -3042,6 +3052,8 @@
 			<element name="testName" type="token" maxOccurs="1"
 				minOccurs="0" />
 			<element name="numberOfSamplesPositive" type="token"
+				maxOccurs="1" minOccurs="0" />
+			<element name="referenceId" type="nonNegativeInteger"
 				maxOccurs="1" minOccurs="0" />
 		</sequence>
 	</complexType>
@@ -3118,4 +3130,29 @@
 		</sequence>
 	</complexType>
 
+
+	<complexType name="Interval">
+		<sequence>
+			<element name="startBoundaryDefinition" type="tns:IntervalBoundaryDefinitionEnum"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="endBoundaryDefinition" type="tns:IntervalBoundaryDefinitionEnum"
+				maxOccurs="1" minOccurs="1"></element>
+			<element name="duration" type="tns:Duration" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="readableTitle" type="token" maxOccurs="1"
+				minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="IntervalBoundaryDefinitionEnum">
+		<restriction base="string">
+			<enumeration value="timeOfFirstSymptom" />
+			<enumeration value="timeOfRecovery" />
+			<enumeration value="timeOfHospitalAdmission" />
+			<enumeration value="timeOfHospitalDischarge" />
+			<enumeration value="timeOfDeath" />
+			<enumeration value="timeOfWhoNotification" />
+			<enumeration value="timeOfCaseDetection" />
+		</restriction>
+	</simpleType>
 </schema>
