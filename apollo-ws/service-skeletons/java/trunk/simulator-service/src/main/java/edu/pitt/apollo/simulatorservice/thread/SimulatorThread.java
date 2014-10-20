@@ -4,6 +4,7 @@ import edu.pitt.apollo.SimulatorServiceImpl;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
 import edu.pitt.apollo.types.v2_0_2.Location;
@@ -50,7 +51,7 @@ public abstract class SimulatorThread extends Thread {
 
 	protected abstract void runSimulator() throws IOException;
 
-	protected abstract void storeFileOutputToDatabase(String location);
+	protected abstract void storeFileOutputToDatabase(String location) throws SimulatorServiceException;
 
 	protected abstract void storeTimeSeriesOutputToDatabase(String location);
 
@@ -69,7 +70,9 @@ public abstract class SimulatorThread extends Thread {
 			storeOutput();
 			setRunCompletedStatus();
 		} catch (IOException ex) {
-			System.err.println("IOException running simulator: " + ex.getMessage());
+			updateStatus(MethodCallStatusEnum.FAILED, "IOException running simulator: " + ex.getMessage());
+		} catch (SimulatorServiceException ex) {
+			updateStatus(MethodCallStatusEnum.FAILED, "SimulatorServiceException: " + ex.getMessage());
 		} finally {
 			finalizeRun();
 		}
@@ -94,12 +97,12 @@ public abstract class SimulatorThread extends Thread {
 		RunUtils.updateStatus(dbUtils, runId, statusEnum, message);
 	}
 
-	protected void storeOutput() throws IOException {
+	protected void storeOutput() throws IOException, SimulatorServiceException {
 		if (useDatabase) {
 			// get location
 			Location location = message.getInfectiousDiseaseScenario().getLocation();
 			String locationString;
-			if (location.getApolloLocationCode()!= null) {
+			if (location.getApolloLocationCode() != null) {
 				locationString = location.getApolloLocationCode();
 			} else {
 				// else use first location included
@@ -133,7 +136,7 @@ public abstract class SimulatorThread extends Thread {
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		try {
 			for (int i = 0; i < series.length; i++) {
-				String line = "US" + locationString + " " + series[i] + " " + i + ":1" + "\n";
+				String line = locationString + " " + series[i] + " " + i + ":1" + "\n";
 				stream.write(line.getBytes());
 			}
 		} catch (IOException ex) {
