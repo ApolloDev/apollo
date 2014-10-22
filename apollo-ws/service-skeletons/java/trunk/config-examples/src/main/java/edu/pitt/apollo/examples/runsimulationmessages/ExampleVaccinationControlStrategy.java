@@ -169,7 +169,6 @@ public class ExampleVaccinationControlStrategy {
 		// populationTreatmentCensus not set as it is not required
 		vaccinationControlStrategy.setCompliance(getControlStrategyCompilance());
 		// delayFromSymptomsToTreatment not set as it is not required
-		vaccinationControlStrategy.setTreatmentSystemLogistics(getTreatmentSystemLogistics());
 		vaccinationControlStrategy.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
 
 		return vaccinationControlStrategy;
