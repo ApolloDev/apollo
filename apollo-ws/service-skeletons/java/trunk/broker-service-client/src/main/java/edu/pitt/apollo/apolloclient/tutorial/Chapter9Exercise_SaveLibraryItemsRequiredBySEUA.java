@@ -175,7 +175,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 			logistics.getAdministrationCapacityPerDay().add(
 					new BigInteger("5000"));
 		}
-		vcm.setTreatmentSystemLogistics(logistics);
+		vcm.getTreatmentSystemLogistics().add(logistics);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
 		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
@@ -272,7 +272,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 					new BigInteger("2000"));
 		}
 
-		atcm.setTreatmentSystemLogistics(logistics);
+		atcm.getTreatmentSystemLogistics().add(logistics);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
 		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
