@@ -1193,8 +1193,8 @@
 				maxOccurs="unbounded" minOccurs="1" />
 			<element name="locationsExcluded" type="tns:ApolloLocationCode"
 				maxOccurs="unbounded" minOccurs="0" />
-			<element name="polygons" type="string" maxOccurs="unbounded"
-				minOccurs="0" />
+			<element name="multiGeometries" type="tns:MultiGeometry"
+				maxOccurs="unbounded" minOccurs="0" />
 		</sequence>
 	</complexType>
 
@@ -1320,6 +1320,8 @@
 			<enumeration value="allSchools" />
 			<enumeration value="allSchoolsOfOneLevelInOneTract" />
 			<enumeration value="workplace" />
+			<enumeration value="nzaraCottonFactory" />
+			<enumeration value="home" />
 		</restriction>
 	</simpleType>
 
@@ -1548,7 +1550,7 @@
 					</element>
 					<element name="administrativeLocations" type="tns:Location"
 						maxOccurs="unbounded" minOccurs="1" />
-					<element name="epidemicZones" type="tns:NamedPolygon"
+					<element name="epidemicZones" type="tns:NamedMultiGeometry"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
@@ -2120,6 +2122,7 @@
 			<enumeration value="miles" />
 			<enumeration value="daily_dose" />
 			<enumeration value="percent_of_population_vaccinated" />
+			<enumeration value="visits" />
 		</restriction>
 	</simpleType>
 
@@ -2254,8 +2257,8 @@
 				<element name="locationDefinition" type="tns:LocationDefinition"
 					maxOccurs="1" minOccurs="1">
 				</element>
-				<element name="polygon" type="tns:NamedPolygon" maxOccurs="1"
-					minOccurs="1">
+				<element name="namedMultiGeometry" type="tns:NamedMultiGeometry"
+					maxOccurs="1" minOccurs="1">
 				</element>
 				<element name="cartesianCircleLocationDefinition" type="tns:CartesianCircleLocationDefinition"
 					maxOccurs="1" minOccurs="1">
@@ -2972,25 +2975,27 @@
 
 	<complexType name="CaseRecord">
 		<sequence>
-			<element name="caseId" type="token" maxOccurs="1" minOccurs="0">
+			<element name="caseId" type="token" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="dateOfOnset" type="date" maxOccurs="1"
+			<element name="ageInYears" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="occupations" type="tns:OccupationEnum"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="placesVisitedWhileSusceptibleOrInfectious"
+				type="tns:PlaceVisited" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="infectionAcquiredFromCaseId" type="token"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="diseaseOutcomesWithLocationDateTime" type="tns:DiseaseOutcomeWithLocationDateTime"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="labTestsAndResults" type="tns:LabTestAndResult"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="pathogenGeneSequence" type="string" maxOccurs="1"
 				minOccurs="0">
-			</element>
-			<element name="outcome" type="tns:DiseaseOutcomeEnum"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="dateOfOutcome" type="date" maxOccurs="1"
-				minOccurs="0">
-			</element>
-			<element name="infectionAcquiredFrom" type="string"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="isolatedPathogenGeneSequence" type="string"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="additionalCaseRecordCategoricalVariables"
-				type="tns:CategoryDefinition" maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
@@ -3102,7 +3107,18 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="RelativeRiskDataSet"></complexType>
+	<complexType name="RelativeRiskDataSet">
+		<sequence>
+			<element name="textualDescription" type="token" maxOccurs="1"
+				minOccurs="1" />
+			<element name="caseCountArray" type="tns:CaseCountArray"
+				maxOccurs="1" minOccurs="1" />
+			<element name="controlCountArray" type="tns:CaseCountArray"
+				maxOccurs="1" minOccurs="1" />
+			<element name="referenceId" type="tns:Reference" maxOccurs="1"
+				minOccurs="0" />
+		</sequence>
+	</complexType>
 
 	<complexType name="CaseVariableAndValue">
 		<sequence>
@@ -3266,18 +3282,7 @@
 
 
 
-	<complexType name="NamedPolygon">
-		<sequence>
-			<element name="polygon" type="tns:LocationPolygon" maxOccurs="1"
-				minOccurs="1"></element>
-			<choice>
-				<element name="apolloLocationCode" type="tns:ApolloLocationCode"
-					maxOccurs="1" minOccurs="1"></element>
-				<element name="textualDescription" type="string" maxOccurs="1"
-					minOccurs="1"></element>
-			</choice>
-		</sequence>
-	</complexType>
+
 
 	<complexType name="LocationPolygon">
 		<sequence>
@@ -3290,4 +3295,94 @@
 			<pattern value="[0-9]{5}-[0-9]{1}"></pattern>
 		</restriction>
 	</simpleType>
-</schema>
+
+	<complexType name="DiseaseOutcomeWithLocationDateTime">
+		<sequence>
+			<element name="diseaseOutcome" type="tns:DiseaseOutcomeEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="dateTime" type="dateTime" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<choice><element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="0">
+			</element>
+				<element name="namedPolygon" type="tns:NamedMultiGeometry" maxOccurs="1" minOccurs="0"></element></choice>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="LabTestAndResult">
+		<sequence>
+			<choice>
+				<element name="textualName" type="string" maxOccurs="1"
+					minOccurs="1"></element>
+				<element name="loincCode" type="tns:LoincId" maxOccurs="1"
+					minOccurs="1"></element>
+
+			</choice>
+			<element name="sampleDate" type="dateTime" maxOccurs="1"
+					minOccurs="0"></element>
+			<element name="result" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="OccupationEnum">
+		<restriction base="string">
+			<enumeration value="storekeeper" />
+			<enumeration value="merchant" />
+			<enumeration value="nurse" />
+			<enumeration value="hospitalMessenger" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="PlaceVisited">
+		<sequence>
+			<choice>
+				<element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="namedMultiGeometry" type="tns:NamedMultiGeometry" maxOccurs="1" minOccurs="1"></element>
+			</choice>
+			<choice>
+				<element name="frequencyOfVisits" type="tns:Rate"
+					maxOccurs="1" minOccurs="0">
+				</element>
+				<element name="datesOfVisits" type="date" maxOccurs="unbounded"
+					minOccurs="0">
+				</element>
+				<element name="realDateSpansOfVisits"
+					type="tns:RealDateSpanCategoryDefinition" maxOccurs="unbounded"
+					minOccurs="0">
+				</element>
+				<element name="realTimeSpansOfVisits"
+					type="tns:RealTimeSpanCategoryDefinition" maxOccurs="unbounded"
+					minOccurs="0">
+				</element>
+			</choice>
+        </sequence>
+	</complexType>
+
+
+	<complexType name="MultiGeometry">
+		<sequence>
+			<element name="polygons" type="tns:LocationPolygon" maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="NamedMultiGeometry">
+	<!-- <complexContent>
+	<extension base="tns:MultiGeometry">-->
+		<sequence>
+		<element name="polygons" type="tns:LocationPolygon" maxOccurs="unbounded" minOccurs="1"></element>
+			<choice>
+				<element name="apolloLocationCode" type="tns:ApolloLocationCode"
+					maxOccurs="1" minOccurs="1"></element>
+				<element name="textualDescription" type="string" maxOccurs="1"
+					minOccurs="1"></element>
+			</choice>
+		</sequence>
+		<!--  </extension>
+		</complexContent> -->
+	</complexType>
+	
+	</schema>
