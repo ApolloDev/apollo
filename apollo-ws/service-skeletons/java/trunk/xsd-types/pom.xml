@@ -146,8 +146,9 @@
 								<resource>
 									<directory>${basedir}/../src/main/resources</directory>
 									<includes>
-										<include>apollo-types_2.0.2.xsd</include>
-										<include>broker-service-types_2.0.2.xsd</include>
+										<include>apollo-types_2.1.0.xsd</include>
+										<include>library_service_2.1.0.xsd</include>
+										<include>services-common_2.1.0.xsd</include>
 									</includes>
 									<filtering>true</filtering>
 								</resource>
@@ -230,7 +231,9 @@
 					<bindingDirectory>src/main/xjb</bindingDirectory>
 					<schemaDirectory>src/main/xsd</schemaDirectory>
 					<schemaIncludes>
-						<include>apollo-types_2.0.2.xsd</include>
+						<include>apollo-types_2.1.0.xsd</include>
+						<include>library_service_2.1.0.xsd</include>
+						<include>services-common_2.1.0.xsd</include>
 					</schemaIncludes>
 					<extension>true</extension>
 					<!-- The name of your generated source package -->
