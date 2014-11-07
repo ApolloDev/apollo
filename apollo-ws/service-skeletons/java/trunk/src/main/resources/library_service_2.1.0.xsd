@@ -121,7 +121,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="ModifyOwnershipMessage">
+	<complexType name="ModifyGroupOwnershipMessage">
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
