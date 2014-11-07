@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.types.v2_0_2.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
+import edu.pitt.apollo.types.v2_1_0.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_1_0.Authentication;
 import java.util.List;
 
 /**

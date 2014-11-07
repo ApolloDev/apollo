@@ -29,7 +29,7 @@ import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerExcept
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  * 
