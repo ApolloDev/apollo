@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
-import edu.pitt.apollo.types.v2_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationsResult;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationsResult;
 
 /**
  *

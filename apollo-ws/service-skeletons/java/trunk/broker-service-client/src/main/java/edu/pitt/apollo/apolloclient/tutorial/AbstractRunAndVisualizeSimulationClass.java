@@ -3,10 +3,10 @@ package edu.pitt.apollo.apolloclient.tutorial;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.VisualizerIdentificationEnum;
-import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  * This provides helper methods to send requests to, and process the results of

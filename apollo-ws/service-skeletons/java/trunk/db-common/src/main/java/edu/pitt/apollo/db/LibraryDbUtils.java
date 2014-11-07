@@ -1,10 +1,10 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.types.v2_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.Epidemic;
-import edu.pitt.apollo.types.v2_0_2.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
+import edu.pitt.apollo.types.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.Epidemic;
+import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseControlStrategy;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -363,7 +363,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				+ "		FROM\n"
 				+ "			library_objects \n"
 				+ "		WHERE\n"
-				+ "			json_of_library_object->>'class' = 'edu.pitt.apollo.types.v2_0_2.Epidemic' ) t \n"
+				+ "			json_of_library_object->>'class' = 'edu.pitt.apollo.types.v2_1_0.Epidemic' ) t \n"
 				+ "WHERE\n"
 				+ "	t.pathogen->>'ncbiTaxonId' = '12'";
 		List<Epidemic> objects = dbUtils.queryObjects(sql, Epidemic.class);
