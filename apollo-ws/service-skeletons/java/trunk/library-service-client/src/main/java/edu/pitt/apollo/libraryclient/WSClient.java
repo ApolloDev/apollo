@@ -14,9 +14,33 @@
 // */
 package edu.pitt.apollo.libraryclient;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+
+import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsMessage;
+import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+
 public class WSClient {
 
-    public static final String WSDL_LOC = "http://localhost:8080/libraryservice2.0/services/libraryservice?wsdl";
+    public static final String WSDL_LOC = "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
+    public static final QName SERVICE =  new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
+    
+    public static void main(String[] args) throws MalformedURLException {
+    	LibraryServiceV210 ls = new LibraryServiceV210(new URL(WSDL_LOC), SERVICE);
+    	LibraryServiceEI port = ls.getLibraryServiceEndpoint();
+    	GetCommentsMessage gcm = new GetCommentsMessage();
+    	Authentication a = new Authentication();
+    	a.setRequesterId("john");
+    	a.setRequesterPassword("oh yeah");
+    	gcm.setAuthentication(a);
+    	gcm.setUri("test");
+    	gcm.setVersion(7);
+    	port.getComments(gcm);
+    }
 
 //    private static Authentication getAuthentication() {
 //
