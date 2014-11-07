@@ -12,9 +12,9 @@ import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  * 

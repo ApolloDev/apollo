@@ -20,20 +20,20 @@ import java.util.ArrayList;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleVaccinationControlStrategy;
-import edu.pitt.apollo.types.v2_0_2.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v2_0_2.FixedDuration;
-import edu.pitt.apollo.types.v2_0_2.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v2_0_2.Infection;
-import edu.pitt.apollo.types.v2_0_2.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseControlStrategy;
-import edu.pitt.apollo.types.v2_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v2_0_2.ReproductionNumber;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.TriggerDefinition;
-import edu.pitt.apollo.types.v2_0_2.Vaccination;
+import edu.pitt.apollo.types.v2_1_0.AddLibraryItemResult;
+import edu.pitt.apollo.types.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v2_1_0.FixedDuration;
+import edu.pitt.apollo.types.v2_1_0.GetLibraryItemResult;
+import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.Infection;
+import edu.pitt.apollo.types.v2_1_0.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_1_0.ReproductionNumber;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_1_0.TriggerDefinition;
+import edu.pitt.apollo.types.v2_1_0.Vaccination;
 
 public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationClass {
 
