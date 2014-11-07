@@ -17,10 +17,10 @@ import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorI
 import edu.pitt.apollo.apolloclient.tutorial.TutorialWebServiceClient;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  * 
