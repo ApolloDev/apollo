@@ -7,10 +7,10 @@ import java.util.Map;
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_2.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_2.UrlOutputResource;
+import edu.pitt.apollo.types.v2_1_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_1_0.UrlOutputResource;
 
 /**
  *
