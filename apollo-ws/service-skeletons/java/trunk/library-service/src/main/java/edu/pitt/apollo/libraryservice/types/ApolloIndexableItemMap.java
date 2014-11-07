@@ -1,6 +1,6 @@
 package edu.pitt.apollo.libraryservice.types;
 
-import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
+import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
 import java.util.HashMap;
 
 /**
