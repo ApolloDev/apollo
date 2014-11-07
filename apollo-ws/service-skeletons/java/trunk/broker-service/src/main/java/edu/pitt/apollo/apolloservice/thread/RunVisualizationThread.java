@@ -12,10 +12,10 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v2_0_2.VisualizerServiceV202;
-import edu.pitt.apollo.types.v2_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceV202;
+import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  *

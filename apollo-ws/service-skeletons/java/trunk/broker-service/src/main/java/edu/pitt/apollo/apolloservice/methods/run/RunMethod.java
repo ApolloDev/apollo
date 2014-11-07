@@ -9,11 +9,11 @@ import edu.pitt.apollo.apolloservice.thread.RunApolloServiceThreadFactory;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_2.RunResult;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_1_0.RunResult;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 /**
  * 
