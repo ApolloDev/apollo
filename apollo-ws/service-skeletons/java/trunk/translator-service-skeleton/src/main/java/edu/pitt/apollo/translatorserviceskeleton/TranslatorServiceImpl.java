@@ -18,10 +18,10 @@ import java.math.BigInteger;
 
 import javax.jws.WebService;
 
-import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
+import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_0_2/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_1_0/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI")
 public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 
