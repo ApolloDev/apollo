@@ -7,11 +7,11 @@ import java.util.Map;
 import junit.framework.TestCase;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.types.v2_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_0_2.Authentication;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 
 public class ApolloDbUtilsTest extends TestCase {
 
