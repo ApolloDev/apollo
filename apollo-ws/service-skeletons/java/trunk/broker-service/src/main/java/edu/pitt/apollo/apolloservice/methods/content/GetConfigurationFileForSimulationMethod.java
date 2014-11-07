@@ -8,9 +8,9 @@ import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_0_2.GetConfigurationFileForSimulationResult;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_1_0.GetConfigurationFileForSimulationResult;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
 
 /**
  *

@@ -4,7 +4,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>2.0.2a.7-SNAPSHOT</version>
+        <version>2.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>library-service</artifactId>
     <name>Library Service</name>
@@ -23,12 +23,6 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.db4o</groupId>
-            <artifactId>db4o-core-java5</artifactId>
-            <version>8.0.184.15484</version>
         </dependency>
 
 
@@ -72,7 +66,14 @@
                             <outputDirectory>${basedir}/target/classes</outputDirectory>
                             <resources>
                                 <resource>
+                                
                                     <directory>${basedir}/../src/main/resources</directory>
+                                    <includes>
+                                    <include>libraryservice210.wsdl</include>
+                                    <include>library_service_2.1.0.xsd</include>
+                                    <include>apollo-types_2.1.0.xsd</include>
+                                    <include>services-common_2.1.0.xsd</include>
+                                    </includes>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -165,9 +166,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/libraryservice202.wsdl
+                                                ${basedir}/../src/main/resources/libraryservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:libraryservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:libraryservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
