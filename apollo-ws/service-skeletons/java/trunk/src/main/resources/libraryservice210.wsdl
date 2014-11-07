@@ -39,7 +39,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="addOrUpdateLibraryItemContainerResult" type="pref:AddLibraryItemContainerResult"></xsd:element>
+						<xsd:element name="addOrUpdateLibraryItemContainerResult" type="pref:AddOrUpdateLibraryItemContainerResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -55,7 +55,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="addOrUpdateLibraryItemComtainerResult" type="pref:AddOrUpdateLibraryItemContainerResult"></xsd:element>
+						<xsd:element name="addOrUpdateLibraryItemContainerResult" type="pref:AddOrUpdateLibraryItemContainerResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -175,7 +175,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="removeGroupMessage" type=pref:ModifyGroupOwnershipMessage></xsd:element>
+						<xsd:element name="removeGroupMessage" type="pref:ModifyGroupOwnershipMessage"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -327,7 +327,130 @@
         	<wsdl:output message="tns:getDiffResponse"></wsdl:output>
         </wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="LibraryServiceBinding" type="tns:LibraryServiceEI">
+	<wsdl:binding name="LibraryServiceBinding"
+		type="tns:LibraryServiceEI">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getLibraryItemContainer">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getLibraryItemContainer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addLibraryItemContainer">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addLibraryItemContainer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateLibraryItemContainer">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/updateLibraryItemContainer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setReleaseVersion">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/setReleaseVersion" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addReviewerComment">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addReviewerComment" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getComments">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getComments" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getVersions">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getVersions" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getReleaseVersion">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getReleaseVersion" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="query">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/query" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addGroup">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="removeGroup">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/removeGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDiff">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getDiff" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="LibraryService_v2.1.0">
 		<wsdl:port binding="tns:LibraryServiceBinding" name="LibraryServiceEndpoint">
