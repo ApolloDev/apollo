@@ -16,11 +16,11 @@ import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceEI;
-import edu.pitt.apollo.service.translatorservice.v2_0_2.TranslatorServiceV202;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceV202;
+import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
 import java.sql.SQLException;
 
 /**
