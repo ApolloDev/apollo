@@ -67,21 +67,7 @@
 
 	
 
-<!-- 	<complexType name="RunVisualizationMessage"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="visualizerIdentification" type="tns:SoftwareIdentification" /> -->
-<!-- 			<element name="authentication" type="tns:Authentication" /> -->
-<!-- 			<element name="simulationRunIds" type="tns:RunIdentificationAndLabel" -->
-<!-- 				maxOccurs="unbounded" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
 
-<!-- 	<complexType name="RunVisualizationResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="visualizationRunId" type="tns:RunIdentification" /> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
 
 
 
@@ -267,22 +253,7 @@
 	</complexType>
 
 
-	<complexType name="SoftwareIdentification">
-		<sequence>
-			<element name="softwareDeveloper" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareName" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareVersion" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareType" type="tns:ApolloSoftwareTypeEnum"
-				maxOccurs="1" minOccurs="1">
-			</element>
-		</sequence>
-	</complexType>
+	
 
 	<simpleType name="ApolloLocationCode">
 		<restriction base="token">
@@ -337,20 +308,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="RunSimulationsMessage">
-		<sequence>
-			<element name="batchConfigurationFile" type="anyURI" />
-			<element name="acceptCachedResults" type="boolean" />
-			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
-		</sequence>
-	</complexType>
 
-<!-- 	<complexType name="RunSimulationsResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="completedFile" type="anyURI" /> -->
-<!-- 			<element name="runId" type="tns:RunIdentification" /> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
 
 	<complexType name="AntiviralTreatment">
 		<complexContent>
@@ -788,15 +746,7 @@
 
 
 
-	<simpleType name="ApolloSoftwareTypeEnum">
-		<restriction base="string">
-			<enumeration value="simulator" />
-			<enumeration value="visualizer" />
-			<enumeration value="syntheticPopulationGenerator" />
-			<enumeration value="translator" />
-
-		</restriction>
-	</simpleType>
+	
 
 <!-- 	<complexType name="GetVisualizerOutputResourcesResult"> -->
 <!-- 		<sequence> -->
@@ -1396,21 +1346,7 @@
 
 
 
-<!-- 	<complexType name="RunSimulationMessage"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="simulatorIdentification" type="tns:SoftwareIdentification" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 			<element name="authentication" type="tns:Authentication" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 			<element name="simulatorTimeSpecification" type="tns:SimulatorTimeSpecification" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 			<element name="infectiousDiseaseScenario" type="tns:InfectiousDiseaseScenario" -->
-<!-- 				maxOccurs="1" minOccurs="1" /> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
+
 
 	<complexType name="InfectiousDiseaseScenario">
 		<complexContent>
@@ -2182,7 +2118,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="RunSyntheticPopulationGenerationMessage"></complexType>
+	
 
 
 	<complexType name="Population">
@@ -2546,21 +2482,7 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="Role">
-		<sequence>
-			<element name="softwareIdentification" type="tns:SoftwareIdentification">
-			</element>
-			<element name="can_run" type="boolean"></element>
-			<element name="can_view_cached_results" type="boolean"></element>
-		</sequence>
-	</complexType>
 
-	<complexType name="ServiceRecord">
-		<sequence>
-			<element name="url" type="anyURI" />
-			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
-		</sequence>
-	</complexType>
 
 <!-- 	<complexType name="ServiceRegistrationRecord"> -->
 <!-- 		<complexContent> -->
@@ -2591,29 +2513,8 @@
 		</sequence>
 	</complexType>
 
-<!-- 	<complexType name="RunIdentificationAndLabel"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="runIdentification" type="tns:RunIdentification"> -->
-<!-- 			</element> -->
-<!-- 			<element name="runLabel" type="string"></element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
 
-<!-- 	<complexType name="TerminateRunRequest"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="runIdentification" type="tns:RunIdentification"> -->
-<!-- 			</element> -->
-<!-- 			<element name="authentication" type="tns:Authentication"></element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
-
-<!-- 	<complexType name="TerminteRunResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus"> -->
-<!-- 			</element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
-
+	
 	<complexType name="IndividualBehavior"></complexType>
 
 	<complexType name="IndividualMosquitoBehavior">
