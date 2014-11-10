@@ -14,6 +14,8 @@
  */
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.LibraryDbUtils;
 import java.io.File;
 import java.util.Map;
 
@@ -42,16 +44,27 @@ import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
+import edu.pitt.apollo.libraryservice.methods.AddLibraryItemMethod;
+import edu.pitt.apollo.libraryservice.methods.AddReviewerCommentMethod;
+import edu.pitt.apollo.libraryservice.methods.GetCommentsMethod;
+import edu.pitt.apollo.libraryservice.methods.GetDiffMethod;
+import edu.pitt.apollo.libraryservice.methods.GetLibraryItemMethod;
+import edu.pitt.apollo.libraryservice.methods.GetReleaseVersionMethod;
+import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
+import edu.pitt.apollo.libraryservice.methods.QueryLibraryMethod;
+import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
+import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
-
-
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import java.io.IOException;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_1_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI")
 class LibraryServiceImpl implements LibraryServiceEI {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
-	
-	
+	private static final String APOLLO_DIR;
+	private static final LibraryDbUtils libraryDbUtils;
+	private static final LibraryDbUtils readonlyLibraryDbUtils;
 
 	static {
 		Map<String, String> env = System.getenv();
@@ -65,51 +78,40 @@ class LibraryServiceImpl implements LibraryServiceEI {
 			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
 		}
 
-		
+		APOLLO_DIR = apolloDir;
+		try {
+			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database.properties"));
+			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly.properties"));
+		} catch (IOException ex) {
+			throw new ExceptionInInitializerError("IOException creating LibraryDbUtils: " + ex.getMessage());
+		}
 	}
-
-
 
 	@Override
 	public GetVersionsResult getVersions(GetVersionsMessage getVersionsMessage) {
-		return null;
+		return GetVersionsMethod.getVersions(libraryDbUtils, getVersionsMessage);
 	}
-
-
 
 	@Override
 	public QueryResult query(QueryMessage queryMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return QueryLibraryMethod.queryLibrary(readonlyLibraryDbUtils, queryMessage);
 	}
-
-
 
 	@Override
 	public GetLibraryItemContainerResult getLibraryItemContainer(
 			GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return GetLibraryItemMethod.getLibraryItemMethod(libraryDbUtils, getLibraryItemContainerMessage);
 	}
-
-
 
 	@Override
 	public GetDiffResult getDiff(GetDiffMessage getDiffMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return GetDiffMethod.getDiff(libraryDbUtils, getDiffMessage);
 	}
-
-
 
 	@Override
 	public GetCommentsResult getComments(GetCommentsMessage getCommentsMessage) {
-		GetCommentsResult res = new GetCommentsResult();
-		System.out.println("ok!");
-		return null;
+		return GetCommentsMethod.getComments(libraryDbUtils, getCommentsMessage);
 	}
-
-
 
 	@Override
 	public ModifyGroupOwnershipResult addGroup(
@@ -118,16 +120,11 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		return null;
 	}
 
-
-
 	@Override
 	public GetReleaseVersionResult getReleaseVersion(
 			GetReleaseVersionMessage getReleaseVersionMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return GetReleaseVersionMethod.getReleaseVersion(libraryDbUtils, getReleaseVersionMessage);
 	}
-
-
 
 	@Override
 	public ModifyGroupOwnershipResult removeGroup(
@@ -136,40 +133,47 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		return null;
 	}
 
-
-
 	@Override
 	public AddReviewerCommentResult addReviewerComment(
 			AddReviewerCommentMessage addReviewerCommentMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return AddReviewerCommentMethod.addReviewerComment(libraryDbUtils, addReviewerCommentMessage);
 	}
-
-
 
 	@Override
 	public AddOrUpdateLibraryItemContainerResult updateLibraryItemContainer(
 			AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return UpdateLibraryItemMethod.updateLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
 	}
-
-
 
 	@Override
 	public SetReleaseVersionResult setReleaseVersion(
 			SetReleaseVersionMessage setReleaseVersionMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return SetReleaseVersionMethod.setReleaseVersion(libraryDbUtils, setReleaseVersionMessage);
 	}
-
-
 
 	@Override
 	public AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(
 			AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return AddLibraryItemMethod.addLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
 	}
 
+	public static void main(String[] args) throws ApolloDatabaseException {
+		
+		LibraryServiceImpl impl = new LibraryServiceImpl();
+		
+		QueryMessage message = new QueryMessage();
+		
+		Authentication auth = new Authentication();
+		auth.setRequesterId("library_demo");
+		auth.setRequesterPassword("password");
+		
+		message.setAuthentication(auth);
+		
+		String query = "SELECT id,json_of_library_object->1->'catalogEntry'->1->'itemDescription' FROM library_objects";
+		message.setQuery(query);
+		
+		QueryResult result = impl.query(message);
+		System.out.println("done");
+	}
+	
 }
