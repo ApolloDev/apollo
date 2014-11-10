@@ -1,12 +1,15 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.Db4oDatabaseAccessor;
-import edu.pitt.apollo.types.v2_0_2.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_0_2.CatalogEntryForApolloLibraryItem;
-import edu.pitt.apollo.types.v2_0_2.CuratedLibraryItemContainer;
-import edu.pitt.apollo.types.v2_0_2.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatus;
-import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.LibraryDbUtils;
+import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import java.io.IOException;
 
 /**
  *
@@ -18,31 +21,41 @@ import edu.pitt.apollo.types.v2_0_2.MethodCallStatusEnum;
  */
 public class GetLibraryItemMethod {
 
-	public static GetLibraryItemResult getLibraryItemMethod(Db4oDatabaseAccessor db4oAccessor, String uuid) {
-		GetLibraryItemResult result = new GetLibraryItemResult();
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage("Okay.");
-		status.setStatus(MethodCallStatusEnum.COMPLETED);
+	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils, GetLibraryItemContainerMessage message) {
 
-		CatalogEntryForApolloLibraryItem catalogEntry = db4oAccessor.getCatalogEntryForApolloLibraryItemFromMap(uuid);
-		if (catalogEntry == null) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage("No CatalogEntryForApolloLibraryItem with hash \"" + uuid + "\" exists in the database");
-		} else {
-			CuratedLibraryItemContainer container = new CuratedLibraryItemContainer();
-			String apolloIndexableItemHash = catalogEntry.getItemUuid();
-			ApolloIndexableItem apolloIndexableItem = db4oAccessor.getApolloIndexableItemFromMap(apolloIndexableItemHash);
-			if (apolloIndexableItem == null) {
-				status.setStatus(MethodCallStatusEnum.FAILED);
-				status.setMessage("No ApolloIndexableItem entry with hash \"" + apolloIndexableItemHash + "\" exists in the database");
+		Authentication authentication = message.getAuthentication();
+		String uri = message.getUri();
+		Integer version = message.getVersion();
+
+		GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
+		MethodCallStatus status = new MethodCallStatus();
+		result.setStatus(status);
+
+		try {
+			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+			if (userAuthorized) {
+
+				LibraryItemContainer container;
+				if (version == null) {
+					// get release version
+					container = dbUtils.getReleaseLibraryItemContainer(uri);
+				} else {
+					container = dbUtils.getLibraryItemContainer(uri, version);
+				}
+				result.setLibraryItemContainer(container);
+				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
-				container.setApolloIndexableItem(apolloIndexableItem);
-				container.setCuratedLibraryItem(catalogEntry);
-				result.setCuratedLibraryItemContainer(container);
+				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+				status.setMessage("You are not authorized to retrieve items from the library.");
 			}
+		} catch (ApolloDatabaseException ex) {
+			status.setStatus(MethodCallStatusEnum.FAILED);
+			status.setMessage(ex.getMessage());
+		} catch (IOException ex) {
+			status.setStatus(MethodCallStatusEnum.FAILED);
+			status.setMessage("IOEXception: " + ex.getMessage());
 		}
 
-		result.setMethodCallStatus(status);
 		return result;
 	}
 

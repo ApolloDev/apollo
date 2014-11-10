@@ -1,14 +1,14 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunVisualizationMessage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

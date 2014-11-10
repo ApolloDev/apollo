@@ -14,33 +14,33 @@ import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
  *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
- * Date: Aug 13, 2014
- * Time: 3:41:53 PM
- * Class: AddLibraryItemMethod
+ * Date: Nov 7, 2014
+ * Time: 10:40:39 AM
+ * Class: UpdateLibraryItemMethod
  */
-public class AddLibraryItemMethod {
+public class UpdateLibraryItemMethod {
 
-	public static AddOrUpdateLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils,
+	public static AddOrUpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
 			AddOrUpdateLibraryItemContainerMessage message) {
-
+		
 		Authentication authentication = message.getAuthentication();
 		String uri = message.getUri();
 		String comment = message.getComment();
 		LibraryItemContainer item = message.getLibraryItemContainer();
-		
+
 		AddOrUpdateLibraryItemContainerResult result = new AddOrUpdateLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
 		result.setStatus(status);
-		
+
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				int version = dbUtils.addLibraryItem(uri, item, authentication, comment);
+				int version = dbUtils.updateLibraryItem(uri, item, authentication, comment);
 				result.setVersion(version);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to add items to the library.");
+				status.setMessage("You are not authorized to update items in the library.");
 			}
 
 		} catch (ApolloDatabaseException ex) {
@@ -50,4 +50,5 @@ public class AddLibraryItemMethod {
 
 		return result;
 	}
+
 }
