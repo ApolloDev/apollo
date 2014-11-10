@@ -64,11 +64,11 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
 											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
 											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizerservice-2.0.2a.7-SNAPSHOT/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8092/gaia?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8093/gaia?wsdl',1),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
 											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
                                              (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
-                                             (9,'Steve Bellan','Ebola SEIR','1.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1);
+                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pittsimulatorservice-2.0.2a.7-SNAPSHOT/services/pittsimulatorservice?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -106,9 +106,9 @@ INSERT INTO roles VALUES (19, 'Can run CLARA without privileged request');
 INSERT INTO roles VALUES (20, 'Can run CLARA with privileged request');
 INSERT INTO roles VALUES (21, 'Can view cached CLARA results');
 
-INSERT INTO roles VALUES (22, 'Can run Ebola SEIR without privileged request');
-INSERT INTO roles VALUES (23, 'Can run Ebola SEIR with privileged request');
-INSERT INTO roles VALUES (24, 'Can view cached Ebola SEIR results');
+INSERT INTO roles VALUES (22, 'Can run Lancet Ebola without privileged request');
+INSERT INTO roles VALUES (23, 'Can run Lancet Ebola with privileged request');
+INSERT INTO roles VALUES (24, 'Can view cached Lancet Ebola results');
 
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
@@ -354,13 +354,13 @@ INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file f
 INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_newly_exposed, mosquito_newly_exposed.txt '); /* 69 */
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, prevalence_mosquito.png'); /* 70 */
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, incidence_mosquito.png'); /* 71 */
-INSERT INTO run_data_description (label) values ('EbolaSEIR text configuration file, config.txt '); /* 72*/
-INSERT INTO run_data_description (label) values ('EbolaSEIR verbose configuration file, verbose.html'); /* 73 */
-INSERT INTO run_data_description (label) values ('TSV EbolaSEIR Simulator log file for susceptible, susceptible.txt '); /* 74 */
-INSERT INTO run_data_description (label) values ('TSV EbolaSEIR Simulator log file for exposed, exposed.txt '); /* 75 */
-INSERT INTO run_data_description (label) values ('TSV EbolaSEIR Simulator log file for infectious, infectious.txt '); /* 76 */
-INSERT INTO run_data_description (label) values ('TSV EbolaSEIR Simulator log file for recovered, recovered.txt '); /* 77 */
-INSERT INTO run_data_description (label) values ('TSV EbolaSEIR Simulator log file for newly_exposed, newly_exposed.txt '); /* 78 */
+INSERT INTO run_data_description (label) values ('Lancet Ebola text configuration file, config.txt '); /* 72*/
+INSERT INTO run_data_description (label) values ('Lancet Ebola verbose configuration file, verbose.html'); /* 73 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for susceptible, susceptible.txt '); /* 74 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for exposed, exposed.txt '); /* 75 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 76 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 77 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 78 */
 
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values

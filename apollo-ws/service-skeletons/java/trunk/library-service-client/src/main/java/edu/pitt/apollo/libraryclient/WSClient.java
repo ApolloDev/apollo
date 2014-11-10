@@ -14,33 +14,153 @@
 // */
 package edu.pitt.apollo.libraryclient;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
+import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
+import edu.pitt.apollo.service.libraryservice.v2_1_0.GetVersionsResponse;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.Census;
+import edu.pitt.apollo.types.v2_1_0.ContactDefinitionEnum;
+import edu.pitt.apollo.types.v2_1_0.TransmissionProbability;
+import edu.pitt.apollo.types.v2_1_0.Treatment;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class WSClient {
 
-    public static final String WSDL_LOC = "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
-    public static final QName SERVICE =  new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
-    
-    public static void main(String[] args) throws MalformedURLException {
-    	LibraryServiceV210 ls = new LibraryServiceV210(new URL(WSDL_LOC), SERVICE);
-    	LibraryServiceEI port = ls.getLibraryServiceEndpoint();
-    	GetCommentsMessage gcm = new GetCommentsMessage();
-    	Authentication a = new Authentication();
-    	a.setRequesterId("john");
-    	a.setRequesterPassword("oh yeah");
-    	gcm.setAuthentication(a);
-    	gcm.setUri("test");
-    	gcm.setVersion(7);
-    	port.getComments(gcm);
-    }
+	public static final String WSDL_LOC = "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
+
+	public static void main(String[] args) throws MalformedURLException {
+		LibraryServiceV210 ls = new LibraryServiceV210(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
+
+		Authentication a = new Authentication();
+		a.setRequesterId("library_demo");
+		a.setRequesterPassword("password");
+		AddOrUpdateLibraryItemContainerResult result = addLibraryItemContainer(a, port);	
+		System.out.println(result.getStatus().getStatus());
+		System.out.println(result.getStatus().getMessage());
+		System.out.println(result.getVersion());
+//		AddOrUpdateLibraryItemContainerResult updateResult = updateLibraryItemComtainer(a, port);
+//
+//		System.out.println(updateResult.getStatus().getStatus());
+//		System.out.println(updateResult.getStatus().getMessage());
+//		System.out.println(updateResult.getVersion());
+//		GetVersionsResult result = getVersions(a, port);
+//		List<Integer> versions = result.getVersions();
+//		for (int i = 0; i < versions.size(); i++) {
+//			System.out.println("version " + versions.get(i));
+//		}
+		
+//		GetLibraryItemContainerResult result = getLibraryItem(a, port);
+//		Census c = (Census) result.getLibraryItemContainer().getLibraryItem();
+//		System.out.println(c.getDescription());
+//		System.out.println(result.getLibraryItemContainer().getCatalogEntry().getItemDescription());
+
+	}
+
+	private static AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(Authentication auth, LibraryServiceEI port) {
+
+		Census c = new Census();
+		c.setDescription("test description1");
+		c.setSimulatorTime(0);
+		try {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(new Date());
+			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
+		} catch (DatatypeConfigurationException ex) {
+			ex.printStackTrace();
+		}
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(c);
+
+//		GetVersionsMessage test =  new GetVersionsMessage();
+//		test.setAuthentication(auth);
+//		test.setUri("http://test");
+//		lic.setLibraryItem(test);
+		CatalogEntry entry = new CatalogEntry();
+		entry.setItemDescription("test item");
+		lic.setCatalogEntry(entry);
+
+		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setUri("http://testitem");
+		message.setComment("initial commit");
+
+		return port.addLibraryItemContainer(message);
+	}
+
+	private static AddOrUpdateLibraryItemContainerResult updateLibraryItemComtainer(Authentication auth, LibraryServiceEI port) {
+
+		Census c = new Census();
+		c.setDescription("test description 3rd time");
+		c.setSimulatorTime(17);
+//		try {
+//			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar());
+//		} catch (DatatypeConfigurationException ex) {
+//			ex.printStackTrace();
+//		}
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(c);
+
+//		GetVersionsMessage test =  new GetVersionsMessage();
+//		test.setAuthentication(auth);
+//		test.setUri("http://test");
+//		lic.setLibraryItem(test);
+		CatalogEntry entry = new CatalogEntry();
+		entry.setItemDescription("test item update");
+		lic.setCatalogEntry(entry);
+
+		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setUri("http://testitem");
+		message.setComment("update 1");
+
+		return port.updateLibraryItemContainer(message);
+	}
+
+	private static GetVersionsResult getVersions(Authentication auth, LibraryServiceEI port) {
+
+		GetVersionsMessage message = new GetVersionsMessage();
+		message.setAuthentication(auth);
+		message.setUri("http://testitem");
+
+		return port.getVersions(message);
+
+	}
+	
+	private static GetLibraryItemContainerResult getLibraryItem(Authentication auth, LibraryServiceEI port) {
+		
+		GetLibraryItemContainerMessage message = new GetLibraryItemContainerMessage();
+		message.setAuthentication(auth);
+		message.setUri("http://testitem");
+		message.setVersion(2);
+		
+		return port.getLibraryItemContainer(message);
+	}
 
 //    private static Authentication getAuthentication() {
 //
@@ -347,4 +467,3 @@ public class WSClient {
 //        }
 //    }
 }
-    
