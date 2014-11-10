@@ -3,9 +3,8 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
-import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
@@ -14,33 +13,30 @@ import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
  *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
- * Date: Aug 13, 2014
- * Time: 3:41:53 PM
- * Class: AddLibraryItemMethod
+ * Date: Nov 7, 2014
+ * Time: 11:05:58 AM
+ * Class: GetReleaseVersionMethod
  */
-public class AddLibraryItemMethod {
+public class GetReleaseVersionMethod {
 
-	public static AddOrUpdateLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils,
-			AddOrUpdateLibraryItemContainerMessage message) {
+	public static GetReleaseVersionResult getReleaseVersion(LibraryDbUtils dbUtils, GetReleaseVersionMessage message) {
 
 		Authentication authentication = message.getAuthentication();
 		String uri = message.getUri();
-		String comment = message.getComment();
-		LibraryItemContainer item = message.getLibraryItemContainer();
-		
-		AddOrUpdateLibraryItemContainerResult result = new AddOrUpdateLibraryItemContainerResult();
+
+		GetReleaseVersionResult result = new GetReleaseVersionResult();
 		MethodCallStatus status = new MethodCallStatus();
 		result.setStatus(status);
-		
+
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
+			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				int version = dbUtils.addLibraryItem(uri, item, authentication, comment);
+				int version = dbUtils.getPublicVersion(uri);
 				result.setVersion(version);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to add items to the library.");
+				status.setMessage("You are not authorized to get release versions.");
 			}
 
 		} catch (ApolloDatabaseException ex) {
