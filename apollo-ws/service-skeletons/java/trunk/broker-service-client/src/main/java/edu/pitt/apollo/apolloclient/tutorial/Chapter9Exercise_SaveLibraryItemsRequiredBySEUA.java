@@ -61,7 +61,7 @@ import edu.pitt.apollo.types.v2_1_0.VaccinationEfficacyForSimulatorConfiguration
  */
 public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/brokerservice-2.0.2a.7-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://research.rods.pitt.edu/brokerservice-2.0.2a.7-SNAPSHOT/services/apolloservice?wsdl";
 //    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.2/services/apolloservice?wsdl";
 
 	private static Authentication getAuthentication() {
