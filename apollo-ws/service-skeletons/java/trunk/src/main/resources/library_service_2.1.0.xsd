@@ -52,13 +52,14 @@
 
 	<complexType name="GetCommentsResult">
 		<sequence>
+        <element name="status" type="pref:MethodCallStatus"></element>
 			<element name="commitComment" type="tns:CommentFromLibrary"
 				maxOccurs="1" minOccurs="1">
 			</element>
 			<element name="reviewerComments" type="tns:CommentFromLibrary"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
-			<element name="releaseVersionComment" type="tns:CommentFromLibrary"
+			<element name="releaseVersionComments" type="tns:CommentFromLibrary"
 				minOccurs="0" maxOccurs="unbounded">
 			</element>
 		</sequence>
@@ -162,6 +163,7 @@
 
 	<complexType name="QueryResult">
 		<sequence>
+        <element name="status" type="pref:MethodCallStatus"></element>
 			<element name="columnNames" type="token" maxOccurs="unbounded"
 				minOccurs="0"></element>
 			<element name="table" type="string" maxOccurs="unbounded"
@@ -184,6 +186,7 @@
 
 	<complexType name="GetVersionsResult">
 		<sequence>
+            <element name="status" type="pref:MethodCallStatus"></element>
 			<element name="versions" type="int" maxOccurs="unbounded"
 				minOccurs="0"></element>
 		</sequence>
@@ -204,6 +207,8 @@
 
 	<complexType name="QueryMessage">
 		<sequence>
+        <element name="authentication" type="pref:Authentication"
+				maxOccurs="1" minOccurs="1"></element>
 			<element name="query" type="string"></element>
 		</sequence>
 	</complexType>
