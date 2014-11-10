@@ -1,15 +1,14 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.services_common.v2_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunVisualizationMessage;
 import java.math.BigInteger;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleInfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
 import edu.pitt.apollo.types.v2_1_0.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v2_1_0.UnitOfTimeEnum;
 
 public class ApolloServiceTypeFactory {
@@ -65,11 +64,11 @@ public class ApolloServiceTypeFactory {
 
 	public static RunSimulationMessage getDefaultRunSimulationMessage(SimulatorIdentificationEnum simulatorIdentificationEnum) {
 		RunSimulationMessage message = new RunSimulationMessage();
-		message.setInfectiousDiseaseScenario(ExampleInfectiousDiseaseScenario.getScenario());
-		message.setAuthentication(getAuthentication(REQUESTER_ID, REQUESTER_PASSWORD));
-		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(simulatorIdentificationEnum));
-		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification(SIMULATION_RUN_LENGTH,
-				UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP, NUMBER_OF_UNITS_OF_TIME_IN_ONE_SIMULATOR_TIME_STEP));
+//		message.setInfectiousDiseaseScenario(ExampleInfectiousDiseaseScenario.getScenario());
+//		message.setAuthentication(getAuthentication(REQUESTER_ID, REQUESTER_PASSWORD));
+//		message.setSimulatorIdentification(getSoftwareIdentificationForSimulator(simulatorIdentificationEnum));
+//		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification(SIMULATION_RUN_LENGTH,
+//				UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP, NUMBER_OF_UNITS_OF_TIME_IN_ONE_SIMULATOR_TIME_STEP));
 		return message;
 	}
 
