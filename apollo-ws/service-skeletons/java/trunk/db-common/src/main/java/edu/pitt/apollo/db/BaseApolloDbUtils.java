@@ -112,6 +112,8 @@ public abstract class BaseApolloDbUtils {
 	public abstract int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException;
 
+	
+	
 	protected String getHashOfUserPasswordAndSalt(String password, String salt) {
 
 		String passwordAndSalt = password + salt + SYSTEM_SALT;
