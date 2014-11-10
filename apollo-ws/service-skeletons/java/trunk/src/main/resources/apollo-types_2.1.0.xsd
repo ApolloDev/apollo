@@ -238,20 +238,7 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="UrlOutputResource">
-		<sequence>
-			<element name="description" type="string" />
-			<element name="URL" type="token" />
-		</sequence>
-	</complexType>
-
-	<complexType name="ServiceResult">
-		<sequence>
-			<element name="description" type="string" />
-			<element name="URL" type="anyURI" />
-		</sequence>
-	</complexType>
-
+	
 
 	
 
@@ -2484,15 +2471,7 @@
 
 
 
-<!-- 	<complexType name="ServiceRegistrationRecord"> -->
-<!-- 		<complexContent> -->
-<!-- 			<extension base="tns:ServiceRecord"> -->
-<!-- 				<sequence> -->
-<!-- 					<element name="authentication" type="tns:Authentication" /> -->
-<!-- 				</sequence> -->
-<!-- 			</extension> -->
-<!-- 		</complexContent> -->
-<!-- 	</complexType> -->
+
 
 	<complexType name="IndividualLifeCycle">
 		<sequence>
