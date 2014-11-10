@@ -1,10 +1,11 @@
-DROP TABLE IF EXISTS catalog_of_uuids CASCADE;
+DROP TABLE IF EXISTS catalog_of_uris CASCADE;
 DROP TABLE IF EXISTS library_objects CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
-DROP TABLE IF EXISTS public_versions CASCADE;
+DROP TABLE IF EXISTS release_versions CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS user_roles CASCADE;
+DROP TABLE IF EXISTS comment_type CASCADE;
 DROP FUNCTION IF EXISTS increment_version();
 DROP FUNCTION IF EXISTS set_date();
 DROP CAST IF EXISTS (VARCHAR AS json);
@@ -22,8 +23,9 @@ CREATE TABLE roles (
   description TEXT
 );
 
-INSERT INTO roles (description) VALUES ('Editor');
-INSERT INTO roles (description) VALUES ('Read only');
+INSERT INTO roles (description) VALUES ('committer');
+INSERT INTO roles (description) VALUES ('reviewer');
+INSERT INTO roles (description) VALUES ('readonly');
 
 CREATE TABLE user_roles (
     id SERIAL PRIMARY KEY,
@@ -32,31 +34,41 @@ CREATE TABLE user_roles (
     CONSTRAINT user_role_unique UNIQUE (user_id, role_id)
 );
 
-CREATE TABLE catalog_of_uuids (
-    uuid SERIAL PRIMARY KEY,
-    description TEXT NOT NULL
+CREATE TABLE catalog_of_uris (
+    id SERIAL PRIMARY KEY,
+    uri TEXT
 );
 
 CREATE TABLE library_objects (
     id SERIAL PRIMARY KEY,
-    catalog_uuid INT REFERENCES catalog_of_uuids (uuid) NOT NULL,
+    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL,
     version INT NOT NULL,
     date TIMESTAMP WITH TIME ZONE NOT NULL,
     json_of_library_object JSON NOT NULL,
     user_id INT REFERENCES users (id) NOT NULL
 );
 
-CREATE TABLE public_versions (
+CREATE TABLE release_versions (
     id SERIAL PRIMARY KEY,
-    catalog_uuid INT REFERENCES catalog_of_uuids (uuid) NOT NULL,
+    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL,
     item_id INT REFERENCES library_objects (id) NOT NULL
 );
+
+CREATE TABLE comment_type (
+  id SERIAL PRIMARY KEY,
+  description TEXT NOT NULL
+);
+
+INSERT INTO comment_type (description) VALUES ('commit');
+INSERT INTO comment_type (description) VALUES ('review');
+INSERT INTO comment_type (description) VALUES ('release');
 
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     item_id INT REFERENCES library_objects (id) NOT NULL,
     date TIMESTAMP WITH TIME ZONE NOT NULL,
     comment TEXT NOT NULL,
+    comment_type INT REFERENCES comment_type (id) NOT NULL,
     user_id INT REFERENCES users (id) NOT NULL
 
 );
@@ -64,7 +76,7 @@ CREATE TABLE comments (
 CREATE FUNCTION increment_version() RETURNS TRIGGER AS '
 DECLARE x INT;
 BEGIN 
-    x := (SELECT version FROM library_objects WHERE catalog_uuid = NEW.catalog_uuid);
+    x := (SELECT MAX(version) FROM library_objects WHERE catalog_uri_id = NEW.catalog_uri_id);
     if (x IS NULL) THEN
         NEW.version = 1;
     ELSE
