@@ -3,7 +3,34 @@
 	xmlns:tns="http://services-common.apollo.pitt.edu/v2_1_0/"
 	elementFormDefault="qualified">
 
-<complexType name="RunResult">
+	<simpleType name="ApolloSoftwareTypeEnum">
+		<restriction base="string">
+			<enumeration value="simulator" />
+			<enumeration value="visualizer" />
+			<enumeration value="syntheticPopulationGenerator" />
+			<enumeration value="translator" />
+
+		</restriction>
+	</simpleType>
+
+	<complexType name="SoftwareIdentification">
+		<sequence>
+			<element name="softwareDeveloper" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="softwareName" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="softwareVersion" type="token" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="softwareType" type="tns:ApolloSoftwareTypeEnum"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RunResult">
 		<sequence>
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="methodCallStatus" type="tns:MethodCallStatus">
@@ -11,7 +38,7 @@
 		</sequence>
 	</complexType>
 
-<complexType name="RunStatus">
+	<complexType name="RunStatus">
 		<sequence>
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="status" type="tns:MethodCallStatusEnum"
@@ -20,7 +47,43 @@
 				minOccurs="1" />
 		</sequence>
 	</complexType>
-	
+
+	<complexType name="RunIdentificationAndLabel">
+		<sequence>
+			<element name="runIdentification" type="tns:RunIdentification">
+			</element>
+			<element name="runLabel" type="string"></element>
+		</sequence>
+	</complexType>
+	<complexType name="TerminateRunRequest">
+		<sequence>
+			<element name="runIdentification" type="tns:RunIdentification">
+			</element>
+			<element name="authentication" type="tns:Authentication"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TerminteRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="tns:MethodCallStatus">
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="Role">
+		<sequence>
+			<element name="softwareIdentification" type="tns:SoftwareIdentification">
+			</element>
+			<element name="can_run" type="boolean"></element>
+			<element name="can_view_cached_results" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ServiceRecord">
+		<sequence>
+			<element name="url" type="anyURI" />
+			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
+		</sequence>
+	</complexType>
 	<simpleType name="RunIdentification">
 		<restriction base="unsignedLong" />
 	</simpleType>
