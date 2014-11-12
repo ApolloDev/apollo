@@ -16,6 +16,7 @@ package edu.pitt.apollo;
 
 import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
+
 import java.io.File;
 import java.util.Map;
 
@@ -34,6 +35,8 @@ import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
@@ -49,6 +52,7 @@ import edu.pitt.apollo.libraryservice.methods.AddReviewerCommentMethod;
 import edu.pitt.apollo.libraryservice.methods.GetCommentsMethod;
 import edu.pitt.apollo.libraryservice.methods.GetDiffMethod;
 import edu.pitt.apollo.libraryservice.methods.GetLibraryItemMethod;
+import edu.pitt.apollo.libraryservice.methods.GetLibraryItemURIsMethod;
 import edu.pitt.apollo.libraryservice.methods.GetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
 import edu.pitt.apollo.libraryservice.methods.QueryLibraryMethod;
@@ -56,6 +60,7 @@ import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+
 import java.io.IOException;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_1_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI")
@@ -175,5 +180,13 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		QueryResult result = impl.query(message);
 		System.out.println("done");
 	}
+
+	@Override
+	public GetLibraryItemURIsResult getLibraryItemURIs(
+			GetLibraryItemURIsMessage getLibraryItemURIsMessage) {
+		return GetLibraryItemURIsMethod.getLibraryItemURIs(getLibraryItemURIsMessage);
+	}
+
+
 	
 }
