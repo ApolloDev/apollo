@@ -6,7 +6,7 @@
 	<wsdl:types>
 		<xsd:schema
 			targetNamespace="http://service.apollo.pitt.edu/libraryservice/v2_1_0/"
-			xmlns:pref="http://library-service-types.apollo.pitt.edu/v2_1_0/" xmlns:pref1="http://types.apollo.pitt.edu/v2_1_0/">
+			xmlns:lst="http://library-service-types.apollo.pitt.edu/v2_1_0/">
 
 			<xsd:import schemaLocation="library_service_2.1.0.xsd"
 				namespace="http://library-service-types.apollo.pitt.edu/v2_1_0/">
@@ -19,7 +19,7 @@
 					<xsd:sequence>
 						<xsd:element
 							name="getLibraryItemContainerMessage"
-							type="pref:GetLibraryItemContainerMessage">
+							type="lst:GetLibraryItemContainerMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -30,7 +30,7 @@
 
 						<xsd:element
 							name="getLibraryItemContainerResult"
-							type="pref:GetLibraryItemContainerResult">
+							type="lst:GetLibraryItemContainerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -41,7 +41,7 @@
 					<xsd:sequence>
 						<xsd:element
 							name="addOrUpdateLibraryItemContainerMessage"
-							type="pref:AddOrUpdateLibraryItemContainerMessage">
+							type="lst:AddOrUpdateLibraryItemContainerMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -52,7 +52,7 @@
 
 						<xsd:element
 							name="addOrUpdateLibraryItemContainerResult"
-							type="pref:AddOrUpdateLibraryItemContainerResult">
+							type="lst:AddOrUpdateLibraryItemContainerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -63,7 +63,7 @@
 
 						<xsd:element
 							name="addOrUpdateLibraryItemContainerMessage"
-							type="pref:AddOrUpdateLibraryItemContainerMessage">
+							type="lst:AddOrUpdateLibraryItemContainerMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -74,7 +74,7 @@
 
 						<xsd:element
 							name="addOrUpdateLibraryItemContainerResult"
-							type="pref:AddOrUpdateLibraryItemContainerResult">
+							type="lst:AddOrUpdateLibraryItemContainerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -84,7 +84,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="setReleaseVersionMessage"
-							type="pref:SetReleaseVersionMessage">
+							type="lst:SetReleaseVersionMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -94,7 +94,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="setReleaseVersionResult"
-							type="pref:SetReleaseVersionResult">
+							type="lst:SetReleaseVersionResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -104,7 +104,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="addReviewerCommentMessage"
-							type="pref:AddReviewerCommentMessage">
+							type="lst:AddReviewerCommentMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -114,7 +114,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="addReviewerCommentResult"
-							type="pref:AddReviewerCommentResult">
+							type="lst:AddReviewerCommentResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -124,7 +124,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getCommentsMessage"
-							type="pref:GetCommentsMessage">
+							type="lst:GetCommentsMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -134,7 +134,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getCommentsResult"
-							type="pref:GetCommentsResult">
+							type="lst:GetCommentsResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -144,7 +144,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getVersionsMessage"
-							type="pref:GetVersionsMessage">
+							type="lst:GetVersionsMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -154,7 +154,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getVersionsResult"
-							type="pref:GetVersionsResult">
+							type="lst:GetVersionsResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -164,7 +164,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getReleaseVersionMessage"
-							type="pref:GetReleaseVersionMessage">
+							type="lst:GetReleaseVersionMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -174,7 +174,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getReleaseVersionResult"
-							type="pref:GetReleaseVersionResult">
+							type="lst:GetReleaseVersionResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -184,7 +184,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="queryMessage"
-							type="pref:QueryMessage">
+							type="lst:QueryMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -194,7 +194,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="queryResult"
-							type="pref:QueryResult">
+							type="lst:QueryResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -204,7 +204,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="addGroupMessage"
-							type="pref:ModifyGroupOwnershipMessage">
+							type="lst:ModifyGroupOwnershipMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -214,7 +214,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="addGroupResult"
-							type="pref:ModifyGroupOwnershipResult">
+							type="lst:ModifyGroupOwnershipResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -224,7 +224,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="removeGroupMessage"
-							type="pref:ModifyGroupOwnershipMessage">
+							type="lst:ModifyGroupOwnershipMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -234,7 +234,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="removeGroupResult"
-							type="pref:ModifyGroupOwnershipResult">
+							type="lst:ModifyGroupOwnershipResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -244,7 +244,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getDiffMessage"
-							type="pref:GetDiffMessage">
+							type="lst:GetDiffMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -254,8 +254,24 @@
 					<xsd:sequence>
 
 						<xsd:element name="getDiffResult"
-							type="pref:GetDiffResult">
+							type="lst:GetDiffResult">
 						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemURIs">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getLibraryItemURIsMessage" type="lst:GetLibraryItemURIsMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemURIsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getLibraryItemURIsResult" type="lst:GetLibraryItemURIsResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -333,6 +349,12 @@
 	<wsdl:message name="getDiffResponse">
 		<wsdl:part name="parameters" element="tns:getDiffResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getLibraryItemURIsRequest">
+		<wsdl:part name="parameters" element="tns:getLibraryItemURIs"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemURIsResponse">
+		<wsdl:part name="parameters" element="tns:getLibraryItemURIsResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="LibraryServiceEI">
         <wsdl:operation name="getLibraryItemContainer">
         	<wsdl:input message="tns:getLibraryItemContainerRequest"></wsdl:input>
@@ -381,6 +403,10 @@
         <wsdl:operation name="getDiff">
         	<wsdl:input message="tns:getDiffRequest"></wsdl:input>
         	<wsdl:output message="tns:getDiffResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getLibraryItemURIs">
+        	<wsdl:input message="tns:getLibraryItemURIsRequest"></wsdl:input>
+        	<wsdl:output message="tns:getLibraryItemURIsResponse"></wsdl:output>
         </wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="LibraryServiceBinding"
