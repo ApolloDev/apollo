@@ -20,6 +20,8 @@ import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContai
 import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
 import java.net.MalformedURLException;
@@ -28,6 +30,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
 import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.GetVersionsResponse;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
@@ -37,6 +41,7 @@ import edu.pitt.apollo.types.v2_1_0.Census;
 import edu.pitt.apollo.types.v2_1_0.ContactDefinitionEnum;
 import edu.pitt.apollo.types.v2_1_0.TransmissionProbability;
 import edu.pitt.apollo.types.v2_1_0.Treatment;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -48,7 +53,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
 	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
 
 	public static void main(String[] args) throws MalformedURLException {
@@ -58,10 +63,14 @@ public class WSClient {
 		Authentication a = new Authentication();
 		a.setRequesterId("library_demo");
 		a.setRequesterPassword("password");
-		AddOrUpdateLibraryItemContainerResult result = addLibraryItemContainer(a, port);	
-		System.out.println(result.getStatus().getStatus());
-		System.out.println(result.getStatus().getMessage());
-		System.out.println(result.getVersion());
+		
+//		QueryResult result = query(a, port);
+//		System.out.println("ran query");
+//		
+//		AddOrUpdateLibraryItemContainerResult result = addLibraryItemContainer(a, port);
+//		System.out.println(result.getStatus().getStatus());
+//		System.out.println(result.getStatus().getMessage());
+//		System.out.println(result.getVersion());
 //		AddOrUpdateLibraryItemContainerResult updateResult = updateLibraryItemComtainer(a, port);
 //
 //		System.out.println(updateResult.getStatus().getStatus());
@@ -72,41 +81,69 @@ public class WSClient {
 //		for (int i = 0; i < versions.size(); i++) {
 //			System.out.println("version " + versions.get(i));
 //		}
-		
+
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 //		Census c = (Census) result.getLibraryItemContainer().getLibraryItem();
 //		System.out.println(c.getDescription());
 //		System.out.println(result.getLibraryItemContainer().getCatalogEntry().getItemDescription());
-
+		
+		GetLibraryItemURIsResult result = getUris(a, port);
+		System.out.println(result.getURIs().size());
 	}
 
+	private static QueryResult query(Authentication auth, LibraryServiceEI port) {
+
+		QueryMessage message = new QueryMessage();
+
+		message.setAuthentication(auth);
+
+		String query = "SELECT id,json_of_library_object->1->'catalogEntry'->1->'itemDescription' AS description FROM library_objects";
+		message.setQuery(query);
+
+		QueryResult result = port.query(message);
+		return result;
+	}
+
+	private static GetLibraryItemURIsResult getUris(Authentication auth, LibraryServiceEI port) {
+		
+		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
+		message.setAuthentication(auth);
+		message.setItemType("Treatment");
+		return port.getLibraryItemURIs(message);
+	}
+	
 	private static AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(Authentication auth, LibraryServiceEI port) {
 
-		Census c = new Census();
-		c.setDescription("test description1");
-		c.setSimulatorTime(0);
-		try {
-			GregorianCalendar cal = new GregorianCalendar();
-			cal.setTime(new Date());
-			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
-		} catch (DatatypeConfigurationException ex) {
-			ex.printStackTrace();
-		}
+//		Census c = new Census();
+//		c.setDescription("test description1");
+//		c.setSimulatorTime(0);
+//		try {
+//			GregorianCalendar cal = new GregorianCalendar();
+//			cal.setTime(new Date());
+//			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
+//		} catch (DatatypeConfigurationException ex) {
+//			ex.printStackTrace();
+//		}
+		Treatment t = new Treatment();
+		t.setDescription("the treatment");
+		t.setNumDosesInTreatmentCourse(BigInteger.TEN);
+		t.setSpeciesOfTreatedOrganism("people");
+		
 		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(c);
+		lic.setLibraryItem(t);
 
 //		GetVersionsMessage test =  new GetVersionsMessage();
 //		test.setAuthentication(auth);
 //		test.setUri("http://test");
 //		lic.setLibraryItem(test);
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("test item");
+		entry.setItemDescription("test treatment");
 		lic.setCatalogEntry(entry);
 
 		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
 		message.setLibraryItemContainer(lic);
 		message.setAuthentication(auth);
-		message.setUri("http://testitem");
+		message.setUri("http://testtreatment");
 		message.setComment("initial commit");
 
 		return port.addLibraryItemContainer(message);
@@ -151,14 +188,14 @@ public class WSClient {
 		return port.getVersions(message);
 
 	}
-	
+
 	private static GetLibraryItemContainerResult getLibraryItem(Authentication auth, LibraryServiceEI port) {
-		
+
 		GetLibraryItemContainerMessage message = new GetLibraryItemContainerMessage();
 		message.setAuthentication(auth);
 		message.setUri("http://testitem");
-		message.setVersion(2);
-		
+		message.setVersion(1);
+
 		return port.getLibraryItemContainer(message);
 	}
 
