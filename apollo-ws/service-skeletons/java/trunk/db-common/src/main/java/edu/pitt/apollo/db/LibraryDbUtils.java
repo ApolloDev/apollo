@@ -10,6 +10,7 @@ import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_1_0.Epidemic;
 import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
 import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseControlStrategy;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -22,13 +23,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.transform.stream.StreamSource;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.eclipse.persistence.jaxb.JAXBContext;
+import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.eclipse.persistence.jaxb.JAXBMarshaller;
+import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
+import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 /**
  *
@@ -55,26 +64,59 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	}
 
 	private LibraryItemContainer getLibraryItemContainderFromJson(String json) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-		mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-		LibraryItemContainer container = mapper.readValue(json, LibraryItemContainer.class);
-		return container;
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+//		mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+//		LibraryItemContainer container = mapper.readValue(json, LibraryItemContainer.class);
+//		return container;
+		InputStream contentInputStream = new ByteArrayInputStream(json.getBytes());
+		Class clazz = LibraryItemContainer.class;
+		Map<String, Object> properties = new HashMap<String, Object>(2);
+		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		JAXBContext jc;
+		try {
+			jc = (JAXBContext) JAXBContext
+					.newInstance(new Class[]{clazz, ObjectFactory.class}, properties);
+			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
+			StreamSource ss = new StreamSource(contentInputStream);
+			return (LibraryItemContainer) unmarshaller.unmarshal(ss, clazz).getValue();
+		} catch (Exception e) {
+			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
+					+ e.getMessage());
+			return null;
+		}
 	}
 
 	@Override
 	protected ByteArrayOutputStream getJsonBytes(Object obj) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, obj);
+//			ObjectMapper mapper = new ObjectMapper();
+//			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+//			mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+//			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			mapper.writeValue(baos, obj);
+//
+//			return baos;
 
+			Class clazz = LibraryItemContainer.class;
+
+			Map<String, Object> properties = new HashMap<String, Object>(2);
+			properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+			properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz, ObjectFactory.class},
+					properties);
+			JAXBMarshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+			marshaller.marshal(obj, baos);
 			return baos;
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			System.err.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: " + ex.getMessage());
 			return null;
 		}
@@ -195,6 +237,31 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			throw new ApolloDatabaseException("ClassNotFoundException attempting to authorize user: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException attempting to authorize user: " + ex.getMessage());
+		}
+	}
+
+	public List<String> getURIs(String itemType) throws ApolloDatabaseException {
+		try {
+			List<String> uris = new ArrayList<String>();
+			String query;
+			if (itemType == null) {
+				query = "SELECT uri FROM catalog_of_uris";
+			} else {
+				query = "SELECT uri FROM catalog_of_uris WHERE id in ("
+						+ "SELECT id FROM library_objects WHERE json_of_library_object->'libraryItem'->>'type' = '" + itemType + "')";
+			}
+			PreparedStatement pstmt = getConn().prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				uris.add(rs.getString(1));
+			}
+
+			return uris;
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException("ClassNotFoundException getting comment type id: " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException getting comment type id: " + ex.getMessage());
 		}
 	}
 
@@ -541,13 +608,13 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
-			
+
 			int numColumns = rsmd.getColumnCount();
 			for (int i = 1; i <= numColumns; i++) {
 				String columnName = rsmd.getColumnName(i);
 				result.getColumnNames().add(columnName);
 			}
-			
+
 			List<String> resultSetDataAs1DArray = new ArrayList<String>();
 			while (rs.next()) {
 				for (int column = 1; column <= numColumns; column++) {
@@ -564,7 +631,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			throw new ApolloDatabaseException("SQLException querying objects: " + ex.getMessage());
 		}
 	}
-	
+
 	private static Epidemic getEpidemic() {
 		Epidemic epidemic = new Epidemic();
 		ApolloPathogenCode code = new ApolloPathogenCode();
@@ -583,7 +650,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 		int role = dbUtils.getRoleId(LibraryUserRoleTypeEnum.REVIEWER);
 		System.out.println(role);
-		
+
 //		LibraryItemContainer item = new LibraryItemContainer();
 //		Epidemic epidemic = getEpidemic();
 //		InfectiousDiseaseControlStrategy strategy = new IndividualTreatmentControlStrategy();
@@ -597,7 +664,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //
 //		int catalogId = dbUtils.addLibraryItem("scenario_uri", item, authentication, "first item");
 //		System.out.println("Catalog ID: " + catalogId);
-
 //		Epidemic epidemic2 = getEpidemic();
 //		epidemic2.getCausalPathogens().get(0).setNcbiTaxonId("15");
 //		item.setLibraryItem(epidemic2);
