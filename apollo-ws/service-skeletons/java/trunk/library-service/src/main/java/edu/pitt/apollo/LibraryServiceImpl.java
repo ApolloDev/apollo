@@ -99,7 +99,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 
 	@Override
 	public QueryResult query(QueryMessage queryMessage) {
-		return QueryLibraryMethod.queryLibrary(readonlyLibraryDbUtils, queryMessage);
+		return QueryLibraryMethod.queryLibrary(libraryDbUtils, readonlyLibraryDbUtils, queryMessage);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		
 		LibraryServiceImpl impl = new LibraryServiceImpl();
 		
-		QueryMessage message = new QueryMessage();
+		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
 		
 		Authentication auth = new Authentication();
 		auth.setRequesterId("library_demo");
@@ -174,17 +174,16 @@ class LibraryServiceImpl implements LibraryServiceEI {
 		
 		message.setAuthentication(auth);
 		
-		String query = "SELECT id,json_of_library_object->1->'catalogEntry'->1->'itemDescription' FROM library_objects";
-		message.setQuery(query);
+//		message.setItemType("Census");
 		
-		QueryResult result = impl.query(message);
+		GetLibraryItemURIsResult result = impl.getLibraryItemURIs(message);
 		System.out.println("done");
 	}
 
 	@Override
 	public GetLibraryItemURIsResult getLibraryItemURIs(
 			GetLibraryItemURIsMessage getLibraryItemURIsMessage) {
-		return GetLibraryItemURIsMethod.getLibraryItemURIs(getLibraryItemURIsMessage);
+		return GetLibraryItemURIsMethod.getLibraryItemURIs(libraryDbUtils, getLibraryItemURIsMessage);
 	}
 
 

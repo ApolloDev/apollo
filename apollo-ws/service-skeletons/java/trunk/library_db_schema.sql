@@ -1,3 +1,4 @@
+SET SCHEMA 'public';
 DROP TABLE IF EXISTS catalog_of_uris CASCADE;
 DROP TABLE IF EXISTS library_objects CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -15,7 +16,8 @@ CREATE TABLE users (
     user_name TEXT NOT NULL,
     hash_of_user_password_and_salt TEXT NOT NULL,
     salt TEXT NOT NULL,
-    user_email TEXT
+    user_email TEXT,
+    CONSTRAINT user_unique UNIQUE (user_name, hash_of_user_password_and_salt)
 );
 
 CREATE TABLE roles (
@@ -36,7 +38,7 @@ CREATE TABLE user_roles (
 
 CREATE TABLE catalog_of_uris (
     id SERIAL PRIMARY KEY,
-    uri TEXT
+    uri TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE library_objects (
@@ -45,12 +47,13 @@ CREATE TABLE library_objects (
     version INT NOT NULL,
     date TIMESTAMP WITH TIME ZONE NOT NULL,
     json_of_library_object JSON NOT NULL,
-    user_id INT REFERENCES users (id) NOT NULL
+    user_id INT REFERENCES users (id) NOT NULL,
+    CONSTRAINT library_object_unique UNIQUE (catalog_uri_id, version)
 );
 
 CREATE TABLE release_versions (
     id SERIAL PRIMARY KEY,
-    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL,
+    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL UNIQUE,
     item_id INT REFERENCES library_objects (id) NOT NULL
 );
 
