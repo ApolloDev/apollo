@@ -21,8 +21,6 @@
 		<sequence>
 			<element name="itemDescription" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="itemSource" type="string" maxOccurs="1"
-				minOccurs="1" />
 			<element name="itemType" type="string" maxOccurs="1"
 				minOccurs="1" />
 		</sequence>
