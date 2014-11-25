@@ -1,9 +1,8 @@
 SET SCHEMA 'public';
-DROP TABLE IF EXISTS catalog_of_uris CASCADE;
-DROP TABLE IF EXISTS library_objects CASCADE;
+DROP TABLE IF EXISTS library_item_container_urns CASCADE;
+DROP TABLE IF EXISTS library_item_containers CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
-DROP TABLE IF EXISTS release_versions CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS user_roles CASCADE;
 DROP TABLE IF EXISTS comment_type CASCADE;
@@ -36,25 +35,21 @@ CREATE TABLE user_roles (
     CONSTRAINT user_role_unique UNIQUE (user_id, role_id)
 );
 
-CREATE TABLE catalog_of_uris (
+CREATE TABLE library_item_container_urns (
     id SERIAL PRIMARY KEY,
-    uri TEXT NOT NULL UNIQUE
+    urn TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE library_objects (
+CREATE TABLE library_item_containers (
     id SERIAL PRIMARY KEY,
-    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL,
+    urn_id INT REFERENCES library_item_container_urns (id) NOT NULL,
     version INT NOT NULL,
-    date TIMESTAMP WITH TIME ZONE NOT NULL,
-    json_of_library_object JSON NOT NULL,
-    user_id INT REFERENCES users (id) NOT NULL,
-    CONSTRAINT library_object_unique UNIQUE (catalog_uri_id, version)
-);
-
-CREATE TABLE release_versions (
-    id SERIAL PRIMARY KEY,
-    catalog_uri_id INT REFERENCES catalog_of_uris (id) NOT NULL UNIQUE,
-    item_id INT REFERENCES library_objects (id) NOT NULL
+    is_latest_published_version BOOLEAN NOT NULL DEFAULT false,
+    was_previously_published BOOLEAN NOT NULL DEFAULT false,
+    date_created TIMESTAMP WITH TIME ZONE NOT NULL,
+    json_represenation JSON NOT NULL,
+    committer_id INT REFERENCES users (id) NOT NULL,
+    CONSTRAINT unique_library_item_container UNIQUE (urn_id, version)
 );
 
 CREATE TABLE comment_type (
@@ -64,12 +59,12 @@ CREATE TABLE comment_type (
 
 INSERT INTO comment_type (description) VALUES ('commit');
 INSERT INTO comment_type (description) VALUES ('review');
-INSERT INTO comment_type (description) VALUES ('release');
+INSERT INTO comment_type (description) VALUES ('publish');
 
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    item_id INT REFERENCES library_objects (id) NOT NULL,
-    date TIMESTAMP WITH TIME ZONE NOT NULL,
+    item_id INT REFERENCES library_item_containers (id) NOT NULL,
+    date_created TIMESTAMP WITH TIME ZONE NOT NULL,
     comment TEXT NOT NULL,
     comment_type INT REFERENCES comment_type (id) NOT NULL,
     user_id INT REFERENCES users (id) NOT NULL
@@ -79,7 +74,7 @@ CREATE TABLE comments (
 CREATE FUNCTION increment_version() RETURNS TRIGGER AS '
 DECLARE x INT;
 BEGIN 
-    x := (SELECT MAX(version) FROM library_objects WHERE catalog_uri_id = NEW.catalog_uri_id);
+    x := (SELECT MAX(version) FROM library_item_containers WHERE urn_id = NEW.urn_id);
     if (x IS NULL) THEN
         NEW.version = 1;
     ELSE
@@ -90,17 +85,17 @@ BEGIN
 END' LANGUAGE 'plpgsql';
     
 CREATE TRIGGER version_trigger
-BEFORE INSERT ON library_objects
+BEFORE INSERT ON library_item_containers
 FOR EACH ROW EXECUTE PROCEDURE increment_version();
 
 CREATE FUNCTION set_date() RETURNS TRIGGER AS '
 BEGIN
-    NEW.date = now();
+    NEW.date_created = now();
     RETURN NEW;
 END' LANGUAGE 'plpgsql';
 
 CREATE TRIGGER item_date_trigger
-BEFORE INSERT ON library_objects
+BEFORE INSERT ON library_item_containers
 FOR EACH ROW EXECUTE PROCEDURE set_date();
 
 CREATE TRIGGER comments_date_trigger
