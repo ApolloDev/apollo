@@ -1,5 +1,11 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v2_1_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
@@ -25,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -51,6 +56,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
+	private static final boolean APOLLO_DB_AUTO_COMMIT = true;
 
 	// public final int RECORD_NOT_FOUND = -1;
 	// public final int PASSWORD_NOT_CORRECT = -2;
@@ -69,11 +75,11 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
 	public ApolloDbUtils(File databasePropertiesFile) throws IOException {
-		super(databasePropertiesFile);
+		super(databasePropertiesFile, APOLLO_DB_AUTO_COMMIT);
 	}
 
 	public ApolloDbUtils(InputStream databasePropertiesInputStream) throws IOException {
-		super(databasePropertiesInputStream);
+		super(databasePropertiesInputStream, APOLLO_DB_AUTO_COMMIT);
 	}
 
 	// public String old_getJSONString(Object obj) {
