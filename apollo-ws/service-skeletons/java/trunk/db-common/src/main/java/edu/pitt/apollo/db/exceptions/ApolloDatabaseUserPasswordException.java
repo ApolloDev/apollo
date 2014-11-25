@@ -1,4 +1,4 @@
-package edu.pitt.apollo.db;
+package edu.pitt.apollo.db.exceptions;
 
 public class ApolloDatabaseUserPasswordException extends ApolloDatabaseException {
 
