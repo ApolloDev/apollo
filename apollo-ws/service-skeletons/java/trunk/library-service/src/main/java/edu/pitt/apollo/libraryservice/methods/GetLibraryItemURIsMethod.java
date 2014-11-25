@@ -1,8 +1,8 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
@@ -25,7 +25,7 @@ public class GetLibraryItemURIsMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				result.getURIs().addAll(dbUtils.getURIs(itemType));
+				result.getURIs().addAll(dbUtils.getURNs(itemType));
 				status.setMessage("");
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
