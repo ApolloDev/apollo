@@ -1,8 +1,8 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;

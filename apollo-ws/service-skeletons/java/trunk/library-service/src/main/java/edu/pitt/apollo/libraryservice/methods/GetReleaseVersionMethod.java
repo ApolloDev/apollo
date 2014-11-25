@@ -1,8 +1,8 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
@@ -31,8 +31,13 @@ public class GetReleaseVersionMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				int version = dbUtils.getPublicVersion(uri);
-				result.setVersion(version);
+				Integer version = dbUtils.getReleaseVersion(uri);
+				if (version == null) {
+					result.setHasPublishedVersion(false);
+				} else {
+					result.setHasPublishedVersion(true);
+					result.setVersion(version);
+				}
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
