@@ -1,6 +1,6 @@
-package edu.pitt.apollo.db;
+package edu.pitt.apollo.db.exceptions;
 
-public class ApolloDatabaseRecordAlreadyExistsException extends Exception {
+public class ApolloDatabaseRecordAlreadyExistsException extends ApolloDatabaseException {
 
 	/**
 	 * 
