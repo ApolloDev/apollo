@@ -1,6 +1,6 @@
-package edu.pitt.apollo.db;
+package edu.pitt.apollo.db.exceptions;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 
 public class ApolloDatabaseKeyNotFoundException extends ApolloDatabaseException {
 

@@ -1,8 +1,8 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
@@ -51,9 +51,6 @@ public class GetLibraryItemMethod {
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);
 			status.setMessage(ex.getMessage());
-		} catch (IOException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage("IOEXception: " + ex.getMessage());
 		}
 
 		return result;
