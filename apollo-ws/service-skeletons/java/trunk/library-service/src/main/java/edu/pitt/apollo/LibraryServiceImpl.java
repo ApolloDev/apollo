@@ -14,8 +14,8 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.LibraryDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 
 import java.io.File;
 import java.util.Map;
@@ -64,10 +64,10 @@ import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import java.io.IOException;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v2_1_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI")
-class LibraryServiceImpl implements LibraryServiceEI {
+public class LibraryServiceImpl implements LibraryServiceEI {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
-	private static final String APOLLO_DIR;
+	public static final String APOLLO_DIR;
 	private static final LibraryDbUtils libraryDbUtils;
 	private static final LibraryDbUtils readonlyLibraryDbUtils;
 
