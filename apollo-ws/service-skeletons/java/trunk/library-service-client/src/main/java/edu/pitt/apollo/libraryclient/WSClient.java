@@ -18,10 +18,13 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
 import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
 import java.net.MalformedURLException;
@@ -32,6 +35,8 @@ import javax.xml.namespace.QName;
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
 import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.GetVersionsResponse;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
@@ -63,7 +68,7 @@ public class WSClient {
 		Authentication a = new Authentication();
 		a.setRequesterId("library_demo");
 		a.setRequesterPassword("password");
-		
+
 //		QueryResult result = query(a, port);
 //		System.out.println("ran query");
 //		
@@ -72,7 +77,7 @@ public class WSClient {
 //		System.out.println(result.getStatus().getMessage());
 //		System.out.println(result.getVersion());
 //		AddOrUpdateLibraryItemContainerResult updateResult = updateLibraryItemComtainer(a, port);
-//
+////
 //		System.out.println(updateResult.getStatus().getStatus());
 //		System.out.println(updateResult.getStatus().getMessage());
 //		System.out.println(updateResult.getVersion());
@@ -81,14 +86,40 @@ public class WSClient {
 //		for (int i = 0; i < versions.size(); i++) {
 //			System.out.println("version " + versions.get(i));
 //		}
-
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 //		Census c = (Census) result.getLibraryItemContainer().getLibraryItem();
 //		System.out.println(c.getDescription());
 //		System.out.println(result.getLibraryItemContainer().getCatalogEntry().getItemDescription());
+//		GetLibraryItemURIsResult result = getUris(a, port);
+//		System.out.println(result.getURIs().size());
+//		SetReleaseVersionResult setReleaseVersionResult = setReleaseVersion(a, port);
+//		System.out.println(setReleaseVersionResult.getStatus().getStatus());
 		
-		GetLibraryItemURIsResult result = getUris(a, port);
-		System.out.println(result.getURIs().size());
+		
+		GetReleaseVersionResult result = getReleaseVersion(a, port);
+		System.out.println(result.getStatus().getStatus());
+		System.out.println(result.getVersion());
+	}
+
+	private static GetReleaseVersionResult getReleaseVersion(Authentication auth, LibraryServiceEI port) {
+		
+		GetReleaseVersionMessage message = new GetReleaseVersionMessage();
+		message.setAuthentication(auth);
+		message.setUri("/epidemic/ebola/ZR/1976");
+		
+		return port.getReleaseVersion(message);
+		
+	}
+	
+	private static SetReleaseVersionResult setReleaseVersion(Authentication auth, LibraryServiceEI port) {
+
+		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+		message.setAuthentication(auth);
+		message.setComment("test");
+		message.setUri("http://testtreatment");
+		message.setVersion(2);
+
+		return port.setReleaseVersion(message);
 	}
 
 	private static QueryResult query(Authentication auth, LibraryServiceEI port) {
@@ -105,13 +136,13 @@ public class WSClient {
 	}
 
 	private static GetLibraryItemURIsResult getUris(Authentication auth, LibraryServiceEI port) {
-		
+
 		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
 		message.setAuthentication(auth);
 		message.setItemType("Treatment");
 		return port.getLibraryItemURIs(message);
 	}
-	
+
 	private static AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(Authentication auth, LibraryServiceEI port) {
 
 //		Census c = new Census();
@@ -128,7 +159,7 @@ public class WSClient {
 		t.setDescription("the treatment");
 		t.setNumDosesInTreatmentCourse(BigInteger.TEN);
 		t.setSpeciesOfTreatedOrganism("people");
-		
+
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(t);
 
@@ -173,7 +204,7 @@ public class WSClient {
 		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
 		message.setLibraryItemContainer(lic);
 		message.setAuthentication(auth);
-		message.setUri("http://testitem");
+		message.setUri("http://testtreatment");
 		message.setComment("update 1");
 
 		return port.updateLibraryItemContainer(message);
