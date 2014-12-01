@@ -43,6 +43,6 @@ public class GetCommentsMethod {
 		}
 		result.setStatus(status);
 
-		return null;
+		return result;
 	}
 }
