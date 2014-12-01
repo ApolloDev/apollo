@@ -511,12 +511,26 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
+	public LibraryCommentTypeEnum getCommentTypeFromId(int id) throws ClassNotFoundException, SQLException, ApolloDatabaseExplicitException {
+
+		String sql = "SELECT description FROM comment_type WHERE id = " + id;
+
+		PreparedStatement pstmt = getConn().prepareStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+
+		while (rs.next()) {
+			return LibraryCommentTypeEnum.valueOf(rs.getString(1).toUpperCase());
+		}
+
+		throw new ApolloDatabaseExplicitException("There was no comment type with ID " + id);
+	}
+
 	public GetCommentsResult getComments(String urn, int version) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURI(urn);
 			int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version);
-			String sql = "SELECT date,comment,comment_type,user_id FROM comments WHERE item_id = " + itemId;
+			String sql = "SELECT date_created,comment,comment_type,user_id FROM comments WHERE item_id = " + itemId;
 
 			GetCommentsResult result = new GetCommentsResult();
 
@@ -526,7 +540,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			while (rs.next()) {
 				Date date = rs.getDate(1);
 				String comment = rs.getString(2);
-				LibraryCommentTypeEnum commentTypeEnum = LibraryCommentTypeEnum.valueOf(rs.getString(3).toUpperCase());
+				int commentTypeId = rs.getInt(3);
+				LibraryCommentTypeEnum commentTypeEnum = getCommentTypeFromId(commentTypeId);
 				String userId = rs.getString(4);
 
 				CommentFromLibrary commentFomLibrary = new CommentFromLibrary();
@@ -583,7 +598,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		} catch (ApolloDatabaseUserPasswordException ex) {
 			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
 		} catch (NoURNFoundException ex) {
-			throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION + "to " + version 
+			throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION + "to " + version
 					+ " for the following resource: \"" + urn + "\". The specified resoucre does not exist in the library.");
 		} catch (NoLibraryItemException ex) {
 			throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION
@@ -602,7 +617,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	private void setReleaseVersion(int catalogId, int version) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, 
+	private void setReleaseVersion(int catalogId, int version) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException,
 			NoLibraryItemException, ApolloDatabaseException {
 
 		int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version);
@@ -612,13 +627,13 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 		try {
 			clearPreviousReleaseVersion(catalogId);
-			
+
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			pstmt.executeUpdate();
 			if (pstmt.getUpdateCount() == 0) {
 				throw new ApolloDatabaseException("There was an error setting the release version. You specified a version of the object that does not exist");
 			}
-			
+
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseExplicitException("ClassNotFoundException setting public version for urn_id " + catalogId + " and version " + version + ": " + ex.getMessage());
 		} catch (SQLException ex) {
@@ -628,7 +643,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	private void clearPreviousReleaseVersion(int catalogId) throws ApolloDatabaseExplicitException {
 
-		String sql = "UPDATE library_item_containers SET is_latest_published_version = false, was_previously_published = true WHERE urn_id = " + catalogId 
+		String sql = "UPDATE library_item_containers SET is_latest_published_version = false, was_previously_published = true WHERE urn_id = " + catalogId
 				+ " AND is_latest_published_version = true";
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
@@ -816,7 +831,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //			throw new ApolloDatabaseExplicitException("SQLException checking library_item_container_urns table");
 //		}
 //	}
-
 	private <T extends Object> T getObjectFromJson(String json, Class<T> type) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		T object = mapper.readValue(json, type);
