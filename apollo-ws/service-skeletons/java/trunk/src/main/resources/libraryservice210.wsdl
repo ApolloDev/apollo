@@ -230,7 +230,7 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			
+
 			<xsd:element name="getLibraryItemURNs">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -247,20 +247,39 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLibraryItemURNsAddedSinceDateTime">
+			<xsd:element name="getChangeLogForLibraryItemsModifiedSinceDateTime">
 				<xsd:complexType>
 					<xsd:sequence>
-
-						<xsd:element name="getLibraryItemsAddedSinceDateTimeMessage"
-							type="lst:GetLibraryItemsAddedSinceDateTimeMessage"></xsd:element>
+						<xsd:element
+							name="getChangeLogForLibraryItemsModifiedSinceDateTimeMessage"
+							type="lst:GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="getLibraryItemURNsAddedSinceDateTimeResponse">
+			<xsd:element
+				name="getChangeLogForLibraryItemsModifiedSinceDateTimeResponse">
+								<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element
+							name="getChangeLogForLibraryItemsModifiedSinceDateTimeResult"
+							type="lst:GetChangeLogForLibraryItemsModifiedSinceDateTimeResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+				
+			</xsd:element>
+			<xsd:element name="setLibraryItemAsNotReleased">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="getLibraryItemsAddedSinceDateTimeResult"
-							type="lst:GetLibraryItemsAddedSinceDateTimeResult"></xsd:element>
+
+						<xsd:element name="setLibraryItemAsNotReleasedMessage" type="lst:SetLibraryItemAsNotReleasedMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="setLibraryItemAsNotReleasedResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="setLibraryItemAsNotReleasedResult" type="lst:SetLibraryItemAsNotReleasedResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -347,12 +366,20 @@
 	<wsdl:message name="getLibraryItemURNsResponse">
 		<wsdl:part name="parameters" element="tns:getLibraryItemURNsResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getLibraryItemURNsAddedSinceDateTimeRequest">
-		<wsdl:part name="parameters" element="tns:getLibraryItemURNsAddedSinceDateTime"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getLibraryItemURNsAddedSinceDateTimeResponse">
+	<wsdl:message name="getChangeLogForLibraryItemsModifiedSinceDateTimeRequest">
 		<wsdl:part name="parameters"
-			element="tns:getLibraryItemURNsAddedSinceDateTimeResponse"></wsdl:part>
+			element="tns:getChangeLogForLibraryItemsModifiedSinceDateTime"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message
+		name="getChangeLogForLibraryItemsModifiedSinceDateTimeResponse">
+		<wsdl:part name="parameters"
+			element="tns:getChangeLogForLibraryItemsModifiedSinceDateTimeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="setLibraryItemAsNotReleasedRequest">
+		<wsdl:part name="parameters" element="tns:setLibraryItemAsNotReleased"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="setLibraryItemAsNotReleasedResponse">
+		<wsdl:part name="parameters" element="tns:setLibraryItemAsNotReleasedResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:portType name="LibraryServiceEI">
 		<wsdl:operation name="getLibraryItemURNs">
@@ -363,9 +390,11 @@
 			<wsdl:input message="tns:getLibraryItemContainerRequest"></wsdl:input>
 			<wsdl:output message="tns:getLibraryItemContainerResponse"></wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLibraryItemURNsAddedSinceDateTime">
-			<wsdl:input message="tns:getLibraryItemURNsAddedSinceDateTimeRequest"></wsdl:input>
-			<wsdl:output message="tns:getLibraryItemURNsAddedSinceDateTimeResponse"></wsdl:output>
+		<wsdl:operation name="getChangeLogForLibraryItemsModifiedSinceDateTime">
+			<wsdl:input
+				message="tns:getChangeLogForLibraryItemsModifiedSinceDateTimeRequest"></wsdl:input>
+			<wsdl:output
+				message="tns:getChangeLogForLibraryItemsModifiedSinceDateTimeResponse"></wsdl:output>
 		</wsdl:operation>
 		<wsdl:operation name="addLibraryItemContainer">
 			<wsdl:input message="tns:addLibraryItemContainerRequest"></wsdl:input>
@@ -408,9 +437,12 @@
 			<wsdl:input message="tns:queryRequest"></wsdl:input>
 			<wsdl:output message="tns:queryResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="setLibraryItemAsNotReleased">
+			<wsdl:input message="tns:setLibraryItemAsNotReleasedRequest"></wsdl:input>
+			<wsdl:output message="tns:setLibraryItemAsNotReleasedResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="LibraryServiceBinding"
-		type="tns:LibraryServiceEI">
+	<wsdl:binding name="LibraryServiceBinding" type="tns:LibraryServiceEI">
 
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
@@ -571,10 +603,10 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
-		<wsdl:operation name="getLibraryItemURNsAddedSinceDateTime">
+		<wsdl:operation name="getChangeLogForLibraryItemsModifiedSinceDateTime">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getLibraryItemURNsAddedSinceDateTime" />
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getChangeLogForLibraryItemsModifiedSinceDateTime" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
