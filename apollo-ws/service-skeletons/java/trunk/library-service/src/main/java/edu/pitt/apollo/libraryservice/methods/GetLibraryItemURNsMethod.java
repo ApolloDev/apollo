@@ -3,29 +3,29 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
 
-public class GetLibraryItemURIsMethod {
+public class GetLibraryItemURNsMethod {
 
-	public static GetLibraryItemURIsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
-			GetLibraryItemURIsMessage getLibraryItemURIsMessage) {
+	public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
+			GetLibraryItemURNsMessage getLibraryItemURIsMessage) {
 
 		Authentication authentication = getLibraryItemURIsMessage.getAuthentication();
 		String itemType = getLibraryItemURIsMessage.getItemType();
 
 		//execute query
-		GetLibraryItemURIsResult result = new GetLibraryItemURIsResult();
+		GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();
 		MethodCallStatus status = new MethodCallStatus();
 		result.setStatus(status);
 
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				result.getURIs().addAll(dbUtils.getURNs(itemType));
+				result.getURNs().addAll(dbUtils.getURNs(itemType));
 				status.setMessage("");
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
