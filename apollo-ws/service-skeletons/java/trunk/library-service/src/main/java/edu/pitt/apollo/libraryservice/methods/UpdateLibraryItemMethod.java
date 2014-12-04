@@ -24,7 +24,7 @@ public class UpdateLibraryItemMethod {
 			AddOrUpdateLibraryItemContainerMessage message) {
 		
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 		String comment = message.getComment();
 		LibraryItemContainer item = message.getLibraryItemContainer();
 
@@ -35,7 +35,7 @@ public class UpdateLibraryItemMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				int version = dbUtils.updateLibraryItem(uri, item, authentication, comment);
+				int version = dbUtils.updateLibraryItem(urn, item, authentication, comment);
 				result.setVersion(version);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
