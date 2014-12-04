@@ -15,59 +15,94 @@
 package edu.pitt.apollo.libraryclient;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
-import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
-import edu.pitt.apollo.service.libraryservice.v2_1_0.GetVersionsResponse;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
 import edu.pitt.apollo.types.v2_1_0.Census;
-import edu.pitt.apollo.types.v2_1_0.ContactDefinitionEnum;
-import edu.pitt.apollo.types.v2_1_0.TransmissionProbability;
 import edu.pitt.apollo.types.v2_1_0.Treatment;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseScenario;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.transform.stream.StreamSource;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.eclipse.persistence.jaxb.JAXBContext;
+import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
+import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final String WSDL_LOC = "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
 	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
+	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
+	
+	public static final String APOLLO_DIR;
 
-	public static void main(String[] args) throws MalformedURLException {
+	static {
+		Map<String, String> env = System.getenv();
+		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		if (apolloDir != null) {
+			if (!apolloDir.endsWith(File.separator)) {
+				apolloDir += File.separator;
+			}
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + apolloDir);
+		} else {
+			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
+		}
+
+		APOLLO_DIR = apolloDir;
+	}
+
+	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
 		LibraryServiceV210 ls = new LibraryServiceV210(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
-		Authentication a = new Authentication();
-		a.setRequesterId("library_demo");
-		a.setRequesterPassword("password");
+		Authentication a = getAuthentication();
+		
+		
 
 //		QueryResult result = query(a, port);
 //		System.out.println("ran query");
@@ -87,6 +122,7 @@ public class WSClient {
 //			System.out.println("version " + versions.get(i));
 //		}
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
+//		GetLibraryItemURNsResult result = getUris(a, port);
 //		Census c = (Census) result.getLibraryItemContainer().getLibraryItem();
 //		System.out.println(c.getDescription());
 //		System.out.println(result.getLibraryItemContainer().getCatalogEntry().getItemDescription());
@@ -94,32 +130,54 @@ public class WSClient {
 //		System.out.println(result.getURIs().size());
 //		SetReleaseVersionResult setReleaseVersionResult = setReleaseVersion(a, port);
 //		System.out.println(setReleaseVersionResult.getStatus().getStatus());
+//		GetReleaseVersionResult result = getReleaseVersion(a, port);
+//		System.out.println(result.getStatus().getStatus());
+//		System.out.println("test");
+//		System.out.println(result.getVersion());
+		addInfectiousDiseaseScenarioToLibrary(a, port);
+		System.out.println("finished");
+	}
+	
+	private static Authentication getAuthentication() throws FileNotFoundException, IOException {
+		File props = new File(APOLLO_DIR + LIBRARY_CONNECTION_PROPERTIES_FILE);
+		InputStream fis = new FileInputStream(props);
+		Properties properties = new Properties();
+		properties.load(fis);
+		fis.close();
 		
-		
-		GetReleaseVersionResult result = getReleaseVersion(a, port);
-		System.out.println(result.getStatus().getStatus());
-		System.out.println(result.getVersion());
+		Authentication auth = new Authentication();
+		auth.setRequesterId(properties.getProperty("user"));
+		auth.setRequesterPassword(properties.getProperty("password"));
+		return auth;
+	}
+
+	private static GetLibraryItemURNsResult getUris(Authentication auth, LibraryServiceEI port) {
+
+		GetLibraryItemURNsMessage message = new GetLibraryItemURNsMessage();
+		message.setAuthentication(auth);
+		message.setItemType("Epidemic");
+
+		return port.getLibraryItemURNs(message);
 	}
 
 	private static GetReleaseVersionResult getReleaseVersion(Authentication auth, LibraryServiceEI port) {
-		
+
 		GetReleaseVersionMessage message = new GetReleaseVersionMessage();
 		message.setAuthentication(auth);
-		message.setUri("/epidemic/ebola/ZR/1976");
-		
-		return port.getReleaseVersion(message);
-		
+		message.setUrn("/epidemic/ebola/ZR/1976");
+
+		return port.getLibraryItemReleaseVersion(message);
 	}
-	
+
 	private static SetReleaseVersionResult setReleaseVersion(Authentication auth, LibraryServiceEI port) {
 
 		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
 		message.setAuthentication(auth);
 		message.setComment("test");
-		message.setUri("http://testtreatment");
+		message.setUrn("http://testtreatment");
 		message.setVersion(2);
 
-		return port.setReleaseVersion(message);
+		return port.setReleaseVersionForLibraryItem(message);
 	}
 
 	private static QueryResult query(Authentication auth, LibraryServiceEI port) {
@@ -135,47 +193,29 @@ public class WSClient {
 		return result;
 	}
 
-	private static GetLibraryItemURIsResult getUris(Authentication auth, LibraryServiceEI port) {
+//	private static GetLibraryItemURIsResult getUris(Authentication auth, LibraryServiceEI port) {
+//
+//		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
+//		message.setAuthentication(auth);
+//		message.setItemType("Treatment");
+//		return port.getLibraryItemURIs(message);
+//	}
+	private static AddOrUpdateLibraryItemContainerResult addInfectiousDiseaseScenarioToLibrary(Authentication auth, LibraryServiceEI port) 
+			throws DatatypeConfigurationException, ParseException {
 
-		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
-		message.setAuthentication(auth);
-		message.setItemType("Treatment");
-		return port.getLibraryItemURIs(message);
-	}
-
-	private static AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(Authentication auth, LibraryServiceEI port) {
-
-//		Census c = new Census();
-//		c.setDescription("test description1");
-//		c.setSimulatorTime(0);
-//		try {
-//			GregorianCalendar cal = new GregorianCalendar();
-//			cal.setTime(new Date());
-//			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
-//		} catch (DatatypeConfigurationException ex) {
-//			ex.printStackTrace();
-//		}
-		Treatment t = new Treatment();
-		t.setDescription("the treatment");
-		t.setNumDosesInTreatmentCourse(BigInteger.TEN);
-		t.setSpeciesOfTreatedOrganism("people");
-
+		InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
 		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(t);
+		lic.setLibraryItem(scenario);
 
-//		GetVersionsMessage test =  new GetVersionsMessage();
-//		test.setAuthentication(auth);
-//		test.setUri("http://test");
-//		lic.setLibraryItem(test);
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("test treatment");
+		entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
 		lic.setCatalogEntry(entry);
 
 		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
 		message.setLibraryItemContainer(lic);
 		message.setAuthentication(auth);
-		message.setUri("http://testtreatment");
-		message.setComment("initial commit");
+		message.setUrn("/scenario/114727/180/2009");
+		message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
 
 		return port.addLibraryItemContainer(message);
 	}
@@ -204,7 +244,7 @@ public class WSClient {
 		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
 		message.setLibraryItemContainer(lic);
 		message.setAuthentication(auth);
-		message.setUri("http://testtreatment");
+		message.setUrn("http://testtreatment");
 		message.setComment("update 1");
 
 		return port.updateLibraryItemContainer(message);
@@ -214,9 +254,9 @@ public class WSClient {
 
 		GetVersionsMessage message = new GetVersionsMessage();
 		message.setAuthentication(auth);
-		message.setUri("http://testitem");
+		message.setUrn("http://testitem");
 
-		return port.getVersions(message);
+		return port.getVersionNumbersForLibraryItem(message);
 
 	}
 
@@ -224,7 +264,7 @@ public class WSClient {
 
 		GetLibraryItemContainerMessage message = new GetLibraryItemContainerMessage();
 		message.setAuthentication(auth);
-		message.setUri("http://testitem");
+		message.setUrn("/epidemic/ebola/ZR/1976");
 		message.setVersion(1);
 
 		return port.getLibraryItemContainer(message);
