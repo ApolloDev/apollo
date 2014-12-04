@@ -21,7 +21,7 @@ public class GetCommentsMethod {
 
 	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, GetCommentsMessage message) {
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 		int version = message.getVersion();
 		
 		GetCommentsResult result = new GetCommentsResult();
@@ -30,7 +30,7 @@ public class GetCommentsMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				result = dbUtils.getComments(uri, version);
+				result = dbUtils.getComments(urn, version);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
