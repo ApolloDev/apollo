@@ -22,7 +22,7 @@ public class GetReleaseVersionMethod {
 	public static GetReleaseVersionResult getReleaseVersion(LibraryDbUtils dbUtils, GetReleaseVersionMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 
 		GetReleaseVersionResult result = new GetReleaseVersionResult();
 		MethodCallStatus status = new MethodCallStatus();
@@ -31,11 +31,11 @@ public class GetReleaseVersionMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				Integer version = dbUtils.getReleaseVersion(uri);
+				Integer version = dbUtils.getReleaseVersion(urn);
 				if (version == null) {
-					result.setHasPublishedVersion(false);
+					result.setHasReleasedVersion(false);
 				} else {
-					result.setHasPublishedVersion(true);
+					result.setHasReleasedVersion(true);
 					result.setVersion(version);
 				}
 				status.setStatus(MethodCallStatusEnum.COMPLETED);

@@ -246,7 +246,7 @@
     <complexType name="GetChangeLogForLibraryItemsModifiedSinceDateTimeResult">
     	<sequence>
     		<element name="status" type="pref:MethodCallStatus"></element>
-    		<element name="changeLogEntries" type="token" minOccurs="0" maxOccurs="unbounded"></element>
+    		<element name="changeLogEntries" type="tns:ChangeLogEntry" minOccurs="0" maxOccurs="unbounded"></element>
     	</sequence>
     </complexType>
 
@@ -255,6 +255,7 @@
     		<element name="urn" type="string"></element>
     		<element name="version" type="int"></element>
     		<element name="actionPerformed" type="tns:LibraryActionTypeEnum"></element>
+            <element name="dateOfAction" type="dateTime"></element>
     	</sequence>
     </complexType>
     
