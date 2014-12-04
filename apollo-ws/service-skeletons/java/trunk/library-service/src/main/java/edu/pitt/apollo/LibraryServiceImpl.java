@@ -15,7 +15,6 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.db.LibraryDbUtils;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 
 import java.io.File;
 import java.util.Map;
@@ -29,14 +28,14 @@ import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContai
 import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.AddReviewerCommentMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.AddReviewerCommentResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetDiffResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURIsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
@@ -45,21 +44,23 @@ import edu.pitt.apollo.library_service_types.v2_1_0.ModifyGroupOwnershipMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.ModifyGroupOwnershipResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedResult;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
 import edu.pitt.apollo.libraryservice.methods.AddLibraryItemMethod;
 import edu.pitt.apollo.libraryservice.methods.AddReviewerCommentMethod;
+import edu.pitt.apollo.libraryservice.methods.GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod;
 import edu.pitt.apollo.libraryservice.methods.GetCommentsMethod;
-import edu.pitt.apollo.libraryservice.methods.GetDiffMethod;
 import edu.pitt.apollo.libraryservice.methods.GetLibraryItemMethod;
-import edu.pitt.apollo.libraryservice.methods.GetLibraryItemURIsMethod;
+import edu.pitt.apollo.libraryservice.methods.GetLibraryItemURNsMethod;
 import edu.pitt.apollo.libraryservice.methods.GetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.GetVersionsMethod;
 import edu.pitt.apollo.libraryservice.methods.QueryLibraryMethod;
+import edu.pitt.apollo.libraryservice.methods.SetLibraryItemAsNotReleasedMethod;
 import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 
 import java.io.IOException;
 
@@ -93,11 +94,6 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 	}
 
 	@Override
-	public GetVersionsResult getVersions(GetVersionsMessage getVersionsMessage) {
-		return GetVersionsMethod.getVersions(libraryDbUtils, getVersionsMessage);
-	}
-
-	@Override
 	public QueryResult query(QueryMessage queryMessage) {
 		return QueryLibraryMethod.queryLibrary(libraryDbUtils, readonlyLibraryDbUtils, queryMessage);
 	}
@@ -109,51 +105,9 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 	}
 
 	@Override
-	public GetDiffResult getDiff(GetDiffMessage getDiffMessage) {
-		return GetDiffMethod.getDiff(libraryDbUtils, getDiffMessage);
-	}
-
-	@Override
-	public GetCommentsResult getComments(GetCommentsMessage getCommentsMessage) {
-		return GetCommentsMethod.getComments(libraryDbUtils, getCommentsMessage);
-	}
-
-	@Override
-	public ModifyGroupOwnershipResult addGroup(
-			ModifyGroupOwnershipMessage addGroupMessage) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GetReleaseVersionResult getReleaseVersion(
-			GetReleaseVersionMessage getReleaseVersionMessage) {
-		return GetReleaseVersionMethod.getReleaseVersion(libraryDbUtils, getReleaseVersionMessage);
-	}
-
-	@Override
-	public ModifyGroupOwnershipResult removeGroup(
-			ModifyGroupOwnershipMessage removeGroupMessage) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AddReviewerCommentResult addReviewerComment(
-			AddReviewerCommentMessage addReviewerCommentMessage) {
-		return AddReviewerCommentMethod.addReviewerComment(libraryDbUtils, addReviewerCommentMessage);
-	}
-
-	@Override
 	public AddOrUpdateLibraryItemContainerResult updateLibraryItemContainer(
 			AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
 		return UpdateLibraryItemMethod.updateLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
-	}
-
-	@Override
-	public SetReleaseVersionResult setReleaseVersion(
-			SetReleaseVersionMessage setReleaseVersionMessage) {
-		return SetReleaseVersionMethod.setReleaseVersion(libraryDbUtils, setReleaseVersionMessage);
 	}
 
 	@Override
@@ -162,30 +116,54 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 		return AddLibraryItemMethod.addLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
 	}
 
-	public static void main(String[] args) throws ApolloDatabaseException {
-		
-		LibraryServiceImpl impl = new LibraryServiceImpl();
-		
-		GetLibraryItemURIsMessage message = new GetLibraryItemURIsMessage();
-		
-		Authentication auth = new Authentication();
-		auth.setRequesterId("library_demo");
-		auth.setRequesterPassword("password");
-		
-		message.setAuthentication(auth);
-		
-//		message.setItemType("Census");
-		
-		GetLibraryItemURIsResult result = impl.getLibraryItemURIs(message);
-		System.out.println("done");
+	@Override
+	public GetReleaseVersionResult getLibraryItemReleaseVersion(GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
+		return GetReleaseVersionMethod.getReleaseVersion(libraryDbUtils, getLibraryItemReleaseVersionMessage);
 	}
 
 	@Override
-	public GetLibraryItemURIsResult getLibraryItemURIs(
-			GetLibraryItemURIsMessage getLibraryItemURIsMessage) {
-		return GetLibraryItemURIsMethod.getLibraryItemURIs(libraryDbUtils, getLibraryItemURIsMessage);
+	public GetCommentsResult getCommentsForLibraryItem(GetCommentsMessage getCommentsForLibraryItemMessage) {
+		return GetCommentsMethod.getComments(libraryDbUtils, getCommentsForLibraryItemMessage);
 	}
 
+	@Override
+	public GetVersionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+		return GetVersionsMethod.getVersions(libraryDbUtils, getVersionNumbersForLibraryItemMessage);
+	}
 
-	
+	@Override
+	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public GetLibraryItemURNsResult getLibraryItemURNs(GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
+		return GetLibraryItemURNsMethod.getLibraryItemURIs(libraryDbUtils, getLibraryItemURNsMessage);
+	}
+
+	@Override
+	public SetReleaseVersionResult setReleaseVersionForLibraryItem(SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
+		return SetReleaseVersionMethod.setReleaseVersion(libraryDbUtils, setReleaseVersionForLibraryItemMessage);
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public AddReviewerCommentResult addReviewerCommentToLibraryItem(AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
+		return AddReviewerCommentMethod.addReviewerComment(libraryDbUtils, addReviewerCommentToLibraryItemMessage);
+	}
+
+	@Override
+	public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
+		return SetLibraryItemAsNotReleasedMethod.setLibraryItemAsNotReleased(libraryDbUtils, setLibraryItemAsNotReleasedMessage);
+	}
+
+	@Override
+	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
+		return GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod.getChangeLogForLibraryItemsModifiedSinceDateTime(
+				libraryDbUtils, getChangeLogForLibraryItemsModifiedSinceDateTimeMessage);
+	}
 }
