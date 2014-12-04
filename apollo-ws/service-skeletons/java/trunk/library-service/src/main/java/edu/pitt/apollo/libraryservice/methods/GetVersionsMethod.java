@@ -22,7 +22,7 @@ public class GetVersionsMethod {
 
 	public static GetVersionsResult getVersions(LibraryDbUtils dbUtils, GetVersionsMessage message) {
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 
 		GetVersionsResult result = new GetVersionsResult();
 		MethodCallStatus status = new MethodCallStatus();
@@ -31,7 +31,7 @@ public class GetVersionsMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				List<Integer> versions = dbUtils.getVersions(uri);
+				List<Integer> versions = dbUtils.getVersions(urn);
 				result.getVersions().addAll(versions);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {

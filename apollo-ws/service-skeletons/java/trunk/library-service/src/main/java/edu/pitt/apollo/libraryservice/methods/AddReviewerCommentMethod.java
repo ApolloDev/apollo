@@ -22,7 +22,7 @@ public class AddReviewerCommentMethod {
 	public static AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, AddReviewerCommentMessage message) {
 		
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 		String comment = message.getComment();
 		int version = message.getVersion();
 
@@ -33,7 +33,7 @@ public class AddReviewerCommentMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.REVIEWER);
 			if (userAuthorized) {
-				dbUtils.addReviewerComment(uri, version, comment, authentication);
+				dbUtils.addReviewerComment(urn, version, comment, authentication);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
