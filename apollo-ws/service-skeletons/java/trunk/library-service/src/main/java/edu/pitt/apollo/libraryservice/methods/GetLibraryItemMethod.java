@@ -24,7 +24,7 @@ public class GetLibraryItemMethod {
 	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils, GetLibraryItemContainerMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 		Integer version = message.getVersion();
 
 		GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
@@ -38,9 +38,9 @@ public class GetLibraryItemMethod {
 				LibraryItemContainer container;
 				if (version == null) {
 					// get release version
-					container = dbUtils.getReleaseLibraryItemContainer(uri);
+					container = dbUtils.getReleaseLibraryItemContainer(urn);
 				} else {
-					container = dbUtils.getLibraryItemContainer(uri, version);
+					container = dbUtils.getLibraryItemContainer(urn, version);
 				}
 				result.setLibraryItemContainer(container);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
