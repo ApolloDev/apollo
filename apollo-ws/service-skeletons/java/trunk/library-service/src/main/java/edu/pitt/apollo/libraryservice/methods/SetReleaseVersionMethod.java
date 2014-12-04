@@ -22,7 +22,7 @@ public class SetReleaseVersionMethod {
 	public static SetReleaseVersionResult setReleaseVersion(LibraryDbUtils dbUtils, SetReleaseVersionMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String uri = message.getUri();
+		String urn = message.getUrn();
 		String comment = message.getComment();
 		int version = message.getVersion();
 
@@ -33,7 +33,7 @@ public class SetReleaseVersionMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				dbUtils.setReleaseVersion(uri, version, authentication, comment);
+				dbUtils.setReleaseVersion(urn, version, authentication, comment);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
