@@ -10,5 +10,5 @@ package edu.pitt.apollo.db;
  */
 public enum LibraryCommentTypeEnum {
 
-	COMMIT, REVIEW, PUBLISH;
+	COMMIT, REVIEW, RELEASE;
 }
