@@ -1,4 +1,6 @@
 SET SCHEMA 'public';
+DROP TABLE IF EXISTS library_actions CASCADE;
+DROP TABLE IF EXISTS library_item_action_history CASCADE;
 DROP TABLE IF EXISTS library_item_container_urns CASCADE;
 DROP TABLE IF EXISTS library_item_containers CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -44,12 +46,31 @@ CREATE TABLE library_item_containers (
     id SERIAL PRIMARY KEY,
     urn_id INT REFERENCES library_item_container_urns (id) NOT NULL,
     version INT NOT NULL,
-    is_latest_published_version BOOLEAN NOT NULL DEFAULT false,
-    was_previously_published BOOLEAN NOT NULL DEFAULT false,
+    is_latest_release_version BOOLEAN NOT NULL DEFAULT false,
+    was_previously_released BOOLEAN NOT NULL DEFAULT false,
     date_created TIMESTAMP WITH TIME ZONE NOT NULL,
     json_represenation JSON NOT NULL,
     committer_id INT REFERENCES users (id) NOT NULL,
     CONSTRAINT unique_library_item_container UNIQUE (urn_id, version)
+);
+
+CREATE TABLE library_actions (
+    id SERIAL PRIMARY KEY,
+    action TEXT NOT NULL
+);
+
+INSERT INTO library_actions (action) VALUES ('added_item');
+INSERT INTO library_actions (action) VALUES ('updated_item');
+INSERT INTO library_actions (action) VALUES ('set_as_release_version');
+INSERT INTO library_actions (action) VALUES ('removed_as_release_version');
+INSERT INTO library_actions (action) VALUES ('added_reviewer_comment');
+
+CREATE TABLE library_item_action_history (
+    id SERIAL PRIMARY KEY,
+    urn_id INT REFERENCES library_item_container_urns (id) NOT NULL,
+    version INT NOT NULL,
+    action_performed INT REFERENCES library_actions (id) NOT NULL,
+    date_of_action TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE comment_type (
@@ -59,7 +80,7 @@ CREATE TABLE comment_type (
 
 INSERT INTO comment_type (description) VALUES ('commit');
 INSERT INTO comment_type (description) VALUES ('review');
-INSERT INTO comment_type (description) VALUES ('publish');
+INSERT INTO comment_type (description) VALUES ('release');
 
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
@@ -68,7 +89,6 @@ CREATE TABLE comments (
     comment TEXT NOT NULL,
     comment_type INT REFERENCES comment_type (id) NOT NULL,
     user_id INT REFERENCES users (id) NOT NULL
-
 );
 
 CREATE FUNCTION increment_version() RETURNS TRIGGER AS '
