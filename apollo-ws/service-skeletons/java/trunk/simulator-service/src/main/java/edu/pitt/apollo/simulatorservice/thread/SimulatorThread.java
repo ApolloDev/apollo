@@ -1,17 +1,18 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
 import edu.pitt.apollo.SimulatorServiceImpl;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
 import edu.pitt.apollo.types.v2_1_0.Location;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -145,6 +146,21 @@ public abstract class SimulatorThread extends Thread {
 		}
 		addTextDataContentForSeries(stream.toString(), seriesName);
 
+	}
+
+	protected final void addTextDataContentForAllSeries(Map<String, Double[]> seriesNamesAndContent, String location) throws IOException {
+
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		for (String seriesName : seriesNamesAndContent.keySet()) {
+			Double[] series = seriesNamesAndContent.get(seriesName);
+
+			for (int t = 0; t < series.length; t++) {
+				String line = t + "," + location + "," + seriesName + "," + "," + "," + series[t] + "\n";
+				stream.write(line.getBytes());
+			}
+		}
+
+		addTextDataContentForSeries(stream.toString(), "run_output");
 	}
 
 	private void addTextDataContentForSeries(String content, String seriesName) throws IOException {
