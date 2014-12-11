@@ -32,18 +32,19 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceEI;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v2_1_0.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsResult;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.thread.SimulatorThread;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
-import edu.pitt.apollo.types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationsResult;
-import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_1_0.TerminateRunRequest;
-import edu.pitt.apollo.types.v2_1_0.TerminteRunResult;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/", portName = "SimulatorServiceEndpoint", serviceName = "SimulatorService", endpointInterface = "edu.pitt.apollo.service.simulatorservice.SimulatorServiceEI")
 public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
@@ -62,7 +63,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
     @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/runSimulations")
     @ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.RunSimulationsResponse")
     public RunSimulationsResult runSimulations(
-            @WebParam(name = "runSimulationsMessage", targetNamespace = "") edu.pitt.apollo.types.v2_1_0.RunSimulationsMessage runSimulationsMessage) {
+            @WebParam(name = "runSimulationsMessage", targetNamespace = "") RunSimulationsMessage runSimulationsMessage) {
         throw new UnsupportedOperationException("Run simulations is not yet implemented");
     }
 
