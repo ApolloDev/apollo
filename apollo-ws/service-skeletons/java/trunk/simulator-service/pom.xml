@@ -136,9 +136,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/simulatorservice202.wsdl
+                                                ${basedir}/../src/main/resources/simulatorservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:simulatorservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:simulatorservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
