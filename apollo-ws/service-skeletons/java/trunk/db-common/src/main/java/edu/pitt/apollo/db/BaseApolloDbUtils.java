@@ -20,9 +20,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
