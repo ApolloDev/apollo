@@ -413,7 +413,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				query = "SELECT urn FROM library_item_container_urns";
 			} else {
 				query = "SELECT urn FROM library_item_container_urns WHERE id in ("
-						+ "SELECT id FROM library_item_containers WHERE json_represenation->'libraryItem'->>'type' = '" + itemType + "')";
+						+ "SELECT urn_id FROM library_item_containers WHERE json_represenation->'libraryItem'->>'type' = '" + itemType + "')";
 			}
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
