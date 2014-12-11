@@ -29,6 +29,42 @@
 		</sequence>
 	</complexType>
 
+    <complexType name="GetScenarioLocationCodesSupportedBySimulatorResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="locationCodes" type="apollo:ApolloLocationCode"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+    
+    	<complexType name="GetPopulationAndEnvironmentCensusResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="populationAndEnvironmentCensus" type="apollo:PopulationAndEnvironmentCensus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+    
+    	<complexType name="GetConfigurationFileForSimulationResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="configurationFile" type="string" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="configurationFileInHtmlFormat" type="string"
+				maxOccurs="1" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+    
 	<complexType name="RunVisualizationResult">
 		<sequence>
 			<element name="visualizationRunId" type="common:RunIdentification" />
