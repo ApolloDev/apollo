@@ -8,7 +8,6 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
-import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
 import edu.pitt.apollo.library_service_types.v2_1_0.ChangeLogEntry;
 import edu.pitt.apollo.library_service_types.v2_1_0.CommentFromLibrary;
 import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsResult;
@@ -16,10 +15,24 @@ import edu.pitt.apollo.library_service_types.v2_1_0.LibraryActionTypeEnum;
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
 import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
+import edu.pitt.apollo.types.v2_1_0.Census;
+import edu.pitt.apollo.types.v2_1_0.CensusData;
+import edu.pitt.apollo.types.v2_1_0.Contamination;
+import edu.pitt.apollo.types.v2_1_0.DecisionAnalysis;
 import edu.pitt.apollo.types.v2_1_0.Epidemic;
 import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.Infection;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDisease;
 import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseControlStrategy;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseDecisionModel;
+import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v2_1_0.ProbabilisticParameter;
+import edu.pitt.apollo.types.v2_1_0.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v2_1_0.TimeScaleEnum;
+import edu.pitt.apollo.types.v2_1_0.Treatment;
+import edu.pitt.apollo.types.v2_1_0.TriggerDefinition;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,7 +45,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +54,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.transform.stream.StreamSource;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
@@ -106,7 +117,20 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		JAXBContext jc;
 		try {
 			jc = (JAXBContext) JAXBContext
-					.newInstance(new Class[]{clazz, ObjectFactory.class}, properties);
+					.newInstance(new Class[]{clazz,
+						// All ApolloIndexableItems must be listed here
+						DecisionAnalysis.class,
+						Epidemic.class,
+						InfectiousDiseaseDecisionModel.class,
+						Infection.class,
+						InfectiousDisease.class,
+						CensusData.class,
+						Contamination.class,
+						Treatment.class,
+						InfectiousDiseaseScenario.class,
+						Census.class,
+						InfectiousDiseaseControlStrategy.class,
+						ObjectFactory.class}, properties);
 			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
 			StreamSource ss = new StreamSource(contentInputStream);
 			return (LibraryItemContainer) unmarshaller.unmarshal(ss, clazz).getValue();
@@ -119,12 +143,25 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	@Override
 	protected ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
-		Class clazz = LibraryItemContainer.class;
+		Class clazz = obj.getClass();
 
 		Map<String, Object> properties = new HashMap<String, Object>(2);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz, ObjectFactory.class},
+//		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz,
+			// All ApolloIndexableItems must be listed here
+			DecisionAnalysis.class,
+			Epidemic.class,
+			InfectiousDiseaseDecisionModel.class,
+			Infection.class,
+			InfectiousDisease.class,
+			CensusData.class,
+			Contamination.class,
+			Treatment.class,
+			InfectiousDiseaseScenario.class,
+			Census.class,
+			InfectiousDiseaseControlStrategy.class,
+			ObjectFactory.class},
 				properties);
 		JAXBMarshaller marshaller = jc.createMarshaller();
 		marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -618,7 +655,13 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Date date = rs.getDate(1);
+				Timestamp date = rs.getTimestamp(1);
+
+				GregorianCalendar calendar = new GregorianCalendar();
+				calendar.setTimeInMillis(date.getTime());
+				XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(
+						calendar);
+
 				String comment = rs.getString(2);
 				int commentTypeId = rs.getInt(3);
 				LibraryCommentTypeEnum commentTypeEnum = getCommentTypeFromId(commentTypeId);
@@ -628,9 +671,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				commentFomLibrary.setComment(comment);
 				commentFomLibrary.setCommenter(userId);
 
-				GregorianCalendar cal = new GregorianCalendar();
-				cal.setTime(date);
-				XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				commentFomLibrary.setTime(xmlCal);
 
 				if (commentTypeEnum.equals(LibraryCommentTypeEnum.COMMIT)) {
@@ -1023,7 +1063,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		return epidemic;
 	}
 
-	public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException {
+	public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException, JAXBException {
 
 		LibraryDbUtils dbUtils = new LibraryDbUtils(new File("C:\\apollo_210\\library_database.properties"));
 
@@ -1033,16 +1073,25 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 //		int role = dbUtils.getRoleId(LibraryUserRoleTypeEnum.REVIEWER);
 //		System.out.println(role);
-//		LibraryItemContainer item = new LibraryItemContainer();
+		LibraryItemContainer item = new LibraryItemContainer();
 //		Epidemic epidemic = getEpidemic();
-//		InfectiousDiseaseControlStrategy strategy = new IndividualTreatmentControlStrategy();
-//		strategy.setDescription("test strategy");
+		IndividualTreatmentControlStrategy strategy = new IndividualTreatmentControlStrategy();
+		strategy.setDescription("test strategy");
+		ProbabilisticParameter prob = new ProbabilisticParameter();
+		prob.setProbability(0.5);
+		strategy.setCompliance(prob);
+
+		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
+		trigger.setTimeScale(TimeScaleEnum.DECSISION_TIME_SCALE);
+		strategy.getControlStrategyStartTime().add(trigger);
+
 //		epidemic.getInfectiousDiseaseControlStrategies().add(strategy);
 //////
 //		CatalogEntry entry = new CatalogEntry();
 //		entry.setItemDescription("test description");
 //
-//		item.setLibraryItem(epidemic);
+		item.setLibraryItem(strategy);
+		ByteArrayOutputStream bytes = dbUtils.getJsonBytes(item);
 ////
 //		int catalogId = dbUtils.addLibraryItem("scenario_urn2", item, authentication, "first item");
 //		System.out.println("Catalog ID: " + catalogId);
@@ -1082,11 +1131,12 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //		System.out.println("list size: " + objects.size());
 //		LibraryItemContainer container = dbUtils.getLibraryItemContainer("scenario_urn", 1);
 //		Epidemic epidemicFromLibrary = (Epidemic) container.getLibraryItem();
+//		GetCommentsResult result = dbUtils.getComments("/scenario/influenza/H1N1/US/PA/42003/2009", 1);
 
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(2014, 11, 5);
-		XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-		List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(xcal);
+//		GregorianCalendar cal = new GregorianCalendar();
+//		cal.set(2014, 11, 5);
+//		XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+//		List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(xcal);
 		System.out.println("done");
 	}
 }
