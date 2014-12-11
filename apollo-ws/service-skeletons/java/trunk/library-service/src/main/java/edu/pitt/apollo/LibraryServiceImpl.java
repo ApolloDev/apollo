@@ -86,8 +86,8 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 
 		APOLLO_DIR = apolloDir;
 		try {
-			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database.properties"));
-			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly.properties"));
+			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_dev.properties"));
+			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly_dev.properties"));
 		} catch (IOException ex) {
 			throw new ExceptionInInitializerError("IOException creating LibraryDbUtils: " + ex.getMessage());
 		}
