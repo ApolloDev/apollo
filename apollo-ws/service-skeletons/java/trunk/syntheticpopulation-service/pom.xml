@@ -129,9 +129,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/syntheticpopulationservice202.wsdl
+                                                ${basedir}/../src/main/resources/syntheticpopulationservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:syntheticpopulationservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:syntheticpopulationservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

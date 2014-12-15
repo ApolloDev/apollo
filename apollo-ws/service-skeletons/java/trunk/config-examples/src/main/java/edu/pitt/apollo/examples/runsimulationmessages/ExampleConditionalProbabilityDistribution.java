@@ -1,5 +1,6 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.types.v2_1_0.AgeRangeCategoryDefinition;
@@ -11,7 +12,6 @@ import edu.pitt.apollo.types.v2_1_0.DiscreteNonparametricProbabilityDistribution
 import edu.pitt.apollo.types.v2_1_0.GenderCategoryDefinition;
 import edu.pitt.apollo.types.v2_1_0.GenderEnum;
 import edu.pitt.apollo.types.v2_1_0.ProbabilityValuePair;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_1_0.UncertainDuration;
 import edu.pitt.apollo.types.v2_1_0.UnitOfTimeEnum;
 

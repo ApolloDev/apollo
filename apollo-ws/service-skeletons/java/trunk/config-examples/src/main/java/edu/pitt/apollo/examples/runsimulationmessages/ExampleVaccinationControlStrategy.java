@@ -1,5 +1,6 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
@@ -14,7 +15,6 @@ import edu.pitt.apollo.types.v2_1_0.Location;
 import edu.pitt.apollo.types.v2_1_0.NamedPrioritizationSchemeEnum;
 import edu.pitt.apollo.types.v2_1_0.OperatorEnum;
 import edu.pitt.apollo.types.v2_1_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_1_0.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v2_1_0.TimeScaleEnum;
 import edu.pitt.apollo.types.v2_1_0.TreatmentPreventableOutcomeEnum;
