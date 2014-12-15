@@ -5,11 +5,11 @@ import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
 import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunVisualizationMessage;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.types.v2_1_0.SimulatorTimeSpecification;
 import edu.pitt.apollo.types.v2_1_0.UnitOfTimeEnum;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
 
 public class ApolloServiceTypeFactory {
 

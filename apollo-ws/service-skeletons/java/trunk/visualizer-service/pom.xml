@@ -178,9 +178,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/visualizerservice202.wsdl
+                                                ${basedir}/../src/main/resources/visualizerservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:visualizerservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:visualizerservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

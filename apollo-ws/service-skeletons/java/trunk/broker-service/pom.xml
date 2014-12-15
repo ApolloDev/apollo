@@ -226,9 +226,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/apolloservice202.wsdl
+                                                ${basedir}/../src/main/resources/apolloservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:apolloservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:apolloservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

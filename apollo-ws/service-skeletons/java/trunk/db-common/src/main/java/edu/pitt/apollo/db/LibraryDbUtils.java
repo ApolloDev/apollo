@@ -15,7 +15,6 @@ import edu.pitt.apollo.library_service_types.v2_1_0.LibraryActionTypeEnum;
 import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
 import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
 import edu.pitt.apollo.types.v2_1_0.Census;
 import edu.pitt.apollo.types.v2_1_0.CensusData;
@@ -32,7 +31,6 @@ import edu.pitt.apollo.types.v2_1_0.ProbabilisticParameter;
 import edu.pitt.apollo.types.v2_1_0.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v2_1_0.TimeScaleEnum;
 import edu.pitt.apollo.types.v2_1_0.Treatment;
-import edu.pitt.apollo.types.v2_1_0.TriggerDefinition;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -413,7 +411,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				query = "SELECT urn FROM library_item_container_urns";
 			} else {
 				query = "SELECT urn FROM library_item_container_urns WHERE id in ("
-						+ "SELECT urn_id FROM library_item_containers WHERE json_represenation->'libraryItem'->>'type' = '" + itemType + "')";
+						+ "SELECT urn_id FROM library_item_containers WHERE json_representation->'libraryItem'->>'type' = '" + itemType + "')";
 			}
 			PreparedStatement pstmt = getConn().prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
@@ -528,7 +526,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			int userKey = getUserId(authentication.getRequesterId(), authentication.getRequesterPassword());
 
 			String itemJson = getJSONStringForLibraryItem(item);
-			String sql = "INSERT INTO library_item_containers (urn_id,json_represenation,committer_id) VALUES (?,?,?)";
+			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
 			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
 			pstmt.setString(2, itemJson);
@@ -923,7 +921,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	private String getItemJSONFromCatalogIdAndVersion(int catalogId, int versionId, String urn) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoLibraryItemException {
-		String sql = "SELECT json_represenation FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
+		String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
