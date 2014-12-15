@@ -14,15 +14,14 @@ import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
 import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+//import edu.pitt.apollo.
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

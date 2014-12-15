@@ -23,12 +23,11 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceV202;
-import edu.pitt.apollo.types.v2_1_0.AddLibraryItemResult;
+import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceV210;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.types.v2_1_0.AntiviralTreatment;
 import edu.pitt.apollo.types.v2_1_0.AntiviralTreatmentEfficacy;
 import edu.pitt.apollo.types.v2_1_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v2_1_0.Authentication;
 import edu.pitt.apollo.types.v2_1_0.ControlStrategyTargetPopulationsAndPrioritization;
 import edu.pitt.apollo.types.v2_1_0.DiseaseOutcomeEnum;
 import edu.pitt.apollo.types.v2_1_0.DiseaseSurveillanceCapability;
@@ -190,11 +189,11 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		itemIndexingLabels.add("human");
 		itemIndexingLabels.add("non-hypothetical");
 
-		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(), vcm, vcm.getDescription(),
-				"Discussion with ACHD staff.", "InfectiousDiseaseControlStrategy",
-				itemIndexingLabels);
+//		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(), vcm, vcm.getDescription(),
+//				"Discussion with ACHD staff.", "InfectiousDiseaseControlStrategy",
+//				itemIndexingLabels);
 
-		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with Vaccination: " + result.getUuid());
+//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with Vaccination: " + result.getUuid());
 		System.out.println();
 	}
 
@@ -288,13 +287,13 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		itemIndexingLabels.add("hypothetical");
 
 		Authentication authentication = getAuthentication();
-		AddLibraryItemResult result = port.addLibraryItem(authentication,
-				atcm,
-				"A hypothetical control strategy in which all sick humans are treated with a course of Tamiflu.",
-				"Expert opinion regarding a realistic (yet hypothetical) Antiviral Treatment Control Measure.",
-				"InfectiousDiseaseControlStrategy", itemIndexingLabels);
-
-		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with AntiviralTreatment: " + result.getUuid());
+//		AddLibraryItemResult result = port.addLibraryItem(authentication,
+//				atcm,
+//				"A hypothetical control strategy in which all sick humans are treated with a course of Tamiflu.",
+//				"Expert opinion regarding a realistic (yet hypothetical) Antiviral Treatment Control Measure.",
+//				"InfectiousDiseaseControlStrategy", itemIndexingLabels);
+//
+//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with AntiviralTreatment: " + result.getUuid());
 		System.out.println();
 
 	}
@@ -365,13 +364,13 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		indexingValues.add("human");
 		indexingValues.add("hypothetical");
 
-		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(),
-				scm,
-				scm.getDescription(),
-				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-				"InfectiousDiseaseControlStrategy", indexingValues);
-
-		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance : " + result.getUuid());
+//		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(),
+//				scm,
+//				scm.getDescription(),
+//				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
+//				"InfectiousDiseaseControlStrategy", indexingValues);
+//
+//		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance : " + result.getUuid());
 		System.out.println();
 	}
 
@@ -440,20 +439,20 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		indexingValues.add("human");
 		indexingValues.add("hypothetical");
 
-		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(),
-				scm,
-				scm.getDescription(),
-				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-				"InfectiousDiseaseControlStrategy", indexingValues);
-
-		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance: " + result.getUuid());
+//		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(),
+//				scm,
+//				scm.getDescription(),
+//				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
+//				"InfectiousDiseaseControlStrategy", indexingValues);
+//
+//		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance: " + result.getUuid());
 		System.out.println();
 	}
 
 	public static void main(String[] args) throws InterruptedException,
 			IOException, DatatypeConfigurationException {
 
-		ApolloServiceV202 service = new ApolloServiceV202(new URL(WSDL_LOC));
+		ApolloServiceV210 service = new ApolloServiceV210(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 		addAcVcm(port);

@@ -36,7 +36,6 @@ import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
 import edu.pitt.apollo.services_common.v2_1_0.Authentication;
 import edu.pitt.apollo.types.v2_1_0.Census;
 import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseControlStrategy;
 import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseScenario;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,7 +56,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-2.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-2.1.0-SNAPSHOT-dev/services/libraryservice?wsdl";
 	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
@@ -83,10 +82,10 @@ public class WSClient {
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-//		addInfectiousDiseaseScenarioToLibrary(a, port);
-//		setReleaseVersionForInfectiousDiseaseScenario(a, port);
-//		addVaccinationControlStrategyToLibrary(a, port);
-		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlStrategyInLibrary(a, port);
+//		AddOrUpdateLibraryItemContainerResult result = addInfectiousDiseaseScenarioToLibrary(a, port);
+//		setReleaseVersionForInfectiousDiseaseScenario(a, port, result.getVersion());
+		AddOrUpdateLibraryItemContainerResult result = addVaccinationControlStrategyToLibrary(a, port);
+//		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlStrategyInLibrary(a, port);
 		setReleaseVersionForVaccinationControlStratgy(a, port, result.getVersion());
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 		System.out.println("finished");
@@ -123,13 +122,13 @@ public class WSClient {
 		return port.getLibraryItemReleaseVersion(message);
 	}
 
-	private static SetReleaseVersionResult setReleaseVersionForInfectiousDiseaseScenario(Authentication auth, LibraryServiceEI port) {
+	private static SetReleaseVersionResult setReleaseVersionForInfectiousDiseaseScenario(Authentication auth, LibraryServiceEI port, int version) {
 
 		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
 		message.setAuthentication(auth);
 		message.setComment("Setting release version for influenza scenario");
 		message.setUrn("/scenario/114727/180/2009");
-		message.setVersion(1);
+		message.setVersion(version);
 
 		return port.setReleaseVersionForLibraryItem(message);
 	}
