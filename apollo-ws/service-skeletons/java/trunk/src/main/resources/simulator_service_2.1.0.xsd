@@ -19,16 +19,6 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="RunVisualizationMessage">
-		<sequence>
-			<element name="visualizerIdentification" type="common:SoftwareIdentification" />
-			<element name="authentication" type="common:Authentication" />
-			<element name="simulationRunIds" type="common:RunIdentificationAndLabel"
-				maxOccurs="unbounded" minOccurs="1">
-			</element>
-		</sequence>
-	</complexType>
-
     <complexType name="GetScenarioLocationCodesSupportedBySimulatorResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"
@@ -40,7 +30,7 @@
 		</sequence>
 	</complexType>
     
-    	<complexType name="GetPopulationAndEnvironmentCensusResult">
+        	<complexType name="GetPopulationAndEnvironmentCensusResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"
 				maxOccurs="1" minOccurs="1">
@@ -64,12 +54,6 @@
 			</element>
 		</sequence>
 	</complexType>
-    
-	<complexType name="RunVisualizationResult">
-		<sequence>
-			<element name="visualizationRunId" type="common:RunIdentification" />
-		</sequence>
-	</complexType>
 
 	<complexType name="RunSimulationsResult">
 		<sequence>
@@ -77,12 +61,6 @@
 			<element name="runId" type="common:RunIdentification" />
 		</sequence>
 	</complexType>
-
-	<complexType name="RunSyntheticPopulationGenerationMessage"></complexType>
-
-
-
-
 
 	<complexType name="RunSimulationMessage">
 		<sequence>
