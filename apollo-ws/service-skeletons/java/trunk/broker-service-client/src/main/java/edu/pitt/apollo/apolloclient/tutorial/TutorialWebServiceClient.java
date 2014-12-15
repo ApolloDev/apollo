@@ -24,22 +24,27 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceV202;
-import edu.pitt.apollo.types.v2_1_0.AddLibraryItemResult;
+import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceV210;
+import edu.pitt.apollo.services_common.v2_1_0.Authentication;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.AUTHENTICATION_FAILURE;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.COMPLETED;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.FAILED;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.LOG_FILES_WRITTEN;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.UNAUTHORIZED;
+import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.UNKNOWN_RUNID;
+import edu.pitt.apollo.services_common.v2_1_0.RunResult;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.UrlOutputResource;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_1_0.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v2_1_0.PopulationAndEnvironmentCensus;
-import edu.pitt.apollo.types.v2_1_0.RunResult;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_1_0.UrlOutputResource;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+
 
 public class TutorialWebServiceClient {
 
@@ -151,21 +156,21 @@ public class TutorialWebServiceClient {
 
     static {
         try {
-            ApolloServiceV202 ss = new ApolloServiceV202(new URL(WSDL_LOC), SERVICE_NAME);
+            ApolloServiceV210 ss = new ApolloServiceV210(new URL(WSDL_LOC), SERVICE_NAME);
             port = ss.getApolloServiceEndpoint();
         } catch (MalformedURLException ex) {
             throw new ExceptionInInitializerError("MalformedURLException: " + ex.getMessage());
         }
     }
 
-	public static GetLibraryItemResult getLibraryItem(String uuid) {
-		return port.getLibraryItem(uuid);
-	}
-
-	public static AddLibraryItemResult addLibraryItem(Authentication authentication, ApolloIndexableItem apolloIndexableItem, String itemDescription,
-			String itemSource, String itemType, ArrayList<String> itemIndexingLabels) {
-		return port.addLibraryItem(authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
-	}
+//	public static GetLibraryItemResult getLibraryItem(String uuid) {
+//		return port.getLibraryItem(uuid);
+//	}
+//
+//	public static AddLibraryItemResult addLibraryItem(Authentication authentication, ApolloIndexableItem apolloIndexableItem, String itemDescription,
+//			String itemSource, String itemType, ArrayList<String> itemIndexingLabels) {
+//		return port.addLibraryItem(authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
+//	}
 
 	
 }
