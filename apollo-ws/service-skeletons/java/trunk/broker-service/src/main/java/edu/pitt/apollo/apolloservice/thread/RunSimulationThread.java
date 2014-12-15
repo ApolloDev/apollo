@@ -1,7 +1,6 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -14,12 +13,12 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceV202;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 
 /**
  * 

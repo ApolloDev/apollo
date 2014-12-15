@@ -21,7 +21,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -29,42 +28,70 @@ import edu.pitt.apollo.apolloservice.methods.census.GetPopulationAndEnvironmentC
 import edu.pitt.apollo.apolloservice.methods.census.GetScenarioLocationCodesSupportedBySimulatorMethod;
 import edu.pitt.apollo.apolloservice.methods.content.GetConfigurationFileForSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.content.GetVisualizerOutputResourcesMethod;
-import edu.pitt.apollo.apolloservice.methods.library.AddLibraryItemMethod;
-import edu.pitt.apollo.apolloservice.methods.library.GetLibraryItemMethod;
-import edu.pitt.apollo.apolloservice.methods.library.GetUuidsForLibraryItemsCreatedSinceDateTimeMethod;
-import edu.pitt.apollo.apolloservice.methods.library.GetUuidsForLibraryItemsGivenTypeMethod;
-import edu.pitt.apollo.apolloservice.methods.library.RemoveLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.AddLibraryItemContainerMethod;
+import edu.pitt.apollo.apolloservice.methods.library.AddReviewerCommentMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetCommentsForLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetLibraryItemContainerMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetLibraryItemReleaseVersionMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetLibraryItemURNsMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GetVersionNumbersForLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.GrantGroupAccessToLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.QueryMethod;
+import edu.pitt.apollo.apolloservice.methods.library.RemoveGroupAccessToLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.SetLibraryItemAsNotReleasedMethod;
+import edu.pitt.apollo.apolloservice.methods.library.SetReleaseVersionForLibraryItemMethod;
+import edu.pitt.apollo.apolloservice.methods.library.UpdateLibraryItemContainerMethod;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunSimulationsMethod;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddReviewerCommentMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.AddReviewerCommentResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetCommentsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.ModifyGroupOwnershipMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.ModifyGroupOwnershipResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedResult;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
 import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI;
-import edu.pitt.apollo.types.v2_1_0.AddLibraryItemResult;
-import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.GetConfigurationFileForSimulationResult;
-import edu.pitt.apollo.types.v2_1_0.GetLibraryItemResult;
-import edu.pitt.apollo.types.v2_1_0.GetLibraryItemUuidsResult;
-import edu.pitt.apollo.types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_1_0.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_1_0.RunResult;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationsResult;
-import edu.pitt.apollo.types.v2_1_0.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_1_0.ServiceRecord;
-import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
-import edu.pitt.apollo.types.v2_1_0.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.types.v2_1_0.TerminateRunRequest;
-import edu.pitt.apollo.types.v2_1_0.TerminteRunResult;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.RunResult;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRecord;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v2_1_0.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetConfigurationFileForSimulationResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsResult;
+import edu.pitt.apollo.synthetic_population_service_types.v2_1_0.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v2_1_0.SyntheticPopulationGenerationResult;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
     
     @Override
@@ -108,30 +135,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
         return RegisterServiceMethod.registerService(serviceRegistrationRecord);
     }
     
-    @Override
-    @WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-    @RequestWrapper(localName = "getUuidsForLibraryItemsGivenType", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetUuidsForLibraryItemsGivenType")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/getUuidsForLibraryItemsGivenType")
-    @ResponseWrapper(localName = "getUuidsForLibraryItemsGivenTypeResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetUuidsForLibraryItemsGivenTypeResponse")
-    public GetLibraryItemUuidsResult getUuidsForLibraryItemsGivenType(
-            @WebParam(name = "type", targetNamespace = "") String type) {
-        return GetUuidsForLibraryItemsGivenTypeMethod.getUuidsForLibraryItemsGivenType(type);
-    }
-    
-    @Override
-    @WebResult(name = "addLibraryItemResult", targetNamespace = "")
-    @RequestWrapper(localName = "addLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.AddLibraryItem")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/addLibraryItem")
-    @ResponseWrapper(localName = "addLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.AddLibraryItemResponse")
-    public AddLibraryItemResult addLibraryItem(
-            @WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-            @WebParam(name = "apolloIndexableItem", targetNamespace = "") ApolloIndexableItem apolloIndexableItem,
-            @WebParam(name = "itemDescription", targetNamespace = "") String itemDescription,
-            @WebParam(name = "itemSource", targetNamespace = "") String itemSource,
-            @WebParam(name = "itemType", targetNamespace = "") String itemType,
-            @WebParam(name = "itemIndexingLabels", targetNamespace = "") List<String> itemIndexingLabels) {
-        return AddLibraryItemMethod.addLibraryItem(authentication, apolloIndexableItem, itemDescription, itemSource, itemType, itemIndexingLabels);
-    }
     
     @Override
     @WebResult(name = "getConfigurationFileForSimulationResult", targetNamespace = "")
@@ -153,15 +156,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
         return GetRunStatusMethod.getRunStatus(runIdentification);
     }
     
-    @Override
-    @WebResult(name = "getLibraryItemResult", targetNamespace = "")
-    @RequestWrapper(localName = "getLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetLibraryItem")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/getLibraryItem")
-    @ResponseWrapper(localName = "getLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetLibraryItemResponse")
-    public GetLibraryItemResult getLibraryItem(
-            @WebParam(name = "uuid", targetNamespace = "") String uuid) {
-        return GetLibraryItemMethod.getLibraryItem(uuid);
-    }
     
     @Override
     @WebResult(name = "serviceRecords", targetNamespace = "")
@@ -194,27 +188,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				runVisualizationMessage);
         return runMethod.run();
     }
-    
-    @Override
-    @WebResult(name = "methodCallStatus", targetNamespace = "")
-    @RequestWrapper(localName = "removeLibraryItem", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.RemoveLibraryItem")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/removeLibraryItem")
-    @ResponseWrapper(localName = "removeLibraryItemResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.RemoveLibraryItemResponse")
-    public MethodCallStatus removeLibraryItem(
-            @WebParam(name = "authentication", targetNamespace = "") Authentication authentication,
-            @WebParam(name = "uuid", targetNamespace = "") String uuid) {
-        return RemoveLibraryItemMethod.removeLibraryItem(authentication, uuid);
-    }
-    
-    @Override
-    @WebResult(name = "getLibraryItemsResult", targetNamespace = "")
-    @RequestWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTime", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetUuidsForLibraryItemsCreatedSinceDateTime")
-    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/getUuidsForLibraryItemsCreatedSinceDateTime")
-    @ResponseWrapper(localName = "getUuidsForLibraryItemsCreatedSinceDateTimeResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetUuidsForLibraryItemsCreatedSinceDateTimeResponse")
-    public GetLibraryItemUuidsResult getUuidsForLibraryItemsCreatedSinceDateTime(
-            @WebParam(name = "creationDateTime", targetNamespace = "") XMLGregorianCalendar creationDateTime) {
-        return GetUuidsForLibraryItemsCreatedSinceDateTimeMethod.getUuidsForLibraryItemsCreatedSinceDateTime(creationDateTime);
-    }
+
     
     @Override
     @WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
@@ -242,7 +216,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @Override
     @WebResult(name = "getVisualizerOutputResourcesResult", targetNamespace = "")
     @RequestWrapper(localName = "getVisualizerOutputResources", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetVisualizerOutputResources")
-    @WebMethod
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/getVisualizerOutputResourcesResponse")
     @ResponseWrapper(localName = "getVisualizerOutputResourcesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", className = "edu.pitt.apollo.service.apolloservice.v2_1_0.GetVisualizerOutputResourcesResponse")
     public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
             @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
@@ -259,6 +233,76 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public GetCommentsResult getCommentsForLibraryItem(GetCommentsMessage getCommentsForLibraryItemMessage) {
+		return GetCommentsForLibraryItemMethod.getComments(getCommentsForLibraryItemMessage);
+	}
+
+	@Override
+	public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
+		return SetLibraryItemAsNotReleasedMethod.setLibraryItemAsnotReleased(setLibraryItemAsNotReleasedMessage);
+	}
+
+	@Override
+	public GetLibraryItemURNsResult getLibraryItemURNs(GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
+		return GetLibraryItemURNsMethod.getURNs(getLibraryItemURNsMessage);
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
+		return RemoveGroupAccessToLibraryItemMethod.removeGroupAccess(removeGroupAccessToLibraryItemMessage);
+	}
+
+	@Override
+	public AddReviewerCommentResult addReviewerCommentToLibraryItem(AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
+		return AddReviewerCommentMethod.addReviewerComment(addReviewerCommentToLibraryItemMessage);
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
+		return GrantGroupAccessToLibraryItemMethod.grantGroupAccess(grantGroupAccessToLibraryItemMessage);
+	}
+
+	@Override
+	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
+		return GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod.getChangeLog(getChangeLogForLibraryItemsModifiedSinceDateTimeMessage);
+	}
+
+	@Override
+	public GetLibraryItemContainerResult getLibraryItemContainer(GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
+		return GetLibraryItemContainerMethod.getLibraryItemContainer(getLibraryItemContainerMessage);
+	}
+
+	@Override
+	public AddOrUpdateLibraryItemContainerResult updateLibraryItemContainer(AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
+		return UpdateLibraryItemContainerMethod.updateLibraryItemContainer(addOrUpdateLibraryItemContainerMessage);
+	}
+
+	@Override
+	public SetReleaseVersionResult setReleaseVersionForLibraryItem(SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
+		return SetReleaseVersionForLibraryItemMethod.setReleaseVersion(setReleaseVersionForLibraryItemMessage);
+	}
+
+	@Override
+	public AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
+		return AddLibraryItemContainerMethod.addLibraryItemContainer(addOrUpdateLibraryItemContainerMessage);
+	}
+
+	@Override
+	public GetVersionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+		return GetVersionNumbersForLibraryItemMethod.getVersions(getVersionNumbersForLibraryItemMessage);
+	}
+
+	@Override
+	public QueryResult query(QueryMessage queryMessage) {
+		return QueryMethod.query(queryMessage);
+	}
+
+	@Override
+	public GetReleaseVersionResult getLibraryItemReleaseVersion(GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
+		return GetLibraryItemReleaseVersionMethod.getReleaseVersion(getLibraryItemReleaseVersionMessage);
 	}
 
 

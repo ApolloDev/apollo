@@ -354,12 +354,6 @@
 	<wsdl:message name="removeGroupAccessToLibraryItemResponse">
 		<wsdl:part name="parameters" element="tns:removeGroupAccessToLibraryItemResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="getDiffRequest">
-		<wsdl:part name="parameters" element="tns:getDiff"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getDiffResponse">
-		<wsdl:part name="parameters" element="tns:getDiffResponse"></wsdl:part>
-	</wsdl:message>
 	<wsdl:message name="getLibraryItemURNsRequest">
 		<wsdl:part name="parameters" element="tns:getLibraryItemURNs"></wsdl:part>
 	</wsdl:message>
