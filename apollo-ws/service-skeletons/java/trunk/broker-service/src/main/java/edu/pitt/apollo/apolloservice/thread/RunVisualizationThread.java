@@ -10,12 +10,12 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceV202;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceV210;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
 
 /**
  *
@@ -43,7 +43,7 @@ public class RunVisualizationThread extends RunApolloServiceThread {
             try {
 
                 url = dbUtils.getUrlForSoftwareIdentification(visualizerIdentification);
-                VisualizerServiceEI visualizerPort = new VisualizerServiceV202(new URL(url)).getVisualizerServiceEndpoint();
+                VisualizerServiceEI visualizerPort = new VisualizerServiceV210(new URL(url)).getVisualizerServiceEndpoint();
 
                 // disable chunking for ZSI
                 Client visualizerClient = ClientProxy.getClient(visualizerPort);
