@@ -14,6 +14,8 @@
  */
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI;
+import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -23,12 +25,10 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI;
 import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
-import edu.pitt.apollo.types.v2_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_1_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v2_1_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v2_1_0.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
    
