@@ -14,14 +14,14 @@
  */
 package edu.pitt.apollo.translatorserviceskeleton;
 
+import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 import java.math.BigInteger;
 
 import javax.jws.WebService;
 
-import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_1_0/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.0.2", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v2_1_0/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI")
 public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 

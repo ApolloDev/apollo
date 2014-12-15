@@ -2,13 +2,13 @@ package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.db.ApolloDatabaseException;
-import edu.pitt.apollo.db.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.types.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
+import edu.pitt.apollo.services_common.v2_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
 import java.math.BigInteger;
 
 /**

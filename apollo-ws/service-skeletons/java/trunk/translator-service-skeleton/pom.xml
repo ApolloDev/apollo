@@ -190,9 +190,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/src/main/resources/translatorservice202.wsdl
+                                                ${basedir}/src/main/resources/translatorservice210.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:translatorservice202.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:translatorservice210.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
