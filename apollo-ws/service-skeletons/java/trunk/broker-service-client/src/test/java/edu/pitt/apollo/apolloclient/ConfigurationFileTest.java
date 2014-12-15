@@ -1,26 +1,12 @@
 package edu.pitt.apollo.apolloclient;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.math.BigInteger;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.Scanner;
 
 import junit.framework.TestCase;
-import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory;
-import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.apolloclient.tutorial.TutorialWebServiceClient;
-import edu.pitt.apollo.db.ApolloDatabaseException;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.types.v2_1_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+
 
 /**
  * 
