@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://service.apollo.pitt.edu/libraryservice/v2_1_0/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="LibraryService_v2.1.0" targetNamespace="http://service.apollo.pitt.edu/libraryservice/v2_1_0/">
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://service.apollo.pitt.edu/libraryservice/v2_1_0/"
+			xmlns:lst="http://library-service-types.apollo.pitt.edu/v2_1_0/">
+
+			<xsd:import schemaLocation="library_service_2.1.0.xsd"
+				namespace="http://library-service-types.apollo.pitt.edu/v2_1_0/">
+			</xsd:import>
+			
+			
+			
+			<xsd:element name="getLibraryItemContainer">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element
+							name="getLibraryItemContainerMessage"
+							type="lst:GetLibraryItemContainerMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemContainerResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element
+							name="getLibraryItemContainerResult"
+							type="lst:GetLibraryItemContainerResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="addLibraryItemContainer">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element
+							name="addOrUpdateLibraryItemContainerMessage"
+							type="lst:AddOrUpdateLibraryItemContainerMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addLibraryItemContainerResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element
+							name="addOrUpdateLibraryItemContainerResult"
+							type="lst:AddOrUpdateLibraryItemContainerResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="updateLibraryItemContainer">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element
+							name="addOrUpdateLibraryItemContainerMessage"
+							type="lst:AddOrUpdateLibraryItemContainerMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="updateLibraryItemContainerResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element
+							name="addOrUpdateLibraryItemContainerResult"
+							type="lst:AddOrUpdateLibraryItemContainerResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="setReleaseVersion">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="setReleaseVersionMessage"
+							type="lst:SetReleaseVersionMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="setReleaseVersionResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="setReleaseVersionResult"
+							type="lst:SetReleaseVersionResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addReviewerComment">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="addReviewerCommentMessage"
+							type="lst:AddReviewerCommentMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addReviewerCommentResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="addReviewerCommentResult"
+							type="lst:AddReviewerCommentResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getComments">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getCommentsMessage"
+							type="lst:GetCommentsMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getCommentsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getCommentsResult"
+							type="lst:GetCommentsResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getVersions">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getVersionsMessage"
+							type="lst:GetVersionsMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getVersionsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getVersionsResult"
+							type="lst:GetVersionsResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getReleaseVersion">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getReleaseVersionMessage"
+							type="lst:GetReleaseVersionMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getReleaseVersionResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getReleaseVersionResult"
+							type="lst:GetReleaseVersionResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="query">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="queryMessage"
+							type="lst:QueryMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="queryResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="queryResult"
+							type="lst:QueryResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addGroup">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="addGroupMessage"
+							type="lst:ModifyGroupOwnershipMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="addGroupResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="addGroupResult"
+							type="lst:ModifyGroupOwnershipResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="removeGroup">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="removeGroupMessage"
+							type="lst:ModifyGroupOwnershipMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="removeGroupResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="removeGroupResult"
+							type="lst:ModifyGroupOwnershipResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDiff">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getDiffMessage"
+							type="lst:GetDiffMessage">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDiffResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getDiffResult"
+							type="lst:GetDiffResult">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemURIs">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getLibraryItemURIsMessage" type="lst:GetLibraryItemURIsMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLibraryItemURIsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getLibraryItemURIsResult" type="lst:GetLibraryItemURIsResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getLibraryItemContainerRequest">
+		<wsdl:part name="parameters" element="tns:getLibraryItemContainer"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemContainerResponse">
+		<wsdl:part name="parameters" element="tns:getLibraryItemContainerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addLibraryItemContainerRequest">
+		<wsdl:part name="parameters" element="tns:addLibraryItemContainer"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addLibraryItemContainerResponse">
+		<wsdl:part name="parameters" element="tns:addLibraryItemContainerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateLibraryItemContainerRequest">
+		<wsdl:part name="parameters" element="tns:updateLibraryItemContainer"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateLibraryItemContainerResponse">
+		<wsdl:part name="parameters" element="tns:updateLibraryItemContainerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="setReleaseVersionRequest">
+		<wsdl:part name="parameters" element="tns:setReleaseVersion"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="setReleaseVersionResponse">
+		<wsdl:part name="parameters" element="tns:setReleaseVersionResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addReviewerCommentRequest">
+		<wsdl:part name="parameters" element="tns:addReviewerComment"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addReviewerCommentResponse">
+		<wsdl:part name="parameters" element="tns:addReviewerCommentResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getCommentsRequest">
+		<wsdl:part name="parameters" element="tns:getComments"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getCommentsResponse">
+		<wsdl:part name="parameters" element="tns:getCommentsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getVersionsRequest">
+		<wsdl:part name="parameters" element="tns:getVersions"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getVersionsResponse">
+		<wsdl:part name="parameters" element="tns:getVersionsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getReleaseVersionRequest">
+		<wsdl:part name="parameters" element="tns:getReleaseVersion"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getReleaseVersionResponse">
+		<wsdl:part name="parameters" element="tns:getReleaseVersionResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="queryRequest">
+		<wsdl:part name="parameters" element="tns:query"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="queryResponse">
+		<wsdl:part name="parameters" element="tns:queryResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addGroupRequest">
+		<wsdl:part name="parameters" element="tns:addGroup"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addGroupResponse">
+		<wsdl:part name="parameters" element="tns:addGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="removeGroupRequest">
+		<wsdl:part name="parameters" element="tns:removeGroup"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="removeGroupResponse">
+		<wsdl:part name="parameters" element="tns:removeGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDiffRequest">
+		<wsdl:part name="parameters" element="tns:getDiff"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDiffResponse">
+		<wsdl:part name="parameters" element="tns:getDiffResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemURIsRequest">
+		<wsdl:part name="parameters" element="tns:getLibraryItemURIs"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLibraryItemURIsResponse">
+		<wsdl:part name="parameters" element="tns:getLibraryItemURIsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="LibraryServiceEI">
+        <wsdl:operation name="getLibraryItemContainer">
+        	<wsdl:input message="tns:getLibraryItemContainerRequest"></wsdl:input>
+        	<wsdl:output message="tns:getLibraryItemContainerResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="addLibraryItemContainer">
+        	<wsdl:input message="tns:addLibraryItemContainerRequest"></wsdl:input>
+        	<wsdl:output message="tns:addLibraryItemContainerResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateLibraryItemContainer">
+        	<wsdl:input message="tns:updateLibraryItemContainerRequest"></wsdl:input>
+        	<wsdl:output message="tns:updateLibraryItemContainerResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setReleaseVersion">
+        	<wsdl:input message="tns:setReleaseVersionRequest"></wsdl:input>
+        	<wsdl:output message="tns:setReleaseVersionResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="addReviewerComment">
+        	<wsdl:input message="tns:addReviewerCommentRequest"></wsdl:input>
+        	<wsdl:output message="tns:addReviewerCommentResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getComments">
+        	<wsdl:input message="tns:getCommentsRequest"></wsdl:input>
+        	<wsdl:output message="tns:getCommentsResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersions">
+        	<wsdl:input message="tns:getVersionsRequest"></wsdl:input>
+        	<wsdl:output message="tns:getVersionsResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReleaseVersion">
+        	<wsdl:input message="tns:getReleaseVersionRequest"></wsdl:input>
+        	<wsdl:output message="tns:getReleaseVersionResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="query">
+        	<wsdl:input message="tns:queryRequest"></wsdl:input>
+        	<wsdl:output message="tns:queryResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="addGroup">
+        	<wsdl:input message="tns:addGroupRequest"></wsdl:input>
+        	<wsdl:output message="tns:addGroupResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="removeGroup">
+        	<wsdl:input message="tns:removeGroupRequest"></wsdl:input>
+        	<wsdl:output message="tns:removeGroupResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDiff">
+        	<wsdl:input message="tns:getDiffRequest"></wsdl:input>
+        	<wsdl:output message="tns:getDiffResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getLibraryItemURIs">
+        	<wsdl:input message="tns:getLibraryItemURIsRequest"></wsdl:input>
+        	<wsdl:output message="tns:getLibraryItemURIsResponse"></wsdl:output>
+        </wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LibraryServiceBinding"
+		type="tns:LibraryServiceEI">
+
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getLibraryItemContainer">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getLibraryItemContainer" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addLibraryItemContainer">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addLibraryItemContainer" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateLibraryItemContainer">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/updateLibraryItemContainer" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setReleaseVersion">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/setReleaseVersion" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addReviewerComment">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addReviewerComment" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getComments">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getComments" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getVersions">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getVersions" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getReleaseVersion">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getReleaseVersion" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="query">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/query" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addGroup">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/addGroup" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="removeGroup">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/removeGroup" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDiff">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getDiff" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLibraryItemURIs">
+
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/libraryservice/v2_1_0/getLibraryItemURIs" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LibraryService_v2.1.0">
+		<wsdl:port binding="tns:LibraryServiceBinding" name="LibraryServiceEndpoint">
+			<soap:address
+				location="http://localhost:8080/libraryservice2.1.0/services/libraryservice" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
