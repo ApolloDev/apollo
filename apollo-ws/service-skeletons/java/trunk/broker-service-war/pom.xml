@@ -40,8 +40,13 @@
 							<directory>${basedir}/../src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>apolloservice202.wsdl</include>
-								<include>apollo-types_2.0.2.xsd</include>
+								<include>apolloservice210.wsdl</include>
+								<include>apollo-types_2.1.0.xsd</include>
+                                <include>library_service_2.1.0.xsd</include>
+                                <include>services-common_2.1.0.xsd</include>
+                                <include>simulator_service_2.1.0.xsd</include>
+                                <include>synthetic_population_service_2.1.0.xsd</include>
+                                <include>visualizer_service_2.1.0.xsd</include>
 							</includes>
 						</resource>
 					</webResources>
