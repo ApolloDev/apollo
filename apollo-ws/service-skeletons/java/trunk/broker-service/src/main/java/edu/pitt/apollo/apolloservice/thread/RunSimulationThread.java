@@ -16,7 +16,7 @@ import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceV202;
+import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceV210;
 import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
 
@@ -52,7 +52,7 @@ public class RunSimulationThread extends RunApolloServiceThread {
 				url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
 				SimulatorServiceEI simulatorPort = null;
 				try {
-					simulatorPort = new SimulatorServiceV202(new URL(url)).getSimulatorServiceEndpoint();
+					simulatorPort = new SimulatorServiceV210(new URL(url)).getSimulatorServiceEndpoint();
 				} catch (Exception e) {
 					ApolloServiceErrorHandler.writeErrorToErrorFile(
 							"Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
