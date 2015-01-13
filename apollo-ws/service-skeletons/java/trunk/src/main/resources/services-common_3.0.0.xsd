@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services-common.apollo.pitt.edu/v2_1_0/"
-	xmlns:tns="http://services-common.apollo.pitt.edu/v2_1_0/"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services-common.apollo.pitt.edu/v3_0_0/"
+	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_0/"
 	elementFormDefault="qualified">
 
 	<simpleType name="ApolloSoftwareTypeEnum">
