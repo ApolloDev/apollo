@@ -20,7 +20,7 @@ import java.net.MalformedURLException;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleConditionalProbabilityDistribution;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleUnconditionalProbabilityDistribution;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 
 public class Chapter7_ProbabilityDistributionExample extends TutorialWebServiceClient {

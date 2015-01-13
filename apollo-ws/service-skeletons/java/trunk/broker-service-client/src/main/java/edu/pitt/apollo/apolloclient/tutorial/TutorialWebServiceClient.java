@@ -23,27 +23,27 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v2_1_0.ApolloServiceV210;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.AUTHENTICATION_FAILURE;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.COMPLETED;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.FAILED;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.LOG_FILES_WRITTEN;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.UNAUTHORIZED;
-import static edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum.UNKNOWN_RUNID;
-import edu.pitt.apollo.services_common.v2_1_0.RunResult;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v2_1_0.UrlOutputResource;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v2_1_0.ApolloIndexableItem;
-import edu.pitt.apollo.types.v2_1_0.PopulationAndEnvironmentCensus;
-import edu.pitt.apollo.visualizer_service_types.v2_1_0.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.AUTHENTICATION_FAILURE;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.COMPLETED;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.FAILED;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.LOG_FILES_WRITTEN;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.UNAUTHORIZED;
+import static edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum.UNKNOWN_RUNID;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.UrlOutputResource;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_0_0.ApolloIndexableItem;
+import edu.pitt.apollo.types.v3_0_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 
 public class TutorialWebServiceClient {
@@ -52,7 +52,7 @@ public class TutorialWebServiceClient {
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
     //public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
     private static final QName SERVICE_NAME = new QName(
-            "http://service.apollo.pitt.edu/apolloservice/v2_1_0/", "ApolloService_v2.0.1");
+            "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", "ApolloService_v2.0.1");
     public static final long TWO_SECONDS = 2000;
     public static final boolean RUN_IS_NOT_COMPLETED_OR_FAILED = true;
     public static final boolean RUN_WAS_SUCCESSFUL = true;
@@ -156,7 +156,7 @@ public class TutorialWebServiceClient {
 
     static {
         try {
-            ApolloServiceV210 ss = new ApolloServiceV210(new URL(WSDL_LOC), SERVICE_NAME);
+            ApolloServiceV300 ss = new ApolloServiceV300(new URL(WSDL_LOC), SERVICE_NAME);
             port = ss.getApolloServiceEndpoint();
         } catch (MalformedURLException ex) {
             throw new ExceptionInInitializerError("MalformedURLException: " + ex.getMessage());
