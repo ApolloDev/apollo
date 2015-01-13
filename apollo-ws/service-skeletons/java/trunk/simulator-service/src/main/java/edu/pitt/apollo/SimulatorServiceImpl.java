@@ -31,17 +31,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.service.simulatorservice.v2_1_0.SimulatorServiceEI;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v2_1_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v2_1_0.TerminteRunResult;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationsResult;
+import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationsResult;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.thread.SimulatorThread;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
@@ -59,18 +59,18 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "runSimulationsResult", targetNamespace = "")
-    @RequestWrapper(localName = "runSimulations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.RunSimulations")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/runSimulations")
-    @ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.RunSimulationsResponse")
+    @RequestWrapper(localName = "runSimulations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulations")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/runSimulations")
+    @ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulationsResponse")
     public RunSimulationsResult runSimulations(
             @WebParam(name = "runSimulationsMessage", targetNamespace = "") RunSimulationsMessage runSimulationsMessage) {
         throw new UnsupportedOperationException("Run simulations is not yet implemented");
     }
 
     @Override
-    @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.RunSimulation")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/runSimulation")
-    @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.RunSimulationResponse")
+    @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulation")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/runSimulation")
+    @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulationResponse")
     public MethodCallStatus runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId) {
         System.out.println("running simulation");
         int runId = simulationRunId.intValue();
@@ -99,9 +99,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
-    @RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.GetPopulationAndEnvironmentCensus")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/getPopulationAndEnvironmentCensus")
-    @ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.GetPopulationAndEnvironmentCensusResponse")
+    @RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensus")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getPopulationAndEnvironmentCensus")
+    @ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensusResponse")
     public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
             @WebParam(name = "location", targetNamespace = "") String location) {
         // TODO Auto-generated method stub
@@ -117,9 +117,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
     @Override
     @WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-    @RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.GetScenarioLocationCodesSupportedBySimulator")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/getScenarioLocationCodesSupportedBySimulator")
-    @ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v2_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+    @RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulator")
+    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getScenarioLocationCodesSupportedBySimulator")
+    @ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
     public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
         // TODO Auto-generated method stub
         return null;

@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
 
 /**
  *

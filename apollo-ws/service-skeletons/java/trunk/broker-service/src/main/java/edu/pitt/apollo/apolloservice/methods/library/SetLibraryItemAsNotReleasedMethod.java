@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.SetLibraryItemAsNotReleasedResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedResult;
 
 /**
  *
