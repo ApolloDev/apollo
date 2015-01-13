@@ -25,7 +25,7 @@ import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
