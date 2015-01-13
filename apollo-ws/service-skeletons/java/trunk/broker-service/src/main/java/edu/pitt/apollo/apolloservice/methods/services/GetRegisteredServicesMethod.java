@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.services_common.v2_1_0.ServiceRecord;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
 
 /**
  *

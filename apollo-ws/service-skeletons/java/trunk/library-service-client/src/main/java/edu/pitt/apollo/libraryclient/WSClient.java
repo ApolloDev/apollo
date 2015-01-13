@@ -15,28 +15,28 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.AddOrUpdateLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetLibraryItemURNsResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.GetVersionsResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v2_1_0.QueryMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.QueryResult;
-import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v2_1_0.SetReleaseVersionResult;
-import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.types.v2_1_0.Census;
-import edu.pitt.apollo.types.v2_1_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v2_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.CatalogEntry;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v3_0_0.QueryMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.QueryResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
+import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.types.v3_0_0.Census;
+import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,7 +57,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 public class WSClient {
 
 	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-2.1.0-SNAPSHOT-dev/services/libraryservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v2_1_0/", "LibraryService_v2.1.0");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_0/", "LibraryService_v2.1.0");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
 	public static final String APOLLO_DIR;
@@ -78,7 +78,7 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV210 ls = new LibraryServiceV210(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV300 ls = new LibraryServiceV300(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();

@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v2_1_0.Location;
-import edu.pitt.apollo.types.v2_1_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v3_0_0.Location;
+import edu.pitt.apollo.types.v3_0_0.PopulationAndEnvironmentCensus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
