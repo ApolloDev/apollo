@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v2_1_0.LibraryServiceV210;
+import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceV300;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +24,7 @@ public abstract class LibraryMethod {
             libraryServiceURL = new URL(
                     "http://localhost:8080/library-service-war-2.1.0-SNAPSHOT-dev/services/libraryservice?wsdl");
 
-            return new LibraryServiceV210(libraryServiceURL).getLibraryServiceEndpoint();
+            return new LibraryServiceV300(libraryServiceURL).getLibraryServiceEndpoint();
 
         } catch (MalformedURLException ex) {
             try {

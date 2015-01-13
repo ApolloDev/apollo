@@ -4,8 +4,8 @@ import java.math.BigInteger;
 
 import junit.framework.TestCase;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 
 /**
