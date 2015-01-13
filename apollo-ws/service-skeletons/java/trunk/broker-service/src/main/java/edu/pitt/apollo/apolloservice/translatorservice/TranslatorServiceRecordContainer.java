@@ -2,8 +2,8 @@ package edu.pitt.apollo.apolloservice.translatorservice;
 
 import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.sql.SQLException;
 import java.util.Map;
 
