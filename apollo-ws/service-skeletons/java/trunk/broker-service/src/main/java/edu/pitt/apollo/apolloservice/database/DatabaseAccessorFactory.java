@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apolloservice.database;
 
 import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 /**
  *
