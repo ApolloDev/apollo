@@ -146,11 +146,11 @@
 								<resource>
 									<directory>${basedir}/../src/main/resources</directory>
 									<includes>
-										<include>apollo-types_2.1.0.xsd</include>
-										<include>library_service_2.1.0.xsd</include>
-										<include>simulator_service_2.1.0.xsd</include>
-										<include>services-common_2.1.0.xsd</include>
-                                        <include>visualizer_service_2.1.0.xsd</include>
+										<include>apollo-types_3.0.0.xsd</include>
+										<include>library_service_3.0.0.xsd</include>
+										<include>simulator_service_3.0.0.xsd</include>
+										<include>services-common_3.0.0.xsd</include>
+                                        <include>visualizer_service_3.0.0.xsd</include>
 									</includes>
 									<filtering>true</filtering>
 								</resource>
@@ -233,12 +233,12 @@
 					<bindingDirectory>src/main/xjb</bindingDirectory>
 					<schemaDirectory>src/main/xsd</schemaDirectory>
 					<schemaIncludes>
-						<include>apollo-types_2.1.0.xsd</include>
-						<include>library_service_2.1.0.xsd</include>
-						<include>simulator_service_2.1.0.xsd</include>
-						<include>services-common_2.1.0.xsd</include>
-                        <include>synthetic_population_service_2.1.0.xsd</include>
-                        <include>visualizer_service_2.1.0.xsd</include>
+						<include>apollo-types_3.0.0.xsd</include>
+						<include>library_service_3.0.0.xsd</include>
+						<include>simulator_service_3.0.0.xsd</include>
+						<include>services-common_3.0.0.xsd</include>
+                        <include>synthetic_population_service_3.0.0.xsd</include>
+                        <include>visualizer_service_3.0.0.xsd</include>
 					</schemaIncludes>
 					<extension>true</extension>
 					<!-- The name of your generated source package -->
@@ -265,5 +265,5 @@
 	</build>
 	<name>Apollo XSD types</name>
 	<groupId>edu.pitt.apollo</groupId>
-	<version>2.1.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 </project>
