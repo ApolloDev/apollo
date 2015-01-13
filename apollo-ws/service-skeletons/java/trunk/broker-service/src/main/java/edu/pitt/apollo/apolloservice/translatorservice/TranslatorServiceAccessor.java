@@ -16,11 +16,11 @@ import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceEI;
-import edu.pitt.apollo.service.translatorservice.v2_1_0.TranslatorServiceV210;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v2_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
+import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import java.sql.SQLException;
 
 /**
@@ -33,7 +33,7 @@ public class TranslatorServiceAccessor {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
-            translatorPort = new TranslatorServiceV210(new URL(translatorServiceRecord.getUrl())).getTranslatorServiceEndpoint();
+            translatorPort = new TranslatorServiceV300(new URL(translatorServiceRecord.getUrl())).getTranslatorServiceEndpoint();
         } catch (WebServiceException e) {
             ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to get the translator port for runId " + runId
                     + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + e.getMessage(),

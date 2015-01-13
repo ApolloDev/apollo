@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.simulator_service_types.v2_1_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 /**
  *
