@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>edu.pitt.apollo</groupId>
-        <version>2.1.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
         <artifactId>apollo-ws</artifactId>
     </parent>
     <artifactId>translator-service-skeleton</artifactId>
@@ -190,9 +190,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/src/main/resources/translatorservice210.wsdl
+                                                ${basedir}/src/main/resources/translatorservice300.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:translatorservice210.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:translatorservice300.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

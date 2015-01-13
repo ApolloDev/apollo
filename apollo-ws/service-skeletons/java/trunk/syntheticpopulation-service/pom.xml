@@ -4,7 +4,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>2.1.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>syntheticpopulation-service</artifactId>
     <name>Synthetic Population Service</name>
@@ -129,9 +129,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/syntheticpopulationservice210.wsdl
+                                                ${basedir}/../src/main/resources/syntheticpopulationservice300.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:syntheticpopulationservice210.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:syntheticpopulationservice300.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
