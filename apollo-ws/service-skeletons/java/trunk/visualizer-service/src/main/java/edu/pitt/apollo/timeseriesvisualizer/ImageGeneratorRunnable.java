@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v2_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
 
