@@ -7,11 +7,11 @@ import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.apolloservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.apolloservice.thread.RunApolloServiceThreadFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v2_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v2_1_0.RunResult;
-import edu.pitt.apollo.services_common.v2_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.math.BigInteger;
 
 /**
