@@ -2,8 +2,8 @@ package edu.pitt.apollo.apolloservice.database;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v2_1_0.Authentication;
-import edu.pitt.apollo.visualizer_service_types.v2_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.List;
