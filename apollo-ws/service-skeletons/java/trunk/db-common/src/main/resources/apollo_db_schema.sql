@@ -60,15 +60,15 @@ CREATE TABLE software_identification (
 
 -- HSQLDB: ALTER TABLE software_identification ALTER COLUMN id RESTART WITH 1;
 
-INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-2.1.0-SNAPSHOT/services/translatorservice?wsdl',1),
-											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-2.1.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
+INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-3.0.0-SNAPSHOT/services/translatorservice?wsdl',1),
+											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
 											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
-											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-2.1.0-SNAPSHOT/services/visualizerservice?wsdl',1),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-3.0.0-SNAPSHOT/services/visualizerservice?wsdl',1),
 											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8093/gaia?wsdl',1),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
-											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-2.1.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
                                              (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
-                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-2.1.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1);
+                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
