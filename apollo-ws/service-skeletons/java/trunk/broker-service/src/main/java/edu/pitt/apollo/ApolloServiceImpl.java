@@ -91,7 +91,7 @@ import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopula
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
     
     @Override

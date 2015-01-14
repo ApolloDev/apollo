@@ -64,7 +64,7 @@ import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
 
 import java.io.IOException;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v2.1.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI")
 public class LibraryServiceImpl implements LibraryServiceEI {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
@@ -86,8 +86,8 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 
 		APOLLO_DIR = apolloDir;
 		try {
-			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_dev.properties"));
-			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly_dev.properties"));
+			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database.properties"));
+			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly.properties"));
 		} catch (IOException ex) {
 			throw new ExceptionInInitializerError("IOException creating LibraryDbUtils: " + ex.getMessage());
 		}
