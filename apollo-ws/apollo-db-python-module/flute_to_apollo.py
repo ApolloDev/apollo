@@ -105,16 +105,21 @@ if __name__ == '__main__':
         
         
         outStr = ''.join(outStrList)
+	with open('out.log','wb') as f:
+	    	f.write(outStr)
         m = hashlib.md5()
         m.update(outStr)
         m5hash = m.hexdigest() 
-	#m5hash = m5hash[:-2] + "1c"
         bufferSize=len(outStr)
         count = 0
         runDataContentId = -1
-        SQLString = 'INSERT INTO run_data_content (text_content, md5_hash_of_content) values ("%s","%s")'%(outStr,m5hash)
-        apolloDB.query(SQLString)
-        runDataContentId = apolloDB.insertID()
+        hashvar = apolloDB.checkMD5HashExistence(m5hash)
+        if hashvar > -1:
+            runDataContentId = hashvar
+        else:
+        	SQLString = 'INSERT INTO run_data_content (text_content, md5_hash_of_content) values ("%s","%s")'%(outStr,m5hash)
+        	apolloDB.query(SQLString)
+        	runDataContentId = apolloDB.insertID()
         softIdTS =    apolloDB.getSoftwareIdentificationId(name_="Time Series Visualizer",version_="1.0")
         softIdGAIA =  apolloDB.getSoftwareIdentificationId(name_="GAIA",version_="1.0")
         softIdFLUTE = apolloDB.getSoftwareIdentificationId(name_="FluTE",version_="1.15")
@@ -134,12 +139,7 @@ if __name__ == '__main__':
                                                                                                       runDataContentId)
         apolloDB.query(SQLString)
 
-        apolloDB.close()
-        
-        ### Insert data into database
-        
-        #with open('test.txt','wb') as f:
-        #    f.write("%s"%(''.join(outStr)))          
+        apolloDB.close() 
                               
     except Exception as e:
         error_exit(str(e))
