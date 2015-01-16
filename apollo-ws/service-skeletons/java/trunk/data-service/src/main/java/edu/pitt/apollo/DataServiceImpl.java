@@ -16,49 +16,56 @@
 package edu.pitt.apollo;
 
 import java.math.BigInteger;
-import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFileURLMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFileURLResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareResult;
+import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceResult;
 
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
-portName="SyntheticPopulationServiceEndpoint",
-serviceName="SyntheticPopulationService", 
-endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
-class DataServiceImpl implements SyntheticPopulationServiceEI {
+
+class DataServiceImpl implements DataServiceEI {
 
 	@Override
-	@WebResult(name = "serviceResult", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/")
-	@RequestWrapper(localName = "runSyntheticPopulationGeneration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.RunSyntheticPopulationGeneration")
-	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/runSyntheticPopulationGeneration")
-	@ResponseWrapper(localName = "runSyntheticPopulationGenerationResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.RunSyntheticPopulationGenerationResponse")
-	public List<ServiceResult> runSyntheticPopulationGeneration(
-			@WebParam(name = "runSyntheticPopulationGenerationMessage", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/") RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage) {
+	public GetOutputFilesURLAsZipResult getOutputFilesURLAsZip(
+			GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@WebResult(name = "runStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.GetRunStatusResponse")
-	public MethodCallStatus getRunStatus(
-			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/") BigInteger runId) {
+	public GetOutputFileURLResult getOutputFileURL(
+			GetOutputFileURLMessage getOutputFileUrlMessage) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public MethodCallStatus getRequestStatus(BigInteger requestIdentification) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public GetOutputFilesURLsResult getOutputFilesURLs(
+			GetOutputFilesURLsMessage getOutputFilesURLsMessage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public ListOutputFilesForSoftwareResult listOutputFilesForSoftware(
+			ListOutputFilesForSoftwareMessage listOutputFilesForSoftwareMessage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 
 }
