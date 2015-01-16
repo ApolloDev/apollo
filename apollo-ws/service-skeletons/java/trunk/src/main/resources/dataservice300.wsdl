@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:ds="http://service.apollo.pitt.edu/dataservice/v3_0_0/"
+	xmlns:common="http://services-common.apollo.pitt.edu/v3_0_0/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="DataService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/dataservice/v3_0_0/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/dataservice/v3_0_0/"
+			xmlns:dst="http://data-service-types.apollo.pitt.edu/v3_0_0/"
+			xmlns:common="http://services-common.apollo.pitt.edu/v3_0_0/">
+
+			<xsd:import schemaLocation="services-common_3.0.0.xsd"
+				namespace="http://services-common.apollo.pitt.edu/v3_0_0/"></xsd:import>
+			<xsd:import schemaLocation="data_service_3.0.0.xsd"
+				namespace="http://data-service-types.apollo.pitt.edu/v3_0_0/"></xsd:import>
+
+			<xsd:element name="listOutputFilesForSoftware">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="listOutputFilesForSoftwareMessage"
+							type="dst:ListOutputFilesForSoftwareMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="listOutputFilesForSoftwareResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="listOutputFilesForSoftwareResult"
+							type="dst:ListOutputFilesForSoftwareResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFileURL">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFileUrlMessage" type="dst:GetOutputFileURLMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFileURLResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFileUrlResult" type="dst:GetOutputFileURLResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLs">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLsMessage" type="dst:GetOutputFilesURLsMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLsResult" type="dst:GetOutputFilesURLsResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLAsZip">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getOutputFilesURLAsZipMessage"
+							type="dst:GetOutputFilesURLAsZipMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLAsZipResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLAsZipResult" type="dst:GetOutputFilesURLAsZipResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRequestStatus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="requestIdentification" type="common:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRequestStatusResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="requestStatus" type="common:MethodCallStatus"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="listOutputFilesForSoftwareRequest">
+		<wsdl:part name="parameters" element="ds:listOutputFilesForSoftware"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="listOutputFilesForSoftwareResponse">
+		<wsdl:part name="parameters" element="ds:listOutputFilesForSoftwareResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFileURLRequest">
+		<wsdl:part name="parameters" element="ds:getOutputFileURL"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFileURLResponse">
+		<wsdl:part name="parameters" element="ds:getOutputFileURLResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLsRequest">
+		<wsdl:part name="parameters" element="ds:getOutputFilesURLs"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLsResponse">
+		<wsdl:part name="parameters" element="ds:getOutputFilesURLsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLAsZipRequest">
+		<wsdl:part name="parameters" element="ds:getOutputFilesURLAsZip"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLAsZipResponse">
+		<wsdl:part name="parameters" element="ds:getOutputFilesURLAsZipResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRequestStatusRequest">
+		<wsdl:part name="parameters" element="ds:getRequestStatus"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRequestStatusResponse">
+		<wsdl:part name="parameters" element="ds:getRequestStatusResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="DataServiceEI">
+
+		<wsdl:operation name="listOutputFilesForSoftware">
+			<wsdl:input message="ds:listOutputFilesForSoftwareRequest"></wsdl:input>
+			<wsdl:output message="ds:listOutputFilesForSoftwareResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getOutputFileURL">
+			<wsdl:input message="ds:getOutputFileURLRequest"></wsdl:input>
+			<wsdl:output message="ds:getOutputFileURLResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getOutputFilesURLs">
+			<wsdl:input message="ds:getOutputFilesURLsRequest"></wsdl:input>
+			<wsdl:output message="ds:getOutputFilesURLsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getOutputFilesURLAsZip">
+			<wsdl:input message="ds:getOutputFilesURLAsZipRequest"></wsdl:input>
+			<wsdl:output message="ds:getOutputFilesURLAsZipResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRequestStatus">
+			<wsdl:input message="ds:getRequestStatusRequest"></wsdl:input>
+			<wsdl:output message="ds:getRequestStatusResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="DataServiceBinding" type="ds:DataServiceEI">
+
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+
+	</wsdl:binding>
+	<wsdl:service name="DataService_v3.0.0">
+		<wsdl:port binding="ds:DataServiceBinding" name="DataServiceEndpoint">
+			<soap:address
+				location="http://localhost:8080/dataservice3.0.0/services/libraryservice" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
