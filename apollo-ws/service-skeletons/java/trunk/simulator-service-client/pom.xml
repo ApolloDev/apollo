@@ -31,7 +31,11 @@
             <version>${project.version}</version>
 
         </dependency>
-
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>xsd-types</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
     </dependencies>
 
