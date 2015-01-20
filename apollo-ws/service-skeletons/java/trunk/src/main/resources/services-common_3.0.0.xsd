@@ -6,10 +6,11 @@
 	<simpleType name="ApolloSoftwareTypeEnum">
 		<restriction base="string">
 			<enumeration value="simulator" />
+			<enumeration value="batchSimulator" />
 			<enumeration value="visualizer" />
 			<enumeration value="syntheticPopulationGenerator" />
 			<enumeration value="translator" />
-
+			<enumeration value="data" />
 		</restriction>
 	</simpleType>
 
