@@ -1,234 +1,227 @@
-try:
-	import os,sys,string
-	import math
-	import optparse
+# /usr/bin/env python
+import os, sys, string
+import math
+import optparse
+from StringIO import StringIO
+import apollo
+import time
+import glob, hashlib
+import datetime
+import random
 
-        if 'FRED_HOME' not in os.environ.keys():
-		raise RuntimeError("Environment Variable 'FRED_HOME' must be set to run the fred to apollo translator")
-	fred_home = os.environ['FRED_HOME']
-	sys.path.append(fred_home+'/bin')
- 	
-	from fred import FRED,FRED_RUN,FRED_Infection_Set,FRED_Household_Set,FRED_People_Set
-	import apollo
-	import time
-	import glob,hashlib
-	import datetime
-	import random
-#from threading import Thread
-#from multiprocessing import Process,Queue
-except Exception as e:
-	import sys
-	sys.stderr.write(str(e))
-	sys.exit(1)
+class MyError(Exception):
+	def __init__(self, value):
+		self.value = value
+	def __str__(self):
+		return repr(self.value)
 
-def statusUpdate(status,message):
+def FREDAverageOuts(outDir):
+	try:
+		import glob
+		import ntpath
+		
+		outputFileList = glob.glob("{0}/blockseday*.txt".format(outDir))
+		if len(outputFileList) == 0:
+			raise MyError("There are no files in the output directory : {0}".format(outDir))
+		
+		outputs = {}
+		# fipsList = []  # # list to hold the fips codes contained in this output set
+		simDays = -1
+		outputsAve = {}
+		outputKeyOrdered = None
+		
+		firstRun = True
+		outCount = 0
+		for outFile in outputFileList:
+			outFileKey = ntpath.basename(outFile)[10:-4]
+			
+			outputs[outFileKey] = []
+			with open(outFile, "rb") as f:
+				dayCount = 0
+				print outFile
+				# ## Read the header
+				header = f.readline().strip().split(",")
+				if outputKeyOrdered is None:
+					outputKeyOrdered = header
+				else:
+					if outputKeyOrdered != header:
+						raise MyError("Inconsistent output files")
+
+				try:
+					dayIndex = outputKeyOrdered.index("Day")
+					fipsIndex = outputKeyOrdered.index("BlockGroup")
+				except:
+					raise MyError("Day Index not found, file has incorrect format")
+				
+				for head in header:
+					if head not in outputKeyOrdered:
+						outputKeyOrdered.append(head)
+				
+				# # first find out how many days are in this file
+				last_day = int(f.readlines()[-1].split(",")[dayIndex])
+				f.seek(0)
+				f.readline()
+				if last_day > simDays:
+					simDays = last_day
+				# if len(outputsAve) < simDays:
+				# 	for i in range(len(outputsAve),simDays):
+				# 		outputsAve.append([])
+				for line in f:
+					# print line
+					lineSplit = line.strip().split(",")
+					block = lineSplit[fipsIndex]
+					day = int(lineSplit[dayIndex])
+					# print "{0} {1}".format(block,day)
+					
+					# ## remove the masked items
+					lineSplit[fipsIndex] = -9999999
+					lineSplit[dayIndex] = -9999999
+					
+					cleanSplit = filter(lambda a: a != -9999999, lineSplit)
+					
+					if not outputsAve.has_key(block):
+						outputsAve[block] = [[0.0 for j in range(len(outputKeyOrdered) - 2)] for i in range(simDays + 1)]
+					else:
+						if len(outputsAve[block]) < simDays:
+							for i in range(len(outputsAve[block]), simDays + 1):
+								outputsAve[block].append([0.0 for j in range(len(outputKeyOrdered) - 2)])
+					for i in range(len(cleanSplit)):
+						outputsAve[block][day][i] += float(cleanSplit[i])
+		
+		numberOfRuns = float(len(outputFileList))
+		for block in outputsAve.keys():
+			for i in range(len(outputsAve[block])):
+				for j in range(len(outputsAve[block][i])):
+					outputsAve[block][i][j] /= numberOfRuns
+# 		for block, values in outputsAve.items():
+# 			for value in values:
+# 				print "Block = {0},{2}: {1}".format(block, value, values.index(value))
+		# clean outputKeys before sending
+		print "Before: {0}".format(outputKeyOrdered)
+		outputKeyOrdered = filter(lambda a: a != "Day" and a != "BlockGroup", outputKeyOrdered)
+		print "After: {0}".format(outputKeyOrdered)
+		return simDays, outputKeyOrdered, outputsAve
+					
+	except Exception as e:
+		print "Error in fred_to_apollo::FREDAverageOuts {0}".format(e)
+
+	
+def statusUpdate(status, message):
 	statusFile = './starttime'
-	with open(statusFile,"wb") as f:
-		f.write("%s %s"%(status,message))
+	with open(statusFile, "wb") as f:
+		f.write("%s %s" % (status, message))
 
 def error_exit(message):
-	#statusUpdate("LOGERROR",message)
+	# statusUpdate("LOGERROR",message)
 	sys.stderr.write(message)
 	sys.exit(1)
 	
-if __name__ == '__main__':
-    parser = optparse.OptionParser(usage="""
-    %prog [--help][-k key][-r run_number][-t vis_type]
-    -k or --key   Fred Key
-    -r or --run   The run number of vizualize
-                  ave = produce an average result
-                  all = produce an input for all runs
+def main():
+	parser = optparse.OptionParser(usage="""
+	%prog [--help][-k key][-r run_number][-t vis_type]
+	-k or --key   Fred Key
+	-r or --run   The run number of vizualize
+				  ave = produce an average result
+				  all = produce an input for all runs
    
-    -w or --time  Turn on profiling
-    -d or --debug Turn on debug printing
-    """)
+	-w or --time  Turn on profiling
+	-d or --debug Turn on debug printing
+	""")
 
-    parser.add_option("-k","--key",type="string",
-                      help="The FRED key for the run you wish to visualize")
-    parser.add_option("-i","--runId",type="string",
-		      help="The Apollo RunId for this call")
-    parser.add_option("-r","--run",type="string",
-                      help="The number of the run you would like to visualize (number,ave, or all)",
-                      default=1)
-    parser.add_option("-w","--time",action="store_true",
-                      default=False)
-    parser.add_option("-d","--debug",action="store_true",
-                      default=False)
+	# parser.add_option("-k","--key",type="string",
+# 			  help="The FRED key for the run you wish to visualize")
+	parser.add_option("-o", "--outputdir", type="string", default="OUT")
+	parser.add_option("-i", "--runId", type="string",
+			  help="The Apollo RunId for this call")
+	# parser.add_option("-r","--run",type="string",
+	#				  help="The number of the run you would like to visualize (number,ave, or all)",
+	#				  default=1)
+	parser.add_option("-w", "--time", action="store_true",
+					  default=False)
+	parser.add_option("-d", "--debug", action="store_true",
+					  default=False)
+	parser.add_option("-H", "--dbHost", type="string", default="warhol-fred.psc.edu")
+	parser.add_option("-D", "--dbName", type="string", default="test")
+	parser.add_option("-U", "--dbUser", type="string", default="apolloext")
+	parser.add_option("-P", "--dbPword", type="string")
+	parser.add_option("-n", "--no_db", action="store_true", default=False)
 
-    opts,args=parser.parse_args()
+	opts, args = parser.parse_args()
 
-    DBHosts = ["warhol-fred.psc.edu"]
-    ### This only currently works for allegheny county
-
-    #### Initialize the FRED SIMS
-    fredh = FRED()    
-    key = opts.key
-    run = opts.run
-    simulationRunId = opts.runId
-    statusFile = "./starttime"
-
-    if simulationRunId is None:
-	    error_exit("Need to specify an Apollo SimulationRunId to use this program")
-
-    try:
-	    fred_run = FRED_RUN(fredh,key)
-	    numberDays = int(fred_run.get_param("days"))
-	    outputsAve = fred_run.outputsAve
-    except Exception as e:
-	    error_exit(str(e))
-
-    try:
-	    apolloDBs = [ apollo.ApolloDB(host_=x,dbname_="test") for x in DBHosts ]
-	    
-	    for apolloDB in apolloDBs:
-		    print "working on DB: " + str(apolloDB._host)
-		    apolloDB.connect() 
-		    
-		    ### Get the runId from the database 
-		   
-		    locationList = [fred_run.get_param('fips')]
-		    for state,fileName in apolloDB.stateToDataFileDict.items():
-			    stateStringList = []
-			    if state == "C": continue
-			    for location in locationList:	    
-				    for day in outputsAve:
-					    state_dis = "%s_0"%state
-					    if state_dis in day.keys():
-						    stateStringList.append("US%s %d %d:1\n"%(str(location),day[state_dis],day['Day']))
-			    
-			    
-			    
-			    stateString = "".join(stateStringList)
-			    if stateString == "":continue
-			    m = hashlib.md5()
-			    m.update(stateString)
-			    m5hash = m.hexdigest()
-			    SQLString = 'INSERT INTO run_data_content (text_content, md5_hash_of_content) values ("%s","%s")'%(stateString,m5hash)
-			    #print SQLString
-			    apolloDB.query(SQLString)
-			    runDataContentId = apolloDB.insertID()
-			    #print "stateString = " + stateString
-			    runDataDescriptionId = apolloDB.getRunDataDescriptionId(fileName)
-
-			    SQLString = 'INSERT INTO run_data (run_id, description_id, content_id) values '\
-				'("%s","%s","%s")'%(simulationRunId,runDataDescriptionId,runDataContentId)
-		            #print SQLString
-			    apolloDB.query(SQLString)
-			    
-			    with open(fileName,"wb") as f:
-				    f.write("".join(stateStringList))
-    except Exception as e:
-	    error_exit(str(e))
-
-    try:
-	    numDays = int(fred_run.get_param("days"))
-            bgoutStr = []
-	    aveInfByBG = []
-	    fipsSet = set()
-	    time1 = time.time()
-	    for i in range(0,numDays):
-		    aveInfByBG.append({})
-
-	    
-	    AllInfs = []
-	    time1 = time.time()
-	    for j in range(0,len(fred_run.block_infection_file_names)):
-		    #print "J = " + str(j)
-		    InfSet = []
-		    for i in range(0,int(numDays)):
-			    InfSet.append({})
-
-		    bgInfSet = fred_run.get_block_infection_set(j+1)
-		    #print "Length = " + str(len(bgInfSet.infectionList))
-		    for i in range(0,len(bgInfSet.infectionList)):
-			    #print str(bgInfSet.infectionList[i])
-			    day = bgInfSet.get("Day",i)
-			    bg = bgInfSet.get("BlockGroup",i)
-			    inf = bgInfSet.get("C",i)
-			    #print "BG: %s Day: %d inf: %d"%(str(bg),int(day),int(inf))
-			    InfSet[int(day)][bg] = float(inf)
-		    AllInfs.append(InfSet)
-	    time2 = time.time()
-	    print "Time to get data = %10.2lf"%(time2-time1)
-	    time1 = time.time()
-	    for Inf in AllInfs:
-		    for day in range(0,len(Inf)):
-			    for fips,value in Inf[day].items():
-				    fipsSet.add(fips)
-	    for day in xrange(0,numDays):
-		    for fips in fipsSet:
-			    aveInfByBG[day][fips] = 0.0
+	DBHosts = [opts.dbHost]
 	
-	    for Inf in AllInfs:
-		    for day in xrange(0,len(Inf)):
-			    for fips,value in Inf[day].items():
-				    aveInfByBG[day][fips]+= value
+	simulationRunId = opts.runId
+	statusFile = "./starttime"
 
-	    time2 = time.time()
-	    print "time to sum data = %10.2f"%(time2-time1)
-	    time1 = time.time()
-	    for day in range(0,len(aveInfByBG)):
-		    for fips in aveInfByBG[day].keys():
-			    aveInfByBG[day][fips]/= float(len(fred_run.block_infection_file_names))
+	if simulationRunId is None:
+		error_exit("Need to specify an Apollo SimulationRunId to use this program")
 
-	    time2 = time.time()
+	try:
+		numberDays,outputKeys, averageOuts = FREDAverageOuts(opts.outputdir)
+		#averageOutputs = FREDAverageOuts(opts.outputdir)
+		#sys.exit()
+		# numberDays = int(fred_run.get_param("days"))
+		# outputsAve = fred_run.outputsAve
+	except Exception as e:
+		error_exit(str(e))
 
-	    print "Time to divide data %10.2f"%(time2-time1)
-	    ### Create a textfile that can be used by visualizer service to create a GAIA file
-	    time1 = time.time()
-	    for day in range(0,len(aveInfByBG)):
-			    for fips in aveInfByBG[day].keys():
-				    bgoutStr.append("US%s %d %d:1\n"%(str(fips),int(math.ceil(aveInfByBG[day][fips])),day))
-	    time2 = time.time()
-	    print "Time to create string = %10.2f"%(time2-time1)
+	try:
+		apolloDBs = [ apollo.ApolloDB(host_=x, dbname_=opts.dbName, user_=opts.dbUser, password_=opts.dbPword) for x in DBHosts ]
+		for apolloDB in apolloDBs:
+			apolloDB.connect()
+			for state,filename in apolloDB.stateToDataFileDict.items():
+				sio=StringIO()
+				csvsio = StringIO()
+				csvsio.write("BlockGroup,Day,{0}".format(state))
+				if state in outputKeys:
+					for fips,days in averageOuts.items():
+						for i in range(len(days)):
+							#print "US{0} {1} {2}:1\n".format(fips,days[i][outputKeys.index(state)],i)
+							sio.write("US{0} {1} {2}:1\n".format(fips,int(round(days[i][outputKeys.index(state)],0)),i))
+							
+				
+				
+				m = hashlib.md5()
+				m.update(sio.getvalue())
+				m5hash = m.hexdigest()
+				runDataContentId = -1
+				hashvar = apolloDB.checkMD5HashExistence(m5hash)
+				if hashvar > -1:
+					runDataContentId = hashvar
+				else:
+					SQLString = 'INSERT INTO run_data_content (text_content, md5_hash_of_content) values ("%s","%s")' % (sio.getvalue(), m5hash)
+					if(opts.no_db is False):
+						apolloDB.query(SQLString)
+					runDataContentId = apolloDB.insertID()
+				runDataDescriptionIdTS = apolloDB.getRunDataDescriptionId(label_=filename)
 
-    except Exception as e:
-	    print str(e)
-	    #error_exit(str(e))
-    
-    try:
-	    time1 = time.time()
-	    bgStr = "".join(bgoutStr)
-            #print "BgStr = " + bgStr
-	    m = hashlib.md5()
-	    m.update(bgStr)
-	    m5hash = m.hexdigest()
-	    with open("test.txt","wb") as f:
-		    f.write("%s"%bgStr)
-	    bufferSize = len(bgStr)
-	    count = 0
-	    runDataContentId = -1
-#	    while count*bufferSize < len(bgStr):
-#		    start = count*bufferSize
-#		    if count*bufferSize + bufferSize > len(bgStr):
-#			    end = len(bgStr)
-#		    else:
-#			    end = start+bufferSize
-#		    if count == 0:
-	    SQLString = 'INSERT INTO run_data_content (text_content, md5_hash_of_content) values ("%s","%s")'%(bgStr,m5hash)
-	    apolloDB.query(SQLString)
-	    runDataContentId = apolloDB.insertID()
-	    print "ID 1 = " + str(runDataContentId)
-#		    else:
-#			    SQLString = 'UPDATE run_data_content SET text_content=concat(text_content,"%s") where id = %s'%(bgStr[start:end],str(runDataContentId))
-#			    apolloDB.query(SQLString)
-	    #print SQLString
-		    
-		    #count+=1
-	    runDataDescriptionIdTS = apolloDB.getRunDataDescriptionId("newly_exposed.txt")
-
-	    print "ID = " +str(runDataContentId)
-	    SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')"%(simulationRunId,runDataDescriptionIdTS,runDataContentId)
-	    apolloDB.query(SQLString)
-	    
- 	    runDataDescriptionIdGAIA = apolloDB.getRunDataDescriptionId(label_="newly_exposed.txt",destination_software_=5) 
-	    SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')"%(simulationRunId,runDataDescriptionIdGAIA,runDataContentId)
-	    print "GAIA ID = " + str(runDataDescriptionIdGAIA)
-            apolloDB.query(SQLString)
-
-	    time2 = time.time()
-	    print "Time to insert in database = %10.2f"%(time2-time1)
-	    apolloDB.close()
-	    statusUpdate("LOG_FILES_WRITTEN","%s"%datetime.datetime.now().strftime("%a %b %d %H:%M:%S EDT %Y"))
-    except Exception as e:
-	    error_exit(str(e))
+				SQLString = 'INSERT INTO run_data (run_id, description_id, content_id) values '\
+					'("%s","%s","%s")' % (simulationRunId, runDataDescriptionIdTS, runDataContentId)
+				
+				if(opts.no_db is False):
+					apolloDB.query(SQLString)
+				
+				if state == "C":
+					runDataDescriptionIdGAIA = apolloDB.getRunDataDescriptionId(label_="newly_exposed.txt", destination_software_=5) 
+					SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')" % (simulationRunId, 
+																													runDataDescriptionIdGAIA, 
+																													runDataContentId)
+					
+					SQLString = "INSERT INTO run_data(run_Id,description_id,content_id) values ('%s','%d','%d')" % (simulationRunId, runDataDescriptionIdGAIA, runDataContentId)
+					if(opts.no_db is False):
+						apolloDB.query(SQLString)
+					
+				with open(filename,"wb") as f:
+					f.write('{0}'.format(sio.getvalue()))
+		
+		
+		apolloDB.close()
+		statusUpdate("LOG_FILES_WRITTEN", "%s" % datetime.datetime.now().strftime("%a %b %d %H:%M:%S EDT %Y"))
+		
+	except Exception as e:
+		error_exit(str(e))
+		
+if __name__ == '__main__':
+	main()
+			 
+		
