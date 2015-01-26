@@ -15,7 +15,6 @@
 package edu.pitt.apollo.translatorserviceskeleton;
 
 import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceEI;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import java.math.BigInteger;
 
 import javax.jws.WebService;
@@ -26,8 +25,7 @@ public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 
 	@Override
-	public void translateRunSimulationMessage(BigInteger simulationRunId,
-			RunSimulationMessage runSimulationMessage) {
+	public void translateRun(BigInteger runId) {
 		// TODO Auto-generated method stub
 		
 	}
