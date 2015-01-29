@@ -151,6 +151,7 @@
 										<include>simulator_service_3.0.0.xsd</include>
 										<include>services-common_3.0.0.xsd</include>
                                         <include>visualizer_service_3.0.0.xsd</include>
+                                        <include>data_service_3.0.0.xsd</include>
 									</includes>
 									<filtering>true</filtering>
 								</resource>
@@ -239,6 +240,7 @@
 						<include>services-common_3.0.0.xsd</include>
                         <include>synthetic_population_service_3.0.0.xsd</include>
                         <include>visualizer_service_3.0.0.xsd</include>
+                        <include>data_service_3.0.0.xsd</include>
 					</schemaIncludes>
 					<extension>true</extension>
 					<!-- The name of your generated source package -->
