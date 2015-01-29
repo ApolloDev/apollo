@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://data-service-types.apollo.pitt.edu/v3_0_0/"
-	xmlns:tns="http://library-service-types.apollo.pitt.edu/v3_0_0/"
+	xmlns:tns="http://data-service-types.apollo.pitt.edu/v3_0_0/"
 	elementFormDefault="qualified" xmlns:common="http://services-common.apollo.pitt.edu/v3_0_0/"
 	xmlns:Q1="http://types.apollo.pitt.edu/v3_0_0/">
 
@@ -21,28 +21,11 @@
 				maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
-
-	<complexType name="GetOutputFileURLMessage">
-		<sequence>
-			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
-			<element name="softwareRunId" type="common:RunIdentificationAndLabel"></element>
-		</sequence>
-	</complexType>
-	
-	<complexType name="GetOutputFileURLResult">
-		<sequence>
-			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
-			<element name="requestIdentification" type="common:RunIdentification"></element>
-			<element name="url" type="anyURI"></element>
-		</sequence>
-	</complexType>
 	
 	<complexType name="GetOutputFilesURLsMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
-			<element name="softwareRunIds" type="common:RunIdentificationAndLabel" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 	
@@ -50,7 +33,7 @@
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 			<element name="requestIdentification" type="common:RunIdentification"></element>
-			<element name="urls" type="anyURI" maxOccurs="unbounded"></element>
+			<element name="urlsForRunIdsAndFiles" type="tns:URLForFileAndRunId" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 	
@@ -58,7 +41,7 @@
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
 			<element name="softwareIdentification" type="common:SoftwareIdentification" />
-			<element name="softwareRunIds" type="common:RunIdentificationAndLabel" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 	
@@ -67,6 +50,22 @@
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 			<element name="requestIdentification" type="common:RunIdentification"></element>
 			<element name="url" type="anyURI"></element>
+		</sequence>
+	</complexType>
+    
+    	<complexType name="RunIdAndFiles">
+		<sequence>
+			<element name="runId" type="common:RunIdentification" />
+			<element name="files" type="token" minOccurs="1"
+				maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+    
+    <complexType name="URLForFileAndRunId">
+		<sequence>
+			<element name="runId" type="common:RunIdentification" />
+			<element name="file" type="token"/>
+            <element name="url" type="anyURI"/>
 		</sequence>
 	</complexType>
 	
