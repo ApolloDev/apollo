@@ -18,7 +18,7 @@ Created on Feb 13, 2013
 @author: John Levander and Shawn Brown
 '''
 
-from VisualizerService_v2_0_2_server import VisualizerService_v2_0_2
+from VisualizerService_v3_0_0_server import VisualizerService_v3_0_0
 from ZSI.ServiceContainer import AsServer
 from ApolloFactory import *
 import visWS
@@ -30,13 +30,22 @@ import time
 import shutil
 import os,sys
 import hashlib
-from threading import Thread
+from multiprocessing import Process,Queue,Manager 
 from logger import Log,ThreadLog
 
+
 def ApolloToGaia(vizRunId,simulationRunId,simulationTitle,gaiaFileName,gaiaOutputFileName,
-                 gaiaStyleFileName,gaiaURL,statusFile,logger,apollodb):
+                 gaiaStyleFileName,gaiaURL,statusFile,logger,port,portDict):
+    
+    apollodb = ApolloDB(dbname_=visWS.configuration['local']['apolloDBName'],
+                        host_=visWS.configuration['local']['apolloDBHost'],
+                        user_=visWS.configuration['local']['apolloDBUser'],
+                        password_=visWS.configuration['local']['apolloDBPword'])
+
+    apollodb.connect()
     
     try:
+	apollodb.setRunStatus(vizRunId,"running","Visusalizer process now running")
         sourceId = apollodb.getSimulatorIdFromRunId(simulationRunId)
         fileContents = apollodb.getRunDataContentFromRunIdAndLabel(simulationRunId_=simulationRunId,
                                                                    label_='newly_exposed.txt',
@@ -92,13 +101,15 @@ def ApolloToGaia(vizRunId,simulationRunId,simulationTitle,gaiaFileName,gaiaOutpu
                             max_resolution_ = 1000,
                             legend_="Incidence",
                             legend_font_size_ = 16.0,
-			    title_=str(simulationTitle))
+			    title_=str(simulationTitle),
+			    )
+        confInfo = ConfInfo(serverPort_=str(port))
     except Exception,e:
         logger.update('GAIA_FILE_CREATION_FAILED',message=str(e))
 	apollodb.setRunStatus(vizRunId,'failed',str(e))
 	raise e
 	
-    gaia = GAIA(plotInfo)           
+    gaia = GAIA(plotInfo,confInfo)           
     logger.update('GAIA_FILE_CREATION_COMPLETE')
 
     logger.update('CALLING_GAIA')
@@ -107,6 +118,7 @@ def ApolloToGaia(vizRunId,simulationRunId,simulationTitle,gaiaFileName,gaiaOutpu
     except Exception,e:
         logger.update('GAIA_FAILED',message=str(e))
 	apollodb.setRunStatus(vizRunId,'failed',str(e))
+	portDict[port]=False
         return
 	
     logger.update('GAIA_SUCCESS')
@@ -114,7 +126,6 @@ def ApolloToGaia(vizRunId,simulationRunId,simulationTitle,gaiaFileName,gaiaOutpu
     try:
         gaiaOutWDirFileName = visWS.configuration['local']['outputDirectory'] + "/" + gaiaOutputFileName
         shutil.move(gaiaOutputFileName+".ogg",gaiaOutWDirFileName+".ogg")
-        
 	### put the url in the database
 	m = hashlib.md5()
 	m.update(gaiaURL)
@@ -136,31 +147,41 @@ def ApolloToGaia(vizRunId,simulationRunId,simulationTitle,gaiaFileName,gaiaOutpu
     except Exception,e:
         logger.update('FILE_MOVE_FAILED',message=str(e))
 	apollodb.setRunStatus(vizRunId,'failed',str(e))
+	portDict[port]=False
 	return
     logger.update("COMPLETED")
     apollodb.setRunStatus(vizRunId,'completed','Visualization Completed')
+    apollodb.close()
+    portDict[port]=False
 
-class GaiaWebService(VisualizerService_v2_0_2):
+class GaiaWebService(VisualizerService_v3_0_0):
     _wsdl = "".join(open(visWS.configuration['local']['wsdlFile']).readlines()) 
     factory = ApolloFactory()
 
     LogDict = {}
     LogDict["GlobalLogger"] = Log(visWS.configuration['local']['logFile'])
     LogDict["GlobalLogger"].start()
-
+    manager = Manager()
+    portDict = manager.dict()
+    portDict[9807] = False
+    portDict[9809] = False
+    portDict[9812] = False
     vizRunId = None
     def soap_runVisualization(self, ps, **kw):
+	vizRunId = None
  	try:
-            apolloDB = ApolloDB(dbname_=visWS.configuration['local']['apolloDBName'])
+            apolloDB = ApolloDB(dbname_=visWS.configuration['local']['apolloDBName'],
+				host_=visWS.configuration['local']['apolloDBHost'],
+				user_=visWS.configuration['local']['apolloDBUser'],
+				password_=visWS.configuration['local']['apolloDBPword'])
             apolloDB.connect()
-            response = VisualizerService_v2_0_2.soap_runVisualization(self, ps, **kw)
+            response = VisualizerService_v3_0_0.soap_runVisualization(self, ps, **kw)
             vc = response[0]._runVisualizationMessage;
             vizRunId = response[0]._visualizationRunId
             forLogMoniker = vizRunId
             simulationRunValue = vc._simulationRunIds[0]
             simulationRunId = simulationRunValue._runIdentification
             simulationTitle = simulationRunValue._runLabel	
-            
 	except Exception as e:
             print str(e)
             
@@ -201,12 +222,22 @@ class GaiaWebService(VisualizerService_v2_0_2):
             gaiaOutputFileName = "gaia.output.%d"%timeStamp
             gaiaOutWDirFileName =  "%s/%s"%(visWS.configuration['local']['outputDirectory'],gaiaOutputFileName)
             gaiaURL = "%s/%s.ogg"%(visWS.configuration['local']['URL'],gaiaOutputFileName)
-            apolloDB.setRunStatus(vizRunId,'running','Visualization has been subitted to GAIA for processing')
-            t = Thread(target=ApolloToGaia,args=(vizRunId,simulationRunId,simulationTitle,
+            apolloDB.setRunStatus(vizRunId,'queued','Visualization has been subitted to GAIA for processing')
+	   
+            ### pick a port
+	    port = -1
+            print str(self.portDict)
+            while port == -1:
+           	for p in self.portDict.keys():
+		    if self.portDict[p] is False:
+			self.portDict[p]=True
+			port = p
+			break
+
+            t = Process(target=ApolloToGaia,args=(vizRunId,simulationRunId,simulationTitle,
                                                  gaiaFileName,gaiaOutputFileName,
                                                  gaiaStyleFileName,gaiaURL,
-                                                 statusFile,self.LogDict[forLogMoniker],
-                                                 apolloDB))
+                                                 statusFile,self.LogDict[forLogMoniker],port,self.portDict))
             t.start()
             print "The client requests a visualization of the following runId: "\
                 + str(vizRunId)
