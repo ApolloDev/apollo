@@ -19,7 +19,7 @@ Created on Nov 29, 2012
 @author: John Levander
 '''
 
-from VisualizerService_v2_0_2_types import *
+from VisualizerService_v3_0_0_types import *
 
 class ApolloFactory:
     
@@ -45,7 +45,7 @@ class ApolloFactory:
         return vopt;
     
     def new_MethodCallStatus(self):
-        run_status = ns1.MethodCallStatus_Def(None).pyclass()
+        run_status = ns2.MethodCallStatus_Def(None).pyclass()
         return run_status
     
     def new_VisualizerConfiguration(self):
