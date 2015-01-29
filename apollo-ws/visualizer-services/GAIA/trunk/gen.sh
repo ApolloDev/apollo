@@ -1,1 +1,1 @@
-wsdl2py --complexType --lazy  visualizerservice202.wsdl
+wsdl2py --complexType --lazy  visualizerservice300.wsdl
