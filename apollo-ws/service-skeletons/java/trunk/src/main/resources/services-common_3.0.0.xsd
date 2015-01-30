@@ -14,6 +14,8 @@
 		</restriction>
 	</simpleType>
 
+
+
 	<complexType name="SoftwareIdentification">
 		<sequence>
 			<element name="softwareDeveloper" type="token" maxOccurs="1"
@@ -73,7 +75,7 @@
 			</extension>
 		</complexContent>
 	</complexType>
-	
+
 	<complexType name="UrlOutputResource">
 		<sequence>
 			<element name="description" type="string" />
@@ -87,7 +89,7 @@
 			<element name="URL" type="anyURI" />
 		</sequence>
 	</complexType>
-	
+
 
 	<complexType name="TerminteRunResult">
 		<sequence>
@@ -136,6 +138,8 @@
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
 			<enumeration value="log_files_written" />
+			<enumeration value="loading_run_config_into_database" />
+			<enumeration value="loaded_run_config_into_database" />
 			<enumeration value="staging" />
 			<enumeration value="running" />
 			<enumeration value="moving" />
