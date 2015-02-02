@@ -18,7 +18,7 @@ import edu.pitt.apollo.ErrorUtils;
  */
 public class ApolloServiceErrorHandler extends ErrorUtils {
 
-    public static final BigInteger FATAL_ERROR_CODE = new BigInteger("-1");
+    public static final BigInteger JOB_ID_FOR_FATAL_ERROR = new BigInteger("-1");
     public static final String RUN_ERROR_PREFIX = "ApolloServiceError";
     private static final String ERROR_FILENAME = "run_errors.txt";
     private static final String ERROR_FILE_DIR = "errors";
