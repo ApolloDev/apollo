@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -26,6 +28,10 @@ public class RunApolloServiceThreadFactory {
 				return new RunSimulationsThread(authentication, (RunSimulationsMessage) message, runId, simulationGroupId);
 		} else if (message instanceof RunVisualizationMessage) {
 			return new RunVisualizationThread((RunVisualizationMessage) message, runId);
+		} else if (message instanceof GetOutputFilesURLsMessage) {
+			return new RunDataServiceThread((GetOutputFilesURLsMessage) message);
+		} else if (message instanceof GetOutputFilesURLAsZipMessage) {
+			return new RunDataServiceThread((GetOutputFilesURLAsZipMessage) message);
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
 		}
