@@ -26,7 +26,5 @@ public abstract class RunApolloServiceThread extends Thread {
 	
 	public abstract void setAuthenticationPasswordFieldToBlank();
 	
-	public void setRunId(BigInteger runId) {
-		this.runId = runId;
-	}
+
 }
