@@ -5,6 +5,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -17,11 +18,15 @@ import java.math.BigInteger;
  */
 public abstract class DatabaseAccessor {
 
-	protected ApolloDbUtils dbUtils;
+	protected static final ApolloDbUtils dbUtils;
 	protected final Authentication authentication;
 
+	static {
+		dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+	}
+
 	public DatabaseAccessor(Authentication authentication) {
-		this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+
 		this.authentication = authentication;
 	}
 
@@ -58,6 +63,10 @@ public abstract class DatabaseAccessor {
 		return targetRunMessageAsJson.equals(runSimulationMessageAssociatedWithRunIdAsJson);
 	}
 
+	public List<BigInteger> getRunIdsAssociatedWithRun(BigInteger runId) throws ApolloDatabaseException {
+		return dbUtils.getRunIdsForBatch(runId);
+	}
+	
 	public abstract BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException;
 
 	protected abstract String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException;
