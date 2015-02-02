@@ -29,7 +29,7 @@ import java.sql.SQLException;
  */
 public class TranslatorServiceAccessor {
 
-    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, RunSimulationMessage message, ApolloDbUtils dbUtils) throws IOException {
+    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, ApolloDbUtils dbUtils) throws IOException {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
@@ -55,7 +55,7 @@ public class TranslatorServiceAccessor {
         http.setClient(httpClientPolicy);
 
         try {
-            translatorPort.translateRunSimulationMessage(runId, message);
+            translatorPort.translateRun(runId);
         } catch (WebServiceException e) {
             ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to call translateRunSimulationMessage() for runId:  " + runId
                     + ". Error was: " + e.getMessage(),

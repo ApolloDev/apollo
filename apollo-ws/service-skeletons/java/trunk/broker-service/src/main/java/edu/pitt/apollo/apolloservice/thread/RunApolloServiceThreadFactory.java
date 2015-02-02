@@ -1,6 +1,10 @@
 package edu.pitt.apollo.apolloservice.thread;
 
+import java.math.BigInteger;
+
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
@@ -14,12 +18,14 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
  */
 public class RunApolloServiceThreadFactory {
 
-	public static RunApolloServiceThread getRunApolloServiceThread(Object message) throws UnrecognizedMessageTypeException {
+	public static RunApolloServiceThread getRunApolloServiceThread(Authentication authentication, Object message, BigInteger runId, BigInteger simulationGroupId) throws UnrecognizedMessageTypeException {
 
 		if (message instanceof RunSimulationMessage) {
-			return new RunSimulationThread((RunSimulationMessage) message);
+			return new RunSimulationThread((RunSimulationMessage) message, runId);
+		} else if (message instanceof RunSimulationsMessage) {
+				return new RunSimulationsThread(authentication, (RunSimulationsMessage) message, runId, simulationGroupId);
 		} else if (message instanceof RunVisualizationMessage) {
-			return new RunVisualizationThread((RunVisualizationMessage) message);
+			return new RunVisualizationThread((RunVisualizationMessage) message, runId);
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
 		}
