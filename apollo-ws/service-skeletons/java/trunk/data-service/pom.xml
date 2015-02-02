@@ -10,12 +10,31 @@
     <name>Data Service</name>
     <packaging>jar</packaging>
 
+    <repositories>
+        <repository>
+            <id>apollo</id>
+            <url>http://research.rods.pitt.edu/repo</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>db-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>apollo-service-queue</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
