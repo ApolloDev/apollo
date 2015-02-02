@@ -1,5 +1,7 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
+import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.SimulatorServiceImpl;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -9,7 +11,6 @@ import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
-import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
 import edu.pitt.apollo.types.v3_0_0.Location;
 
@@ -24,30 +25,26 @@ import java.util.Map;
  *
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Jun 20, 2014 Time: 3:27:45 PM Class: SimulatorThread IDE: NetBeans 6.9.1
  */
-public abstract class SimulatorThread extends Thread {
+public abstract class SimulatorThread extends ApolloServiceThread {
 
 	protected RunSimulationMessage message;
-	protected final BigInteger runId;
 	private final boolean useFile;
 	private final boolean useDatabase;
 	protected final ApolloDbUtils dbUtils;
 	private final SoftwareIdentification translatorSoftwareId;
-	protected static SoftwareIdentification visualizerId;
+	protected static SoftwareIdentification visualizerSoftwareId;
+	private static SoftwareIdentification dataServiceSoftwareId;
+	private static int dataServiceSoftwareKey;
 
-	public SimulatorThread(ApolloDbUtils dbUtils, BigInteger runId, SoftwareIdentification translatorSoftwareId,
+	public SimulatorThread(BigInteger runId, ApolloServiceQueue queue, ApolloDbUtils dbUtils, SoftwareIdentification translatorSoftwareId,
 			boolean useFile, boolean useDatabase) {
-		super();
-		this.runId = runId;
+		super(runId, queue);
 		this.useFile = useFile;
 		this.useDatabase = useDatabase;
 		this.dbUtils = dbUtils;
 		this.translatorSoftwareId = translatorSoftwareId;
 
 		loadRunSimulationMessage();
-	}
-
-	public BigInteger getRunId() {
-		return runId;
 	}
 
 	protected abstract void runSimulator() throws IOException;
@@ -59,7 +56,7 @@ public abstract class SimulatorThread extends Thread {
 	protected abstract void storeLocalFileOutput();
 
 	@Override
-	public void run() {
+	public void runApolloService() {
 
 		try {
 
@@ -74,8 +71,6 @@ public abstract class SimulatorThread extends Thread {
 			updateStatus(MethodCallStatusEnum.FAILED, "IOException running simulator: " + ex.getMessage());
 		} catch (SimulatorServiceException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "SimulatorServiceException: " + ex.getMessage());
-		} finally {
-			finalizeRun();
 		}
 
 	}
@@ -127,11 +122,6 @@ public abstract class SimulatorThread extends Thread {
 		updateStatus(MethodCallStatusEnum.RUNNING, "The simulator is running");
 	}
 
-	private void finalizeRun() {
-		SimulatorServiceQueue.simulatorThreadFinished();
-		SimulatorServiceQueue.startQueuedSimulatorThreads();
-	}
-
 	protected final void addTextDataContentForSeries(double[] series, String seriesName, String locationString) throws IOException {
 
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -144,7 +134,7 @@ public abstract class SimulatorThread extends Thread {
 			updateStatus(MethodCallStatusEnum.FAILED, "IOException attempting to write " + seriesName + " series "
 					+ "to ByteArrayOutputStream for run " + runId + ": " + ex.getMessage());
 		}
-		addTextDataContentForSeries(stream.toString(), seriesName);
+		addTextDataContentForSeriesForVisualizer(stream.toString(), seriesName);
 
 	}
 
@@ -160,10 +150,31 @@ public abstract class SimulatorThread extends Thread {
 			}
 		}
 
-		addTextDataContentForSeries(stream.toString(), "run_output");
+		String seriesName = "run_output";
+		try {
+			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			addTextDataContentForSeries(stream.toString(), seriesName, sourceSoftwareIdKey, dataServiceSoftwareKey);
+		} catch (ApolloDatabaseException ex) {
+			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
+					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+		}
+
 	}
 
-	private void addTextDataContentForSeries(String content, String seriesName) throws IOException {
+	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
+
+		try {
+			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			int visualizerSoftwareKey = dbUtils.getSoftwareIdentificationKey(visualizerSoftwareId);
+
+			addTextDataContentForSeries(content, seriesName, sourceSoftwareIdKey, visualizerSoftwareKey);
+		} catch (ApolloDatabaseException ex) {
+			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
+					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+		}
+	}
+
+	private void addTextDataContentForSeries(String content, String seriesName, int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws IOException {
 		int dataContentKey;
 		try {
 			dataContentKey = dbUtils.addTextDataContent(content);
@@ -184,8 +195,8 @@ public abstract class SimulatorThread extends Thread {
 		int runDataDescriptionId;
 		try {
 			runDataDescriptionId = dbUtils.getRunDataDescriptionId(ApolloDbUtils.DbContentDataFormatEnum.TEXT, seriesName + ".txt",
-					ApolloDbUtils.DbContentDataType.SIMULATOR_LOG_FILE, message.getSimulatorIdentification(),
-					visualizerId);
+					ApolloDbUtils.DbContentDataType.SIMULATOR_LOG_FILE, sourceSoftwareIdKey,
+					destinationSoftwareIdKey);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to get run data "
 					+ "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
@@ -251,7 +262,7 @@ public abstract class SimulatorThread extends Thread {
 
 	private static void loadTimeSeriesVisualizerSoftwareIdentification() {
 
-		System.out.println("Loading time series visualizer software identification");
+		System.out.println("Loading software identifications");
 		try {
 			ApolloDbUtils dbUtils = new ApolloDbUtils(new File(SimulatorServiceImpl.getDatabasePropertiesFilename()));
 
@@ -259,11 +270,14 @@ public abstract class SimulatorThread extends Thread {
 			for (Integer id : softwareIdMap.keySet()) {
 				SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
 				if (softwareId.getSoftwareName().toLowerCase().equals("time series visualizer")) {
-					visualizerId = softwareIdMap.get(id).getSoftwareIdentification();
-					break;
+					visualizerSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
+				} else if (softwareId.getSoftwareName().toLowerCase().equals("data service")) {
+					dataServiceSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
 				}
 
 			}
+
+			dataServiceSoftwareKey = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
 
 		} catch (ClassNotFoundException ex) {
 			throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the time series visualizer software ID: "
@@ -272,10 +286,14 @@ public abstract class SimulatorThread extends Thread {
 			throw new ExceptionInInitializerError("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ExceptionInInitializerError("SQLException attempting to load the time series visualizer software ID: " + ex.getMessage());
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("ApolloDatabaseException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		}
-
-		if (visualizerId == null) {
+		if (visualizerSoftwareId == null) {
 			throw new ExceptionInInitializerError("Could not find the time series visualizer software id in the list of registered services");
+		}
+		if (dataServiceSoftwareId == null) {
+			throw new ExceptionInInitializerError("Could not find the data service software id in the list of registered services");
 		}
 	}
 

@@ -62,13 +62,14 @@ CREATE TABLE software_identification (
 
 INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-3.0.0-SNAPSHOT/services/translatorservice?wsdl',1),
 											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
 											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-3.0.0-SNAPSHOT/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:8093/gaia?wsdl',1),
-											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:13501/gaia?wsdl',1),
+											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
 											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-                                             (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:8095/pscsimu?wsdl',1),
-                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1);
+                                             (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
+                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
+											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -110,6 +111,9 @@ INSERT INTO roles VALUES (22, 'Can run Lancet Ebola without privileged request')
 INSERT INTO roles VALUES (23, 'Can run Lancet Ebola with privileged request');
 INSERT INTO roles VALUES (24, 'Can view cached Lancet Ebola results');
 
+INSERT INTO roles VALUES (25, 'Can run Data Service without privileged request');
+INSERT INTO roles VALUES (26, 'Can view cached Data Service results');
+
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
   software_id INT REFERENCES software_identification(id),
@@ -149,6 +153,9 @@ INSERT INTO role_description VALUES(21, 8, 0, 0);
 INSERT INTO role_description VALUES(22, 9, 1, 0);
 INSERT INTO role_description VALUES(23, 9, 1, 1);
 INSERT INTO role_description VALUES(24, 9, 0, 0);
+
+INSERT INTO role_description VALUES(25, 10, 1, 0);
+INSERT INTO role_description VALUES(26, 10, 0, 0);
 
 CREATE TABLE user_roles (
   user_id INT NOT NULL REFERENCES users(id),
@@ -361,6 +368,9 @@ INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 76 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 77 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 78 */
+INSERT INTO run_data_description (label) values ('SEIR log file, run_output.txt '); /* 79 */
+INSERT INTO run_data_description (label) values ('FRED log file, run_output.txt '); /* 80 */
+INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 81*/
 
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
@@ -831,7 +841,25 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(78, 2, 'newly_exposed.txt'),
 	(78, 3, 'SIMULATOR_LOG_FILE'),
 	(78, 4, '9'),
-	(78, 5, '4');
+	(78, 5, '4'),
+    
+   	(79, 1, 'TEXT'), 
+	(79, 2, 'run_output.txt'),
+	(79, 3, 'SIMULATOR_LOG_FILE'),
+	(79, 4, '2'),
+	(79, 5, '0'),
+    
+    (80, 1, 'TEXT'), 
+	(80, 2, 'run_output.txt'),
+	(80, 3, 'SIMULATOR_LOG_FILE'),
+	(80, 4, '3'),
+	(80, 5, '0'),
+    
+	(81, 1, 'TEXT'), 
+	(81, 2, 'run_data_service_message.json'),
+	(81, 3, 'RUN_DATA_SERVICE_MESSAGE'),
+	(81, 4, '0'),
+	(81, 5, '10');
     
 CREATE VIEW run_data_description_view AS
 SELECT
