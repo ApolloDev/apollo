@@ -3,7 +3,6 @@ package edu.pitt.apollo.apolloservice.database;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
-import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
