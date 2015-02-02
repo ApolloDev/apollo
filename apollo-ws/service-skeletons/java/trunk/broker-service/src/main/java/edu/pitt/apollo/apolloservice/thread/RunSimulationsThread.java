@@ -18,6 +18,7 @@ import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.exception.BatchException;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
+import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
 import edu.pitt.apollo.apolloservice.methods.run.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -229,7 +230,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 					if (message instanceof RunSimulationsMessage) {
 						RunSimulationMessage currentRunSimulationMessage = populateTemplateWithRecord(
 								message, batchConfigRecord);
-						RunMethod runMethod = new RunMethod(
+						RunMethod runMethod = new RunMethodForSimulationAndVisualization(
 								authentication,
 								message.getSimulatorIdentification(),
 								currentRunSimulationMessage);
