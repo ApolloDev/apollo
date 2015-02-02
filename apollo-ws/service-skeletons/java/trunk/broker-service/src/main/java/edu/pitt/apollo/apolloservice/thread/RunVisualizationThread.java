@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
@@ -30,9 +32,10 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 
     private final RunVisualizationMessage message;
 
-    public RunVisualizationThread(RunVisualizationMessage message) {
+    public RunVisualizationThread(RunVisualizationMessage message, BigInteger runId) {
 		super();
         this.message = message;
+        this.runId = runId;
     }
 
     @Override
