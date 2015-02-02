@@ -62,5 +62,9 @@ public abstract class DatabaseAccessor {
 
 	protected abstract String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException;
 
-	public abstract BigInteger insertRunIntoDatabase() throws ApolloDatabaseException;
+	public abstract BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException;
+
+	public BigInteger getSimulationGroupIdForRun(BigInteger runId) throws ApolloDatabaseException {
+		return dbUtils.getSimulationGroupIdForRun(runId);
+	}
 }
