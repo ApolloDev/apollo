@@ -144,7 +144,6 @@ public abstract class BaseApolloDbUtils {
 	}
 
 	static {
-
 		Map<String, String> env = System.getenv();
 		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (apolloDir != null) {
