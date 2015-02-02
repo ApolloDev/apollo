@@ -34,14 +34,13 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.GetPopulationAndEnvironmentCensusResult;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationsResult;
 import edu.pitt.apollo.simulatorservice.queue.SimulatorServiceQueue;
 import edu.pitt.apollo.simulatorservice.thread.SimulatorThread;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
@@ -50,128 +49,146 @@ import edu.pitt.apollo.simulatorservice.util.RunUtils;
 public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
 	static Logger logger = LoggerFactory.getLogger(SimulatorServiceImpl.class);
-	
-    private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 
-    protected static String APOLLO_DIR = "";
-    protected static ApolloDbUtils dbUtils;
-    protected static SoftwareIdentification translatorSoftwareId;
+	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 
-    @Override
-    @WebResult(name = "runSimulationsResult", targetNamespace = "")
-    @RequestWrapper(localName = "runSimulations", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulations")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/runSimulations")
-    @ResponseWrapper(localName = "runSimulationsResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulationsResponse")
-    public RunSimulationsResult runSimulations(
-            @WebParam(name = "runSimulationsMessage", targetNamespace = "") RunSimulationsMessage runSimulationsMessage) {
-        throw new UnsupportedOperationException("Run simulations is not yet implemented");
-    }
+	protected static String APOLLO_DIR = "";
+	protected static ApolloDbUtils dbUtils;
+	protected static SoftwareIdentification translatorSoftwareId;
 
-    @Override
-    @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulation")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/runSimulation")
-    @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulationResponse")
-    public MethodCallStatus runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId) {
-        System.out.println("running simulation");
-        int runId = simulationRunId.intValue();
-//        try {
-            // set the started file for the run
-//            System.out.println("creating run directory: " + getRunDirectory(runId));
-            RunUtils.updateStatus(dbUtils, simulationRunId, MethodCallStatusEnum.QUEUED, "The simulator run is queued");
-//        } catch (IOException ex) {
-//            try {
-//                RunUtils.updateStatus(dbUtils, MethodCallStatusEnum.FAILED, "IOException attempting to create started file for run "
-//                        + runId + ": " + ex.getMessage());
-//            } catch (IOException ex1) {
-//                System.err.println("IOException attempting to create error file for run " + runId + ": " + ex1.getMessage());
-//            }
-//        }
-        // create the run thread
-        SimulatorThread worker = createSimulatorThread(simulationRunId);
-        System.out.println("Starting an AddSimulatorToQueueThread with run ID " + runId);
-        SimulatorServiceQueue.startAddSimulatorToQueueThread(worker);
-        return null;
-    }
+	@Override
+	public RunResult runSimulations(BigInteger simulationRunId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public static String getDatabasePropertiesFilename() {
-        return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
-    }
+	@Override
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulationResponse")
+	public MethodCallStatus runSimulation(
+			@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId) {
+		System.out.println("running simulation");
+		int runId = simulationRunId.intValue();
+		// try {
+		// set the started file for the run
+		// System.out.println("creating run directory: " +
+		// getRunDirectory(runId));
+		RunUtils.updateStatus(dbUtils, simulationRunId,
+				MethodCallStatusEnum.QUEUED, "The simulator run is queued");
+		// } catch (IOException ex) {
+		// try {
+		// RunUtils.updateStatus(dbUtils, MethodCallStatusEnum.FAILED,
+		// "IOException attempting to create started file for run "
+		// + runId + ": " + ex.getMessage());
+		// } catch (IOException ex1) {
+		// System.err.println("IOException attempting to create error file for run "
+		// + runId + ": " + ex1.getMessage());
+		// }
+		// }
+		// create the run thread
+		SimulatorThread worker = createSimulatorThread(simulationRunId);
+		System.out.println("Starting an AddSimulatorToQueueThread with run ID "
+				+ runId);
+		SimulatorServiceQueue.startAddSimulatorToQueueThread(worker);
+		return null;
+	}
 
-    @Override
-    @WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
-    @RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensus")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getPopulationAndEnvironmentCensus")
-    @ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensusResponse")
-    public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
-            @WebParam(name = "location", targetNamespace = "") String location) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public static String getDatabasePropertiesFilename() {
+		return APOLLO_DIR + DATABASE_PROPERTIES_FILENAME;
+	}
 
-    public static SoftwareIdentification getTranslatorSoftwareId() {
-        return translatorSoftwareId;
-    }
+	@Override
+	@WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
+	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getPopulationAndEnvironmentCensus")
+	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetPopulationAndEnvironmentCensusResponse")
+	public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
+			@WebParam(name = "location", targetNamespace = "") String location) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    protected abstract SimulatorThread createSimulatorThread(
-            BigInteger runId);
+	public static SoftwareIdentification getTranslatorSoftwareId() {
+		return translatorSoftwareId;
+	}
 
-    @Override
-    @WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-    @RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulator")
-    @WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getScenarioLocationCodesSupportedBySimulator")
-    @ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
-    public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	protected abstract SimulatorThread createSimulatorThread(BigInteger runId);
 
-//    protected abstract String getRunDirectory(int runId);
+	@Override
+	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_0_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	// protected abstract String getRunDirectory(int runId);
 
-    static {
+	@Override
+	public TerminteRunResult terminateRun(
+			TerminateRunRequest terminateRunRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        Map<String, String> env = System.getenv();
-        APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-        if (APOLLO_DIR != null) {
-            if (!APOLLO_DIR.endsWith(File.separator)) {
-                APOLLO_DIR += File.separator;
-            }
-            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
-        } else {
-            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
-            APOLLO_DIR = "";
-        }
-        try {
-            dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-        } catch (IOException ex) {
-            System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
-        }
+	static {
 
-        try {
-            Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
-            for (Integer id : softwareIdMap.keySet()) {
-                SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                if (softwareId.getSoftwareName().toLowerCase().equals("translator")) {
-                    translatorSoftwareId = softwareIdMap.get(id).getSoftwareIdentification();
-                    break;
-                }
-            }
+		Map<String, String> env = System.getenv();
+		APOLLO_DIR = env
+				.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+		if (APOLLO_DIR != null) {
+			if (!APOLLO_DIR.endsWith(File.separator)) {
+				APOLLO_DIR += File.separator;
+			}
+			System.out
+					.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+							+ " is now:" + APOLLO_DIR);
+		} else {
+			System.out
+					.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+							+ " environment variable not found!");
+			APOLLO_DIR = "";
+		}
+		try {
+			dbUtils = new ApolloDbUtils(new File(
+					getDatabasePropertiesFilename()));
+		} catch (IOException ex) {
+			System.out
+					.println("Error creating ApoloDbUtils when initializing SEIR web service: "
+							+ ex.getMessage());
+		}
 
-        } catch (ClassNotFoundException ex) {
-            throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the translator software ID: "
-                    + ex.getMessage());
-        } catch (SQLException ex) {
-            throw new ExceptionInInitializerError("SQLException attempting to load the translator software ID: " + ex.getMessage());
-        }
+		try {
+			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils
+					.getRegisteredSoftware();
+			for (Integer id : softwareIdMap.keySet()) {
+				SoftwareIdentification softwareId = softwareIdMap.get(id)
+						.getSoftwareIdentification();
+				if (softwareId.getSoftwareName().toLowerCase()
+						.equals("translator")) {
+					translatorSoftwareId = softwareIdMap.get(id)
+							.getSoftwareIdentification();
+					break;
+				}
+			}
 
-        if (translatorSoftwareId == null) {
-            System.out.println("Could not find translator in the list of registered services");
-        }
-    }
+		} catch (ClassNotFoundException ex) {
+			throw new ExceptionInInitializerError(
+					"ClassNotFoundException attempting to load the translator software ID: "
+							+ ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ExceptionInInitializerError(
+					"SQLException attempting to load the translator software ID: "
+							+ ex.getMessage());
+		}
+
+		if (translatorSoftwareId == null) {
+			System.out
+					.println("Could not find translator in the list of registered services");
+		}
+	}
 
 }
