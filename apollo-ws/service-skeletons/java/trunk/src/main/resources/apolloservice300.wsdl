@@ -4,12 +4,14 @@
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	name="ApolloService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_0/">
 	<wsdl:types>
+
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_0/"
 			xmlns:apollo="http://types.apollo.pitt.edu/v3_0_0/"
 			xmlns:apollo-service="http://apollo-service-types.apollo.pitt.edu/v3_0_0/"
 			xmlns:sst="http://simulator-service-types.apollo.pitt.edu/v3_0_0/"
 			xmlns:vst="http://visualizer-service-types.apollo.pitt.edu/v3_0_0/"
 			xmlns:lst="http://library-service-types.apollo.pitt.edu/v3_0_0/"
+            xmlns:dst="http://data-service-types.apollo.pitt.edu/v3_0_0/"
 			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_0/"
 			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_0/">
 			<xsd:import schemaLocation="apollo-types_3.0.0.xsd"
@@ -34,9 +36,61 @@
 			</xsd:import>
 			<xsd:import schemaLocation="library_service_3.0.0.xsd"
 				namespace="http://library-service-types.apollo.pitt.edu/v3_0_0/">
-			</xsd:import>
 
-			<xsd:element name="getLibraryItemContainer">
+                </xsd:import>
+                <xsd:import schemaLocation="data_service_3.0.0.xsd"
+				namespace="http://data-service-types.apollo.pitt.edu/v3_0_0/">
+                </xsd:import>
+                
+             
+            <xsd:element name="getOutputFilesURLAsZip">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getOutputFilesURLAsZipMessage"
+							type="dst:GetOutputFilesURLAsZipMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLAsZipResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLAsZipResult" type="dst:GetOutputFilesURLAsZipResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>             
+             <xsd:element name="getOutputFilesURLs">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLsMessage" type="dst:GetOutputFilesURLsMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getOutputFilesURLsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getOutputFilesURLsResult" type="dst:GetOutputFilesURLsResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+              <xsd:element name="listOutputFilesForSoftware">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="listOutputFilesForSoftwareMessage"
+							type="dst:ListOutputFilesForSoftwareMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="listOutputFilesForSoftwareResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="listOutputFilesForSoftwareResult"
+							type="dst:ListOutputFilesForSoftwareResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+                
+                	<xsd:element name="getLibraryItemContainer">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="getLibraryItemContainerMessage"
@@ -538,7 +592,27 @@
 			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
-	<wsdl:message name="getLibraryItemContainerRequest">
+
+    <wsdl:message name="listOutputFilesForSoftwareRequest">
+		<wsdl:part name="parameters" element="tns:listOutputFilesForSoftware"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="listOutputFilesForSoftwareResponse">
+		<wsdl:part name="parameters" element="tns:listOutputFilesForSoftwareResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLsRequest">
+		<wsdl:part name="parameters" element="tns:getOutputFilesURLs"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLsResponse">
+		<wsdl:part name="parameters" element="tns:getOutputFilesURLsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLAsZipRequest">
+		<wsdl:part name="parameters" element="tns:getOutputFilesURLAsZip"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getOutputFilesURLAsZipResponse">
+		<wsdl:part name="parameters" element="tns:getOutputFilesURLAsZipResponse"></wsdl:part>
+	</wsdl:message>
+    <wsdl:message name="getLibraryItemContainerRequest">
+
 		<wsdl:part name="parameters" element="tns:getLibraryItemContainer"></wsdl:part>
 	</wsdl:message>
 	<wsdl:message name="getLibraryItemContainerResponse">
@@ -724,7 +798,22 @@
 		<wsdl:part name="parameters" element="tns:terminateRunResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
-		<wsdl:operation name="getLibraryItemURNs">
+
+    <wsdl:operation name="listOutputFilesForSoftware">
+	<wsdl:input message="tns:listOutputFilesForSoftwareRequest"></wsdl:input>
+	<wsdl:output message="tns:listOutputFilesForSoftwareResponse"></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getOutputFilesURLs">
+			<wsdl:input message="tns:getOutputFilesURLsRequest"></wsdl:input>
+			<wsdl:output message="tns:getOutputFilesURLsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getOutputFilesURLAsZip">
+			<wsdl:input message="tns:getOutputFilesURLAsZipRequest"></wsdl:input>
+			<wsdl:output message="tns:getOutputFilesURLAsZipResponse"></wsdl:output>
+		</wsdl:operation>
+    <wsdl:operation name="getLibraryItemURNs">
+
 			<wsdl:input message="tns:getLibraryItemURNsRequest"></wsdl:input>
 			<wsdl:output message="tns:getLibraryItemURNsResponse"></wsdl:output>
 		</wsdl:operation>
