@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -29,16 +31,17 @@ public class RunSimulationThread extends RunApolloServiceThread {
 
 	private final RunSimulationMessage message;
 
-	public RunSimulationThread(RunSimulationMessage message) {
+	public RunSimulationThread(RunSimulationMessage message, BigInteger runId) {
 		super();
 		this.message = message;
+		this.runId = runId;
 	}
 
 	@Override
 	public void run() {
 		try {
 			// first call the translator and translate the runSimulationMessage
-			boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, message, dbUtils);
+			boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, dbUtils);
 			if (!translatorRunSuccessful) {
 				return;
 			}
