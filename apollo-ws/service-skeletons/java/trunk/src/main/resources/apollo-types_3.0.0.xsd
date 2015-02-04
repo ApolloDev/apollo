@@ -48,7 +48,7 @@
 		</restriction>
 	</simpleType>
 
-	
+
 	<simpleType name="GenderEnum">
 		<restriction base="string">
 			<enumeration value="M" />
@@ -65,7 +65,7 @@
 		</restriction>
 	</simpleType>
 
-	
+
 
 
 
@@ -150,20 +150,23 @@
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="hostTaxonId" type="tns:NcbiTaxonId"
-						maxOccurs="1" minOccurs="1" />
+					<element name="host" type="tns:NcbiTaxonId" maxOccurs="1"
+						minOccurs="1" />
 					<element name="infectiousDiseases" type="tns:InfectiousDisease"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
 					<choice>
 						<element name="infectionAcquisitionsFromInfectiousHosts"
-							type="tns:InfectionAcquisitionFromInfectiousHost" maxOccurs="unbounded"
+							type="tns:InfectionAcquisitionFromInfectedHost" maxOccurs="unbounded"
 							minOccurs="1">
 						</element>
 						<element name="infectionAcquisitionsFromContaminatedThings"
-							type="tns:InfectionAcquisitionFromContaminatedThing" maxOccurs="unbounded"
-							minOccurs="1">
+							type="tns:InfectionAcquisitionFromContaminatedAbioticThing"
+							maxOccurs="unbounded" minOccurs="1">
 						</element>
+						<element name="InfectionAcquisitionsFromColonizedHosts"
+							type="tns:InfectionAcquisitionFromColonizedHost" maxOccurs="unbounded"
+							minOccurs="1"></element>
 					</choice>
 				</sequence>
 			</extension>
@@ -174,9 +177,9 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
+					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
-					<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
+					<element name="abioticThing" type="tns:AbioticEcosystemEnum"
 						maxOccurs="1" minOccurs="1" />
 					<element name="contaminationDuration" type="tns:Duration"
 						maxOccurs="1" minOccurs="1" />
@@ -186,39 +189,47 @@
 			</extension>
 		</complexContent>
 	</complexType>
-	
-			<complexType name="Colonization">
+
+	<complexType name="Colonization">
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="pathogenTaxonId"
-						type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="1" />
-					<element name="colonizationDuration"
-						type="tns:Duration" maxOccurs="1" minOccurs="1" />
-					<element name="colonizationAcquisition"
-						type="tns:ColonizationAcquisition" maxOccurs="unbounded"
-						minOccurs="1" />
-					<choice><element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum" maxOccurs="1" minOccurs="1" /><element name="contaminatedCritter" type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1"></element></choice>
+					<element name="pathogen" type="tns:ApolloPathogenCode"
+						maxOccurs="1" minOccurs="1" />
+					<element name="host" type="tns:NcbiTaxonId" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="colonizationDuration" type="tns:Duration"
+						maxOccurs="1" minOccurs="0" />
+					<element name="probabilityOfInfectionOverTime" type="tns:ConditionalProbabilityDistribution"
+						maxOccurs="1" minOccurs="0"></element>
+					<element name="colonizationAcquisition" type="tns:ColonizationAcquisition"
+						maxOccurs="unbounded" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
-	
-		<complexType name="ColonizationAcquisition">
+
+	<complexType name="ColonizationAcquisition">
 		<sequence>
-			<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
-				maxOccurs="1" minOccurs="1" />
 			<choice>
 				<element name="infectiousHostSource" type="tns:NcbiTaxonId"
 					maxOccurs="1" minOccurs="1" />
-				<element name="contaminatedSource" type="token" maxOccurs="1"
+				<element name="contaminatedSource" type="tns:AbioticEcosystemEnum"
+					maxOccurs="1" minOccurs="1" />
+				<element name="colonizedHost" type="tns:NcbiTaxonId"
+					maxOccurs="1" minOccurs="1">
+				</element>
+			</choice>
+			<choice>
+				<element name="transmissionProbability" type="tns:TransmissionProbability"
+					maxOccurs="1" minOccurs="1"></element>
+				<element name="beta" type="tns:Rate" maxOccurs="unbounded"
 					minOccurs="1" />
 			</choice>
-			<element name="colonizationProbability" type="tns:ProbabilisticParameter"
-				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
-	
+
 
 	<complexType name="PopulationInfectionAndImmunityCensus">
 		<complexContent>
@@ -271,9 +282,9 @@
 		</complexContent>
 	</complexType>
 
-	
 
-	
+
+
 
 	<simpleType name="ApolloLocationCode">
 		<restriction base="token">
@@ -576,6 +587,48 @@
 		</complexContent>
 	</complexType>
 
+	<complexType name="HealthcareFacilityCategoryDefinition">
+		<complexContent>
+			<extension base="tns:CategoryDefinition">
+				<sequence>
+					<element name="healthcareFacilityId" type="tns:RheaHealthcareFacilityEnum"
+						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="IndividualMovement" />
+
+
+	<complexType name="IndividualPathMovement">
+		<complexContent>
+			<extension base="tns:IndividualMovement">
+				<sequence>
+					<element name="taxonOfIndividual" type="string"></element>
+					<element name="startPlace" type="tns:PlaceEnum"
+						maxOccurs="1" minOccurs="1" />
+					<element name="endPlace" type="tns:PlaceEnum"
+						maxOccurs="1" minOccurs="1" />
+					<element name="pathType" type="string"></element>
+					<element name="dailyProbability"
+						type="tns:Probability" maxOccurs="1" minOccurs="1" />
+					<element name="transitTime" type="tns:Duration"
+						maxOccurs="1" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<simpleType name="RheaHealthcareFacilityEnum">
+		<restriction base="string">
+			<enumeration value="XXXX"></enumeration>
+			<enumeration value="YYYY"></enumeration>
+		</restriction>
+	</simpleType>
+
+
 	<complexType name="GenderCategoryDefinition">
 		<complexContent>
 			<extension base="tns:CategoryDefinition">
@@ -766,24 +819,31 @@
 
 
 
-	
 
-<!-- 	<complexType name="GetVisualizerOutputResourcesResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus"> -->
-<!-- 			</element> -->
-<!-- 			<element name="urlOutputResources" type="tns:UrlOutputResource" -->
-<!-- 				maxOccurs="unbounded" minOccurs="0" /> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
 
-<!-- 	<complexType name="SyntheticPopulationGenerationResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="runId" type="tns:RunIdentification" /> -->
-<!-- 			<element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource" -->
-<!-- 				maxOccurs="unbounded" minOccurs="1" /> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
+	<!-- 	<complexType name="GetVisualizerOutputResourcesResult"> -->
+	<!-- 		<sequence> -->
+	<!--
+		<element name="methodCallStatus" type="tns:MethodCallStatus">
+	-->
+	<!-- 			</element> -->
+	<!--
+		<element name="urlOutputResources" type="tns:UrlOutputResource"
+	-->
+	<!-- 				maxOccurs="unbounded" minOccurs="0" /> -->
+	<!-- 		</sequence> -->
+	<!-- 	</complexType> -->
+
+	<!-- 	<complexType name="SyntheticPopulationGenerationResult"> -->
+	<!-- 		<sequence> -->
+	<!-- 			<element name="runId" type="tns:RunIdentification" /> -->
+	<!--
+		<element name="syntheticPopulationOutputResource"
+		type="tns:UrlOutputResource"
+	-->
+	<!-- 				maxOccurs="unbounded" minOccurs="1" /> -->
+	<!-- 		</sequence> -->
+	<!-- 	</complexType> -->
 
 	<complexType name="DiscreteNonparametricProbabilityDistribution">
 		<complexContent>
@@ -1105,7 +1165,7 @@
 	</complexType>
 
 
-	
+
 	<complexType name="LibraryItem">
 		<sequence>
 			<element name="base_type" type="string" />
@@ -1174,7 +1234,7 @@
 	</complexType>
 
 
-	
+
 	<complexType name="ApolloIndexableItem" />
 
 	<simpleType name="PathogenTaxonID">
@@ -1208,18 +1268,31 @@
 	</simpleType>
 
 
-	<complexType name="InfectionAcquisitionFromContaminatedThing">
+	<complexType name="InfectionAcquisitionFromContaminatedAbioticThing">
 		<sequence>
-			<element name="abioticEcosystemType" type="tns:AbioticEcosystemEnum"
+			<element name="contaminatedAbioticThing" type="tns:AbioticEcosystemEnum"
 				maxOccurs="1" minOccurs="1" />
 			<element name="transmissionProbability" type="tns:ProbabilisticParameter"
 				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
 
-	<complexType name="InfectionAcquisitionFromInfectiousHost">
+
+	<complexType name="InfectionAcquisitionFromColonizedHost">
 		<sequence>
-			<element name="infectiousHostTaxonId" type="tns:NcbiTaxonId"
+			<element name="colonizedHost" type="tns:NcbiTaxonId"
+				maxOccurs="1" minOccurs="1" />
+			<choice>
+				<element name="transmissionProbability" type="tns:ProbabilisticParameter"
+					maxOccurs="1" minOccurs="1" />
+				<element name="beta" type="string" maxOccurs="1" minOccurs="1"></element>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="InfectionAcquisitionFromInfectedHost">
+		<sequence>
+			<element name="infectedHost" type="tns:NcbiTaxonId"
 				maxOccurs="1" minOccurs="1" />
 			<element name="latentPeriodDuration" type="tns:Duration"
 				maxOccurs="1" minOccurs="1">
@@ -1233,9 +1306,12 @@
 				<element name="beta" type="tns:Rate" maxOccurs="1"
 					minOccurs="1" />
 				<element name="transmissionProbability" type="tns:TransmissionProbability"
-					maxOccurs="1" minOccurs="1" />
-				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
-					maxOccurs="1" minOccurs="1" /> -->
+					maxOccurs="unbounded" minOccurs="1" />
+				<!--
+					<element name="forGlobalEpidemicSimulator"
+					type="tns:GesParametersForContactAndTransmission" maxOccurs="1"
+					minOccurs="1" />
+				-->
 			</choice>
 		</sequence>
 	</complexType>
@@ -1510,17 +1586,15 @@
 
 	<complexType name="ContaminationAcquisition">
 		<sequence>
-			<element name="abioticEcosystemElement" type="tns:AbioticEcosystemEnum"
-				maxOccurs="1" minOccurs="1" />
-			<element name="pathogenTaxonId" type="tns:ApolloPathogenCode"
-				maxOccurs="1" minOccurs="1" />
 			<choice>
 				<element name="infectiousHostSource" type="tns:NcbiTaxonId"
 					maxOccurs="1" minOccurs="1" />
 				<element name="contaminatedSource" type="token" maxOccurs="1"
 					minOccurs="1" />
+				<element name="colonizedHostSource" type="tns:NcbiTaxonId"
+					maxOccurs="1" minOccurs="1"></element>
 			</choice>
-			<element name="contaminationProbability" type="tns:ProbabilisticParameter"
+			<element name="transmissionProbability" type="tns:ProbabilisticParameter"
 				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1624,7 +1698,7 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="diseaseId" type="tns:SnomedId" maxOccurs="1"
+					<element name="disease" type="tns:SnomedId" maxOccurs="1"
 						minOccurs="1" />
 					<element name="speciesWithDisease" type="tns:NcbiTaxonId"
 						maxOccurs="1" minOccurs="1" />
@@ -2050,37 +2124,42 @@
 
 
 
-<!-- 	<complexType name="GetPopulationAndEnvironmentCensusResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 			<element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
+	<!-- 	<complexType name="GetPopulationAndEnvironmentCensusResult"> -->
+	<!-- 		<sequence> -->
+	<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus" -->
+	<!-- 				maxOccurs="1" minOccurs="1"> -->
+	<!-- 			</element> -->
+	<!--
+		<element name="populationAndEnvironmentCensus"
+		type="tns:PopulationAndEnvironmentCensus"
+	-->
+	<!-- 				maxOccurs="1" minOccurs="1"> -->
+	<!-- 			</element> -->
+	<!-- 		</sequence> -->
+	<!-- 	</complexType> -->
 
-<!-- 	<complexType name="GetConfigurationFileForSimulationResult"> -->
-<!-- 		<sequence> -->
-<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus" -->
-<!-- 				maxOccurs="1" minOccurs="1"> -->
-<!-- 			</element> -->
-<!-- 			<element name="configurationFile" type="string" maxOccurs="1" -->
-<!-- 				minOccurs="0"> -->
-<!-- 			</element> -->
-<!-- 			<element name="configurationFileInHtmlFormat" type="string" -->
-<!-- 				maxOccurs="1" minOccurs="0"> -->
-<!-- 			</element> -->
-<!-- 		</sequence> -->
-<!-- 	</complexType> -->
+	<!-- 	<complexType name="GetConfigurationFileForSimulationResult"> -->
+	<!-- 		<sequence> -->
+	<!-- 			<element name="methodCallStatus" type="tns:MethodCallStatus" -->
+	<!-- 				maxOccurs="1" minOccurs="1"> -->
+	<!-- 			</element> -->
+	<!--
+		<element name="configurationFile" type="string" maxOccurs="1"
+	-->
+	<!-- 				minOccurs="0"> -->
+	<!-- 			</element> -->
+	<!-- 			<element name="configurationFileInHtmlFormat" type="string" -->
+	<!-- 				maxOccurs="1" minOccurs="0"> -->
+	<!-- 			</element> -->
+	<!-- 		</sequence> -->
+	<!-- 	</complexType> -->
 
 
 
-	
 
 
-	
+
+
 	<complexType name="Location">
 		<sequence>
 			<choice>
@@ -2138,7 +2217,7 @@
 		</complexContent>
 	</complexType>
 
-	
+
 
 
 	<complexType name="Population">
@@ -2526,7 +2605,7 @@
 	</complexType>
 
 
-	
+
 	<complexType name="IndividualBehavior"></complexType>
 
 	<complexType name="IndividualMosquitoBehavior">
@@ -3094,9 +3173,13 @@
 			<element name="dateTime" type="dateTime" maxOccurs="1"
 				minOccurs="0">
 			</element>
-			<choice><element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="0">
-			</element>
-				<element name="namedPolygon" type="tns:NamedMultiGeometry" maxOccurs="1" minOccurs="0"></element></choice>
+			<choice>
+				<element name="place" type="tns:PlaceEnum" maxOccurs="1"
+					minOccurs="0">
+				</element>
+				<element name="namedPolygon" type="tns:NamedMultiGeometry"
+					maxOccurs="1" minOccurs="0"></element>
+			</choice>
 		</sequence>
 	</complexType>
 
@@ -3111,7 +3194,7 @@
 
 			</choice>
 			<element name="sampleDate" type="dateTime" maxOccurs="1"
-					minOccurs="0"></element>
+				minOccurs="0"></element>
 			<element name="result" type="string" maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
@@ -3128,42 +3211,44 @@
 	<complexType name="PlaceVisited">
 		<sequence>
 			<choice>
-				<element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="1">
+				<element name="place" type="tns:PlaceEnum" maxOccurs="1"
+					minOccurs="1">
 				</element>
-				<element name="namedMultiGeometry" type="tns:NamedMultiGeometry" maxOccurs="1" minOccurs="1"></element>
+				<element name="namedMultiGeometry" type="tns:NamedMultiGeometry"
+					maxOccurs="1" minOccurs="1"></element>
 			</choice>
 			<choice>
-				<element name="frequencyOfVisits" type="tns:Rate"
-					maxOccurs="1" minOccurs="0">
+				<element name="frequencyOfVisits" type="tns:Rate" maxOccurs="1"
+					minOccurs="0">
 				</element>
 				<element name="datesOfVisits" type="date" maxOccurs="unbounded"
 					minOccurs="0">
 				</element>
-				<element name="realDateSpansOfVisits"
-					type="tns:RealDateSpanCategoryDefinition" maxOccurs="unbounded"
-					minOccurs="0">
+				<element name="realDateSpansOfVisits" type="tns:RealDateSpanCategoryDefinition"
+					maxOccurs="unbounded" minOccurs="0">
 				</element>
-				<element name="realTimeSpansOfVisits"
-					type="tns:RealTimeSpanCategoryDefinition" maxOccurs="unbounded"
-					minOccurs="0">
+				<element name="realTimeSpansOfVisits" type="tns:RealTimeSpanCategoryDefinition"
+					maxOccurs="unbounded" minOccurs="0">
 				</element>
 			</choice>
-        </sequence>
+		</sequence>
 	</complexType>
 
 
 	<complexType name="MultiGeometry">
 		<sequence>
-			<element name="polygons" type="tns:LocationPolygon" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="polygons" type="tns:LocationPolygon"
+				maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
 
 	<complexType name="NamedMultiGeometry">
-	<!-- <complexContent>
+		<!-- <complexContent>
 	<extension base="tns:MultiGeometry">-->
 		<sequence>
-		<element name="polygons" type="tns:LocationPolygon" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="polygons" type="tns:LocationPolygon"
+				maxOccurs="unbounded" minOccurs="1"></element>
 			<choice>
 				<element name="apolloLocationCode" type="tns:ApolloLocationCode"
 					maxOccurs="1" minOccurs="1"></element>
@@ -3174,5 +3259,5 @@
 		<!--  </extension>
 		</complexContent> -->
 	</complexType>
-	
-	</schema>
+
+</schema>
