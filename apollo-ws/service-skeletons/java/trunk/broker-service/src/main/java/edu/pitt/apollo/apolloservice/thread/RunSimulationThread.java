@@ -32,9 +32,8 @@ public class RunSimulationThread extends RunApolloServiceThread {
 	private final RunSimulationMessage message;
 
 	public RunSimulationThread(RunSimulationMessage message, BigInteger runId) {
-		super();
+		super(runId);
 		this.message = message;
-		this.runId = runId;
 	}
 
 	@Override

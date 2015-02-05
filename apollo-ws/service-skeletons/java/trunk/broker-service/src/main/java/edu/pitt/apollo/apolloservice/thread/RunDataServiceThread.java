@@ -10,6 +10,7 @@ import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceV300;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,11 +33,13 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 	private GetOutputFilesURLsMessage getOutputFilesURLsMessage;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage;
 	
-	public RunDataServiceThread(GetOutputFilesURLsMessage message) {
+	public RunDataServiceThread(GetOutputFilesURLsMessage message, BigInteger runId) {
+		super(runId);
 		this.getOutputFilesURLsMessage = message;
 	}
 	
-	public RunDataServiceThread(GetOutputFilesURLAsZipMessage message) {
+	public RunDataServiceThread(GetOutputFilesURLAsZipMessage message, BigInteger runId) {
+		super(runId);
 		this.getOutputFilesURLAsZipMessage = message;
 	}
 

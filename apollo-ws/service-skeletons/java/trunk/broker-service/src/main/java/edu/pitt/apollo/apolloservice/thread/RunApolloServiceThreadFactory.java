@@ -29,9 +29,9 @@ public class RunApolloServiceThreadFactory {
 		} else if (message instanceof RunVisualizationMessage) {
 			return new RunVisualizationThread((RunVisualizationMessage) message, runId);
 		} else if (message instanceof GetOutputFilesURLsMessage) {
-			return new RunDataServiceThread((GetOutputFilesURLsMessage) message);
+			return new RunDataServiceThread((GetOutputFilesURLsMessage) message, runId);
 		} else if (message instanceof GetOutputFilesURLAsZipMessage) {
-			return new RunDataServiceThread((GetOutputFilesURLAsZipMessage) message);
+			return new RunDataServiceThread((GetOutputFilesURLAsZipMessage) message, runId);
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
 		}
