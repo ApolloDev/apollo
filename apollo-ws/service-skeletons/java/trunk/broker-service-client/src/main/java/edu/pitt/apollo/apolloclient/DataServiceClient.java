@@ -63,8 +63,8 @@ public class DataServiceClient {
 		ApolloServiceV300 ls = new ApolloServiceV300(new URL(WSDL_LOC), SERVICE);
 		ApolloServiceEI port = ls.getApolloServiceEndpoint();
 
-//		testGettingOutputFilesURLAsZip(port);
-		testGettingOutputFiles(port);
+		testGettingOutputFilesURLAsZip(port);
+//		testGettingOutputFiles(port);
 	}
 
 	private static void testGettingOutputFilesURLAsZip(ApolloServiceEI port) throws IOException {
@@ -73,10 +73,10 @@ public class DataServiceClient {
 		message.setAuthentication(getAuthentication());
 
 		RunIdAndFiles runIdAndFiles = new RunIdAndFiles();
-		runIdAndFiles.setRunId(new BigInteger("463"));
+		runIdAndFiles.setRunId(new BigInteger("505"));
 //		runIdAndFiles.getFiles().add("exposed.txt");
-//		runIdAndFiles.getFiles().add("config.txt");
-		runIdAndFiles.getFiles().add("run_simulation_message.json");
+		runIdAndFiles.getFiles().add("config.txt");
+		runIdAndFiles.getFiles().add("verbose.html");
 		message.getRunIdsAndFiles().add(runIdAndFiles);
 
 		GetOutputFilesURLAsZipResult result = port.getOutputFilesURLAsZip(message);
