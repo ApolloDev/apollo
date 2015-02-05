@@ -286,9 +286,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 	public RunSimulationsThread(Authentication authentication,
 			RunSimulationsMessage message, BigInteger runId,
 			BigInteger simulationGroupId) {
-		super();
+		super(runId);
 		this.message = message;
-		this.runId = runId;
 		this.simulationGroupId = simulationGroupId;
 		this.authentication = authentication;
 		try {

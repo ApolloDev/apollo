@@ -1376,8 +1376,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			associateContentWithRunId(new BigInteger(String.valueOf(runId)),
 					dataContentKey, runDataDescriptionId);
 
-			BigInteger[] runIdSimulationGroupId = new BigInteger[1];
+			BigInteger[] runIdSimulationGroupId = new BigInteger[2];
 			runIdSimulationGroupId[0] = new BigInteger(Integer.toString(runId));
+			runIdSimulationGroupId[1] = simulationGroupId;
 			return runIdSimulationGroupId;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
@@ -1902,8 +1903,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// it's not used at this point.
 			associateContentWithRunId(new BigInteger(String.valueOf(runId)),
 					dataContentKey, runDataDescriptionId);
-			BigInteger[] runIdSimulationGroupId = new BigInteger[1];
+			BigInteger[] runIdSimulationGroupId = new BigInteger[2];
 			runIdSimulationGroupId[0] = runId;
+			runIdSimulationGroupId[1] = simulationGroupId;
 			return runIdSimulationGroupId;
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException(
