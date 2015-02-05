@@ -20,8 +20,9 @@ public abstract class RunApolloServiceThread extends Thread {
 	protected final ApolloDbUtils dbUtils;
 	protected BigInteger runId;
 
-	public RunApolloServiceThread() {
+	public RunApolloServiceThread(BigInteger runId) {
 		this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+		this.runId = runId;
 	}
 	
 	public abstract void setAuthenticationPasswordFieldToBlank();
