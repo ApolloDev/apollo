@@ -91,22 +91,25 @@
 		<complexContent>
 			<extension base="tns:InfectiousDiseaseControlStrategy">
 				<sequence>
-					<element name="pathogen" type="tns:ApolloPathogenCode"
-						maxOccurs="1" minOccurs="1">
+					<element name="pathogen"
+						type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="individualTreatment" type="tns:Treatment"
-						maxOccurs="1" minOccurs="1">
+					<element name="taxonOfTreatedIndividual" type="tns:NcbiTaxonId" maxOccurs="1" minOccurs="1"></element>
+					<element name="individualTreatment"
+						type="tns:Treatment" maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="populationTreatmentCensus" type="tns:PopulationTreatmentCensus"
-						maxOccurs="1" minOccurs="0">
+					<element name="populationTreatmentCensus"
+						type="tns:PopulationTreatmentCensus" maxOccurs="1"
+						minOccurs="0">
 					</element>
-					<element name="compliance" type="tns:ProbabilisticParameter"
-						maxOccurs="1" minOccurs="1" />
-					<element name="delayFromSymptomsToTreatment" type="tns:Duration"
-						maxOccurs="1" minOccurs="0">
+					<element name="compliance"
+						type="tns:ProbabilisticParameter" maxOccurs="1" minOccurs="1" />
+					<element name="delayFromSymptomsToTreatment"
+						type="tns:Duration" maxOccurs="1" minOccurs="0">
 					</element>
-					<element name="treatmentSystemLogistics" type="tns:TreatmentSystemLogistics"
-						maxOccurs="unbounded" minOccurs="1">
+					<element name="treatmentSystemLogistics"
+						type="tns:TreatmentSystemLogistics" maxOccurs="unbounded"
+						minOccurs="1">
 					</element>
 					<element name="targetPopulationsAndPrioritizations"
 						type="tns:ControlStrategyTargetPopulationsAndPrioritization"
@@ -125,6 +128,20 @@
 						maxOccurs="1" minOccurs="1" />
 					<element name="vaccinationEfficacies"
 						type="tns:VaccinationEfficacyForSimulatorConfiguration" maxOccurs="unbounded"
+						minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+		<complexType name="IndividualDecolonization">
+		<complexContent>
+			<extension base="tns:Treatment">
+				<sequence>
+					<element name="description" type="token"
+						maxOccurs="1" minOccurs="1" />
+					<element name="efficacies"
+						type="string" maxOccurs="unbounded"
 						minOccurs="1" />
 				</sequence>
 			</extension>
@@ -833,6 +850,11 @@
 			<enumeration value="members_of_the_same_household" />
 			<enumeration value="newly_sick" />
 			<enumeration value="household_member_of_infant" />
+			<enumeration value="icuPatient" />
+			<enumeration value="colonizedIcuPatient" />
+			<enumeration value="icuPatient" />
+			<enumeration value="colonizedWardPatient" />
+			<enumeration value="colonizedLongTermCareFacilityResident" />
 		</restriction>
 	</simpleType>
 
@@ -2434,6 +2456,21 @@
 						maxOccurs="1" minOccurs="1" />
 					<element name="fractionReductionOfLarvae" type="tns:Fraction"
 						maxOccurs="1" minOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+		<complexType name= "DecolonizationControlStrategy">
+		<complexContent>
+			<extension base="tns:IndividualTreatmentControlStrategy">
+				<sequence>
+					<element name="individualTreatment"
+						type="tns:IndividualDecolonization" maxOccurs="1" minOccurs="1" />
+					<element name="relapseProbability???"
+						type="tns:Probability" maxOccurs="1" minOccurs="1">
+					</element>
+					<element name="relapseInterval???" type="string"></element>
 				</sequence>
 			</extension>
 		</complexContent>
