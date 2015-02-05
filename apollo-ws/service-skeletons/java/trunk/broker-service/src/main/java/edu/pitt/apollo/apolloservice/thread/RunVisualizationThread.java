@@ -33,9 +33,8 @@ public class RunVisualizationThread extends RunApolloServiceThread {
     private final RunVisualizationMessage message;
 
     public RunVisualizationThread(RunVisualizationMessage message, BigInteger runId) {
-		super();
+		super(runId);
         this.message = message;
-        this.runId = runId;
     }
 
     @Override
