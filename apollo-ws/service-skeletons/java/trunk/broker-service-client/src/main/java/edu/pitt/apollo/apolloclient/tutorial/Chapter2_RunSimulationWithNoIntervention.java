@@ -62,7 +62,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 
 	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
-				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.FRED);
+				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 		String contentForRun = getJSONString(runSimulationMessage);
 		Map<String, Object> properties = new HashMap<String, Object>(2);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
@@ -85,7 +85,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 			e.printStackTrace();
 		}
 
-		System.exit(-1);
+		
 		runScenarioAndDisplayResults(runSimulationMessage);
 	}
 
