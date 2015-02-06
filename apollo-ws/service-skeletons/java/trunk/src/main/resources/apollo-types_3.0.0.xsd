@@ -172,19 +172,19 @@
 					<element name="infectiousDiseases" type="tns:InfectiousDisease"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
-					<choice>
+					
 						<element name="infectionAcquisitionsFromInfectiousHosts"
 							type="tns:InfectionAcquisitionFromInfectedHost" maxOccurs="unbounded"
-							minOccurs="1">
+							minOccurs="0">
 						</element>
 						<element name="infectionAcquisitionsFromContaminatedThings"
 							type="tns:InfectionAcquisitionFromContaminatedAbioticThing"
-							maxOccurs="unbounded" minOccurs="1">
+							maxOccurs="unbounded" minOccurs="0">
 						</element>
 						<element name="InfectionAcquisitionsFromColonizedHosts"
 							type="tns:InfectionAcquisitionFromColonizedHost" maxOccurs="unbounded"
-							minOccurs="1"></element>
-					</choice>
+							minOccurs="0"></element>
+					
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1147,7 +1147,7 @@
 	<complexType name="Ecosystem">
 		<sequence>
 			<element name="description" type="string" maxOccurs="1"
-				minOccurs="1" />
+				minOccurs="0" />
 			<element name="bioticEcosystem" type="tns:BioticEcosystem"
 				maxOccurs="1" minOccurs="1" />
 			<element name="abioticEcosystem" type="tns:AbioticEcosystem"
@@ -1157,7 +1157,7 @@
 
 	<complexType name="BioticEcosystem">
 		<sequence>
-			<element name="communities" type="tns:PopulationInfectionAndImmunityCensus"
+			<element name="populations" type="tns:Census"
 				maxOccurs="unbounded" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -1489,37 +1489,44 @@
 		<complexContent>
 			<extension base="tns:ApolloIndexableItem">
 				<sequence>
-					<element name="scenarioDate" type="dateTime" maxOccurs="1"
-						minOccurs="1" />
-					<element name="location" type="tns:Location" maxOccurs="1"
-						minOccurs="1" />
-					<element name="ecosystem" type="tns:Ecosystem" maxOccurs="1"
-						minOccurs="0"></element>
-					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="contaminations" type="tns:Contamination"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="populationInfectionAndImmunityCensuses"
-						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlStrategy"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="individualLifeCycles" type="tns:IndividualLifeCycle"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="individualBehaviors" type="tns:IndividualBehavior"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
-					<element name="individualReproductions" type="tns:IndividualMosquitoReproduction"
+					<element name="scenarioDate" type="dateTime"
+						maxOccurs="1" minOccurs="1" />
+					<element name="location" type="tns:Location"
+						maxOccurs="1" minOccurs="1" />
+					<element name="ecosystem" type="tns:Ecosystem"
 						maxOccurs="1" minOccurs="0">
 					</element>
-					<element name="abioticEcosystemCensuses" type="tns:AbioticEcosystemCensus"
-						maxOccurs="1" minOccurs="0">
+                    <element name="infections" type="tns:Infection" maxOccurs="unbounded" minOccurs="1" />
+                    <element name="contaminations"
+						type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
+					<element name="colonizations" type="tns:Colonization" maxOccurs="unbounded" minOccurs="0"></element>
+					<element
+						name="populationInfectionAndImmunityCensuses"
+						type="tns:PopulationInfectionAndImmunityCensus"
+						maxOccurs="unbounded" minOccurs="1" />
+					<element name="infectiousDiseaseControlStrategies"
+						type="tns:InfectiousDiseaseControlStrategy" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="individualLifeCycles"
+						type="tns:IndividualLifeCycle" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="individualBehaviors"
+						type="tns:IndividualBehavior" maxOccurs="unbounded"
+						minOccurs="0">
 					</element>
-					<element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin"
-						maxOccurs="1" minOccurs="0">
+					<element name="individualReproductions"
+						type="tns:IndividualMosquitoReproduction" maxOccurs="1"
+						minOccurs="0">
 					</element>
-					<element name="nonApolloParameters" type="tns:NonApolloParameter"
-						maxOccurs="unbounded" minOccurs="0">
+					<element name="abioticEcosystemCensuses"
+						type="tns:AbioticEcosystemCensus" maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="scenarioCartesianOrigin"
+						type="tns:ScenarioCartesianOrigin" maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="nonApolloParameters"
+						type="tns:NonApolloParameter" maxOccurs="unbounded"
+						minOccurs="0">
 					</element>
 				</sequence>
 			</extension>
