@@ -1,5 +1,6 @@
 package edu.pitt.apollo.apolloservice.thread;
 
+import edu.pitt.apollo.ApolloServiceConstants;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +22,12 @@ import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
 import edu.pitt.apollo.apolloservice.methods.run.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
@@ -32,9 +39,18 @@ import edu.pitt.apollo.types.v3_0_0.InfectionStateEnum;
 import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v3_0_0.ReproductionNumber;
 import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
+import java.sql.SQLException;
+import javax.xml.ws.WebServiceException;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 public class RunSimulationsThread extends RunApolloServiceThread {
 
+	private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
+	private static final SoftwareIdentification brokerServiceSoftwareId;
+	private static final int BROKER_SERVICE_SOFTWARE_ID_KEY;
 	Exception error = null;
 	private final RunSimulationsMessage message;
 	BigInteger simulationGroupId;
@@ -45,6 +61,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 	public static final Random rng = new Random(System.currentTimeMillis());
 
 	private class BatchConfigRecord {
+
 		Double r0;
 		Double infectiousPeriod;
 		Double latentPeriod;
@@ -67,13 +84,13 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 	public static boolean isNonErrorCachedStatus(
 			MethodCallStatusEnum methodCallStatusEnum) {
 		switch (methodCallStatusEnum) {
-		case AUTHENTICATION_FAILURE:
-		case FAILED:
-		case UNAUTHORIZED:
-		case UNKNOWN_RUNID:
-			return false;
-		default:
-			return true;
+			case AUTHENTICATION_FAILURE:
+			case FAILED:
+			case UNAUTHORIZED:
+			case UNKNOWN_RUNID:
+				return false;
+			default:
+				return true;
 		}
 	}
 
@@ -195,36 +212,45 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			} catch (BatchException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"Error downloading batch configuration file, error was: "
-								+ simulatorIdentification.getSoftwareName()
-								+ ", version: "
-								+ simulatorIdentification.getSoftwareVersion()
-								+ ", developer: "
-								+ simulatorIdentification
-										.getSoftwareDeveloper()
-								+ " for run id " + runId + ": "
-								+ ex.getMessage(), runId);
+						+ simulatorIdentification.getSoftwareName()
+						+ ", version: "
+						+ simulatorIdentification.getSoftwareVersion()
+						+ ", developer: "
+						+ simulatorIdentification
+						.getSoftwareDeveloper()
+						+ " for run id " + runId + ": "
+						+ ex.getMessage(), runId);
 				return;
 
 			} catch (IOException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"Error downloading batch configuration file, error was: "
-								+ simulatorIdentification.getSoftwareName()
-								+ ", version: "
-								+ simulatorIdentification.getSoftwareVersion()
-								+ ", developer: "
-								+ simulatorIdentification
-										.getSoftwareDeveloper()
-								+ " for run id " + runId + ": "
-								+ ex.getMessage(), runId);
+						+ simulatorIdentification.getSoftwareName()
+						+ ", version: "
+						+ simulatorIdentification.getSoftwareVersion()
+						+ ", developer: "
+						+ simulatorIdentification
+						.getSoftwareDeveloper()
+						+ " for run id " + runId + ": "
+						+ ex.getMessage(), runId);
 				return;
 
 			}
 
-			Scanner sc = new Scanner(new File(filename));
+			File inputsFile = new File(filename);
+//			String inputsFileWithRunIdsPath = OUTPUT_DIRECTORY + runId + File.separator + FILE_NAME_FOR_INPUTS_WITH_RUN_IDS;
+//			String urlForFileWithRunIds = BASE_URL + runId + "/" + FILE_NAME_FOR_INPUTS_WITH_RUN_IDS;
+
+//			File inputFileWithRunIds = new File(inputsFileWithRunIdsPath);
+//			inputFileWithRunIds.getParentFile().mkdirs();
+			StringBuilder stBuild = new StringBuilder();
+
+			Scanner sc = new Scanner(inputsFile);
 			try {
 				int lineCounter = 1;
 				while (sc.hasNextLine()) {
-					String[] params = sc.nextLine().split(",");
+					String line = sc.nextLine();
+					String[] params = line.split(",");
 					BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
 							params);
 					if (message instanceof RunSimulationsMessage) {
@@ -236,6 +262,9 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 								currentRunSimulationMessage);
 						RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
 						RunResult runResult = runResultandSimulationGroupId.getRunResult();
+
+						String lineWithRunId = line + "," + runResult.getRunId();
+						stBuild.append(lineWithRunId).append("\n");
 //						boolean translatorRunSuccessful = TranslatorServiceAccessor
 //								.runTranslatorAndReturnIfRunWasSuccessful(
 //										runId, dbUtils);
@@ -243,22 +272,20 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 //						if (!translatorRunSuccessful) {
 //							return;
 //						}
-						
-						if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) 
-						{
+						if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
 							ApolloServiceErrorHandler
 									.writeErrorToErrorFile(
 											"Error staging job using line "
-													+ String.valueOf(lineCounter)
-													+ " of the batch configuration file. "
-													+ "Broker returned the following status: "
-													+ runResult
-													+ simulatorIdentification
-															.getSoftwareVersion()
-													+ ", developer: "
-													+ simulatorIdentification
-															.getSoftwareDeveloper()
-													+ "  run id " + runId + ".",
+											+ String.valueOf(lineCounter)
+											+ " of the batch configuration file. "
+											+ "Broker returned the following status: "
+											+ runResult
+											+ simulatorIdentification
+											.getSoftwareVersion()
+											+ ", developer: "
+											+ simulatorIdentification
+											.getSoftwareDeveloper()
+											+ "  run id " + runId + ".",
 											runId);
 							return;
 
@@ -270,13 +297,32 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 				boolean translatorRunSuccessful = TranslatorServiceAccessor
 						.runTranslatorAndReturnIfRunWasSuccessful(
 								runId, dbUtils);
-				
+
 				if (!translatorRunSuccessful) {
 					return;
 				}
 			} finally {
 				sc.close();
 			}
+
+			try {
+				// add the text data content for the URL
+				int dataContentKey = dbUtils.addTextDataContent(stBuild.toString());
+				int runDataDescriptionId = dbUtils.getRunDataDescriptionId(ApolloDbUtils.DbContentDataFormatEnum.TEXT, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS,
+						ApolloDbUtils.DbContentDataType.CONFIGURATION_FILE, BROKER_SERVICE_SOFTWARE_ID_KEY, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
+				dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
+
+			} catch (ApolloDatabaseException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"ApolloDatabaseException inserting text data content for run: " + ex.getMessage(), runId);
+			} catch (ClassNotFoundException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"ClassNotFoundException inserting text data content for run: " + ex.getMessage(), runId);
+			} catch (SQLException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"SQLException inserting text data content for run: " + ex.getMessage(), runId);
+			}
+
 		} catch (IOException e) {
 			logger.error("Error writing error file!: " + e.getMessage());
 		}
@@ -297,6 +343,90 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 		}
 	}
 
+	private void startSimulations() {
+		SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
+		String url = null;
+		try {
+			try {
+
+				url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
+				SimulatorServiceEI simulatorPort;
+				try {
+					simulatorPort = new SimulatorServiceV300(new URL(url)).getSimulatorServiceEndpoint();
+				} catch (Exception e) {
+					ApolloServiceErrorHandler.writeErrorToErrorFile(
+							"Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
+							runId);
+					return;
+				}
+
+				// disable chunking for ZSI
+				Client simulatorClient = ClientProxy.getClient(simulatorPort);
+				HTTPConduit simulatorHttp = (HTTPConduit) simulatorClient.getConduit();
+				HTTPClientPolicy simulatorHttpClientPolicy = new HTTPClientPolicy();
+				simulatorHttpClientPolicy.setConnectionTimeout(36000);
+				simulatorHttpClientPolicy.setAllowChunking(false);
+				simulatorHttp.setClient(simulatorHttpClientPolicy);
+				try {
+					simulatorPort.runSimulations(runId);
+				} catch (WebServiceException e) {
+					ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling runSimulation(): " + "\n\tError was: " + e.getMessage(),
+							runId);
+					return;
+				}
+			} catch (ApolloDatabaseKeyNotFoundException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"Apollo database key not found attempting to get URL for simulator: "
+						+ simulatorIdentification.getSoftwareName() + ", version: "
+						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+						+ ex.getMessage(), runId);
+				return;
+			} catch (ClassNotFoundException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"ClassNotFoundException attempting to get URL for simulator: "
+						+ simulatorIdentification.getSoftwareName() + ", version: "
+						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+						+ ex.getMessage(), runId);
+				return;
+			} catch (MalformedURLException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"MalformedURLException attempting to create port for simulator: "
+						+ simulatorIdentification.getSoftwareName() + ", version: "
+						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
+						+ ". Error message was: " + ex.getMessage(), runId);
+				return;
+			} catch (SQLException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile(
+						"SQLException attempting to get URL for simulator: " + simulatorIdentification.getSoftwareName()
+						+ ", version: " + simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+						+ ex.getMessage(), runId);
+				return;
+			}
+			try {
+				dbUtils.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
+			} catch (ApolloDatabaseKeyNotFoundException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
+						+ " call for run id " + runId + ": " + ex.getMessage(), runId);
+			} catch (SQLException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service" + " call for run id " + runId
+						+ ": " + ex.getMessage(), runId);
+			} catch (ClassNotFoundException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service" + " call for run id "
+						+ runId + ": " + ex.getMessage(), runId);
+			} catch (ApolloDatabaseException ex) {
+				ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
+						+ runId + ": " + ex.getMessage(), runId);
+			}
+		} catch (IOException ex) {
+			logger.error("Error writing error file!: " + ex.getMessage());
+
+		}
+	}
+
 	@Override
 	public void run() {
 		if (error != null) {
@@ -306,26 +436,42 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			try {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"Error staging batch run for: "
-								+ simulatorIdentification.getSoftwareName()
-								+ ", version: "
-								+ simulatorIdentification.getSoftwareVersion()
-								+ ", developer: "
-								+ simulatorIdentification
-										.getSoftwareDeveloper()
-								+ " for run id " + runId + ": "
-								+ error.getMessage(), runId);
+						+ simulatorIdentification.getSoftwareName()
+						+ ", version: "
+						+ simulatorIdentification.getSoftwareVersion()
+						+ ", developer: "
+						+ simulatorIdentification
+						.getSoftwareDeveloper()
+						+ " for run id " + runId + ": "
+						+ error.getMessage(), runId);
 			} catch (IOException e) {
 				logger.error("Error writing error file!: " + e.getMessage());
 			}
 			return;
 		}
 		queueAndTranslateRuns();
+		startSimulations();
 
 	}
 
 	@Override
 	public void setAuthenticationPasswordFieldToBlank() {
 		message.getAuthentication().setRequesterPassword("");
+	}
+
+	static {
+
+		brokerServiceSoftwareId = new SoftwareIdentification();
+		brokerServiceSoftwareId.setSoftwareDeveloper("UPitt");
+		brokerServiceSoftwareId.setSoftwareName("Broker Service");
+		brokerServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.BROKER);
+		brokerServiceSoftwareId.setSoftwareVersion("3.0.0");
+
+		try {
+			BROKER_SERVICE_SOFTWARE_ID_KEY = dbUtils.getSoftwareIdentificationKey(brokerServiceSoftwareId);
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("ApolloDatabaseException getting broker service software key: " + ex.getMessage());
+		}
 	}
 
 }

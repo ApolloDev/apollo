@@ -49,6 +49,8 @@ import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisual
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -363,6 +365,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public GetOutputFilesURLsResult getOutputFilesURLs(GetOutputFilesURLsMessage getOutputFilesURLsMessage) {
 		RunMethod method = new RunMethodForDataService(getOutputFilesURLsMessage.getAuthentication(), getOutputFilesURLsMessage);
 		return (GetOutputFilesURLsResult) method.run().getObjectToReturnFromBroker();
+	}
+
+	@Override
+	public GetAllOutputFilesURLAsZipResult getAllOutputFilesURLAsZip(GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage) {
+		RunMethod method = new RunMethodForDataService(getAllOutputFilesURLAsZipMessage.getAuthentication(), getAllOutputFilesURLAsZipMessage);
+		return (GetAllOutputFilesURLAsZipResult) method.run().getObjectToReturnFromBroker();
 	}
 
 
