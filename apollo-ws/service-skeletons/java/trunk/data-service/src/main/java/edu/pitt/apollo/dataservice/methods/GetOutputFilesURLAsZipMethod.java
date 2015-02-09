@@ -4,7 +4,7 @@ import edu.pitt.apollo.apolloqueue.ApolloServiceQueue;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.dbUtils;
-import edu.pitt.apollo.dataservice.thread.DataServiceThread;
+import edu.pitt.apollo.dataservice.thread.DataServiceSpecifiedFilesThread;
 import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
@@ -34,6 +34,7 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 		loadGetOutputFilesURLsMessage();
 	}
 
+	@Override
 	public void downloadFiles() {
 
 		FileInformationCollection fileInformationCollection = new FileInformationCollection();
@@ -59,7 +60,7 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 			}
 		}
 
-		DataServiceThread thread = new DataServiceThread(runId, fileInformationCollection,
+		DataServiceSpecifiedFilesThread thread = new DataServiceSpecifiedFilesThread(runId, fileInformationCollection,
 				queue, dbUtils);
 		MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
 		if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
