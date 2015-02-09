@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -25,13 +26,15 @@ public class RunApolloServiceThreadFactory {
 		if (message instanceof RunSimulationMessage) {
 			return new RunSimulationThread((RunSimulationMessage) message, runId);
 		} else if (message instanceof RunSimulationsMessage) {
-				return new RunSimulationsThread(authentication, (RunSimulationsMessage) message, runId, simulationGroupId);
+			return new RunSimulationsThread(authentication, (RunSimulationsMessage) message, runId, simulationGroupId);
 		} else if (message instanceof RunVisualizationMessage) {
 			return new RunVisualizationThread((RunVisualizationMessage) message, runId);
 		} else if (message instanceof GetOutputFilesURLsMessage) {
 			return new RunDataServiceThread((GetOutputFilesURLsMessage) message, runId);
 		} else if (message instanceof GetOutputFilesURLAsZipMessage) {
 			return new RunDataServiceThread((GetOutputFilesURLAsZipMessage) message, runId);
+		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
+			return new RunDataServiceThread((GetAllOutputFilesURLAsZipMessage) message, runId);
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
 		}

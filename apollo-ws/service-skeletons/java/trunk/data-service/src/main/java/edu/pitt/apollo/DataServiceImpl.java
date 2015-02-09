@@ -19,6 +19,7 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareResult;
+import edu.pitt.apollo.dataservice.methods.GetAllOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLsMethod;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
@@ -56,5 +57,14 @@ class DataServiceImpl implements DataServiceEI {
 		
 		return null;
 	}
+
+	@Override
+	public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId) {
+		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId);
+		method.downloadFiles();
+		
+		return null;
+	}
+
 
 }
