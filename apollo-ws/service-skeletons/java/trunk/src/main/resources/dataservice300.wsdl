@@ -61,6 +61,22 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+            <xsd:element name="getAllOutputFilesURLAsZip">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="runId"
+							type="xsd:positiveInteger"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+            <xsd:element name="getAllOutputFilesURLAsZipResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="methodCallStatus" type="common:MethodCallStatus"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:schema>
 	</wsdl:types>
 
@@ -83,6 +99,12 @@
 	<wsdl:message name="getOutputFilesURLAsZipResponse">
 		<wsdl:part name="parameters" element="ds:getOutputFilesURLAsZipResponse"></wsdl:part>
 	</wsdl:message>
+    	<wsdl:message name="getAllOutputFilesURLAsZipRequest">
+		<wsdl:part name="parameters" element="ds:getAllOutputFilesURLAsZip"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllOutputFilesURLAsZipResponse">
+		<wsdl:part name="parameters" element="ds:getAllOutputFilesURLAsZipResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="DataServiceEI">
 
 		<wsdl:operation name="listOutputFilesForSoftware">
@@ -97,6 +119,10 @@
 		<wsdl:operation name="getOutputFilesURLAsZip">
 			<wsdl:input message="ds:getOutputFilesURLAsZipRequest"></wsdl:input>
 			<wsdl:output message="ds:getOutputFilesURLAsZipResponse"></wsdl:output>
+		</wsdl:operation>
+        <wsdl:operation name="getAllOutputFilesURLAsZip">
+			<wsdl:input message="ds:getAllOutputFilesURLAsZipRequest"></wsdl:input>
+			<wsdl:output message="ds:getAllOutputFilesURLAsZipResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="DataServiceBinding" type="ds:DataServiceEI">
