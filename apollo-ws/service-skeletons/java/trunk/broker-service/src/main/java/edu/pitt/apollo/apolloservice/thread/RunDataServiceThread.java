@@ -3,6 +3,7 @@ package edu.pitt.apollo.apolloservice.thread;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessorForRunningDataService;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import static edu.pitt.apollo.apolloservice.thread.RunApolloServiceThread.logger;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
@@ -32,15 +33,21 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 
 	private GetOutputFilesURLsMessage getOutputFilesURLsMessage;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage;
-	
+	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage;
+
 	public RunDataServiceThread(GetOutputFilesURLsMessage message, BigInteger runId) {
 		super(runId);
 		this.getOutputFilesURLsMessage = message;
 	}
-	
+
 	public RunDataServiceThread(GetOutputFilesURLAsZipMessage message, BigInteger runId) {
 		super(runId);
 		this.getOutputFilesURLAsZipMessage = message;
+	}
+
+	public RunDataServiceThread(GetAllOutputFilesURLAsZipMessage message, BigInteger runId) {
+		super(runId);
+		this.getAllOutputFilesURLAsZipMessage = message;
 	}
 
 	@Override
@@ -73,6 +80,8 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 						dataServicePort.getOutputFilesURLs(runId);
 					} else if (getOutputFilesURLAsZipMessage != null) {
 						dataServicePort.getOutputFilesURLAsZip(runId);
+					} else if (getAllOutputFilesURLAsZipMessage != null) {
+						dataServicePort.getAllOutputFilesURLAsZip(runId);
 					}
 				} catch (WebServiceException e) {
 					ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling data service: " + "\n\tError was: " + e.getMessage(),
