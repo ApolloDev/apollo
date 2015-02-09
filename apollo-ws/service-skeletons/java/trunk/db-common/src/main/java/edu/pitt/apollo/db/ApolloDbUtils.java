@@ -15,20 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.eclipse.persistence.jaxb.JAXBContext;
-import org.eclipse.persistence.jaxb.JAXBContextProperties;
-import org.eclipse.persistence.jaxb.JAXBMarshaller;
-import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
-import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
@@ -193,36 +184,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
 	public static String getJSONString(Object obj) {
-		Class<?> clazz;
 		try {
-			if (obj instanceof RunSimulationMessage) {
-				clazz = RunSimulationMessage.class;
-			} else if (obj instanceof RunSimulationsMessage) {
-				clazz = RunSimulationsMessage.class;
-			} else if (obj instanceof RunVisualizationMessage) {
-				clazz = RunVisualizationMessage.class;
-			} else if (obj instanceof GetOutputFilesURLsMessage) {
-				clazz = GetOutputFilesURLsMessage.class;
-			} else if (obj instanceof GetOutputFilesURLAsZipMessage) {
-				clazz = GetOutputFilesURLAsZipMessage.class;
-			} else {
-				clazz = null;
-				throw new Exception("Unknown run message type for object "
-						+ obj);
-			}
 
-			Map<String, Object> properties = new HashMap<String, Object>(2);
-			properties
-					.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-			properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{
-				clazz, ObjectFactory.class}, properties);
-			JAXBMarshaller marshaller = jc.createMarshaller();
-			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			return getJsonBytes(obj).toString();
 
-			marshaller.marshal(obj, baos);
-			return baos.toString();
 		} catch (Exception e) {
 			System.err
 					.println("Exception encoding to JSON.  Error message was: "
@@ -232,24 +197,53 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
 	}
 
-	public Object getObjectFromJSON(InputStream json, Class clazz) {
-		Map<String, Object> properties = new HashMap<String, Object>(2);
-		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc;
-		try {
-			jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz,
-				ObjectFactory.class}, properties);
-			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
-			StreamSource ss = new StreamSource(json);
-			return unmarshaller.unmarshal(ss, clazz).getValue();
-		} catch (Exception e) {
-			System.err.println("Exception encoding " + clazz.getName()
-					+ " to JSON.  Error message was: " + e.getMessage());
-			return null;
-		}
-	}
-
+//	public Object getObjectFromJSON(InputStream contentInputStream, Class clazz) {
+////		Map<String, Object> properties = new HashMap<String, Object>(2);
+////		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+////		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+////		JAXBContext jc;
+////		try {
+////			jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz,
+////				ObjectFactory.class}, properties);
+////			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
+////			StreamSource ss = new StreamSource(json);
+////			return unmarshaller.unmarshal(ss, clazz).getValue();
+////		} catch (Exception e) {
+////			System.err.println("Exception encoding " + clazz.getName()
+////					+ " to JSON.  Error message was: " + e.getMessage());
+////			return null;
+////		}
+//
+////		InputStream contentInputStream = new ByteArrayInputStream(json);
+//		Map<String, Object> properties = new HashMap<String, Object>(2);
+//		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+//		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+//		JAXBContext jc;
+//		try {
+//			jc = (JAXBContext) JAXBContext
+//					.newInstance(new Class[]{clazz,
+//						// All ApolloIndexableItems must be listed here
+//						DecisionAnalysis.class,
+//						Epidemic.class,
+//						InfectiousDiseaseDecisionModel.class,
+//						Infection.class,
+//						InfectiousDisease.class,
+//						CensusData.class,
+//						Contamination.class,
+//						Treatment.class,
+//						InfectiousDiseaseScenario.class,
+//						Census.class,
+//						InfectiousDiseaseControlStrategy.class,
+//						ObjectFactory.class}, properties);
+//			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
+//			StreamSource ss = new StreamSource(contentInputStream);
+//			return unmarshaller.unmarshal(ss, clazz).getValue();
+//		} catch (Exception e) {
+//			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
+//					+ e.getMessage());
+//			return null;
+//		}
+//	}
 	public RunSimulationMessage getRunSimulationMessageForRun(BigInteger runId)
 			throws ApolloDatabaseException, IOException {
 
@@ -260,7 +254,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
-				return (RunSimulationMessage) getObjectFromJSON(
+				return (RunSimulationMessage) getObjectFromJson(
 						contentInputStream, RunSimulationMessage.class);
 			}
 		}
@@ -278,7 +272,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
-				return (GetOutputFilesURLsMessage) getObjectFromJSON(
+				return (GetOutputFilesURLsMessage) getObjectFromJson(
 						contentInputStream, GetOutputFilesURLsMessage.class);
 			}
 		}
@@ -296,8 +290,26 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
-				return (GetOutputFilesURLAsZipMessage) getObjectFromJSON(
+				return (GetOutputFilesURLAsZipMessage) getObjectFromJson(
 						contentInputStream, GetOutputFilesURLAsZipMessage.class);
+			}
+		}
+
+		throw new ApolloDatabaseException(
+				"Could not find run_data_service_message.json content associated with run ID"
+				+ runId);
+	}
+
+	public GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(
+			BigInteger runId) throws ApolloDatabaseException {
+		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
+		for (String name : contentForRun.keySet()) {
+			if (name.equals("run_data_service_message.json")) {
+				InputStream contentInputStream = new ByteArrayInputStream(
+						contentForRun.get(name).toByteArray());
+
+				return (GetAllOutputFilesURLAsZipMessage) getObjectFromJson(
+						contentInputStream, GetAllOutputFilesURLAsZipMessage.class);
 			}
 		}
 
@@ -328,25 +340,24 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	// + e.getMessage());
 	// }
 	// }
-	protected ByteArrayOutputStream getJsonBytes(Object obj) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS,
-					false);
-			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			mapper.writeValue(baos, obj);
-
-			return baos;
-		} catch (IOException ex) {
-			System.err
-					.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: "
-							+ ex.getMessage());
-			return null;
-		}
-	}
-
+//	protected ByteArrayOutputStream getJsonBytes(Object obj) {
+//		try {
+//			ObjectMapper mapper = new ObjectMapper();
+//			mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+//			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS,
+//					false);
+//			mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			mapper.writeValue(baos, obj);
+//
+//			return baos;
+//		} catch (IOException ex) {
+//			System.err
+//					.println("IO Exception JSON encoding and getting bytes from RunSimulationMessage: "
+//							+ ex.getMessage());
+//			return null;
+//		}
+//	}
 	private int getRoleDescriptionId(int softwareId,
 			boolean requestToRunSoftware, boolean requestPrivileged)
 			throws ApolloDatabaseException {
@@ -1291,39 +1302,50 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
 	}
 
+	public BigInteger[] addDataServiceRun(GetAllOutputFilesURLAsZipMessage message, int md5CollisionId,
+			Authentication authentication,
+			SoftwareIdentification dataServiceSoftwareId)
+			throws ApolloDatabaseException {
+
+//		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
+//		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+//		runIdAndLabel.setRunIdentification(message.getRunId());
+//		runIds.add(runIdAndLabel);
+//
+		return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
+	}
+//
 	public BigInteger[] addDataServiceRun(GetOutputFilesURLsMessage message, int md5CollisionId,
 			Authentication authentication,
 			SoftwareIdentification dataServiceSoftwareId)
 			throws ApolloDatabaseException {
-
-		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
-		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
-		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
-			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
-			runIds.add(runIdAndLabel);
-		}
-
-		return addDataServiceRun(message, runIds, md5CollisionId, authentication, dataServiceSoftwareId);
+//
+//		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
+//		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
+//		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
+//			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+//			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
+//			runIds.add(runIdAndLabel);
+//		}
+//
+		return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
 	}
-
 	public BigInteger[] addDataServiceRun(GetOutputFilesURLAsZipMessage message, int md5CollisionId,
 			Authentication authentication,
 			SoftwareIdentification dataServiceSoftwareId)
 			throws ApolloDatabaseException {
-
-		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
-		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
-		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
-			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
-			runIds.add(runIdAndLabel);
-		}
-
-		return addDataServiceRun(message, runIds, md5CollisionId, authentication, dataServiceSoftwareId);
+//
+//		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
+//		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
+//		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
+//			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+//			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
+//			runIds.add(runIdAndLabel);
+//		}
+//
+		return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
 	}
-
-	private BigInteger[] addDataServiceRun(Object message, List<RunIdentificationAndLabel> runIdsForDataService, int md5CollisionId,
+	private BigInteger[] addDataServiceRunForAllMessageTypes(Object message, int md5CollisionId,
 			Authentication authentication,
 			SoftwareIdentification dataServiceSoftwareId)
 			throws ApolloDatabaseException {
@@ -1339,8 +1361,6 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
 		try {
 			BigInteger simulationGroupId = getNewSimulationGroupId();
-
-			addRunIdsToSimulationGroup(simulationGroupId, runIdsForDataService);
 
 			String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = getConn().prepareStatement(query,
@@ -1375,6 +1395,16 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// it's not used at this point.
 			associateContentWithRunId(new BigInteger(String.valueOf(runId)),
 					dataContentKey, runDataDescriptionId);
+
+			List<RunIdentificationAndLabel> runIdsForDataService = new ArrayList<RunIdentificationAndLabel>();
+			RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
+			runIdentificationAndLabel.setRunIdentification(new BigInteger(Integer.toString(runId)));
+			runIdentificationAndLabel
+					.setRunLabel("Individual simulation set id: "
+							+ simulationGroupId.toString());
+			runIdsForDataService = new ArrayList<RunIdentificationAndLabel>();
+			runIdsForDataService.add(runIdentificationAndLabel);
+			addRunIdsToSimulationGroup(simulationGroupId, runIdsForDataService);
 
 			BigInteger[] runIdSimulationGroupId = new BigInteger[2];
 			runIdSimulationGroupId[0] = new BigInteger(Integer.toString(runId));
@@ -2322,13 +2352,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 						actualCount, runId);
 	}
 
-	// public static void main(String[] args) throws IOException,
-	// ApolloDatabaseException {
-	//
-	// ApolloDbUtils dbUtils = new ApolloDbUtils(new
-	// File("C:\\apollo_300\\database.properties"));
-	// List<BigInteger> runIDs = dbUtils.getRunIdsForBatch(new BigInteger("4"));
-	// System.out.println(runIDs.size());
-	//
-	// }
+//	public static void main(String[] args) throws IOException,
+//			ApolloDatabaseException {
+//
+//		ApolloDbUtils dbUtils = new ApolloDbUtils(new File("C:\\apollo_300\\database.properties"));
+//
+//		RunSimulationMessage message = new AnthraxRunSimulationMessageBuilder().getRunSimulationMessage(new HashSet<AbstractRunSimulationMessageBuilder.ControlMeasureTypeEnum>());
+//		String json = dbUtils.getJSONString(message);
+//		System.out.println(json);
+//
+//	}
 }
