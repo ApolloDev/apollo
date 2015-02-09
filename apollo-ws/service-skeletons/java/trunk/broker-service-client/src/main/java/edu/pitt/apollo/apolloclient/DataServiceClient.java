@@ -15,6 +15,8 @@ package edu.pitt.apollo.apolloclient;
  * the License.
  */
 import edu.pitt.apollo.GlobalConstants;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -63,8 +65,9 @@ public class DataServiceClient {
 		ApolloServiceV300 ls = new ApolloServiceV300(new URL(WSDL_LOC), SERVICE);
 		ApolloServiceEI port = ls.getApolloServiceEndpoint();
 
-		testGettingOutputFilesURLAsZip(port);
+//		testGettingOutputFilesURLAsZip(port);
 //		testGettingOutputFiles(port);
+		testGettingAllOutputFiles(port);
 	}
 
 	private static void testGettingOutputFilesURLAsZip(ApolloServiceEI port) throws IOException {
@@ -90,15 +93,26 @@ public class DataServiceClient {
 		message.setAuthentication(getAuthentication());
 
 		RunIdAndFiles runIdAndFiles = new RunIdAndFiles();
-		runIdAndFiles.setRunId(new BigInteger("463"));
+		runIdAndFiles.setRunId(new BigInteger("17"));
 //		runIdAndFiles.getFiles().add("susceptible.txt");
-		runIdAndFiles.getFiles().add("run_simulation_message.json");
+		runIdAndFiles.getFiles().add("batch_inputs_with_run_ids.txt");
 		message.getRunIdsAndFiles().add(runIdAndFiles);
 
 		GetOutputFilesURLsResult result = port.getOutputFilesURLs(message);
 		System.out.println(result.getMethodCallStatus().getStatus());
 		System.out.println(result.getMethodCallStatus().getMessage());
 		System.out.println(result.getUrlsForRunIdsAndFiles().get(0).getUrl());
+	}
+
+	private static void testGettingAllOutputFiles(ApolloServiceEI port) throws IOException {
+		GetAllOutputFilesURLAsZipMessage message = new GetAllOutputFilesURLAsZipMessage();
+		message.setAuthentication(getAuthentication());
+		message.setRunId(new BigInteger("113"));
+
+		GetAllOutputFilesURLAsZipResult result = port.getAllOutputFilesURLAsZip(message);
+		System.out.println(result.getMethodCallStatus().getStatus());
+		System.out.println(result.getMethodCallStatus().getMessage());
+		System.out.println(result.getUrl());
 	}
 
 	private static Authentication getAuthentication() throws FileNotFoundException, IOException {

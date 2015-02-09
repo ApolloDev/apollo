@@ -69,7 +69,8 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
                                              (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
                                              (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1);
+											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1),
+											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -220,6 +221,8 @@ INSERT INTO run_status_description (status) VALUES ('translating');
 INSERT INTO run_status_description (status) VALUES ('translation_completed');
 INSERT INTO run_status_description (status) VALUES ('initializing');
 INSERT INTO run_status_description (status) VALUES ('log_files_written');
+INSERT INTO run_status_description (status) VALUES ('loading_run_config_into_database');
+INSERT INTO run_status_description (status) VALUES ('loaded_run_config_into_database');
 INSERT INTO run_status_description (status) VALUES ('staging');
 INSERT INTO run_status_description (status) VALUES ('running');
 INSERT INTO run_status_description (status) VALUES ('moving');
@@ -371,6 +374,7 @@ INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log
 INSERT INTO run_data_description (label) values ('SEIR log file, run_output.txt '); /* 79 */
 INSERT INTO run_data_description (label) values ('FRED log file, run_output.txt '); /* 80 */
 INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 81*/
+INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 82*/
 
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
@@ -859,7 +863,13 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(81, 2, 'run_data_service_message.json'),
 	(81, 3, 'RUN_DATA_SERVICE_MESSAGE'),
 	(81, 4, '0'),
-	(81, 5, '10');
+	(81, 5, '10'),
+    
+    (82, 1, 'TEXT'), 
+	(82, 2, 'batch_inputs_with_run_ids.txt'),
+	(82, 3, 'CONFIGURATION_FILE'),
+	(82, 4, '11'),
+	(82, 5, '0');
     
 CREATE VIEW run_data_description_view AS
 SELECT

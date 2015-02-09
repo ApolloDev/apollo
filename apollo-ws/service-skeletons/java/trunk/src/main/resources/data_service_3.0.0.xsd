@@ -53,6 +53,22 @@
 		</sequence>
 	</complexType>
     
+        <complexType name="GetAllOutputFilesURLAsZipMessage">
+		<sequence>
+			<element name="authentication" type="common:Authentication" />
+			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="runId" type="common:RunIdentification" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+    
+    <complexType name="GetAllOutputFilesURLAsZipResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="requestIdentification" type="common:RunIdentification"></element>
+			<element name="url" type="anyURI"></element>
+		</sequence>
+	</complexType>
+    
     	<complexType name="RunIdAndFiles">
 		<sequence>
 			<element name="runId" type="common:RunIdentification" />

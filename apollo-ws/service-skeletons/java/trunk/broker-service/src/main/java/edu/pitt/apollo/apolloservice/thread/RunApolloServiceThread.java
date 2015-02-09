@@ -17,15 +17,17 @@ import org.slf4j.LoggerFactory;
 public abstract class RunApolloServiceThread extends Thread {
 
 	static Logger logger = LoggerFactory.getLogger(RunApolloServiceThread.class);
-	protected final ApolloDbUtils dbUtils;
+	protected static final ApolloDbUtils dbUtils;
 	protected BigInteger runId;
 
 	public RunApolloServiceThread(BigInteger runId) {
-		this.dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
 		this.runId = runId;
 	}
-	
+
 	public abstract void setAuthenticationPasswordFieldToBlank();
-	
+
+	static {
+		dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+	}
 
 }
