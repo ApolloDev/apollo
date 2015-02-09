@@ -41,7 +41,7 @@ public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://localhost:8080/broker-service-war/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(

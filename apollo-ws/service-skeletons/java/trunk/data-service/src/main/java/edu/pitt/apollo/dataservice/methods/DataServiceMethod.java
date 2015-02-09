@@ -126,5 +126,7 @@ public abstract class DataServiceMethod {
 		this.queue = queue;
 		this.runId = runId;
 	}
+	
+	public abstract void downloadFiles();
 
 }

@@ -79,7 +79,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		try {
 			message = dbUtils.getRunSimulationMessageForRun(runId);
 			if (message == null) {
-				updateStatus(MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
+				updateStatus(MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null for run " + runId);
 			}
 
 		} catch (ApolloDatabaseException ex) {
