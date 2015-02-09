@@ -58,6 +58,22 @@
 						<xsd:element name="getOutputFilesURLAsZipResult" type="dst:GetOutputFilesURLAsZipResult"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
+			</xsd:element>     
+            <xsd:element name="getAllOutputFilesURLAsZip">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getAllOutputFilesURLAsZipMessage"
+							type="dst:GetAllOutputFilesURLAsZipMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>    
+            <xsd:element name="getAllOutputFilesURLAsZipResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getAllOutputFilesURLAsZipResult" type="dst:GetAllOutputFilesURLAsZipResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
 			</xsd:element>             
              <xsd:element name="getOutputFilesURLs">
 				<xsd:complexType>
@@ -611,6 +627,12 @@
 	<wsdl:message name="getOutputFilesURLAsZipResponse">
 		<wsdl:part name="parameters" element="tns:getOutputFilesURLAsZipResponse"></wsdl:part>
 	</wsdl:message>
+    	<wsdl:message name="getAllOutputFilesURLAsZipRequest">
+		<wsdl:part name="parameters" element="tns:getAllOutputFilesURLAsZip"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllOutputFilesURLAsZipResponse">
+		<wsdl:part name="parameters" element="tns:getAllOutputFilesURLAsZipResponse"></wsdl:part>
+	</wsdl:message>
     <wsdl:message name="getLibraryItemContainerRequest">
 
 		<wsdl:part name="parameters" element="tns:getLibraryItemContainer"></wsdl:part>
@@ -812,7 +834,11 @@
 			<wsdl:input message="tns:getOutputFilesURLAsZipRequest"></wsdl:input>
 			<wsdl:output message="tns:getOutputFilesURLAsZipResponse"></wsdl:output>
 		</wsdl:operation>
-    <wsdl:operation name="getLibraryItemURNs">
+        <wsdl:operation name="getAllOutputFilesURLAsZip">
+			<wsdl:input message="tns:getAllOutputFilesURLAsZipRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllOutputFilesURLAsZipResponse"></wsdl:output>
+		</wsdl:operation>
+        <wsdl:operation name="getLibraryItemURNs">
 
 			<wsdl:input message="tns:getLibraryItemURNsRequest"></wsdl:input>
 			<wsdl:output message="tns:getLibraryItemURNsResponse"></wsdl:output>

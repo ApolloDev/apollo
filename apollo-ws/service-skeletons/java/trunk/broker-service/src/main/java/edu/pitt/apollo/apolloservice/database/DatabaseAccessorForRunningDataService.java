@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.database;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -25,6 +26,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 
 	private GetOutputFilesURLsMessage getOutputFilesURLsMessage = null;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage = null;
+	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage = null;
 
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
 	private static final int DATA_SERVICE_SOFTWARE_KEY;
@@ -53,6 +55,11 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		this.getOutputFilesURLAsZipMessage = message;
 	}
 
+	public DatabaseAccessorForRunningDataService(GetAllOutputFilesURLAsZipMessage message, Authentication authentication) {
+		super(authentication);
+		this.getAllOutputFilesURLAsZipMessage = message;
+	}
+
 	public static SoftwareIdentification getDataServiceSoftwareId() {
 		return DATA_SERVICE_SOFTWARE_ID;
 	}
@@ -68,6 +75,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		} else if (getOutputFilesURLAsZipMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
 			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getOutputFilesURLAsZipMessage);
+		} else if (getAllOutputFilesURLAsZipMessage != null) {
+			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
+			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
 		}
 
 		if (runIds != null && targetRunSimulationMessageAsJson != null && runIds.size() > 0) {
@@ -107,6 +117,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		} else if (getOutputFilesURLAsZipMessage != null) {
 			md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLAsZipMessage) + 1;
 			runIds = dbUtils.addDataServiceRun(getOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+		} else if (getAllOutputFilesURLAsZipMessage != null) {
+			md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
+			runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
 		}
 
 		return runIds;
