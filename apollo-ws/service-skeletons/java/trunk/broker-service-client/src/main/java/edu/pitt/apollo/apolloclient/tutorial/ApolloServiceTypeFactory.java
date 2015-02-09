@@ -15,8 +15,8 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 public class ApolloServiceTypeFactory {
 
-	public static final String REQUESTER_ID = "TutorialUser";
-	public static final String REQUESTER_PASSWORD = "TutorialPassword";
+	public static final String REQUESTER_ID = "apollo_demo";
+	public static final String REQUESTER_PASSWORD = "apollo_demo";
 	
 	public static final BigInteger SIMULATION_RUN_LENGTH = new BigInteger("90");
 	public static final UnitOfTimeEnum UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP = UnitOfTimeEnum.DAY;

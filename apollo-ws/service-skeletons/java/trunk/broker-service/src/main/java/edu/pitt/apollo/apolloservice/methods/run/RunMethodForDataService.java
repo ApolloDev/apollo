@@ -3,6 +3,8 @@ package edu.pitt.apollo.apolloservice.methods.run;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessorForRunningDataService;
 import edu.pitt.apollo.apolloservice.types.ReturnObjectForRun;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -37,6 +39,7 @@ public class RunMethodForDataService extends RunMethod {
 	private List<URLForFileAndRunId> urlsForFilesAndRunIds;
 	private GetOutputFilesURLsMessage getOutputFilesURLsMessage;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage;
+	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage;
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
 	private static final String BASE_URL_KEY = "base_url";
 	protected static final String BASE_URL;
@@ -84,6 +87,11 @@ public class RunMethodForDataService extends RunMethod {
 	public RunMethodForDataService(Authentication authentication, GetOutputFilesURLAsZipMessage message) {
 		super(authentication, DatabaseAccessorForRunningDataService.getDataServiceSoftwareId(), message);
 		this.getOutputFilesURLAsZipMessage = message;
+	}
+	
+	public RunMethodForDataService(Authentication authentication, GetAllOutputFilesURLAsZipMessage message) {
+		super(authentication, DatabaseAccessorForRunningDataService.getDataServiceSoftwareId(), message);
+		this.getAllOutputFilesURLAsZipMessage = message;
 	}
 
 	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws ApolloDatabaseException {
@@ -138,6 +146,14 @@ public class RunMethodForDataService extends RunMethod {
 		} else if (getOutputFilesURLAsZipMessage != null) {
 			String zipURL = getZipFileURL(runResult.getRunId());
 			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
+			filesResult.setMethodCallStatus(runResult.getMethodCallStatus());
+			filesResult.setRequestIdentification(runResult.getRunId());
+			filesResult.setUrl(zipURL);
+			returnObj.setStatus(runResult.getMethodCallStatus());
+			returnObj.setObjectToReturnFromBroker(filesResult);
+		} else if (getAllOutputFilesURLAsZipMessage != null) {
+			String zipURL = getZipFileURL(runResult.getRunId());
+			GetAllOutputFilesURLAsZipResult filesResult = new GetAllOutputFilesURLAsZipResult();
 			filesResult.setMethodCallStatus(runResult.getMethodCallStatus());
 			filesResult.setRequestIdentification(runResult.getRunId());
 			filesResult.setUrl(zipURL);
