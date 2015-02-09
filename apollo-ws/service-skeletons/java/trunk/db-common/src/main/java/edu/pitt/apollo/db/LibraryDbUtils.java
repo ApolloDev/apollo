@@ -107,66 +107,14 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	}
 
 	private LibraryItemContainer getLibraryItemContainderFromJson(String json) throws IOException {
-		InputStream contentInputStream = new ByteArrayInputStream(json.getBytes());
-		Class clazz = LibraryItemContainer.class;
-		Map<String, Object> properties = new HashMap<String, Object>(2);
-		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc;
 		try {
-			jc = (JAXBContext) JAXBContext
-					.newInstance(new Class[]{clazz,
-						// All ApolloIndexableItems must be listed here
-						DecisionAnalysis.class,
-						Epidemic.class,
-						InfectiousDiseaseDecisionModel.class,
-						Infection.class,
-						InfectiousDisease.class,
-						CensusData.class,
-						Contamination.class,
-						Treatment.class,
-						InfectiousDiseaseScenario.class,
-						Census.class,
-						InfectiousDiseaseControlStrategy.class,
-						ObjectFactory.class}, properties);
-			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
-			StreamSource ss = new StreamSource(contentInputStream);
-			return (LibraryItemContainer) unmarshaller.unmarshal(ss, clazz).getValue();
+
+			return (LibraryItemContainer) getObjectFromJson(json, LibraryItemContainer.class);
 		} catch (Exception e) {
-			System.err.println("Exception encoding " + clazz.getName() + " to JSON.  Error message was: "
+			System.err.println("Exception encoding library item container to JSON.  Error message was: "
 					+ e.getMessage());
 			return null;
 		}
-	}
-
-	@Override
-	protected ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
-		Class clazz = obj.getClass();
-
-		Map<String, Object> properties = new HashMap<String, Object>(2);
-		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-//		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc = (JAXBContext) JAXBContext.newInstance(new Class[]{clazz,
-			// All ApolloIndexableItems must be listed here
-			DecisionAnalysis.class,
-			Epidemic.class,
-			InfectiousDiseaseDecisionModel.class,
-			Infection.class,
-			InfectiousDisease.class,
-			CensusData.class,
-			Contamination.class,
-			Treatment.class,
-			InfectiousDiseaseScenario.class,
-			Census.class,
-			InfectiousDiseaseControlStrategy.class,
-			ObjectFactory.class},
-				properties);
-		JAXBMarshaller marshaller = jc.createMarshaller();
-		marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		marshaller.marshal(obj, baos);
-		return baos;
 	}
 
 	@Override

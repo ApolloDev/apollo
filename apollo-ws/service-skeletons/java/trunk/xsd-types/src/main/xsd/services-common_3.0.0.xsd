@@ -11,6 +11,7 @@
 			<enumeration value="syntheticPopulationGenerator" />
 			<enumeration value="translator" />
 			<enumeration value="data" />
+            <enumeration value="broker" />
 		</restriction>
 	</simpleType>
 
