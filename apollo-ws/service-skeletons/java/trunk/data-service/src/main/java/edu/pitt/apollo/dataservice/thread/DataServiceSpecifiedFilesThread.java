@@ -1,6 +1,6 @@
 package edu.pitt.apollo.dataservice.thread;
 
-import edu.pitt.apollo.apolloqueue.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.db.ApolloDbUtils;
