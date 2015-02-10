@@ -1,6 +1,6 @@
 package edu.pitt.apollo.dataservice.methods;
 
-import edu.pitt.apollo.apolloqueue.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.OUTPUT_DIRECTORY;
 import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
