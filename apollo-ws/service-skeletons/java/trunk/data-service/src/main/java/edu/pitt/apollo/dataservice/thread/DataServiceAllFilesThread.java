@@ -1,7 +1,6 @@
 package edu.pitt.apollo.dataservice.thread;
 
-import edu.pitt.apollo.apolloqueue.ApolloServiceQueue;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
