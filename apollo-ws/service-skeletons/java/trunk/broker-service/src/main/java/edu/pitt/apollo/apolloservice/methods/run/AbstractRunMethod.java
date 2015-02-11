@@ -1,7 +1,11 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessor;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessorFactory;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
@@ -11,6 +15,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
@@ -49,6 +54,30 @@ public class AbstractRunMethod {
 				if (runId != null) {
 					MethodCallStatus runStatus = getRunStatus(runId);
 					if (runStatus.getStatus() != MethodCallStatusEnum.FAILED) {
+						if (simulationGroupIdOrNull != null) {
+							RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
+							runIdentificationAndLabel
+									.setRunIdentification(runId);
+							runIdentificationAndLabel.setRunLabel("");
+							List<RunIdentificationAndLabel> runIdentificationAndLabels = new ArrayList<RunIdentificationAndLabel>();
+							runIdentificationAndLabels
+									.add(runIdentificationAndLabel);
+							try {
+								if (!(message instanceof RunSimulationsMessage))
+									databaseAccessor
+											.addRunIdsToSimulationGroup(
+													simulationGroupIdOrNull,
+													runIdentificationAndLabels);
+							} catch (Exception e) {
+								runResultAndSimulationGroupId
+										.setRunResult(createRunResult(
+												ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
+												MethodCallStatusEnum.FAILED,
+												e.getMessage()));
+								return runResultAndSimulationGroupId;
+							}
+
+						}
 						BigInteger simulationGroupId = databaseAccessor
 								.getSimulationGroupIdForRun(runId);
 
@@ -56,7 +85,8 @@ public class AbstractRunMethod {
 								.setRunResult(createRunResult(runId,
 										runStatus.getStatus(),
 										runStatus.getMessage()));
-						runResultAndSimulationGroupId.setSimulationGroupId(simulationGroupId);
+						runResultAndSimulationGroupId
+								.setSimulationGroupId(simulationGroupId);
 						return runResultAndSimulationGroupId;
 					} else if (runStatus.getStatus() == MethodCallStatusEnum.FAILED) {
 						databaseAccessor
@@ -71,8 +101,7 @@ public class AbstractRunMethod {
 						: MethodCallStatusEnum.LOADING_RUN_CONFIG_INTO_DATABASE;
 
 				runResultAndSimulationGroupId.setRunResult(createRunResult(
-						runIdSimulationGroupId[0],
-						methodCallStatusEnum,
+						runIdSimulationGroupId[0], methodCallStatusEnum,
 						"Apollo Broker is handling the run request."));
 				runResultAndSimulationGroupId
 						.setSimulationGroupId(runIdSimulationGroupId[1]);
