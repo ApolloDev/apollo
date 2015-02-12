@@ -26,6 +26,8 @@
 			<element name="baseInfectiousDiseaseScenario" type="apollo:InfectiousDiseaseScenario"
 				maxOccurs="1" minOccurs="1" />
 			<element name="batchConfigurationFile" type="anyURI" />
+			<element name="md5HashOfbatchConfigurationFile" type="token" />
+			
 		</sequence>
 	</complexType>
 

@@ -11,13 +11,13 @@
 
 	<import schemaLocation="apollo-types_3.0.0.xsd" namespace="http://types.apollo.pitt.edu/v3_0_0/"></import>
 
-	
+
 	<complexType name="RunSimulationResult">
 		<sequence>
 			<element name="runId" type="common:RunIdentification" />
 		</sequence>
 	</complexType>
-	
+
 	<complexType name="GetScenarioLocationCodesSupportedBySimulatorResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"
@@ -67,6 +67,8 @@
 			</element>
 			<element name="infectiousDiseaseScenario" type="apollo:InfectiousDiseaseScenario"
 				maxOccurs="1" minOccurs="1" />
+			<!-- <element name="softwareOutputStratificationGranularity" type="common:SoftwareOutputStratificationGranularity" 
+				minOccurs="1" maxOccurs="1"/> -->
 		</sequence>
 	</complexType>
 
