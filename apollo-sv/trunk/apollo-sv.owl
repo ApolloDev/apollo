@@ -1020,24 +1020,24 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
         <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasRelatedSynonym>
             <rdf:Description/>
         </oboInOwl:hasRelatedSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </ObjectProperty>
     
 
@@ -3756,11 +3756,11 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
                 <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000115"/>
             </Restriction>
         </rdfs:subClassOf>
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Infection</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">A process of reproduction of a particular pathogen species inside some tissue of a particular host species.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">A reproduction of a pathogen in (a part of) the tissue of a host organism from another species.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A reproduction of a pathogen organism of a particular biological taxon in (a part of) the tissue of a host organism from another taxon.</obo:IAO_0000115>
         <dc:creator xml:lang="en">M. Brochhausen</dc:creator>
-        <rdfs:comment xml:lang="en">infection is reproduction of a pathogen inside some tissue of a host.  By associating infection with the classes latent period and infectious period, which are associated with specific pathogen species and host species, Apollo-SV defines infection further as reproduction of a particular pathogen species inside some tissue of a particular host species.</rdfs:comment>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">infection is reproduction of a pathogen inside some tissue of a host.  By associating infection with the classes latent period and infectious period, which are associated with specific pathogen species and host species, Apollo-SV defines infection further as reproduction of a particular pathogen taxon inside some tissue of a particular host taxon.</rdfs:comment>
     </Class>
     
 
@@ -3824,8 +3824,9 @@ Note that the susceptible and infectious organisms can be of different species.
 The likelihood of acquisition is expressed by parameters such as the basic reproduction rate and transmission coefficient.   
 An infection is acquired from an infectious organism or a contaminated thing. 
 </rdfs:comment>
+        <rdfs:comment xml:lang="en">Cannot acquire from colonized host directly - contamination results from colonized or contaminated thing and new host picks it up from contaminated thing</rdfs:comment>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000115 xml:lang="en">The biological process of pathogen organism(s) entering (the body of) a host organism from a contagious host or a contaminated thing and reproducing using host resources</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">The biological process of pathogen organism(s) of a particular biological taxon entering (the tissues of the body of) a host organism of another taxon from a contagious host or a contaminated thing and reproducing using host resources</obo:IAO_0000115>
     </Class>
     
 
@@ -4952,10 +4953,11 @@ I checked because an infection and immunity census would involve two different c
                 </intersectionOf>
             </Class>
         </equivalentClass>
-        <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
+        <rdfs:subClassOf rdf:resource="&obo;GO_0044409"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ContaminationAcquisition</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A biological process whereby an entity that does not contain a pathogen becomes a contaminated thing.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A biological process whereby an entity that is not in contact with a pathogen of a particular biological taxon begins to undergo contamination with that pathogen.</obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
     </Class>
     
 
@@ -5327,10 +5329,53 @@ I checked because an infection and immunity census would involve two different c
 
     <Class rdf:about="&obo;APOLLO_SV_00000186">
         <rdfs:label xml:lang="en">contamination</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <unionOf rdf:parseType="Collection">
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&GO;GO_0000003"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom>
+                                    <Class>
+                                        <intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="&snap;MaterialEntity"/>
+                                            <Class>
+                                                <complementOf rdf:resource="&obo;OBI_0100026"/>
+                                            </Class>
+                                        </intersectionOf>
+                                    </Class>
+                                </someValuesFrom>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                    <Class>
+                        <intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&GO;GO_0008150"/>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
+                            </Restriction>
+                            <Restriction>
+                                <onProperty rdf:resource="&ro;has_participant"/>
+                                <someValuesFrom rdf:resource="&snap;MaterialEntity"/>
+                            </Restriction>
+                        </intersectionOf>
+                    </Class>
+                </unionOf>
+            </Class>
+        </equivalentClass>
         <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Contamination</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:comment xml:lang="en">Contamination is the process: existence or reproduction of pathogen inside/on some material entity not undergoing infection.
-</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">The process of existence without reproduction of a pathogen of a particular biological taxon in or on some material entity or the process of reproduction of a pathogen in or on a material entity that is not an organism.</obo:IAO_0000115>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000111 xml:lang="en">biological contamination</obo:IAO_0000111>
+        <rdfs:comment xml:lang="en">the preferred term is biological contamination to distinguish from things like radiological contamination, contamination of the Gulf of Mexico with oil, the contamination of air with pollution, etc.</rdfs:comment>
     </Class>
     
 
@@ -7454,6 +7499,140 @@ The constant rate may be zero.  The period of an epidemic may be defined using s
     
 
 
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000330 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000330">
+        <rdfs:label xml:lang="en">colonization</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&GO;GO_0000003"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;has_participant"/>
+                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
+                    </Restriction>
+                    <Restriction>
+                        <onProperty rdf:resource="&ro;located_in"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <Class>
+                                        <complementOf rdf:resource="&obo;UBERON_0000479"/>
+                                    </Class>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;part_of"/>
+                                        <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&GO;GO_0000003"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Colonization</apollo_sv:APOLLO_SV_0000040>
+        <rdfs:comment xml:lang="en">Primary use case is colonization of humans, animals with Staph aureus, but it also covers bacteriuria, transient bactermia, and normal gut flora.</rdfs:comment>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">a reproduction of a pathogen of a particular biological taxon inside a host organism of another taxon, without invasion of the tissues of the host.</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">biological colonization</obo:IAO_0000111>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000331 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000331">
+        <rdfs:label xml:lang="en">infection in population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000306"/>
+        <apollo_sv:APOLLO_SV_0000040 xml:lang="en">Infection</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">an infection in an ecosystem occurring in one population of organisms</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">infection in a population</obo:IAO_0000111>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000332 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000332">
+        <rdfs:label xml:lang="en">colonization acquisition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;GO_0044409"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">ColonizationAcquisition</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">a biological process where a pathogen organism of a particular biological taxon enters into a host organism of a particular taxon and begins to undergo reproduction in a location external to tissues of the host</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">colonization acquisition</obo:IAO_0000111>
+        <rdfs:comment xml:lang="en">the host organism was not colonized wtih the pathogen prior to the colonization acquisition</rdfs:comment>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000333 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000333">
+        <rdfs:label xml:lang="en">decolonization control strategy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000194"/>
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">DecolonizationControlStrategy</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">an indivdiual treatment control strategy that prevents infectious disease by treating indivdiuals colonized with a pathogen of a particular species to limit or end the colonization</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">decolonization control strategy</obo:IAO_0000111>
+        <rdfs:comment xml:lang="en">typically the pathogen is a bacterium</rdfs:comment>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00000334 -->
+
+    <Class rdf:about="&obo;APOLLO_SV_00000334">
+        <rdfs:label xml:lang="en">infection from colonization of self</rdfs:label>
+        <equivalentClass>
+            <Class>
+                <intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&GO;GO_0008150"/>
+                    <Restriction>
+                        <onProperty rdf:resource="&obo;RO_0002087"/>
+                        <someValuesFrom>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000330"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
+                                    </Restriction>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;has_participant"/>
+                                        <someValuesFrom>
+                                            <Class>
+                                                <intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000238"/>
+                                                    <Restriction>
+                                                        <onProperty rdf:resource="&ro;participates_in"/>
+                                                        <someValuesFrom>
+                                                            <Restriction>
+                                                                <onProperty rdf:resource="&obo;RO_0002090"/>
+                                                                <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000114"/>
+                                                            </Restriction>
+                                                        </someValuesFrom>
+                                                    </Restriction>
+                                                </intersectionOf>
+                                            </Class>
+                                        </someValuesFrom>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
+                        </someValuesFrom>
+                    </Restriction>
+                </intersectionOf>
+            </Class>
+        </equivalentClass>
+        <rdfs:subClassOf rdf:resource="&GO;GO_0008150"/>
+        <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">a biological process by which a pathogen organism from a particular biological taxon, which previously was participating in a colonization process in a host organism from another taxon, begins to invade the tissues of the same host organism and reproduce there.</obo:IAO_0000115>
+        <obo:IAO_0000111 xml:lang="en">establishment of infection from self colonization</obo:IAO_0000111>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/APOLLO_SV_00001008 -->
 
     <Class rdf:about="&obo;APOLLO_SV_00001008">
@@ -7917,13 +8096,13 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <Restriction>
                 <onProperty rdf:resource="&ro;has_part"/>
-                <someValuesFrom rdf:resource="&obo;IAO_0000005"/>
+                <someValuesFrom rdf:resource="&obo;IAO_0000007"/>
             </Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">2/3/2009 Comment from OBI review.
@@ -10507,12 +10686,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -10526,12 +10705,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/gene_ontology</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
         <obo:IAO_0000115 xml:lang="en">The emergence of an adult insect from a pupa case.</obo:IAO_0000115>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -10545,12 +10724,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>GO:0016280</oboInOwl:hasAlternativeId>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_generic"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -10570,15 +10749,15 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_plant"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#high_level_annotation_qc"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -10611,15 +10790,15 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
-        <oboInOwl:hasBroadSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasBroadSynonym>
-        <oboInOwl:hasBroadSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasBroadSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasBroadSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasBroadSynonym>
+        <oboInOwl:hasBroadSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasBroadSynonym>
     </Class>
     
 
@@ -10651,12 +10830,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_aspergillus"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#goslim_pir"/>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#gosubset_prok"/>
-        <oboInOwl:hasNarrowSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasNarrowSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasNarrowSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasNarrowSynonym>
     </Class>
     
 
@@ -10668,12 +10847,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <rdfs:subClassOf rdf:resource="&GO;GO_0019098"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/gene_ontology</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -11083,9 +11262,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     <rdf:Description rdf:about="&obo;IAO_0000330">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
     <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0001025">
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#attribute_slim"/>
         <oboInOwl:hasDefinition>
@@ -11112,6 +11288,9 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000574">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
@@ -11684,35 +11863,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -11743,6 +11893,15 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -11757,6 +11916,26 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
