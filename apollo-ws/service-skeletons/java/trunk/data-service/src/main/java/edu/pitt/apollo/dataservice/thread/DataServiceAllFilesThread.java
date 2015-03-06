@@ -23,13 +23,17 @@ import java.util.Map;
 public class DataServiceAllFilesThread extends DataServiceThread {
 
 	private final String outputDirectory;
-	private static final String ZIP_FILE_NAME = "run_%d_all_files.zip";
 	private final BigInteger runIdFromMessage;
+	private final String outputFileName;
+	private final List<String> fileNamesToMatch;
 
-	public DataServiceAllFilesThread(BigInteger runId, BigInteger runIdFromMessage, ApolloServiceQueue queue, ApolloDbUtils dbUtils, String outputDirectory) {
+	public DataServiceAllFilesThread(BigInteger runId, BigInteger runIdFromMessage, ApolloServiceQueue queue, 
+			ApolloDbUtils dbUtils, String outputDirectory, String outputFileName, List<String> fileNamesToMatch) {
 		super(runId, queue, dbUtils);
 		this.outputDirectory = outputDirectory;
 		this.runIdFromMessage = runIdFromMessage;
+		this.outputFileName = outputFileName;
+		this.fileNamesToMatch = fileNamesToMatch;
 	}
 
 	@Override
@@ -45,6 +49,13 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 
 				Map<String, ByteArrayOutputStream> contentMap = dbUtils.getDataContentForSoftware(singleRunId);
 				for (String filename : contentMap.keySet()) {
+					
+					if (fileNamesToMatch!= null && fileNamesToMatch.size() > 0) {
+						if (!fileNamesToMatch.contains(filename)) {
+							continue;
+						}
+					}
+					
 					ByteArrayOutputStream content = contentMap.get(filename);
 
 					String filePath = outputDirectory + File.separator + singleRunId + File.separator + filename;
@@ -60,9 +71,10 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 				}
 			}
 
-			String zipFileName = String.format(ZIP_FILE_NAME, runIdFromMessage);
+			String zipFileName = String.format(outputFileName, runId);
 			zipOutputFiles(outputDirectory, zipFileName);
 
+			updateStatus(MethodCallStatusEnum.COMPLETED, "The data service run has completed");
 		} catch (ApolloDatabaseException ex) {
 			logger.error(ex.getMessage());
 			updateStatus(MethodCallStatusEnum.FAILED, "There was an error getting the run output from the Apollo database.");
