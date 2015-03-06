@@ -22,7 +22,7 @@ public class AddReviewerCommentMethod {
 	public static AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, AddReviewerCommentMessage message) {
 		
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 		String comment = message.getComment();
 		int version = message.getVersion();
 
