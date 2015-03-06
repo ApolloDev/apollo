@@ -1,7 +1,6 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import java.math.BigInteger;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class AbstractRunMethod {
 										.setRunResult(createRunResult(
 												ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
 												MethodCallStatusEnum.FAILED,
-												e.getMessage()));
+												"Database error adding run IDs to simulation group: " + e.getMessage()));
 								return runResultAndSimulationGroupId;
 							}
 
@@ -111,7 +110,7 @@ public class AbstractRunMethod {
 		} catch (ApolloDatabaseException ex) {
 			runResultAndSimulationGroupId.setRunResult(createRunResult(
 					ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-					MethodCallStatusEnum.FAILED, ex.getMessage()));
+					MethodCallStatusEnum.FAILED, "Database exception staging run: " + ex.getMessage()));
 			return runResultAndSimulationGroupId;
 		}
 	}
