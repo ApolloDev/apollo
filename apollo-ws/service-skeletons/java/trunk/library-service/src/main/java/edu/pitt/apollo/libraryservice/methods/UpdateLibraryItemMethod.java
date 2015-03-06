@@ -3,9 +3,9 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -20,15 +20,15 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
  */
 public class UpdateLibraryItemMethod {
 
-	public static AddOrUpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
-			AddOrUpdateLibraryItemContainerMessage message) {
+	public static UpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
+			UpdateLibraryItemContainerMessage message) {
 		
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 		String comment = message.getComment();
 		LibraryItemContainer item = message.getLibraryItemContainer();
 
-		AddOrUpdateLibraryItemContainerResult result = new AddOrUpdateLibraryItemContainerResult();
+		UpdateLibraryItemContainerResult result = new UpdateLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
 		result.setStatus(status);
 

@@ -36,8 +36,8 @@
 			<xsd:element name="addLibraryItemContainer">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="addOrUpdateLibraryItemContainerMessage"
-							type="lst:AddOrUpdateLibraryItemContainerMessage">
+						<xsd:element name="addLibraryItemContainerMessage"
+							type="lst:AddLibraryItemContainerMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -46,8 +46,8 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="addOrUpdateLibraryItemContainerResult"
-							type="lst:AddOrUpdateLibraryItemContainerResult">
+						<xsd:element name="addLibraryItemContainerResult"
+							type="lst:AddLibraryItemContainerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -56,8 +56,8 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="addOrUpdateLibraryItemContainerMessage"
-							type="lst:AddOrUpdateLibraryItemContainerMessage">
+						<xsd:element name="updateLibraryItemContainerMessage"
+							type="lst:UpdateLibraryItemContainerMessage">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -66,8 +66,8 @@
 				<xsd:complexType>
 					<xsd:sequence>
 
-						<xsd:element name="addOrUpdateLibraryItemContainerResult"
-							type="lst:AddOrUpdateLibraryItemContainerResult">
+						<xsd:element name="updateLibraryItemContainerResult"
+							type="lst:UpdateLibraryItemContainerResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
