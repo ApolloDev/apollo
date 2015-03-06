@@ -223,6 +223,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -614,9 +615,7 @@ public abstract class BaseApolloDbUtils {
 
 	protected String getSaltForPassword() {
 		Random random = new SecureRandom();
-		byte[] bytes = new byte[20];
-		random.nextBytes(bytes);
-		return new String(bytes);
+		return new BigInteger(130, random).toString(32);
 	}
 
 	static {
