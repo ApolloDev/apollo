@@ -18,11 +18,13 @@ import java.net.URL;
  */
 public abstract class LibraryMethod {
 
+//	private static final String LIBRARY_SERVICE_URL = "http://betaweb.rods.pitt.edu/library-service-war-3.0.0/services/libraryservice?wsdl"; // production
+	private static final String LIBRARY_SERVICE_URL = "http://localhost:8080/library-service-war-3.0.0-SNAPSHOT/services/libraryservice?wsdl"; // testing
+	
     protected static LibraryServiceEI getLibraryServicePort() {
         URL libraryServiceURL;
         try {
-            libraryServiceURL = new URL(
-                    "http://localhost:8080/library-service-war-3.0.0-SNAPSHOT/services/libraryservice?wsdl");
+            libraryServiceURL = new URL(LIBRARY_SERVICE_URL);
 
             return new LibraryServiceV300(libraryServiceURL).getLibraryServiceEndpoint();
 

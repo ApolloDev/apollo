@@ -24,7 +24,7 @@ public class GetLibraryItemMethod {
 	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils, GetLibraryItemContainerMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 		Integer version = message.getVersion();
 
 		GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();

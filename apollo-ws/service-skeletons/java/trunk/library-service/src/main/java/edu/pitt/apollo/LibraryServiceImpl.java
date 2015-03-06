@@ -15,6 +15,8 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.db.LibraryDbUtils;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 
 import java.io.File;
 import java.util.Map;
@@ -24,8 +26,6 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
@@ -48,6 +48,8 @@ import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedM
 import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.libraryservice.methods.AddLibraryItemMethod;
 import edu.pitt.apollo.libraryservice.methods.AddReviewerCommentMethod;
 import edu.pitt.apollo.libraryservice.methods.GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod;
@@ -105,14 +107,14 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 	}
 
 	@Override
-	public AddOrUpdateLibraryItemContainerResult updateLibraryItemContainer(
-			AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
+	public UpdateLibraryItemContainerResult updateLibraryItemContainer(
+			UpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
 		return UpdateLibraryItemMethod.updateLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
 	}
 
 	@Override
-	public AddOrUpdateLibraryItemContainerResult addLibraryItemContainer(
-			AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
+	public AddLibraryItemContainerResult addLibraryItemContainer(
+			AddLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
 		return AddLibraryItemMethod.addLibraryItem(libraryDbUtils, addOrUpdateLibraryItemContainerMessage);
 	}
 

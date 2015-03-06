@@ -21,7 +21,7 @@ public class SetLibraryItemAsNotReleasedMethod {
 
 	public static SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(LibraryDbUtils dbUtils, SetLibraryItemAsNotReleasedMessage message) {
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 
 		SetLibraryItemAsNotReleasedResult result = new SetLibraryItemAsNotReleasedResult();
 		MethodCallStatus status = new MethodCallStatus();
