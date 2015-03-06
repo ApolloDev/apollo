@@ -36,6 +36,7 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareLicenseIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
@@ -651,7 +652,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			pstmt.close();
 		}
 
-		query = "SELECT id, developer, name, version, service_type, wsdl_url, admin_id FROM software_identification";
+		query = "SELECT id, developer, name, version, service_type, wsdl_url, admin_id, license_name, license_version, license_url, license_attribution FROM software_identification";
 		pstmt = getConn().prepareStatement(query);
 		try {
 			ResultSet rs = pstmt.executeQuery();
@@ -672,6 +673,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				srr.getAuthentication().setRequesterId(
 						userIdMap.get(rs.getInt(7)));
 				srr.getAuthentication().setRequesterPassword("");
+				
+				SoftwareLicenseIdentification license = new SoftwareLicenseIdentification();
+				license.setLicenseName(rs.getString(8));
+				license.setLicenseVersion(rs.getString(9));
+				license.setLicenseLocation(rs.getString(10));
+				license.setAttributionNotice(rs.getString(11));
+				srr.getSoftwareIdentification().setSoftwareLicenseIdentification(license);
+				
 				result.put(id, srr);
 			}
 		} finally {
@@ -1197,7 +1206,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	public SoftwareIdentification getSoftwareIdentification(int i)
 			throws ApolloDatabaseKeyNotFoundException, SQLException,
 			ClassNotFoundException {
-		String query = "SELECT developer, name, version, service_type FROM software_identification WHERE "
+		String query = "SELECT developer, name, version, service_type, license_name, license_version, license_url, license_attribution FROM software_identification WHERE "
 				+ "id = ?";
 		PreparedStatement pstmt = getConn().prepareStatement(query);
 		pstmt.setInt(1, i);
@@ -1209,6 +1218,15 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			softwareIdentification.setSoftwareVersion(rs.getString(3));
 			softwareIdentification.setSoftwareType(ApolloSoftwareTypeEnum
 					.fromValue(rs.getString(4)));
+			
+			SoftwareLicenseIdentification license = new SoftwareLicenseIdentification();
+			license.setLicenseName(rs.getString(5));;
+			license.setLicenseVersion(rs.getString(6));
+			license.setLicenseLocation(rs.getString(7));
+			license.setAttributionNotice(rs.getString(8));
+			
+			softwareIdentification.setSoftwareLicenseIdentification(license);
+			
 			return softwareIdentification;
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
