@@ -3,8 +3,8 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -20,23 +20,22 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
  */
 public class AddLibraryItemMethod {
 
-	public static AddOrUpdateLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils,
-			AddOrUpdateLibraryItemContainerMessage message) {
+	public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils,
+			AddLibraryItemContainerMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
 		String comment = message.getComment();
 		LibraryItemContainer item = message.getLibraryItemContainer();
 		
-		AddOrUpdateLibraryItemContainerResult result = new AddOrUpdateLibraryItemContainerResult();
+		AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
 		
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				int version = dbUtils.addLibraryItem(urn, item, authentication, comment);
-				result.setVersion(version);
+				result = dbUtils.addLibraryItem(item, authentication, comment);
+				result.setStatus(status);
+				
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
