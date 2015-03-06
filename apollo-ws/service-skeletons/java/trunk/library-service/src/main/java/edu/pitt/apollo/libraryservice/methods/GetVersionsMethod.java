@@ -22,7 +22,7 @@ public class GetVersionsMethod {
 
 	public static GetVersionsResult getVersions(LibraryDbUtils dbUtils, GetVersionsMessage message) {
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 
 		GetVersionsResult result = new GetVersionsResult();
 		MethodCallStatus status = new MethodCallStatus();
