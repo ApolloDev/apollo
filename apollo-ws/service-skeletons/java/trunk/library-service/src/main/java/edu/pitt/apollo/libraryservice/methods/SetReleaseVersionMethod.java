@@ -22,7 +22,7 @@ public class SetReleaseVersionMethod {
 	public static SetReleaseVersionResult setReleaseVersion(LibraryDbUtils dbUtils, SetReleaseVersionMessage message) {
 
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 		String comment = message.getComment();
 		int version = message.getVersion();
 
