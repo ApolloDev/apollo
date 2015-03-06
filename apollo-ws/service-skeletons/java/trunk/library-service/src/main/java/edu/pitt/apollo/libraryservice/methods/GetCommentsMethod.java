@@ -21,7 +21,7 @@ public class GetCommentsMethod {
 
 	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, GetCommentsMessage message) {
 		Authentication authentication = message.getAuthentication();
-		String urn = message.getUrn();
+		int urn = message.getUrn();
 		int version = message.getVersion();
 		
 		GetCommentsResult result = new GetCommentsResult();

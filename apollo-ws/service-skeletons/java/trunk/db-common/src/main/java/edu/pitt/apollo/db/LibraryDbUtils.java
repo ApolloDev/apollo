@@ -8,6 +8,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
+import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.ChangeLogEntry;
 import edu.pitt.apollo.library_service_types.v3_0_0.CommentFromLibrary;
 import edu.pitt.apollo.library_service_types.v3_0_0.GetCommentsResult;
@@ -275,12 +276,12 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	private boolean checkIfUrnAlreadyExists(String urn) throws ApolloDatabaseExplicitException {
+	private boolean checkIfUrnAlreadyExists(int urn) throws ApolloDatabaseExplicitException {
 
 		String query = "SELECT urn FROM library_item_container_urns WHERE urn = ?";
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.setString(1, urn);
+			pstmt.setInt(1, urn);
 			ResultSet rs = pstmt.executeQuery();
 
 			return rs.next();
@@ -351,9 +352,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public List<String> getURNs(String itemType) throws ApolloDatabaseException {
+	public List<Integer> getURNs(String itemType) throws ApolloDatabaseException {
 		try {
-			List<String> urns = new ArrayList<String>();
+			List<Integer> urns = new ArrayList<Integer>();
 			String query;
 			if (itemType == null) {
 				query = "SELECT urn FROM library_item_container_urns";
@@ -365,7 +366,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				urns.add(rs.getString(1));
+				urns.add(rs.getInt(1));
 			}
 
 			return urns;
@@ -376,20 +377,19 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public int addLibraryItem(String urn, LibraryItemContainer item, Authentication authentication, String commitMessage) throws ApolloDatabaseException {
+	public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer item, Authentication authentication, String commitMessage) throws ApolloDatabaseException {
 		// user has already been authenticated
 
 		try {
-			boolean itemAlreadyExists = checkIfUrnAlreadyExists(urn);
-			if (itemAlreadyExists) {
-				throw new ApolloDatabaseException("There was an error " + ADDING_LIBARY_ITEM
-						+ ". The specified URI \"" + urn + "\" already exists in the library.");
-			}
+//			boolean itemAlreadyExists = checkIfUrnAlreadyExists(urn);
+//			if (itemAlreadyExists) {
+//				throw new ApolloDatabaseException("There was an error " + ADDING_LIBARY_ITEM
+//						+ ". The specified URI \"" + urn + "\" already exists in the library.");
+//			}
 
 			String sql = "INSERT INTO library_item_container_urns (urn) VALUES (?);";
 
 			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, urn);
 			pstmt.executeUpdate();
 
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -398,7 +398,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				catalogId = rs.getInt(1);
 			} else {
 				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, new ApolloDatabaseException("No ID was returned "
-						+ " when adding the item with URN " + urn + " to the Apollo library."));
+						+ " when adding the item to the Apollo library."));
 			}
 
 			int itemVersion = updateLibraryItem(catalogId, item, authentication);
@@ -410,7 +410,11 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			getConn().commit();
 
-			return itemVersion;
+			AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
+			result.setUrn(catalogId);
+			result.setVersion(itemVersion);
+			
+			return result;
 		} catch (ClassNotFoundException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
 		} catch (SQLException ex) {
@@ -435,7 +439,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public int updateLibraryItem(String urn, Object item, Authentication authentication, String comment) throws ApolloDatabaseException {
+	public int updateLibraryItem(int urn, Object item, Authentication authentication, String comment) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
@@ -517,7 +521,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	}
 
-	public void addReviewerComment(String urn, int version, String comment, Authentication authentication) throws ApolloDatabaseException {
+	public void addReviewerComment(int urn, int version, String comment, Authentication authentication) throws ApolloDatabaseException {
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
 			addComment(catalogId, version, comment, authentication, LibraryCommentTypeEnum.REVIEW);
@@ -588,7 +592,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		throw new ApolloDatabaseExplicitException("There was no comment type with ID " + id);
 	}
 
-	public GetCommentsResult getComments(String urn, int version) throws ApolloDatabaseException {
+	public GetCommentsResult getComments(int urn, int version) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
@@ -650,7 +654,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public void setReleaseVersion(String urn, int version, Authentication authentication, String message) throws ApolloDatabaseException {
+	public void setReleaseVersion(int urn, int version, Authentication authentication, String message) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
@@ -725,7 +729,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public int setLibraryItemAsNotReleased(String urn) throws ApolloDatabaseException {
+	public int setLibraryItemAsNotReleased(int urn) throws ApolloDatabaseException {
 
 		try {
 			Integer currentReleaseVersion = getReleaseVersion(urn);
@@ -743,7 +747,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public List<Integer> getVersions(String urn) throws ApolloDatabaseException {
+	public List<Integer> getVersions(int urn) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
@@ -773,7 +777,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	}
 
-	public Integer getReleaseVersion(String urn) throws ApolloDatabaseException {
+	public Integer getReleaseVersion(int urn) throws ApolloDatabaseException {
 
 		try {
 			int catalogId = getCatalogIDFromURN(urn);
@@ -813,7 +817,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public LibraryItemContainer getLibraryItemContainer(String urn, int version) throws ApolloDatabaseException {
+	public LibraryItemContainer getLibraryItemContainer(int urn, int version) throws ApolloDatabaseException {
 
 		try {
 			String itemJson = getLibraryItemContainerJSON(urn, version);
@@ -832,7 +836,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public LibraryItemContainer getReleaseLibraryItemContainer(String urn) throws ApolloDatabaseException {
+	public LibraryItemContainer getReleaseLibraryItemContainer(int urn) throws ApolloDatabaseException {
 
 		Integer publicVersion = getReleaseVersion(urn);
 		if (publicVersion == null) {
@@ -842,17 +846,17 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	private String getLibraryItemContainerJSON(String urn, int version) throws ApolloDatabaseKeyNotFoundException,
+	private String getLibraryItemContainerJSON(int urn, int version) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoURNFoundException, NoLibraryItemException {
 		int catalogId = getCatalogIDFromURN(urn);
 		return getItemJSONFromCatalogIdAndVersion(catalogId, version, urn);
 	}
 
-	private int getCatalogIDFromURN(String urn) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, NoURNFoundException {
+	private int getCatalogIDFromURN(int urn) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, NoURNFoundException {
 		String sql = "SELECT id FROM library_item_container_urns WHERE urn = ?";
 		try {
 			PreparedStatement pstmt = getConn().prepareStatement(sql);
-			pstmt.setString(1, urn);
+			pstmt.setInt(1, urn);
 			ResultSet rs = pstmt.executeQuery();
 			if (!rs.next()) {
 				throw new NoURNFoundException("No item with urn " + urn + " exists");
@@ -867,7 +871,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	}
 
-	private String getItemJSONFromCatalogIdAndVersion(int catalogId, int versionId, String urn) throws ApolloDatabaseKeyNotFoundException,
+	private String getItemJSONFromCatalogIdAndVersion(int catalogId, int versionId, int urn) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoLibraryItemException {
 		String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
 		try {
@@ -925,7 +929,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			while (rs.next()) {
 				int version = rs.getInt(1);
 				Timestamp actionTime = rs.getTimestamp(2);
-				String urn = rs.getString(3);
+				int urn = rs.getInt(3);
 				LibraryActionTypeEnum actionType = LibraryActionTypeEnum.valueOf(rs.getString(4).toUpperCase());
 
 				GregorianCalendar calendar = new GregorianCalendar();

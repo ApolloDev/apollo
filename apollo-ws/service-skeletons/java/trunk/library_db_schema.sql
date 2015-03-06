@@ -38,8 +38,7 @@ CREATE TABLE user_roles (
 );
 
 CREATE TABLE library_item_container_urns (
-    id SERIAL PRIMARY KEY,
-    urn TEXT NOT NULL UNIQUE
+    id SERIAL PRIMARY KEY
 );
 
 CREATE TABLE library_item_containers (
