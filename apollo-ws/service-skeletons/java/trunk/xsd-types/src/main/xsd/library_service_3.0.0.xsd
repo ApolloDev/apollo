@@ -33,7 +33,15 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="AddOrUpdateLibraryItemContainerResult">
+	<complexType name="AddLibraryItemContainerResult">
+		<sequence>
+			<element name="status" type="pref:MethodCallStatus"></element>
+			<element name="version" type="int"></element>
+            <element name="urn" type="int"></element>
+		</sequence>
+	</complexType>
+    
+    <complexType name="UpdateLibraryItemContainerResult">
 		<sequence>
 			<element name="status" type="pref:MethodCallStatus"></element>
 			<element name="version" type="int"></element>
@@ -70,10 +78,19 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="AddOrUpdateLibraryItemContainerMessage">
+	<complexType name="AddLibraryItemContainerMessage">
 		<sequence>
 			<element name="authentication" type="pref:Authentication"></element>
-			<element name="urn" type="token"></element>
+			<element name="libraryItemContainer" type="tns:LibraryItemContainer">
+			</element>
+			<element name="comment" type="string"></element>
+		</sequence>
+	</complexType>
+    
+    <complexType name="UpdateLibraryItemContainerMessage">
+		<sequence>
+			<element name="authentication" type="pref:Authentication"></element>
+			<element name="urn" type="int"></element>
 			<element name="libraryItemContainer" type="tns:LibraryItemContainer">
 			</element>
 			<element name="comment" type="string"></element>
@@ -84,7 +101,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="version" type="int" maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
@@ -101,7 +118,7 @@
 	<complexType name="GetLibraryItemURNsResult">
 		<sequence>
 			<element name="status" type="pref:MethodCallStatus"></element>
-			<element name="URNs" type="token" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="URNs" type="int" minOccurs="0" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 
@@ -109,7 +126,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="version" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="comment" type="string" maxOccurs="1"
 				minOccurs="0"></element>
@@ -120,7 +137,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="version" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="comment" type="string" maxOccurs="1"
 				minOccurs="0"></element>
@@ -131,7 +148,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="version" type="int" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
@@ -140,7 +157,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="group" type="token" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
@@ -149,7 +166,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 
 		</sequence>
 	</complexType>
@@ -157,7 +174,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 
 		</sequence>
 	</complexType>
@@ -166,7 +183,7 @@
 		<sequence>
 			<element name="authentication" type="pref:Authentication"
 				maxOccurs="1" minOccurs="1"></element>
-			<element name="urn" type="token" maxOccurs="1" minOccurs="1"></element>
+			<element name="urn" type="int" maxOccurs="1" minOccurs="1"></element>
 			<element name="version1" type="token" maxOccurs="1"
 				minOccurs="1"></element>
 			<element name="version2" type="token" maxOccurs="1"
@@ -231,7 +248,7 @@
 	<complexType name="GetVersionsMessage">
 		<sequence>
 			<element name="authentication" type="pref:Authentication"></element>
-			<element name="urn" type="token"></element>
+			<element name="urn" type="int"></element>
 		</sequence>
 	</complexType>
 
@@ -252,7 +269,7 @@
 
     <complexType name="ChangeLogEntry">
     	<sequence>
-    		<element name="urn" type="string"></element>
+    		<element name="urn" type="int"></element>
     		<element name="version" type="int"></element>
     		<element name="actionPerformed" type="tns:LibraryActionTypeEnum"></element>
             <element name="dateOfAction" type="dateTime"></element>
@@ -272,7 +289,7 @@
     <complexType name="SetLibraryItemAsNotReleasedMessage">
     	<sequence>
     		<element name="authentication" type="pref:Authentication"></element>
-    		<element name="urn" type="token"></element>
+    		<element name="urn" type="int"></element>
     	</sequence>
     </complexType>
     
