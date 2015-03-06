@@ -55,22 +55,26 @@ CREATE TABLE software_identification (
   service_type VARCHAR(255) NOT NULL,
   wsdl_url TEXT NOT NULL,
   admin_id INT NOT NULL REFERENCES users(id),
+  license_name TEXT,
+  license_version TEXT,
+  license_url TEXT,
+  license_attribution TEXT,
   PRIMARY KEY (id)
 );
 
 -- HSQLDB: ALTER TABLE software_identification ALTER COLUMN id RESTART WITH 1;
 
-INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-3.0.0-SNAPSHOT/services/translatorservice?wsdl',1),
-											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
-											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-3.0.0-SNAPSHOT/services/visualizerservice?wsdl',1),
-											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:13501/gaia?wsdl',1),
-											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
-											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-                                             (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1),
-                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1),
-											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1),
-											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1);
+INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-3.0.0-SNAPSHOT/services/translatorservice?wsdl',1, NULL, NULL, NULL, NULL),
+											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, NULL, NULL, NULL, NULL),
+											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-3.0.0-SNAPSHOT/services/visualizerservice?wsdl',1, NULL, NULL, NULL ,NULL),
+											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:13501/gaia?wsdl',1, NULL, NULL, NULL, NULL),
+											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, NULL, NULL, NULL, NULL),
+                                             (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                                             (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, 'Creative Commons Attribution 4.0 International License', '4.0', 'http://creativecommons.org/licenses/by/4.0/', 'The Lancet Ebola simulator was used to produce results for the following publication:\n\nBellan SE, JRC Pulliam, J Dushoff, and LA Meyers. Asymptomatic infection, natural immunity, and Ebola dynamics. Letter, submitted to Lancet.\n\nThe original source code for the simulator is available at https://github.com/ICI3D/Ebola. The code was changed for use with the Apollo Web Services to do the following:\n\n - Read initial compartment sizes, transmission and disease parameters from an external input file\n - Produce time series output files for each compartment\n - Compute a newly exposed time series from the cumulative exposed time series'),
+											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1, NULL, NULL, NULL, NULL),
+											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1, NULL, NULL, NULL ,NULL);
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
@@ -371,11 +375,9 @@ INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 76 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 77 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 78 */
-INSERT INTO run_data_description (label) values ('SEIR log file, run_output.txt '); /* 79 */
-INSERT INTO run_data_description (label) values ('FRED log file, run_output.txt '); /* 80 */
-INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 81*/
-INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 82*/
-
+INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 79*/
+INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 80*/
+INSERT INTO run_data_description (label) values ('FRED ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 81*/
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
 	(1, 1, 'TEXT'), 
@@ -847,29 +849,23 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(78, 4, '9'),
 	(78, 5, '4'),
     
-   	(79, 1, 'TEXT'), 
-	(79, 2, 'run_output.txt'),
-	(79, 3, 'SIMULATOR_LOG_FILE'),
-	(79, 4, '2'),
-	(79, 5, '0'),
+	(79, 1, 'TEXT'), 
+	(79, 2, 'run_data_service_message.json'),
+	(79, 3, 'RUN_DATA_SERVICE_MESSAGE'),
+	(79, 4, '0'),
+	(79, 5, '10'),
     
     (80, 1, 'TEXT'), 
-	(80, 2, 'run_output.txt'),
-	(80, 3, 'SIMULATOR_LOG_FILE'),
-	(80, 4, '3'),
+	(80, 2, 'batch_inputs_with_run_ids.txt'),
+	(80, 3, 'CONFIGURATION_FILE'),
+	(80, 4, '11'),
 	(80, 5, '0'),
     
-	(81, 1, 'TEXT'), 
-	(81, 2, 'run_data_service_message.json'),
-	(81, 3, 'RUN_DATA_SERVICE_MESSAGE'),
-	(81, 4, '0'),
-	(81, 5, '10'),
-    
-    (82, 1, 'TEXT'), 
-	(82, 2, 'batch_inputs_with_run_ids.txt'),
-	(82, 3, 'CONFIGURATION_FILE'),
-	(82, 4, '11'),
-	(82, 5, '0');
+    (81, 1, 'TEXT'), 
+	(81, 2, 'ods_required_output_for_model_validation.csv'),
+	(81, 3, 'SIMULATOR_LOG_FILE'),
+	(81, 4, '3'),
+	(81, 5, '0');
     
 CREATE VIEW run_data_description_view AS
 SELECT

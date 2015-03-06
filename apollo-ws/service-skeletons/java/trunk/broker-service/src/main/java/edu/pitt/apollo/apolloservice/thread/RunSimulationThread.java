@@ -45,7 +45,7 @@ public class RunSimulationThread extends RunApolloServiceThread {
 				return;
 			}
 
-            // once the translator has finished, call the simulator and start
+			// once the translator has finished, call the simulator and start
 			// the simulation
 			SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
 			String url = null;
@@ -135,5 +135,30 @@ public class RunSimulationThread extends RunApolloServiceThread {
 	@Override
 	public void setAuthenticationPasswordFieldToBlank() {
 		message.getAuthentication().setRequesterPassword("");
+	}
+
+	public static void main(String[] args) {
+
+		SimulatorServiceEI simulatorPort = null;
+		try {
+			simulatorPort = new SimulatorServiceV300(new URL("http://gaia.pha.psc.edu:13500/pscsimu?wsdl")).getSimulatorServiceEndpoint();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// disable chunking for ZSI
+		Client simulatorClient = ClientProxy.getClient(simulatorPort);
+		HTTPConduit simulatorHttp = (HTTPConduit) simulatorClient.getConduit();
+		HTTPClientPolicy simulatorHttpClientPolicy = new HTTPClientPolicy();
+		simulatorHttpClientPolicy.setConnectionTimeout(36000);
+		simulatorHttpClientPolicy.setAllowChunking(false);
+		simulatorHttp.setClient(simulatorHttpClientPolicy);
+		try {
+			simulatorPort.runSimulation(new BigInteger("196") /*, message*/);
+		} catch (WebServiceException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
