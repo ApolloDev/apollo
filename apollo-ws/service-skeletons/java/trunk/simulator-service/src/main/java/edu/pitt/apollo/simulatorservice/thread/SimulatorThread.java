@@ -138,28 +138,28 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 	}
 
-	protected final void addTextDataContentForAllSeries(Map<String, Double[]> seriesNamesAndContent, String location) throws IOException {
-
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		for (String seriesName : seriesNamesAndContent.keySet()) {
-			Double[] series = seriesNamesAndContent.get(seriesName);
-
-			for (int t = 0; t < series.length; t++) {
-				String line = t + "," + location + "," + seriesName + "," + "," + "," + series[t] + "\n";
-				stream.write(line.getBytes());
-			}
-		}
-
-		String seriesName = "run_output";
-		try {
-			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
-			addTextDataContentForSeries(stream.toString(), seriesName, sourceSoftwareIdKey, dataServiceSoftwareKey);
-		} catch (ApolloDatabaseException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
-					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-		}
-
-	}
+//	protected final void addTextDataContentForAllSeries(Map<String, Double[]> seriesNamesAndContent, String location) throws IOException {
+//
+//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//		for (String seriesName : seriesNamesAndContent.keySet()) {
+//			Double[] series = seriesNamesAndContent.get(seriesName);
+//
+//			for (int t = 0; t < series.length; t++) {
+//				String line = t + "," + location + "," + seriesName + "," + "," + "," + series[t] + "\n";
+//				stream.write(line.getBytes());
+//			}
+//		}
+//
+//		String seriesName = "run_output";
+//		try {
+//			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+//			addTextDataContentForSeries(stream.toString(), seriesName, sourceSoftwareIdKey, dataServiceSoftwareKey);
+//		} catch (ApolloDatabaseException ex) {
+//			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
+//					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+//		}
+//
+//	}
 
 	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
 
