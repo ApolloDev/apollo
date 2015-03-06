@@ -33,7 +33,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 	public void downloadFiles() {
 
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
-		DataServiceThread thread = new DataServiceAllFilesThread(runId, message.getRunId(), queue, dbUtils, outputDirectory);
+		DataServiceThread thread = new DataServiceAllFilesThread(runId, message.getRunId(), queue, dbUtils, outputDirectory, ZIP_FILE_NAME, message.getFileNames());
 
 		MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
 		if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
