@@ -3,6 +3,14 @@
 	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_0/"
 	elementFormDefault="qualified">
 
+
+	<simpleType name="SoftwareOutputStratificationGranularity">
+		<restriction base="string">
+			<enumeration value="byTopLevelLocationAndInfectionStateOverTime" />
+			<enumeration value="allStratificationsAtTheFinestGranularity" />
+		</restriction>
+	</simpleType>
+	
 	<simpleType name="ApolloSoftwareTypeEnum">
 		<restriction base="string">
 			<enumeration value="simulator" />
@@ -11,11 +19,18 @@
 			<enumeration value="syntheticPopulationGenerator" />
 			<enumeration value="translator" />
 			<enumeration value="data" />
-            <enumeration value="broker" />
+			<enumeration value="broker" />
 		</restriction>
 	</simpleType>
 
-
+	<complexType name="SoftwareLicenseIdentification">
+		<sequence>
+			<element name="licenseLocation" type="anyURI"></element>
+			<element name="licenseVersion" type="token"></element>
+			<element name="licenseName" type="token"></element>
+			<element name="attributionNotice" type="string"></element>
+		</sequence>
+	</complexType>
 
 	<complexType name="SoftwareIdentification">
 		<sequence>
@@ -31,6 +46,8 @@
 			<element name="softwareType" type="tns:ApolloSoftwareTypeEnum"
 				maxOccurs="1" minOccurs="1">
 			</element>
+			<element name="softwareLicenseIdentification" type="tns:SoftwareLicenseIdentification"
+				minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
