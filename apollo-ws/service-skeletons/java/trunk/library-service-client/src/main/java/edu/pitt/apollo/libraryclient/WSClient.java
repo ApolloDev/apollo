@@ -37,6 +37,7 @@ import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.types.v3_0_0.Census;
 import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
 import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v3_0_0.PlaceClosureControlStrategy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,7 +57,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.0/services/libraryservice?wsdl";
 	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_0/", "LibraryService_v3.0.0");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
@@ -82,11 +83,22 @@ public class WSClient {
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-//		AddOrUpdateLibraryItemContainerResult result = addInfectiousDiseaseScenarioToLibrary(a, port);
-//		setReleaseVersionForInfectiousDiseaseScenario(a, port, result.getVersion());
-		AddOrUpdateLibraryItemContainerResult result = addVaccinationControlStrategyToLibrary(a, port);
+		AddOrUpdateLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+		setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion());
+
+//		AddOrUpdateLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
+//		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion());
+//
+//		AddOrUpdateLibraryItemContainerResult antiviralResult = addAntiviralControlStrategyToLibrary(a, port);
+//		setReleaseVersionForAntiviralControlStratgy(a, port, antiviralResult.getVersion());
+//
+//		AddOrUpdateLibraryItemContainerResult allSchoolsResult = addAllSchoolClosureControlStrategyToLibrary(a, port);
+//		setReleaseVersionForAllSchoolsControlStratgy(a, port, allSchoolsResult.getVersion());
+//
+//		AddOrUpdateLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlStrategyToLibrary(a, port);
+//		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion());
+
 //		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlStrategyInLibrary(a, port);
-		setReleaseVersionForVaccinationControlStratgy(a, port, result.getVersion());
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 		System.out.println("finished");
 	}
@@ -139,6 +151,39 @@ public class WSClient {
 		message.setAuthentication(auth);
 		message.setComment("Setting release version for 2009 Allegheny County vaccination control strategy");
 		message.setUrn("/controlstrategy/vaccination/114727/1169/2009");
+		message.setVersion(version);
+
+		return port.setReleaseVersionForLibraryItem(message);
+	}
+
+	private static SetReleaseVersionResult setReleaseVersionForAntiviralControlStratgy(Authentication auth, LibraryServiceEI port, int version) {
+
+		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+		message.setAuthentication(auth);
+		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+		message.setUrn("/controlstrategy/antiviral/114727/1169/2009");
+		message.setVersion(version);
+
+		return port.setReleaseVersionForLibraryItem(message);
+	}
+
+	private static SetReleaseVersionResult setReleaseVersionForAllSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version) {
+
+		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+		message.setAuthentication(auth);
+		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+		message.setUrn("/controlstrategy/allschoolclosure/114727/1169/2009");
+		message.setVersion(version);
+
+		return port.setReleaseVersionForLibraryItem(message);
+	}
+
+	private static SetReleaseVersionResult setReleaseVersionForIndividualSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version) {
+
+		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+		message.setAuthentication(auth);
+		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+		message.setUrn("/controlstrategy/individualschoolclosure/114727/1169/2009");
 		message.setVersion(version);
 
 		return port.setReleaseVersionForLibraryItem(message);
@@ -199,6 +244,66 @@ public class WSClient {
 		message.setAuthentication(auth);
 		message.setUrn("/controlstrategy/vaccination/114727/1169/2009");
 		message.setComment("Adding vaccination control strategy for Allegheny County in 2009");
+
+		return port.addLibraryItemContainer(message);
+
+	}
+
+	private static AddOrUpdateLibraryItemContainerResult addAntiviralControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+
+		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy();
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(strategy);
+
+		CatalogEntry entry = new CatalogEntry();
+		entry.setItemDescription("A control strategy in which all sick humans are treated with a course of Tamiflu.");
+		lic.setCatalogEntry(entry);
+
+		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setUrn("/controlstrategy/antiviral/114727/1169/2009");
+		message.setComment("Adding antiviral control strategy for Allegheny County in 2009");
+
+		return port.addLibraryItemContainer(message);
+
+	}
+
+	private static AddOrUpdateLibraryItemContainerResult addAllSchoolClosureControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+
+		PlaceClosureControlStrategy strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlStrategy();
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(strategy);
+
+		CatalogEntry entry = new CatalogEntry();
+		entry.setItemDescription("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
+		lic.setCatalogEntry(entry);
+
+		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setUrn("/controlstrategy/allschoolclosure/114727/1169/2009");
+		message.setComment("Adding all school closure control strategy for Allegheny County in 2009");
+
+		return port.addLibraryItemContainer(message);
+
+	}
+
+	private static AddOrUpdateLibraryItemContainerResult addIndividualSchoolClosureControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+
+		PlaceClosureControlStrategy strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlStrategy();
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(strategy);
+
+		CatalogEntry entry = new CatalogEntry();
+		entry.setItemDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
+		lic.setCatalogEntry(entry);
+
+		AddOrUpdateLibraryItemContainerMessage message = new AddOrUpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setUrn("/controlstrategy/individualschoolclosure/114727/1169/2009");
+		message.setComment("Adding individual school closure control strategy for Allegheny County in 2009");
 
 		return port.addLibraryItemContainer(message);
 

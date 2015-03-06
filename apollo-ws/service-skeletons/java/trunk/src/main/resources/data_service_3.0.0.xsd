@@ -58,6 +58,8 @@
 			<element name="authentication" type="common:Authentication" />
 			<element name="softwareIdentification" type="common:SoftwareIdentification" />
 			<element name="runId" type="common:RunIdentification" minOccurs="1" maxOccurs="1"></element>
+            <element name="fileNames" type="token" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
     
