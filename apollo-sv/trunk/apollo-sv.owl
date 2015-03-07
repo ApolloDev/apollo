@@ -3772,26 +3772,17 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&GO;GO_0000003"/>
                     <Restriction>
-                        <onProperty rdf:resource="&ro;has_participant"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;located_in"/>
+                        <onProperty rdf:resource="&obo;BFO_0000066"/>
                         <someValuesFrom>
-                            <Restriction>
-                                <onProperty rdf:resource="&ro;part_of"/>
-                                <someValuesFrom>
-                                    <Class>
-                                        <intersectionOf rdf:parseType="Collection">
-                                            <rdf:Description rdf:about="&obo;UBERON_0000479"/>
-                                            <Restriction>
-                                                <onProperty rdf:resource="&ro;part_of"/>
-                                                <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
-                                            </Restriction>
-                                        </intersectionOf>
-                                    </Class>
-                                </someValuesFrom>
-                            </Restriction>
+                            <Class>
+                                <intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="&obo;UBERON_0000479"/>
+                                    <Restriction>
+                                        <onProperty rdf:resource="&ro;part_of"/>
+                                        <someValuesFrom rdf:resource="&obo;OBI_0100026"/>
+                                    </Restriction>
+                                </intersectionOf>
+                            </Class>
                         </someValuesFrom>
                     </Restriction>
                 </intersectionOf>
@@ -3805,7 +3796,7 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
             </Restriction>
         </rdfs:subClassOf>
         <obo:IAO_0000600 xml:lang="en">A process of reproduction of a particular pathogen species inside some tissue of a particular host species.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">A reproduction of a pathogen organism of a particular biological taxon in (a part of) the tissue of a host organism from another taxon.</obo:IAO_0000115>
+        <obo:IAO_0000115 xml:lang="en">A reproduction of a pathogen organism of a particular biological taxon in a tissue of a host organism from another taxon.</obo:IAO_0000115>
         <dc:creator xml:lang="en">M. Brochhausen</dc:creator>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">infection is reproduction of a pathogen inside some tissue of a host.  By associating infection with the classes latent period and infectious period, which are associated with specific pathogen species and host species, Apollo-SV defines infection further as reproduction of a particular pathogen taxon inside some tissue of a particular host taxon.</rdfs:comment>
@@ -6194,12 +6185,7 @@ can&apos;t recall whether we should use process or processual_entity for future 
                                         <allValuesFrom>
                                             <Class>
                                                 <intersectionOf rdf:parseType="Collection">
-                                                    <Class>
-                                                        <unionOf rdf:parseType="Collection">
-                                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000114"/>
-                                                            <rdf:Description rdf:about="&obo;APOLLO_SV_00000330"/>
-                                                        </unionOf>
-                                                    </Class>
+                                                    <rdf:Description rdf:about="&obo;APOLLO_SV_00000114"/>
                                                     <Restriction>
                                                         <onProperty rdf:resource="&obo;RO_0000057"/>
                                                         <hasSelf rdf:datatype="&xsd;boolean">true</hasSelf>
@@ -6217,8 +6203,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0100026"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Pathogen</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">An organism of a particular biological taxon that is the bearer of a disposition that, when realized, is realized as its reproduction in an organism of a different biological taxon.</obo:IAO_0000115>
-        <obo:IAO_0000600 xml:lang="en">An organism, virus, or prion that is reproducing inside another organism.</obo:IAO_0000600>
+        <obo:IAO_0000115 xml:lang="en">An organism of a particular biological taxon that is the bearer of a disposition that, when realized, is realized as its reproduction in the tissue of an organism of a different biological taxon.</obo:IAO_0000115>
+        <obo:IAO_0000600 xml:lang="en">An organism, virus, or prion that can infect another organism.</obo:IAO_0000600>
     </Class>
     
 
@@ -6281,8 +6267,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000031"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDisease</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115 xml:lang="en">A disease that inheres in a host and, when realized, is realized as a disease course that is causally preceded by an infection.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A disease that is caused by an infection.</obo:IAO_0000600>
-        <obo:IAO_0000115 xml:lang="en">A disease that when it inheres, inheres in a host and when it is realized, is realized as a disease course that is causally preceded by an infection.</obo:IAO_0000115>
     </Class>
     
 
@@ -7566,11 +7552,7 @@ The constant rate may be zero.  The period of an epidemic may be defined using s
                 <intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&GO;GO_0000003"/>
                     <Restriction>
-                        <onProperty rdf:resource="&ro;has_participant"/>
-                        <someValuesFrom rdf:resource="&obo;APOLLO_SV_00000237"/>
-                    </Restriction>
-                    <Restriction>
-                        <onProperty rdf:resource="&ro;located_in"/>
+                        <onProperty rdf:resource="&obo;BFO_0000066"/>
                         <someValuesFrom>
                             <Class>
                                 <intersectionOf rdf:parseType="Collection">
