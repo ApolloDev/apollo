@@ -26,16 +26,17 @@ public class AddLibraryItemMethod {
 		Authentication authentication = message.getAuthentication();
 		String comment = message.getComment();
 		LibraryItemContainer item = message.getLibraryItemContainer();
-		
+
 		AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
-		
+		result.setStatus(status);
+
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
 				result = dbUtils.addLibraryItem(item, authentication, comment);
 				result.setStatus(status);
-				
+
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
