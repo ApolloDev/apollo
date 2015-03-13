@@ -27,7 +27,7 @@ public class ExampleSchoolClosureControlStrategy {
 		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
 
 		Location location = new Location();
-		location.setApolloLocationCode("42003");
+		location.setApolloLocationCode("1169");
 
 		DiseaseSurveillanceTriggerDefinition rt = new DiseaseSurveillanceTriggerDefinition();
 
@@ -83,7 +83,7 @@ public class ExampleSchoolClosureControlStrategy {
 		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
 
 		Location location = new Location();
-		location.setApolloLocationCode("42003");
+		location.setApolloLocationCode("1169");
 
 		DiseaseSurveillanceTriggerDefinition rt = new DiseaseSurveillanceTriggerDefinition();
 
