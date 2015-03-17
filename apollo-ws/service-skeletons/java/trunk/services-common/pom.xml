@@ -52,8 +52,10 @@
             <id>CXF</id>
             <!-- To use Metro by default, move activation element to its profile below -->
             <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+           <property>
+                    <name>!skipCXF</name>
+                </property> 
+                </activation>
             <properties>
                 <cxf.version>2.7.3</cxf.version>
             </properties>
@@ -75,6 +77,11 @@
             <!-- See http://metro.java.net/guide/Using_Mavenized_Metro_Binaries.html 
             for more Metro/Maven config info -->
             <id>Metro</id>
+                  <activation>
+                 <property>
+                    <name>!skipMetro</name>
+                </property> 
+                </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish.metro</groupId>
@@ -83,27 +90,11 @@
                 </dependency>
             </dependencies>
         </profile>
-    </profiles>
-
-    <build>
-        <defaultGoal>install</defaultGoal>
-
+        <profile>
+        <id>runShade</id>
+        <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <!--   <version>2.2.1</version> -->
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
+                <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.3</version>
@@ -127,6 +118,29 @@
                     </execution>
                 </executions>
             </plugin>
+            </plugins>
+          </build>
+      </profile>
+    </profiles>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <!--   <version>2.2.1</version> -->
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
