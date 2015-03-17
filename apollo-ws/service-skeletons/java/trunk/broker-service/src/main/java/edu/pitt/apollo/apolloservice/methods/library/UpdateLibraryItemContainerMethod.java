@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
 
 /**
  *
@@ -13,8 +13,8 @@ import edu.pitt.apollo.library_service_types.v3_0_0.AddOrUpdateLibraryItemContai
  */
 public class UpdateLibraryItemContainerMethod extends LibraryMethod {
 
-	public static AddOrUpdateLibraryItemContainerResult updateLibraryItemContainer(AddOrUpdateLibraryItemContainerMessage addOrUpdateLibraryItemContainerMessage) {
-		return getLibraryServicePort().updateLibraryItemContainer(addOrUpdateLibraryItemContainerMessage);
+	public static UpdateLibraryItemContainerResult updateLibraryItemContainer(UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
+		return getLibraryServicePort().updateLibraryItemContainer(updateLibraryItemContainerMessage);
 	}
 	
 }
