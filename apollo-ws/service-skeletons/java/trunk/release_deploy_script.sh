@@ -8,7 +8,7 @@ read svn_username
 echo -n "enter subversion password: "
 read -s svn_password
 
-mvn release:prepare -DreleaseVersion=$release_version -DdevelopmentVersion="$development_version-SNAPSHOT" -Dtag=$release_version -Dusername=$svn_username -Dpassword=$svn_password  -DautoVersionSubmodules=true
+mvn release:prepare -DreleaseVersion=$release_version -DdevelopmentVersion="$development_version-SNAPSHOT" -Dtag=$release_version -Dusername=$svn_username -Dpassword=$svn_password  -DautoVersionSubmodules=true -PrunShade
 
 mvn release:perform -Dgoals=deploy -DuseReleaseProfile=false
 
