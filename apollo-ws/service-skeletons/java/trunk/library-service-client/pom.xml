@@ -63,7 +63,15 @@
                     </arguments>
                 </configuration>
             </plugin>
-            <plugin>
+	
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+        <id>runShade</id>
+        <build>
+        <plugins>
+                <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.3</version>
@@ -87,8 +95,9 @@
                     </execution>
                 </executions>
             </plugin>
-	
-        </plugins>
-    </build>
+            </plugins>
+          </build>
+      </profile>
+    </profiles>
     </project>
 
