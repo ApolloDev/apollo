@@ -248,6 +248,8 @@ CREATE TABLE run_status (
   CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id)
 );
 
+ALTER TABLE run_status engine = InnoDB;
+
 -- HSQLDB: ALTER TABLE run_status ALTER COLUMN id RESTART WITH 1;
 
 CREATE TABLE simulation_group_definition (
