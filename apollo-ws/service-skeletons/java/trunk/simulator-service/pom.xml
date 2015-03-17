@@ -28,30 +28,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <executions>
@@ -119,8 +95,10 @@
             <id>CXF</id>
             <!-- To use Metro by default, move activation element to its profile below -->
             <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+             <property>
+                    <name>!skipCXF</name>
+                </property> 
+                </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -162,6 +140,37 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+        <id>runShade</id>
+        <build>
+        <plugins>
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
+                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            </plugins>
+          </build>
+      </profile>
     </profiles>
     <name>Simulator Service</name>
 
