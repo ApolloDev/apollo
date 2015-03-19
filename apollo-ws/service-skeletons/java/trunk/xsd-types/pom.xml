@@ -76,10 +76,8 @@
 			<id>CXF</id>
 			<!-- To use Metro by default, move activation element to its profile below -->
 			<activation>
-               <property>
-                    <name>!skipCXF</name>
-                </property> 
-                </activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<cxf.version>2.7.3</cxf.version>
 			</properties>
@@ -99,46 +97,11 @@
 				</dependency>
 			</dependencies>
 		</profile>
-        <profile>
-        <id>runShade</id>
-        <build>
-        <plugins>
-                <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            </plugins>
-          </build>
-      </profile>
+
 		<profile>
 			<!-- See http://metro.java.net/guide/Using_Mavenized_Metro_Binaries.html 
 				for more Metro/Maven config info -->
 			<id>Metro</id>
-              <activation>
-                <property>
-                    <name>!skipMetro</name>
-                </property> 
-            </activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.glassfish.metro</groupId>
@@ -204,6 +167,31 @@
 				</descriptorRefs> </configuration> <executions> <execution> <id>make-assembly</id> 
 				this is used for inheritance merges <phase>package</phase> bind to the packaging 
 				phase <goals> <goal>single</goal> </goals> </execution> </executions> </plugin> -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
+										<exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
