@@ -16,8 +16,7 @@
             <url>https://repository.sonatype.org/content/groups/forge/</url>
         </repository>
     </repositories>
-    
-    
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -102,6 +101,31 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
+                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
             the objects created by running wsdl2java or wsimport), as this JAR will also 
             be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
@@ -144,9 +168,7 @@
             <id>CXF</id>
             <!-- To use Metro by default, move activation element to its profile below -->
             <activation>
-                <property>
-                    <name>!skipCXF</name>
-                </property> 
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -189,36 +211,5 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-        <id>runShade</id>
-        <build>
-        <plugins>
-                <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            </plugins>
-          </build>
-      </profile>
     </profiles>
 </project>
