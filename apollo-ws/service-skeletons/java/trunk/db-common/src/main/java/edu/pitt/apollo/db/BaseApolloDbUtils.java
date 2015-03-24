@@ -255,6 +255,9 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseApolloDbUtils {
 
 	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
+
+    static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
+
 	private static final String APOLLO_DIR;
 	private static final String SALT_FILE_NAME = "salt.txt";
 	protected static final String SYSTEM_SALT;
@@ -506,14 +509,20 @@ public abstract class BaseApolloDbUtils {
 
 	protected static final ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
 		Class clazz = obj.getClass();
-
-		Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
-		jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+        JAXBMarshaller marshaller = null;
+        if (marshallerMap.containsKey(clazz)) {
+            marshaller =  marshallerMap.get(clazz);
+        } else {
+            Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
+            jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 //		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz),
-				jaxbProperties);
-		JAXBMarshaller marshaller = jc.createMarshaller();
-		marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+            JAXBContext jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz),
+                    jaxbProperties);
+            marshaller = jc.createMarshaller();
+            marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshallerMap.put(clazz, marshaller);
+        }
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 		marshaller.marshal(obj, baos);
