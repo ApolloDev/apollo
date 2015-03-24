@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.exception.BatchException;
@@ -103,7 +104,9 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			String toHash = time + rnd;
 			md5.update(toHash.getBytes());
 			String filename = new BigInteger(1, md5.digest()).toString(16);
-			filename = filename + ".txt";
+            File f = new File(ApolloServiceConstants.APOLLO_DIR + "tmp");
+            f.mkdirs();
+			filename =  ApolloServiceConstants.APOLLO_DIR  + "tmp" + File.separator + filename + ".txt";
 			return filename;
 		} catch (NoSuchAlgorithmException e) {
 			// This is not likely to happen as MD5 isn't going anywhere.
