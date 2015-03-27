@@ -137,12 +137,13 @@ public class ImageGenerator {
 
 	private TimeSeriesCurveTypeList getTimeSeriesCurveTypeListForHuman(String simulatorName) {
 		TimeSeriesCurveTypeList timeSeriesCurveTypesToUseForHuman = new TimeSeriesCurveTypeList();
-		if (simulatorName.equals("flute")) {
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
-			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
-					getChartTypeProperties(ChartTypeEnum.INCIDENCE, "Incidence of newly latent over time",
-							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
-		} else if (simulatorName.equals("anthrax")) {
+//		if (simulatorName.equals("flute")) {
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+//			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+//					getChartTypeProperties(ChartTypeEnum.INCIDENCE, "Incidence of newly latent over time",
+//							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
+//		} else 
+		if (simulatorName.equals("anthrax")) {
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.RECOVERED);
