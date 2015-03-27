@@ -83,20 +83,20 @@ public class WSClient {
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-//		AddOrUpdateLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
-//		setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion());
+		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+		setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
 
-		AddLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
-		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
-//
-		AddLibraryItemContainerResult antiviralResult = addAntiviralControlStrategyToLibrary(a, port);
-		setReleaseVersionForAntiviralControlStratgy(a, port, antiviralResult.getVersion(), antiviralResult.getUrn());
-//
-		AddLibraryItemContainerResult allSchoolsResult = addAllSchoolClosureControlStrategyToLibrary(a, port);
-		setReleaseVersionForAllSchoolsControlStratgy(a, port, allSchoolsResult.getVersion(), allSchoolsResult.getUrn());
-//
-		AddLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlStrategyToLibrary(a, port);
-		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion(), individualSchoolsResult.getUrn());
+//		AddLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
+//		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
+////
+//		AddLibraryItemContainerResult antiviralResult = addAntiviralControlStrategyToLibrary(a, port);
+//		setReleaseVersionForAntiviralControlStratgy(a, port, antiviralResult.getVersion(), antiviralResult.getUrn());
+////
+//		AddLibraryItemContainerResult allSchoolsResult = addAllSchoolClosureControlStrategyToLibrary(a, port);
+//		setReleaseVersionForAllSchoolsControlStratgy(a, port, allSchoolsResult.getVersion(), allSchoolsResult.getUrn());
+////
+//		AddLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlStrategyToLibrary(a, port);
+//		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion(), individualSchoolsResult.getUrn());
 
 //		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlStrategyInLibrary(a, port);
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
