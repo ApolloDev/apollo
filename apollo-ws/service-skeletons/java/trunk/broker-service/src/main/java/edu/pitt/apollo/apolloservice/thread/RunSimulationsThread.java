@@ -41,6 +41,11 @@ import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensusDataCell
 import edu.pitt.apollo.types.v3_0_0.ReproductionNumber;
 import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceException;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -70,15 +75,18 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 		Double percentExposed;
 		Double percentInfectious;
 		Double percentRecovered;
+		int dayOfWeekOffset;
 
 		public BatchConfigRecord(String[] columns) {
-			percentSusceptible = Double.valueOf(columns[0]);
-			percentExposed = Double.valueOf(columns[1]);
-			percentInfectious = Double.valueOf(columns[2]);
-			percentRecovered = Double.valueOf(columns[3]);
-			r0 = Double.valueOf(columns[4]);
-			latentPeriod = Double.valueOf(columns[5]);
-			infectiousPeriod = Double.valueOf(columns[6]);
+			// column 0 is the ODS model ID
+			percentSusceptible = Double.valueOf(columns[1]);
+			percentExposed = Double.valueOf(columns[2]);
+			percentInfectious = Double.valueOf(columns[3]);
+			percentRecovered = Double.valueOf(columns[4]);
+			r0 = Double.valueOf(columns[5]);
+			latentPeriod = Double.valueOf(columns[6]);
+			infectiousPeriod = Double.valueOf(columns[7]);
+			dayOfWeekOffset = Integer.parseInt(columns[8]);
 		}
 	}
 
@@ -148,7 +156,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 	}
 
 	public static RunSimulationMessage populateTemplateWithRecord(
-			RunSimulationsMessage template, BatchConfigRecord batchConfigRecord) {
+			RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException {
 
 		RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
 		runSimulationMessage.setAuthentication(template.getAuthentication());
@@ -193,6 +201,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 		censusDataCells.add(createPiiDataCell(InfectionStateEnum.RECOVERED,
 				batchConfigRecord.percentRecovered));
 
+		GregorianCalendar gc = scenarioDate.toGregorianCalendar();
+		gc.add(Calendar.DATE, batchConfigRecord.dayOfWeekOffset);
+		scenarioDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+		runSimulationMessage.getInfectiousDiseaseScenario().setScenarioDate(scenarioDate);
+
 		return runSimulationMessage;
 
 	}
@@ -209,6 +222,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 		String filename = null;
 		SoftwareIdentification simulatorIdentification = message
 				.getSimulatorIdentification();
+
+		XMLGregorianCalendar scenarioDate = (XMLGregorianCalendar) message.getBaseInfectiousDiseaseScenario().getScenarioDate().clone();
 		try {
 			try {
 				filename = downloadUrlToFile(configFileUrl);
@@ -258,7 +273,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 							params);
 					if (message instanceof RunSimulationsMessage) {
 						RunSimulationMessage currentRunSimulationMessage = populateTemplateWithRecord(
-								message, batchConfigRecord);
+								message, batchConfigRecord, scenarioDate);
 						RunMethod runMethod = new RunMethodForSimulationAndVisualization(
 								authentication,
 								message.getSimulatorIdentification(),
@@ -304,6 +319,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 				if (!translatorRunSuccessful) {
 					return;
 				}
+			} catch (DatatypeConfigurationException ex) {
+				ApolloServiceErrorHandler
+						.writeErrorToErrorFile(
+								"Error staging job. There was an exception setting the scenario date.", runId
+						);
 			} finally {
 				sc.close();
 			}
