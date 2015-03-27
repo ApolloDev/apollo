@@ -378,6 +378,8 @@ INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log
 INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 79*/
 INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 80*/
 INSERT INTO run_data_description (label) values ('FRED ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 81*/
+INSERT INTO run_data_description (label) values ('FluTE ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 82*/
+INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 83*/
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
 	(1, 1, 'TEXT'), 
@@ -865,7 +867,19 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(81, 2, 'ods_required_output_for_model_validation.csv'),
 	(81, 3, 'SIMULATOR_LOG_FILE'),
 	(81, 4, '3'),
-	(81, 5, '0');
+	(81, 5, '0'),
+    
+    (82, 1, 'TEXT'), 
+	(82, 2, 'ods_required_output_for_model_validation.csv'),
+	(82, 3, 'SIMULATOR_LOG_FILE'),
+	(82, 4, '6'),
+	(82, 5, '0'),
+    
+    (83, 1, 'TEXT'), 
+	(83, 2, 'ods_required_output_for_model_validation.csv'),
+	(83, 3, 'SIMULATOR_LOG_FILE'),
+	(83, 4, '2'),
+	(83, 5, '0');
     
 CREATE VIEW run_data_description_view AS
 SELECT
