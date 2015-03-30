@@ -5,60 +5,60 @@
     <!ENTITY UO "http://purl.org/obo/owl/UO#" >
     <!ENTITY GO "http://purl.org/obo/owl/GO#" >
     <!ENTITY DOID "http://purl.org/obo/owl/DOID#" >
-    <!ENTITY TRANS "http://purl.org/obo/owl/TRANS#" >
     <!ENTITY bfo "http://www.ifomis.org/bfo/1.1#" >
-    <!ENTITY IDOMAL "http://purl.org/obo/owl/IDOMAL#" >
+    <!ENTITY TRANS "http://purl.org/obo/owl/TRANS#" >
     <!ENTITY obo "http://purl.obolibrary.org/obo/" >
+    <!ENTITY IDOMAL "http://purl.org/obo/owl/IDOMAL#" >
     <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
     <!ENTITY OBO_REL "http://purl.org/obo/owl/OBO_REL#" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY NCBITaxon "http://purl.org/obo/owl/NCBITaxon#" >
-    <!ENTITY span "http://www.ifomis.org/bfo/1.1/span#" >
-    <!ENTITY snap "http://www.ifomis.org/bfo/1.1/snap#" >
     <!ENTITY asv "http://purl.obolibrary.org/obo/asv/" >
+    <!ENTITY snap "http://www.ifomis.org/bfo/1.1/snap#" >
+    <!ENTITY span "http://www.ifomis.org/bfo/1.1/span#" >
     <!ENTITY ro "http://www.obofoundry.org/ro/ro.owl#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY geo "http://purl.obolibrary.org/obo/geo.owl#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY apollo_sv2 "http://purl.obolibrary.org/obo/apollo_sv.owl#" >
     <!ENTITY oboInOwl "http://www.geneontology.org/formats/oboInOwl#" >
+    <!ENTITY apollo_sv2 "http://purl.obolibrary.org/obo/apollo_sv.owl#" >
     <!ENTITY apollo_sv "http://purl.obolibrary.org/obo/apollo_sv.owl/" >
 ]>
 
 
 <rdf:RDF xmlns="http://www.w3.org/2002/07/owl#"
      xml:base="http://www.w3.org/2002/07/owl"
-     xmlns:apollo_sv2="&obo;apollo_sv.owl#"
-     xmlns:asv="&obo;asv/"
-     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:ro="http://www.obofoundry.org/ro/ro.owl#"
+     xmlns:geo="&obo;geo.owl#"
      xmlns:apollo_sv="&obo;apollo_sv.owl/"
-     xmlns:DOID="http://purl.org/obo/owl/DOID#"
-     xmlns:OBO_REL="http://purl.org/obo/owl/OBO_REL#"
+     xmlns:UO="http://purl.org/obo/owl/UO#"
+     xmlns:NCBITaxon="http://purl.org/obo/owl/NCBITaxon#"
+     xmlns:snap="http://www.ifomis.org/bfo/1.1/snap#"
+     xmlns:bfo="http://www.ifomis.org/bfo/1.1#"
+     xmlns:asv="&obo;asv/"
+     xmlns:apollo_sv2="&obo;apollo_sv.owl#"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:IDOMAL="http://purl.org/obo/owl/IDOMAL#"
      xmlns:GO="http://purl.org/obo/owl/GO#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:bfo="http://www.ifomis.org/bfo/1.1#"
-     xmlns:NCBITaxon="http://purl.org/obo/owl/NCBITaxon#"
-     xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
-     xmlns:geo="&obo;geo.owl#"
-     xmlns:IDOMAL="http://purl.org/obo/owl/IDOMAL#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:UO="http://purl.org/obo/owl/UO#"
-     xmlns:ro="http://www.obofoundry.org/ro/ro.owl#"
-     xmlns:obo="http://purl.obolibrary.org/obo/"
-     xmlns:span="http://www.ifomis.org/bfo/1.1/span#"
-     xmlns:snap="http://www.ifomis.org/bfo/1.1/snap#"
-     xmlns:dc="http://purl.org/dc/elements/1.1/">
+     xmlns:DOID="http://purl.org/obo/owl/DOID#"
+     xmlns:OBO_REL="http://purl.org/obo/owl/OBO_REL#"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+     xmlns:TRANS="http://purl.org/obo/owl/TRANS#"
+     xmlns:span="http://www.ifomis.org/bfo/1.1/span#">
     <Ontology rdf:about="&obo;apollo_sv/dev/apollo_sv.owl">
-        <dc:contributor>Amanda Hicks</dc:contributor>
+        <dc:contributor>Shawn T. Brown</dc:contributor>
         <dc:contributor>William R. Hogan</dc:contributor>
         <dc:contributor>Mike Wagner</dc:contributor>
-        <dc:contributor>Josh Hanna</dc:contributor>
-        <dc:contributor>John Levander</dc:contributor>
-        <dc:contributor>Shawn T. Brown</dc:contributor>
         <dc:creator>Mathias Brochhausen</dc:creator>
+        <dc:contributor>John Levander</dc:contributor>
         <versionInfo xml:lang="en">(development) see svn repository for details</versionInfo>
+        <dc:contributor>Amanda Hicks</dc:contributor>
         <dc:title xml:lang="en">Apollo Structured Vocabulary (Apollo-SV)</dc:title>
+        <dc:contributor>Josh Hanna</dc:contributor>
         <rdfs:comment xml:lang="en">When citing Apollo-SV, use the permanent URL of the ontology: http://purl.obolibrary.org/obo/apollo_sv.owl.  When referencing a specific component of the Apollo-SV such as a class, object property, annotation property, or individual, use the component&apos;s Uniform Resource Identifier (URI).</rdfs:comment>
         <dc:license xml:lang="en">https://creativecommons.org/licenses/by/3.0/</dc:license>
         <imports rdf:resource="&obo;geo/dev/geo.owl"/>
@@ -163,8 +163,8 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
 
     <AnnotationProperty rdf:about="&obo;ERO_0000480">
         <rdfs:label xml:lang="en">hasURL</rdfs:label>
-        <obo:IAO_0000412>VIVO-ISF</obo:IAO_0000412>
         <rdfs:comment xml:lang="en">There are several URL and hasURL annotation properties out there in the ontology world. This one had the most sensible source ontology and OBO ID URI combination out there.</rdfs:comment>
+        <obo:IAO_0000412>VIVO-ISF</obo:IAO_0000412>
     </AnnotationProperty>
     
 
@@ -172,8 +172,8 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
     <!-- http://purl.obolibrary.org/obo/IAO_0000111 -->
 
     <AnnotationProperty rdf:about="&obo;IAO_0000111">
-        <rdfs:label>editor preferred term</rdfs:label>
         <rdfs:label xml:lang="en">editor preferred label</rdfs:label>
+        <rdfs:label>editor preferred term</rdfs:label>
         <rdfs:label xml:lang="en">editor preferred term</rdfs:label>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </AnnotationProperty>
@@ -929,8 +929,8 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
     <!-- http://purl.obolibrary.org/obo/RO_0002222 -->
 
     <ObjectProperty rdf:about="&obo;RO_0002222">
-        <rdfs:range rdf:resource="&span;Occurrent"/>
         <rdfs:domain rdf:resource="&span;Occurrent"/>
+        <rdfs:range rdf:resource="&span;Occurrent"/>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
     </ObjectProperty>
     
@@ -941,9 +941,9 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
     <ObjectProperty rdf:about="&obo;RO_0002224">
         <rdfs:label xml:lang="en">starts with</rdfs:label>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
-        <obo:IAO_0000112>Every insulin receptor signaling pathway starts with the binding of a ligand to the insulin receptor</obo:IAO_0000112>
         <obo:IAO_0000118>started by</obo:IAO_0000118>
         <obo:IAO_0000115>x starts with y if and only if x has part y and the time point at which x starts is equivalent to the time point at which y starts. Formally: α(y) = α(x) ∧ ω(y) &lt; ω(x), where α is a function that maps a process to a start point, and ω is a function that maps a process to an end point.</obo:IAO_0000115>
+        <obo:IAO_0000112>Every insulin receptor signaling pathway starts with the binding of a ligand to the insulin receptor</obo:IAO_0000112>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
         <rdfs:subPropertyOf rdf:resource="&obo;RO_0002222"/>
     </ObjectProperty>
@@ -1049,28 +1049,28 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
         <rdfs:label xml:lang="en">realized_by</rdfs:label>
         <rdfs:comment rdf:datatype="&xsd;string">NOTE: there appears to be some consistency in usage as to whether processes or continuants realize</rdfs:comment>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
-        <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
-        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
         <oboInOwl:hasAlternativeId>OBO_REL:realized_as</oboInOwl:hasAlternativeId>
+        <oboInOwl:hasOBONamespace>relationship</oboInOwl:hasOBONamespace>
+        <oboInOwl:hasAlternativeId>OBO_REL:0000035</oboInOwl:hasAlternativeId>
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasRelatedSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasRelatedSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasRelatedSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasRelatedSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </ObjectProperty>
     
 
@@ -1594,8 +1594,8 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
     <Class rdf:about="http://purl.obolibrary.obo/obo/NCBITaxon_7160">
         <rdfs:label xml:lang="en">Aedes albopictus</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_53541"/>
-        <obo:IAO_0000118>forest day mosquito</obo:IAO_0000118>
         <obo:IAO_0000118>Stegomyia albopicta</obo:IAO_0000118>
+        <obo:IAO_0000118>forest day mosquito</obo:IAO_0000118>
     </Class>
     
 
@@ -1605,14 +1605,14 @@ For the 1982-10-17 date, we suggest the dc:created annotation.</rdfs:comment>
     <Class rdf:about="&obo;APOLLO_SV_00000000">
         <rdfs:label xml:lang="en">purely intentional entity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;GenericallyDependentContinuant"/>
-        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant which derives its existence and its entire endowment from an intending experience of consciousness (an &quot;act&quot;) that is laden with determinate, uniformily structured content.</obo:IAO_0000115>
-        <dc:source>Johansson I. (2009) Proof of the existence of universals – and Roman Ingarden&apos;s Ontology. Metaphysica. International Journal for Ontology &amp; Metaphysics. 10, 65-87</dc:source>
         <dc:source>Ingarden, R. (1964) Der Streit um die Existenz der Welt I. Existentalontologie. Max Niemeyer, Tübingen.
 </dc:source>
-        <dc:source>Ingarden, R. (1965b) Der Streit um die Existenz der Welt II/1. Formalontologie 1. Teil. Max Niemeyer, Tübingen.</dc:source>
-        <dc:source>Ingarden, R. (1965a) Das literarische Kunstwerk. 3. Auflage. Max Niemeyer, Tübingen.</dc:source>
-        <rdfs:comment xml:lang="en">MB: Right now we represent &apos;purely intentional entities&apos; as siblings to &apos;information content entities&apos;. Given their nature I am not entirly sure that this is correct. It seems that both &apos;information content entity&apos; and &apos;simulation&apos; are subclass to &apos;purely intentional entity&apos;.</rdfs:comment>
         <dc:source>Thomasson AL. &quot;Ingarden and the Ontology of Cultural Objects.&quot; In: Chrudziminski A (ed.): Existence, Culture, and Person. The Ontology of Roman Ingarden. Frankfurt: ontos, 2005, 115-136.</dc:source>
+        <dc:source>Ingarden, R. (1965b) Der Streit um die Existenz der Welt II/1. Formalontologie 1. Teil. Max Niemeyer, Tübingen.</dc:source>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant which derives its existence and its entire endowment from an intending experience of consciousness (an &quot;act&quot;) that is laden with determinate, uniformily structured content.</obo:IAO_0000115>
+        <dc:source>Ingarden, R. (1965a) Das literarische Kunstwerk. 3. Auflage. Max Niemeyer, Tübingen.</dc:source>
+        <dc:source>Johansson I. (2009) Proof of the existence of universals – and Roman Ingarden&apos;s Ontology. Metaphysica. International Journal for Ontology &amp; Metaphysics. 10, 65-87</dc:source>
+        <rdfs:comment xml:lang="en">MB: Right now we represent &apos;purely intentional entities&apos; as siblings to &apos;information content entities&apos;. Given their nature I am not entirly sure that this is correct. It seems that both &apos;information content entity&apos; and &apos;simulation&apos; are subclass to &apos;purely intentional entity&apos;.</rdfs:comment>
     </Class>
     
 
@@ -1954,12 +1954,12 @@ For example, if run length is 10 and the time step is 6 hours, then the simulato
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">infectiousPeriodDuration</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A duration of the parts of an infection during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A period when an individual of a particular species, who is infected with a particular pathogen, is able to infect susceptible organisms of a particular species.
 
 Note that the susceptible and infectious organisms can be of different species.</obo:IAO_0000600>
-        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs.</rdfs:comment>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A duration of the parts of an infection during which the host bears an infectious disposition in a population of hosts.</obo:IAO_0000115>
+        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs.</rdfs:comment>
     </Class>
     
 
@@ -1986,14 +1986,14 @@ Note that the susceptible and infectious organisms can be of different species.<
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">latentPeriodDuration</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs</rdfs:comment>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A duration of the time interval between the host acquiring an infection and the host bearing a contagiousness disposition during the same disease course within a population of hosts.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A period during which an organism of a particular species, who is infected with a particular pathogen, is not yet able to infect susceptible organisms of a particular species.  
 
 Note that the susceptible and infected organisms can be of different species.
 
 </obo:IAO_0000600>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <rdfs:comment xml:lang="en">MB: In order to get the temporal occupation relations I added properties that I renamed with BFO2 URIs</rdfs:comment>
         <rdfs:comment xml:lang="en">The duration of the period between when an organism becomes infected and when it becomes infectious.</rdfs:comment>
     </Class>
     
@@ -2089,12 +2089,12 @@ Any ideas?  I’ve considered and rejected allowing individual organisms to be f
         <rdfs:label xml:lang="en">vaccination compliance</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0302867"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">vaccination cm compliance</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">MB: This class is still awaiting its class restriction. It should be restricted as being about a population that has members that are eligible for a vaccination against the members that are eligible and consented the vaccination. There is a class &quot;eligibility rule&quot; in OBI (http://purl.obolibrary.org/obo/OBI_0500026), but it is restricted by definition to studies. I put in an issue in the OBI issue tracker. The consenting process and its specified outcome should be done in d-acts, but needs to be done properly.</rdfs:comment>
         <rdfs:comment xml:lang="en">MW: I still see enough similarities at the abstract level among some control measures that we might add the concepts “Control measure compliance”, “Control measure efficacy”  and “control measure efficacy delay.”    We could then post-coordinate particular control measures such as vaccine.
 
 It is worth noting that there are control measures such as closing schools that are not applied at the individual level.   We have not represented those control measures yet.
 </rdfs:comment>
+        <obo:IAO_0000600>The fraction of individuals in a population who are eligible according to a particular vaccination policy and will accept vaccination assuming no supply constraint.</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">The fraction expressing the probability that an organism who is eligible according to a particular vaccination policy will be consented for that vaccination.</obo:IAO_0000115>
     </Class>
     
@@ -2256,9 +2256,9 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">simulated population</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">A simulated population is a set of simulated organisms.  The set can be null (e.g., the set of 200 year-old H. sapiens).  A simulated population can include more than one species, in which case it may be convenient to define each species as a simulated population and form the overall simulated population by set union.  Similarly, it may be convenient to define sociodemographic or geographic strata within a simulated population as simulated populations and obtain the overall simulated population by set union.  See examples in “Programmer’s Guide, page x)</obo:IAO_0000600>
         <obo:IAO_0000115 xml:lang="en">A simulation of the aggregate of organisms that are members of the population participating in a simulator.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -2297,8 +2297,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         </equivalentClass>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
         <obo:IAO_0000115 xml:lang="en">The planned process of finding the number of elements in a finite set of objects.</obo:IAO_0000115>
+        <obo:IAO_0000119>http://en.wikipedia.org/wiki/Counting</obo:IAO_0000119>
     </Class>
     
 
@@ -2360,8 +2360,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <rdfs:subClassOf rdf:resource="&obo;IAO_0020000"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">population location</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000600 xml:lang="en">An identifier referring to geographical location of a simulated population.  Our intent is for the location identifiers to be INCITS codes.</obo:IAO_0000600>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An identifier that refers to a geographical location to be used as location of a population in a simulation.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
     </Class>
     
 
@@ -2440,8 +2440,8 @@ Note that the name for this concept, were it to be named based on its intent, wo
             </Restriction>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">disease</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000115 xml:lang="en">A representation of a disposition realized in a represented disease course that at least part of the simulated population is represented as participating in.</obo:IAO_0000115>
         <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A representation of a disposition realized in a represented disease course that at least part of the simulated population is represented as participating in.</obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">The disease being simulated.</obo:IAO_0000600>
     </Class>
     
@@ -2702,8 +2702,8 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
             </Class>
         </rdfs:subClassOf>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">epidemic simulation</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">A simulating of a disease epidemic or pandemic.</obo:IAO_0000115>
+        <obo:IAO_0000117>Mathias Brochhausen</obo:IAO_0000117>
         <obo:IAO_0000600 xml:lang="en">the process of simulating a disease epidemic or pandemic. This term is not currently used in Apollo-WS.</obo:IAO_0000600>
     </Class>
     
@@ -2775,12 +2775,12 @@ MB: This issue will need to be taken care of in the axiomatization of simulated 
         <rdfs:label xml:lang="en">simulation of antiviral control measure</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000070"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">antiviral control measure</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000115>The simulation of an antiviral control measure. </obo:IAO_0000115>
         <obo:IAO_0000600 xml:lang="en">A type of control measure based on administration of chemotherapeutic agents to an infected or high-risk organism that kill or inhibit replication of viruses within a simulated organism.</obo:IAO_0000600>
         <rdfs:comment xml:lang="en">MB: For all the antiviral-related classes I referred to ChEBI: Antiviral class. I wasn&apos;t able to use the plug-in though (there was a JAVA heap space error, probably due to the size of ChEBI).
 AND (more importantly) I did not re-use any of the ChEBI hierarchy which, even in the BFO version is a mess.
 Maybe we need to discuss this.
 </rdfs:comment>
-        <obo:IAO_0000115>The simulation of an antiviral control measure. </obo:IAO_0000115>
     </Class>
     
 
@@ -3714,8 +3714,8 @@ The concept derives from the epidemiological notion of ‘herd immunity,’ whic
         <rdfs:label xml:lang="en">obsolete_educational institution</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboInOwl;ObsoleteClass"/>
         <deprecated rdf:datatype="&xsd;boolean">true</deprecated>
-        <obo:IAO_0000115 xml:lang="en">An educational institution is an place organization which provides the necessary system for people of different ages gain an education. It includes (among others) preschools, childcare, elementary schools, and universities.</obo:IAO_0000115>
         <obo:IAO_0000119>http://en.wikipedia.org/wiki/Types_of_educational_institutions (amended)</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">An educational institution is an place organization which provides the necessary system for people of different ages gain an education. It includes (among others) preschools, childcare, elementary schools, and universities.</obo:IAO_0000115>
     </Class>
     
 
@@ -4039,8 +4039,8 @@ An infection is acquired from an infectious organism or a contaminated thing.
         <rdfs:label xml:lang="en">control strategy target population fraction</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000075"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">control strategy target population fraction</apollo_sv:APOLLO_SV_0000040>
-        <rdfs:comment>a specification of a population that a control strategy applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
         <obo:IAO_0000600 xml:lang="en">Fraction of organisms in a target population that a control strategy program seeks to enroll or prioritize</obo:IAO_0000600>
+        <rdfs:comment>a specification of a population that a control strategy applies to.  It is intended to apply to a real population, so I don’t know whether you would consider it a simulated thing.  I don’t.</rdfs:comment>
     </Class>
     
 
@@ -6487,8 +6487,8 @@ can&apos;t recall whether we should use process or processual_entity for future 
         <rdfs:subClassOf rdf:resource="&obo;APOLLO_SV_00000251"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">WeibullDistribution</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000117 xml:lang="en">Mathias Brochhausen</obo:IAO_0000117>
-        <obo:IAO_0000119 xml:lang="en">The Weibull distribution gives the distribution of lifetimes of objects. It was originally proposed to quantify fatigue data, but it is also used in analysis of systems involving a &quot;weakest link.&quot;</obo:IAO_0000119>
         <obo:IAO_0000115 xml:lang="en">The Weibull distribution gives the distribution of lifetimes of objects. It was originally proposed to quantify fatigue data, but it is also used in analysis of systems involving a &quot;weakest link.&quot;</obo:IAO_0000115>
+        <obo:IAO_0000119 xml:lang="en">The Weibull distribution gives the distribution of lifetimes of objects. It was originally proposed to quantify fatigue data, but it is also used in analysis of systems involving a &quot;weakest link.&quot;</obo:IAO_0000119>
     </Class>
     
 
@@ -7703,8 +7703,8 @@ The constant rate may be zero.  The period of an epidemic may be defined using s
         <rdfs:label xml:lang="en">drug product</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Object"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/dron.owl</obo:IAO_0000412>
-        <dc:creator xml:lang="en">William Hogan</dc:creator>
         <obo:IAO_0000117 xml:lang="en">William Hogan</obo:IAO_0000117>
+        <dc:creator xml:lang="en">William Hogan</dc:creator>
         <obo:IAO_0000115 xml:lang="en">a material entity (1) containing at least one scattered molecular aggregate as part (the active ingredient) and (2) that is the bearer of a clinical drug role</obo:IAO_0000115>
     </Class>
     
@@ -8948,6 +8948,17 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_33630 -->
+
+    <Class rdf:about="&obo;NCBITaxon_33630">
+        <rdfs:label xml:lang="en">Alveolata</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&NCBITaxon;NCBITaxon_2759"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">alveolates</obo:IAO_0000118>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_35237 -->
 
     <Class rdf:about="&obo;NCBITaxon_35237">
@@ -8977,6 +8988,17 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_36330 -->
+
+    <Class rdf:about="&obo;NCBITaxon_36330">
+        <rdfs:label xml:lang="en">Plasmodium ovale</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_418103"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">malaria parasite p. ovale</obo:IAO_0000118>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_37124 -->
 
     <Class rdf:about="&obo;NCBITaxon_37124">
@@ -8986,11 +9008,44 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
     
 
 
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_418103 -->
+
+    <Class rdf:about="&obo;NCBITaxon_418103">
+        <rdfs:label xml:lang="en">Plasmodium (Plasmodium)</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_5820"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">plasmodium</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_418107 -->
+
+    <Class rdf:about="&obo;NCBITaxon_418107">
+        <rdfs:label xml:lang="en">Plasmodium (Laverania)</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_5820"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">laverania</obo:IAO_0000118>
+    </Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/NCBITaxon_41827 -->
 
     <Class rdf:about="&obo;NCBITaxon_41827">
         <rdfs:label xml:lang="en">Culicoidea</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_43786"/>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_422676 -->
+
+    <Class rdf:about="&obo;NCBITaxon_422676">
+        <rdfs:label xml:lang="en">Aconoidasida</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_5794"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">hematozoa</obo:IAO_0000118>
     </Class>
     
 
@@ -9064,6 +9119,71 @@ concretized and realized by an actor&quot; with alternative term  &quot;instruct
         <rdfs:label xml:lang="en">Bundibugyo ebolavirus</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_186536"/>
         <obo:IAO_0000118 xml:lang="en">Ebolavirus bundibugyo</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5794 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5794">
+        <rdfs:label xml:lang="en">Apicomplexa</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_33630"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">apicomplexans</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5819 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5819">
+        <rdfs:label xml:lang="en">Haemosporida</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_422676"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">haemosporidians</obo:IAO_0000118>
+        <obo:IAO_0000118 xml:lang="en">haemosporina</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5820 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5820">
+        <rdfs:label xml:lang="en">Plasmodium</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_5819"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5833 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5833">
+        <rdfs:label xml:lang="en">Plasmodium falciparum</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_418107"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">plasmodium (laverania) falciparum</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5855 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5855">
+        <rdfs:label xml:lang="en">Plasmodium vivax</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_418103"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
+        <obo:IAO_0000118 xml:lang="en">malaria parasite p. vivax</obo:IAO_0000118>
+    </Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/NCBITaxon_5858 -->
+
+    <Class rdf:about="&obo;NCBITaxon_5858">
+        <rdfs:label xml:lang="en">Plasmodium malariae</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&obo;NCBITaxon_418103"/>
+        <obo:IAO_0000117 xml:lang="en">Matt Diller</obo:IAO_0000117>
     </Class>
     
 
@@ -9484,15 +9604,15 @@ for now.</obo:IAO_0000116>
     <Class rdf:about="&obo;OBI_0001958">
         <rdfs:label>systematic review study design</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OBI_0500000"/>
-        <obo:IAO_0000117>PERSON: Bill Hogan</obo:IAO_0000117>
-        <obo:IAO_0000112>The effect of moderate gestational alcohol consumption during pregnancy on speech and language outcomes in children: a systematic re\
-view. http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3892059/</obo:IAO_0000112>
+        <obo:IAO_0000111>systematic review study design</obo:IAO_0000111>
         <obo:IAO_0000112>Red blood cell transfusion in patients with traumatic brain injury: a systematic review protocol. http://www.ncbi.nlm.nih.gov/pmc/ar\
 ticles/PMC4090399/</obo:IAO_0000112>
-        <obo:IAO_0000111>systematic review study design</obo:IAO_0000111>
+        <obo:IAO_0000112>The effect of moderate gestational alcohol consumption during pregnancy on speech and language outcomes in children: a systematic re\
+view. http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3892059/</obo:IAO_0000112>
         <obo:IAO_0000115>A study design for identifying in the literature prior studies of a pre-determined phenomenon or set of related phenomena according \
 to certain criteria, extracting findings from these studies, and summarizing these findings and/or attempting to draw new conclusions from them which were no\
 t justified by any of the individual, prior studies. Many systematic reviews also assess the quality of the studies so reviewed.</obo:IAO_0000115>
+        <obo:IAO_0000117>PERSON: Bill Hogan</obo:IAO_0000117>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </Class>
     
@@ -9675,9 +9795,9 @@ t justified by any of the individual, prior studies. Many systematic reviews als
     <Class rdf:about="&obo;OGMS_0000031">
         <rdfs:label>disease</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;Disposition"/>
-        <obo:IAO_0000115 xml:lang="en">A disposition (i) to undergo pathological processes that (ii) exists in an organism because of one or more disorders in that organism.</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000232>creation date: 2009-06-23T11:21:20Z</obo:IAO_0000232>
+        <obo:IAO_0000115 xml:lang="en">A disposition (i) to undergo pathological processes that (ii) exists in an organism because of one or more disorders in that organism.</obo:IAO_0000115>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
     </Class>
     
@@ -9689,10 +9809,10 @@ t justified by any of the individual, prior studies. Many systematic reviews als
         <rdfs:label>disorder</rdfs:label>
         <rdfs:subClassOf rdf:resource="&snap;MaterialEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A material entity which is clinically abnormal and part of an extended organism. Disorders are the physical basis of disease.</obo:IAO_0000115>
-        <obo:IAO_0000232>creation date: 2009-06-23T11:39:44Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A material entity which is clinically abnormal and part of an extended organism. Disorders are the physical basis of disease.</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2009-06-23T11:39:44Z</obo:IAO_0000232>
     </Class>
     
 
@@ -9704,11 +9824,11 @@ t justified by any of the individual, prior studies. Many systematic reviews als
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ido.owl</obo:IAO_0000412>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000111>disease course</obo:IAO_0000111>
-        <obo:IAO_0000115 xml:lang="en">The totality of all processes through which a given disease instance is realized.</obo:IAO_0000115>
         <obo:IAO_0000119>http://ontology.buffalo.edu/medo/Disease_and_Diagnosis.pdf</obo:IAO_0000119>
-        <obo:IAO_0000232>creation date: 2009-06-23T11:55:44Z</obo:IAO_0000232>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000111>disease course</obo:IAO_0000111>
+        <obo:IAO_0000232>creation date: 2009-06-23T11:55:44Z</obo:IAO_0000232>
+        <obo:IAO_0000115 xml:lang="en">The totality of all processes through which a given disease instance is realized.</obo:IAO_0000115>
     </Class>
     
 
@@ -9721,8 +9841,8 @@ t justified by any of the individual, prior studies. Many systematic reviews als
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">An object aggregate consisting of an organism and all material entities located within the organism, overlapping the organism, or occupying sites formed in part by the organism.</obo:IAO_0000115>
-        <obo:IAO_0000232>creation date: 2010-01-25T04:51:11Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=3</obo:IAO_0000119>
+        <obo:IAO_0000232>creation date: 2010-01-25T04:51:11Z</obo:IAO_0000232>
     </Class>
     
 
@@ -9734,13 +9854,13 @@ t justified by any of the individual, prior studies. Many systematic reviews als
         <rdfs:subClassOf rdf:resource="&obo;OBI_0000011"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">Treatment</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://code.google.com/p/ogms/issues/detail?id=35</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">A processual entity whose completion is hypothesized (by a healthcare provider) to alleviate the signs and symptoms associated with a disorder</obo:IAO_0000115>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <rdfs:comment xml:lang="en">Apollo-SV currently defines two subclasses of treatment.
 See vaccination and antiviral treatment.  
 </rdfs:comment>
+        <obo:IAO_0000232>creation date: 2010-03-31T04:51:11Z</obo:IAO_0000232>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000115 xml:lang="en">A processual entity whose completion is hypothesized (by a healthcare provider) to alleviate the signs and symptoms associated with a disorder</obo:IAO_0000115>
     </Class>
     
 
@@ -9765,10 +9885,10 @@ See vaccination and antiviral treatment.
         <rdfs:label>health care process</rdfs:label>
         <rdfs:subClassOf rdf:resource="&span;ProcessualEntity"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
+        <obo:IAO_0000115 xml:lang="en">A social process that has at least one human participant and that includes as parts the treatment, diagnosis, or prevention of disease or injury--or the following of instructions of another human for treatment, diagnosis, or prevention--of a participant in the process</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">A social process that has at least one human participant and that includes as parts the treatment, diagnosis, or prevention of disease or injury--or the following of instructions of another human for treatment, diagnosis, or prevention--of a participant in the process</obo:IAO_0000115>
     </Class>
     
 
@@ -9779,10 +9899,10 @@ See vaccination and antiviral treatment.
         <rdfs:label>health care encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000096"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
-        <obo:IAO_0000115 xml:lang="en">A temporally-connected health care process that has as participants an organization or person realizing the health care provider role and a person realizing the patient role.  The health care provider role and patient are realized during the health care encounter</obo:IAO_0000115>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000115 xml:lang="en">A temporally-connected health care process that has as participants an organization or person realizing the health care provider role and a person realizing the patient role.  The health care provider role and patient are realized during the health care encounter</obo:IAO_0000115>
     </Class>
     
 
@@ -9794,9 +9914,9 @@ See vaccination and antiviral treatment.
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">hospitalization</apollo_sv:APOLLO_SV_0000040>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
         <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
     </Class>
     
@@ -9808,10 +9928,10 @@ See vaccination and antiviral treatment.
         <rdfs:label>outpatient encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
+        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
     </Class>
     
 
@@ -9822,10 +9942,10 @@ See vaccination and antiviral treatment.
         <rdfs:label>inpatient encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
+        <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
     </Class>
     
 
@@ -9836,10 +9956,10 @@ See vaccination and antiviral treatment.
         <rdfs:label>ED encounter</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OGMS_0000097"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/ogms.owl</obo:IAO_0000412>
-        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
-        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000117>Albert Goldfain</obo:IAO_0000117>
+        <obo:IAO_0000119>http://groups.google.com/group/ogms-discuss/browse_thread/thread/a2dbc2ed1dff99d6</obo:IAO_0000119>
         <obo:IAO_0000115 xml:lang="en">TODO</obo:IAO_0000115>
+        <obo:IAO_0000232>creation date: 2011-02-21T09:57:44Z</obo:IAO_0000232>
     </Class>
     
 
@@ -9910,8 +10030,8 @@ See vaccination and antiviral treatment.
         <rdfs:label xml:lang="en">human health care role</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;OMRSE_00000024"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/omrse.owl</obo:IAO_0000412>
-        <obo:IAO_0000115 xml:lang="en">A role in human social processes that is realized by health care processes such as seeking or providing treatment for disease and injury, diagnosing disease and injury, or undergoing diagnosis. </obo:IAO_0000115>
         <rdfs:comment>Mathias Brochhausen</rdfs:comment>
+        <obo:IAO_0000115 xml:lang="en">A role in human social processes that is realized by health care processes such as seeking or providing treatment for disease and injury, diagnosing disease and injury, or undergoing diagnosis. </obo:IAO_0000115>
         <obo:IAO_0000117 xml:lang="en">William R. Hogan</obo:IAO_0000117>
         <obo:IAO_0000118 xml:lang="en">health care role</obo:IAO_0000118>
     </Class>
@@ -10723,8 +10843,8 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <rdfs:label xml:lang="en">news article</rdfs:label>
         <rdfs:subClassOf rdf:resource="&obo;IAO_0000310"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/flybase_vocab</obo:IAO_0000412>
-        <rdfs:comment xml:lang="en">Originally imported into Apollo-SV for purpose of indexing in OBC.ide news articles relevant to infectious disease epidemiology.</rdfs:comment>
         <oboInOwl:hasOBONamespace>pub_type</oboInOwl:hasOBONamespace>
+        <rdfs:comment xml:lang="en">Originally imported into Apollo-SV for purpose of indexing in OBC.ide news articles relevant to infectious disease epidemiology.</rdfs:comment>
         <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#camcur"/>
     </Class>
     
@@ -10748,12 +10868,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </Class>
     
 
@@ -10767,12 +10887,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/gene_ontology</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
         <obo:IAO_0000115 xml:lang="en">The emergence of an adult insect from a pupa case.</obo:IAO_0000115>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
     </Class>
     
 
@@ -10814,9 +10934,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasDbXref>
-            <rdf:Description/>
-        </oboInOwl:hasDbXref>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -10826,6 +10943,9 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDbXref>
+            <rdf:Description/>
+        </oboInOwl:hasDbXref>
     </Class>
     
 
@@ -10852,15 +10972,15 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasDbXref>
             <rdf:Description/>
         </oboInOwl:hasDbXref>
+        <oboInOwl:hasBroadSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasBroadSynonym>
+        <oboInOwl:hasBroadSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasBroadSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasBroadSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasBroadSynonym>
-        <oboInOwl:hasBroadSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasBroadSynonym>
     </Class>
     
 
@@ -10872,12 +10992,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <rdfs:subClassOf rdf:resource="&GO;GO_0007610"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/gene_ontology</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasDefinition>
             <rdf:Description/>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
     </Class>
     
 
@@ -10909,12 +11029,12 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <rdfs:subClassOf rdf:resource="&GO;GO_0019098"/>
         <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.org/obo/owl/gene_ontology</obo:IAO_0000412>
         <oboInOwl:hasOBONamespace>biological_process</oboInOwl:hasOBONamespace>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
     </Class>
     
 
@@ -11170,26 +11290,96 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <rdf:Description rdf:about="&UO;UO_0000001">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    <rdf:Description rdf:about="&obo;IAO_0000101">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000595">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000078">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    <rdf:Description rdf:about="&ro;integral_part_of">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000079">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
+    <rdf:Description rdf:about="&obo;IAO_0000105">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000314">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000315">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000312">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000313">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000590">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
+    <rdf:Description rdf:about="&obo;iao/dev/obsolete.owl">
+        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000311">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000591">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0100001">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000592">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
@@ -11197,295 +11387,10 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
     <rdf:Description rdf:about="&obo;IAO_0000593">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;coverage">
+    <rdf:Description rdf:about="&dc;rights">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;description">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&UO;UO_0000002">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000225">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000105">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000589">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000220">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000101">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000222">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;publisher">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000125">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000223">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000183">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000580">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000184">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000185">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000065">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000186">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000180">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000181">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000182">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;adjacent_to">
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;RO_0002222">
-        <rdfs:label xml:lang="en">temporal relation</rdfs:label>
-        <rdfs:label xml:lang="en">temporally related to</rdfs:label>
-        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
-        <obo:IAO_0000116>move to BFO?</obo:IAO_0000116>
-        <obo:IAO_0000119>Allen</obo:IAO_0000119>
-        <rdfs:comment>A relation that holds between two occurrents. This is a grouping relation that collects together all the Allen relations.</rdfs:comment>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;format">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000122">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;GEO_000000372">
-        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDiseaseScenarioLocation</apollo_sv:APOLLO_SV_0000040>
-        <obo:IAO_0000600 xml:lang="en">An arbitrary part of the Earth defined by human-made boundaries and/or natural features such as rivers.</obo:IAO_0000600>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;iao/dev/obsolete.owl">
-        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000059">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000576">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000577">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000578">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000579">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000572">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000330">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0001025">
-        <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#attribute_slim"/>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description/>
-        </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000573">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000574">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000057">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000179">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000575">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;type">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;contained_in">
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000327">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000328">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000329">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000323">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000324">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000325">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000326">
+    <rdf:Description rdf:about="&obo;IAO_0000309">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;transformation_of">
@@ -11546,93 +11451,72 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000320">
+    <rdf:Description rdf:about="&obo;IAO_0000308">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000321">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000442">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000322">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000443">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;iao/dev/iao.owl">
-        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000047">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;OBI_0000066">
-        <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000316">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000317">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000318">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000319">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000312">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000037">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000313">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000038">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000314">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000315">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000034">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000035">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000311">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000031">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000309">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000305">
+    <rdf:Description rdf:about="&obo;IAO_0000307">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000306">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000307">
+    <rdf:Description rdf:about="&obo;IAO_0000305">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000308">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    <rdf:Description rdf:about="&obo;IAO_0000180">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000429">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    <rdf:Description rdf:about="&obo;IAO_0000182">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000422">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    <rdf:Description rdf:about="&obo;IAO_0000181">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0001025">
+        <oboInOwl:inSubset rdf:resource="http://purl.org/obo/owl/obo#attribute_slim"/>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description/>
+        </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000184">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000183">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000047">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000186">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000185">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000589">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000301">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
@@ -11641,9 +11525,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000303">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000304">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;improper_part_of">
@@ -11704,169 +11585,83 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000144">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    <rdf:Description rdf:about="&obo;IAO_0000304">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000024">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    <rdf:Description rdf:about="&obo;IAO_0000442">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000443">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000300">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000025">
+    <rdf:Description rdf:about="&obo;IAO_0000580">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000140">
+    <rdf:Description rdf:about="&obo;IAO_0000059">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000057">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000576">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000577">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000578">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000579">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000572">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000573">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000574">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000575">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;publisher">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000065">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000179">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000122"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000079">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;date">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000078">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000006">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;format">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000141">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000142">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;date">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&ro;integral_part_of">
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;subject">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
-        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000419">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;rights">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000019">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000415">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000417">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000418">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;PATO_0000122">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000015">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000017">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000414">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000018">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000132">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000012">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000013">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000135">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;relation">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000096">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000097">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000131">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000098">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000091">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&dc;language">
-        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000093">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;relationship">
         <oboInOwl:hasDefinition>
@@ -11926,22 +11721,36 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&dc;identifier">
+    <rdf:Description rdf:about="&dc;language">
         <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000408">
+    <rdf:Description rdf:about="&obo;IAO_0000140">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000008">
-        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;PATO_0000125">
+    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000125">
         <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000144">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;iao/dev/iao.owl">
+        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000401">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000088">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;IAO_0000400">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000401">
+    <rdf:Description rdf:about="http://purl.org/obo/owl/PATO#PATO_0000122">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000403">
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
@@ -11949,26 +11758,173 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
         <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000006">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    <rdf:Description rdf:about="&obo;IAO_0000015">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000403">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    <rdf:Description rdf:about="&obo;IAO_0000017">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000128">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000121"/>
+    <rdf:Description rdf:about="&dc;description">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000018">
         <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;IAO_0000088">
-        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    <rdf:Description rdf:about="&obo;IAO_0000012">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;identifier">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000013">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;iao/dev/iao-main.owl">
+        <rdfs:seeAlso rdf:resource="http://code.google.com/p/information-artifact-ontology/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;OBI_0000066">
+        <obo:IAO_0000412 rdf:resource="&obo;obi.owl"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000408">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;GEO_000000372">
+        <apollo_sv:APOLLO_SV_0000040 rdf:datatype="&xsd;string">InfectiousDiseaseScenarioLocation</apollo_sv:APOLLO_SV_0000040>
+        <obo:IAO_0000600 xml:lang="en">An arbitrary part of the Earth defined by human-made boundaries and/or natural features such as rivers.</obo:IAO_0000600>
+    </rdf:Description>
+    <rdf:Description rdf:about="&UO;UO_0000001">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&UO;UO_0000002">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;subject">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000414">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;UO_0000003">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000097">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000098">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;UO_0000001">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;UO_0000002">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000096">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000093">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000008">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000091">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000024">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000025">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;BFO_0000156">
         <rdfs:label xml:lang="en">has temporal occupant</rdfs:label>
     </rdf:Description>
     <rdf:Description rdf:about="&obo;BFO_0000155">
         <rdfs:label xml:lang="en">occupies temporal region</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="&ro;contained_in">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;PATO_0000125">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000419">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000128">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000121"/>
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000226"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000415">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000318">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000319">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000417">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
     </rdf:Description>
     <rdf:Description rdf:about="&ro;derives_from">
         <oboInOwl:hasDefinition>
@@ -11978,6 +11934,23 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -12008,19 +11981,6 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
                 </oboInOwl:hasDbXref>
             </rdf:Description>
         </oboInOwl:hasDefinition>
-        <oboInOwl:hasDefinition>
-            <rdf:Description>
-                <oboInOwl:hasDbXref>
-                    <rdf:Description/>
-                </oboInOwl:hasDbXref>
-            </rdf:Description>
-        </oboInOwl:hasDefinition>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
-        <oboInOwl:hasExactSynonym>
-            <rdf:Description/>
-        </oboInOwl:hasExactSynonym>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
@@ -12044,6 +12004,172 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
         <oboInOwl:hasExactSynonym>
             <rdf:Description/>
         </oboInOwl:hasExactSynonym>
+        <oboInOwl:hasExactSynonym>
+            <rdf:Description/>
+        </oboInOwl:hasExactSynonym>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000316">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000317">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000418">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000326">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000325">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000422">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000324">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000323">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000322">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000321">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000320">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;type">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000223">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000222">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;PATO_0000122">
+        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/PATO"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000220">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000019">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000225">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000034">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000035">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000131">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000037">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000002"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000038">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;RO_0002222">
+        <rdfs:label xml:lang="en">temporal relation</rdfs:label>
+        <rdfs:label xml:lang="en">temporally related to</rdfs:label>
+        <obo:IAO_0000412 rdf:datatype="&xsd;string">http://purl.obolibrary.org/obo/obi.owl</obo:IAO_0000412>
+        <rdfs:comment>A relation that holds between two occurrents. This is a grouping relation that collects together all the Allen relations.</rdfs:comment>
+        <obo:IAO_0000116>move to BFO?</obo:IAO_0000116>
+        <obo:IAO_0000119>Allen</obo:IAO_0000119>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000327">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000132">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000124"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000328">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000429">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000329">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000031">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000123"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000135">
+        <obo:IAO_0000231 rdf:resource="&obo;IAO_0000103"/>
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0100001">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000125"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&dc;coverage">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&obo;IAO_0000330">
+        <obo:IAO_0000114 rdf:resource="&obo;IAO_0000120"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="&ro;adjacent_to">
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
+        <oboInOwl:hasDefinition>
+            <rdf:Description>
+                <oboInOwl:hasDbXref>
+                    <rdf:Description/>
+                </oboInOwl:hasDbXref>
+            </rdf:Description>
+        </oboInOwl:hasDefinition>
         <oboInOwl:hasDefinition>
             <rdf:Description>
                 <oboInOwl:hasDbXref>
@@ -12052,14 +12178,8 @@ http://mathworld.wolfram.com/Sensitivity.html</obo:IAO_0000119>
             </rdf:Description>
         </oboInOwl:hasDefinition>
     </rdf:Description>
-    <rdf:Description rdf:about="&obo;UO_0000003">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;UO_0000001">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
-    </rdf:Description>
-    <rdf:Description rdf:about="&obo;UO_0000002">
-        <obo:IAO_0000412 rdf:resource="http://purl.org/obo/owl/UO"/>
+    <rdf:Description rdf:about="&dc;relation">
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
     </rdf:Description>
 </rdf:RDF>
 
