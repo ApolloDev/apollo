@@ -1,6 +1,5 @@
 package edu.pitt.apollo.apolloservice.methods.services;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +27,6 @@ public class GetRegisteredServicesMethod {
         try {
             ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
             return new ArrayList<ServiceRecord>(dbUtils.getRegisteredSoftware().values());
-        } catch (SQLException ex) {
-            logger.error("SQLException attempting to get registered services: "
-                    + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-           logger.error("ClassNotFoundException attempting to get registered services: "
-                    + ex.getMessage());
         } catch (Exception ex) {
             logger.error("Exception attempting to get registered services: "
                     + ex.getMessage());

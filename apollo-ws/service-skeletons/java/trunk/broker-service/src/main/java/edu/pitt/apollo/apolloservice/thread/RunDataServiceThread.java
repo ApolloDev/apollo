@@ -7,6 +7,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessag
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceV300;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -93,20 +94,15 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 						"Apollo database key not found attempting to get URL for data service for run id " + runId + ": "
 						+ ex.getMessage(), runId);
 				return;
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ClassNotFoundException attempting to get URL for data service for run id " + runId + ": "
-						+ ex.getMessage(), runId);
-				return;
 			} catch (MalformedURLException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"MalformedURLException attempting to create port for data service for run id " + runId + ". URL was: " + url
 						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
-			} catch (SQLException ex) {
+			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"SQLException attempting to get URL for data service for run id " + runId + ": "
-						+ ex.getMessage(), runId);
+						"ApolloDatabaseException attempting to create port for data service for run id " + runId + ". URL was: " + url
+						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
 			}
 		} catch (IOException e) {

@@ -160,7 +160,6 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 //		}
 //
 //	}
-
 	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
 
 		try {
@@ -178,14 +177,6 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		int dataContentKey;
 		try {
 			dataContentKey = dbUtils.addTextDataContent(content);
-		} catch (ClassNotFoundException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to add text data "
-					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-			return;
-		} catch (SQLException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to add text data "
-					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-			return;
 		} catch (ApolloDatabaseException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
 					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
@@ -201,14 +192,6 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to get run data "
 					+ "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
 			return;
-		} catch (ClassNotFoundException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to get run data "
-					+ "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-			return;
-		} catch (SQLException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to get run data "
-					+ "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-			return;
 		} catch (ApolloDatabaseException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to get run data "
 					+ "description ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
@@ -217,14 +200,11 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 		try {
 			dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
-		} catch (ClassNotFoundException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "ClassNotFoundException attempting to associate "
-					+ "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
-		} catch (SQLException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, "SQLException attempting to associate "
-					+ "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to associate "
+					+ "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
+		} catch (ApolloDatabaseException ex) {
+			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to associate "
 					+ "content with run ID for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
 		}
 	}
@@ -279,13 +259,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 			dataServiceSoftwareKey = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
 
-		} catch (ClassNotFoundException ex) {
-			throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the time series visualizer software ID: "
-					+ ex.getMessage());
 		} catch (IOException ex) {
 			throw new ExceptionInInitializerError("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ExceptionInInitializerError("SQLException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		} catch (ApolloDatabaseException ex) {
 			throw new ExceptionInInitializerError("ApolloDatabaseException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		}
