@@ -76,10 +76,10 @@ public class DatabaseUtility {
 			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
 		} catch (IOException ex) {
 			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
-							+ ex.getMessage());
+					+ ex.getMessage());
 		}
 	}
-	
+
 	public static ApolloDbUtils getDbUtils() {
 		return dbUtils;
 	}
@@ -97,18 +97,14 @@ public class DatabaseUtility {
 		try {
 			SoftwareIdentification id = dbUtils.getSoftwareIdentificationForRun(runId);
 			return id.getSoftwareName();
-		} catch (ClassNotFoundException ex) {
-			throw new TimeSeriesVisualizerException(
-					"ClassNotFoundException attempting to get software identification for run " + runId
-							+ ": " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new TimeSeriesVisualizerException(
-					"SQLException attempting to get software identification for run " + runId + ": "
-							+ ex.getMessage());
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new TimeSeriesVisualizerException(
 					"ApolloDatabaseKeyNotFoundException attempting to get software identification for run "
-							+ runId + ": " + ex.getMessage());
+					+ runId + ": " + ex.getMessage());
+		} catch (ApolloDatabaseException ex) {
+			throw new TimeSeriesVisualizerException(
+					"ApolloDatabaseException attempting to get software identification for run "
+					+ runId + ": " + ex.getMessage());
 		}
 	}
 
@@ -202,14 +198,14 @@ public class DatabaseUtility {
 
 				//jdl: removing the second condition as this is no longer possible..
 //				if (getDiseaseStatesData /* && !runId.toLowerCase().contains("flute")*/) { // can't
-																						// make
-																						// a
-																						// disease
-																						// states
-																						// chart
-																						// for
-																						// flute
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionStatesToUse);
+				// make
+				// a
+				// disease
+				// states
+				// chart
+				// for
+				// flute
+				timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionStatesToUse);
 //				} else {
 //					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
 //				}
@@ -231,7 +227,7 @@ public class DatabaseUtility {
 				} catch (SQLException ex) {
 					throw new TimeSeriesVisualizerException(
 							"SQLException attempting to close database connection, statement, "
-									+ "and resultset: " + ex.getMessage());
+							+ "and resultset: " + ex.getMessage());
 				}
 			}
 
@@ -265,8 +261,8 @@ public class DatabaseUtility {
 				processor.storeTimeSeriesFromDatabaseFiles(map);
 
 //				if (getDiseaseStatesData) { // can't make a disease states chart
-											// for flute
-					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionSatesToRetrieve);
+				// for flute
+				timeSeriesContainer = processor.getTimeSeriesForInfectionStates(infectionSatesToRetrieve);
 //				} else {
 //					timeSeriesContainer = processor.getTimeSeriesForInfectionStates(false, getIncidenceData);
 //				}
@@ -298,20 +294,17 @@ public class DatabaseUtility {
 	public String getSoftwareNameForRunId(BigInteger runId) throws TimeSeriesVisualizerException {
 
 		try {
-			
+
 			SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runId);
 			return softwareId.getSoftwareName();
-		} catch (ClassNotFoundException ex) {
-			throw new TimeSeriesVisualizerException("ClassNotFoundException for run " + runId
-					+ " attempting to get software identification from database: " + ex.getMessage());
-		} catch (SQLException ex) {
-			throw new TimeSeriesVisualizerException("SQLException for run " + runId
-					+ " attempting to get software identification from database: " + ex.getMessage());
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new TimeSeriesVisualizerException("ApolloDatabaseKeyNotFoundException for run " + runId
 					+ " attempting to get software identification from database: " + ex.getMessage());
 		} catch (NumberFormatException ex) {
 			throw new TimeSeriesVisualizerException("NumberFormatException for run " + runId
+					+ " attempting to get software identification from database: " + ex.getMessage());
+		} catch (ApolloDatabaseException ex) {
+			throw new TimeSeriesVisualizerException("ApolloDatabaseException for run " + runId
 					+ " attempting to get software identification from database: " + ex.getMessage());
 		}
 	}
@@ -322,14 +315,6 @@ public class DatabaseUtility {
 		int dataContentKey;
 		try {
 			dataContentKey = dbUtils.addTextDataContent(url);
-		} catch (ClassNotFoundException ex) {
-			throw new TimeSeriesVisualizerException("ClassNotFoundException attempting to add text data "
-					+ "content for image " + imageName + " for run " + visualizerRunId + ": "
-					+ ex.getMessage());
-		} catch (SQLException ex) {
-			throw new TimeSeriesVisualizerException("SQLException attempting to add text data "
-					+ "content for image " + imageName + " for run " + visualizerRunId + ": "
-					+ ex.getMessage());
 		} catch (ApolloDatabaseException ex) {
 			throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to add text data "
 					+ "content for image " + imageName + " for run " + visualizerRunId + ": "
@@ -343,14 +328,6 @@ public class DatabaseUtility {
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new TimeSeriesVisualizerException(
 					"ApolloDatabaseKeyNotFoundException attempting to get run data "
-							+ "description ID for image " + imageName + " for run " + visualizerRunId + ": "
-							+ ex.getMessage());
-		} catch (ClassNotFoundException ex) {
-			throw new TimeSeriesVisualizerException("ClassNotFoundException attempting to get run data "
-					+ "description ID for image " + imageName + " for run " + visualizerRunId + ": "
-					+ ex.getMessage());
-		} catch (SQLException ex) {
-			throw new TimeSeriesVisualizerException("SQLException attempting to get run data "
 					+ "description ID for image " + imageName + " for run " + visualizerRunId + ": "
 					+ ex.getMessage());
 		} catch (ApolloDatabaseException ex) {
@@ -361,19 +338,16 @@ public class DatabaseUtility {
 
 		try {
 			dbUtils.associateContentWithRunId(visualizerRunId, dataContentKey, runDataDescriptionId);
-		} catch (ClassNotFoundException ex) {
-			throw new TimeSeriesVisualizerException("ClassNotFoundException attempting to associate "
-					+ "content with run ID for image " + imageName + " for run " + visualizerRunId + ": "
-					+ ex.getMessage());
-		} catch (SQLException ex) {
-			throw new TimeSeriesVisualizerException("SQLException attempting to associate "
-					+ "content with run ID for image " + imageName + " for run " + visualizerRunId + ": "
-					+ ex.getMessage());
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new TimeSeriesVisualizerException(
 					"ApolloDatabaseKeyNotFoundException attempting to associate "
-							+ "content with run ID for image " + imageName + " for run " + visualizerRunId
-							+ ": " + ex.getMessage());
+					+ "content with run ID for image " + imageName + " for run " + visualizerRunId
+					+ ": " + ex.getMessage());
+		} catch (ApolloDatabaseException ex) {
+			throw new TimeSeriesVisualizerException(
+					"ApolloDatabaseException attempting to associate "
+					+ "content with run ID for image " + imageName + " for run " + visualizerRunId
+					+ ": " + ex.getMessage());
 		}
 	}
 
