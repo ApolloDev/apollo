@@ -49,6 +49,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<String, Integer>();
 
     static Map<String, Integer> populationAxisCache = new HashMap<String, Integer>();
+    static Map<String, Integer> runDataDescriptionIdCache = new HashMap<String, Integer>();
+
     static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
     private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
     private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
@@ -1152,27 +1154,36 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                                        String dataLabel, DbContentDataType dataType,
                                        int dataSourceSoftwareIdKey, int dataDestinationSoftwareIdKey)
             throws SQLException, ClassNotFoundException,
+
             ApolloDatabaseKeyNotFoundException {
-        String query = "SELECT v.run_data_description_id FROM run_data_description_view v WHERE "
-                + "v.format = ? AND v.label = ? and v.type = ? and v.source_software = ? and v.destination_software = ?";
-        PreparedStatement pstmt = getConn().prepareStatement(query);
-        pstmt.setString(1, dataFormat.toString());
-        pstmt.setString(2, dataLabel);
-        pstmt.setString(3, dataType.toString());
-        pstmt.setInt(4, dataSourceSoftwareIdKey);
-        pstmt.setInt(5, dataDestinationSoftwareIdKey);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1);
+
+        String paramsAsString = dataFormat.toString() + dataLabel + dataType.toString() + dataSourceSoftwareIdKey + dataDestinationSoftwareIdKey;
+        if (runDataDescriptionIdCache.containsKey(paramsAsString)) {
+            return runDataDescriptionIdCache.get(paramsAsString);
         } else {
-            throw new ApolloDatabaseKeyNotFoundException(
-                    "No entry found in run_data_description_view where format = "
-                            + dataFormat.toString() + " and label = "
-                            + dataLabel + " and type = " + dataType.toString()
-                            + " and source_software = "
-                            + dataSourceSoftwareIdKey
-                            + " and destination_software = "
-                            + dataDestinationSoftwareIdKey);
+            String query = "SELECT v.run_data_description_id FROM run_data_description_view v WHERE "
+                    + "v.format = ? AND v.label = ? and v.type = ? and v.source_software = ? and v.destination_software = ?";
+            PreparedStatement pstmt = getConn().prepareStatement(query);
+            pstmt.setString(1, dataFormat.toString());
+            pstmt.setString(2, dataLabel);
+            pstmt.setString(3, dataType.toString());
+            pstmt.setInt(4, dataSourceSoftwareIdKey);
+            pstmt.setInt(5, dataDestinationSoftwareIdKey);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Integer id = rs.getInt(1);
+                runDataDescriptionIdCache.put(paramsAsString, id);
+                return rs.getInt(1);
+            } else {
+                throw new ApolloDatabaseKeyNotFoundException(
+                        "No entry found in run_data_description_view where format = "
+                                + dataFormat.toString() + " and label = "
+                                + dataLabel + " and type = " + dataType.toString()
+                                + " and source_software = "
+                                + dataSourceSoftwareIdKey
+                                + " and destination_software = "
+                                + dataDestinationSoftwareIdKey);
+            }
         }
     }
 
