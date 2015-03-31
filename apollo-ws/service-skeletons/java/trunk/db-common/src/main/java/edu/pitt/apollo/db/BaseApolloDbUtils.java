@@ -260,7 +260,7 @@ public abstract class BaseApolloDbUtils {
 
 	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
 
-    static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
+	static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
 
 
     static DataSource datasource = null;
@@ -515,21 +515,31 @@ public abstract class BaseApolloDbUtils {
 
 	}
 
+	protected static void closeConnection(Connection connection) throws ApolloDatabaseException {
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("Could not close connection");
+		}
+	}
+
 	protected static final ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
 		Class clazz = obj.getClass();
-        JAXBMarshaller marshaller = null;
-        if (marshallerMap.containsKey(clazz)) {
-            marshaller =  marshallerMap.get(clazz);
-        } else {
-            Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
-            jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+		JAXBMarshaller marshaller = null;
+		if (marshallerMap.containsKey(clazz)) {
+			marshaller = marshallerMap.get(clazz);
+		} else {
+			Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
+			jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 //		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-            JAXBContext jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz),
-                    jaxbProperties);
-            marshaller = jc.createMarshaller();
-            marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshallerMap.put(clazz, marshaller);
-        }
+			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz),
+					jaxbProperties);
+			marshaller = jc.createMarshaller();
+			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshallerMap.put(clazz, marshaller);
+		}
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -537,7 +547,7 @@ public abstract class BaseApolloDbUtils {
 		return baos;
 	}
 
-	protected static final Object getObjectFromJson(String json, Class clazz) throws ApolloDatabaseException {
+	public static final Object getObjectFromJson(String json, Class clazz) throws ApolloDatabaseException {
 		InputStream jsonInputStream = new ByteArrayInputStream(json.getBytes());
 		return getObjectFromJson(jsonInputStream, clazz);
 	}

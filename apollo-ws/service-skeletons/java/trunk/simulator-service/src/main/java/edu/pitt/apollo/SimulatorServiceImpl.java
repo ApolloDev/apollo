@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -126,7 +127,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
 	static {
 
-	// protected abstract String getRunDirectory(int runId);
+		// protected abstract String getRunDirectory(int runId);
 		Map<String, String> env = System.getenv();
 		APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		if (APOLLO_DIR != null) {
@@ -154,11 +155,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 				}
 			}
 
-		} catch (ClassNotFoundException ex) {
-			throw new ExceptionInInitializerError("ClassNotFoundException attempting to load the translator software ID: "
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("ApolloDatabaseException attempting to load the translator software ID: "
 					+ ex.getMessage());
-		} catch (SQLException ex) {
-			throw new ExceptionInInitializerError("SQLException attempting to load the translator software ID: " + ex.getMessage());
 		}
 
 		if (translatorSoftwareId == null) {
