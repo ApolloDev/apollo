@@ -248,8 +248,6 @@ CREATE TABLE run_status (
   CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id)
 );
 
-ALTER TABLE run_status engine = InnoDB;
-
 -- HSQLDB: ALTER TABLE run_status ALTER COLUMN id RESTART WITH 1;
 
 CREATE TABLE simulation_group_definition (
@@ -305,81 +303,80 @@ INSERT INTO run_data_description (label) values ('FRED text configuration file, 
 INSERT INTO run_data_description (label) values ('FluTE text configuration file, config.txt'); /* 4 */
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, incidence.png'); /* 5 */
 INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, prevalence.png'); /* 6 */
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer text input file, time_series_visualizer_input.xml'); /* 7 */
-INSERT INTO run_data_description (label) values ('Reed-Frost text configuration file, config.txt'); /* 8 */
-INSERT INTO run_data_description (label) values ('GES binary configuration file, config.bin'); /* 9 */
-INSERT INTO run_data_description (label) values ('GAIA input file, gaia.zip'); /* 10 */
-INSERT INTO run_data_description (label) values ('Verbose HTML file for FRED, verbose.html'); /* 11*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for newly-exposed, newly_exposed.txt '); /* 12*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for susceptible, susceptible.txt '); /* 13*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for exposed, exposed.txt '); /* 14*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for infectious, infectious.txt '); /* 15*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for recovered, recovered.txt '); /* 16*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for antivirals given, av_given.txt '); /* 17*/
-INSERT INTO run_data_description (label) values ('SEIR Simulator log file for vaccines given, vacc_gave_to.txt '); /* 18*/
-INSERT INTO run_data_description (label) values ('Verbose HTML for SEIR, verbose.html '); /* 19*/
-INSERT INTO run_data_description (label) values ('SEIR text configuration file, config.txt '); /* 20*/
-INSERT INTO run_data_description (label) values ('FluTE verbose configuration file, verbose.html'); /* 21 */
-INSERT INTO run_data_description (label) values ('SEIR verbose configuration file, verbose.html'); /* 22 */
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for newly-exposed, newly_exposed.txt '); /* 23 */
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for susceptible, susceptible.txt '); /* 24 */
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for exposed, exposed.txt '); /* 25 */
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for infectious, infectious.txt '); /* 26 */
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for recovered, recovered.txt '); /* 27*/
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for antivirals given, av_given.txt '); /* 28*/
-INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for vaccines given, vacc_gave_to.txt '); /* 29*/
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for newly-exposed, newly_exposed.txt '); /* 30*/
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for susceptible, susceptible.txt '); /* 31*/
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for exposed, exposed.txt '); /* 32 */
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for infectious, infectious.txt '); /* 33 */
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for recovered, recovered.txt '); /* 34 */
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for antivirals given, av_given.txt '); /* 35 */
-INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for vaccines given, vacc_gave_to.txt '); /* 36*/
-INSERT INTO run_data_description (label) values ('GAIA FluTE Simulator log file for newly-exposed, newly_exposed.txt '); /* 37 */
-INSERT INTO run_data_description (label) values ('GAIA FRED Simulator log file for newly-exposed, newly_exposed.txt '); /* 38*/
-INSERT INTO run_data_description (label) values ('GAIA movie, movie.ogg '); /* 39*/
-INSERT INTO run_data_description (label) values ('RunSimulationMessage JSON, run_simulation_message.json '); /* 40*/
-INSERT INTO run_data_description (label) values ('RunVisualizationMessage JSON for Time Series Visualizer, run_visualization_message.json '); /* 41*/
-INSERT INTO run_data_description (label) values ('RunVisualizationMessage JSON for GAIA Visualizer, run_visualization_message.json '); /* 42*/
-INSERT INTO run_data_description (label) values ('Anthrax text configuration file, config.txt '); /* 43*/
-INSERT INTO run_data_description (label) values ('Anthrax verbose configuration file, verbose.html'); /* 44 */
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for susceptible, susceptible.txt '); /* 45*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for exposed, exposed.txt '); /* 46*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for recovered, recovered.txt '); /* 47*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for newly_deceased, newly_deceased.txt '); /* 48*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for prophylactics_given, prophylactics_given.txt ');/* 49*/
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, treatment.png'); /* 50 */
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, newly_deceased.png'); /* 51 */
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for asymptomatic, asymptomatic.txt '); /* 52*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for symptomatic, symptomatic.txt '); /* 53*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for fulminant, fulminant.txt '); /* 54*/
-INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for dead, dead.txt '); /* 55*/
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 56 */
-INSERT INTO run_data_description (label) values ('CLARA text configuration file, config.txt '); /* 57*/
-INSERT INTO run_data_description (label) values ('CLARA verbose configuration file, verbose.html'); /* 58 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for susceptible, susceptible.txt '); /* 59 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for exposed, exposed.txt '); /* 60 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for infectious, infectious.txt '); /* 61 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for temp_immuned, temp_immuned.txt '); /* 62 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for recovered, recovered.txt '); /* 63 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for immuned, immuned.txt '); /* 64 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for newly_exposed, newly_exposed.txt '); /* 65 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_susceptible, mosquito_susceptible.txt '); /* 66 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_exposed, mosquito_exposed.txt '); /* 67 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_infectious, mosquito_infectious.txt '); /* 68 */
-INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_newly_exposed, mosquito_newly_exposed.txt '); /* 69 */
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, prevalence_mosquito.png'); /* 70 */
-INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, incidence_mosquito.png'); /* 71 */
-INSERT INTO run_data_description (label) values ('Lancet Ebola text configuration file, config.txt '); /* 72*/
-INSERT INTO run_data_description (label) values ('Lancet Ebola verbose configuration file, verbose.html'); /* 73 */
-INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for susceptible, susceptible.txt '); /* 74 */
-INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for exposed, exposed.txt '); /* 75 */
-INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 76 */
-INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 77 */
-INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 78 */
-INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 79*/
-INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 80*/
-INSERT INTO run_data_description (label) values ('FRED ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 81*/
+INSERT INTO run_data_description (label) values ('GAIA input file, gaia.zip'); /* 7 */
+INSERT INTO run_data_description (label) values ('Verbose HTML file for FRED, verbose.html'); /* 8 */
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for newly-exposed, newly_exposed.txt '); /* 9*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for susceptible, susceptible.txt '); /* 10*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for exposed, exposed.txt '); /* 11*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for infectious, infectious.txt '); /* 12*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for recovered, recovered.txt '); /* 13*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for antivirals given, av_given.txt '); /* 14*/
+INSERT INTO run_data_description (label) values ('SEIR Simulator log file for vaccines given, vacc_gave_to.txt '); /* 15*/
+INSERT INTO run_data_description (label) values ('Verbose HTML for SEIR, verbose.html '); /* 16*/
+INSERT INTO run_data_description (label) values ('SEIR text configuration file, config.txt '); /* 17*/
+INSERT INTO run_data_description (label) values ('FluTE verbose configuration file, verbose.html'); /* 18 */
+INSERT INTO run_data_description (label) values ('SEIR verbose configuration file, verbose.html'); /* 19 */
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for newly-exposed, newly_exposed.txt '); /* 20 */
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for susceptible, susceptible.txt '); /* 21 */
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for exposed, exposed.txt '); /* 22 */
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for infectious, infectious.txt '); /* 23 */
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for recovered, recovered.txt '); /* 24*/
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for antivirals given, av_given.txt '); /* 25*/
+INSERT INTO run_data_description (label) values ('TSV FluTE Simulator log file for vaccines given, vacc_gave_to.txt '); /* 26*/
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for newly-exposed, newly_exposed.txt '); /* 27*/
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for susceptible, susceptible.txt '); /* 28*/
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for exposed, exposed.txt '); /* 29 */
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for infectious, infectious.txt '); /* 30 */
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for recovered, recovered.txt '); /* 31 */
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for antivirals given, av_given.txt '); /* 32 */
+INSERT INTO run_data_description (label) values ('TSV FRED Simulator log file for vaccines given, vacc_gave_to.txt '); /* 33*/
+INSERT INTO run_data_description (label) values ('GAIA FluTE Simulator log file for newly-exposed, newly_exposed.txt '); /* 34 */
+INSERT INTO run_data_description (label) values ('GAIA FRED Simulator log file for newly-exposed, newly_exposed.txt '); /* 35*/
+INSERT INTO run_data_description (label) values ('GAIA movie, movie.ogg '); /* 36*/
+INSERT INTO run_data_description (label) values ('RunSimulationMessage JSON, run_simulation_message.json '); /* 37*/
+INSERT INTO run_data_description (label) values ('RunVisualizationMessage JSON for Time Series Visualizer, run_visualization_message.json '); /* 38*/
+INSERT INTO run_data_description (label) values ('RunVisualizationMessage JSON for GAIA Visualizer, run_visualization_message.json '); /* 39*/
+INSERT INTO run_data_description (label) values ('Anthrax text configuration file, config.txt '); /* 40*/
+INSERT INTO run_data_description (label) values ('Anthrax verbose configuration file, verbose.html'); /* 41 */
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for susceptible, susceptible.txt '); /* 42*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for exposed, exposed.txt '); /* 43*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for recovered, recovered.txt '); /* 44*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for newly_deceased, newly_deceased.txt '); /* 45*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for prophylactics_given, prophylactics_given.txt ');/* 46*/
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, treatment.png'); /* 47 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, newly_deceased.png'); /* 48 */
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for asymptomatic, asymptomatic.txt '); /* 49*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for symptomatic, symptomatic.txt '); /* 50*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for fulminant, fulminant.txt '); /* 51*/
+INSERT INTO run_data_description (label) values ('Anthrax Simulator log file for dead, dead.txt '); /* 52*/
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, disease_states.png'); /* 53 */
+INSERT INTO run_data_description (label) values ('CLARA text configuration file, config.txt '); /* 54*/
+INSERT INTO run_data_description (label) values ('CLARA verbose configuration file, verbose.html'); /* 55 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for susceptible, susceptible.txt '); /* 56 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for exposed, exposed.txt '); /* 57 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for infectious, infectious.txt '); /* 58 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for temp_immuned, temp_immuned.txt '); /* 59 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for recovered, recovered.txt '); /* 60 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for immuned, immuned.txt '); /* 61 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for newly_exposed, newly_exposed.txt '); /* 62 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_susceptible, mosquito_susceptible.txt '); /* 63 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_exposed, mosquito_exposed.txt '); /* 64 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_infectious, mosquito_infectious.txt '); /* 65 */
+INSERT INTO run_data_description (label) values ('TSV CLARA Simulator log file for mosquito_newly_exposed, mosquito_newly_exposed.txt '); /* 66 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, prevalence_mosquito.png'); /* 67 */
+INSERT INTO run_data_description (label) values ('TimeSeriesVisualizer output url, incidence_mosquito.png'); /* 68 */
+INSERT INTO run_data_description (label) values ('Lancet Ebola text configuration file, config.txt '); /* 69*/
+INSERT INTO run_data_description (label) values ('Lancet Ebola verbose configuration file, verbose.html'); /* 70 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for susceptible, susceptible.txt '); /* 71 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for exposed, exposed.txt '); /* 72 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 73 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 74 */
+INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 75 */
+INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 76*/
+INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 77*/
+INSERT INTO run_data_description (label) values ('FRED ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 78*/
+INSERT INTO run_data_description (label) values ('FluTE ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 79*/
+INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 80*/
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
 	(1, 1, 'TEXT'), 
@@ -418,456 +415,450 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(6, 4, '4'),
 	(6, 5, '0'),
 	
-	(7, 1, 'xml'), 
-	(7, 2, 'config.xml'),
+	(7, 1, 'zip'), 
+	(7, 2, 'gaia.zip'),
 	(7, 3, 'CONFIGURATION_FILE'),
-	(7, 4, 'Simulator'),
-	(7, 5, '0'),
+	(7, 4, '3'),
+	(7, 5, '5'),
 	
 	(8, 1, 'TEXT'), 
-	(8, 2, 'config.txt'),
+	(8, 2, 'verbose.html'),
 	(8, 3, 'CONFIGURATION_FILE'),
 	(8, 4, '1'),
-	(8, 5, 'Reed-Frost'),
+	(8, 5, '3'),
 	
-	(9, 1, 'binary'), 
-	(9, 2, 'config.bin'),
-	(9, 3, 'CONFIGURATION_FILE'),
-	(9, 4, '1'),
-	(9, 5, 'GES'),
 	
-	(10, 1, 'zip'), 
-	(10, 2, 'gaia.zip'),
-	(10, 3, 'CONFIGURATION_FILE'),
-	(10, 4, '3'),
-	(10, 5, '5'),
+	(9, 1, 'TEXT'), 
+	(9, 2, 'newly_exposed.txt'),
+	(9, 3, 'SIMULATOR_LOG_FILE'),
+	(9, 4, '2'),
+	(9, 5, '4'),
+	
+	(10, 1, 'TEXT'), 
+	(10, 2, 'susceptible.txt'),
+	(10, 3, 'SIMULATOR_LOG_FILE'),
+	(10, 4, '2'),
+	(10, 5, '4'),
 	
 	(11, 1, 'TEXT'), 
-	(11, 2, 'verbose.html'),
-	(11, 3, 'CONFIGURATION_FILE'),
-	(11, 4, '1'),
-	(11, 5, '3'),
-	
+	(11, 2, 'exposed.txt'),
+	(11, 3, 'SIMULATOR_LOG_FILE'),
+	(11, 4, '2'),
+	(11, 5, '4'),
 	
 	(12, 1, 'TEXT'), 
-	(12, 2, 'newly_exposed.txt'),
+	(12, 2, 'infectious.txt'),
 	(12, 3, 'SIMULATOR_LOG_FILE'),
 	(12, 4, '2'),
 	(12, 5, '4'),
 	
 	(13, 1, 'TEXT'), 
-	(13, 2, 'susceptible.txt'),
+	(13, 2, 'recovered.txt'),
 	(13, 3, 'SIMULATOR_LOG_FILE'),
 	(13, 4, '2'),
 	(13, 5, '4'),
 	
 	(14, 1, 'TEXT'), 
-	(14, 2, 'exposed.txt'),
+	(14, 2, 'av_administered.txt'),
 	(14, 3, 'SIMULATOR_LOG_FILE'),
 	(14, 4, '2'),
 	(14, 5, '4'),
 	
 	(15, 1, 'TEXT'), 
-	(15, 2, 'infectious.txt'),
+	(15, 2, 'vacc_administered.txt'),
 	(15, 3, 'SIMULATOR_LOG_FILE'),
 	(15, 4, '2'),
 	(15, 5, '4'),
 	
 	(16, 1, 'TEXT'), 
-	(16, 2, 'recovered.txt'),
-	(16, 3, 'SIMULATOR_LOG_FILE'),
-	(16, 4, '2'),
-	(16, 5, '4'),
+	(16, 2, 'verbose.html'),
+	(16, 3, 'CONFIGURATION_FILE'),
+	(16, 4, '1'),
+	(16, 5, '2'),
 	
 	(17, 1, 'TEXT'), 
-	(17, 2, 'av_administered.txt'),
-	(17, 3, 'SIMULATOR_LOG_FILE'),
-	(17, 4, '2'),
-	(17, 5, '4'),
+	(17, 2, 'config.txt'),
+	(17, 3, 'CONFIGURATION_FILE'),
+	(17, 4, '1'),
+	(17, 5, '2'),
 	
 	(18, 1, 'TEXT'), 
-	(18, 2, 'vacc_administered.txt'),
-	(18, 3, 'SIMULATOR_LOG_FILE'),
-	(18, 4, '2'),
-	(18, 5, '4'),
+	(18, 2, 'verbose.html'),
+	(18, 3, 'CONFIGURATION_FILE'),
+	(18, 4, '1'),
+	(18, 5, '6'),
 	
 	(19, 1, 'TEXT'), 
 	(19, 2, 'verbose.html'),
 	(19, 3, 'CONFIGURATION_FILE'),
-	(19, 4, '1'),
-	(19, 5, '2'),
+	(19, 4, '2'),
+	(19, 5, '6'),
 	
 	(20, 1, 'TEXT'), 
-	(20, 2, 'config.txt'),
-	(20, 3, 'CONFIGURATION_FILE'),
-	(20, 4, '1'),
-	(20, 5, '2'),
+	(20, 2, 'newly_exposed.txt'),
+	(20, 3, 'SIMULATOR_LOG_FILE'),
+	(20, 4, '6'),
+	(20, 5, '4'),
 	
 	(21, 1, 'TEXT'), 
-	(21, 2, 'verbose.html'),
-	(21, 3, 'CONFIGURATION_FILE'),
-	(21, 4, '1'),
-	(21, 5, '6'),
+	(21, 2, 'susceptible.txt'),
+	(21, 3, 'SIMULATOR_LOG_FILE'),
+	(21, 4, '6'),
+	(21, 5, '4'),
 	
 	(22, 1, 'TEXT'), 
-	(22, 2, 'verbose.html'),
-	(22, 3, 'CONFIGURATION_FILE'),
-	(22, 4, '2'),
-	(22, 5, '6'),
+	(22, 2, 'exposed.txt'),
+	(22, 3, 'SIMULATOR_LOG_FILE'),
+	(22, 4, '6'),
+	(22, 5, '4'),
 	
 	(23, 1, 'TEXT'), 
-	(23, 2, 'newly_exposed.txt'),
+	(23, 2, 'infectious.txt'),
 	(23, 3, 'SIMULATOR_LOG_FILE'),
 	(23, 4, '6'),
 	(23, 5, '4'),
 	
 	(24, 1, 'TEXT'), 
-	(24, 2, 'susceptible.txt'),
+	(24, 2, 'recovered.txt'),
 	(24, 3, 'SIMULATOR_LOG_FILE'),
 	(24, 4, '6'),
 	(24, 5, '4'),
 	
 	(25, 1, 'TEXT'), 
-	(25, 2, 'exposed.txt'),
+	(25, 2, 'av_administered.txt'),
 	(25, 3, 'SIMULATOR_LOG_FILE'),
 	(25, 4, '6'),
 	(25, 5, '4'),
 	
 	(26, 1, 'TEXT'), 
-	(26, 2, 'infectious.txt'),
+	(26, 2, 'vacc_administered.txt'),
 	(26, 3, 'SIMULATOR_LOG_FILE'),
 	(26, 4, '6'),
 	(26, 5, '4'),
 	
 	(27, 1, 'TEXT'), 
-	(27, 2, 'recovered.txt'),
+	(27, 2, 'newly_exposed.txt'),
 	(27, 3, 'SIMULATOR_LOG_FILE'),
-	(27, 4, '6'),
+	(27, 4, '3'),
 	(27, 5, '4'),
 	
 	(28, 1, 'TEXT'), 
-	(28, 2, 'av_administered.txt'),
+	(28, 2, 'susceptible.txt'),
 	(28, 3, 'SIMULATOR_LOG_FILE'),
-	(28, 4, '6'),
+	(28, 4, '3'),
 	(28, 5, '4'),
 	
 	(29, 1, 'TEXT'), 
-	(29, 2, 'vacc_administered.txt'),
+	(29, 2, 'exposed.txt'),
 	(29, 3, 'SIMULATOR_LOG_FILE'),
-	(29, 4, '6'),
+	(29, 4, '3'),
 	(29, 5, '4'),
 	
 	(30, 1, 'TEXT'), 
-	(30, 2, 'newly_exposed.txt'),
+	(30, 2, 'infectious.txt'),
 	(30, 3, 'SIMULATOR_LOG_FILE'),
 	(30, 4, '3'),
 	(30, 5, '4'),
 	
 	(31, 1, 'TEXT'), 
-	(31, 2, 'susceptible.txt'),
+	(31, 2, 'recovered.txt'),
 	(31, 3, 'SIMULATOR_LOG_FILE'),
 	(31, 4, '3'),
 	(31, 5, '4'),
 	
 	(32, 1, 'TEXT'), 
-	(32, 2, 'exposed.txt'),
+	(32, 2, 'av_administered.txt'),
 	(32, 3, 'SIMULATOR_LOG_FILE'),
 	(32, 4, '3'),
 	(32, 5, '4'),
 	
 	(33, 1, 'TEXT'), 
-	(33, 2, 'infectious.txt'),
+	(33, 2, 'vacc_administered.txt'),
 	(33, 3, 'SIMULATOR_LOG_FILE'),
 	(33, 4, '3'),
 	(33, 5, '4'),
 	
 	(34, 1, 'TEXT'), 
-	(34, 2, 'recovered.txt'),
+	(34, 2, 'newly_exposed.txt'),
 	(34, 3, 'SIMULATOR_LOG_FILE'),
-	(34, 4, '3'),
-	(34, 5, '4'),
+	(34, 4, '6'),
+	(34, 5, '5'),
 	
 	(35, 1, 'TEXT'), 
-	(35, 2, 'av_administered.txt'),
+	(35, 2, 'newly_exposed.txt'),
 	(35, 3, 'SIMULATOR_LOG_FILE'),
 	(35, 4, '3'),
-	(35, 5, '4'),
+	(35, 5, '5'),
 	
-	(36, 1, 'TEXT'), 
-	(36, 2, 'vacc_administered.txt'),
-	(36, 3, 'SIMULATOR_LOG_FILE'),
-	(36, 4, '3'),
-	(36, 5, '4'),
+	(36, 1, 'URL'), 
+	(36, 2, 'movie.ogg'),
+	(36, 3, 'MOVIE'),
+	(36, 4, '5'),
+	(36, 5, '0'),
 	
 	(37, 1, 'TEXT'), 
-	(37, 2, 'newly_exposed.txt'),
-	(37, 3, 'SIMULATOR_LOG_FILE'),
-	(37, 4, '6'),
-	(37, 5, '5'),
+	(37, 2, 'run_simulation_message.json'),
+	(37, 3, 'RUN_SIMULATION_MESSAGE'),
+	(37, 4, '0'),
+	(37, 5, '1'),
 	
 	(38, 1, 'TEXT'), 
-	(38, 2, 'newly_exposed.txt'),
-	(38, 3, 'SIMULATOR_LOG_FILE'),
-	(38, 4, '3'),
-	(38, 5, '5'),
+	(38, 2, 'run_visualization_message.json'),
+	(38, 3, 'RUN_VISUALIZATION_MESSAGE'),
+	(38, 4, '0'),
+	(38, 5, '4'),
 	
-	(39, 1, 'URL'), 
-	(39, 2, 'movie.ogg'),
-	(39, 3, 'MOVIE'),
-	(39, 4, '5'),
-	(39, 5, '0'),
+	(39, 1, 'TEXT'), 
+	(39, 2, 'run_visualization_message.json'),
+	(39, 3, 'RUN_VISUALIZATION_MESSAGE'),
+	(39, 4, '0'),
+	(39, 5, '5'),
 	
 	(40, 1, 'TEXT'), 
-	(40, 2, 'run_simulation_message.json'),
-	(40, 3, 'RUN_SIMULATION_MESSAGE'),
-	(40, 4, '0'),
-	(40, 5, '1'),
+	(40, 2, 'config.txt'),
+	(40, 3, 'CONFIGURATION_FILE'),
+	(40, 4, '1'),
+	(40, 5, '7'),
 	
 	(41, 1, 'TEXT'), 
-	(41, 2, 'run_visualization_message.json'),
-	(41, 3, 'RUN_VISUALIZATION_MESSAGE'),
-	(41, 4, '0'),
-	(41, 5, '4'),
-	
+	(41, 2, 'verbose.html'),
+	(41, 3, 'CONFIGURATION_FILE'),
+	(41, 4, '1'),
+	(41, 5, '7'),
+
 	(42, 1, 'TEXT'), 
-	(42, 2, 'run_visualization_message.json'),
-	(42, 3, 'RUN_VISUALIZATION_MESSAGE'),
-	(42, 4, '0'),
-	(42, 5, '5'),
+	(42, 2, 'susceptible.txt'),
+	(42, 3, 'SIMULATOR_LOG_FILE'),
+	(42, 4, '7'),
+	(42, 5, '4'),
 	
 	(43, 1, 'TEXT'), 
-	(43, 2, 'config.txt'),
-	(43, 3, 'CONFIGURATION_FILE'),
-	(43, 4, '1'),
-	(43, 5, '7'),
+	(43, 2, 'exposed.txt'),
+	(43, 3, 'SIMULATOR_LOG_FILE'),
+	(43, 4, '7'),
+	(43, 5, '4'),
 	
 	(44, 1, 'TEXT'), 
-	(44, 2, 'verbose.html'),
-	(44, 3, 'CONFIGURATION_FILE'),
-	(44, 4, '1'),
-	(44, 5, '7'),
-
+	(44, 2, 'recovered.txt'),
+	(44, 3, 'SIMULATOR_LOG_FILE'),
+	(44, 4, '7'),
+	(44, 5, '4'),
+    
 	(45, 1, 'TEXT'), 
-	(45, 2, 'susceptible.txt'),
+	(45, 2, 'newly_deceased.txt'),
 	(45, 3, 'SIMULATOR_LOG_FILE'),
 	(45, 4, '7'),
 	(45, 5, '4'),
-	
+    
 	(46, 1, 'TEXT'), 
-	(46, 2, 'exposed.txt'),
+	(46, 2, 'prophylactics_given.txt'),
 	(46, 3, 'SIMULATOR_LOG_FILE'),
 	(46, 4, '7'),
 	(46, 5, '4'),
-	
-	(47, 1, 'TEXT'), 
-	(47, 2, 'recovered.txt'),
-	(47, 3, 'SIMULATOR_LOG_FILE'),
-	(47, 4, '7'),
-	(47, 5, '4'),
     
-	(48, 1, 'TEXT'), 
-	(48, 2, 'newly_deceased.txt'),
-	(48, 3, 'SIMULATOR_LOG_FILE'),
-	(48, 4, '7'),
-	(48, 5, '4'),
+	(47, 1, 'URL'), 
+	(47, 2, 'treatment.png'),
+	(47, 3, 'IMAGE'),
+	(47, 4, '4'),
+	(47, 5, '0'),
     
-	(49, 1, 'TEXT'), 
-	(49, 2, 'prophylactics_given.txt'),
+	(48, 1, 'URL'), 
+	(48, 2, 'newly_deceased.png'),
+	(48, 3, 'IMAGE'),
+	(48, 4, '4'),
+	(48, 5, '0'),
+    
+   	(49, 1, 'TEXT'), 
+	(49, 2, 'asymptomatic.txt'),
 	(49, 3, 'SIMULATOR_LOG_FILE'),
 	(49, 4, '7'),
 	(49, 5, '4'),
     
-	(50, 1, 'URL'), 
-	(50, 2, 'treatment.png'),
-	(50, 3, 'IMAGE'),
-	(50, 4, '4'),
-	(50, 5, '0'),
+   	(50, 1, 'TEXT'), 
+	(50, 2, 'symptomatic.txt'),
+	(50, 3, 'SIMULATOR_LOG_FILE'),
+	(50, 4, '7'),
+	(50, 5, '4'),
     
-	(51, 1, 'URL'), 
-	(51, 2, 'newly_deceased.png'),
-	(51, 3, 'IMAGE'),
-	(51, 4, '4'),
-	(51, 5, '0'),
+   	(51, 1, 'TEXT'), 
+	(51, 2, 'fulminant.txt'),
+	(51, 3, 'SIMULATOR_LOG_FILE'),
+	(51, 4, '7'),
+	(51, 5, '4'),  
     
    	(52, 1, 'TEXT'), 
-	(52, 2, 'asymptomatic.txt'),
+	(52, 2, 'dead.txt'),
 	(52, 3, 'SIMULATOR_LOG_FILE'),
 	(52, 4, '7'),
 	(52, 5, '4'),
     
-   	(53, 1, 'TEXT'), 
-	(53, 2, 'symptomatic.txt'),
-	(53, 3, 'SIMULATOR_LOG_FILE'),
-	(53, 4, '7'),
-	(53, 5, '4'),
+	(53, 1, 'URL'), 
+	(53, 2, 'disease_states.png'),
+	(53, 3, 'IMAGE'),
+	(53, 4, '4'),
+	(53, 5, '0'),
     
-   	(54, 1, 'TEXT'), 
-	(54, 2, 'fulminant.txt'),
-	(54, 3, 'SIMULATOR_LOG_FILE'),
-	(54, 4, '7'),
-	(54, 5, '4'),  
+    (54, 1, 'TEXT'), 
+	(54, 2, 'config.txt'),
+	(54, 3, 'CONFIGURATION_FILE'),
+	(54, 4, '1'),
+	(54, 5, '8'),
     
-   	(55, 1, 'TEXT'), 
-	(55, 2, 'dead.txt'),
-	(55, 3, 'SIMULATOR_LOG_FILE'),
-	(55, 4, '7'),
-	(55, 5, '4'),
+    (55, 1, 'TEXT'), 
+	(55, 2, 'verbose.html'),
+	(55, 3, 'CONFIGURATION_FILE'),
+	(55, 4, '1'),
+	(55, 5, '8'),
     
-	(56, 1, 'URL'), 
-	(56, 2, 'disease_states.png'),
-	(56, 3, 'IMAGE'),
-	(56, 4, '4'),
-	(56, 5, '0'),
+   	(56, 1, 'TEXT'), 
+	(56, 2, 'susceptible.txt'),
+	(56, 3, 'SIMULATOR_LOG_FILE'),
+	(56, 4, '8'),
+	(56, 5, '4'),
     
-    (57, 1, 'TEXT'), 
-	(57, 2, 'config.txt'),
-	(57, 3, 'CONFIGURATION_FILE'),
-	(57, 4, '1'),
-	(57, 5, '8'),
-    
-    (58, 1, 'TEXT'), 
-	(58, 2, 'verbose.html'),
-	(58, 3, 'CONFIGURATION_FILE'),
-	(58, 4, '1'),
-	(58, 5, '8'),
+   	(57, 1, 'TEXT'), 
+	(57, 2, 'exposed.txt'),
+	(57, 3, 'SIMULATOR_LOG_FILE'),
+	(57, 4, '8'),
+	(57, 5, '4'),
+	
+   	(58, 1, 'TEXT'), 
+	(58, 2, 'infectious.txt'),
+	(58, 3, 'SIMULATOR_LOG_FILE'),
+	(58, 4, '8'),
+	(58, 5, '4'),
     
    	(59, 1, 'TEXT'), 
-	(59, 2, 'susceptible.txt'),
+	(59, 2, 'temp_immuned.txt'),
 	(59, 3, 'SIMULATOR_LOG_FILE'),
 	(59, 4, '8'),
 	(59, 5, '4'),
     
    	(60, 1, 'TEXT'), 
-	(60, 2, 'exposed.txt'),
+	(60, 2, 'recovered.txt'),
 	(60, 3, 'SIMULATOR_LOG_FILE'),
 	(60, 4, '8'),
 	(60, 5, '4'),
-	
+    
    	(61, 1, 'TEXT'), 
-	(61, 2, 'infectious.txt'),
+	(61, 2, 'immuned.txt'),
 	(61, 3, 'SIMULATOR_LOG_FILE'),
 	(61, 4, '8'),
 	(61, 5, '4'),
     
    	(62, 1, 'TEXT'), 
-	(62, 2, 'temp_immuned.txt'),
+	(62, 2, 'newly_exposed.txt'),
 	(62, 3, 'SIMULATOR_LOG_FILE'),
 	(62, 4, '8'),
 	(62, 5, '4'),
     
    	(63, 1, 'TEXT'), 
-	(63, 2, 'recovered.txt'),
+	(63, 2, 'mosquito_susceptible.txt'),
 	(63, 3, 'SIMULATOR_LOG_FILE'),
 	(63, 4, '8'),
 	(63, 5, '4'),
     
    	(64, 1, 'TEXT'), 
-	(64, 2, 'immuned.txt'),
+	(64, 2, 'mosquito_exposed.txt'),
 	(64, 3, 'SIMULATOR_LOG_FILE'),
 	(64, 4, '8'),
 	(64, 5, '4'),
     
    	(65, 1, 'TEXT'), 
-	(65, 2, 'newly_exposed.txt'),
+	(65, 2, 'mosquito_infectious.txt'),
 	(65, 3, 'SIMULATOR_LOG_FILE'),
 	(65, 4, '8'),
 	(65, 5, '4'),
     
    	(66, 1, 'TEXT'), 
-	(66, 2, 'mosquito_susceptible.txt'),
+	(66, 2, 'mosquito_newly_exposed.txt'),
 	(66, 3, 'SIMULATOR_LOG_FILE'),
 	(66, 4, '8'),
 	(66, 5, '4'),
     
-   	(67, 1, 'TEXT'), 
-	(67, 2, 'mosquito_exposed.txt'),
-	(67, 3, 'SIMULATOR_LOG_FILE'),
-	(67, 4, '8'),
-	(67, 5, '4'),
+   	(67, 1, 'URL'), 
+	(67, 2, 'prevalence_mosquito.png'),
+	(67, 3, 'IMAGE'),
+	(67, 4, '4'),
+	(67, 5, '0'),
     
-   	(68, 1, 'TEXT'), 
-	(68, 2, 'mosquito_infectious.txt'),
-	(68, 3, 'SIMULATOR_LOG_FILE'),
-	(68, 4, '8'),
-	(68, 5, '4'),
+   	(68, 1, 'URL'), 
+	(68, 2, 'incidence_mosquito.png'),
+	(68, 3, 'IMAGE'),
+	(68, 4, '4'),
+	(68, 5, '0'),
     
-   	(69, 1, 'TEXT'), 
-	(69, 2, 'mosquito_newly_exposed.txt'),
-	(69, 3, 'SIMULATOR_LOG_FILE'),
-	(69, 4, '8'),
-	(69, 5, '4'),
+    (69, 1, 'TEXT'), 
+	(69, 2, 'config.txt'),
+	(69, 3, 'CONFIGURATION_FILE'),
+	(69, 4, '1'),
+	(69, 5, '9'),
     
-   	(70, 1, 'URL'), 
-	(70, 2, 'prevalence_mosquito.png'),
-	(70, 3, 'IMAGE'),
-	(70, 4, '4'),
-	(70, 5, '0'),
+    (70, 1, 'TEXT'), 
+	(70, 2, 'verbose.html'),
+	(70, 3, 'CONFIGURATION_FILE'),
+	(70, 4, '1'),
+	(70, 5, '9'),
     
-   	(71, 1, 'URL'), 
-	(71, 2, 'incidence_mosquito.png'),
-	(71, 3, 'IMAGE'),
-	(71, 4, '4'),
-	(71, 5, '0'),
+   	(71, 1, 'TEXT'), 
+	(71, 2, 'susceptible.txt'),
+	(71, 3, 'SIMULATOR_LOG_FILE'),
+	(71, 4, '9'),
+	(71, 5, '4'),
     
-    (72, 1, 'TEXT'), 
-	(72, 2, 'config.txt'),
-	(72, 3, 'CONFIGURATION_FILE'),
-	(72, 4, '1'),
-	(72, 5, '9'),
+   	(72, 1, 'TEXT'), 
+	(72, 2, 'exposed.txt'),
+	(72, 3, 'SIMULATOR_LOG_FILE'),
+	(72, 4, '9'),
+	(72, 5, '4'),
     
-    (73, 1, 'TEXT'), 
-	(73, 2, 'verbose.html'),
-	(73, 3, 'CONFIGURATION_FILE'),
-	(73, 4, '1'),
-	(73, 5, '9'),
+   	(73, 1, 'TEXT'), 
+	(73, 2, 'infectious.txt'),
+	(73, 3, 'SIMULATOR_LOG_FILE'),
+	(73, 4, '9'),
+	(73, 5, '4'),
     
-   	(74, 1, 'TEXT'), 
-	(74, 2, 'susceptible.txt'),
+    (74, 1, 'TEXT'), 
+	(74, 2, 'recovered.txt'),
 	(74, 3, 'SIMULATOR_LOG_FILE'),
 	(74, 4, '9'),
 	(74, 5, '4'),
     
-   	(75, 1, 'TEXT'), 
-	(75, 2, 'exposed.txt'),
+    (75, 1, 'TEXT'), 
+	(75, 2, 'newly_exposed.txt'),
 	(75, 3, 'SIMULATOR_LOG_FILE'),
 	(75, 4, '9'),
 	(75, 5, '4'),
     
-   	(76, 1, 'TEXT'), 
-	(76, 2, 'infectious.txt'),
-	(76, 3, 'SIMULATOR_LOG_FILE'),
-	(76, 4, '9'),
-	(76, 5, '4'),
+	(76, 1, 'TEXT'), 
+	(76, 2, 'run_data_service_message.json'),
+	(76, 3, 'RUN_DATA_SERVICE_MESSAGE'),
+	(76, 4, '0'),
+	(76, 5, '10'),
     
     (77, 1, 'TEXT'), 
-	(77, 2, 'recovered.txt'),
-	(77, 3, 'SIMULATOR_LOG_FILE'),
-	(77, 4, '9'),
-	(77, 5, '4'),
+	(77, 2, 'batch_inputs_with_run_ids.txt'),
+	(77, 3, 'CONFIGURATION_FILE'),
+	(77, 4, '11'),
+	(77, 5, '0'),
     
     (78, 1, 'TEXT'), 
-	(78, 2, 'newly_exposed.txt'),
+	(78, 2, 'ods_required_output_for_model_validation.csv'),
 	(78, 3, 'SIMULATOR_LOG_FILE'),
-	(78, 4, '9'),
-	(78, 5, '4'),
+	(78, 4, '3'),
+	(78, 5, '0'),
     
-	(79, 1, 'TEXT'), 
-	(79, 2, 'run_data_service_message.json'),
-	(79, 3, 'RUN_DATA_SERVICE_MESSAGE'),
-	(79, 4, '0'),
-	(79, 5, '10'),
+    (79, 1, 'TEXT'), 
+	(79, 2, 'ods_required_output_for_model_validation.csv'),
+	(79, 3, 'SIMULATOR_LOG_FILE'),
+	(79, 4, '6'),
+	(79, 5, '0'),
     
     (80, 1, 'TEXT'), 
-	(80, 2, 'batch_inputs_with_run_ids.txt'),
-	(80, 3, 'CONFIGURATION_FILE'),
-	(80, 4, '11'),
-	(80, 5, '0'),
-    
-    (81, 1, 'TEXT'), 
-	(81, 2, 'ods_required_output_for_model_validation.csv'),
-	(81, 3, 'SIMULATOR_LOG_FILE'),
-	(81, 4, '3'),
-	(81, 5, '0');
+	(80, 2, 'ods_required_output_for_model_validation.csv'),
+	(80, 3, 'SIMULATOR_LOG_FILE'),
+	(80, 4, '2'),
+	(80, 5, '0');
     
 CREATE VIEW run_data_description_view AS
 SELECT

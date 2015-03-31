@@ -64,14 +64,6 @@ public class RunVisualizationThread extends RunApolloServiceThread {
                         + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
                         + ex.getMessage(), runId);
                 return;
-            } catch (ClassNotFoundException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile(
-                        "ClassNotFoundException attempting to get URL for visualizer: "
-                        + visualizerIdentification.getSoftwareName() + ", version: "
-                        + visualizerIdentification.getSoftwareVersion() + ", developer: "
-                        + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-                        + ex.getMessage(), runId);
-                return;
             } catch (MalformedURLException ex) {
                 ApolloServiceErrorHandler.writeErrorToErrorFile(
                         "MalformedURLException attempting to create port for visualizer: "
@@ -80,9 +72,9 @@ public class RunVisualizationThread extends RunApolloServiceThread {
                         + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
                         + ". Error message was: " + ex.getMessage(), runId);
                 return;
-            } catch (SQLException ex) {
+            } catch (ApolloDatabaseException ex) {
                 ApolloServiceErrorHandler.writeErrorToErrorFile(
-                        "SQLException attempting to get URL for visualizer: " + visualizerIdentification.getSoftwareName()
+                        "ApolloDatabaseException attempting to get URL for visualizer: " + visualizerIdentification.getSoftwareName()
                         + ", version: " + visualizerIdentification.getSoftwareVersion() + ", developer: "
                         + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
                         + ex.getMessage(), runId);
@@ -93,14 +85,6 @@ public class RunVisualizationThread extends RunApolloServiceThread {
             } catch (ApolloDatabaseKeyNotFoundException ex) {
                 ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
                         + " call for run id " + runId + ": " + ex.getMessage(), runId);
-                return;
-            } catch (SQLException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service" + " call for run id " + runId + ": "
-                        + ex.getMessage(), runId);
-                return;
-            } catch (ClassNotFoundException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service" + " call for run id "
-                        + runId + ": " + ex.getMessage(), runId);
                 return;
             } catch (ApolloDatabaseException ex) {
                 ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
