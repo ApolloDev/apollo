@@ -7,7 +7,6 @@ import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
 import java.math.BigInteger;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -81,7 +80,7 @@ public abstract class DatabaseAccessor {
 
 	public void addRunIdsToSimulationGroup(
 			BigInteger simulationGroupId,
-			List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws ClassNotFoundException, SQLException {
+			List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws ApolloDatabaseException {
 		dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
 				simulationRunIdentificationsAndLabels);
 	}

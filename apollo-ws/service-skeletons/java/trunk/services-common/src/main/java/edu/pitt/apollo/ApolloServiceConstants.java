@@ -20,7 +20,7 @@ public class ApolloServiceConstants {
     public static final String APOLLO_DIR;
     public static final int END_USER_APPLICATION_SOURCE_ID = 0;
 
-    static Logger logger = LoggerFactory.getLogger(ApolloServiceConstants.class);
+    static final Logger logger = LoggerFactory.getLogger(ApolloServiceConstants.class);
     static {
 
         Map<String, String> env = System.getenv();
