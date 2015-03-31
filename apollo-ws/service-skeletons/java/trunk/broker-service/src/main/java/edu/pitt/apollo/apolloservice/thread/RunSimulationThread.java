@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLException;
 
 import javax.xml.ws.WebServiceException;
 
@@ -84,14 +83,6 @@ public class RunSimulationThread extends RunApolloServiceThread {
 						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
 						+ ex.getMessage(), runId);
 				return;
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ClassNotFoundException attempting to get URL for simulator: "
-						+ simulatorIdentification.getSoftwareName() + ", version: "
-						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-						+ ex.getMessage(), runId);
-				return;
 			} catch (MalformedURLException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"MalformedURLException attempting to create port for simulator: "
@@ -100,27 +91,21 @@ public class RunSimulationThread extends RunApolloServiceThread {
 						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
 						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
-			} catch (SQLException ex) {
+			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"SQLException attempting to get URL for simulator: " + simulatorIdentification.getSoftwareName()
-						+ ", version: " + simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-						+ ex.getMessage(), runId);
+						"ApolloDatabaseException attempting to create port for simulator: "
+						+ simulatorIdentification.getSoftwareName() + ", version: "
+						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
+						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
 			}
+
 			try {
 				dbUtils.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
 			} catch (ApolloDatabaseKeyNotFoundException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
 						+ " call for run id " + runId + ": " + ex.getMessage(), runId);
-				return;
-			} catch (SQLException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service" + " call for run id " + runId
-						+ ": " + ex.getMessage(), runId);
-				return;
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service" + " call for run id "
-						+ runId + ": " + ex.getMessage(), runId);
 				return;
 			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
