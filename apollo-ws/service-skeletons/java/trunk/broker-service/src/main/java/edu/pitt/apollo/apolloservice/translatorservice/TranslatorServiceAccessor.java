@@ -97,16 +97,6 @@ public class TranslatorServiceAccessor {
                     + ". Error message was: " + ex.getMessage(),
                     runId);
             return false;
-        } catch (ClassNotFoundException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service to be called to translator for runId " + runId
-                    + ". Error message was: " + ex.getMessage(),
-                    runId);
-            return false;
-        } catch (SQLException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service to be called to translator for runId " + runId
-                    + ". Error message was: " + ex.getMessage(),
-                    runId);
-            return false;
         }
 
         // while translator is running, query the status

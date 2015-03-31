@@ -40,7 +40,6 @@ import edu.pitt.apollo.types.v3_0_0.InfectionStateEnum;
 import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensusDataCell;
 import edu.pitt.apollo.types.v3_0_0.ReproductionNumber;
 import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -112,9 +111,9 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			String toHash = time + rnd;
 			md5.update(toHash.getBytes());
 			String filename = new BigInteger(1, md5.digest()).toString(16);
-            File f = new File(ApolloServiceConstants.APOLLO_DIR + "tmp");
-            f.mkdirs();
-			filename =  ApolloServiceConstants.APOLLO_DIR  + "tmp" + File.separator + filename + ".txt";
+			File f = new File(ApolloServiceConstants.APOLLO_DIR + "tmp");
+			f.mkdirs();
+			filename = ApolloServiceConstants.APOLLO_DIR + "tmp" + File.separator + filename + ".txt";
 			return filename;
 		} catch (NoSuchAlgorithmException e) {
 			// This is not likely to happen as MD5 isn't going anywhere.
@@ -338,12 +337,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"ApolloDatabaseException inserting text data content for run: " + ex.getMessage(), runId);
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ClassNotFoundException inserting text data content for run: " + ex.getMessage(), runId);
-			} catch (SQLException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"SQLException inserting text data content for run: " + ex.getMessage(), runId);
 			}
 
 		} catch (IOException e) {
@@ -405,14 +398,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
 						+ ex.getMessage(), runId);
 				return;
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ClassNotFoundException attempting to get URL for simulator: "
-						+ simulatorIdentification.getSoftwareName() + ", version: "
-						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-						+ ex.getMessage(), runId);
-				return;
 			} catch (MalformedURLException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
 						"MalformedURLException attempting to create port for simulator: "
@@ -421,12 +406,13 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
 						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
-			} catch (SQLException ex) {
+			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"SQLException attempting to get URL for simulator: " + simulatorIdentification.getSoftwareName()
-						+ ", version: " + simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-						+ ex.getMessage(), runId);
+						"ApolloDatabaseException attempting to create port for simulator: "
+						+ simulatorIdentification.getSoftwareName() + ", version: "
+						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
+						+ ". Error message was: " + ex.getMessage(), runId);
 				return;
 			}
 			try {
@@ -434,12 +420,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 			} catch (ApolloDatabaseKeyNotFoundException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
 						+ " call for run id " + runId + ": " + ex.getMessage(), runId);
-			} catch (SQLException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("SQLException attempting to update last service" + " call for run id " + runId
-						+ ": " + ex.getMessage(), runId);
-			} catch (ClassNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("ClassNotFoundException attempting to update last service" + " call for run id "
-						+ runId + ": " + ex.getMessage(), runId);
 			} catch (ApolloDatabaseException ex) {
 				ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
 						+ runId + ": " + ex.getMessage(), runId);
