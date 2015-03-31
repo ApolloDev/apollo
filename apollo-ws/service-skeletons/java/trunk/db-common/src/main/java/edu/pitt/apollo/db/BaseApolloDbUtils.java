@@ -233,6 +233,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -258,7 +262,11 @@ public abstract class BaseApolloDbUtils {
 
     static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
 
-	private static final String APOLLO_DIR;
+
+    static DataSource datasource = null;
+
+
+    private static final String APOLLO_DIR;
 	private static final String SALT_FILE_NAME = "salt.txt";
 	protected static final String SYSTEM_SALT;
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
@@ -576,7 +584,7 @@ public abstract class BaseApolloDbUtils {
 	}
 
 	public Connection getConn() throws ClassNotFoundException, SQLException {
-		if (dbcon == null) {
+		/*if (dbcon == null) {
 			establishDbConn();
 		} else {
 			boolean connIsValid = false;
@@ -589,7 +597,8 @@ public abstract class BaseApolloDbUtils {
 				establishDbConn();
 			}
 		}
-		return dbcon;
+		return dbcon;*/
+        return datasource.getConnection();
 	}
 
 	public void closeConnection() throws ApolloDatabaseException {
@@ -627,6 +636,7 @@ public abstract class BaseApolloDbUtils {
 		return new BigInteger(130, random).toString(32);
 	}
 
+
 	static {
 		Map<String, String> env = System.getenv();
 		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
@@ -653,5 +663,15 @@ public abstract class BaseApolloDbUtils {
 
 		SYSTEM_SALT = saltFileScanner.nextLine();
 		saltFileScanner.close();
+
+        Context initCtx = null;
+        try {
+            initCtx = new InitialContext();
+
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        datasource = (DataSource) envCtx.lookup("jdbc/ApolloDB");
+        } catch (NamingException e) {
+            logger.error("Error initializing db resource:" + e.getMessage());
+        }
 	}
 }
