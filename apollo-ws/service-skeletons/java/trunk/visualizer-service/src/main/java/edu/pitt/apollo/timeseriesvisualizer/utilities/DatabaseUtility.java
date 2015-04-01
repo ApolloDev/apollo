@@ -72,12 +72,13 @@ public class DatabaseUtility {
 		} catch (Exception e) {
 			logger.error("\n\n\nError loading " + fn + " file\n\n\n");
 		}
-		try {
-			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-		} catch (IOException ex) {
-			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
-					+ ex.getMessage());
-		}
+//		try {
+//			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+//		} catch (IOException ex) {
+//			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
+//					+ ex.getMessage());
+//		}
+        dbUtils = new ApolloDbUtils();
 	}
 
 	public static ApolloDbUtils getDbUtils() {
