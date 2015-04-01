@@ -76,6 +76,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		super(databasePropertiesInputStream, APOLLO_DB_AUTO_COMMIT);
 	}
 
+    public ApolloDbUtils() {
+        super(APOLLO_DB_AUTO_COMMIT);
+    }
+
 	public boolean isRunBatch(BigInteger runId) throws ApolloDatabaseException {
 
 		String query = "SELECT simulation_group_id from run WHERE id = "
@@ -186,7 +190,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (Exception e) {
 			System.err
 					.println("Exception encoding to JSON.  Error message was: "
-							+ e.getMessage());
+                            + e.getMessage());
 			return null;
 		}
 
@@ -355,7 +359,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			throws ApolloDatabaseException {
 
 		int roleId = getRoleDescriptionId(softwareId, requestToRunSoftware,
-				requestPrivileged);
+                requestPrivileged);
 		return authorizeUser(userId, roleId);
 	}
 
@@ -580,7 +584,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding user role: " + ex.getMessage());
 		} finally {
-			closeConnection();
+			closeConnection(conn);
 		}
 
 	}
@@ -889,7 +893,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// if here then no cache hit
 			// false cache hit, so insert the new content with an incremented
 			// collision statusId
-			int highestMD5CollisionId = getHighestMD5CollisionIdForRunDataContent(content);
+			int highestMD5CollisionId = getHighestMD5CollisionIdForRunDataContent(conn,
+                    content);
 			int md5CollisionId = highestMD5CollisionId + 1; // increment the ID to
 			// insert with the new
 			// content
@@ -924,7 +929,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				"md5_hash_of_run_message", getMd5(message));
 	}
 
-	public int getHighestMD5CollisionIdForRunDataContent(String content)
+	public int getHighestMD5CollisionIdForRunDataContent(Connection conn, String content)
 			throws ApolloDatabaseException {
 		return getHighestMD5CollisionIdForTable("run_data_content",
 				"md5_hash_of_content", getMd5FromString(content));
@@ -935,10 +940,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			throws ApolloDatabaseException {
 		String query = "SELECT md5_collision_id FROM " + tableName + " where "
 				+ md5ColumnName + " = ?";
-
-		Connection conn = null;
+        Connection conn = null;
 		try {
-			conn = getConn();
+            conn =getConn();
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, md5Hash);
 			ResultSet rs = pstmt.executeQuery();
@@ -963,7 +967,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					+ tableName + " and hash " + md5Hash + ": "
 					+ ex.getMessage());
 		} finally {
-			closeConnection();
+            closeConnection(conn);
 		}
 	}
 
