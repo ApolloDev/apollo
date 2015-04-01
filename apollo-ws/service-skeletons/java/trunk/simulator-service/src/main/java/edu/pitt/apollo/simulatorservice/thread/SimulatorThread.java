@@ -244,7 +244,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 		System.out.println("Loading software identifications");
 		try {
-			ApolloDbUtils dbUtils = new ApolloDbUtils(new File(SimulatorServiceImpl.getDatabasePropertiesFilename()));
+			//ApolloDbUtils dbUtils = new ApolloDbUtils(new File(SimulatorServiceImpl.getDatabasePropertiesFilename()));
+            ApolloDbUtils dbUtils = new ApolloDbUtils();
 
 			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
 			for (Integer id : softwareIdMap.keySet()) {
@@ -259,8 +260,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 			dataServiceSoftwareKey = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
 
-		} catch (IOException ex) {
-			throw new ExceptionInInitializerError("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
+//		} catch (IOException ex) {
+//			throw new ExceptionInInitializerError("IOException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		} catch (ApolloDatabaseException ex) {
 			throw new ExceptionInInitializerError("ApolloDatabaseException attempting to load the time series visualizer software ID: " + ex.getMessage());
 		}
