@@ -94,8 +94,9 @@ public abstract class DataServiceMethod {
 
 			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
 
-			try {
-				dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
+//			try {
+				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
+                dbUtils = new ApolloDbUtils();
 
 				try {
 					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
@@ -103,10 +104,10 @@ public abstract class DataServiceMethod {
 					logger.error(ex.getMessage());
 					throw new ExceptionInInitializerError("ApolloDatabaseException getting the key for the data service software ID");
 				}
-			} catch (IOException ex) {
-				throw new ExceptionInInitializerError("Error creating ApolloDbUtils when initializing the data service: "
-						+ ex.getMessage());
-			}
+//			} catch (IOException ex) {
+//				throw new ExceptionInInitializerError("Error creating ApolloDbUtils when initializing the data service: "
+//						+ ex.getMessage());
+//			}
 		} else {
 			throw new ExceptionInInitializerError("No Apollo Work Dir evironment variable found when initializing data service!");
 		}
