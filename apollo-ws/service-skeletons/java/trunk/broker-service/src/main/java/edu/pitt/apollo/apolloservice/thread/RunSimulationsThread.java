@@ -296,7 +296,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 											+ String.valueOf(lineCounter)
 											+ " of the batch configuration file. "
 											+ "Broker returned the following status: "
-											+ runResult
+											+ "(" + runResult.getMethodCallStatus().getStatus() + ")" + runResult.getMethodCallStatus().getMessage() + " for software "
 											+ simulatorIdentification
 											.getSoftwareVersion()
 											+ ", developer: "
