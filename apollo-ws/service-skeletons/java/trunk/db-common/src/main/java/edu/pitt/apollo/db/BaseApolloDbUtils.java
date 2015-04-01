@@ -274,6 +274,10 @@ public abstract class BaseApolloDbUtils {
 	Properties properties;
 	private final boolean AUTO_COMMIT;
 
+    public BaseApolloDbUtils(boolean autocommit) {
+        AUTO_COMMIT = autocommit;
+    }
+
 	public BaseApolloDbUtils(File databasePropertiesFile, boolean autocommit) throws IOException {
 		InputStream fis = new FileInputStream(databasePropertiesFile);
 		properties = new Properties();
@@ -611,16 +615,16 @@ public abstract class BaseApolloDbUtils {
         return datasource.getConnection();
 	}
 
-	public void closeConnection() throws ApolloDatabaseException {
-		if (dbcon != null) {
-			try {
-				dbcon.close();
-			} catch (SQLException ex) {
-				throw new ApolloDatabaseException("SQLException attempting to close database connection: "
-						+ ex.getMessage());
-			}
-		}
-	}
+//	public void closeConnection() throws ApolloDatabaseException {
+//		if (dbcon != null) {
+//			try {
+//				dbcon.close();
+//			} catch (SQLException ex) {
+//				throw new ApolloDatabaseException("SQLException attempting to close database connection: "
+//						+ ex.getMessage());
+//			}
+//		}
+//	}
 
 	protected String getHashOfUserPasswordAndSalt(String password, String salt) {
 

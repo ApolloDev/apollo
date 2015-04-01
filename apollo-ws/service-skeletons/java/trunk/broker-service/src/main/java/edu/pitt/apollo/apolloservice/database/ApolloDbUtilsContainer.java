@@ -20,11 +20,10 @@ public class ApolloDbUtilsContainer {
     private static final ApolloDbUtils DB_UTILS;
 
     static {
-        try {
-            DB_UTILS = new ApolloDbUtils(new File(ApolloServiceConstants.APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-        } catch (IOException ex) {
-            throw new ExceptionInInitializerError("IOException initializing ApolloDbUtils: " + ex.getMessage());
-        }
+
+            //DB_UTILS = new ApolloDbUtils(new File(ApolloServiceConstants.APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
+            DB_UTILS = new ApolloDbUtils();
+
     }
     
     public static ApolloDbUtils getApolloDbUtils() {

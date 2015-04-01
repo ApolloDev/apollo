@@ -139,12 +139,12 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
 			APOLLO_DIR = "";
 		}
-		try {
-			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
-		} catch (IOException ex) {
-			System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
-		}
-
+//		try {
+//			dbUtils = new ApolloDbUtils(new File(getDatabasePropertiesFilename()));
+//		} catch (IOException ex) {
+//			System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
+//		}
+        dbUtils = new ApolloDbUtils();
 		try {
 			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
 			for (Integer id : softwareIdMap.keySet()) {
