@@ -30,71 +30,65 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
  */
 public class RunVisualizationThread extends RunApolloServiceThread {
 
-    private final RunVisualizationMessage message;
+	private final RunVisualizationMessage message;
 
-    public RunVisualizationThread(RunVisualizationMessage message, BigInteger runId) {
+	public RunVisualizationThread(RunVisualizationMessage message, BigInteger runId) {
 		super(runId);
-        this.message = message;
-    }
+		this.message = message;
+	}
 
-    @Override
-    public void run() {
-        SoftwareIdentification visualizerIdentification = message.getVisualizerIdentification();
-        String url = null;
-        try {
-            try {
+	@Override
+	public void run() {
+		SoftwareIdentification visualizerIdentification = message.getVisualizerIdentification();
+		String url = null;
+		try {
 
-                url = dbUtils.getUrlForSoftwareIdentification(visualizerIdentification);
-                VisualizerServiceEI visualizerPort = new VisualizerServiceV300(new URL(url)).getVisualizerServiceEndpoint();
+			url = dbUtils.getUrlForSoftwareIdentification(visualizerIdentification);
+			VisualizerServiceEI visualizerPort = new VisualizerServiceV300(new URL(url)).getVisualizerServiceEndpoint();
 
-                // disable chunking for ZSI
-                Client visualizerClient = ClientProxy.getClient(visualizerPort);
-                HTTPConduit visualizerHttp = (HTTPConduit) visualizerClient.getConduit();
-                HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-                httpClientPolicy.setConnectionTimeout(36000);
-                httpClientPolicy.setAllowChunking(false);
-                visualizerHttp.setClient(httpClientPolicy);
+			// disable chunking for ZSI
+			Client visualizerClient = ClientProxy.getClient(visualizerPort);
+			HTTPConduit visualizerHttp = (HTTPConduit) visualizerClient.getConduit();
+			HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+			httpClientPolicy.setConnectionTimeout(36000);
+			httpClientPolicy.setAllowChunking(false);
+			visualizerHttp.setClient(httpClientPolicy);
 
-                visualizerPort.runVisualization(runId, message);
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile(
-                        "Apollo database key not found attempting to get URL for visualizer: "
-                        + visualizerIdentification.getSoftwareName() + ", version: "
-                        + visualizerIdentification.getSoftwareVersion() + ", developer: "
-                        + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-                        + ex.getMessage(), runId);
-                return;
-            } catch (MalformedURLException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile(
-                        "MalformedURLException attempting to create port for visualizer: "
-                        + visualizerIdentification.getSoftwareName() + ", version: "
-                        + visualizerIdentification.getSoftwareVersion() + ", developer: "
-                        + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
-                        + ". Error message was: " + ex.getMessage(), runId);
-                return;
-            } catch (ApolloDatabaseException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile(
-                        "ApolloDatabaseException attempting to get URL for visualizer: " + visualizerIdentification.getSoftwareName()
-                        + ", version: " + visualizerIdentification.getSoftwareVersion() + ", developer: "
-                        + visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-                        + ex.getMessage(), runId);
-                return;
-            }
-            try {
-                dbUtils.updateLastServiceToBeCalledForRun(runId, visualizerIdentification);
-            } catch (ApolloDatabaseKeyNotFoundException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
-                        + " call for run id " + runId + ": " + ex.getMessage(), runId);
-                return;
-            } catch (ApolloDatabaseException ex) {
-                ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
-                        + runId + ": " + ex.getMessage(), runId);
-                return;
-            }
-        } catch (IOException e) {
-            logger.error("Error writing error file!: " + e.getMessage());
-        }
-    }
+			visualizerPort.runVisualization(runId, message);
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"Apollo database key not found attempting to get URL for visualizer: "
+					+ visualizerIdentification.getSoftwareName() + ", version: "
+					+ visualizerIdentification.getSoftwareVersion() + ", developer: "
+					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+					+ ex.getMessage(), runId, dbUtils);
+			return;
+		} catch (MalformedURLException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"MalformedURLException attempting to create port for visualizer: "
+					+ visualizerIdentification.getSoftwareName() + ", version: "
+					+ visualizerIdentification.getSoftwareVersion() + ", developer: "
+					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
+					+ ". Error message was: " + ex.getMessage(), runId, dbUtils);
+			return;
+		} catch (ApolloDatabaseException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"ApolloDatabaseException attempting to get URL for visualizer: " + visualizerIdentification.getSoftwareName()
+					+ ", version: " + visualizerIdentification.getSoftwareVersion() + ", developer: "
+					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+					+ ex.getMessage(), runId, dbUtils);
+			return;
+		}
+		try {
+			dbUtils.updateLastServiceToBeCalledForRun(runId, visualizerIdentification);
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase("Apollo database key not found attempting to update last service"
+					+ " call for run id " + runId + ": " + ex.getMessage(), runId, dbUtils);
+		} catch (ApolloDatabaseException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase("ApolloDatabaseException attempting to update last service" + " call for run id "
+					+ runId + ": " + ex.getMessage(), runId, dbUtils);
+		}
+	}
 
 	@Override
 	public void setAuthenticationPasswordFieldToBlank() {
