@@ -6,12 +6,9 @@ The goal of this project is to increase programmatic access to epidemic simulato
 Currently, Apollo consists of four efforts:
 
 1. Defining a syntax for representing infectious disease scenarios, called the _Apollo Schema_
-
-2. Defining and developing a set of Web services, called the _Apollo Web Services_  
-
-3. Developing a simple Web application that demonstrates the services offered by Apollo Web Services
-
-4. Developing an ontology for epidemic simulation, called _Apollo-SV_ (Structured Vocabulary).
+1. Defining and developing a set of Web services, called the _Apollo Web Services_  
+1. Developing a simple Web application that demonstrates the services offered by Apollo Web Services
+1. Developing an ontology for epidemic simulation, called _Apollo-SV_ (Structured Vocabulary).
 
 
 ##Apollo Schema
