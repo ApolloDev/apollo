@@ -37,83 +37,69 @@ public class RunSimulationThread extends RunApolloServiceThread {
 
 	@Override
 	public void run() {
-		try {
-			// first call the translator and translate the runSimulationMessage
-			boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, dbUtils);
-			if (!translatorRunSuccessful) {
-				return;
-			}
+		// first call the translator and translate the runSimulationMessage
+		boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, dbUtils);
+		if (!translatorRunSuccessful) {
+			return;
+		}
 
 			// once the translator has finished, call the simulator and start
-			// the simulation
-			SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
-			String url = null;
+		// the simulation
+		SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
+		String url = null;
+		try {
+
+			url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
+			SimulatorServiceEI simulatorPort = null;
 			try {
-
-				url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
-				SimulatorServiceEI simulatorPort = null;
-				try {
-					simulatorPort = new SimulatorServiceV300(new URL(url)).getSimulatorServiceEndpoint();
-				} catch (Exception e) {
-					ApolloServiceErrorHandler.writeErrorToErrorFile(
-							"Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
-							runId);
-					return;
-				}
-
-				// disable chunking for ZSI
-				Client simulatorClient = ClientProxy.getClient(simulatorPort);
-				HTTPConduit simulatorHttp = (HTTPConduit) simulatorClient.getConduit();
-				HTTPClientPolicy simulatorHttpClientPolicy = new HTTPClientPolicy();
-				simulatorHttpClientPolicy.setConnectionTimeout(36000);
-				simulatorHttpClientPolicy.setAllowChunking(false);
-				simulatorHttp.setClient(simulatorHttpClientPolicy);
-				try {
-					simulatorPort.runSimulation(runId /*, message*/);
-				} catch (WebServiceException e) {
-					ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling runSimulation(): " + "\n\tError was: " + e.getMessage(),
-							runId);
-					return;
-				}
-			} catch (ApolloDatabaseKeyNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"Apollo database key not found attempting to get URL for simulator: "
-						+ simulatorIdentification.getSoftwareName() + ", version: "
-						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-						+ ex.getMessage(), runId);
-				return;
-			} catch (MalformedURLException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"MalformedURLException attempting to create port for simulator: "
-						+ simulatorIdentification.getSoftwareName() + ", version: "
-						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
-						+ ". Error message was: " + ex.getMessage(), runId);
-				return;
-			} catch (ApolloDatabaseException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ApolloDatabaseException attempting to create port for simulator: "
-						+ simulatorIdentification.getSoftwareName() + ", version: "
-						+ simulatorIdentification.getSoftwareVersion() + ", developer: "
-						+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
-						+ ". Error message was: " + ex.getMessage(), runId);
+				simulatorPort = new SimulatorServiceV300(new URL(url)).getSimulatorServiceEndpoint();
+			} catch (Exception e) {
+				ApolloServiceErrorHandler.writeErrorToDatabase(
+						"Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
+						runId, dbUtils);
 				return;
 			}
 
+			// disable chunking for ZSI
+			Client simulatorClient = ClientProxy.getClient(simulatorPort);
+			HTTPConduit simulatorHttp = (HTTPConduit) simulatorClient.getConduit();
+			HTTPClientPolicy simulatorHttpClientPolicy = new HTTPClientPolicy();
+			simulatorHttpClientPolicy.setConnectionTimeout(36000);
+			simulatorHttpClientPolicy.setAllowChunking(false);
+			simulatorHttp.setClient(simulatorHttpClientPolicy);
 			try {
-				dbUtils.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
-			} catch (ApolloDatabaseKeyNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("Apollo database key not found attempting to update last service"
-						+ " call for run id " + runId + ": " + ex.getMessage(), runId);
-				return;
-			} catch (ApolloDatabaseException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service" + " call for run id "
-						+ runId + ": " + ex.getMessage(), runId);
+				simulatorPort.runSimulation(runId /*, message*/);
+			} catch (WebServiceException e) {
+				ApolloServiceErrorHandler.writeErrorToDatabase("Error calling runSimulation(): " + "\n\tError was: " + e.getMessage(),
+						runId, dbUtils);
 				return;
 			}
-		} catch (IOException e) {
-			logger.error("Error writing error file!: " + e.getMessage());
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"Apollo database key not found attempting to get URL for simulator: "
+					+ simulatorIdentification.getSoftwareName() + ", version: "
+					+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+					+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
+					+ ex.getMessage(), runId, dbUtils);
+			return;
+		} catch (ApolloDatabaseException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"ApolloDatabaseException attempting to create port for simulator: "
+					+ simulatorIdentification.getSoftwareName() + ", version: "
+					+ simulatorIdentification.getSoftwareVersion() + ", developer: "
+					+ simulatorIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
+					+ ". Error message was: " + ex.getMessage(), runId, dbUtils);
+			return;
+		}
+
+		try {
+			dbUtils.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase("Apollo database key not found attempting to update last service"
+					+ " call for run id " + runId + ": " + ex.getMessage(), runId, dbUtils);
+		} catch (ApolloDatabaseException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase("ApolloDatabaseException attempting to update last service" + " call for run id "
+					+ runId + ": " + ex.getMessage(), runId, dbUtils);
 		}
 	}
 
