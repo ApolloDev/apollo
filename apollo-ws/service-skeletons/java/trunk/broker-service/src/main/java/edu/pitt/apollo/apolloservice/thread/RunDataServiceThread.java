@@ -53,60 +53,48 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 
 	@Override
 	public void run() {
+		SoftwareIdentification dataServiceSoftwareId = DatabaseAccessorForRunningDataService.getDataServiceSoftwareId();
+		String url = null;
 		try {
-			SoftwareIdentification dataServiceSoftwareId = DatabaseAccessorForRunningDataService.getDataServiceSoftwareId();
-			String url = null;
+
+			url = dbUtils.getUrlForSoftwareIdentification(dataServiceSoftwareId);
+			DataServiceEI dataServicePort = null;
 			try {
-
-				url = dbUtils.getUrlForSoftwareIdentification(dataServiceSoftwareId);
-				DataServiceEI dataServicePort = null;
-				try {
-					dataServicePort = new DataServiceV300(new URL(url)).getDataServiceEndpoint();
-				} catch (Exception e) {
-					ApolloServiceErrorHandler.writeErrorToErrorFile(
-							"Unable to get data service port for url: " + url + "\n\tError was: " + e.getMessage(),
-							runId);
-					return;
-				}
-
-				// disable chunking for ZSI
-				Client dataServiceClient = ClientProxy.getClient(dataServicePort);
-				HTTPConduit dataServiceHttp = (HTTPConduit) dataServiceClient.getConduit();
-				HTTPClientPolicy dataServiceHttpClientPolicy = new HTTPClientPolicy();
-				dataServiceHttpClientPolicy.setConnectionTimeout(36000);
-				dataServiceHttpClientPolicy.setAllowChunking(false);
-				dataServiceHttp.setClient(dataServiceHttpClientPolicy);
-				try {
-					if (getOutputFilesURLsMessage != null) {
-						dataServicePort.getOutputFilesURLs(runId);
-					} else if (getOutputFilesURLAsZipMessage != null) {
-						dataServicePort.getOutputFilesURLAsZip(runId);
-					} else if (getAllOutputFilesURLAsZipMessage != null) {
-						dataServicePort.getAllOutputFilesURLAsZip(runId);
-					}
-				} catch (WebServiceException e) {
-					ApolloServiceErrorHandler.writeErrorToErrorFile("Error calling data service: " + "\n\tError was: " + e.getMessage(),
-							runId);
-					return;
-				}
-			} catch (ApolloDatabaseKeyNotFoundException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"Apollo database key not found attempting to get URL for data service for run id " + runId + ": "
-						+ ex.getMessage(), runId);
-				return;
-			} catch (MalformedURLException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"MalformedURLException attempting to create port for data service for run id " + runId + ". URL was: " + url
-						+ ". Error message was: " + ex.getMessage(), runId);
-				return;
-			} catch (ApolloDatabaseException ex) {
-				ApolloServiceErrorHandler.writeErrorToErrorFile(
-						"ApolloDatabaseException attempting to create port for data service for run id " + runId + ". URL was: " + url
-						+ ". Error message was: " + ex.getMessage(), runId);
+				dataServicePort = new DataServiceV300(new URL(url)).getDataServiceEndpoint();
+			} catch (Exception e) {
+				ApolloServiceErrorHandler.writeErrorToDatabase(
+						"Unable to get data service port for url: " + url + "\n\tError was: " + e.getMessage(),
+						runId, dbUtils);
 				return;
 			}
-		} catch (IOException e) {
-			logger.error("Error writing error file!: " + e.getMessage());
+
+			// disable chunking for ZSI
+			Client dataServiceClient = ClientProxy.getClient(dataServicePort);
+			HTTPConduit dataServiceHttp = (HTTPConduit) dataServiceClient.getConduit();
+			HTTPClientPolicy dataServiceHttpClientPolicy = new HTTPClientPolicy();
+			dataServiceHttpClientPolicy.setConnectionTimeout(36000);
+			dataServiceHttpClientPolicy.setAllowChunking(false);
+			dataServiceHttp.setClient(dataServiceHttpClientPolicy);
+			try {
+				if (getOutputFilesURLsMessage != null) {
+					dataServicePort.getOutputFilesURLs(runId);
+				} else if (getOutputFilesURLAsZipMessage != null) {
+					dataServicePort.getOutputFilesURLAsZip(runId);
+				} else if (getAllOutputFilesURLAsZipMessage != null) {
+					dataServicePort.getAllOutputFilesURLAsZip(runId);
+				}
+			} catch (WebServiceException e) {
+				ApolloServiceErrorHandler.writeErrorToDatabase("Error calling data service: " + "\n\tError was: " + e.getMessage(),
+						runId, dbUtils);
+			}
+		} catch (ApolloDatabaseKeyNotFoundException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"Apollo database key not found attempting to get URL for data service for run id " + runId + ": "
+					+ ex.getMessage(), runId, dbUtils);
+		} catch (ApolloDatabaseException ex) {
+			ApolloServiceErrorHandler.writeErrorToDatabase(
+					"ApolloDatabaseException attempting to create port for data service for run id " + runId + ". URL was: " + url
+					+ ". Error message was: " + ex.getMessage(), runId, dbUtils);
 		}
 	}
 
