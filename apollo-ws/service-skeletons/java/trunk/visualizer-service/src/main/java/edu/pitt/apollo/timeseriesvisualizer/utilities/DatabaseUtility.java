@@ -78,7 +78,11 @@ public class DatabaseUtility {
 //			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
 //					+ ex.getMessage());
 //		}
-        dbUtils = new ApolloDbUtils();
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("Could not create ApolloDbUtils: " + ex.getMessage());
+		}
 	}
 
 	public static ApolloDbUtils getDbUtils() {
