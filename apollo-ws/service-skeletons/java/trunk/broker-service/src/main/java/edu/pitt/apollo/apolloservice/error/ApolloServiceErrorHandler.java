@@ -6,6 +6,12 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.ErrorUtils;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,49 +24,68 @@ import edu.pitt.apollo.ErrorUtils;
  */
 public class ApolloServiceErrorHandler extends ErrorUtils {
 
-    public static final BigInteger JOB_ID_FOR_FATAL_ERROR = new BigInteger("-1");
-    public static final String RUN_ERROR_PREFIX = "ApolloServiceError";
-    private static final String ERROR_FILENAME = "run_errors.txt";
-    private static final String ERROR_FILE_DIR = "errors";
+	static Logger logger = LoggerFactory.getLogger(ApolloServiceErrorHandler.class);
+	public static final BigInteger JOB_ID_FOR_FATAL_ERROR = new BigInteger("-1");
+	public static final String RUN_ERROR_PREFIX = "ApolloServiceError";
+	private static final String ERROR_FILENAME = "run_errors.txt";
+	private static final String ERROR_FILE_DIR = "errors";
 
-    public static String getErrorFilename() {
-        return ApolloServiceConstants.APOLLO_DIR + ERROR_FILENAME;
-    }
+	public static String getErrorFilename() {
+		return ApolloServiceConstants.APOLLO_DIR + ERROR_FILENAME;
+	}
 
-    public static File getErrorFile(long runId) {
-        return new File(ApolloServiceConstants.APOLLO_DIR + ERROR_FILE_DIR + File.separator + "error-"
-                + Long.valueOf(runId) + ".txt");
-    }
+	public static File getErrorFile(long runId) {
+		return new File(ApolloServiceConstants.APOLLO_DIR + ERROR_FILE_DIR + File.separator + "error-"
+				+ Long.valueOf(runId) + ".txt");
+	}
 
 //    public static String getErrorRunId() {
 //        return "-" + RUN_ERROR_PREFIX
 //                + Long.toString(System.currentTimeMillis());
 //    }
-    public static long getErrorRunId() {
-        return -System.currentTimeMillis();
-    }
+	public static long getErrorRunId() {
+		return -System.currentTimeMillis();
+	}
 
 //    public static void writeErrorToErrorFile(String message, int runID) throws IOException {
 //        ErrorUtils.writeErrorToFile(message, getErrorFile(runID));
 //    }
-    public static long writeErrorWithErrorId(String message) throws IOException {
-        long id = getErrorRunId();
-        ErrorUtils.writeErrorToFile(message, getErrorFile(id));
-        return id;
-    }
+	public static long writeErrorWithErrorId(String message) throws IOException {
+		long id = getErrorRunId();
+		ErrorUtils.writeErrorToFile(message, getErrorFile(id));
+		return id;
+	}
 
-    public static boolean checkErrorFileExists(long runId) {
-        return checkFileExists(getErrorFile(runId));
-    }
+	public static boolean checkErrorFileExists(long runId) {
+		return checkFileExists(getErrorFile(runId));
+	}
 
-    public static String readErrorFromErrorFile(long runId) {
-        return readErrorFromFile(getErrorFile(runId));
-    }
-    
-    public static void writeErrorToErrorFile(String message, BigInteger runId) throws IOException {
-        writeErrorToFile(message, getErrorFile(runId.longValue()));
-    }
-    
+	public static String readErrorFromErrorFile(long runId) {
+		return readErrorFromFile(getErrorFile(runId));
+	}
+
+	public static void writeErrorToErrorFile(String message, BigInteger runId) throws IOException {
+		writeErrorToFile(message, getErrorFile(runId.longValue()));
+	}
+
+	public static void writeErrorToDatabase(String message, BigInteger runId, ApolloDbUtils dbUtils) {
+
+		MethodCallStatus status = new MethodCallStatus();
+		status.setStatus(MethodCallStatusEnum.FAILED);
+		status.setMessage(message);
+
+		try {
+			dbUtils.updateStatusOfRun(runId, MethodCallStatusEnum.HELD, message);
+		} catch (ApolloDatabaseException ex) {
+			try {
+				writeErrorToErrorFile("ApolloDatabaseException writing status for run " + runId + ": " + ex.getMessage(), runId);
+			} catch (IOException ex2) {
+				logger.error("Error writing error file!: " + ex2.getMessage());
+			}
+		}
+
+	}
+
 //    public synchronized static String getError(String runId) {
 //        File errorFile = new File(getErrorFilename());
 //        if (errorFile.exists()) {
