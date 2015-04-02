@@ -1,9 +1,7 @@
 package edu.pitt.apollo.apolloservice.database;
 
-import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import java.io.File;
-import java.io.IOException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 
 /**
  *
@@ -16,17 +14,20 @@ import java.io.IOException;
  */
 public class ApolloDbUtilsContainer {
 
-    private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
-    private static final ApolloDbUtils DB_UTILS;
+	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
+	private static final ApolloDbUtils DB_UTILS;
 
-    static {
+	static {
+		try {
+			//DB_UTILS = new ApolloDbUtils(new File(ApolloServiceConstants.APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
+			DB_UTILS = new ApolloDbUtils();
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("Could not initialize ApolloDbUtils: " + ex.getMessage());
+		}
 
-            //DB_UTILS = new ApolloDbUtils(new File(ApolloServiceConstants.APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-            DB_UTILS = new ApolloDbUtils();
+	}
 
-    }
-    
-    public static ApolloDbUtils getApolloDbUtils() {
-        return DB_UTILS;
-    }
+	public static ApolloDbUtils getApolloDbUtils() {
+		return DB_UTILS;
+	}
 }
