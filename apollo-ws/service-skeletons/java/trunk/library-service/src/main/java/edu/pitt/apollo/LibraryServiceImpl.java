@@ -15,6 +15,8 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.db.LibraryDbUtils;
+import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 
@@ -64,7 +66,6 @@ import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
 
-import java.io.IOException;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI")
 public class LibraryServiceImpl implements LibraryServiceEI {
@@ -88,10 +89,10 @@ public class LibraryServiceImpl implements LibraryServiceEI {
 
 		APOLLO_DIR = apolloDir;
 		try {
-			libraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database.properties"));
-			readonlyLibraryDbUtils = new LibraryDbUtils(new File(APOLLO_DIR + "library_database_readonly.properties"));
-		} catch (IOException ex) {
-			throw new ExceptionInInitializerError("IOException creating LibraryDbUtils: " + ex.getMessage());
+			libraryDbUtils = new LibraryDbUtils();
+			readonlyLibraryDbUtils = new LibraryReadOnlyDbUtils();
+		} catch (ApolloDatabaseException ex) {
+			throw new ExceptionInInitializerError("ApolloDatabaseException initializing LibraryDbUtils: " + ex.getMessage());
 		}
 	}
 
