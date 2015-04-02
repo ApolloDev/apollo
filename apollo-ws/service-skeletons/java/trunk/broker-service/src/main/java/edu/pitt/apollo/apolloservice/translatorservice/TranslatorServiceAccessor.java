@@ -1,16 +1,11 @@
 package edu.pitt.apollo.apolloservice.translatorservice;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.ws.WebServiceException;
 
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
@@ -20,8 +15,6 @@ import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceEI;
 import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceV300;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import java.sql.SQLException;
 
 /**
  *
@@ -31,7 +24,7 @@ public class TranslatorServiceAccessor {
 
 
     static TranslatorServiceEI translatorPortSingleton = null;
-    private static  TranslatorServiceEI getTranslatorPort(BigInteger runId) throws IOException {
+    private static  TranslatorServiceEI getTranslatorPort(BigInteger runId, ApolloDbUtils dbUtils) {
         if (translatorPortSingleton != null)
             return translatorPortSingleton;
 
@@ -41,35 +34,30 @@ public class TranslatorServiceAccessor {
             translatorPortSingleton = new TranslatorServiceV300(new URL(translatorServiceRecord.getUrl())).getTranslatorServiceEndpoint();
             return translatorPortSingleton;
         } catch (WebServiceException e) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to get the translator port for runId " + runId
+            ApolloServiceErrorHandler.writeErrorToDatabase("WebServiceException attempting to get the translator port for runId " + runId
                             + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + e.getMessage(),
-                    runId);
+                    runId, dbUtils);
             return null;
         } catch (MalformedURLException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("MalformedURLEXception attempting to get the translator port for runId " + runId
+            ApolloServiceErrorHandler.writeErrorToDatabase("MalformedURLEXception attempting to get the translator port for runId " + runId
                             + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + ex.getMessage(),
-                    runId);
+                    runId, dbUtils);
             return null;
         }
 
     }
 
-    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, ApolloDbUtils dbUtils) throws IOException {
+    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, ApolloDbUtils dbUtils) {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
-            translatorPort = getTranslatorPort(runId);
+            translatorPort = getTranslatorPort(runId, dbUtils);
             if (translatorPort == null)
                 return false;
         } catch (WebServiceException e) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to get the translator port for runId " + runId
+            ApolloServiceErrorHandler.writeErrorToDatabase("WebServiceException attempting to get the translator port for runId " + runId
                     + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + e.getMessage(),
-                    runId);
-            return false;
-        } catch (MalformedURLException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("MalformedURLEXception attempting to get the translator port for runId " + runId
-                    + ". URL was " + translatorServiceRecord.getUrl() + ". Error message was: " + ex.getMessage(),
-                    runId);
+                    runId, dbUtils);
             return false;
         }
 
@@ -84,18 +72,18 @@ public class TranslatorServiceAccessor {
         try {
             translatorPort.translateRun(runId);
         } catch (WebServiceException e) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("WebServiceException attempting to call translateRunSimulationMessage() for runId:  " + runId
+            ApolloServiceErrorHandler.writeErrorToDatabase("WebServiceException attempting to call translateRunSimulationMessage() for runId:  " + runId
                     + ". Error was: " + e.getMessage(),
-                    runId);
+                    runId, dbUtils);
             return false;
         }
 
         try {
             dbUtils.updateLastServiceToBeCalledForRun(runId, translatorServiceRecord.getSoftwareIdentification());
         } catch (ApolloDatabaseException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("ApolloDatabaseException attempting to update last service to be called to translator for runId " + runId
+            ApolloServiceErrorHandler.writeErrorToDatabase("ApolloDatabaseException attempting to update last service to be called to translator for runId " + runId
                     + ". Error message was: " + ex.getMessage(),
-                    runId);
+                    runId, dbUtils);
             return false;
         }
 
@@ -112,14 +100,14 @@ public class TranslatorServiceAccessor {
                 status = GetRunStatusMethod.getRunStatus(runId).getStatus();
 
                 if (status.equals(MethodCallStatusEnum.FAILED)) {
-                    ApolloServiceErrorHandler.writeErrorToErrorFile("Translator service returned status of FAILED for runId " + runId,
-                            runId);
+                    ApolloServiceErrorHandler.writeErrorToDatabase("Translator service returned status of FAILED for runId " + runId,
+                            runId, dbUtils);
                     return false;
                 }
             }
         } catch (InterruptedException ex) {
-            ApolloServiceErrorHandler.writeErrorToErrorFile("InterruptedException while attempting to get status of translator for runId "
-                    + runId + ": " + ex.getMessage(), runId);
+            ApolloServiceErrorHandler.writeErrorToDatabase("InterruptedException while attempting to get status of translator for runId "
+                    + runId + ": " + ex.getMessage(), runId, dbUtils);
             return false;
         }
 
