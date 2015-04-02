@@ -5,7 +5,6 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 import static edu.pitt.apollo.db.ApolloDbUtils.logger;
-import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
 import edu.pitt.apollo.types.v3_0_0.AaaDummyType;
 import edu.pitt.apollo.types.v3_0_0.AbioticEcosystem;
 import edu.pitt.apollo.types.v3_0_0.AbioticEcosystemCensus;
@@ -219,18 +218,14 @@ import edu.pitt.apollo.types.v3_0_0.WolbachiaReleaseSiteEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 import javax.naming.Context;
@@ -262,37 +257,51 @@ public abstract class BaseApolloDbUtils {
 
 	static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
 
+	private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
+	protected final DataSource datasource;
 
-    static DataSource datasource = null;
-
-
-    private static final String APOLLO_DIR;
+	private static final String APOLLO_DIR;
 	private static final String SALT_FILE_NAME = "salt.txt";
 	protected static final String SYSTEM_SALT;
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
-	Connection dbcon = null;
-	Properties properties;
-	private final boolean AUTO_COMMIT;
+	Connection dbcon;
+//	Properties properties;
+//	private final boolean AUTO_COMMIT;
 
-    public BaseApolloDbUtils(boolean autocommit) {
-        AUTO_COMMIT = autocommit;
-    }
+	public BaseApolloDbUtils(boolean autocommit, String resourceName) throws ApolloDatabaseException {
+		if (!dataSourceMap.containsKey(resourceName)) {
+			try {
+				Context initCtx = new InitialContext();
+				Context envCtx = (Context) initCtx.lookup("java:comp/env");
+				dataSourceMap.put(resourceName, (DataSource) envCtx.lookup("jdbc/" + resourceName));
+			} catch (NamingException e) {
+				logger.error("Error initializing db resource:" + e.getMessage());
+			}
+		}
 
-	public BaseApolloDbUtils(File databasePropertiesFile, boolean autocommit) throws IOException {
-		InputStream fis = new FileInputStream(databasePropertiesFile);
-		properties = new Properties();
-		properties.load(fis);
-		fis.close();
-		AUTO_COMMIT = autocommit;
+		datasource = dataSourceMap.get(resourceName);
+		try {
+			dbcon = datasource.getConnection();
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException initializing DB Utils: " + ex.getMessage());
+		}
+
 	}
-
-	public BaseApolloDbUtils(InputStream databasePropertiesInputStream, boolean autocommit) throws IOException {
-
-		properties = new Properties();
-		properties.load(databasePropertiesInputStream);
-		databasePropertiesInputStream.close();
-		AUTO_COMMIT = autocommit;
-	}
+//	public BaseApolloDbUtils(File databasePropertiesFile, boolean autocommit) throws IOException {
+//		InputStream fis = new FileInputStream(databasePropertiesFile);
+//		properties = new Properties();
+//		properties.load(fis);
+//		fis.close();
+//		AUTO_COMMIT = autocommit;
+//	}
+//
+//	public BaseApolloDbUtils(InputStream databasePropertiesInputStream, boolean autocommit) throws IOException {
+//
+//		properties = new Properties();
+//		properties.load(databasePropertiesInputStream);
+//		databasePropertiesInputStream.close();
+//		AUTO_COMMIT = autocommit;
+//	}
 
 	public abstract int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException;
@@ -519,11 +528,9 @@ public abstract class BaseApolloDbUtils {
 
 	}
 
-	protected static void closeConnection(Connection connection) throws ApolloDatabaseException {
+	public void close() throws ApolloDatabaseException {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
+			dbcon.close();
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("Could not close connection");
 		}
@@ -571,48 +578,44 @@ public abstract class BaseApolloDbUtils {
 		}
 	}
 
-	protected void establishDbConn() throws ClassNotFoundException, SQLException {
-
-		String dbClass = properties.getProperty("class");
-		String url = properties.getProperty("url");
-		String user = properties.getProperty("user");
-		String password = properties.getProperty("password");
-
-		try {
-			if (dbcon != null) {
-				dbcon.close();
-			}
-		} catch (SQLException e) {
-			// who cares, making a new one anyway
-		}
-		dbcon = null;
-		try {
-			Class.forName(dbClass);
-			logger.debug("Getting DB connection");
-			dbcon = DriverManager.getConnection(url, user, password);
-			dbcon.setAutoCommit(AUTO_COMMIT);
-		} catch (SQLException e) {
-			throw new SQLException("Error getting connection to database: " + url + " using username " + user
-					+ ".   Specific error was:\n" + e.getMessage());
-		}
-	}
-
+//	protected void establishDbConn() throws ClassNotFoundException, SQLException {
+//
+//		String dbClass = properties.getProperty("class");
+//		String url = properties.getProperty("url");
+//		String user = properties.getProperty("user");
+//		String password = properties.getProperty("password");
+//
+//		try {
+//			if (dbcon != null) {
+//				dbcon.close();
+//			}
+//		} catch (SQLException e) {
+//			// who cares, making a new one anyway
+//		}
+//		dbcon = null;
+//		try {
+//			Class.forName(dbClass);
+//			logger.debug("Getting DB connection");
+//			dbcon = DriverManager.getConnection(url, user, password);
+//			dbcon.setAutoCommit(AUTO_COMMIT);
+//		} catch (SQLException e) {
+//			throw new SQLException("Error getting connection to database: " + url + " using username " + user
+//					+ ".   Specific error was:\n" + e.getMessage());
+//		}
+//	}
 	public Connection getConn() throws ClassNotFoundException, SQLException {
-		/*if (dbcon == null) {
-			establishDbConn();
-		} else {
-			boolean connIsValid = false;
-			try {
-				connIsValid = dbcon.isValid(1000);
-			} catch (SQLException e1) {
-				// who cares, we are making a new one anyway!
-			}
-			if (!connIsValid) {
-				establishDbConn();
-			}
+
+		boolean connIsValid = false;
+		try {
+			connIsValid = dbcon.isValid(1000);
+		} catch (SQLException e1) {
+			// who cares, we are making a new one anyway!
 		}
-		return dbcon;*/
-        return datasource.getConnection();
+		if (!connIsValid) {
+			dbcon = datasource.getConnection();
+		}
+
+		return dbcon;
 	}
 
 //	public void closeConnection() throws ApolloDatabaseException {
@@ -625,7 +628,6 @@ public abstract class BaseApolloDbUtils {
 //			}
 //		}
 //	}
-
 	protected String getHashOfUserPasswordAndSalt(String password, String salt) {
 
 		String passwordAndSalt = password + salt + SYSTEM_SALT;
@@ -649,7 +651,6 @@ public abstract class BaseApolloDbUtils {
 		Random random = new SecureRandom();
 		return new BigInteger(130, random).toString(32);
 	}
-
 
 	static {
 		Map<String, String> env = System.getenv();
@@ -677,15 +678,5 @@ public abstract class BaseApolloDbUtils {
 
 		SYSTEM_SALT = saltFileScanner.nextLine();
 		saltFileScanner.close();
-
-        Context initCtx = null;
-        try {
-            initCtx = new InitialContext();
-
-        Context envCtx = (Context) initCtx.lookup("java:comp/env");
-        datasource = (DataSource) envCtx.lookup("jdbc/ApolloDB");
-        } catch (NamingException e) {
-            logger.error("Error initializing db resource:" + e.getMessage());
-        }
 	}
 }

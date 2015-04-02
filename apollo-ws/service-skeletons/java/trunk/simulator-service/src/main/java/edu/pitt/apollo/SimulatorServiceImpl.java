@@ -144,8 +144,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 //		} catch (IOException ex) {
 //			System.out.println("Error creating ApoloDbUtils when initializing SEIR web service: " + ex.getMessage());
 //		}
-        dbUtils = new ApolloDbUtils();
+        
 		try {
+			dbUtils = new ApolloDbUtils();
 			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
 			for (Integer id : softwareIdMap.keySet()) {
 				SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
