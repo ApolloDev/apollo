@@ -17,26 +17,13 @@ import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v3_0_0.QueryResult;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.Census;
-import edu.pitt.apollo.types.v3_0_0.CensusData;
-import edu.pitt.apollo.types.v3_0_0.Contamination;
-import edu.pitt.apollo.types.v3_0_0.DecisionAnalysis;
 import edu.pitt.apollo.types.v3_0_0.Epidemic;
 import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.Infection;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDisease;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseDecisionModel;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
 import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_0.Treatment;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -45,19 +32,11 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.transform.stream.StreamSource;
-import org.eclipse.persistence.jaxb.JAXBContext;
-import org.eclipse.persistence.jaxb.JAXBContextProperties;
-import org.eclipse.persistence.jaxb.JAXBMarshaller;
-import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
-import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,14 +67,23 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private static final String GETTING_CHANGE_LOG = "getting the change log for library items modeified since the specified date and time";
 	private static final String SETTING_ITEM_AS_NOT_RELEASED = "setting the library item as not released";
 	private static final boolean LIBRARY_AUTO_COMMIT = false;
+	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB";
 
-	public LibraryDbUtils(File databasePropertiesFile) throws IOException {
-		super(databasePropertiesFile, LIBRARY_AUTO_COMMIT);
+	public LibraryDbUtils() throws ApolloDatabaseException {
+		super(LIBRARY_AUTO_COMMIT, LIBRARY_DB_RESOURCE_NAME);
+	}
+	
+	protected LibraryDbUtils(String resourceName) throws ApolloDatabaseException {
+		super(LIBRARY_AUTO_COMMIT, resourceName);
 	}
 
-	public LibraryDbUtils(InputStream databasePropertiesInputStream) throws IOException {
-		super(databasePropertiesInputStream, LIBRARY_AUTO_COMMIT);
-	}
+//	public LibraryDbUtils(File databasePropertiesFile) throws IOException {
+//		super(databasePropertiesFile, LIBRARY_AUTO_COMMIT);
+//	}
+//
+//	public LibraryDbUtils(InputStream databasePropertiesInputStream) throws IOException {
+//		super(databasePropertiesInputStream, LIBRARY_AUTO_COMMIT);
+//	}
 
 	private String getJSONStringForLibraryItem(Object obj) throws JAXBException {
 		String itemJson = getJsonBytes(obj).toString();
@@ -1013,9 +1001,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		return epidemic;
 	}
 
-	public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException, JAXBException {
+	public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException, JAXBException, SQLException {
 
-		LibraryDbUtils dbUtils = new LibraryDbUtils(new File("C:\\apollo_210\\library_database.properties"));
+		LibraryDbUtils dbUtils = new LibraryDbUtils();
 
 		Authentication authentication = new Authentication();
 		authentication.setRequesterId("library_demo");
