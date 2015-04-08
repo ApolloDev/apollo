@@ -16,17 +16,15 @@ import java.util.List;
  */
 public abstract class DatabaseAccessor {
 
-	protected static final ApolloDbUtils dbUtils;
+	protected final ApolloDbUtils dbUtils;
+
 	protected final Authentication authentication;
 
-	static {
-		dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
-	}
-
-	public DatabaseAccessor(Authentication authentication) {
-
+	public DatabaseAccessor(Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
 		this.authentication = authentication;
+		this.dbUtils = dbUtils;
 	}
+
 
 	public void removeAllDataAssociatedWithRunId(BigInteger runId)
 			throws ApolloDatabaseException {
