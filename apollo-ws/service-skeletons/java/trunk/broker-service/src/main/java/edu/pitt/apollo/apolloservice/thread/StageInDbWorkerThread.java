@@ -1,0 +1,211 @@
+package edu.pitt.apollo.apolloservice.thread;
+
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
+import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
+import edu.pitt.apollo.apolloservice.methods.run.RunResultAndSimulationGroupId;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_0_0.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+/**
+ * Created by jdl50 on 4/8/15.
+ */
+public class StageInDbWorkerThread implements Runnable {
+
+    private final BufferedReader bufferedReader;
+    private final RunSimulationsMessage message;
+
+    static Logger logger = LoggerFactory.getLogger(StageInDbWorkerThread.class);
+    private final SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder;
+    private final XMLGregorianCalendar scenarioDate;
+    private final BigInteger batchRunId;
+    private final BigInteger simulationGroupId;
+    private final SoftwareIdentification simulatorIdentification;
+    private Authentication authentication;
+    private final ApolloDbUtils dbUtils;
+
+    private class BatchConfigRecord {
+
+        Double r0;
+        Double infectiousPeriod;
+        Double latentPeriod;
+        Double percentSusceptible;
+        Double percentExposed;
+        Double percentInfectious;
+        Double percentRecovered;
+        int dayOfWeekOffset;
+
+        public BatchConfigRecord(String[] columns) {
+            // column 0 is the ODS model ID
+            percentSusceptible = Double.valueOf(columns[1]);
+            percentExposed = Double.valueOf(columns[2]);
+            percentInfectious = Double.valueOf(columns[3]);
+            percentRecovered = Double.valueOf(columns[4]);
+            r0 = Double.valueOf(columns[5]);
+            latentPeriod = Double.valueOf(columns[6]);
+            infectiousPeriod = Double.valueOf(columns[7]);
+            dayOfWeekOffset = Integer.parseInt(columns[8]);
+        }
+    }
+
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, BufferedReader br, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder) throws ApolloDatabaseException {
+        this.bufferedReader = br;
+        this.message = message;
+        this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
+        this.authentication = authentication;
+        this.scenarioDate = scenarioDate;
+        this.batchRunId = batchRunId;
+        this.simulationGroupId = simulationGroupId;
+        this.simulatorIdentification = simulatorIdentification;
+        dbUtils = new ApolloDbUtils();
+    }
+
+    private static PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
+            InfectionStateEnum infectionStateEnum, Double fractionInState) {
+        PopulationInfectionAndImmunityCensusDataCell piiDataCell = new PopulationInfectionAndImmunityCensusDataCell();
+        piiDataCell.setFractionInState(fractionInState);
+        piiDataCell.setInfectionState(infectionStateEnum);
+        return piiDataCell;
+    }
+
+    public static RunSimulationMessage populateTemplateWithRecord(
+            RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException {
+
+        RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
+        runSimulationMessage.setAuthentication(template.getAuthentication());
+        runSimulationMessage.setInfectiousDiseaseScenario(template
+                .getBaseInfectiousDiseaseScenario());
+        runSimulationMessage.setSimulatorIdentification(template
+                .getSimulatorIdentification());
+        runSimulationMessage.setSimulatorTimeSpecification(template
+                .getSimulatorTimeSpecification());
+
+        ReproductionNumber r0 = new ReproductionNumber();
+        r0.setExactValue(batchConfigRecord.r0);
+
+        FixedDuration latentPeriod = new FixedDuration();
+        latentPeriod.setValue(batchConfigRecord.latentPeriod);
+        latentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
+
+        FixedDuration infectiousPeriod = new FixedDuration();
+        infectiousPeriod.setValue(batchConfigRecord.infectiousPeriod);
+        infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
+
+        InfectionAcquisitionFromInfectiousHost infection = runSimulationMessage
+                .getInfectiousDiseaseScenario().getInfections().get(0)
+                .getInfectionAcquisitionsFromInfectiousHosts().get(0);
+
+        infection.setLatentPeriodDuration(latentPeriod);
+        infection.setInfectiousPeriodDuration(infectiousPeriod);
+        infection.getBasicReproductionNumbers().set(0, r0);
+
+        List<PopulationInfectionAndImmunityCensusDataCell> censusDataCells = runSimulationMessage
+                .getInfectiousDiseaseScenario()
+                .getPopulationInfectionAndImmunityCensuses().get(0)
+                .getCensusData().getCensusDataCells();
+
+        censusDataCells.clear();
+        censusDataCells.add(createPiiDataCell(InfectionStateEnum.SUSCEPTIBLE,
+                batchConfigRecord.percentSusceptible));
+        censusDataCells.add(createPiiDataCell(InfectionStateEnum.LATENT,
+                batchConfigRecord.percentExposed));
+        censusDataCells.add(createPiiDataCell(InfectionStateEnum.INFECTIOUS,
+                batchConfigRecord.percentInfectious));
+        censusDataCells.add(createPiiDataCell(InfectionStateEnum.RECOVERED,
+                batchConfigRecord.percentRecovered));
+
+        GregorianCalendar gc = scenarioDate.toGregorianCalendar();
+        gc.add(Calendar.DATE, batchConfigRecord.dayOfWeekOffset);
+        scenarioDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+        runSimulationMessage.getInfectiousDiseaseScenario().setScenarioDate(scenarioDate);
+
+        return runSimulationMessage;
+
+    }
+    public static boolean isNonErrorCachedStatus(
+            MethodCallStatusEnum methodCallStatusEnum) {
+        switch (methodCallStatusEnum) {
+            case AUTHENTICATION_FAILURE:
+            case FAILED:
+            case UNAUTHORIZED:
+            case UNKNOWN_RUNID:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    @Override
+    public void run() {
+        logger.debug("Thread %s running.", Thread.currentThread().getName());
+        try {
+            String paramLineOrNullIfEndOfStream = bufferedReader.readLine();
+            if (paramLineOrNullIfEndOfStream != null) {
+                logger.debug("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
+                String params[] = paramLineOrNullIfEndOfStream.split(",");
+
+                BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
+                        params);
+                if (message instanceof RunSimulationsMessage) {
+                    RunSimulationMessage currentRunSimulationMessage = null;
+                    try {
+                        currentRunSimulationMessage = populateTemplateWithRecord(
+                                message, batchConfigRecord, scenarioDate);
+                    } catch (DatatypeConfigurationException ex) {
+                        ApolloServiceErrorHandler
+                                .writeErrorToDatabase(
+                                        "Error staging job. There was an exception setting the scenario date.", batchRunId, dbUtils
+                                );
+                    }
+                    RunMethod runMethod = new RunMethodForSimulationAndVisualization(
+                            authentication,
+                            message.getSimulatorIdentification(),
+                            currentRunSimulationMessage);
+                    RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
+                    RunResult runResult = runResultandSimulationGroupId.getRunResult();
+
+                    String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
+                    batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
+
+                    if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
+                        ApolloServiceErrorHandler
+                                .writeErrorToDatabase(
+                                        "Error staging job using line "
+                                                + paramLineOrNullIfEndOfStream
+                                                + " of the batch configuration file. "
+                                                + "Broker returned the following status: "
+                                                + "(" + runResult.getMethodCallStatus().getStatus() + ")" + runResult.getMethodCallStatus().getMessage() + " for software "
+                                                + simulatorIdentification
+                                                .getSoftwareVersion()
+                                                + ", developer: "
+                                                + simulatorIdentification
+                                                .getSoftwareDeveloper()
+                                                + "  run id " + batchRunId + ".",
+                                        batchRunId, dbUtils);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
