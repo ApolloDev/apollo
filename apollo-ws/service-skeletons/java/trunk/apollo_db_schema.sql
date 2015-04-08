@@ -245,7 +245,8 @@ CREATE TABLE run_status (
   message TEXT,
   PRIMARY KEY (id),
   CONSTRAINT fk_run_id FOREIGN KEY (run_id) REFERENCES run (id),
-  CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id)
+  CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id),
+  CONSTRAINT run_status UNIQUE(run_id)
 );
 
 -- HSQLDB: ALTER TABLE run_status ALTER COLUMN id RESTART WITH 1;
@@ -253,7 +254,8 @@ CREATE TABLE run_status (
 CREATE TABLE simulation_group_definition (
   simulation_group_id INT NOT NULL REFERENCES simulation_groups(id),
   run_id INT NOT NULL,
-  CONSTRAINT fk_sim_group_def_run_id FOREIGN KEY (run_id) REFERENCES run (id)
+  CONSTRAINT fk_sim_group_def_run_id FOREIGN KEY (run_id) REFERENCES run (id),
+  CONSTRAINT simulation_group_definition_unique UNIQUE (simulation_group_id, run_id)
 );
 
 CREATE TABLE run_data_description (
