@@ -34,3 +34,6 @@ The development version of the ontology is always available at: http://purl.obol
 
 For instructions on viewing Apollo-SV, click [https://github.com/ApolloDev/apollo/wiki/Apollo-SV-BasicsOfViewing here].
 
+##Acknowledgements
+The Apollo Software Development Team would like to thank PremiumSoft™ CyberTech Ltd. for supporting this open source project by providing the project with a free license for Navicat.<br>
+<a href="http://www.navicat.com"><img src="https://github.com/ApolloDev/apollo/blob/master/wiki/img/navicat.png" align="left" height="100" ></a>
