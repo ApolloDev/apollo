@@ -34,7 +34,7 @@ import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPop
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/", 
 portName="SyntheticPopulationServiceEndpoint",
 serviceName="SyntheticPopulationService", 
-endpointInterface="edu.pitt.apollo.service.visualizerservice.Synthis_WSSoap")
+endpointInterface="edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceEI")
 class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 
 	@Override
