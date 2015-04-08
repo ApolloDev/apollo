@@ -76,10 +76,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //			throws IOException {
 //		super(databasePropertiesInputStream, APOLLO_DB_AUTO_COMMIT);
 //	}
-
-    public ApolloDbUtils() throws ApolloDatabaseException {
-        super(APOLLO_DB_AUTO_COMMIT, APOLLO_DB_RESOURCE_IDENTIFIER);
-    }
+	public ApolloDbUtils() throws ApolloDatabaseException {
+		super(APOLLO_DB_AUTO_COMMIT, APOLLO_DB_RESOURCE_IDENTIFIER);
+	}
 
 	public boolean isRunBatch(BigInteger runId) throws ApolloDatabaseException {
 
@@ -111,7 +110,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"ClassNotFoundException attempting to authorize user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -147,7 +146,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"ClassNotFoundException attempting to authorize user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -179,7 +178,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to authorize user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -191,14 +190,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (Exception e) {
 			System.err
 					.println("Exception encoding to JSON.  Error message was: "
-                            + e.getMessage());
+							+ e.getMessage());
 			return null;
 		}
 
 	}
 
 	public ResultSet getRunIdAndRunSimulationMessagesForBatch(BigInteger batchRunId, int endUserSoftwareId,
-			int translatorSoftwareId, Connection conn) throws ApolloDatabaseException {
+			int translatorSoftwareId) throws ApolloDatabaseException {
 
 		String query = "SELECT"
 				+ "	sgd.run_id,"
@@ -225,17 +224,23 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				+ "	rs.run_id = r.id AND"
 				+ "	rsd.id = rs.status_id";
 
+		Connection conn;
 		try {
+			conn = getConn();
 			PreparedStatement pstmt = conn.prepareStatement(query);
-			pstmt.setInt(0, endUserSoftwareId);
-			pstmt.setInt(1, translatorSoftwareId);
-			pstmt.setInt(2, batchRunId.intValue());
+			pstmt.setInt(1, endUserSoftwareId);
+			pstmt.setInt(2, translatorSoftwareId);
+			pstmt.setInt(3, batchRunId.intValue());
 
 			ResultSet rs = pstmt.executeQuery();
 			return rs;
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException(
 					"SQLException getting run IDs and runSimulationMessages for batch: "
+					+ ex.getMessage());
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException(
+					"ClassNotFoundException getting run IDs and runSimulationMessages for batch: "
 					+ ex.getMessage());
 		}
 
@@ -351,7 +356,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to authorize user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -360,7 +365,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			throws ApolloDatabaseException {
 
 		int roleId = getRoleDescriptionId(softwareId, requestToRunSoftware,
-                requestPrivileged);
+				requestPrivileged);
 		return authorizeUser(userId, roleId);
 	}
 
@@ -423,7 +428,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 						"SQLException attempting to add user role: "
 						+ ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 	}
@@ -492,7 +497,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 						"SQLException attempting to get software identification key: "
 						+ ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 
@@ -535,7 +540,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting run key: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -585,7 +590,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding user role: " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -621,7 +626,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException getting role key: " + ex.getMessage());
 			} finally {
-				
+
 			}
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
@@ -689,7 +694,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting registered software: " + ex.getMessage());
 		} finally {
-			
+
 		}
 		return result;
 
@@ -732,7 +737,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get user key: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -782,7 +787,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			throw new ApolloDatabaseException(
 					"SQLException attempting to add user: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -828,7 +833,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to authorize user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -856,7 +861,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to delete user: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -895,7 +900,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// false cache hit, so insert the new content with an incremented
 			// collision statusId
 			int highestMD5CollisionId = getHighestMD5CollisionIdForRunDataContent(conn,
-                    content);
+					content);
 			int md5CollisionId = highestMD5CollisionId + 1; // increment the ID to
 			// insert with the new
 			// content
@@ -919,7 +924,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding text data content: " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -941,9 +946,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			throws ApolloDatabaseException {
 		String query = "SELECT md5_collision_id FROM " + tableName + " where "
 				+ md5ColumnName + " = ?";
-        Connection conn = null;
+		Connection conn = null;
 		try {
-            conn =getConn();
+			conn = getConn();
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, md5Hash);
 			ResultSet rs = pstmt.executeQuery();
@@ -968,7 +973,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					+ tableName + " and hash " + md5Hash + ": "
 					+ ex.getMessage());
 		} finally {
-            
+
 		}
 	}
 
@@ -1017,7 +1022,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get data content for software for run ID "
 					+ runKey + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 		return result;
@@ -1064,10 +1069,59 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get data content for software for run ID "
 					+ runKey + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 		return result;
+	}
+
+	public PreparedStatement getDataContentForBatchSimulations(BigInteger batchRunId) throws ApolloDatabaseException {
+
+		String query = "SELECT"
+				+ " rddav.value AS name,"
+				+ "	rdc.text_content,"
+				+ " r2.id"
+				+ " FROM"
+				+ " run_data_description_axis_value rddav,"
+				+ " run_data_description_axis rdda,"
+				+ "	run_data_content rdc,"
+				+ "	run_data rd,"
+				+ " simulation_group_definition sgd,"
+				+ " run r1,"
+				+ " run r2"
+				+ " WHERE"
+				+ "	rd.content_id = rdc.id AND"
+				+ " r2.id = sgd.run_id AND"
+				+ " rd.run_id = r2.id AND"
+				+ " rddav.run_data_description_axis_id = rdda.id AND"
+				+ " rddav.run_data_description_id = rd.description_id AND"
+				+ " sgd.simulation_group_id = r1.simulation_group_id AND"
+				+ " r1.id = ? AND"
+				+ " rdda.label = 'label'";
+
+		Connection conn;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConn();
+			try {
+				pstmt = conn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+				pstmt.setFetchSize(Integer.MIN_VALUE);
+				pstmt.setInt(1, batchRunId.intValue());
+				return pstmt;
+//				ResultSet rs = pstmt.executeQuery();
+//				return rs;
+			} finally {
+//				pstmt.close();
+			}
+		} catch (ClassNotFoundException ex) {
+			throw new ApolloDatabaseException(
+					"ClassNotFoundException attempting to get data content for batch run ID "
+					+ batchRunId + ": " + ex.getMessage());
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException(
+					"SQLException attempting to get data content for batch run ID "
+					+ batchRunId + ": " + ex.getMessage());
+		}
 	}
 
 	public int getSoftwareIdForRunId(BigInteger runId)
@@ -1096,7 +1150,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get software_id for run_id "
 					+ runId);
 		} finally {
-			
+
 		}
 
 	}
@@ -1156,7 +1210,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException associating content with run ID " + runKey + ": " + ex.getMessage());
 			} finally {
-				
+
 			}
 		} else {
 			throw new ApolloDatabaseKeyNotFoundException(
@@ -1208,7 +1262,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException getting run data description ID: " + ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 	}
@@ -1255,7 +1309,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding run data description ID: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1298,7 +1352,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting software identification: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1329,7 +1383,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting software identification for run " + runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1356,7 +1410,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (ClassNotFoundException e) {
 			throw new ApolloDatabaseException(e.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1395,7 +1449,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting URL for software identification: " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -1422,7 +1476,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting URL for software identification: " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -1549,7 +1603,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to add simulation run: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1666,7 +1720,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to add simulation run: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1704,7 +1758,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get run IDs associated with hash "
 					+ hash + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1764,7 +1818,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get visualization run ID: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1793,7 +1847,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException updating last service to be called for run " + runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -1831,7 +1885,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to insert or update status of run for run ID "
 					+ runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1875,7 +1929,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting ID of last service to be called for run " + runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1919,7 +1973,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get last service to be called for run "
 					+ runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -1954,7 +2008,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get status ID of status  "
 					+ statusEnum + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -1990,7 +2044,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get status enum of status ID "
 					+ statusId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -2030,7 +2084,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to get status and message for run ID "
 					+ runId.intValue() + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -2057,7 +2111,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException getting new simulation group ID: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -2083,7 +2137,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -2158,7 +2212,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to add visualization run: "
 					+ ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
@@ -2245,7 +2299,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 					"SQLException attempting to remove all data for run "
 					+ runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -2272,7 +2326,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException creating axis ID: " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -2321,7 +2375,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException getting axis ID: " + ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 		return id;
@@ -2358,7 +2412,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (ClassNotFoundException ex) {
 				throw new ApolloDatabaseException("ClassNotFoundException getting population ID: " + ex.getMessage());
 			} finally {
-				
+
 			}
 
 		}
@@ -2425,7 +2479,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException getting or creating population ID: " + ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 
@@ -2506,7 +2560,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			} catch (SQLException ex) {
 				throw new ApolloDatabaseException("SQLException getting or creating population ID: " + ex.getMessage());
 			} finally {
-				
+
 			}
 		}
 
@@ -2568,7 +2622,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (ClassNotFoundException ex) {
 			throw new ApolloDatabaseException("ClassNotFoundException inserting time series for run ID " + runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 
 	}
@@ -2639,7 +2693,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException awaiting row count for time series table for run ID " + runId + ": " + ex.getMessage());
 		} finally {
-			
+
 		}
 	}
 
