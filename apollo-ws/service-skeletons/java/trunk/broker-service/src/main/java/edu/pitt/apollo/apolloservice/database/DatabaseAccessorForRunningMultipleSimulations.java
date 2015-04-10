@@ -5,6 +5,7 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 
@@ -13,9 +14,10 @@ public class DatabaseAccessorForRunningMultipleSimulations extends
 
 	public DatabaseAccessorForRunningMultipleSimulations(
 			RunSimulationsMessage runSimulationsMessage,
-			Authentication authentication) {
+			Authentication authentication,
+			ApolloDbUtils dbUtils) throws ApolloDatabaseException {
 		super(authentication, runSimulationsMessage
-				.getSimulatorIdentification(), RunSimulationsMessage.class);
+				.getSimulatorIdentification(), dbUtils, RunSimulationsMessage.class);
 		this.runMessage = runSimulationsMessage;
 	}
 
