@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.apolloservice.types.ReturnObjectForRun;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -15,7 +16,7 @@ import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
  */
 public class RunMethodForSimulationAndVisualization extends RunMethod {
 
-	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, Object message) {
+	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, ApolloDbUtils dbUtils, Object message) {
 		super(authentication, softwareIdentification, message);
 	}
 

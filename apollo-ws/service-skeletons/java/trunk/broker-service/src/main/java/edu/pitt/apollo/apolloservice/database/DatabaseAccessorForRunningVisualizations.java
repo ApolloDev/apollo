@@ -24,8 +24,8 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 
 	private final RunVisualizationMessage runVisualizationMessage;
 
-	public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage, Authentication authentication) {
-		super(authentication);
+	public DatabaseAccessorForRunningVisualizations(RunVisualizationMessage runVisualizationMessage, Authentication authentication, ApolloDbUtils dbUitls) throws ApolloDatabaseException {
+		super(authentication, dbUitls);
 		this.runVisualizationMessage = runVisualizationMessage;
 	}
 
