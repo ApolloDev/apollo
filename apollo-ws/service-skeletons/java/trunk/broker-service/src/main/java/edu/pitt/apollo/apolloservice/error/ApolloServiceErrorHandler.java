@@ -29,6 +29,25 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
 	public static final String RUN_ERROR_PREFIX = "ApolloServiceError";
 	private static final String ERROR_FILENAME = "run_errors.txt";
 	private static final String ERROR_FILE_DIR = "errors";
+	private static ApolloDbUtils dbUtils;
+
+
+	public static void reportError(String message, BigInteger runId) {
+		try {
+			writeErrorToDatabase(message, runId);
+		} catch (ApolloDatabaseException e) {
+			logger.debug("Error writing error: {} to database for runId {}, error was: {}", message, runId, e.getMessage());
+			logger.debug("Attempting to write error to disk.");
+			try {
+				writeErrorToErrorFile(message, runId);
+			} catch (IOException e1) {
+				logger.debug("Error writing error: {} to dick for runId {}, error was: {}", message, runId, e1.getMessage());
+				e1.printStackTrace();
+			}
+
+		}
+	}
+
 
 	public static String getErrorFilename() {
 		return ApolloServiceConstants.APOLLO_DIR + ERROR_FILENAME;
@@ -64,12 +83,16 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
 		return readErrorFromFile(getErrorFile(runId));
 	}
 
+
+
 	public static void writeErrorToErrorFile(String message, BigInteger runId) throws IOException {
 		writeErrorToFile(message, getErrorFile(runId.longValue()));
 	}
 
-	public static void writeErrorToDatabase(String message, BigInteger runId, ApolloDbUtils dbUtils) {
-
+	public static void writeErrorToDatabase(String message, BigInteger runId) throws ApolloDatabaseException {
+		if (dbUtils == null) {
+			dbUtils = new ApolloDbUtils();
+		}
 		MethodCallStatus status = new MethodCallStatus();
 		status.setStatus(MethodCallStatusEnum.FAILED);
 		status.setMessage(message);

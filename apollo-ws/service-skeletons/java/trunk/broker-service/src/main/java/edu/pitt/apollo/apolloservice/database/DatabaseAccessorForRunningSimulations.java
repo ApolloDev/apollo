@@ -26,8 +26,8 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 
 	public DatabaseAccessorForRunningSimulations(Authentication authentication,
 			SoftwareIdentification softwareIdentification,
-			Class clazz) {
-		super(authentication);
+			ApolloDbUtils dbUtils, Class clazz) throws ApolloDatabaseException {
+		super(authentication, dbUtils);
 		this.runMessageClass = clazz;
 		this.softwareIdentification = softwareIdentification;
 	}
