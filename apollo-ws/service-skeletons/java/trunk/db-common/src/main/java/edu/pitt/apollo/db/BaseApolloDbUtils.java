@@ -251,7 +251,7 @@ import org.slf4j.LoggerFactory;
  * Time: 11:10:59 AM
  * Class: BaseApolloDbUtils
  */
-public abstract class BaseApolloDbUtils {
+public abstract class BaseApolloDbUtils implements AutoCloseable {
 
 	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
 
@@ -528,6 +528,7 @@ public abstract class BaseApolloDbUtils {
 
 	}
 
+	@Override
 	public void close() throws ApolloDatabaseException {
 		try {
 			dbcon.close();
