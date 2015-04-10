@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,7 +29,7 @@ import java.util.List;
  */
 public class StageInDbWorkerThread implements Runnable {
 
-    private final BufferedReader bufferedReader;
+
     private final RunSimulationsMessage message;
 
     static Logger logger = LoggerFactory.getLogger(StageInDbWorkerThread.class);
@@ -42,6 +40,7 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private Authentication authentication;
     private final ApolloDbUtils dbUtils;
+    private final String line;
 
     private class BatchConfigRecord {
 
@@ -67,8 +66,8 @@ public class StageInDbWorkerThread implements Runnable {
         }
     }
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, BufferedReader br, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder) throws ApolloDatabaseException {
-        this.bufferedReader = br;
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder) throws ApolloDatabaseException {
+        this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
         this.authentication = authentication;
@@ -141,6 +140,7 @@ public class StageInDbWorkerThread implements Runnable {
         return runSimulationMessage;
 
     }
+
     public static boolean isNonErrorCachedStatus(
             MethodCallStatusEnum methodCallStatusEnum) {
         switch (methodCallStatusEnum) {
@@ -157,55 +157,54 @@ public class StageInDbWorkerThread implements Runnable {
     @Override
     public void run() {
         logger.debug("Thread %s running.", Thread.currentThread().getName());
-        try {
-            String paramLineOrNullIfEndOfStream = bufferedReader.readLine();
-            if (paramLineOrNullIfEndOfStream != null) {
-                logger.debug("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
-                String params[] = paramLineOrNullIfEndOfStream.split(",");
 
-                BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
-                        params);
-                if (message instanceof RunSimulationsMessage) {
-                    RunSimulationMessage currentRunSimulationMessage = null;
-                    try {
-                        currentRunSimulationMessage = populateTemplateWithRecord(
-                                message, batchConfigRecord, scenarioDate);
-                    } catch (DatatypeConfigurationException ex) {
-                        ApolloServiceErrorHandler
-                                .writeErrorToDatabase(
-                                        "Error staging job. There was an exception setting the scenario date.", batchRunId, dbUtils
-                                );
-                    }
-                    RunMethod runMethod = new RunMethodForSimulationAndVisualization(
-                            authentication,
-                            message.getSimulatorIdentification(),
-                            currentRunSimulationMessage);
-                    RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
-                    RunResult runResult = runResultandSimulationGroupId.getRunResult();
+        String paramLineOrNullIfEndOfStream = line;
+        if (paramLineOrNullIfEndOfStream != null) {
+            logger.debug("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
+            String params[] = paramLineOrNullIfEndOfStream.split(",");
 
-                    String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
-                    batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
+            BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
+                    params);
+            if (message instanceof RunSimulationsMessage) {
+                RunSimulationMessage currentRunSimulationMessage = null;
+                try {
+                    currentRunSimulationMessage = populateTemplateWithRecord(
+                            message, batchConfigRecord, scenarioDate);
+                } catch (DatatypeConfigurationException ex) {
+                    ApolloServiceErrorHandler
+                            .reportError(
+                                    "Error staging job. There was an exception setting the scenario date.", batchRunId
+                            );
+                }
+                RunMethod runMethod = new RunMethodForSimulationAndVisualization(
+                        authentication,
+                        message.getSimulatorIdentification(),
+                        dbUtils,
+                        currentRunSimulationMessage);
+                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
+                RunResult runResult = runResultandSimulationGroupId.getRunResult();
 
-                    if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
-                        ApolloServiceErrorHandler
-                                .writeErrorToDatabase(
-                                        "Error staging job using line "
-                                                + paramLineOrNullIfEndOfStream
-                                                + " of the batch configuration file. "
-                                                + "Broker returned the following status: "
-                                                + "(" + runResult.getMethodCallStatus().getStatus() + ")" + runResult.getMethodCallStatus().getMessage() + " for software "
-                                                + simulatorIdentification
-                                                .getSoftwareVersion()
-                                                + ", developer: "
-                                                + simulatorIdentification
-                                                .getSoftwareDeveloper()
-                                                + "  run id " + batchRunId + ".",
-                                        batchRunId, dbUtils);
-                    }
+                String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
+                batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
+
+                if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
+                    ApolloServiceErrorHandler
+                            .reportError(
+                                    "Error staging job using line "
+                                            + paramLineOrNullIfEndOfStream
+                                            + " of the batch configuration file. "
+                                            + "Broker returned the following status: "
+                                            + "(" + runResult.getMethodCallStatus().getStatus() + ")" + runResult.getMethodCallStatus().getMessage() + " for software "
+                                            + simulatorIdentification
+                                            .getSoftwareVersion()
+                                            + ", developer: "
+                                            + simulatorIdentification
+                                            .getSoftwareDeveloper()
+                                            + "  run id " + batchRunId + ".",
+                                    batchRunId);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 }
