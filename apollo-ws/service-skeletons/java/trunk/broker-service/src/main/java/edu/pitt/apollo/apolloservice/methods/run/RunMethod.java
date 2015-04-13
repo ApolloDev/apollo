@@ -65,7 +65,7 @@ public abstract class RunMethod extends AbstractRunMethod {
 		return userAuthorizedToRunSoftware;
 	}
 
-	public final ReturnObjectForRun run() {
+	public final ReturnObjectForRun run()  {
 		RunResultAndSimulationGroupId runResultAndSimulationGroupId = stageInDatabase(null);
 		RunResult runResult = runResultAndSimulationGroupId.getRunResult();
 		
@@ -83,7 +83,7 @@ public abstract class RunMethod extends AbstractRunMethod {
 
 				runApolloServiceThread.setAuthenticationPasswordFieldToBlank();
 				runApolloServiceThread.start();
-			} catch (UnrecognizedMessageTypeException e) {
+			} catch (Exception  e) {
 				returnObj.setObjectToReturnFromBroker(createRunResult(
 						ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
 						MethodCallStatusEnum.FAILED,
