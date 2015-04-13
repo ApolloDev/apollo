@@ -7,6 +7,7 @@ import edu.pitt.apollo.apolloservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -21,7 +22,7 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
  */
 public class RunApolloServiceThreadFactory {
 
-	public static RunApolloServiceThread getRunApolloServiceThread(Authentication authentication, Object message, BigInteger runId, BigInteger simulationGroupId) throws UnrecognizedMessageTypeException {
+	public static RunApolloServiceThread getRunApolloServiceThread(Authentication authentication, Object message, BigInteger runId, BigInteger simulationGroupId) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
 
 		if (message instanceof RunSimulationMessage) {
 			return new RunSimulationThread((RunSimulationMessage) message, runId);
