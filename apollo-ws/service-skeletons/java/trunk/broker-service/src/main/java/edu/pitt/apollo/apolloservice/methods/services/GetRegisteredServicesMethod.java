@@ -1,14 +1,12 @@
 package edu.pitt.apollo.apolloservice.methods.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,8 +22,7 @@ public class GetRegisteredServicesMethod {
 	static Logger logger = LoggerFactory.getLogger(GetRegisteredServicesMethod.class);
 
     public static List<ServiceRecord> getRegisteredServices() {
-        try {
-            ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+        try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
             return new ArrayList<ServiceRecord>(dbUtils.getRegisteredSoftware().values());
         } catch (Exception ex) {
             logger.error("Exception attempting to get registered services: "
