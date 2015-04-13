@@ -1,8 +1,5 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
-import java.math.BigInteger;
-
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -11,6 +8,8 @@ import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+
+import java.math.BigInteger;
 
 /**
  *
@@ -32,7 +31,7 @@ public class GetRunStatusMethod {
 
     public static MethodCallStatus getRunStatus(BigInteger runIdentification) {
 
-        ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+
         // first check the apollo errors file
         if (ApolloServiceErrorHandler.checkErrorFileExists(runIdentification.intValue())) {
 
@@ -46,11 +45,11 @@ public class GetRunStatusMethod {
         }
 
         MethodCallStatus status = new MethodCallStatus();
-        try {
+        try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
             status = dbUtils.getStatusOfLastServiceToBeCalledForRun(runIdentification);
         } catch (ApolloDatabaseStatusNotFoundForRunIdException ex) {
             SoftwareIdentification softwareId;
-            try {
+            try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
                 softwareId = dbUtils.getLastServiceToBeCalledForRun(runIdentification);
             } catch (ApolloDatabaseException ex1) {
                 String message = ex1.getMessage();
