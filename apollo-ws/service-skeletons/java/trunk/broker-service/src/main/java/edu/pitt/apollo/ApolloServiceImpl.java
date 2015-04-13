@@ -24,6 +24,7 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.methods.census.GetPopulationAndEnvironmentCensusMethod;
 import edu.pitt.apollo.apolloservice.methods.census.GetScenarioLocationCodesSupportedBySimulatorMethod;
 import edu.pitt.apollo.apolloservice.methods.content.GetConfigurationFileForSimulationMethod;
@@ -57,6 +58,8 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareResult;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentMessage;
@@ -185,14 +188,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.RunVisualizationResponse")
 	public RunResult runVisualization(
 			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-		RunMethod runMethod = new RunMethodForSimulationAndVisualization(
-				runVisualizationMessage.getAuthentication(),
-				runVisualizationMessage.getVisualizerIdentification(),
 
-				runVisualizationMessage);
+			RunMethod runMethod = new RunMethodForSimulationAndVisualization(
+					runVisualizationMessage.getAuthentication(),
+					runVisualizationMessage.getVisualizerIdentification(),
+					runVisualizationMessage);
 
-		return (RunResult) runMethod.run().getObjectToReturnFromBroker();
-
+			return (RunResult) runMethod.run().getObjectToReturnFromBroker();
 	}
 
 	@Override

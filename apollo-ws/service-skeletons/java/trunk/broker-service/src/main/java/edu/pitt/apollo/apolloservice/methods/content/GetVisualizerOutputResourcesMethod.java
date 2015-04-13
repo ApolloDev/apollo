@@ -1,10 +1,5 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
-import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.util.Map;
-
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -12,8 +7,11 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.UrlOutputResource;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
 
+import java.io.ByteArrayOutputStream;
+import java.math.BigInteger;
+import java.util.Map;
+
 /**
- *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
  * Date: May 9, 2014
@@ -29,8 +27,8 @@ public class GetVisualizerOutputResourcesMethod {
         MethodCallStatus status = new MethodCallStatus();
         result.setMethodCallStatus(status);
 
-        try {
-            ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+        try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
+
             Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(runIdentification,
                     dbUtils.getSoftwareIdentificationKeyForRun(runIdentification), 0);
 
