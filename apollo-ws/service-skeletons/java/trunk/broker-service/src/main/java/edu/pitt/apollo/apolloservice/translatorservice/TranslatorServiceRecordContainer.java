@@ -1,11 +1,11 @@
 package edu.pitt.apollo.apolloservice.translatorservice;
 
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+
 import java.util.Map;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 
 /**
  *
@@ -21,10 +21,9 @@ public class TranslatorServiceRecordContainer {
 	private static final ServiceRegistrationRecord TRANSLATOR_SERVICE_RECORD;
 
 	static {
-		ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
 
 		ServiceRegistrationRecord tempTranslatorServiceRecord = null;
-		try {
+		try (ApolloDbUtils dbUtils = new ApolloDbUtils()){
 			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
 			for (Integer id : softwareIdMap.keySet()) {
 				SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();
