@@ -16,7 +16,7 @@ import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
  */
 public class RunMethodForSimulationAndVisualization extends RunMethod {
 
-	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, ApolloDbUtils dbUtils, Object message) {
+	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, Object message) {
 		super(authentication, softwareIdentification, message);
 	}
 
