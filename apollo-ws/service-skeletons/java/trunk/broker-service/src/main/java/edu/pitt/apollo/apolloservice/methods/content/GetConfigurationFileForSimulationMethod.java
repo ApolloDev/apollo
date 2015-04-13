@@ -1,16 +1,15 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
-import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.util.Map;
-
-import edu.pitt.apollo.apolloservice.database.ApolloDbUtilsContainer;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.GetConfigurationFileForSimulationResult;
+
+import java.io.ByteArrayOutputStream;
+import java.math.BigInteger;
+import java.util.Map;
 
 /**
  *
@@ -24,15 +23,14 @@ import edu.pitt.apollo.simulator_service_types.v3_0_0.GetConfigurationFileForSim
 public class GetConfigurationFileForSimulationMethod {
 
     public static GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(BigInteger runIdentification) {
-        
-        ApolloDbUtils dbUtils = ApolloDbUtilsContainer.getApolloDbUtils();
+
         GetConfigurationFileForSimulationResult result = new GetConfigurationFileForSimulationResult();
         MethodCallStatus status = new MethodCallStatus();
         result.setMethodCallStatus(status);
 
         
         Map<String, ByteArrayOutputStream> map;
-        try {
+        try (ApolloDbUtils dbUtils = new ApolloDbUtils()){
             map = dbUtils.getConfigFilesForSimulation(
             		runIdentification,
                     dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer.getTranslatorSoftwareIdentification()));
