@@ -1,0 +1,4 @@
+apollo-ws/service-skeletons/java/trunk/xsd-types/src/main/xsd/
+dependency-reduced-pom.xml
+target/
+*.iml
