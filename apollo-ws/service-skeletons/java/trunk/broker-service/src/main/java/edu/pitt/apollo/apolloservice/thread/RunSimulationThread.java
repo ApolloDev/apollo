@@ -39,7 +39,7 @@ public class RunSimulationThread extends RunApolloServiceThread {
     public void run() {
         // first call the translator and translate the runSimulationMessage
         try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-            boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId, dbUtils);
+            boolean translatorRunSuccessful = TranslatorServiceAccessor.runTranslatorAndReturnIfRunWasSuccessful(runId);
             if (!translatorRunSuccessful) {
                 return;
             }
