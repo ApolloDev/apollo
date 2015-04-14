@@ -38,8 +38,10 @@ public class StageInDbWorkerThread implements Runnable {
     private final BigInteger batchRunId;
     private final BigInteger simulationGroupId;
     private final SoftwareIdentification simulatorIdentification;
+    private final RunSimulationsThread.BooleanRef errorRef;
+
     private Authentication authentication;
-    private final ApolloDbUtils dbUtils;
+
     private final String line;
 
     private class BatchConfigRecord {
@@ -66,7 +68,7 @@ public class StageInDbWorkerThread implements Runnable {
         }
     }
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder) throws ApolloDatabaseException {
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef) throws ApolloDatabaseException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -75,7 +77,8 @@ public class StageInDbWorkerThread implements Runnable {
         this.batchRunId = batchRunId;
         this.simulationGroupId = simulationGroupId;
         this.simulatorIdentification = simulatorIdentification;
-        dbUtils = new ApolloDbUtils();
+        this.errorRef = errorRef;
+
     }
 
     private static PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
@@ -156,11 +159,11 @@ public class StageInDbWorkerThread implements Runnable {
 
     @Override
     public void run() {
-        logger.debug("Thread %s running.", Thread.currentThread().getName());
+        logger.trace("Thread {} running.", Thread.currentThread().getName());
 
         String paramLineOrNullIfEndOfStream = line;
         if (paramLineOrNullIfEndOfStream != null) {
-            logger.debug("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
+            logger.trace("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
             String params[] = paramLineOrNullIfEndOfStream.split(",");
 
             BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
@@ -171,10 +174,12 @@ public class StageInDbWorkerThread implements Runnable {
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
                 } catch (DatatypeConfigurationException ex) {
+                    errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
                                     "Error staging job. There was an exception setting the scenario date.", batchRunId
                             );
+                    return;
                 }
                 RunMethod runMethod = new RunMethodForSimulationAndVisualization(
                         authentication,
@@ -186,7 +191,10 @@ public class StageInDbWorkerThread implements Runnable {
                 String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
                 batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
 
+
+
                 if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
+                    errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
                                     "Error staging job using line "
@@ -201,7 +209,9 @@ public class StageInDbWorkerThread implements Runnable {
                                             .getSoftwareDeveloper()
                                             + "  run id " + batchRunId + ".",
                                     batchRunId);
+                    return;
                 }
+                errorRef.value = false;
             }
         }
 
