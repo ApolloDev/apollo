@@ -24,7 +24,7 @@ public class TranslatorServiceAccessor {
 
 
     static TranslatorServiceEI translatorPortSingleton = null;
-    private static  TranslatorServiceEI getTranslatorPort(BigInteger runId, ApolloDbUtils dbUtils) {
+    private static  TranslatorServiceEI getTranslatorPort(BigInteger runId) {
         if (translatorPortSingleton != null)
             return translatorPortSingleton;
 
@@ -47,11 +47,11 @@ public class TranslatorServiceAccessor {
 
     }
 
-    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId, ApolloDbUtils dbUtils) {
+    public static boolean runTranslatorAndReturnIfRunWasSuccessful(BigInteger runId) {
         ServiceRegistrationRecord translatorServiceRecord = TranslatorServiceRecordContainer.getTranslatorServiceRegistrationRecord();
         TranslatorServiceEI translatorPort;
         try {
-            translatorPort = getTranslatorPort(runId, dbUtils);
+            translatorPort = getTranslatorPort(runId);
             if (translatorPort == null)
                 return false;
         } catch (WebServiceException e) {
@@ -78,7 +78,7 @@ public class TranslatorServiceAccessor {
             return false;
         }
 
-        try {
+        try (ApolloDbUtils dbUtils = new ApolloDbUtils()){
             dbUtils.updateLastServiceToBeCalledForRun(runId, translatorServiceRecord.getSoftwareIdentification());
         } catch (ApolloDatabaseException ex) {
             ApolloServiceErrorHandler.reportError("ApolloDatabaseException attempting to update last service to be called to translator for runId " + runId
