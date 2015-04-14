@@ -11,6 +11,8 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,6 +22,7 @@ import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 public abstract class DatabaseAccessorForRunningSimulations extends
 		DatabaseAccessor {
 
+	static Logger logger = LoggerFactory.getLogger(DatabaseAccessorForRunningSimulations.class);
 	protected Object runMessage;
 	private SoftwareIdentification softwareIdentification;
 	private Class runMessageClass;
@@ -53,9 +56,10 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 	@Override
 	public BigInteger getCachedRunIdFromDatabaseOrNull()
 			throws ApolloDatabaseException {
+		String hash = dbUtils.getMd5(runMessage);
 		List<BigInteger> runIds = dbUtils
-				.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(
-						softwareIdentification, runMessage);
+				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
+						softwareIdentification, hash);
 		if (runIds.size() > 0) {
 			// String targetRunSimulationMessageAsJson =
 			// dbUtils.getJSONString(runSimulationMessage,
@@ -67,6 +71,7 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 					return runIdAssociatedWithRunSimulationMessageHash;
 				}
 			}
+			logger.error("RunMessage + SoftwareId existed in the database, but run messages did not match?  Collision?");
 			return null;
 		} else {
 			return null;
