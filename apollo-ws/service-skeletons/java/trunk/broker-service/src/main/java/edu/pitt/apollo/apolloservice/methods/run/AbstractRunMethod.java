@@ -25,8 +25,6 @@ public class AbstractRunMethod {
     protected final Authentication authentication;
     protected final SoftwareIdentification softwareIdentification;
     protected RunApolloServiceThread runApolloServiceThread;
-    ApolloDbUtils dbUitls;
-
     protected final RunResult USER_AUTHENTICATED_AND_AUTHORIZED = null;
 
     public RunResultAndSimulationGroupId stageRun(Object message,
@@ -47,69 +45,69 @@ public class AbstractRunMethod {
             }
 
 
-                RunResult authResult = authenticateAndAuthorizeUser();
-                if (authResult == USER_AUTHENTICATED_AND_AUTHORIZED) {
+            RunResult authResult = authenticateAndAuthorizeUser();
+            if (authResult == USER_AUTHENTICATED_AND_AUTHORIZED) {
 
-                    BigInteger runId = databaseAccessor
-                            .getCachedRunIdFromDatabaseOrNull();
+                BigInteger runId = databaseAccessor
+                        .getCachedRunIdFromDatabaseOrNull();
 
-                    if (runId != null) {
-                        MethodCallStatus runStatus = getRunStatus(runId);
-                        if (runStatus.getStatus() != MethodCallStatusEnum.FAILED) {
-                            if (simulationGroupIdOrNull != null) {
-                                RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
-                                runIdentificationAndLabel
-                                        .setRunIdentification(runId);
-                                runIdentificationAndLabel.setRunLabel("");
-                                List<RunIdentificationAndLabel> runIdentificationAndLabels = new ArrayList<RunIdentificationAndLabel>();
-                                runIdentificationAndLabels
-                                        .add(runIdentificationAndLabel);
-                                try {
-                                    if (!(message instanceof RunSimulationsMessage))
-                                        databaseAccessor
-                                                .addRunIdsToSimulationGroup(
-                                                        simulationGroupIdOrNull,
-                                                        runIdentificationAndLabels);
-                                } catch (Exception e) {
-                                    runResultAndSimulationGroupId
-                                            .setRunResult(createRunResult(
-                                                    ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-                                                    MethodCallStatusEnum.FAILED,
-                                                    "Database error adding run IDs to simulation group: " + e.getMessage()));
-                                    return runResultAndSimulationGroupId;
-                                }
-
+                if (runId != null) {
+                    MethodCallStatus runStatus = getRunStatus(runId);
+                    if (runStatus.getStatus() != MethodCallStatusEnum.FAILED) {
+                        if (simulationGroupIdOrNull != null) {
+                            RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
+                            runIdentificationAndLabel
+                                    .setRunIdentification(runId);
+                            runIdentificationAndLabel.setRunLabel("");
+                            List<RunIdentificationAndLabel> runIdentificationAndLabels = new ArrayList<RunIdentificationAndLabel>();
+                            runIdentificationAndLabels
+                                    .add(runIdentificationAndLabel);
+                            try {
+                                if (!(message instanceof RunSimulationsMessage))
+                                    databaseAccessor
+                                            .addRunIdsToSimulationGroup(
+                                                    simulationGroupIdOrNull,
+                                                    runIdentificationAndLabels);
+                            } catch (Exception e) {
+                                runResultAndSimulationGroupId
+                                        .setRunResult(createRunResult(
+                                                ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
+                                                MethodCallStatusEnum.FAILED,
+                                                "Database error adding run IDs to simulation group: " + e.getMessage()));
+                                return runResultAndSimulationGroupId;
                             }
-                            BigInteger simulationGroupId = databaseAccessor
-                                    .getSimulationGroupIdForRun(runId);
 
-                            runResultAndSimulationGroupId
-                                    .setRunResult(createRunResult(runId,
-                                            runStatus.getStatus(),
-                                            runStatus.getMessage()));
-                            runResultAndSimulationGroupId
-                                    .setSimulationGroupId(simulationGroupId);
-                            return runResultAndSimulationGroupId;
-                        } else if (runStatus.getStatus() == MethodCallStatusEnum.FAILED) {
-                            databaseAccessor
-                                    .removeAllDataAssociatedWithRunId(runId);
                         }
+                        BigInteger simulationGroupId = databaseAccessor
+                                .getSimulationGroupIdForRun(runId);
+
+                        runResultAndSimulationGroupId
+                                .setRunResult(createRunResult(runId,
+                                        runStatus.getStatus(),
+                                        runStatus.getMessage()));
+                        runResultAndSimulationGroupId
+                                .setSimulationGroupId(simulationGroupId);
+                        return runResultAndSimulationGroupId;
+                    } else if (runStatus.getStatus() == MethodCallStatusEnum.FAILED) {
+                        databaseAccessor
+                                .removeAllDataAssociatedWithRunId(runId);
                     }
+                }
 
-                    BigInteger[] runIdSimulationGroupId = databaseAccessor
-                            .insertRunIntoDatabase(simulationGroupIdOrNull);
+                BigInteger[] runIdSimulationGroupId = databaseAccessor
+                        .insertRunIntoDatabase(simulationGroupIdOrNull);
 
-                    MethodCallStatusEnum methodCallStatusEnum = simulationGroupIdOrNull == null ? MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE
-                            : MethodCallStatusEnum.LOADING_RUN_CONFIG_INTO_DATABASE;
+                MethodCallStatusEnum methodCallStatusEnum = simulationGroupIdOrNull == null ? MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE
+                        : MethodCallStatusEnum.LOADING_RUN_CONFIG_INTO_DATABASE;
 
-                    runResultAndSimulationGroupId.setRunResult(createRunResult(
-                            runIdSimulationGroupId[0], methodCallStatusEnum,
-                            "Apollo Broker is handling the run request."));
-                    runResultAndSimulationGroupId
-                            .setSimulationGroupId(runIdSimulationGroupId[1]);
-                } else
-                    runResultAndSimulationGroupId.setRunResult(authResult);
-                return runResultAndSimulationGroupId;
+                runResultAndSimulationGroupId.setRunResult(createRunResult(
+                        runIdSimulationGroupId[0], methodCallStatusEnum,
+                        "Apollo Broker is handling the run request."));
+                runResultAndSimulationGroupId
+                        .setSimulationGroupId(runIdSimulationGroupId[1]);
+            } else
+                runResultAndSimulationGroupId.setRunResult(authResult);
+            return runResultAndSimulationGroupId;
 
         } catch (ApolloDatabaseException ex) {
             runResultAndSimulationGroupId.setRunResult(createRunResult(
