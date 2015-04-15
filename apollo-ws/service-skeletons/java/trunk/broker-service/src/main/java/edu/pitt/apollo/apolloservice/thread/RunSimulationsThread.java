@@ -178,7 +178,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 ExecutorService executor = null;
                 try {
-                    executor = Executors.newFixedThreadPool(5);
+                    executor = Executors.newFixedThreadPool(1);
                     String line = null;
                     int i = 0;
 
