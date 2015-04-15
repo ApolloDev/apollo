@@ -1728,6 +1728,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     private List<BigInteger> getRunIdsAssociatedWithHash(String hash,
                                                          int softwareKey) throws ApolloDatabaseException {
+        logger.debug("Looking in the run table for runs with hash {}", hash);
+
         String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? AND software_id = ?";
 
         Connection conn = null;
@@ -1743,6 +1745,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             while (rs.next()) {
                 runIds.add(new BigInteger(String.valueOf(rs.getInt(1))));
             }
+            if (runIds.size() > 0)
+                logger.error("Found {} runs with hash {}.  This is very likely an error.", runIds.size(), hash);
 
             // if (runIds.isEmpty()) {
             // throw new ApolloDatabaseKeyNotFoundException(
