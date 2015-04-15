@@ -921,7 +921,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         } catch (ClassNotFoundException ex) {
             throw new ApolloDatabaseException("ClassNotFoundException adding text data content: " + ex.getMessage());
         } catch (SQLException ex) {
-            throw new ApolloDatabaseException("SQLException adding text data content: " + ex.getMessage());
+            throw new ApolloDatabaseException("SQLException adding text data content with hash \"" + md5 + "\": " + ex.getMessage());
         } finally {
 
         }
