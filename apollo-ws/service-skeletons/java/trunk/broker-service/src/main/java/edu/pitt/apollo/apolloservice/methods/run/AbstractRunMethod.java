@@ -26,6 +26,7 @@ public class AbstractRunMethod {
     protected final SoftwareIdentification softwareIdentification;
     protected RunApolloServiceThread runApolloServiceThread;
     protected final RunResult USER_AUTHENTICATED_AND_AUTHORIZED = null;
+    private MethodCallStatus runStatus;
 
     public RunResultAndSimulationGroupId stageRun(Object message,
                                                   BigInteger simulationGroupIdOrNull) {
