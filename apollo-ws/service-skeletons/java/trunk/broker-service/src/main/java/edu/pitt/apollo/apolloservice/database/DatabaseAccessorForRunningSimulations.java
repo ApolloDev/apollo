@@ -56,11 +56,13 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 	@Override
 	public BigInteger getCachedRunIdFromDatabaseOrNull()
 			throws ApolloDatabaseException {
+
 		String hash = dbUtils.getMd5(runMessage);
 		List<BigInteger> runIds = dbUtils
 				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
 						softwareIdentification, hash);
 		if (runIds.size() > 0) {
+			logger.debug("Possible cache hit!  Checking to see if it's a true hit or if we have a collision...");
 			// String targetRunSimulationMessageAsJson =
 			// dbUtils.getJSONString(runSimulationMessage,
 			// RunSimulationMessage.class);
@@ -71,7 +73,7 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 					return runIdAssociatedWithRunSimulationMessageHash;
 				}
 			}
-			logger.error("RunMessage + SoftwareId existed in the database, but run messages did not match?  Collision?");
+			logger.error("Possible collision detected, but extremely unlikely.");
 			return null;
 		} else {
 			return null;
