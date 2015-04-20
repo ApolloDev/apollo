@@ -28,6 +28,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -48,6 +49,10 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
     public class BooleanRef {
         boolean value;
+    }
+
+    public class CounterRef {
+        int count = 0;
     }
 
     private final Authentication authentication;
@@ -177,42 +182,37 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             BufferedReader br = new BufferedReader(new FileReader(inputsFile));
             try {
                 ExecutorService executor = null;
-                try {
-                    executor = Executors.newFixedThreadPool(1);
-                    String line = null;
-                    int i = 0;
 
-                    error.value = false;
-                    while ((line = br.readLine()) != null) {
-                        i++;
-                        if (i % 10 == 0 && !error.value) {
-                            try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-                                dbUtils.updateStatusOfRun(runId,
-                                        MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE,
-                                        "Adding config information to the database for " + i + " runs of batch run with runId: "
-                                                + runId.toString());
-                            }
-                        }
-                        Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, authentication, line, message, scenarioDate, stBuild, error);
-                        executor.execute(worker);
-                        if (error.value) {
-                            break;
-                        }
+                executor = Executors.newFixedThreadPool(1);
+                String line = null;
+                int i = 0;
+                CounterRef counter = new CounterRef();
+                error.value = false;
+                Timer timer = new Timer();
+                timer.schedule(new StatusUpdaterThread(runId, counter, error), 0, 2500);
+
+                while ((line = br.readLine()) != null) {
+                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, authentication, line, message, scenarioDate, stBuild, error, counter);
+                    executor.execute(worker);
+                    if (error.value) {
+                        break;
                     }
-                } catch (ApolloDatabaseException e) {
-                    e.printStackTrace();
                 }
+
                 if (executor != null) {
                     executor.shutdown();
+                    logger.debug("Waiting for all StageInDbWorkerThreads to finish");
                     while (!executor.isTerminated()) {
-                        logger.debug("Waiting for all StageInDbWorkerThreads to finish");
+
                         try {
                             Thread.sleep(250);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
+                    logger.debug("All StageInDbWorkerThreads finished!");
                 }
+                timer.cancel();
 
                 MethodCallStatus status = GetRunStatusMethod.getRunStatus(runId);
 
@@ -247,10 +247,12 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 }
 
                 return false;
+            } catch (ApolloDatabaseException e) {
+                ApolloServiceErrorHandler.reportError("DB Error queuing and translating runs, error was " + e.getMessage(), runId);
             } finally {
                 br.close();
             }
-
+            return false;
 
         } catch (IOException e) {
             logger.error("Error writing error file!: " + e.getMessage());
@@ -258,6 +260,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
         }
 
     }
+
+
 
     private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) {
         try {
