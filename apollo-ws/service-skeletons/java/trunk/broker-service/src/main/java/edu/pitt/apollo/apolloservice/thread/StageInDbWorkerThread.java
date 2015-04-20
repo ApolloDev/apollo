@@ -39,6 +39,7 @@ public class StageInDbWorkerThread implements Runnable {
     private final BigInteger simulationGroupId;
     private final SoftwareIdentification simulatorIdentification;
     private final RunSimulationsThread.BooleanRef errorRef;
+    private final RunSimulationsThread.CounterRef counterRef;
 
     private Authentication authentication;
 
@@ -68,7 +69,7 @@ public class StageInDbWorkerThread implements Runnable {
         }
     }
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef) throws ApolloDatabaseException {
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, Authentication authentication, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef) throws ApolloDatabaseException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -78,6 +79,7 @@ public class StageInDbWorkerThread implements Runnable {
         this.simulationGroupId = simulationGroupId;
         this.simulatorIdentification = simulatorIdentification;
         this.errorRef = errorRef;
+        this.counterRef = counterRef;
 
     }
 
@@ -214,6 +216,6 @@ public class StageInDbWorkerThread implements Runnable {
                 errorRef.value = false;
             }
         }
-
+        counterRef.count += 1;
     }
 }
