@@ -101,31 +101,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
             the objects created by running wsdl2java or wsimport), as this JAR will also 
             be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
@@ -156,6 +131,30 @@
                     <artifactId>maven-bundle-plugin</artifactId>
                     <version>2.3.7</version>
                     <extensions>true</extensions>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>truezip-maven-plugin</artifactId>
+                    <version>1.1</version>
+                    <executions>
+                        <execution>
+                            <id>remove-a-file-in-sub-archive</id>
+                            <goals>
+                                <goal>remove</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <fileset>
+                                    <directory>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar/META-INF/services/</directory>
+                                    <includes>
+                                        <include>javax.xml.ws.spi.Provider</include>
+                                        <include>javax.xml.bind.JAXBContext</include>
+                                    </includes>
+                                </fileset>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
