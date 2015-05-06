@@ -212,6 +212,10 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                     }
                     logger.debug("All StageInDbWorkerThreads finished!");
                 }
+
+                addBatchInputsWithRunIdsFileToDatabase(stBuild);
+
+
                 timer.cancel();
 
                 MethodCallStatus status = GetRunStatusMethod.getRunStatus(runId);
@@ -260,7 +264,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
         }
 
     }
-
 
 
     private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) {
