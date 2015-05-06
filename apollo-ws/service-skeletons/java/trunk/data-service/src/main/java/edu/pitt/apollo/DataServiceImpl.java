@@ -16,7 +16,6 @@ package edu.pitt.apollo;
 
 import java.math.BigInteger;
 
-import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareResult;
 import edu.pitt.apollo.dataservice.methods.GetAllOutputFilesURLAsZipMethod;
@@ -65,6 +64,4 @@ class DataServiceImpl implements DataServiceEI {
 		
 		return null;
 	}
-
-
 }
