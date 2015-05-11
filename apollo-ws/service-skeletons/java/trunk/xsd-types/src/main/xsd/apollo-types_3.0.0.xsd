@@ -2,6 +2,9 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v3_0_0/"
 	xmlns:tns="http://types.apollo.pitt.edu/v3_0_0/" elementFormDefault="qualified">
 
+	<element name="EpidemicElement" type="tns:Epidemic"/>
+
+
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
