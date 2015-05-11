@@ -2,6 +2,7 @@ package edu.pitt.apollo.apolloservice.thread;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.apolloservice.methods.run.AbstractRunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
 import edu.pitt.apollo.apolloservice.methods.run.RunResultAndSimulationGroupId;
@@ -187,7 +188,7 @@ public class StageInDbWorkerThread implements Runnable {
                         authentication,
                         message.getSimulatorIdentification(),
                         currentRunSimulationMessage);
-                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
+                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stage(simulationGroupId);
                 RunResult runResult = runResultandSimulationGroupId.getRunResult();
 
                 String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
