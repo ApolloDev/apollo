@@ -85,9 +85,9 @@ public abstract class DatabaseAccessor {
 
     public void addRunIdsToSimulationGroup(
             BigInteger simulationGroupId,
-            List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels) throws ApolloDatabaseException {
+            List<BigInteger> runIds) throws ApolloDatabaseException {
         dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
-                simulationRunIdentificationsAndLabels);
+                runIds);
     }
 
     public abstract BigInteger getCachedRunIdFromDatabaseOrNull()
