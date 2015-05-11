@@ -225,32 +225,33 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                             runId);
                     return false;
                 }
-
-                logger.debug("Finished all threads!");
-
-                if (!error.value) {
-                    logger.info("Staging successful! Calling translator!");
-                    try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-
-                        boolean translatorRunSuccessful = TranslatorServiceAccessor
-                                .runTranslatorAndReturnIfRunWasSuccessful(
-                                        runId);
-
-                        if (!translatorRunSuccessful) {
-                            logger.error("Translator reported failure for runId {}", runId);
-                            return false;
-                        } else {
-                            logger.info("Translator reported success for runId {}", runId);
-                            return true;
-                        }
-                    } catch (ApolloDatabaseException e) {
-                        ApolloServiceErrorHandler.reportError("Unable to create instance of ApolloDbUtils to call runTranslatorAndReturnIfWasSuccessful", runId);
-                    }
-                } else {
-                    logger.info("Bypassing calling translator as the staging returned an error.");
-                }
-
                 return false;
+//
+//                logger.debug("Finished all threads!");
+
+//                if (!error.value) {
+//                    logger.info("Staging successful! Calling translator!");
+//                    try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
+//
+//                        boolean translatorRunSuccessful = TranslatorServiceAccessor
+//                                .runTranslatorAndReturnIfRunWasSuccessful(
+//                                        runId);
+//
+//                        if (!translatorRunSuccessful) {
+//                            logger.error("Translator reported failure for runId {}", runId);
+//                            return false;
+//                        } else {
+//                            logger.info("Translator reported success for runId {}", runId);
+//                            return true;
+//                        }
+//                    } catch (ApolloDatabaseException e) {
+//                        ApolloServiceErrorHandler.reportError("Unable to create instance of ApolloDbUtils to call runTranslatorAndReturnIfWasSuccessful", runId);
+//                    }
+//                } else {
+//                    logger.info("Bypassing calling translator as the staging returned an error.");
+//                }
+
+//                return false;
             } catch (ApolloDatabaseException e) {
                 ApolloServiceErrorHandler.reportError("DB Error queuing and translating runs, error was " + e.getMessage(), runId);
             } finally {
