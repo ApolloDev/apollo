@@ -1516,14 +1516,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             associateContentWithRunId(new BigInteger(String.valueOf(runId)),
                     dataContentKey, runDataDescriptionId);
 
-            List<RunIdentificationAndLabel> runIdsForDataService = new ArrayList<RunIdentificationAndLabel>();
-            RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
-            runIdentificationAndLabel.setRunIdentification(new BigInteger(Integer.toString(runId)));
-            runIdentificationAndLabel
-                    .setRunLabel("Individual simulation set id: "
-                            + simulationGroupId.toString());
-            runIdsForDataService = new ArrayList<RunIdentificationAndLabel>();
-            runIdsForDataService.add(runIdentificationAndLabel);
+            List<BigInteger> runIdsForDataService = new ArrayList<BigInteger>();
+            runIdsForDataService.add(new BigInteger(Integer.toString(runId)));
             addRunIdsToSimulationGroup(simulationGroupId, runIdsForDataService);
 
             BigInteger[] runIdSimulationGroupId = new BigInteger[2];
@@ -1595,29 +1589,18 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                         "Record not inserted!");
             }
             if (memberOfSimulationGroupIdOrNull != null) {
-                RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
-                runIdentificationAndLabel.setRunIdentification(runId);
-                runIdentificationAndLabel.setRunLabel("Member of batch run: "
-                        + memberOfSimulationGroupIdOrNull.toString());
-                List<RunIdentificationAndLabel> runIdentificationAndLabels = new ArrayList<RunIdentificationAndLabel>();
-                runIdentificationAndLabels.add(runIdentificationAndLabel);
-                addRunIdsToSimulationGroup(memberOfSimulationGroupIdOrNull,
-                        runIdentificationAndLabels);
-                addRunIdsToSimulationGroup(simulationGroupId,
-                        runIdentificationAndLabels);
+                List<BigInteger> runIds = new ArrayList<BigInteger>();
+                runIds.add(runId);
+                addRunIdsToSimulationGroup(memberOfSimulationGroupIdOrNull, runIds);
+                addRunIdsToSimulationGroup(simulationGroupId, runIds);
 
             } else {
-                RunIdentificationAndLabel runIdentificationAndLabel = new RunIdentificationAndLabel();
-                runIdentificationAndLabel.setRunIdentification(runId);
-                runIdentificationAndLabel
-                        .setRunLabel("Individual simulation set id: "
-                                + simulationGroupId.toString());
-                List<RunIdentificationAndLabel> runIdentificationAndLabels = new ArrayList<RunIdentificationAndLabel>();
-                runIdentificationAndLabels.add(runIdentificationAndLabel);
+                List<BigInteger> runIds = new ArrayList<BigInteger>();
+                runIds.add(runId);
                 if (!(runMessage instanceof RunSimulationsMessage)) {
                     //don't make a batch run a member of a siulation group
                     addRunIdsToSimulationGroup(simulationGroupId,
-                            runIdentificationAndLabels);
+                            runIds);
                 }
             }
 
@@ -1626,6 +1609,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             // use insertDataContentForRun for this
             int dataContentKey = addTextDataContent(getJSONString(runMessage));
             int runDataDescriptionId = getRunDataDescriptionId(
+
                     DbContentDataFormatEnum.TEXT,
                     "run_simulation_message.json",
                     DbContentDataType.RUN_SIMULATION_MESSAGE,
@@ -2030,20 +2014,18 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public void addRunIdsToSimulationGroup(
             BigInteger simulationGroupId,
-            List<RunIdentificationAndLabel> simulationRunIdentificationsAndLabels)
+            List<BigInteger> runIds)
             throws ApolloDatabaseException {
 
         String query = "INSERT IGNORE INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
 
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
-            for (RunIdentificationAndLabel runIdAndLabel : simulationRunIdentificationsAndLabels) {
-                BigInteger simulationRunId = runIdAndLabel.getRunIdentification();
+            for (BigInteger runId : runIds) {
                 pstmt.setLong(1, simulationGroupId.longValue());
-                pstmt.setLong(2, simulationRunId.longValue());
+                pstmt.setLong(2, runId.longValue());
                 pstmt.execute();
             }
-
         } catch (SQLException ex) {
             throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
         } finally {
@@ -2071,9 +2053,12 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
         try (Connection conn = datasource.getConnection()) {
             //conn = getConn();
+            List<BigInteger> runIds = new ArrayList<BigInteger>();
+            for (RunIdentificationAndLabel runIdentificationAndLabel : runVisualizationMessage.getSimulationRunIds()) {
+               runIds.add(runIdentificationAndLabel.getRunIdentification());
+            }
             BigInteger simulationGroupId = getNewSimulationGroupId();
-            addRunIdsToSimulationGroup(simulationGroupId,
-                    runVisualizationMessage.getSimulationRunIds());
+            addRunIdsToSimulationGroup(simulationGroupId, runIds);
 
             String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(query,
