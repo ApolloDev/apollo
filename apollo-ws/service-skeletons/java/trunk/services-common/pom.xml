@@ -2,14 +2,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>services-common</artifactId>
     <packaging>jar</packaging>
-
-    <distributionManagement>
-        <repository>
-            <id>local_repo</id>
-            <name>Local Repository</name>
-            <url>file:${user.home}/.m2/repository</url>
-        </repository>
-    </distributionManagement>
 	
     <licenses>
         <license>
@@ -27,6 +19,19 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <distributionManagement>
+       <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
 
