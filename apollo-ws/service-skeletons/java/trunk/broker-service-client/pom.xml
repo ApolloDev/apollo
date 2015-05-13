@@ -12,6 +12,19 @@
     <name>Broker Service SOAP Client</name>
     <packaging>jar</packaging>
 
+    <distributionManagement>
+       <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>sardine-google-svn-repo</id>
