@@ -25,6 +25,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+       <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -186,30 +199,7 @@
                 </executions>
             </plugin>-->
       
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-                                        <exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
 			
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -224,8 +214,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
 
             </plugin>
