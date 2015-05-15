@@ -61,14 +61,13 @@ public class DataServiceSpecifiedFilesThread extends DataServiceThread {
 						return;
 					}
 				}
-
 			}
 
 			if (fileInformationCollection.isZipFiles()) {
 
-				String zipFileName = fileInformationCollection.getZipFileName();
-				String outputDirectory = fileInformationCollection.getOutputDirectory();
-				zipOutputFiles(outputDirectory, zipFileName);
+//				String zipFileName = fileInformationCollection.getZipFileName();
+//				String outputDirectory = fileInformationCollection.getOutputDirectory();
+//				zipOutputFiles(outputDirectory, zipFileName);
 			}
 
 			updateStatus(MethodCallStatusEnum.COMPLETED, "The data service run has completed.");
