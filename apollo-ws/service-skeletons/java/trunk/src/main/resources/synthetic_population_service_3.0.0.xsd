@@ -10,31 +10,38 @@
 	</import>
 
 	<import schemaLocation="apollo-types_3.0.0.xsd" namespace="http://types.apollo.pitt.edu/v3_0_0/"></import>
-    
-    
-    	<complexType name="GetConfigurationFileForSimulationResult">
+	
+	<complexType name="GetConfigurationFileForSimulationResult">
 		<sequence>
-			<element name="methodCallStatus" type="common:MethodCallStatus"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="configurationFile" type="string" maxOccurs="1"
-				minOccurs="0">
-			</element>
-			<element name="configurationFileInHtmlFormat" type="string"
-				maxOccurs="1" minOccurs="0">
-			</element>
+			<element name="methodCallStatus" type="common:MethodCallStatus" maxOccurs="1" minOccurs="1"></element>
+			<element name="configurationFile" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="configurationFileInHtmlFormat" type="string" maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
-    
-    <complexType name="SyntheticPopulationGenerationResult">
+	
+	<complexType name="SyntheticPopulationGenerationResult">
 		<sequence>
 			<element name="runId" type="common:RunIdentification" />
-			<element name="syntheticPopulationOutputResource" type="common:UrlOutputResource"
-				maxOccurs="unbounded" minOccurs="1" />
+			<element name="syntheticPopulationOutputResource" type="common:UrlOutputResource" maxOccurs="unbounded" minOccurs="1" />
 		</sequence>
 	</complexType>
 
 
-	<complexType name="RunSyntheticPopulationGenerationMessage"></complexType>
+	<complexType name="RunSyntheticPopulationGenerationMessage">
+		<sequence>
+			<element name="boundaryId" type="string" maxOccurs="unbounded" minOccurs="1"/>
+			<element name="variableId" type="string" maxOccurs="unbounded" minOccurs="1"/>
+			<element name="year" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="month" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="day" type="integer" maxOccurs="1" minOccurs="1"/>
+		</sequence>
+	</complexType>
 
+	<complexType name="SyntheticPopulationRunStatusMessage">
+		<sequence>
+			<element name="runStatus" type="common:MethodCallStatusEnum" minOccurs="1" maxOccurs="1"/>
+			<element name="errorMessage" type="string" minOccurs="0" maxOccurs="1"/>
+			<element name="completedRunUrl" type="string" minOccurs="0" maxOccurs="1"/>
+		</sequence>
+	</complexType>
 </schema>
