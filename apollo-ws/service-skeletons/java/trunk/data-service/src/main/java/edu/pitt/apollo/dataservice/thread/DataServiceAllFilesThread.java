@@ -1,5 +1,6 @@
 package edu.pitt.apollo.dataservice.thread;
 
+import com.mysql.jdbc.Connection;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -9,6 +10,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +31,7 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 	private final String outputFileName;
 	private final List<String> fileNamesToMatch;
 
-	public DataServiceAllFilesThread(BigInteger runId, BigInteger runIdFromMessage, ApolloServiceQueue queue, 
+	public DataServiceAllFilesThread(BigInteger runId, BigInteger runIdFromMessage, ApolloServiceQueue queue,
 			ApolloDbUtils dbUtils, String outputDirectory, String outputFileName, List<String> fileNamesToMatch) {
 		super(runId, queue, dbUtils);
 		this.outputDirectory = outputDirectory;
@@ -40,40 +44,94 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 	public void runApolloService() {
 
 		try {
-			List<BigInteger> runIdsAssociatedWithSoftwareRunId = dbUtils.getRunIdsForBatch(runIdFromMessage);
-			if (!runIdsAssociatedWithSoftwareRunId.contains(runIdFromMessage)) {
-				runIdsAssociatedWithSoftwareRunId.add(runIdFromMessage); // this will get all files associated with the batch run as well
-			}
 
-			for (BigInteger singleRunId : runIdsAssociatedWithSoftwareRunId) {
+			String zipFileName = String.format(outputDirectory + File.separator + outputFileName, runId);
+			initializeZipFile(zipFileName);
 
-				Map<String, ByteArrayOutputStream> contentMap = dbUtils.getDataContentForSoftware(singleRunId);
-				for (String filename : contentMap.keySet()) {
-					
-					if (fileNamesToMatch!= null && fileNamesToMatch.size() > 0) {
-						if (!fileNamesToMatch.contains(filename)) {
+			PreparedStatement pstmt = null;
+			ApolloDbUtils localDbUtils = null;
+
+			try {
+				localDbUtils = new ApolloDbUtils();
+				pstmt = localDbUtils.getDataContentForBatchSimulations(runIdFromMessage);
+
+				ResultSet results = pstmt.executeQuery();
+//			try {
+				while (results.next()) {
+
+					int simulationRunId = results.getInt("id");
+					String textContent = results.getString("text_content");
+					String name = results.getString("name");
+
+					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
+						if (!fileNamesToMatch.contains(name)) {
 							continue;
 						}
 					}
-					
-					ByteArrayOutputStream content = contentMap.get(filename);
 
-					String filePath = outputDirectory + File.separator + singleRunId + File.separator + filename;
-					filePath = String.format(filePath, singleRunId);
-					File outputFile = new File(filePath);
-					outputFile.getParentFile().mkdirs();
-					outputFile.createNewFile();
+					String filePath = simulationRunId + File.separator + name;
+					addToZip(filePath, textContent.getBytes());
+				}
 
-					FileOutputStream fos = new FileOutputStream(outputFile);
-					content.writeTo(fos);
+				Map<String, ByteArrayOutputStream> dataContentForBatchRun = dbUtils.getDataContentForSoftware(runIdFromMessage);
+				for (String name : dataContentForBatchRun.keySet()) {
 
-					fos.close();
+					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
+						if (!fileNamesToMatch.contains(name)) {
+							continue;
+						}
+					}
+
+					String filePath = runIdFromMessage + File.separator + name;
+					addToZip(filePath, dataContentForBatchRun.get(name).toByteArray());
+				}
+
+//			} catch (SQLException ex) {
+//				
+//			}
+			} finally {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (localDbUtils != null) {
+					localDbUtils.close();
 				}
 			}
 
-			String zipFileName = String.format(outputFileName, runId);
-			zipOutputFiles(outputDirectory, zipFileName);
+			finalizeZipFile();
 
+//			List<BigInteger> runIdsAssociatedWithSoftwareRunId = dbUtils.getRunIdsForBatch(runIdFromMessage);
+//			if (!runIdsAssociatedWithSoftwareRunId.contains(runIdFromMessage)) {
+//				runIdsAssociatedWithSoftwareRunId.add(runIdFromMessage); // this will get all files associated with the batch run as well
+//			}
+//
+//			for (BigInteger singleRunId : runIdsAssociatedWithSoftwareRunId) {
+//
+//				Map<String, ByteArrayOutputStream> contentMap = dbUtils.getDataContentForSoftware(singleRunId);
+//				for (String filename : contentMap.keySet()) {
+//
+//					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
+//						if (!fileNamesToMatch.contains(filename)) {
+//							continue;
+//						}
+//					}
+//
+//					ByteArrayOutputStream content = contentMap.get(filename);
+//
+//					String filePath = outputDirectory + File.separator + singleRunId + File.separator + filename;
+//					filePath = String.format(filePath, singleRunId);
+//					File outputFile = new File(filePath);
+//					outputFile.getParentFile().mkdirs();
+//					outputFile.createNewFile();
+//
+//					FileOutputStream fos = new FileOutputStream(outputFile);
+//					content.writeTo(fos);
+//
+//					fos.close();
+//				}
+//			}
+//			String zipFileName = String.format(outputFileName, runId);
+//			zipOutputFiles(outputDirectory, zipFileName);
 			updateStatus(MethodCallStatusEnum.COMPLETED, "The data service run has completed");
 		} catch (ApolloDatabaseException ex) {
 			logger.error(ex.getMessage());
@@ -81,6 +139,9 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 		} catch (IOException ex) {
 			logger.error(ex.getMessage());
 			updateStatus(MethodCallStatusEnum.FAILED, "There was an error creating the output file for the run.");
+		} catch (SQLException ex) {
+			logger.error("SQLException getting data for run " + runId + ": " + ex.getMessage());
+			updateStatus(MethodCallStatusEnum.FAILED, "There was an error getting the data for the run.");
 		}
 	}
 
