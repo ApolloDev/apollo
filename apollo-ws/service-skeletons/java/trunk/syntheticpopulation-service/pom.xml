@@ -31,144 +31,158 @@
 			<version>1.5.3</version>
 		</dependency>
 	</dependencies>
+	
+<distributionManagement>
+       <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<filters>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/services/javax.xml.bind.JAXBContext</exclude>
-										<exclude>META-INF/services/javax.xml.ws.spi.Provider</exclude>
-									</excludes>
-								</filter>
-							</filters>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<!-- here the phase you need -->
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/classes</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../src/main/resources</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
-			the objects created by running wsdl2java or wsimport), as this JAR will also 
-			be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>src/assembly/jaxws-jar.xml</descriptor>
-					</descriptors>
-					<appendAssemblyId>true</appendAssemblyId>
-					<attach>true</attach>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.3.7</version>
-					<extensions>true</extensions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		<!-- Name of the generated WAR file -->
-		<!--<finalName>syntheticpopulation-service</finalName>-->
-	</build>
 
-	<profiles>
-		<profile>
-			<id>CXF</id>
-			<!-- To use Metro by default, move activation element to its profile below -->
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.cxf</groupId>
-						<artifactId>cxf-codegen-plugin</artifactId>
-						<version>${cxf.version}</version>
-						<executions>
-							<execution>
-								<configuration>
-									<sourceRoot>
-										${basedir}/target/generated-sources
-									</sourceRoot>
-									<wsdlOptions>
-										<wsdlOption>
-											<wsdl>
-												${basedir}/../src/main/resources/syntheticpopulationservice300.wsdl
-											</wsdl>
-											<wsdlLocation>classpath:syntheticpopulationservice300.wsdl</wsdlLocation>
-										</wsdlOption>
-									</wsdlOptions>
-								</configuration>
-								<goals>
-									<goal>wsdl2java</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					
-					<plugin>
-						<groupId>org.apache.felix</groupId>
-						<artifactId>maven-bundle-plugin</artifactId>
-						<configuration>
-							<instructions>
-								<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-								<Require-Bundle>org.apache.cxf.bundle,org.springframework.beans</Require-Bundle>
-								<Export-Package>edu.pitt.apollo.service</Export-Package>
-							</instructions>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
+            the objects created by running wsdl2java or wsimport), as this JAR will also 
+            be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/jaxws-jar.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>truezip-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>remove-a-file-in-sub-archive</id>
+                        <goals>
+                            <goal>remove</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <fileset>
+                                <directory>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar/META-INF/services/</directory>
+                                <includes>
+                                    <include>javax.xml.ws.spi.Provider</include>
+                                    <include>javax.xml.bind.JAXBContext</include>
+                                </includes>
+                            </fileset>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.3.7</version>
+                    <extensions>true</extensions>
+                </plugin>
+                
+                       
+            </plugins>
+        </pluginManagement>
+        <!-- Name of the generated WAR file -->
+        <!--<finalName>syntheticpopulation-service</finalName>-->
+    </build>
+
+    <profiles>
+        <profile>
+            <id>CXF</id>
+            <!-- To use Metro by default, move activation element to its profile below -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-codegen-plugin</artifactId>
+                        <version>${cxf.version}</version>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <sourceRoot>
+                                        ${basedir}/target/generated-sources
+                                    </sourceRoot>
+                                    <wsdlOptions>
+                                        <wsdlOption>
+                                            <wsdl>
+                                                ${basedir}/../src/main/resources/syntheticpopulationservice300.wsdl
+                                            </wsdl>
+                                            <wsdlLocation>classpath:syntheticpopulationservice300.wsdl</wsdlLocation>
+                                        </wsdlOption>
+                                    </wsdlOptions>
+                                </configuration>
+                                <goals>
+                                    <goal>wsdl2java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.felix</groupId>
+                        <artifactId>maven-bundle-plugin</artifactId>
+                        <configuration>
+                            <instructions>
+                                <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                                <Require-Bundle>org.apache.cxf.bundle,org.springframework.beans</Require-Bundle>
+                                <Export-Package>edu.pitt.apollo.service</Export-Package>
+                            </instructions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
