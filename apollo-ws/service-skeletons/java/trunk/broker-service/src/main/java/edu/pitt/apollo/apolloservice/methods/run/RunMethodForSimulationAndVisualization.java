@@ -5,6 +5,8 @@ import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
+import java.math.BigInteger;
+
 /**
  *
  * Author: Nick Millett
@@ -15,8 +17,8 @@ import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
  */
 public class RunMethodForSimulationAndVisualization extends AbstractRunMethod {
 
-	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, Object message) {
-		super(authentication, softwareIdentification, message);
+	public RunMethodForSimulationAndVisualization(Authentication authentication, SoftwareIdentification softwareIdentification, BigInteger associatedSimulationGroupId, Object message) {
+		super(authentication, softwareIdentification, associatedSimulationGroupId, message);
 	}
 
 	@Override
