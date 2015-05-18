@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.dbUtils;
@@ -76,6 +77,8 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 			if (message == null) {
 				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
 			}
+		} catch (JsonUtilsException jue) {
+			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, jue.getMessage());
 		} catch (ApolloDatabaseException ex) {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
 		}

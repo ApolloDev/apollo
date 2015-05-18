@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import edu.pitt.apollo.Md5UtilsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -324,6 +325,10 @@ public class DatabaseUtility {
 			throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to add text data "
 					+ "content for image " + imageName + " for run " + visualizerRunId + ": "
 					+ ex.getMessage());
+		} catch (Md5UtilsException md5ex) {
+			throw new TimeSeriesVisualizerException("Md5UtilsException attempting to add text data "
+					+ "content for image " + imageName + " for run " + visualizerRunId + ": "
+					+ md5ex.getMessage());
 		}
 
 		int runDataDescriptionId;
