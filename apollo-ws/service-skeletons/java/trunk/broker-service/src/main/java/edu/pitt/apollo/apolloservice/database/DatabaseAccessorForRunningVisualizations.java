@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloservice.database;
 
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -45,12 +46,12 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
+	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException, Md5UtilsException {
 
 		List<BigInteger> runIds = dbUtils.getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(runVisualizationMessage);
 
 		if (runIds.size() > 0) {
-			String targetRunVisualizationMessageAsJson = ApolloDbUtils.getJSONString(runVisualizationMessage);
+			String targetRunVisualizationMessageAsJson = jsonUtils.getJSONString(runVisualizationMessage);
 			for (BigInteger runIdAssociatedWithRunVisualizationMessageHash : runIds) {
 				if (isRunIdAssociatedWithMatchingRunMessage(targetRunVisualizationMessageAsJson,
 					runIdAssociatedWithRunVisualizationMessageHash)) {
@@ -65,7 +66,7 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException {
+	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException, Md5UtilsException {
 		int md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(runVisualizationMessage) + 1;
 		BigInteger[] runIdsimulationGroupId = dbUtils.addVisualizationRun(runVisualizationMessage, md5CollisionId, authentication);
 		return runIdsimulationGroupId;
