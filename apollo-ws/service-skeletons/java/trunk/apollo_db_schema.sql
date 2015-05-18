@@ -243,6 +243,7 @@ CREATE TABLE run_status (
   run_id INT NOT NULL,
   status_id INT NOT NULL,
   message TEXT,
+  last_time_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   CONSTRAINT fk_run_id FOREIGN KEY (run_id) REFERENCES run (id),
   CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES run_status_description(id),
@@ -976,6 +977,14 @@ WHERE
 CREATE TRIGGER run_creation_timestamp BEFORE INSERT ON run 
 FOR EACH ROW
 SET NEW.created = NOW();
+
+CREATE TRIGGER run_status_creation_timestamp BEFORE CREATE ON run 
+FOR EACH ROW
+SET NEW.last_time_updated = NOW();
+
+CREATE TRIGGER run_status_update_timestamp BEFORE UPDATE ON run 
+FOR EACH ROW
+SET NEW.last_time_updated = NOW();
 
 
 	
