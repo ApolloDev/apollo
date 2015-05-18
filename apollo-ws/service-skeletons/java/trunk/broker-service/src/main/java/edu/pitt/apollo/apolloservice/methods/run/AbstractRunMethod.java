@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessor;
 import edu.pitt.apollo.apolloservice.database.DatabaseAccessorFactory;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
@@ -83,15 +84,18 @@ public abstract class AbstractRunMethod implements RunMethod {
 
     @Override
     public RunResultAndSimulationGroupId stage() {
-        RunResult authResult = authenticateAndAuthorizeUser();
-        if (authResult != USER_AUTHENTICATED_AND_AUTHORIZED) {
-            return getRunResultAndSimulationGroupId(authResult, null);
-        }
+
 
         try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
 
             dao = DatabaseAccessorFactory.getDatabaseAccessor(
                     message, authentication, dbUtils);
+
+
+            RunResult authResult = authenticateAndAuthorizeUser();
+            if (authResult != USER_AUTHENTICATED_AND_AUTHORIZED) {
+                return getRunResultAndSimulationGroupId(authResult, null);
+            }
 
             RunResultAndSimulationGroupId runResultAndSimulationGroupId = null;
 
@@ -128,6 +132,10 @@ public abstract class AbstractRunMethod implements RunMethod {
             return getRunResultAndSimulationGroupId(createRunResult(
                     ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
                     MethodCallStatusEnum.FAILED, "Database exception staging run: " + ex.getMessage()), null);
+        } catch (Md5UtilsException md5ex) {
+            return getRunResultAndSimulationGroupId(createRunResult(
+                    ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
+                    MethodCallStatusEnum.FAILED, "Md5 exception staging run: " + md5ex.getMessage()), null);
         }
     }
 
@@ -237,7 +245,6 @@ public abstract class AbstractRunMethod implements RunMethod {
                     MethodCallStatusEnum.FAILED, ex.getMessage());
         }
         return USER_AUTHENTICATED_AND_AUTHORIZED;
-
     }
 
     private boolean isCached(BigInteger runId) {
@@ -252,7 +259,6 @@ public abstract class AbstractRunMethod implements RunMethod {
     private boolean needToAddToSimulationGroup(BigInteger associatedSimulationGroup) {
         return associatedSimulationGroup != null;
     }
-
 
 
 }
