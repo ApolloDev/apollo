@@ -107,9 +107,10 @@ public class DataServiceClient {
 	private static void testGettingAllOutputFiles(ApolloServiceEI port) throws IOException {
 		GetAllOutputFilesURLAsZipMessage message = new GetAllOutputFilesURLAsZipMessage();
 		message.setAuthentication(getAuthentication());
-		message.setRunId(new BigInteger("1001"));
+		message.setRunId(new BigInteger("70106"));
 		message.getFileNames().add("batch_inputs_with_run_ids.txt");
 		message.getFileNames().add("ods_required_output_for_model_validation.csv");
+		message.getFileNames().add("test11");
 		
 		
 		GetAllOutputFilesURLAsZipResult result = port.getAllOutputFilesURLAsZip(message);
