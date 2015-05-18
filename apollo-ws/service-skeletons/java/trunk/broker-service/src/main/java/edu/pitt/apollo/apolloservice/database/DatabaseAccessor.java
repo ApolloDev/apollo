@@ -1,5 +1,8 @@
 package edu.pitt.apollo.apolloservice.database;
 
+import edu.pitt.apollo.JsonUtils;
+import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -16,6 +19,8 @@ import java.util.List;
  * 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
 public abstract class DatabaseAccessor {
+    protected JsonUtils jsonUtils = new JsonUtils();
+    protected Md5Utils md5Utils = new Md5Utils();
 
     protected final ApolloDbUtils dbUtils;
 
@@ -72,9 +77,15 @@ public abstract class DatabaseAccessor {
 
         boolean result = targetRunMessageAsJson
                 .equals(runSimulationMessageAssociatedWithRunIdAsJson);
-        if (!result)
-            logger.warn("Warning!!! " + targetRunMessageAsJson + " \n is not equal to \n " + runSimulationMessageAssociatedWithRunIdAsJson);
-        return result;
+        if (!result) {
+            String targetHash = md5Utils.getMd5FromString(targetRunMessageAsJson);
+            String existingHash = md5Utils.getMd5FromString(runSimulationMessageAssociatedWithRunIdAsJson);
+
+            logger.warn("Warning!!! (" + targetHash + ") " + targetRunMessageAsJson +
+                    " \n is not equal to \n " +
+                    "(" + existingHash +")" + runSimulationMessageAssociatedWithRunIdAsJson);
+
+        }return result;
 
     }
 
@@ -85,20 +96,20 @@ public abstract class DatabaseAccessor {
 
     public void addRunIdsToSimulationGroup(
             BigInteger simulationGroupId,
-            List<BigInteger> runIds) throws ApolloDatabaseException {
+            List<BigInteger> runIds) throws ApolloDatabaseException,Md5UtilsException {
         dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
                 runIds);
     }
 
     public abstract BigInteger getCachedRunIdFromDatabaseOrNull()
-            throws ApolloDatabaseException;
+            throws ApolloDatabaseException, Md5UtilsException;
 
     protected abstract String getRunMessageAssociatedWithRunIdAsJsonOrNull(
             BigInteger runId) throws ApolloDatabaseException;
 
     public abstract BigInteger[] insertRunIntoDatabase(
             BigInteger memberOfSimulationGroupIdOrNull)
-            throws ApolloDatabaseException;
+            throws ApolloDatabaseException, Md5UtilsException;
 
     public BigInteger getSimulationGroupIdForRun(BigInteger runId)
             throws ApolloDatabaseException {

@@ -1,8 +1,6 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import edu.pitt.apollo.ApolloServiceQueue;
-import edu.pitt.apollo.ApolloServiceThread;
-import edu.pitt.apollo.SimulatorServiceImpl;
+import edu.pitt.apollo.*;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
@@ -81,9 +79,10 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 			if (message == null) {
 				updateStatus(MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null for run " + runId);
 			}
-
 		} catch (ApolloDatabaseException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
+		} catch (JsonUtilsException jue) {
+			updateStatus(MethodCallStatusEnum.FAILED, jue.getMessage());
 		} catch (IOException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
 		}
@@ -181,7 +180,12 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseException attempting to add text data "
 					+ "content for series " + seriesName + " for run " + runId + ": " + ex.getMessage());
 			return;
-		}
+
+	    } catch (Md5UtilsException md5ex) {
+		    updateStatus(MethodCallStatusEnum.FAILED, "Md5ex attempting to add text data "
+				+ "content for series " + seriesName + " for run " + runId + ": " + md5ex.getMessage());
+	    	return;
+	    }
 
 		int runDataDescriptionId;
 		try {

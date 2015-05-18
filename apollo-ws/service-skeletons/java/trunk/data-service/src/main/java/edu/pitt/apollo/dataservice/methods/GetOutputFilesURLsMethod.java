@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.dbUtils;
@@ -74,6 +75,8 @@ public class GetOutputFilesURLsMethod extends DataServiceMethod {
 			}
 		} catch (ApolloDatabaseException ex) {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
+		} catch (JsonUtilsException jue) {
+			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, jue.getMessage());
 		}
 	}
 }
