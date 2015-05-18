@@ -1,6 +1,8 @@
 package edu.pitt.apollo.apolloservice.thread;
 
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.apolloservice.exception.BatchException;
@@ -38,6 +40,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     private static final SoftwareIdentification brokerServiceSoftwareId;
     private static int BROKER_SERVICE_SOFTWARE_ID_KEY;
+
 
     static {
         brokerServiceSoftwareId = new SoftwareIdentification();
@@ -183,15 +186,16 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 ExecutorService executor = null;
 
-                executor = Executors.newFixedThreadPool(1);
+                executor = Executors.newFixedThreadPool(10);
                 String line = null;
                 int i = 0;
                 CounterRef counter = new CounterRef();
                 error.value = false;
                 Timer timer = new Timer();
-                timer.schedule(new StatusUpdaterThread(runId, counter, error), 0, 2500);
+                timer.schedule(new StatusUpdaterThread(runId, counter, error), 0, 1000);
 
                 while ((line = br.readLine()) != null) {
+
                     Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, authentication, line, message, scenarioDate, stBuild, error, counter);
                     executor.execute(worker);
                     if (error.value) {
@@ -215,11 +219,15 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
                 addBatchInputsWithRunIdsFileToDatabase(stBuild);
 
-
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 timer.cancel();
 
                 MethodCallStatus status = GetRunStatusMethod.getRunStatus(runId);
-
+                System.out.println("TEST COMPLETE!");
                 if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                     ApolloServiceErrorHandler.reportError("Error staging runs in database, error was " + status.getMessage() + " for runId",
                             runId);
@@ -276,7 +284,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 int runDataDescriptionId = dbUtils.getRunDataDescriptionId(ApolloDbUtils.DbContentDataFormatEnum.TEXT, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS,
                         ApolloDbUtils.DbContentDataType.CONFIGURATION_FILE, BROKER_SERVICE_SOFTWARE_ID_KEY, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
                 dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
-
             } catch (ApolloDatabaseException ex) {
                 try {
                     ApolloServiceErrorHandler.writeErrorToDatabase(
@@ -284,7 +291,15 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 } catch (ApolloDatabaseException e) {
                     e.printStackTrace();
                 }
+            } catch (Md5UtilsException md5ex) {
+                try {
+                   ApolloServiceErrorHandler.writeErrorToDatabase(
+                            "Md5UtilsException inserting text data content for run: " + md5ex.getMessage(), runId);
+                } catch (ApolloDatabaseException e) {
+                e.printStackTrace();
+                }
             }
+
         } catch (ApolloDatabaseException e) {
             try {
                 ApolloServiceErrorHandler.writeErrorToErrorFile("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
@@ -365,8 +380,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                             + ", version: "
                             + simulatorIdentification.getSoftwareVersion()
                             + ", developer: "
-                            + simulatorIdentification
-                            .getSoftwareDeveloper()
+                            + simulatorIdentification.getSoftwareDeveloper()
                             + " for run id " + runId + ": "
                             + error.getMessage(), runId);
 
@@ -375,7 +389,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
         if (queueAndTranslateRuns()) {
             startSimulations();
         }
-
     }
 
     @Override

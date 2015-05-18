@@ -43,10 +43,7 @@ import edu.pitt.apollo.apolloservice.methods.library.RemoveGroupAccessToLibraryI
 import edu.pitt.apollo.apolloservice.methods.library.SetLibraryItemAsNotReleasedMethod;
 import edu.pitt.apollo.apolloservice.methods.library.SetReleaseVersionForLibraryItemMethod;
 import edu.pitt.apollo.apolloservice.methods.library.UpdateLibraryItemContainerMethod;
-import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
-import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
-import edu.pitt.apollo.apolloservice.methods.run.RunMethodForDataService;
-import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
+import edu.pitt.apollo.apolloservice.methods.run.*;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
@@ -106,6 +103,7 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
+	private static final BigInteger NO_SIMULATION_GROUP_ID = null;
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
 	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.UnRegisterService")
@@ -192,9 +190,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			RunMethod runMethod = new RunMethodForSimulationAndVisualization(
 					runVisualizationMessage.getAuthentication(),
 					runVisualizationMessage.getVisualizerIdentification(),
+					NO_SIMULATION_GROUP_ID,
 					runVisualizationMessage);
 
-			return (RunResult) runMethod.run().getObjectToReturnFromBroker();
+			return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
 	}
 
 	@Override
@@ -218,9 +217,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		RunMethod runMethod = new RunMethodForSimulationAndVisualization(
 				runSimulationMessage.getAuthentication(),
 				runSimulationMessage.getSimulatorIdentification(),
+				NO_SIMULATION_GROUP_ID,
 				runSimulationMessage);
 
-		return (RunResult) runMethod.run().getObjectToReturnFromBroker();
+		return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
 	}
 
 	@Override
@@ -237,12 +237,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@Override
 	public RunResult runSimulations(
 			edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
-		RunMethod runMethod = new RunMethodForSimulationAndVisualization(
+		RunMethod runMethod = new BatchRunMethod(
 				runSimulationsMessage.getAuthentication(),
 				runSimulationsMessage.getSimulatorIdentification(),
+				NO_SIMULATION_GROUP_ID,
 				runSimulationsMessage);
 
-		return (RunResult) runMethod.run().getObjectToReturnFromBroker();
+		return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
 	}
 
 	@Override
@@ -358,7 +359,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		RunMethod method = new RunMethodForDataService(
 				getOutputFilesURLAsZipMessage.getAuthentication(),
 				getOutputFilesURLAsZipMessage);
-		return (GetOutputFilesURLAsZipResult) method.run()
+		return (GetOutputFilesURLAsZipResult) method.stageAndRun()
 				.getObjectToReturnFromBroker();
 	}
 
@@ -368,8 +369,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		RunMethod method = new RunMethodForDataService(
 				getOutputFilesURLsMessage.getAuthentication(),
 				getOutputFilesURLsMessage);
-		return (GetOutputFilesURLsResult) method.run()
-				.getObjectToReturnFromBroker();
+		return (GetOutputFilesURLsResult) method.stageAndRun().getObjectToReturnFromBroker();
 	}
 
 	@Override
@@ -378,7 +378,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		RunMethod method = new RunMethodForDataService(
 				getAllOutputFilesURLAsZipMessage.getAuthentication(),
 				getAllOutputFilesURLAsZipMessage);
-		return (GetAllOutputFilesURLAsZipResult) method.run()
+		return (GetAllOutputFilesURLAsZipResult) method.stageAndRun()
 				.getObjectToReturnFromBroker();
 	}
 
