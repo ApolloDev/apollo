@@ -2,7 +2,6 @@ package edu.pitt.apollo.db;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -15,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.Md5UtilsException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -22,7 +24,6 @@ import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
@@ -48,26 +49,15 @@ import java.sql.Connection;
  */
 public class ApolloDbUtils extends BaseApolloDbUtils {
 
-    static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<String, Integer>();
-
-    static Map<String, Integer> populationAxisCache = new HashMap<String, Integer>();
-    static Map<String, Integer> runDataDescriptionIdCache = new HashMap<String, Integer>();
-
-    static Map<String, Integer> simulatedPopulationCache = new HashMap<String, Integer>();
     private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
     private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
     private static final boolean APOLLO_DB_AUTO_COMMIT = true;
     private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB";
-
-    public enum DbContentDataFormatEnum {
-
-        TEXT, URL, ZIP,
-    }
-
-    public enum DbContentDataType {
-
-        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE, RUN_SIMULATION_MESSAGE, RUN_VISUALIZATION_MESSAGE, RUN_DATA_SERVICE_MESSAGE,
-    }
+    static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
+    static Map<String, Integer> populationAxisCache = new HashMap<>();
+    static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
+    static Map<String, Integer> simulatedPopulationCache = new HashMap<>();
+    Md5Utils md5Utils = new Md5Utils();
 
     //	public ApolloDbUtils(File databasePropertiesFile) throws IOException {
 //		super(databasePropertiesFile, APOLLO_DB_AUTO_COMMIT);
@@ -80,6 +70,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public ApolloDbUtils() throws ApolloDatabaseException {
         super(APOLLO_DB_AUTO_COMMIT, APOLLO_DB_RESOURCE_IDENTIFIER);
     }
+
+
 
     public Connection getConnection() throws SQLException {
         return datasource.getConnection();
@@ -156,7 +148,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         String query = "SELECT run_id FROM simulation_group_definition WHERE simulation_group_id "
                 + "in (SELECT simulation_group_id FROM run WHERE id = "
                 + batchRunId + ")";
-        List<BigInteger> runIds = new ArrayList<BigInteger>();
+        List<BigInteger> runIds = new ArrayList<>();
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
@@ -175,18 +167,6 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         } finally {
 
         }
-    }
-
-    public static String getJSONString(Object obj) {
-        try {
-
-            return getJsonBytes(obj).toString();
-
-        } catch (Exception e) {
-            logger.error("Exception encoding {} to JSON.  Error message was: {} ", obj, e.getMessage());
-            return null;
-        }
-
     }
 
     public ResultSet getRunIdAndRunSimulationMessagesForBatch(BigInteger batchRunId, int endUserSoftwareId,
@@ -234,7 +214,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public RunSimulationMessage getRunSimulationMessageForRun(BigInteger runId)
-            throws ApolloDatabaseException, IOException {
+            throws ApolloDatabaseException, IOException, JsonUtilsException {
 
         Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(
                 runId, 0, 1);
@@ -243,7 +223,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                 InputStream contentInputStream = new ByteArrayInputStream(
                         contentForRun.get(name).toByteArray());
 
-                return (RunSimulationMessage) getObjectFromJson(
+                return (RunSimulationMessage) jsonUtils.getObjectFromJson(
                         contentInputStream, RunSimulationMessage.class);
             }
         }
@@ -254,14 +234,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public GetOutputFilesURLsMessage getGetOutputFilesURLsMessageForRun(
-            BigInteger runId) throws ApolloDatabaseException {
+            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
         Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
         for (String name : contentForRun.keySet()) {
             if (name.equals("run_data_service_message.json")) {
                 InputStream contentInputStream = new ByteArrayInputStream(
                         contentForRun.get(name).toByteArray());
 
-                return (GetOutputFilesURLsMessage) getObjectFromJson(
+                return (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(
                         contentInputStream, GetOutputFilesURLsMessage.class);
             }
         }
@@ -272,14 +252,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public GetOutputFilesURLAsZipMessage getGetOutputFilesURLAsZipMessageForRun(
-            BigInteger runId) throws ApolloDatabaseException {
+            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
         Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
         for (String name : contentForRun.keySet()) {
             if (name.equals("run_data_service_message.json")) {
                 InputStream contentInputStream = new ByteArrayInputStream(
                         contentForRun.get(name).toByteArray());
 
-                return (GetOutputFilesURLAsZipMessage) getObjectFromJson(
+                return (GetOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(
                         contentInputStream, GetOutputFilesURLAsZipMessage.class);
             }
         }
@@ -290,14 +270,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(
-            BigInteger runId) throws ApolloDatabaseException {
+            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
         Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
         for (String name : contentForRun.keySet()) {
             if (name.equals("run_data_service_message.json")) {
                 InputStream contentInputStream = new ByteArrayInputStream(
                         contentForRun.get(name).toByteArray());
 
-                return (GetAllOutputFilesURLAsZipMessage) getObjectFromJson(
+                return (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(
                         contentInputStream, GetAllOutputFilesURLAsZipMessage.class);
             }
         }
@@ -486,7 +466,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public int getRunKey(RunSimulationMessage runSimulationMessage)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
         Authentication auth = runSimulationMessage.getAuthentication();
 
         int userKey = getUserKey(auth.getRequesterId(),
@@ -494,7 +474,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         int softwareKey = getSoftwareIdentificationKey(runSimulationMessage
                 .getSimulatorIdentification());
 
-        String hash = getMd5(runSimulationMessage);
+        String hash = md5Utils.getMd5(runSimulationMessage);
 
         String query = "SELECT id FROM run WHERE md5_hash_of_run_message = ?";
         Connection conn = null;
@@ -619,13 +599,13 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public Map<Integer, ServiceRegistrationRecord> getRegisteredSoftware()
             throws ApolloDatabaseException {
-        Map<Integer, ServiceRegistrationRecord> result = new HashMap<Integer, ServiceRegistrationRecord>();
+        Map<Integer, ServiceRegistrationRecord> result = new HashMap<>();
 
         // get all of the users that are an admin of a software
         String query = "SELECT u.id, u.requester_id FROM users u, software_identification s WHERE "
                 + "s.admin_id = u.id";
 
-        Map<Integer, String> userIdMap = new HashMap<Integer, String>();
+        Map<Integer, String> userIdMap = new HashMap<>();
 
         Connection conn = null;
         try {
@@ -844,110 +824,126 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public int addTextDataContent(InputStream content, int md5CollisionId)
             throws SQLException, ClassNotFoundException, IOException,
-            ApolloDatabaseException {
+            ApolloDatabaseException, Md5UtilsException {
         return addTextDataContent(IOUtils.toString(content));
     }
 
-    public int addTextDataContent(String content) throws ApolloDatabaseException {
+    public int addTextDataContent(String content) throws ApolloDatabaseException, Md5UtilsException {
 
-        String md5 = DigestUtils.md5Hex(content);
-        // is the data already in the table?
-        String query = "SELECT id, text_content FROM run_data_content where md5_hash_of_content = ?";
+        String md5 = "";
+        try {
+            md5 = DigestUtils.md5Hex(content);
+        } catch (NullPointerException npe) {
+          System.out.println("?");
+        }
+
+        String query = "INSERT IGNORE INTO run_data_content (text_content, md5_hash_of_content, md5_collision_id) values (?,?,?)";
 
         try (Connection conn = datasource.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, md5);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                // no need to store the data twice
-
-                // let's not be too hasty, we need to see if it's a TRUE cache hit,
-                // so compare the "content" parameter, with rs.getString(2)
-                // if it's a FALSE cache hit..we need to insert the new content,
-                // with an incremented md5_collision_id
-                if (rs.getString(2).equals(content)) {
-                    // this is a true cache hit, so return the ID
-                    return rs.getInt(1);
-                }
-            }
-
-            // if here then no cache hit
-            // false cache hit, so insert the new content with an incremented
-            // collision statusId
+            PreparedStatement pstmt = conn.prepareStatement(query,
+                    Statement.RETURN_GENERATED_KEYS);
             int highestMD5CollisionId = getHighestMD5CollisionIdForRunDataContent(conn,
                     content);
-            int md5CollisionId = highestMD5CollisionId + 1; // increment the ID to
-            // insert with the new
-            // content
-
-            pstmt.close();
-            // store it
-            query = "INSERT INTO run_data_content (text_content, md5_hash_of_content, md5_collision_id) values (?,?,?)";
-            pstmt = conn.prepareStatement(query,
-                    Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, content);
             pstmt.setString(2, md5);
-            pstmt.setInt(3, md5CollisionId);
-            pstmt.execute();
-            rs = pstmt.getGeneratedKeys();
-            rs.next();
-            return rs.getInt(1);
+            pstmt.setInt(3, highestMD5CollisionId);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                rs.next();
+                return rs.getInt(1);
+            } else {
+                //should check to see if we have a real collision
+                query = "SELECT id, text_content FROM run_data_content where md5_hash_of_content = ?";
 
+
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, md5);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    // no need to store the data twice
+
+                    // let's not be too hasty, we need to see if it's a TRUE cache hit,
+                    // so compare the "content" parameter, with rs.getString(2)
+                    // if it's a FALSE cache hit..we need to insert the new content,
+                    // with an incremented md5_collision_id
+                    String existingContent = rs.getString(2);
+                    if (existingContent.equals(content)) {
+                        // this is a true cache hit, so return the ID
+                        return rs.getInt(1);
+                    } else {
+                        throw new ApolloDatabaseException("MD5 collision detected (" + md5 + ")!\n\n " + existingContent + " not equal to\n\n " + content);
+                    }
+                } else {
+                    throw new ApolloDatabaseException("Unable to retrieve data for hash: " + md5 + "!\n\n");
+                }
+            }
         } catch (SQLException ex) {
             throw new ApolloDatabaseException("SQLException adding text data content with hash \"" + md5 + "\": " + ex.getMessage());
-        } finally {
-
         }
 
     }
 
     public int getHighestMD5CollisionIdForRun(Object message)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
         return getHighestMD5CollisionIdForTable("run",
-                "md5_hash_of_run_message", getMd5(message));
+                "md5_hash_of_run_message", md5Utils.getMd5(message), "").getCollisionId();
+    }
+
+    public RunIdAndCollisionId getRunIdAndHighestMD5CollisionIdForRun(Object message)
+            throws ApolloDatabaseException, Md5UtilsException {
+        return getHighestMD5CollisionIdForTable("run",
+                "md5_hash_of_run_message", md5Utils.getMd5(message), "id");
     }
 
     public int getHighestMD5CollisionIdForRunDataContent(Connection conn, String content)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
         return getHighestMD5CollisionIdForTable("run_data_content",
-                "md5_hash_of_content", getMd5FromString(content));
+                "md5_hash_of_content", md5Utils.getMd5FromString(content), "").getCollisionId();
     }
 
-    private int getHighestMD5CollisionIdForTable(String tableName,
-                                                 String md5ColumnName, String md5Hash)
+    private RunIdAndCollisionId getHighestMD5CollisionIdForTable(String tableName,
+                                                                 String md5ColumnName,
+                                                                 String md5Hash, String idColumnName)
             throws ApolloDatabaseException {
-        String query = "SELECT md5_collision_id FROM " + tableName + " where "
-                + md5ColumnName + " = ?";
+
+        RunIdAndCollisionId runIdAndCollisionId = null;
+        String query = "SELECT ";
+        if (idColumnName != null && !idColumnName.isEmpty()) {
+            query += " " + idColumnName + ", ";
+        }
+        query += "MAX(md5_collision_id) FROM " + tableName + " where " + md5ColumnName + " = ?";
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, md5Hash);
             ResultSet rs = pstmt.executeQuery();
-
-            int highestMd5CollisionId = 0; // if no runs exist, return 0
-            while (rs.next()) {
-                int collisionId = rs.getInt(1);
-                if (collisionId > highestMd5CollisionId) {
-                    highestMd5CollisionId = collisionId;
+            if (rs.next()) { //this type of query (MAX) always returns one row, even if the value of all columns is null
+                BigInteger runId = null;
+                Integer collisionId = 0;
+                if (idColumnName != null && !idColumnName.isEmpty() && (rs.getString(1) != null)) {
+                    runId = new BigInteger(rs.getString(1));
+                    int collisionIdx = idColumnName == null ? 1 : 2;
+                    collisionId = rs.getInt(collisionIdx);
                 }
+                runIdAndCollisionId = new RunIdAndCollisionId(runId, collisionId);
+            } else {
+                runIdAndCollisionId = new RunIdAndCollisionId(null, 0);
             }
-
-            return highestMd5CollisionId;
+            return runIdAndCollisionId;
 
         } catch (SQLException ex) {
             throw new ApolloDatabaseException(
                     "SQLException attempting to get highest MD5 collision ID for table "
                             + tableName + " and hash " + md5Hash + ": "
                             + ex.getMessage());
-        } finally {
-
         }
     }
 
     public Map<String, ByteArrayOutputStream> getDataContentForSoftware(
             BigInteger runKey, int sourceSoftwareIdKey,
             int destinationSoftwareIdKey) throws ApolloDatabaseException {
-        Map<String, ByteArrayOutputStream> result = new HashMap<String, ByteArrayOutputStream>();
+        Map<String, ByteArrayOutputStream> result = new HashMap<>();
 
         String query = "SELECT " + "rddv.label, " + "rdc.text_content "
                 + "FROM " + "run_data_content rdc, " + "run_data rd, "
@@ -995,7 +991,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public Map<String, ByteArrayOutputStream> getDataContentForSoftware(
             BigInteger runKey) throws ApolloDatabaseException {
-        Map<String, ByteArrayOutputStream> result = new HashMap<String, ByteArrayOutputStream>();
+        Map<String, ByteArrayOutputStream> result = new HashMap<>();
 
         String query = "SELECT " + "rddv.label, " + "rdc.text_content "
                 + "FROM " + "run_data_content rdc, " + "run_data rd, "
@@ -1128,39 +1124,41 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                                          int runDataDescriptionId) throws ApolloDatabaseException, ApolloDatabaseKeyNotFoundException {
 
         if (runDataDescriptionId >= 0) {
-            String query = "SELECT id FROM run_data WHERE run_id = ? AND description_id = ? and content_id = ?";
+            String query = "INSERT IGNORE INTO run_data (run_id, description_id, content_id) values (?,?,?)";
 
-            PreparedStatement pstmt = null;
+
+            PreparedStatement pstmt;
             try (Connection conn = datasource.getConnection()) {
-                try {
-                    pstmt = conn.prepareStatement(query);
-                    pstmt.setInt(1, runKey.intValue());
-                    pstmt.setInt(2, runDataDescriptionId);
-                    pstmt.setInt(3, dataContentKey);
-                    ResultSet rs = pstmt.executeQuery();
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                } finally {
-                    pstmt.close();
-                }
 
-                query = "INSERT INTO run_data (run_id, description_id, content_id) values (?,?,?)";
-                try {
                     pstmt = conn.prepareStatement(query,
                             Statement.RETURN_GENERATED_KEYS);
                     pstmt.setInt(1, runKey.intValue());
 
                     pstmt.setInt(2, runDataDescriptionId);
                     pstmt.setInt(3, dataContentKey);
-                    pstmt.execute();
-                    ResultSet rs = pstmt.getGeneratedKeys();
-                    rs.next();
-                    return rs.getInt(1);
-                } finally {
-                    pstmt.close();
-                }
-
+                    int rowsAffected = pstmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        ResultSet rs = pstmt.getGeneratedKeys();
+                        rs.next();
+                        return rs.getInt(1);
+                    } else {
+                        pstmt.close();
+                        query = "SELECT id FROM run_data WHERE run_id = ? AND description_id = ? and content_id = ?";
+                        try {
+                            pstmt = conn.prepareStatement(query);
+                            pstmt.setInt(1, runKey.intValue());
+                            pstmt.setInt(2, runDataDescriptionId);
+                            pstmt.setInt(3, dataContentKey);
+                            ResultSet rs = pstmt.executeQuery();
+                            if (rs.next()) {
+                                return rs.getInt(1);
+                            } else {
+                                throw new ApolloDatabaseException("Could not get id for apparently existing run_data.");
+                            }
+                        } finally {
+                            pstmt.close();
+                        }
+                    }
             } catch (SQLException ex) {
                 throw new ApolloDatabaseException("SQLException associating content with run ID " + runKey + ": " + ex.getMessage());
             } finally {
@@ -1249,8 +1247,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             //if (rs.next()) {
             //    runDataDescriptionKey = rs.getInt(1);
             //}
-           // query = "INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values (?,?,?)";
-           // pstmt.setInt(1, runDataDescriptionKey);
+            // query = "INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values (?,?,?)";
+            // pstmt.setInt(1, runDataDescriptionKey);
             // pstmt.setIn
             // not done yet
             return -1;
@@ -1420,7 +1418,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public BigInteger[] addDataServiceRun(GetAllOutputFilesURLAsZipMessage message, int md5CollisionId,
                                           Authentication authentication,
                                           SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
 
 //		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
 //		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
@@ -1434,7 +1432,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public BigInteger[] addDataServiceRun(GetOutputFilesURLsMessage message, int md5CollisionId,
                                           Authentication authentication,
                                           SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
 //
 //		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
 //		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
@@ -1450,7 +1448,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public BigInteger[] addDataServiceRun(GetOutputFilesURLAsZipMessage message, int md5CollisionId,
                                           Authentication authentication,
                                           SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
 //
 //		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
 //		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
@@ -1466,7 +1464,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     private BigInteger[] addDataServiceRunForAllMessageTypes(Object message, int md5CollisionId,
                                                              Authentication authentication,
                                                              SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
 
         String userName = authentication.getRequesterId();
         String password = authentication.getRequesterPassword();
@@ -1485,7 +1483,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, getMd5(message));
+            pstmt.setString(1, md5Utils.getMd5(message));
             pstmt.setInt(2, softwareKey);
             pstmt.setInt(3, userKey);
             pstmt.setInt(4, 1);
@@ -1505,7 +1503,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             // ALSO NEED TO ADD serialized run data service message (JSON) to
             // run_data_content table...
             // use insertDataContentForRun for this
-            int dataContentKey = addTextDataContent(getJSONString(message));
+            int dataContentKey = addTextDataContent(jsonUtils.getJSONString(message));
             int runDataDescriptionId = getRunDataDescriptionId(
                     DbContentDataFormatEnum.TEXT,
                     "run_data_service_message.json",
@@ -1516,7 +1514,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             associateContentWithRunId(new BigInteger(String.valueOf(runId)),
                     dataContentKey, runDataDescriptionId);
 
-            List<BigInteger> runIdsForDataService = new ArrayList<BigInteger>();
+            List<BigInteger> runIdsForDataService = new ArrayList<>();
             runIdsForDataService.add(new BigInteger(Integer.toString(runId)));
             addRunIdsToSimulationGroup(simulationGroupId, runIdsForDataService);
 
@@ -1541,7 +1539,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                                          BigInteger memberOfSimulationGroupIdOrNull, int md5CollisionId,
                                          SoftwareIdentification sourceSoftwareForRunSimulationMessage,
                                          SoftwareIdentification destinationSoftwareForRunSimulationMessage,
-                                         Authentication authentication) throws ApolloDatabaseException {
+                                         Authentication authentication) throws ApolloDatabaseException, Md5UtilsException {
 
         String userName = authentication.getRequesterId();
         String password = authentication.getRequesterPassword();
@@ -1556,6 +1554,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         String additionalInsertField = "";
         String additionalParamHolder = "";
         BigInteger[] runIdSimulationGroupId = new BigInteger[2];
+        String md5 = md5Utils.getMd5(runMessage);
 
 
         try (Connection conn = datasource.getConnection()) {
@@ -1565,22 +1564,32 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             additionalInsertField = ", simulation_group_id";
             additionalParamHolder = ",?";
 
-            String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, md5_collision_id "
+            String query = "INSERT IGNORE INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, md5_collision_id "
                     + additionalInsertField
                     + ") VALUES (?, ?, ?, ?, ? "
                     + additionalParamHolder + ")";
             PreparedStatement pstmt = conn.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, getMd5(runMessage));
+            pstmt.setString(1, md5);
             pstmt.setInt(2, softwareKey);
             pstmt.setInt(3, userKey);
             pstmt.setInt(4, 1);
             pstmt.setInt(5, md5CollisionId);
             pstmt.setLong(6, simulationGroupId.longValue());
 
-            pstmt.execute();
+            ResultSet rs;
+            int rowsAffected = pstmt.executeUpdate();
 
-            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rowsAffected > 0) {
+                rs = pstmt.getGeneratedKeys();
+            } else {
+                query = "SELECT id FROM run WHERE md5_hash_of_run_message = ? and md5_collision_id = ?";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, md5);
+                pstmt.setInt(2, md5CollisionId);
+                rs = pstmt.executeQuery();
+            }
+
             BigInteger runId;
             if (rs.next()) {
                 runId = new BigInteger(rs.getString(1));
@@ -1588,14 +1597,14 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                 throw new ApolloDatabaseRecordNotInsertedException(
                         "Record not inserted!");
             }
+
             if (memberOfSimulationGroupIdOrNull != null) {
-                List<BigInteger> runIds = new ArrayList<BigInteger>();
+                List<BigInteger> runIds = new ArrayList<>();
                 runIds.add(runId);
                 addRunIdsToSimulationGroup(memberOfSimulationGroupIdOrNull, runIds);
                 addRunIdsToSimulationGroup(simulationGroupId, runIds);
-
             } else {
-                List<BigInteger> runIds = new ArrayList<BigInteger>();
+                List<BigInteger> runIds = new ArrayList<>();
                 runIds.add(runId);
                 if (!(runMessage instanceof RunSimulationsMessage)) {
                     //don't make a batch run a member of a siulation group
@@ -1607,7 +1616,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             // ALSO NEED TO ADD serialized runSimulationMessage(JSON) to
             // run_data_content table...
             // use insertDataContentForRun for this
-            int dataContentKey = addTextDataContent(getJSONString(runMessage));
+            int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runMessage));
             int runDataDescriptionId = getRunDataDescriptionId(
 
                     DbContentDataFormatEnum.TEXT,
@@ -1662,7 +1671,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             // pstmt.setInt(3, 1);
             ResultSet rs = pstmt.executeQuery();
 
-            List<BigInteger> runIds = new ArrayList<BigInteger>();
+            List<BigInteger> runIds = new ArrayList<>();
             while (rs.next()) {
                 runIds.add(new BigInteger(String.valueOf(rs.getInt(1))));
             }
@@ -1691,10 +1700,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public List<BigInteger> getSimulationRunIdsAssociatedWithRunSimulationMessageHash(
             SoftwareIdentification softwareIdentification,
-            Object runMessageToBeHashed) throws ApolloDatabaseException {
+            Object runMessageToBeHashed) throws ApolloDatabaseException, Md5UtilsException {
 
         int softwareKey = getSoftwareIdentificationKey(softwareIdentification);
-        String md5Hash = getMd5(runMessageToBeHashed);
+        String md5Hash = md5Utils.getMd5(runMessageToBeHashed);
 
         return getRunIdsAssociatedWithHash(md5Hash, softwareKey);
     }
@@ -1711,19 +1720,19 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     public List<BigInteger> getRunIdsAssociatedWithMessageHashAndSoftware(
             Object message, SoftwareIdentification softwareId)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
         int softwareKey = getSoftwareIdentificationKey(softwareId);
-        String md5Hash = getMd5(message);
+        String md5Hash = md5Utils.getMd5(message);
 
         return getRunIdsAssociatedWithHash(md5Hash, softwareKey);
     }
 
     public List<BigInteger> getVisualizationRunIdsAssociatedWithRunVisualizationMessageHash(
             RunVisualizationMessage runVisualizationMessageToHash)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
         int softwareKey = getSoftwareIdentificationKey(runVisualizationMessageToHash
                 .getVisualizerIdentification());
-        String md5Hash = getMd5(runVisualizationMessageToHash);
+        String md5Hash = md5Utils.getMd5(runVisualizationMessageToHash);
 
         Connection conn = null;
         try {
@@ -1734,7 +1743,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             pstmt.setInt(2, softwareKey);
             // pstmt.setInt(3, 1);
             ResultSet rs = pstmt.executeQuery();
-            List<BigInteger> runIds = new ArrayList<BigInteger>();
+            List<BigInteger> runIds = new ArrayList<>();
             while (rs.next()) {
                 runIds.add(new BigInteger(String.valueOf(rs.getInt(1))));
             }
@@ -2015,7 +2024,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public void addRunIdsToSimulationGroup(
             BigInteger simulationGroupId,
             List<BigInteger> runIds)
-            throws ApolloDatabaseException {
+            throws ApolloDatabaseException, Md5UtilsException {
 
         String query = "INSERT IGNORE INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
 
@@ -2037,7 +2046,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             RunVisualizationMessage runVisualizationMessage,
             int md5CollisionId, Authentication authentication)
             throws ApolloDatabaseException,
-            ApolloDatabaseRecordNotInsertedException {
+            ApolloDatabaseRecordNotInsertedException, Md5UtilsException {
 
         String userName = authentication.getRequesterId();
         String password = authentication.getRequesterPassword();
@@ -2053,9 +2062,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
         try (Connection conn = datasource.getConnection()) {
             //conn = getConn();
-            List<BigInteger> runIds = new ArrayList<BigInteger>();
+            List<BigInteger> runIds = new ArrayList<>();
             for (RunIdentificationAndLabel runIdentificationAndLabel : runVisualizationMessage.getSimulationRunIds()) {
-               runIds.add(runIdentificationAndLabel.getRunIdentification());
+                runIds.add(runIdentificationAndLabel.getRunIdentification());
             }
             BigInteger simulationGroupId = getNewSimulationGroupId();
             addRunIdsToSimulationGroup(simulationGroupId, runIds);
@@ -2063,7 +2072,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             String query = "INSERT INTO run (md5_hash_of_run_message, software_id, requester_id, last_service_to_be_called, simulation_group_id, md5_collision_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, getMd5(runVisualizationMessage));
+            pstmt.setString(1, md5Utils.getMd5(runVisualizationMessage));
             pstmt.setInt(2, softwareKey);
             pstmt.setInt(3, userKey);
             pstmt.setInt(4, 4); // 4 is translator
@@ -2083,7 +2092,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             // ALSO NEED TO ADD serialized runVisualizationMessage(JSON) to
             // run_data_content table...
             // use insertDataContentForRun for this
-            int dataContentKey = addTextDataContent(getJSONString(runVisualizationMessage));
+            int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runVisualizationMessage));
             int runDataDescriptionId = getRunDataDescriptionId(
                     DbContentDataFormatEnum.TEXT,
                     "run_visualization_message.json",
@@ -2147,7 +2156,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, runId.intValue());
             rs = pstmt.executeQuery();
-            List<Integer> simulationGroupIds = new ArrayList<Integer>();
+            List<Integer> simulationGroupIds = new ArrayList<>();
             if (rs.next()) {
                 if (!rs.wasNull()) {
                     simulationGroupIds.add(rs.getInt(1));
@@ -2243,7 +2252,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
                     while (rs.next()) {
                         id = rs.getInt(1);
-                        populationAxisCache.put(label, new Integer(id));
+                        populationAxisCache.put(label, id);
                         // System.out.println(statusId);
                     } // end while
                 } catch (SQLException e) {
@@ -2588,6 +2597,16 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         } finally {
 
         }
+    }
+
+    public enum DbContentDataFormatEnum {
+
+        TEXT, URL, ZIP,
+    }
+
+    public enum DbContentDataType {
+
+        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE, RUN_SIMULATION_MESSAGE, RUN_VISUALIZATION_MESSAGE, RUN_DATA_SERVICE_MESSAGE,
     }
 
 //	public static void main(String[] args) throws IOException,
