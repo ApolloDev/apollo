@@ -1031,7 +1031,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         return result;
     }
 
-    public PreparedStatement getDataContentForBatchSimulations(BigInteger batchRunId) throws ApolloDatabaseException {
+    public PreparedStatement getDataContentForBatchSimulations(BigInteger batchRunId, List<String> fileNamesToMatch) throws ApolloDatabaseException {
 
         String query = "SELECT"
                 + " rddav.value AS name,"
@@ -1048,13 +1048,26 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                 + " WHERE"
                 + "	rd.content_id = rdc.id AND"
                 + " r2.id = sgd.run_id AND"
-                + " rd.run_id = r2.id AND"
-                + " rddav.run_data_description_axis_id = rdda.id AND"
+                + " rd.run_id = r2.id AND";
+		
+				if (!fileNamesToMatch.isEmpty()) {
+					
+					query += " (rddav.value = '" + fileNamesToMatch.get(0) + "'";
+					for (int i = 1; i < fileNamesToMatch.size(); i++) {
+						query += " OR rddav.value = '" + fileNamesToMatch.get(i) + "'";
+					}
+					query += ") AND";
+					
+				}
+		
+                query += " rddav.run_data_description_axis_id = rdda.id AND"
                 + " rddav.run_data_description_id = rd.description_id AND"
                 + " sgd.simulation_group_id = r1.simulation_group_id AND"
                 + " r1.id = ? AND"
                 + " rdda.label = 'label'";
 
+				System.out.println(query);
+				
         Connection conn;
         PreparedStatement pstmt = null;
         try {
