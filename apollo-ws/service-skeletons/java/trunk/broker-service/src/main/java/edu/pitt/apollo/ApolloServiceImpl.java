@@ -50,14 +50,7 @@ import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisual
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.ListOutputFilesForSoftwareResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
@@ -318,6 +311,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
 		return UpdateLibraryItemContainerMethod
 				.updateLibraryItemContainer(updateLibraryItemContainerMessage);
+	}
+
+	@Override
+	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
+		return null;
 	}
 
 	@Override
