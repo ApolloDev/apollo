@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 
+import edu.pitt.apollo.db.ApolloDbUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -41,7 +42,7 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 	public void run() {
 		SoftwareIdentification visualizerIdentification = message.getVisualizerIdentification();
 		String url = null;
-		try {
+		try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
 
 			url = dbUtils.getUrlForSoftwareIdentification(visualizerIdentification);
 			VisualizerServiceEI visualizerPort = new VisualizerServiceV300(new URL(url)).getVisualizerServiceEndpoint();
@@ -56,37 +57,37 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 
 			visualizerPort.runVisualization(runId, message);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase(
+			ApolloServiceErrorHandler.reportError(
 					"Apollo database key not found attempting to get URL for visualizer: "
 					+ visualizerIdentification.getSoftwareName() + ", version: "
 					+ visualizerIdentification.getSoftwareVersion() + ", developer: "
 					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-					+ ex.getMessage(), runId, dbUtils);
+					+ ex.getMessage(), runId);
 			return;
 		} catch (MalformedURLException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase(
+			ApolloServiceErrorHandler.reportError(
 					"MalformedURLException attempting to create port for visualizer: "
 					+ visualizerIdentification.getSoftwareName() + ", version: "
 					+ visualizerIdentification.getSoftwareVersion() + ", developer: "
 					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ". URL was: " + url
-					+ ". Error message was: " + ex.getMessage(), runId, dbUtils);
+					+ ". Error message was: " + ex.getMessage(), runId);
 			return;
 		} catch (ApolloDatabaseException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase(
+			ApolloServiceErrorHandler.reportError(
 					"ApolloDatabaseException attempting to get URL for visualizer: " + visualizerIdentification.getSoftwareName()
 					+ ", version: " + visualizerIdentification.getSoftwareVersion() + ", developer: "
 					+ visualizerIdentification.getSoftwareDeveloper() + " for run id " + runId + ": "
-					+ ex.getMessage(), runId, dbUtils);
+					+ ex.getMessage(), runId);
 			return;
 		}
-		try {
+		try (ApolloDbUtils dbUtils = new ApolloDbUtils()){
 			dbUtils.updateLastServiceToBeCalledForRun(runId, visualizerIdentification);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase("Apollo database key not found attempting to update last service"
-					+ " call for run id " + runId + ": " + ex.getMessage(), runId, dbUtils);
+			ApolloServiceErrorHandler.reportError("Apollo database key not found attempting to update last service"
+					+ " call for run id " + runId + ": " + ex.getMessage(), runId);
 		} catch (ApolloDatabaseException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase("ApolloDatabaseException attempting to update last service" + " call for run id "
-					+ runId + ": " + ex.getMessage(), runId, dbUtils);
+			ApolloServiceErrorHandler.reportError("ApolloDatabaseException attempting to update last service" + " call for run id "
+					+ runId + ": " + ex.getMessage(), runId);
 		}
 	}
 
