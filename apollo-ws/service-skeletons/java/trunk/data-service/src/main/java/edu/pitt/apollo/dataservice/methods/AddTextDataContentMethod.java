@@ -1,5 +1,6 @@
 package edu.pitt.apollo.dataservice.methods;
 
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.AddTextDataContentMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.AddTextDataContentResult;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -37,6 +38,11 @@ public class AddTextDataContentMethod {
         {
             mcs.setStatus(MethodCallStatusEnum.FAILED);
             mcs.setMessage(ex.getMessage());
+            result.setMethodCallStatus(mcs);
+            return result;
+        } catch (Md5UtilsException md5ex) {
+            mcs.setStatus(MethodCallStatusEnum.FAILED);
+            mcs.setMessage("Error getting md5 hash of value.  Message was: " + md5ex.getMessage());
             result.setMethodCallStatus(mcs);
             return result;
         }
