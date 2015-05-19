@@ -1,5 +1,6 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
@@ -69,6 +70,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private static final boolean LIBRARY_AUTO_COMMIT = false;
 	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB";
 
+	JsonUtils jsonUtils = new JsonUtils();
+
 	public LibraryDbUtils() throws ApolloDatabaseException {
 		super(LIBRARY_AUTO_COMMIT, LIBRARY_DB_RESOURCE_NAME);
 	}
@@ -86,7 +89,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //	}
 
 	private String getJSONStringForLibraryItem(Object obj) throws JAXBException {
-		String itemJson = getJsonBytes(obj).toString();
+		String itemJson = jsonUtils.getJsonBytes(obj).toString();
 		return itemJson;
 	}
 
@@ -98,7 +101,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private LibraryItemContainer getLibraryItemContainderFromJson(String json) throws IOException {
 		try {
 
-			return (LibraryItemContainer) getObjectFromJson(json, LibraryItemContainer.class);
+			return (LibraryItemContainer) jsonUtils.getObjectFromJson(json, LibraryItemContainer.class);
 		} catch (Exception e) {
 			System.err.println("Exception encoding library item container to JSON.  Error message was: "
 					+ e.getMessage());
@@ -1029,7 +1032,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //		entry.setItemDescription("test description");
 //
 		item.setLibraryItem(strategy);
-		ByteArrayOutputStream bytes = dbUtils.getJsonBytes(item);
+		ByteArrayOutputStream bytes = new JsonUtils().getJsonBytes(item);
 ////
 //		int catalogId = dbUtils.addLibraryItem("scenario_urn2", item, authentication, "first item");
 //		System.out.println("Catalog ID: " + catalogId);
