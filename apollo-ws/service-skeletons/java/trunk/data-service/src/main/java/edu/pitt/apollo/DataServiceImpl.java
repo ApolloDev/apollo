@@ -24,6 +24,7 @@ import edu.pitt.apollo.dataservice.methods.user.AddUserRoleMethod;
 import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
+//import edu.pitt.apollo.service.dataservice.v3_0_0.GetListOfRegisteredSoftwareResponse;
 import edu.pitt.apollo.service.dataservice.v3_0_0.GetListOfRegisteredSoftwareResponse;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
