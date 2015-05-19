@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>edu.pitt.apollo</groupId>
@@ -26,7 +27,7 @@
     </properties>
 
     <distributionManagement>
-       <repository>
+        <repository>
             <id>rods-nexus-deployment</id>
             <name>RODS Nexus</name>
             <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
@@ -46,8 +47,6 @@
             <version>2.2.6</version>
         </dependency>
 
-
-		
 
         <dependency>
             <groupId>commons-codec</groupId>
@@ -129,7 +128,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-		
+
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -140,7 +139,7 @@
                 </executions>
             </plugin>
 
-         <!--   <plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
@@ -155,14 +154,13 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>make-assembly</id> &lt;!&ndash; this is used for inheritance merges &ndash;&gt;
-                        <phase>package</phase> &lt;!&ndash; bind to the packaging phase &ndash;&gt;
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- bind to the packaging phase -->
                         <goals>
                             <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
 
             <plugin>
@@ -170,9 +168,9 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <useDefaultManifestFile>true</useDefaultManifestFile>
-                     <classesDirectory>${project.build.directory}</classesDirectory>
+                    <!-- <classesDirectory>${project.build.directory}</classesDirectory> -->
                 </configuration>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -182,7 +180,6 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>truezip-maven-plugin</artifactId>
