@@ -8,6 +8,7 @@ import edu.pitt.apollo.dataservice.thread.DataServiceSpecifiedFilesThread;
 import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 public class GetOutputFilesURLsMethod extends DataServiceMethod {
 
+
 	private GetOutputFilesURLsMessage message;
 	private static final String FILE_PREFIX = "run_%d_";
 
@@ -36,6 +38,12 @@ public class GetOutputFilesURLsMethod extends DataServiceMethod {
 
 	@Override
 	public void downloadFiles() {
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
 
 		FileInformationCollection fileInformationCollection = new FileInformationCollection();
 		for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
@@ -67,6 +75,12 @@ public class GetOutputFilesURLsMethod extends DataServiceMethod {
 	}
 
 	private void loadGetOutputFilesURLsMessage() {
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
 		try {
 			message = dbUtils.getGetOutputFilesURLsMessageForRun(runId);
 			if (message == null) {
