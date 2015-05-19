@@ -1,6 +1,8 @@
 package edu.pitt.apollo.apolloservice.database;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
+
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -29,7 +31,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage = null;
 
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
-	private static final int DATA_SERVICE_SOFTWARE_KEY;
+
+	private static int dataServiceSoftwareKey;
+
 
 	static {
 		DATA_SERVICE_SOFTWARE_ID = new SoftwareIdentification();
@@ -37,27 +41,28 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareName("Data Service");
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareType(ApolloSoftwareTypeEnum.DATA);
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareVersion("1.0");
-
-		try {
-			DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(DATA_SERVICE_SOFTWARE_ID);
-		} catch (ApolloDatabaseException ex) {
-			throw new ExceptionInInitializerError("Could not get data service software key: " + ex.getMessage());
-		}
 	}
 
-	public DatabaseAccessorForRunningDataService(GetOutputFilesURLsMessage message, Authentication authentication) {
-		super(authentication);
+	public DatabaseAccessorForRunningDataService(GetOutputFilesURLsMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+		super(authentication, dbUtils);
 		this.getOutputFilesURLsMessage = message;
+		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
 
-	public DatabaseAccessorForRunningDataService(GetOutputFilesURLAsZipMessage message, Authentication authentication) {
-		super(authentication);
+	public DatabaseAccessorForRunningDataService(GetOutputFilesURLAsZipMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+		super(authentication, dbUtils);
 		this.getOutputFilesURLAsZipMessage = message;
+		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
 
-	public DatabaseAccessorForRunningDataService(GetAllOutputFilesURLAsZipMessage message, Authentication authentication) {
-		super(authentication);
+	public DatabaseAccessorForRunningDataService(GetAllOutputFilesURLAsZipMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+		super(authentication, dbUtils);
 		this.getAllOutputFilesURLAsZipMessage = message;
+		dataServiceSoftwareKey = getDataServiceSoftwareKey();
+	}
+
+	private int getDataServiceSoftwareKey() throws ApolloDatabaseException {
+		return dbUtils.getSoftwareIdentificationKey(DATA_SERVICE_SOFTWARE_ID);
 	}
 
 	public static SoftwareIdentification getDataServiceSoftwareId() {
@@ -65,19 +70,19 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
+	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException, Md5UtilsException {
 		List<BigInteger> runIds = null;
 		String targetRunSimulationMessageAsJson = null;
 		if (getOutputFilesURLsMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLsMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getOutputFilesURLsMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLsMessage);
 
 		} else if (getOutputFilesURLAsZipMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getOutputFilesURLAsZipMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLAsZipMessage);
 		} else if (getAllOutputFilesURLAsZipMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
 		}
 
 		if (runIds != null && targetRunSimulationMessageAsJson != null && runIds.size() > 0) {
@@ -98,7 +103,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		Map<String, ByteArrayOutputStream> currentRunMessageAsJsonMap
 				= dbUtils.getDataContentForSoftware(
 						runId, END_USER_APPLICATION_SOURCE_ID,
-						DATA_SERVICE_SOFTWARE_KEY);
+						dataServiceSoftwareKey);
 		for (String label : currentRunMessageAsJsonMap.keySet()) {
 			if (label.equals("run_data_service_message.json")) {
 				return currentRunMessageAsJsonMap.get(label).toString();
@@ -108,7 +113,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException {
+	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException, Md5UtilsException {
 		int md5CollisionId;
 		BigInteger[] runIds = null;
 		if (getOutputFilesURLsMessage != null) {
