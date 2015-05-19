@@ -1,6 +1,8 @@
 package edu.pitt.apollo.apolloservice.database;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
+
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -68,19 +70,19 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException {
+	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException, Md5UtilsException {
 		List<BigInteger> runIds = null;
 		String targetRunSimulationMessageAsJson = null;
 		if (getOutputFilesURLsMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLsMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getOutputFilesURLsMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLsMessage);
 
 		} else if (getOutputFilesURLAsZipMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getOutputFilesURLAsZipMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLAsZipMessage);
 		} else if (getAllOutputFilesURLAsZipMessage != null) {
 			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = ApolloDbUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
+			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
 		}
 
 		if (runIds != null && targetRunSimulationMessageAsJson != null && runIds.size() > 0) {
@@ -111,7 +113,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException {
+	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException, Md5UtilsException {
 		int md5CollisionId;
 		BigInteger[] runIds = null;
 		if (getOutputFilesURLsMessage != null) {
