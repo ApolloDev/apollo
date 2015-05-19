@@ -8,6 +8,7 @@ import edu.pitt.apollo.dataservice.thread.DataServiceSpecifiedFilesThread;
 import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -29,6 +30,7 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 	private GetOutputFilesURLAsZipMessage message;
 	private static final String FILE_PREFIX = "run_%d_";
 
+
 	public GetOutputFilesURLAsZipMethod(ApolloServiceQueue queue, BigInteger runId) {
 		super(queue, runId);
 		loadGetOutputFilesURLsMessage();
@@ -36,6 +38,12 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 	@Override
 	public void downloadFiles() {
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
 
 		FileInformationCollection fileInformationCollection = new FileInformationCollection();
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
@@ -71,6 +79,12 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 	}
 
 	private void loadGetOutputFilesURLsMessage() {
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
 		try {
 			message = dbUtils.getGetOutputFilesURLAsZipMessageForRun(runId);
 			if (message == null) {
