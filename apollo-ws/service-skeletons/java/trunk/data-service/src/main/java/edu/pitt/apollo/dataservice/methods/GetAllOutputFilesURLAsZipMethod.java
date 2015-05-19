@@ -6,6 +6,7 @@ import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.OUTPUT_DIREC
 import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
 import edu.pitt.apollo.dataservice.thread.DataServiceThread;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -22,15 +23,23 @@ import java.math.BigInteger;
  */
 public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 
+
 	private GetAllOutputFilesURLAsZipMessage message;
 
 	public GetAllOutputFilesURLAsZipMethod(ApolloServiceQueue queue, BigInteger runId) {
 		super(queue, runId);
+
 		loadGetAllOutputFilesURLAzZipMessage();
 	}
 
 	@Override
 	public void downloadFiles() {
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
 
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
 		DataServiceThread thread = new DataServiceAllFilesThread(runId, message.getRunId(), queue, dbUtils, outputDirectory, ZIP_FILE_NAME, message.getFileNames());
@@ -45,12 +54,20 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 	}
 
 	private void loadGetAllOutputFilesURLAzZipMessage() {
+		ApolloDbUtils dbUtils = null;
 		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
+		try {
+
 			message = dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
 			if (message == null) {
 				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
 			}
 		} catch (ApolloDatabaseException ex) {
+
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
 		}
 	}
