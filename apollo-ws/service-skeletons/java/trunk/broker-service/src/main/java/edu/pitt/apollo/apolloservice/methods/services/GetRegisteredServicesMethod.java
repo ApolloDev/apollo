@@ -22,6 +22,7 @@ public class GetRegisteredServicesMethod {
 	static Logger logger = LoggerFactory.getLogger(GetRegisteredServicesMethod.class);
 
     public static List<ServiceRecord> getRegisteredServices() {
+
         try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
             return new ArrayList<ServiceRecord>(dbUtils.getRegisteredSoftware().values());
         } catch (Exception ex) {
