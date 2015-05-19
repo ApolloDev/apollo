@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,14 +23,15 @@ import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 public abstract class DatabaseAccessorForRunningSimulations extends
 		DatabaseAccessor {
 
+	static Logger logger = LoggerFactory.getLogger(DatabaseAccessorForRunningSimulations.class);
 	protected Object runMessage;
 	private SoftwareIdentification softwareIdentification;
 	private Class runMessageClass;
 
 	public DatabaseAccessorForRunningSimulations(Authentication authentication,
 			SoftwareIdentification softwareIdentification,
-			Class clazz) {
-		super(authentication);
+			ApolloDbUtils dbUtils, Class clazz) throws ApolloDatabaseException {
+		super(authentication, dbUtils);
 		this.runMessageClass = clazz;
 		this.softwareIdentification = softwareIdentification;
 	}
@@ -51,23 +55,28 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 	}
 
 	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull()
-			throws ApolloDatabaseException {
+	public synchronized BigInteger getCachedRunIdFromDatabaseOrNull()
+			throws ApolloDatabaseException, Md5UtilsException {
+		String hash = md5Utils.getMd5(runMessage);
+		logger.info("Thread" + Thread.currentThread().getName() + " hash: " + hash);
+
 		List<BigInteger> runIds = dbUtils
-				.getSimulationRunIdsAssociatedWithRunSimulationMessageHash(
-						softwareIdentification, runMessage);
+				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
+						softwareIdentification, hash);
 		if (runIds.size() > 0) {
+			logger.debug("Possible cache hit!  Checking to see if it's a true hit or if we have a collision...");
 			// String targetRunSimulationMessageAsJson =
 			// dbUtils.getJSONString(runSimulationMessage,
 			// RunSimulationMessage.class);
 			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
 				if (isRunIdAssociatedWithMatchingRunMessage(
-						ApolloDbUtils.getJSONString(runMessage), 
+						jsonUtils.getJSONString(runMessage),
 						runIdAssociatedWithRunSimulationMessageHash)) {
 					return runIdAssociatedWithRunSimulationMessageHash;
 				}
 			}
-			return null;
+			throw new ApolloDatabaseException("Collision detected, but a true extremely unlikely.");
+
 		} else {
 			return null;
 		}
