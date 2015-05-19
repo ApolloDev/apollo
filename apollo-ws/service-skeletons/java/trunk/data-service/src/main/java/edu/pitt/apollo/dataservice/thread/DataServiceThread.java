@@ -29,109 +29,72 @@ public abstract class DataServiceThread extends ApolloServiceThread {
 
 	protected final ApolloDbUtils dbUtils;
 	protected final org.slf4j.Logger logger = LoggerFactory.getLogger(DataServiceThread.class);
+	private ZipOutputStream zos;
 
 	public DataServiceThread(BigInteger runId, ApolloServiceQueue queue, ApolloDbUtils dbUtils) {
 		super(runId, queue);
 		this.dbUtils = dbUtils;
 	}
 
-	protected final void zipOutputFiles(String outputDirectory, String zipFileName) {
-
-		File directoryToZip = new File(outputDirectory);
-		List<File> filesList = new ArrayList<File>();
-
-		try {
-			getAllFiles(directoryToZip, filesList);
-			writeZipFile(directoryToZip, filesList, outputDirectory + File.separator + zipFileName);
-		} catch (IOException ex) {
-			logger.error("IOExcpetion zipping files: " + ex.getMessage());
-			updateStatus(MethodCallStatusEnum.FAILED, "An error occurred zipping the files.");
-		}
-
-//		List<String> filesList = new ArrayList<String>();
-//		File outputDirFile = new File(outputDirectory);
-//		for (File file : outputDirFile.listFiles()) {
-//			filesList.add(file.getName());
-//		}
+//	protected final void zipOutputFiles(String outputDirectory, String zipFileName) {
 //
-//		byte[] buffer = new byte[1024];
-//		String zipFile = outputDirectory + zipFileName;
+//		File directoryToZip = new File(outputDirectory);
+//		List<File> filesList = new ArrayList<File>();
+//
 //		try {
-//
-//			FileOutputStream fos = new FileOutputStream(zipFile);
-//			ZipOutputStream zos = new ZipOutputStream(fos);
-//
-//			for (String file : filesList) {
-//
-//				ZipEntry ze = new ZipEntry(file);
-//				zos.putNextEntry(ze);
-//
-//				FileInputStream in = new FileInputStream(outputDirectory + File.separator + file);
-//
-//				int len;
-//				while ((len = in.read(buffer)) > 0) {
-//					zos.write(buffer, 0, len);
-//				}
-//
-//				in.close();
-//			}
-//
-//			zos.closeEntry();
-//			//remember close it
-//			zos.close();
-//			fos.close();
-//
+//			getAllFiles(directoryToZip, filesList);
+//			writeZipFile(directoryToZip, filesList, outputDirectory + File.separator + zipFileName);
 //		} catch (IOException ex) {
 //			logger.error("IOExcpetion zipping files: " + ex.getMessage());
 //			updateStatus(MethodCallStatusEnum.FAILED, "An error occurred zipping the files.");
 //		}
-	}
+//
+//	}
 
-	private void getAllFiles(File dir, List<File> fileList) {
-		File[] files = dir.listFiles();
-		for (File file : files) {
-			fileList.add(file);
-			if (file.isDirectory()) {
-				getAllFiles(file, fileList);
-			}
+//	private void getAllFiles(File dir, List<File> fileList) {
+//		File[] files = dir.listFiles();
+//		for (File file : files) {
+//			fileList.add(file);
+//			if (file.isDirectory()) {
+//				getAllFiles(file, fileList);
+//			}
+//		}
+//	}
+
+	protected void initializeZipFile(String zipFilePath) throws IOException {
+
+		File outputFile = new File(zipFilePath);
+		outputFile.getParentFile().mkdirs();
+		FileOutputStream fos = new FileOutputStream(outputFile);
+		zos = new ZipOutputStream(fos);
+	}
+	
+	protected void finalizeZipFile() throws IOException {
+		if (zos != null) {
+			zos.close();
 		}
 	}
 
-	private void writeZipFile(File directoryToZip, List<File> fileList, String zipFilePath) throws FileNotFoundException, IOException {
-
-		FileOutputStream fos = new FileOutputStream(zipFilePath);
-		ZipOutputStream zos = new ZipOutputStream(fos);
-
-		for (File file : fileList) {
-			if (!file.isDirectory()) { // we only zip files, not directories
-				addToZip(directoryToZip, file, zos);
-			}
-		}
-
-		zos.close();
-		fos.close();
-	}
-
-	private void addToZip(File directoryToZip, File file, ZipOutputStream zos) throws FileNotFoundException,
+	protected void addToZip(String pathOfFileInZip, byte[] bytes) throws FileNotFoundException,
 			IOException {
 
-		FileInputStream fis = new FileInputStream(file);
+//		FileInputStream fis = new FileInputStream(file);
+//		byte[] contentBytes = content.getBytes();
+//		Scanner scanner = new Scanner
 
 		// we want the zipEntry's path to be a relative path that is relative
 		// to the directory being zipped, so chop off the rest of the path
-		String zipFilePath = file.getCanonicalPath().substring(directoryToZip.getCanonicalPath().length() + 1,
-				file.getCanonicalPath().length());
-		ZipEntry zipEntry = new ZipEntry(zipFilePath);
+		ZipEntry zipEntry = new ZipEntry(pathOfFileInZip);
 		zos.putNextEntry(zipEntry);
 
-		byte[] bytes = new byte[1024];
-		int length;
-		while ((length = fis.read(bytes)) >= 0) {
-			zos.write(bytes, 0, length);
-		}
+//		byte[] bytes = new byte[1024];
+//		int length;
+//		while ((length = fis.read(bytes)) >= 0) {
+			zos.write(bytes, 0, bytes.length);
+//		}
 
 		zos.closeEntry();
-		fis.close();
+//		fis.close();
 	}
 
 	protected final void updateStatus(MethodCallStatusEnum statusEnum, String message) {
