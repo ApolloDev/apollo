@@ -1,7 +1,12 @@
 package edu.pitt.apollo.apolloservice.thread;
 
+import edu.pitt.apollo.JsonUtils;
+import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.apolloservice.methods.run.AbstractRunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethod;
 import edu.pitt.apollo.apolloservice.methods.run.RunMethodForSimulationAndVisualization;
 import edu.pitt.apollo.apolloservice.methods.run.RunResultAndSimulationGroupId;
@@ -13,6 +18,7 @@ import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_0_0.*;
+import org.apache.commons.lang.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +26,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -40,6 +47,8 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private final RunSimulationsThread.BooleanRef errorRef;
     private final RunSimulationsThread.CounterRef counterRef;
+    Md5Utils md5Utils = new Md5Utils();
+    JsonUtils jsonUtils = new JsonUtils();
 
     private Authentication authentication;
 
@@ -83,7 +92,7 @@ public class StageInDbWorkerThread implements Runnable {
 
     }
 
-    private static PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
+    private PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
             InfectionStateEnum infectionStateEnum, Double fractionInState) {
         PopulationInfectionAndImmunityCensusDataCell piiDataCell = new PopulationInfectionAndImmunityCensusDataCell();
         piiDataCell.setFractionInState(fractionInState);
@@ -91,13 +100,16 @@ public class StageInDbWorkerThread implements Runnable {
         return piiDataCell;
     }
 
-    public static RunSimulationMessage populateTemplateWithRecord(
-            RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException {
+    private InfectiousDiseaseScenario copyInfectiousDiseaseScenarioForTemplate(InfectiousDiseaseScenario ids) throws JsonUtilsException {
+        return (InfectiousDiseaseScenario) jsonUtils.getObjectFromJson(jsonUtils.getJSONString(ids), ids.getClass());
+    }
+
+    public RunSimulationMessage populateTemplateWithRecord(
+            RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException, JsonUtilsException {
 
         RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
         runSimulationMessage.setAuthentication(template.getAuthentication());
-        runSimulationMessage.setInfectiousDiseaseScenario(template
-                .getBaseInfectiousDiseaseScenario());
+        runSimulationMessage.setInfectiousDiseaseScenario(copyInfectiousDiseaseScenarioForTemplate(template.getBaseInfectiousDiseaseScenario()));
         runSimulationMessage.setSimulatorIdentification(template
                 .getSimulatorIdentification());
         runSimulationMessage.setSimulatorTimeSpecification(template
@@ -113,7 +125,6 @@ public class StageInDbWorkerThread implements Runnable {
         FixedDuration infectiousPeriod = new FixedDuration();
         infectiousPeriod.setValue(batchConfigRecord.infectiousPeriod);
         infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
-
         InfectionAcquisitionFromInfectiousHost infection = runSimulationMessage
                 .getInfectiousDiseaseScenario().getInfections().get(0)
                 .getInfectionAcquisitionsFromInfectiousHosts().get(0);
@@ -136,17 +147,15 @@ public class StageInDbWorkerThread implements Runnable {
                 batchConfigRecord.percentInfectious));
         censusDataCells.add(createPiiDataCell(InfectionStateEnum.RECOVERED,
                 batchConfigRecord.percentRecovered));
-
         GregorianCalendar gc = scenarioDate.toGregorianCalendar();
         gc.add(Calendar.DATE, batchConfigRecord.dayOfWeekOffset);
         scenarioDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
         runSimulationMessage.getInfectiousDiseaseScenario().setScenarioDate(scenarioDate);
-
         return runSimulationMessage;
 
     }
 
-    public static boolean isNonErrorCachedStatus(
+    public boolean isNonErrorCachedStatus(
             MethodCallStatusEnum methodCallStatusEnum) {
         switch (methodCallStatusEnum) {
             case AUTHENTICATION_FAILURE:
@@ -165,7 +174,7 @@ public class StageInDbWorkerThread implements Runnable {
 
         String paramLineOrNullIfEndOfStream = line;
         if (paramLineOrNullIfEndOfStream != null) {
-            logger.trace("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
+            logger.info("Thread {} processing line: {}", Thread.currentThread().getName(), paramLineOrNullIfEndOfStream);
             String params[] = paramLineOrNullIfEndOfStream.split(",");
 
             BatchConfigRecord batchConfigRecord = new BatchConfigRecord(
@@ -175,6 +184,11 @@ public class StageInDbWorkerThread implements Runnable {
                 try {
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
+//                    try {
+//                        System.out.println("From " + paramLineOrNullIfEndOfStream + " Creating worker for run " + md5Utils.getMd5(currentRunSimulationMessage) + " (" + currentRunSimulationMessage + ")" + "\n");
+//                    } catch (Md5UtilsException e) {
+//                        e.printStackTrace();
+//                    }
                 } catch (DatatypeConfigurationException ex) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
@@ -182,12 +196,20 @@ public class StageInDbWorkerThread implements Runnable {
                                     "Error staging job. There was an exception setting the scenario date.", batchRunId
                             );
                     return;
+                } catch (JsonUtilsException ex) {
+                    errorRef.value = true;
+                    ApolloServiceErrorHandler
+                            .reportError(
+                                    "Error staging job. There was an exception converting the baseInfectiousDiseaseScenario to JSON.", batchRunId
+                            );
+                    return;
                 }
                 RunMethod runMethod = new RunMethodForSimulationAndVisualization(
                         authentication,
                         message.getSimulatorIdentification(),
+                        simulationGroupId,
                         currentRunSimulationMessage);
-                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stageInDatabase(simulationGroupId);
+                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stage();
                 RunResult runResult = runResultandSimulationGroupId.getRunResult();
 
                 String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
