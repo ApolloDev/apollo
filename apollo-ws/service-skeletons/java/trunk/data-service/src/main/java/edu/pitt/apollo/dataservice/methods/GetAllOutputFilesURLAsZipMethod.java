@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.OUTPUT_DIRECTORY;
 import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
@@ -69,6 +70,8 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 		} catch (ApolloDatabaseException ex) {
 
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
+		} catch (JsonUtilsException jue) {
+			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, jue.getMessage());
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.JsonUtils;
+import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -255,7 +257,7 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 
 	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
 
-	static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
+
 
 	private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
 	protected final DataSource datasource;
@@ -264,6 +266,8 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 	private static final String SALT_FILE_NAME = "salt.txt";
 	protected static final String SYSTEM_SALT;
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
+	JsonUtils jsonUtils = new JsonUtils();
+	Md5Utils md5Utils = new Md5Utils();
 	Connection dbcon;
 //	Properties properties;
 //	private final boolean AUTO_COMMIT;
@@ -306,227 +310,7 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 	public abstract int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException;
 
-	private static Class[] getClassList(Class clazz) {
 
-		Class[] classList = new Class[]{clazz,
-			// All ApolloTypes must be here
-			AaaDummyType.class,
-			AbioticEcosystem.class,
-			AbioticEcosystemCensus.class,
-			AbioticEcosystemElementCensusDescription.class,
-			AbioticEcosystemEnum.class,
-			AgeGroupEfficacy.class,
-			AgeRangeCategoryDefinition.class,
-			AntiviralTreatment.class,
-			AntiviralTreatmentEfficacy.class,
-			ApolloIndexableItem.class,
-			ApolloIndexableItemTypeEnum.class,
-			ApolloPathogenCode.class,
-			ArrayAxis.class,
-			ArrayDimensionsDefinition.class,
-			BaseCaseResult.class,
-			BayesianNetwork.class,
-			BayesianNetworkStructureType.class,
-			BehaviorEnum.class,
-			BioticEcosystem.class,
-			BorderControlStrategy.class,
-			CartesianCircleLocationDefinition.class,
-			CaseCount.class,
-			CaseCountArray.class,
-			CaseCountCategory.class,
-			CaseDefinition.class,
-			CaseDefinitionEnum.class,
-			CaseList.class,
-			CaseQuarantineControlStrategy.class,
-			CaseRecord.class,
-			CaseRecordCategoricalVariable.class,
-			CaseRecordCategoricalVariables.class,
-			CaseVariableAndValue.class,
-			Category.class,
-			CategoryDefinition.class,
-			Census.class,
-			CensusData.class,
-			ClaraDensityDependentMortalityFunction.class,
-			CompartmentalModelPopulationAndEnvironmentCensus.class,
-			ConditionalIndividualBehavior.class,
-			ConditionalProbabilityDistribution.class,
-			ConditionalProbabilityTable.class,
-			ConditioningVariable.class,
-			ConditioningVariableEnum.class,
-			ContactDefinition.class,
-			ContactDefinitionEnum.class,
-			ContactModelForCommunity.class,
-			ContactModelForHousehold.class,
-			ContactModelForPlace.class,
-			ContactModelForSetting.class,
-			ContainerReductionControlStrategy.class,
-			ContaminatedThingCensus.class,
-			ContaminatedThingCensusData.class,
-			Contamination.class,
-			ContaminationAcquisition.class,
-			ContinuousParametricProbabilityDistribution.class,
-			ContinuousUniformDistribution.class,
-			ControlStrategyTargetPopulationsAndPrioritization.class,
-			CountType.class,
-			DecisionAlternative.class,
-			DecisionAnalysis.class,
-			DevelopmentalStageEnum.class,
-			DiscreteNonparametricProbabilityDistribution.class,
-			DiscreteParametricProbabilityDistribution.class,
-			DiseaseOutcomeCategoryDefinition.class,
-			DiseaseOutcomeEnum.class,
-			DiseaseOutcomeWithLocationDateTime.class,
-			DiseaseOutcomeWithProbability.class,
-			DiseaseSurveillanceCapability.class,
-			DiseaseSurveillanceTriggerDefinition.class,
-			Distance.class,
-			DoubleCount.class,
-			DrugTreatment.class,
-			DrugTreatmentEfficacyForSimulatorConfiguration.class,
-			Duration.class,
-			Ecosystem.class,
-			Epidemic.class,
-			EpidemicPeriod.class,
-			EpidemicPeriodBoundaryDefinitionEnum.class,
-			ExpectedUtility.class,
-			FixedDuration.class,
-			FractionOfThingContaminated.class,
-			GammaDistribution.class,
-			GenderCategoryDefinition.class,
-			GenderEnum.class,
-			GeNIEXMLType.class,
-			GesInfectiousnessParameterSet.class,
-			GesParametersForContactAndTransmission.class,
-			Individual.class,
-			IndividualBehavior.class,
-			IndividualHumanBehavior.class,
-			IndividualLifeCycle.class,
-			IndividualMosquitoBehavior.class,
-			IndividualMosquitoReproduction.class,
-			IndividualTreatmentControlStrategy.class,
-			IndividualTreatmentEnum.class,
-			IndoorResidualSprayingVectorControlStrategy.class,
-			Infection.class,
-			InfectionAcquisitionFromContaminatedThing.class,
-			InfectionAcquisitionFromInfectiousHost.class,
-			InfectionStateEnum.class,
-			InfectiousDisease.class,
-			InfectiousDiseaseControlStrategy.class,
-			InfectiousDiseaseDecisionModel.class,
-			InfectiousDiseaseScenario.class,
-			IntegerCount.class,
-			Interval.class,
-			IntervalBoundaryDefinitionEnum.class,
-			LabTestAndResult.class,
-			LarvicideControlStrategy.class,
-			LibraryItem.class,
-			LifeStageWithDurationAndMortality.class,
-			Location.class,
-			LocationDefinition.class,
-			LocationPolygon.class,
-			LogNormalDistribution.class,
-			MeanMedianMinimumMaximum.class,
-			MeanWithConfidenceInterval.class,
-			MeanWithStandardDeviation.class,
-			MortalityFunction.class,
-			MultiGeometry.class,
-			NamedMultiGeometry.class,
-			NamedPrioritizationSchemeEnum.class,
-			NonApolloParameter.class,
-			NonparametricProbabilityDistribution.class,
-			ObjectFactory.class,
-			OccupationEnum.class,
-			OperatorEnum.class,
-			OvipositionSiteCensus.class,
-			ParameterValue.class,
-			ParametricProbabilityDistribution.class,
-			PlaceCategoryDefinition.class,
-			PlaceClosureControlStrategy.class,
-			PlaceEnum.class,
-			PlaceVisited.class,
-			Population.class,
-			PopulationAndEnvironmentCensus.class,
-			PopulationCensusDescription.class,
-			PopulationInfectionAndImmunityCensus.class,
-			PopulationInfectionAndImmunityCensusData.class,
-			PopulationInfectionAndImmunityCensusDataCell.class,
-			PopulationInfectionSurvey.class,
-			PopulationSerologySurvey.class,
-			PopulationStratificationEnum.class,
-			PopulationTreatmentCensus.class,
-			PopulationTreatmentCensusData.class,
-			PopulationTreatmentCensusDataCell.class,
-			PreEpidemicEcosystemCensus.class,
-			ProbabilisticParameter.class,
-			ProbabilityDistribution.class,
-			ProbabilityValuePair.class,
-			PrototypicalProbabilityFunction.class,
-			Rate.class,
-			RealDateSpanCategoryDefinition.class,
-			RealTimePointCategoryDefinition.class,
-			RealTimeSpanCategoryDefinition.class,
-			Reference.class,
-			RelativeRiskDataSet.class,
-			ReproductionNumber.class,
-			RequesterIdentification.class,
-			RingIndividualTreatmentControlStrategy.class,
-			ScenarioCartesianOrigin.class,
-			SeasonalityFunctionParameters.class,
-			SensitivityAnalysis.class,
-			SensitivityAnalysisResult.class,
-			SimulatorTimeRange.class,
-			SimulatorTimeSpecification.class,
-			SimulatorTypeEnum.class,
-			SourceOfInfectionCategoryDefinition.class,
-			SourceOfInfectionEnum.class,
-			SpatialKernelFunctionParameters.class,
-			TargetPopulationDefinition.class,
-			TargetPopulationEnum.class,
-			TargetPriorityPopulation.class,
-			TemporalArrayDimensionsDefinition.class,
-			TemporalTriggerDefinition.class,
-			TimeAxisCategoryLabels.class,
-			TimeDefinition.class,
-			TimeScaleEnum.class,
-			TimeSpanCategoryDefinition.class,
-			TransmissionProbability.class,
-			TransmissionTree.class,
-			TravelRestrictionControlStrategy.class,
-			Treatment.class,
-			TreatmentContraindication.class,
-			TreatmentEfficacy.class,
-			TreatmentPreventableOutcomeEnum.class,
-			TreatmentStateEnum.class,
-			TreatmentSurveillanceCapability.class,
-			TreatmentSurveillanceTriggerDefinition.class,
-			TreatmentSystemLogistics.class,
-			TriggerDefinition.class,
-			UncertainDuration.class,
-			UnconditionalProbabilityDistribution.class,
-			UnitOfDistanceEnum.class,
-			UnitOfMeasureEnum.class,
-			UnitOfTimeEnum.class,
-			UtilityFunction.class,
-			Vaccination.class,
-			VaccinationEfficacyConditionedOnTimeSinceDose.class,
-			VaccinationEfficacyForSimulatorConfiguration.class,
-			VaccinationEfficacyInferred.class,
-			VaccinationEfficacyMeasured.class,
-			VaccinationEfficacyStudy.class,
-			Vaccine.class,
-			VaccineContraindications.class,
-			VariableCategoryDefinition.class,
-			VectorControlStrategy.class,
-			WeibullDistribution.class,
-			WithinGroupTransmissionProbability.class,
-			WolbachiaControlStrategy.class,
-			WolbachiaReleaseSiteEnum.class,
-			ObjectFactory.class
-		};
-
-		return classList;
-
-	}
 
 	@Override
 	public void close() throws ApolloDatabaseException {
@@ -537,47 +321,9 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 		}
 	}
 
-	protected static final ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
-		Class clazz = obj.getClass();
-		JAXBMarshaller marshaller = null;
-		if (marshallerMap.containsKey(clazz)) {
-			marshaller = marshallerMap.get(clazz);
-		} else {
-			Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
-			jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-//		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-			JAXBContext jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz),
-					jaxbProperties);
-			marshaller = jc.createMarshaller();
-			marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshallerMap.put(clazz, marshaller);
-		}
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		marshaller.marshal(obj, baos);
-		return baos;
-	}
 
-	public static final Object getObjectFromJson(String json, Class clazz) throws ApolloDatabaseException {
-		InputStream jsonInputStream = new ByteArrayInputStream(json.getBytes());
-		return getObjectFromJson(jsonInputStream, clazz);
-	}
-
-	protected static final Object getObjectFromJson(InputStream jsonInputStream, Class clazz) throws ApolloDatabaseException {
-		Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
-		jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-		JAXBContext jc;
-		try {
-			jc = (JAXBContext) JAXBContext.newInstance(getClassList(clazz), jaxbProperties);
-			JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
-			StreamSource ss = new StreamSource(jsonInputStream);
-			return unmarshaller.unmarshal(ss, clazz).getValue();
-		} catch (JAXBException ex) {
-			throw new ApolloDatabaseException("JAXBException creating object from JSON: " + ex.getMessage());
-		}
-	}
 
 //	protected void establishDbConn() throws ClassNotFoundException, SQLException {
 //
@@ -632,21 +378,10 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 	protected String getHashOfUserPasswordAndSalt(String password, String salt) {
 
 		String passwordAndSalt = password + salt + SYSTEM_SALT;
-		return getMd5FromString(passwordAndSalt);
+		return md5Utils.getMd5FromString(passwordAndSalt);
 	}
 
-	public String getMd5(Object object) throws ApolloDatabaseException {
 
-		try {
-			return DigestUtils.md5Hex(getJsonBytes(object).toString());
-		} catch (Exception ex) {
-			throw new ApolloDatabaseException("Exception getting MD5 hash: " + ex.getMessage());
-		}
-	}
-
-	public String getMd5FromString(String string) {
-		return DigestUtils.md5Hex(string);
-	}
 
 	protected String getSaltForPassword() {
 		Random random = new SecureRandom();
