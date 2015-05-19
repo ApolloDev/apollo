@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -54,10 +55,11 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 	}
 
 	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull()
-			throws ApolloDatabaseException {
+	public synchronized BigInteger getCachedRunIdFromDatabaseOrNull()
+			throws ApolloDatabaseException, Md5UtilsException {
+		String hash = md5Utils.getMd5(runMessage);
+		logger.info("Thread" + Thread.currentThread().getName() + " hash: " + hash);
 
-		String hash = dbUtils.getMd5(runMessage);
 		List<BigInteger> runIds = dbUtils
 				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
 						softwareIdentification, hash);
@@ -68,13 +70,13 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 			// RunSimulationMessage.class);
 			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
 				if (isRunIdAssociatedWithMatchingRunMessage(
-						ApolloDbUtils.getJSONString(runMessage), 
+						jsonUtils.getJSONString(runMessage),
 						runIdAssociatedWithRunSimulationMessageHash)) {
 					return runIdAssociatedWithRunSimulationMessageHash;
 				}
 			}
-			logger.error("Possible collision detected, but extremely unlikely.");
-			return null;
+			throw new ApolloDatabaseException("Collision detected, but a true extremely unlikely.");
+
 		} else {
 			return null;
 		}
