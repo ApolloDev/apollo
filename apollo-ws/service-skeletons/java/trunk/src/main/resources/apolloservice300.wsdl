@@ -606,6 +606,26 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+
+
+			<xsd:element name="getSoftwareIdentificationForRun">
+				<xsd:complexType>
+					<xsd:sequence>
+
+						<xsd:element name="getSoftwareIdentificationForRunMessage"
+									 type="dst:GetSoftwareIdentificationForRunMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getSoftwareIdentificationForRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="getSoftwareIdentificationForRunResult" type="dst:GetSoftwareIdentificationForRunResult"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+
 		</xsd:schema>
 	</wsdl:types>
 
@@ -819,6 +839,12 @@
 	<wsdl:message name="terminateRunResponse">
 		<wsdl:part name="parameters" element="tns:terminateRunResponse"></wsdl:part>
 	</wsdl:message>
+	<wsdl:message name="getSoftwareIdentificationForRunRequest">
+		<wsdl:part name="parameters" element="tns:getSoftwareIdentificationForRun"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getSoftwareIdentificationForRunResponse">
+		<wsdl:part name="parameters" element="tns:getSoftwareIdentificationForRunResponse"></wsdl:part>
+	</wsdl:message>
 	<wsdl:portType name="ApolloServiceEI">
 
     <wsdl:operation name="listOutputFilesForSoftware">
@@ -950,6 +976,10 @@
 		<wsdl:operation name="terminateRun">
 			<wsdl:input message="tns:terminateRunRequest"></wsdl:input>
 			<wsdl:output message="tns:terminateRunResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSoftwareIdentificationForRun">
+			<wsdl:input message="tns:getSoftwareIdentificationForRunRequest"></wsdl:input>
+			<wsdl:output message="tns:getSoftwareIdentificationForRunResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="ApolloServiceBinding"
