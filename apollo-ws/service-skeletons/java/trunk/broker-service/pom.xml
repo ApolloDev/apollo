@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>visualizer-service-client</artifactId>
+            <artifactId>visualizer-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
