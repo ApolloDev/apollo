@@ -109,6 +109,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
+	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage getSoftwareIdentificationForRunMessage) {
+		return null;
+	}
+
+	@Override
 	@WebResult(name = "syntheticPopulationGenerationResult", targetNamespace = "")
 	@RequestWrapper(localName = "runSyntheticPopulationGeneration", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.RunSyntheticPopulationGeneration")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/runSyntheticPopulationGeneration")
