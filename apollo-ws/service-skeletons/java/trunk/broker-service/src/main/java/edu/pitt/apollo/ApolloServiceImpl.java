@@ -315,11 +315,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
-	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
-		return null;
-	}
-
-	@Override
 	public SetReleaseVersionResult setReleaseVersionForLibraryItem(
 			SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
 		return SetReleaseVersionForLibraryItemMethod
