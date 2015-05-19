@@ -6,6 +6,27 @@
 
 	<import schemaLocation="apollo-types_3.0.0.xsd" namespace="http://types.apollo.pitt.edu/v3_0_0/"></import>
 	<import schemaLocation="services-common_3.0.0.xsd" namespace="http://services-common.apollo.pitt.edu/v3_0_0/"></import>
+	<import schemaLocation="services-common_3.0.0.xsd" namespace="http://services-common.apollo.pitt.edu/v3_0_0/"></import>
+
+	<simpleType name="DbContentDataFormatEnum">
+		<restriction base="string">
+			<enumeration value="TEXT" />
+			<enumeration value="URL" />
+			<enumeration value="ZIP" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DbContentDataType">
+		<restriction base="string">
+			<enumeration value="SIMULATOR_LOG_FILE" />
+			<enumeration value="CONFIGURATION_FILE" />
+			<enumeration value="IMAGE" />
+			<enumeration value="MOVIE" />
+			<enumeration value="RUN_SIMULATION_MESSAGE" />
+			<enumeration value="RUN_VISUALIZATION_MESSAGE" />
+			<enumeration value="RUN_DATA_SERVICE_MESSAGE" />
+		</restriction>
+	</simpleType>
 
 	<complexType name="ListOutputFilesForSoftwareMessage">
 		<sequence>
@@ -86,5 +107,240 @@
             <element name="url" type="anyURI"/>
 		</sequence>
 	</complexType>
-	
+
+	<complexType name="GetSoftwareIdentificationForRunMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetSoftwareIdentificationForRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage">
+		<sequence>
+			<element name="softwareIdentification" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetSoftwareIdentificationKeyFromSoftwareIdentificationResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="softwareIdentificationKey" type="positiveInteger"></element>
+		</sequence>
+	</complexType>
+	<complexType name="GetSoftwareIdentificationKeyForRunMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetSoftwareIdentificationKeyForRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="softwareIdentificationKey" type="positiveInteger"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetDataContentForSoftwareMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="simulatorKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="visualizerKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetDataContentForSoftwareResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="dataContentMapForSoftware" type="anyType"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AddTextDataContentMessage">
+		<sequence>
+			<element name="url" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AddTextDataContentResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="dataContentKey" type="positiveInteger"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetRunDataDescriptionIdMessage">
+		<sequence>
+			<element name="dataFormat" type="tns:DbContentDataFormatEnum" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataLabel" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataSourceSoftwareIdKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataDestinationSoftwareIdKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetRunDataDescriptionIdResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="runDescriptionId" type="positiveInteger"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AssociateContentWithRunIdMessage">
+	<sequence>
+		<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		<element name="dataContentKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		<element name="runDataDescriptionId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+	</sequence>
+</complexType>
+	<complexType name="AssociateContentWithRunIdResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="UpdateStatusOfRunMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="statusEnum" type="common:MethodCallStatusEnum" minOccurs="1" maxOccurs="1"></element>
+			<element name="statusMessage" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="UpdateStatusOfRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="GetStatusOfRunMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="GetStatusOfRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="statusEnum" type="common:MethodCallStatusEnum" minOccurs="1" maxOccurs="1"></element>
+			<element name="statusMessage" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="RemoveRunDataMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="RemoveRunDataResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddUserMessage">
+		<sequence>
+			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userEmail" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddUserResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+	<complexType name="DeleteUserMessage">
+		<sequence>
+			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="DeleteUserResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddUserRoleMessage">
+		<sequence>
+			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="canRunSoftware" type="boolean"></element>
+			<element name="canRequestPrivileged" type="boolean"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddUserRoleResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddRoleMessage">
+		<sequence>
+			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="canRun" type="boolean"></element>
+			<element name="canViewCache" type="boolean"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddRoleResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
+	<complexType name="GetListOfRegisteredSoftwareMessage">
+		<sequence>
+		</sequence>
+	</complexType>
+	<complexType name="GetListOfRegisteredSoftwareResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="listOfRegisteredSoftware" maxOccurs="unbounded" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="softwareIdentification" type="common:SoftwareIdentification"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="ListFilesMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="ListFilesResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="listOfFiles" maxOccurs="unbounded" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="contentId" type="positiveInteger"/>
+						<element name="fileName" type="token"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="ListURLsMessage">
+		<sequence>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="ListURLsResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="listOfURLs" maxOccurs="unbounded" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="contentId" type="positiveInteger"/>
+						<element name="URL" type="token"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
 </schema>

@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class DataServiceMethod {
 
-//	protected static final ApolloDbUtils dbUtils;
+	protected static ApolloDbUtils dbUtils;
 	protected final BigInteger runId;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
 	protected static final int DATA_SERVICE_SOFTWARE_KEY;
