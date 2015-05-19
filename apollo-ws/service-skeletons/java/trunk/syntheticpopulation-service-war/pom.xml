@@ -1,5 +1,4 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
@@ -40,8 +39,8 @@
 							<directory>${basedir}/../src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>syntheticpopulationservice202.wsdl</include>
-								<include>apollo-types_2.0.xsd</include>
+								<include>syntheticpopulationservice300.wsdl</include>
+								<!--<include>synthetic_population_service_3.0.0.xsd</include>-->
 							</includes>
 						</resource>
 					</webResources>
@@ -68,5 +67,4 @@
 			</dependencies>
 		</profile>
 	</profiles>
-
 </project>
