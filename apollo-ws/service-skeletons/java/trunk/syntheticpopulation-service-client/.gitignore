@@ -1,0 +1,5 @@
+/target/
+/src/main/generated/
+.classpath
+.settings
+.project
