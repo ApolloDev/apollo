@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class DataServiceMethod {
 
-	protected static final ApolloDbUtils dbUtils;
+	protected static ApolloDbUtils dbUtils;
 	protected final BigInteger runId;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
 	protected static final int DATA_SERVICE_SOFTWARE_KEY;
@@ -94,9 +94,8 @@ public abstract class DataServiceMethod {
 
 			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
 
-			try {
+			try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
 				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-				dbUtils = new ApolloDbUtils();
 
 				try {
 					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);

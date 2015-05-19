@@ -6,6 +6,7 @@ import static edu.pitt.apollo.apolloservice.thread.RunApolloServiceThread.logger
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
@@ -55,16 +56,16 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 	public void run() {
 		SoftwareIdentification dataServiceSoftwareId = DatabaseAccessorForRunningDataService.getDataServiceSoftwareId();
 		String url = null;
-		try {
+		try (ApolloDbUtils dbUtils = new ApolloDbUtils()){
 
 			url = dbUtils.getUrlForSoftwareIdentification(dataServiceSoftwareId);
 			DataServiceEI dataServicePort = null;
 			try {
 				dataServicePort = new DataServiceV300(new URL(url)).getDataServiceEndpoint();
 			} catch (Exception e) {
-				ApolloServiceErrorHandler.writeErrorToDatabase(
+				ApolloServiceErrorHandler.reportError(
 						"Unable to get data service port for url: " + url + "\n\tError was: " + e.getMessage(),
-						runId, dbUtils);
+						runId);
 				return;
 			}
 
@@ -84,17 +85,17 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 					dataServicePort.getAllOutputFilesURLAsZip(runId);
 				}
 			} catch (WebServiceException e) {
-				ApolloServiceErrorHandler.writeErrorToDatabase("Error calling data service: " + "\n\tError was: " + e.getMessage(),
-						runId, dbUtils);
+				ApolloServiceErrorHandler.reportError("Error calling data service: " + "\n\tError was: " + e.getMessage(),
+						runId);
 			}
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase(
+			ApolloServiceErrorHandler.reportError(
 					"Apollo database key not found attempting to get URL for data service for run id " + runId + ": "
-					+ ex.getMessage(), runId, dbUtils);
+					+ ex.getMessage(), runId);
 		} catch (ApolloDatabaseException ex) {
-			ApolloServiceErrorHandler.writeErrorToDatabase(
+			ApolloServiceErrorHandler.reportError(
 					"ApolloDatabaseException attempting to create port for data service for run id " + runId + ". URL was: " + url
-					+ ". Error message was: " + ex.getMessage(), runId, dbUtils);
+					+ ". Error message was: " + ex.getMessage(), runId);
 		}
 	}
 
