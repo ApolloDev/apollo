@@ -53,7 +53,7 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 
 			try {
 				localDbUtils = new ApolloDbUtils();
-				pstmt = localDbUtils.getDataContentForBatchSimulations(runIdFromMessage);
+				pstmt = localDbUtils.getDataContentForBatchSimulations(runIdFromMessage, fileNamesToMatch);
 
 				ResultSet results = pstmt.executeQuery();
 //			try {
@@ -82,7 +82,7 @@ public class DataServiceAllFilesThread extends DataServiceThread {
 						}
 					}
 
-					String filePath = runIdFromMessage + File.separator + name;
+					String filePath = runIdFromMessage + "/" + name;
 					addToZip(filePath, dataContentForBatchRun.get(name).toByteArray());
 				}
 
