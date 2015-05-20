@@ -1,8 +1,8 @@
 package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndLabel;
-import edu.pitt.apollo.data_service_types.v3_0_0.ListFilesMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.ListFilesResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.ListURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.ListURLsResult;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -12,15 +12,14 @@ import java.math.BigInteger;
 import java.util.HashMap;
 
 /**
- * Created by dcs27 on 5/18/15.
+ * Created by dcs27 on 5/20/15.
  */
-public class ListFilesAssociatedToRunMethod {
-    public static ListFilesResult listFilesAssocaitedToRun(ListFilesMessage message) {
-        ListFilesResult result = new ListFilesResult();
+public class ListURLsAssociatedToRunMethod {
+    public static ListURLsResult listURLsAssociatedToRun(ListURLsMessage message) {
+        ListURLsResult result = new ListURLsResult();
         MethodCallStatus mcs = new MethodCallStatus();
         try(ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-
-            HashMap<BigInteger,String> contentIdToLabelMap = dbUtils.getListOfFilesForRunId(message.getRunId());
+            HashMap<BigInteger,String> contentIdToLabelMap = dbUtils.getListOfURLsForRunId(message.getRunId());
 
             for(BigInteger id : contentIdToLabelMap.keySet())
             {

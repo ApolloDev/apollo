@@ -31,7 +31,7 @@ import java.math.BigInteger;
 @RequestMapping("/ws")
 public class RolesController {
     /*--Methods for the Users collection--*/
-    @GET
+   /* @GET
     @ApiOperation(value ="List roles.", notes = "Returns the list of all possible roles.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
@@ -41,7 +41,7 @@ public class RolesController {
     @ResponseBody
     String getRoles() {
         return null;
-    }
+    }*/
     @POST
     @ApiOperation(value ="Add role.", notes = "Adds the role to the roles collection.", response = String.class)
     @ApiResponses(value = {
@@ -78,7 +78,7 @@ public class RolesController {
 
 
     /*--Methods for the Users collection--*/
-    @GET
+  /*  @GET
     @ApiOperation(value ="Get role.", notes = "Returns the role associated with the given role id.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
@@ -88,8 +88,8 @@ public class RolesController {
     @ResponseBody
     String getRoleUsingRoleId(@ApiParam(value = "Role ID", required = true) @PathVariable("roleId") BigInteger roleId) {
         return null;
-    }
-    @POST
+    }*/
+  /*  @POST
     @ApiOperation(value ="Edit role.", notes = "Edit role's data with the given role ID.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
@@ -99,8 +99,8 @@ public class RolesController {
     @ResponseBody
     String editRoleUsingRoleId(@ApiParam(value = "Role ID", required = true) @PathVariable("roleId") BigInteger roleId) {
         return null;
-    }
-    @DELETE
+    }*/
+    /*@DELETE
     @ApiOperation(value ="Delete role.", notes = "Deletes the given role ID from the roles collection.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
@@ -110,7 +110,7 @@ public class RolesController {
     @ResponseBody
     String deleteTheRole(@ApiParam(value = "Role ID", required = true) @PathVariable("roleId") BigInteger roleId) {
         return null;
-    }
+    }*/
     //We cannot PUT data at this level (PUT).
 
 }

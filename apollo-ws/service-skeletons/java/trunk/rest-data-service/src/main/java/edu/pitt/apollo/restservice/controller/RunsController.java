@@ -7,12 +7,9 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.restservice.rest.responsemessage.GetRunStatusRestMessage;
-import edu.pitt.apollo.restservice.rest.responsemessage.GetSoftwareIdentificationForRunRestMessage;
-import edu.pitt.apollo.restservice.rest.responsemessage.Meta;
-import edu.pitt.apollo.restservice.rest.responsemessage.StatusOnlyResponseMessage;
+import edu.pitt.apollo.restservice.rest.responsemessage.*;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.MethodNotAllowedMessage;
-import edu.pitt.apollo.restservice.rest.statuscodesandmessages.RequestSuccessfulMessage;
+import edu.pitt.apollo.restservice.rest.utils.BuildGetListOfContentAssociatedToRunRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildGetRunStatusRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildSoftwareIdentificationForRunMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildStatusResponseMessage;
@@ -226,7 +223,19 @@ public class RunsController {
     public
     @ResponseBody
     String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
-        return null;
+        GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
+        DataServiceImpl impl = new DataServiceImpl();
+        ListFilesMessage message = new ListFilesMessage();
+        message.setRunId(runId);
+        ListFilesResult result = impl.listFilesAssociatedToRun(message);
+
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+        }
+        return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
     }
 
     @POST
@@ -237,7 +246,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "File text content.", required = true) @RequestBody String fileTextContent) {
+
         return null;
     }
     //We cannot create a new collection at the files level (PUT), and we cannot DELETE the files collection (DELETE).
@@ -252,7 +263,19 @@ public class RunsController {
     public
     @ResponseBody
     String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
-        return null;
+        GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
+        DataServiceImpl impl = new DataServiceImpl();
+        ListURLsMessage message = new ListURLsMessage();
+        message.setRunId(runId);
+        ListURLsResult result = impl.listURLsAssociatedToRun(message);
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+        }
+        return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
+
     }
 
     @POST
@@ -263,7 +286,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/urls", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "URL to associate to run ID.", required = true) @RequestBody String url) {
+
         return null;
     }
     //We cannot create a new collection at the URL level (PUT), and we cannot DELETE the URLs collection (DELETE).

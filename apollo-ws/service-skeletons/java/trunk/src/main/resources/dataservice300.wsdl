@@ -31,6 +31,7 @@
                 </xsd:complexType>
             </xsd:element>
 
+
             <xsd:element name="getOutputFilesURLs">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -308,12 +309,9 @@
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="getListOfRegisteredSoftware">
-                <!--<xsd:complexType>-->
-                    <!--<xsd:sequence>-->
-                        <!--<xsd:element name="addRole"-->
-                                     <!--type="dst:AddRoleMessage"></xsd:element>-->
-                    <!--</xsd:sequence>-->
-                <!--</xsd:complexType>-->
+                <xsd:complexType>
+
+                </xsd:complexType>
             </xsd:element>
             <xsd:element name="getListOfRegisteredSoftwareResponse">
                 <xsd:complexType>
@@ -337,6 +335,87 @@
                     <xsd:sequence>
                         <xsd:element name="listFilesAssociatedToRunResponse"
                                      type="dst:ListFilesResult"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listURLsAssociatedToRun">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="listURLsAssociatedToRun"
+                                     type="dst:ListURLsMessage"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listURLsAssociatedToRunResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="listURLsAssociatedToRunResponse"
+                                     type="dst:ListURLsResult"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getFileContent">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="getFileContent"
+                                     type="dst:GetFileContentMessage"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getFileContentResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="getFileContentResponse"
+                                     type="dst:GetFileContentResult"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getURLContent">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="getURLContent"
+                                     type="dst:GetURLContentMessage"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getURLContentResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="getURLContentResponse"
+                                     type="dst:GetURLContentResult"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="associateFileWithRunId">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="associateFileWithRunId"
+                                     type="dst:AssociateFileWithRunIdMessage"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="associateFileWithRunIdResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="associateFileWithRunIdResponse"
+                                     type="dst:AssociateFileWithRunIdResult"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="associateURLWithRunId">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="associateURLWithRunId"
+                                     type="dst:AssociateURLWithRunIdMessage"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="associateURLWithRunIdResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="associateURLWithRunIdResponse"
+                                     type="dst:AssociateURLWithRunIdResult"></xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -457,19 +536,46 @@
         <wsdl:part name="parameters" element="ds:addRoleResponse"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="getListOfRegisteredSoftwareRequest">
-        <!--<wsdl:part name="parameters" element="ds:getListOfRegisteredSoftware"></wsdl:part>-->
+        <wsdl:part name="parameters" element="ds:getListOfRegisteredSoftware"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="getListOfRegisteredSoftwareResponse">
         <wsdl:part name="parameters" element="ds:getListOfRegisteredSoftwareResponse"></wsdl:part>
     </wsdl:message>
-
-
-
     <wsdl:message name="listFilesAssociatedToRunRequest">
         <wsdl:part name="parameters" element="ds:listFilesAssociatedToRun"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="listFilesAssociatedToRunResponse">
         <wsdl:part name="parameters" element="ds:listFilesAssociatedToRunResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listURLsAssociatedToRunRequest">
+        <wsdl:part name="parameters" element="ds:listURLsAssociatedToRun"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listURLsAssociatedToRunResponse">
+        <wsdl:part name="parameters" element="ds:listURLsAssociatedToRunResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getFileContentRequest">
+        <wsdl:part name="parameters" element="ds:getFileContent"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getFileContentResponse">
+        <wsdl:part name="parameters" element="ds:getFileContentResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getURLContentRequest">
+        <wsdl:part name="parameters" element="ds:getURLContent"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getURLContentResponse">
+        <wsdl:part name="parameters" element="ds:getURLContentResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="associateFileWithRunIdRequest">
+        <wsdl:part name="parameters" element="ds:associateFileWithRunId"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="associateFileWithRunIdResponse">
+        <wsdl:part name="parameters" element="ds:associateFileWithRunIdResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="associateURLWithRunIdRequest">
+        <wsdl:part name="parameters" element="ds:associateURLWithRunId"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="associateURLWithRunIdResponse">
+        <wsdl:part name="parameters" element="ds:associateURLWithRunIdResponse"></wsdl:part>
     </wsdl:message>
 
     <wsdl:portType name="DataServiceEI">
@@ -555,13 +661,32 @@
             <wsdl:input message="ds:getListOfRegisteredSoftwareRequest"></wsdl:input>
             <wsdl:output message="ds:getListOfRegisteredSoftwareResponse"></wsdl:output>
         </wsdl:operation>
-
-
-
         <wsdl:operation name="listFilesAssociatedToRun">
             <wsdl:input message="ds:listFilesAssociatedToRunRequest"></wsdl:input>
             <wsdl:output message="ds:listFilesAssociatedToRunResponse"></wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="listURLsAssociatedToRun">
+            <wsdl:input message="ds:listURLsAssociatedToRunRequest"></wsdl:input>
+            <wsdl:output message="ds:listURLsAssociatedToRunResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getFileContent">
+            <wsdl:input message="ds:getFileContentRequest"></wsdl:input>
+            <wsdl:output message="ds:getFileContentResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getURLContent">
+            <wsdl:input message="ds:getURLContentRequest"></wsdl:input>
+            <wsdl:output message="ds:getURLContentResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="associateFileWithRunId">
+            <wsdl:input message="ds:associateFileWithRunIdRequest"></wsdl:input>
+            <wsdl:output message="ds:associateFileWithRunIdResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="associateURLWithRunId">
+            <wsdl:input message="ds:associateURLWithRunIdRequest"></wsdl:input>
+            <wsdl:output message="ds:associateURLWithRunIdResponse"></wsdl:output>
+        </wsdl:operation>
+
 
     </wsdl:portType>
     <wsdl:binding name="DataServiceBinding" type="ds:DataServiceEI">

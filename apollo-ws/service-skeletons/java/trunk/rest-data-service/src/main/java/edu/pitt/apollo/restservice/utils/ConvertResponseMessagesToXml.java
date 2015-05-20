@@ -153,4 +153,58 @@ public class ConvertResponseMessagesToXml {
         }
         return xml;
     }
+
+    public static String convertGetListOfRegisteredSoftwareRestMessage(GetListOfRegisteredSoftwareRestMessage returnMessage) {
+        String xml = "";
+
+        try{
+            JAXBContext context = JAXBContext.newInstance(GetListOfRegisteredSoftwareRestMessage.class);
+            Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(new JAXBElement(
+                    new QName("local", "GetListOfRegisteredSoftwareRestMessage", "tns"), GetListOfRegisteredSoftwareRestMessage.class, returnMessage), stringWriter);
+
+            xml = stringWriter.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xml;
+    }
+
+    public static String convertGetListOfContentAssociatedToRunRestMessage(GetListOfContentAssociatedToRunRestMessage returnMessage) {
+        String xml = "";
+
+        try{
+            JAXBContext context = JAXBContext.newInstance(GetListOfContentAssociatedToRunRestMessage.class);
+            Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(new JAXBElement(
+                    new QName("local", "GetListOfContentAssociatedToRunRestMessage", "tns"), GetListOfContentAssociatedToRunRestMessage.class, returnMessage), stringWriter);
+
+            xml = stringWriter.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xml;
+    }
+
+    public static String convertGetContentRestMessage(GetContentRestMessage returnMessage) {
+        String xml = "";
+
+        try{
+            JAXBContext context = JAXBContext.newInstance(GetContentRestMessage.class);
+            Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(new JAXBElement(
+                    new QName("local", "GetContentRestMessage", "tns"), GetContentRestMessage.class, returnMessage), stringWriter);
+
+            xml = stringWriter.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xml;
+    }
 }
