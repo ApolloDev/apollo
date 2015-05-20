@@ -2632,8 +2632,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=" + runId +" AND rddv.format='TEXT';");
-
+                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
+            pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
@@ -2660,10 +2660,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=" + runId +" AND (rddv.format='URL' OR rddv.format='ZIP');");
+                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
 
+            pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
-
             while (resultSet.next()) {
                 int content_id = resultSet.getInt("content_id");
                 String url_label = resultSet.getString("label");
@@ -2725,6 +2725,33 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             throw new ApolloDatabaseException("SQLException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
         }
         return urlAsString;
+    }
+
+    public int getSoftwareIdentificationKeyFromNameAndVersion(String softwareName, String softwareVersion) throws ApolloDatabaseException
+    {
+        int softwareIdentificationKey = 0;
+        Connection conn = null;
+
+        try {
+            conn = getConn();
+//            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name='"+softwareName+"' AND version='"+softwareVersion+"'");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name=? AND version=?");
+            pstmt.setString(1,softwareName);
+            pstmt.setString(2,softwareVersion);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while(resultSet.next())
+            {
+                softwareIdentificationKey = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new ApolloDatabaseException("ClassNotFoundException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
+        }
+
+        return softwareIdentificationKey;
     }
 //	public static void main(String[] args) throws IOException,
 //			ApolloDatabaseException {

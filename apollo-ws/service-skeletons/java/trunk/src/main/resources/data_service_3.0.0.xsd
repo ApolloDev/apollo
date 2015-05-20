@@ -364,6 +364,13 @@
 	<complexType name="AssociateFileWithRunIdMessage">
 		<sequence>
 			<element name="fileTextContent" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="sourceSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="sourceSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="destinationSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="contentType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="AssociateFileWithRunIdResult">
@@ -374,7 +381,16 @@
 
 	<complexType name="AssociateURLWithRunIdMessage">
 		<sequence>
-			<element name="url" type="token" minOccurs="1" maxOccurs="1"></element>
+			<sequence>
+				<element name="fileTextContent" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+				<element name="sourceSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="sourceSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="destinationSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="contentType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
+			</sequence>
 		</sequence>
 	</complexType>
 	<complexType name="AssociateURLWithRunIdResult">

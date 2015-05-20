@@ -135,8 +135,9 @@ public class DataServiceImpl implements DataServiceEI {
 	}
 
 	@Override
-	public AssociateFileWithRunIdResult associateFileWithRunId(AssociateFileWithRunIdMessage associateFileWithRunId) {
-		return null;
+	public AssociateFileWithRunIdResult associateFileWithRunId(AssociateFileWithRunIdMessage message) {
+		AssociateFileWithRunIdResult result = AssociateFileWithRunIdMethod.associateFileWithRunId(message);
+		return result;
 	}
 
 
@@ -171,8 +172,9 @@ public class DataServiceImpl implements DataServiceEI {
 	}
 
 	@Override
-	public AssociateURLWithRunIdResult associateURLWithRunId(AssociateURLWithRunIdMessage associateURLWithRunId) {
-		return null;
+	public AssociateURLWithRunIdResult associateURLWithRunId(AssociateURLWithRunIdMessage message) {
+		AssociateURLWithRunIdResult result = AssociateURLWithRunIdMethod.associateURLWithRunId(message);
+		return result;
 	}
 
 	@Override

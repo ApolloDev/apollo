@@ -7,13 +7,18 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
 import edu.pitt.apollo.restservice.rest.responsemessage.*;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.MethodNotAllowedMessage;
+import edu.pitt.apollo.restservice.rest.statuscodesandmessages.RequestSuccessfulMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildGetListOfContentAssociatedToRunRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildGetRunStatusRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildSoftwareIdentificationForRunMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildStatusResponseMessage;
+import edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
+import edu.pitt.apollo.restservice.utils.ParseXmlToAndFromObject;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunStatus;
 import org.springframework.stereotype.Controller;
@@ -247,9 +252,33 @@ public class RunsController {
     public
     @ResponseBody
     String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                  @ApiParam(value = "File text content.", required = true) @RequestBody String fileTextContent) {
+                                  @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        DataServiceImpl impl = new DataServiceImpl();
+        try {
+            AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
+            AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
+            message.setContentLabel(messageBodyContent.getContentLabel());
+            message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
+            message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
+            message.setDestinationSoftwareVersion(messageBodyContent.getDestinationSoftwareVersion());
+            message.setSourceSoftwareName(messageBodyContent.getSourceSoftwareName());
+            message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
+            message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
+            message.setRunId(runId);
 
-        return null;
+            AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+
+            if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+            }
+            else{
+                returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+            }
+        } catch (ParsingFromXmlToObjectException e) {
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getErrorMessage());
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
     }
     //We cannot create a new collection at the files level (PUT), and we cannot DELETE the files collection (DELETE).
 
@@ -287,11 +316,57 @@ public class RunsController {
     public
     @ResponseBody
     String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                 @ApiParam(value = "URL to associate to run ID.", required = true) @RequestBody String url) {
+                                 @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
 
-        return null;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        DataServiceImpl impl = new DataServiceImpl();
+        try {
+            AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
+            AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
+            message.setContentLabel(messageBodyContent.getContentLabel());
+            message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
+            message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
+            message.setDestinationSoftwareVersion(messageBodyContent.getDestinationSoftwareVersion());
+            message.setSourceSoftwareName(messageBodyContent.getSourceSoftwareName());
+            message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
+            message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
+            message.setRunId(runId);
+
+            AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+
+            if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+            }
+            else{
+                returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+            }
+        } catch (ParsingFromXmlToObjectException e) {
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getErrorMessage());
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
     }
     //We cannot create a new collection at the URL level (PUT), and we cannot DELETE the URLs collection (DELETE).
 
+    @POST
+    @ApiOperation(value = "Get all output files url as zip.", notes = "Starts process to get all output files as zipped given a run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/{runId}/getAllOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+        BigInteger runIdAsBigInteger;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Meta meta = new Meta();
+
+        meta.setNumberOfReturnedResults(0);
+        meta.setStatus(RequestSuccessfulMessage.getStatus());
+        meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
+
+        DataServiceImpl impl = new DataServiceImpl();
+        impl.getAllOutputFilesURLAsZip(runId);
+
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
 
 }

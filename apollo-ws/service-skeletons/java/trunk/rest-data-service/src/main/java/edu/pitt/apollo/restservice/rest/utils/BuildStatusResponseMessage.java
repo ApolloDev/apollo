@@ -17,7 +17,7 @@ public class BuildStatusResponseMessage {
         ApolloDatabaseExceptionMessage adem = new ApolloDatabaseExceptionMessage();
         if(errorMessage.contains("No entry found"))
         {
-            meta.setStatusMessage("No run was found in the .");
+            meta.setStatusMessage("No run was found in the database.");
         }
         else{
             meta.setStatusMessage(errorMessage);
