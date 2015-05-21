@@ -230,6 +230,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -257,8 +258,6 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 
 	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
 
-
-
 	private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
 	protected final DataSource datasource;
 
@@ -268,7 +267,7 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
 	JsonUtils jsonUtils = new JsonUtils();
 	Md5Utils md5Utils = new Md5Utils();
-	Connection dbcon;
+//	Connection dbcon;
 //	Properties properties;
 //	private final boolean AUTO_COMMIT;
 
@@ -284,11 +283,13 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 		}
 
 		datasource = dataSourceMap.get(resourceName);
-		try {
-			dbcon = datasource.getConnection();
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("SQLException initializing DB Utils: " + ex.getMessage());
-		}
+//		try {
+//			dbcon = datasource.getConnection();
+//			connectionsOpen.addAndGet(1);
+//			System.out.println("connections open: " + connectionsOpen.intValue());
+//		} catch (SQLException ex) {
+//			throw new ApolloDatabaseException("SQLException initializing DB Utils: " + ex.getMessage());
+//		}
 
 	}
 //	public BaseApolloDbUtils(File databasePropertiesFile, boolean autocommit) throws IOException {
@@ -314,11 +315,12 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 
 	@Override
 	public void close() throws ApolloDatabaseException {
-		try {
-			dbcon.close();
-		} catch (SQLException ex) {
-			throw new ApolloDatabaseException("Could not close connection");
-		}
+//		try {
+//			dbcon.close();
+//			connectionsOpen.addAndGet(-1);
+//		} catch (SQLException ex) {
+//			throw new ApolloDatabaseException("Could not close connection");
+//		}
 	}
 
 
@@ -350,20 +352,20 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 //					+ ".   Specific error was:\n" + e.getMessage());
 //		}
 //	}
-	public Connection getConn() throws ClassNotFoundException, SQLException {
-
-		boolean connIsValid = false;
-		try {
-			connIsValid = dbcon.isValid(1000);
-		} catch (SQLException e1) {
-			// who cares, we are making a new one anyway!
-		}
-		if (!connIsValid) {
-			dbcon = datasource.getConnection();
-		}
-
-		return dbcon;
-	}
+//	public Connection getConn() throws ClassNotFoundException, SQLException {
+//
+//		boolean connIsValid = false;
+//		try {
+//			connIsValid = dbcon.isValid(1000);
+//		} catch (SQLException e1) {
+//			// who cares, we are making a new one anyway!
+//		}
+//		if (!connIsValid) {
+//			dbcon = datasource.getConnection();
+//		}
+//
+//		return dbcon;
+//	}
 
 //	public void closeConnection() throws ApolloDatabaseException {
 //		if (dbcon != null) {

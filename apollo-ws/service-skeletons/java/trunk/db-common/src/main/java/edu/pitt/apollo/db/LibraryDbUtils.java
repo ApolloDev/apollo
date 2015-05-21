@@ -25,6 +25,7 @@ import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -43,11 +44,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: Oct 6, 2014
- * Time: 11:21:38 AM
- * Class: LibraryDbUtils
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Oct 6, 2014 Time: 11:21:38 AM Class: LibraryDbUtils
  */
 public class LibraryDbUtils extends BaseApolloDbUtils {
 
@@ -75,7 +72,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	public LibraryDbUtils() throws ApolloDatabaseException {
 		super(LIBRARY_AUTO_COMMIT, LIBRARY_DB_RESOURCE_NAME);
 	}
-	
+
 	protected LibraryDbUtils(String resourceName) throws ApolloDatabaseException {
 		super(LIBRARY_AUTO_COMMIT, resourceName);
 	}
@@ -87,7 +84,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //	public LibraryDbUtils(InputStream databasePropertiesInputStream) throws IOException {
 //		super(databasePropertiesInputStream, LIBRARY_AUTO_COMMIT);
 //	}
-
 	private String getJSONStringForLibraryItem(Object obj) throws JAXBException {
 		String itemJson = jsonUtils.getJsonBytes(obj).toString();
 		return itemJson;
@@ -131,27 +127,28 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		String query = "INSERT INTO users (user_name,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
 		String salt = getSaltForPassword();
 		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.setString(1, userName);
-			pstmt.setString(2, saltedPasswordHash);
-			pstmt.setString(3, salt);
-			pstmt.setString(4, userEmail);
-			pstmt.executeUpdate();
+		try (Connection conn = datasource.getConnection()) {
 
-			getConn().commit();
-
-			return -1;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex);
-		} catch (SQLException ex) {
 			try {
-				getConn().rollback();
-			} catch (ClassNotFoundException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex1);
-			} catch (SQLException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex1);
+				PreparedStatement pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, userName);
+				pstmt.setString(2, saltedPasswordHash);
+				pstmt.setString(3, salt);
+				pstmt.setString(4, userEmail);
+				pstmt.executeUpdate();
+
+				conn.commit();
+
+				return -1;
+			} catch (SQLException ex) {
+				try {
+					conn.rollback();
+				} catch (SQLException ex1) {
+					throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex1);
+				}
+				throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex);
 			}
+		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex);
 		}
 	}
@@ -163,42 +160,41 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		try {
 			userId = getUserId(userName, userPassword);
 			roleId = getRoleId(role);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
+		} catch (ApolloDatabaseExplicitException | ApolloDatabaseKeyNotFoundException | ApolloDatabaseUserPasswordException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
 		}
 
-		try {
-			String query = "INSERT INTO user_roles (user_id,role_id) VALUES (?,?)";
+		String query = "INSERT INTO user_roles (user_id,role_id) VALUES (?,?)";
 
-			PreparedStatement pstmt = getConn().prepareStatement(query);
-			pstmt.setInt(1, userId);
-			pstmt.setInt(2, roleId);
-			pstmt.executeUpdate();
-
-			getConn().commit();
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
-		} catch (SQLException ex) {
+		try (Connection conn = datasource.getConnection()) {
 			try {
-				getConn().rollback();
-			} catch (ClassNotFoundException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex1);
-			} catch (SQLException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex1);
+				PreparedStatement pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, userId);
+				pstmt.setInt(2, roleId);
+				pstmt.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException ex) {
+				try {
+					conn.rollback();
+				} catch (SQLException ex1) {
+					throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex1);
+				}
+				throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
 			}
+		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex);
 		}
 	}
 
 	private int getUserId(String userName, String userPassword) throws ApolloDatabaseUserPasswordException,
 			ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException {
-		try {
-			String query = "SELECT id, hash_of_user_password_and_salt, salt FROM users WHERE user_name = ?";
-			PreparedStatement pstmt = getConn().prepareStatement(query);
+
+		String query = "SELECT id, hash_of_user_password_and_salt, salt FROM users WHERE user_name = ?";
+
+		try (Connection conn = datasource.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, userName);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -216,17 +212,16 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				throw new ApolloDatabaseKeyNotFoundException("No entry in the users table where user_name = "
 						+ userName);
 			}
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException attempting to get user key: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException attempting to get user key: " + ex.getMessage());
 		}
+
 	}
 
 	private int getRoleId(LibraryUserRoleTypeEnum roleEnum) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException {
 		String sql = "SELECT id FROM roles WHERE description = '" + roleEnum.toString().toLowerCase() + "'";
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			int id;
@@ -239,30 +234,20 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			return id;
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException attempting to get role: " + ex.getMessage());
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException attempting to get role: " + ex.getMessage());
 		}
 	}
 
 	public boolean authorizeUser(Authentication authentication, LibraryUserRoleTypeEnum roleEnum) throws ApolloDatabaseException {
-		try {
+		try (Connection conn = datasource.getConnection()) {
 			int roleId = getRoleId(roleEnum);
 			int userId = getUserId(authentication.getRequesterId(), authentication.getRequesterPassword());
 
 			String query = "SELECT * FROM user_roles where user_id = " + userId + " AND role_id = " + roleId;
 
-			PreparedStatement pstmt = getConn().prepareStatement(query);
+			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(AUTHORIZING_USER, ex);
-		} catch (SQLException ex) {
-			throw createApolloDatabaseExceptionAndLog(AUTHORIZING_USER, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(AUTHORIZING_USER, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(AUTHORIZING_USER, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
+		} catch (SQLException | ApolloDatabaseExplicitException | ApolloDatabaseKeyNotFoundException | ApolloDatabaseUserPasswordException ex) {
 			throw createApolloDatabaseExceptionAndLog(AUTHORIZING_USER, ex);
 		}
 	}
@@ -282,20 +267,17 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //			throw new ApolloDatabaseExplicitException("SQLException getting URN: " + ex.getMessage());
 //		}
 //	}
-
 	private int getActionId(LibraryActionTypeEnum action) throws ApolloDatabaseExplicitException {
 
 		String sql = "SELECT id FROM library_actions WHERE action = ?";
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, action.toString().toLowerCase());
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException getting action ID: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException getting action ID: " + ex.getMessage());
 		}
@@ -308,15 +290,13 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		String sql = "INSERT INTO library_item_action_history (urn_id, version, action_performed, date_of_action) VALUES (?,?,?,?);";
 
 		int actionId = getActionId(action);
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
 			pstmt.setInt(2, version);
 			pstmt.setInt(3, actionId);
 			pstmt.setTimestamp(4, date);
 			pstmt.executeUpdate();
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException inserting action performed: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException inserting action performed: " + ex.getMessage());
 		}
@@ -325,8 +305,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private Timestamp getDateOfItem(int catalogId, int version) throws ApolloDatabaseExplicitException {
 		// need to get the date of the insert
 		String sql = "SELECT id,date_created FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + version;
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			Timestamp date;
@@ -336,24 +316,23 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			} else {
 				throw new ApolloDatabaseExplicitException("The inserted item was not found in the library_item_containers table");
 			}
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException getting ID and date for item: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException getting ID and date for item: " + ex.getMessage());
 		}
 	}
 
 	public List<Integer> getURNs(String itemType) throws ApolloDatabaseException {
-		try {
-			List<Integer> urns = new ArrayList<Integer>();
-			String query;
-			if (itemType == null) {
-				query = "SELECT id FROM library_item_container_urns";
-			} else {
-				query = "SELECT id FROM library_item_container_urns WHERE id in ("
-						+ "SELECT urn_id FROM library_item_containers WHERE json_representation->'libraryItem'->>'type' = '" + itemType + "')";
-			}
-			PreparedStatement pstmt = getConn().prepareStatement(query);
+		List<Integer> urns = new ArrayList<>();
+		String query;
+		if (itemType == null) {
+			query = "SELECT id FROM library_item_container_urns";
+		} else {
+			query = "SELECT id FROM library_item_container_urns WHERE id in ("
+					+ "SELECT urn_id FROM library_item_containers WHERE json_representation->'libraryItem'->>'type' = '" + itemType + "')";
+		}
+		try (Connection conn = datasource.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -361,8 +340,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			}
 
 			return urns;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_URNS, ex);
 		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_URNS, ex);
 		}
@@ -371,7 +348,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer item, Authentication authentication, String commitMessage) throws ApolloDatabaseException {
 		// user has already been authenticated
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 //			boolean itemAlreadyExists = checkIfUrnAlreadyExists(urn);
 //			if (itemAlreadyExists) {
 //				throw new ApolloDatabaseException("There was an error " + ADDING_LIBARY_ITEM
@@ -380,59 +357,52 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			String sql = "INSERT INTO library_item_container_urns DEFAULT VALUES";
 
-			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			pstmt.executeUpdate();
-
-			ResultSet rs = pstmt.getGeneratedKeys();
-			int catalogId;
-			if (rs.next()) {
-				catalogId = rs.getInt(1);
-			} else {
-				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, new ApolloDatabaseException("No ID was returned "
-						+ " when adding the item to the Apollo library."));
-			}
-
-			int itemVersion = updateLibraryItem(catalogId, item, authentication);
-			addComment(catalogId, itemVersion, commitMessage, authentication, LibraryCommentTypeEnum.COMMIT);
-
-			Timestamp date = getDateOfItem(catalogId, itemVersion);
-
-			insertActionPerformed(catalogId, itemVersion, date, LibraryActionTypeEnum.ADDED_ITEM);
-
-			getConn().commit();
-
-			AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
-			result.setUrn(catalogId);
-			result.setVersion(itemVersion);
-			
-			return result;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (SQLException ex) {
 			try {
-				getConn().rollback();
-			} catch (ClassNotFoundException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex1);
-			} catch (SQLException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex1);
+				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pstmt.executeUpdate();
+
+				ResultSet rs = pstmt.getGeneratedKeys();
+				int catalogId;
+				if (rs.next()) {
+					catalogId = rs.getInt(1);
+				} else {
+					throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, new ApolloDatabaseException("No ID was returned "
+							+ " when adding the item to the Apollo library."));
+				}
+
+				int itemVersion = updateLibraryItem(catalogId, item, authentication);
+				addComment(catalogId, itemVersion, commitMessage, authentication, LibraryCommentTypeEnum.COMMIT);
+
+				Timestamp date = getDateOfItem(catalogId, itemVersion);
+
+				insertActionPerformed(catalogId, itemVersion, date, LibraryActionTypeEnum.ADDED_ITEM);
+
+				conn.commit();
+
+				AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
+				result.setUrn(catalogId);
+				result.setVersion(itemVersion);
+
+				return result;
+			} catch (SQLException ex) {
+				try {
+					conn.rollback();
+				} catch (SQLException ex1) {
+					throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex1);
+				}
+				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
+			} catch (ApolloDatabaseKeyNotFoundException | ApolloDatabaseRecordNotInsertedException 
+					| ApolloDatabaseUserPasswordException | ApolloDatabaseExplicitException | NoLibraryItemException ex) {
+				throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
 			}
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (ApolloDatabaseRecordNotInsertedException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
-		} catch (NoLibraryItemException ex) {
+		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex);
 		}
 	}
 
 	public int updateLibraryItem(int urn, Object item, Authentication authentication, String comment) throws ApolloDatabaseException {
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 //			int catalogId = getCatalogIDFromURN(urn);
 			int version = updateLibraryItem(urn, item, authentication);
 			addComment(urn, version, comment, authentication, LibraryCommentTypeEnum.COMMIT);
@@ -441,23 +411,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			insertActionPerformed(urn, version, date, LibraryActionTypeEnum.UPDATED_ITEM);
 
-			getConn().commit();
+			conn.commit();
 			return version;
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-		} catch (ApolloDatabaseRecordNotInsertedException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + UPDATING_LIBRARY_ITEM + ". There is no item with the specified URN: \"" + urn + "\".");
-		} catch (NoLibraryItemException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-		} catch (SQLException ex) {
-			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
-		} catch (ClassNotFoundException ex) {
+		} catch (ApolloDatabaseExplicitException | ApolloDatabaseRecordNotInsertedException | ApolloDatabaseUserPasswordException | NoLibraryItemException | SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(UPDATING_LIBRARY_ITEM, ex);
 		}
 	}
@@ -465,12 +421,12 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private int updateLibraryItem(int catalogId, Object item, Authentication authentication) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseExplicitException, ApolloDatabaseRecordNotInsertedException {
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 			int userKey = getUserId(authentication.getRequesterId(), authentication.getRequesterPassword());
 
 			String itemJson = getJSONStringForLibraryItem(item);
 			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
-			PreparedStatement pstmt = getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
 			pstmt.setString(2, itemJson);
 			pstmt.setInt(3, userKey);
@@ -482,8 +438,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			}
 
 			return rs.getInt("version");
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException updating library item: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException updating library item: " + ex.getMessage());
 		} catch (JAXBException ex) {
@@ -493,9 +447,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	private int getCommentTypeId(LibraryCommentTypeEnum commentType) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException {
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 			String query = "SELECT id FROM comment_type WHERE description = ?";
-			PreparedStatement pstmt = getConn().prepareStatement(query);
+			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, commentType.toString().toLowerCase());
 			ResultSet rs = pstmt.executeQuery();
 
@@ -504,8 +458,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			} else {
 				throw new ApolloDatabaseKeyNotFoundException("No comment type with description " + commentType.toString().toLowerCase() + " exists");
 			}
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException getting comment type id: " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException getting comment type id: " + ex.getMessage());
 		}
@@ -513,35 +465,28 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	}
 
 	public void addReviewerComment(int urn, int version, String comment, Authentication authentication) throws ApolloDatabaseException {
-		try {
-//			int catalogId = getCatalogIDFromURN(urn);
-			addComment(urn, version, comment, authentication, LibraryCommentTypeEnum.REVIEW);
-
-			Timestamp date = getDateOfItem(urn, version);
-			insertActionPerformed(urn, version, date, LibraryActionTypeEnum.ADDED_REVIEWER_COMMENT);
-
-			getConn().commit();
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + ADDING_REVIEWER_COMMENT + ". There is no item with the specified URN: \"" + urn + "\".");
-		} catch (NoLibraryItemException ex) {
-			throw new ApolloDatabaseException("There was an error " + ADDING_REVIEWER_COMMENT
-					+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
-		} catch (SQLException ex) {
+		try (Connection conn = datasource.getConnection()) {
 			try {
-				getConn().rollback();
-			} catch (ClassNotFoundException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex1);
-			} catch (SQLException ex1) {
-				throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex1);
+				addComment(urn, version, comment, authentication, LibraryCommentTypeEnum.REVIEW);
+
+				Timestamp date = getDateOfItem(urn, version);
+				insertActionPerformed(urn, version, date, LibraryActionTypeEnum.ADDED_REVIEWER_COMMENT);
+
+				conn.commit();
+			} catch (ApolloDatabaseKeyNotFoundException | ApolloDatabaseExplicitException | ApolloDatabaseUserPasswordException ex) {
+				throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
+			} catch (NoLibraryItemException ex) {
+				throw new ApolloDatabaseException("There was an error " + ADDING_REVIEWER_COMMENT
+						+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
+			} catch (SQLException ex) {
+				try {
+					conn.rollback();
+				} catch (SQLException ex1) {
+					throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex1);
+				}
+				throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
 			}
+		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex);
 		}
 	}
@@ -554,30 +499,31 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		int userId = getUserId(authentication.getRequesterId(), authentication.getRequesterPassword());
 		int commentTypeId = getCommentTypeId(commentEnum);
 		String sql = "INSERT INTO comments (item_id,comment,comment_type,user_id) VALUES (?,?,?,?)";
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, itemId);
 			pstmt.setString(2, comment);
 			pstmt.setInt(3, commentTypeId);
 			pstmt.setInt(4, userId);
 
 			pstmt.executeUpdate();
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException adding comment for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException adding comment for catalog_uuid " + catalogId + " and version " + version + ": " + ex.getMessage());
 		}
 	}
 
-	public LibraryCommentTypeEnum getCommentTypeFromId(int id) throws ClassNotFoundException, SQLException, ApolloDatabaseExplicitException {
+	public LibraryCommentTypeEnum getCommentTypeFromId(int id) throws SQLException, ApolloDatabaseExplicitException {
 
 		String sql = "SELECT description FROM comment_type WHERE id = " + id;
 
-		PreparedStatement pstmt = getConn().prepareStatement(sql);
-		ResultSet rs = pstmt.executeQuery();
+		try (Connection conn = datasource.getConnection()) {
 
-		while (rs.next()) {
-			return LibraryCommentTypeEnum.valueOf(rs.getString(1).toUpperCase());
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				return LibraryCommentTypeEnum.valueOf(rs.getString(1).toUpperCase());
+			}
 		}
 
 		throw new ApolloDatabaseExplicitException("There was no comment type with ID " + id);
@@ -585,14 +531,14 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	public GetCommentsResult getComments(int urn, int version) throws ApolloDatabaseException {
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 //			int catalogId = getCatalogIDFromURN(urn);
 			int itemId = getItemIdFromCatalogIdAndVersion(urn, version);
 			String sql = "SELECT date_created,comment,comment_type,user_id FROM comments WHERE item_id = " + itemId;
 
 			GetCommentsResult result = new GetCommentsResult();
 
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -625,20 +571,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			return result;
 
-		} catch (ClassNotFoundException ex) {
+		} catch (SQLException | DatatypeConfigurationException | IllegalArgumentException | ApolloDatabaseKeyNotFoundException | ApolloDatabaseExplicitException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-		} catch (SQLException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-		} catch (DatatypeConfigurationException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-		} catch (IllegalArgumentException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_COMMENTS, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + GETTING_COMMENTS + ". There is no item with the specified URN: \"" + urn + "\".");
 		} catch (NoLibraryItemException ex) {
 			throw new ApolloDatabaseException("There was an error " + GETTING_COMMENTS
 					+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
@@ -647,38 +581,30 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	public void setReleaseVersion(int urn, int version, Authentication authentication, String message) throws ApolloDatabaseException {
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 //			int catalogId = getCatalogIDFromURN(urn);
-			setReleaseVersion(urn, version);
-			addComment(urn, version, message, authentication, LibraryCommentTypeEnum.RELEASE);
-
-			Timestamp date = getDateOfItem(urn, version);
-			insertActionPerformed(urn, version, date, LibraryActionTypeEnum.SET_AS_RELEASE_VERSION);
-
-			getConn().commit();
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
-		} catch (ApolloDatabaseUserPasswordException ex) {
-			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION + "to " + version
-//					+ " for the following resource: \"" + urn + "\". The specified resoucre does not exist in the library.");
-		} catch (NoLibraryItemException ex) {
-			throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION
-					+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
-
-		} catch (SQLException ex) {
 			try {
-				getConn().rollback();
-			} catch (ClassNotFoundException ex1) {
-				throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex1);
-			} catch (SQLException ex1) {
-				throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex1);
+				setReleaseVersion(urn, version);
+				addComment(urn, version, message, authentication, LibraryCommentTypeEnum.RELEASE);
+
+				Timestamp date = getDateOfItem(urn, version);
+				insertActionPerformed(urn, version, date, LibraryActionTypeEnum.SET_AS_RELEASE_VERSION);
+
+				conn.commit();
+			} catch (ApolloDatabaseExplicitException | ApolloDatabaseKeyNotFoundException | ApolloDatabaseUserPasswordException ex) {
+				throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
+			} catch (NoLibraryItemException ex) {
+				throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION
+						+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
+			} catch (SQLException ex) {
+				try {
+					conn.rollback();
+				} catch (SQLException ex1) {
+					throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex1);
+				}
 			}
+		} catch (SQLException ex) {
+			throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex);
 		}
 	}
 
@@ -686,21 +612,17 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			NoLibraryItemException, ApolloDatabaseException {
 
 		int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version);
-//		String insert = "INSERT INTO release_versions (catalog_urn_id, item_id) SELECT " + catalogId + "," + itemId;
-//		String upsert = "UPDATE release_versions SET item_id = " + itemId + " WHERE catalog_urn_id = " + catalogId;
 		String sql = "UPDATE library_item_containers SET is_latest_release_version = true WHERE id = " + itemId;
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 			clearPreviousReleaseVersion(catalogId);
 
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 			if (pstmt.getUpdateCount() == 0) {
 				throw new ApolloDatabaseException("There was an error setting the release version. You specified a version of the object that does not exist");
 			}
 
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException setting public version for urn_id " + catalogId + " and version " + version + ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException setting public version for urn_id " + catalogId + " and version " + version + ": " + ex.getMessage());
 		}
@@ -710,11 +632,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 		String sql = "UPDATE library_item_containers SET is_latest_release_version = false, was_previously_released = true WHERE urn_id = " + catalogId
 				+ " AND is_latest_release_version = true";
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException setting public version for urn_id " + catalogId + ": " + ex.getMessage());
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException setting public version for urn_id " + catalogId + ": " + ex.getMessage());
 		}
@@ -740,12 +660,11 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	public List<Integer> getVersions(int urn) throws ApolloDatabaseException {
 
-		try {
-//			int catalogId = getCatalogIDFromURN(urn);
+		try (Connection conn = datasource.getConnection()) {
 			String sql = "SELECT version FROM library_item_containers WHERE urn_id = " + urn;
-			List<Integer> versions = new ArrayList<Integer>();
+			List<Integer> versions = new ArrayList<>();
 
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -754,27 +673,18 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			}
 
 			return versions;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
 		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
-//		} catch (ApolloDatabaseKeyNotFoundException ex) {
-//			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
-//		} catch (ApolloDatabaseExplicitException ex) {
-//			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + GETTING_VERSIONS + ". There is no item with the specified URN: \"" + urn + "\".");
 		}
 
 	}
 
 	public Integer getReleaseVersion(int urn) throws ApolloDatabaseException {
 
-		try {
-//			int catalogId = getCatalogIDFromURN(urn);
+		try (Connection conn = datasource.getConnection()) {
 			String sql = "SELECT version FROM library_item_containers WHERE is_latest_release_version = true AND urn_id = " + urn;
 
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			int version;
@@ -785,26 +695,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				return null;
 			}
 
-//			sql = "SELECT version FROM library_objects WHERE id = " + itemId;
-//			pstmt = getConn().prepareStatement(sql);
-//			rs = pstmt.executeQuery();
-//
-//			if (rs.next()) {
-//				return rs.getInt(1);
-//			} else {
-//				throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION,
-//						new ApolloDatabaseKeyNotFoundException("No item exists with catalog_urn_id " + catalogId));
-//			}
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
 		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
-//		} catch (ApolloDatabaseExplicitException ex) {
-//			throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
-//		} catch (ApolloDatabaseKeyNotFoundException ex) {
-//			throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
-//		} catch (NoURNFoundException ex) {
-//			throw new ApolloDatabaseException("There was an error " + GETTING_RELEASE_VERSION + ". There is no item with the specified URN: \"" + urn + "\".");
 		}
 	}
 
@@ -813,11 +705,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		try {
 			String itemJson = getLibraryItemContainerJSON(urn, version);
 			return getLibraryItemContainderFromJson(itemJson);
-		} catch (IOException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_LIBRARY_ITEM_CONTAINER, ex);
-		} catch (ApolloDatabaseExplicitException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_LIBRARY_ITEM_CONTAINER, ex);
-		} catch (ApolloDatabaseKeyNotFoundException ex) {
+		} catch (IOException | ApolloDatabaseExplicitException | ApolloDatabaseKeyNotFoundException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_LIBRARY_ITEM_CONTAINER, ex);
 		} catch (NoURNFoundException ex) {
 			throw new ApolloDatabaseException("There was an error " + GETTING_LIBRARY_ITEM_CONTAINER + ". There is no item with the specified URN: \"" + urn + "\".");
@@ -839,34 +727,14 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	private String getLibraryItemContainerJSON(int urn, int version) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoURNFoundException, NoLibraryItemException {
-//		int catalogId = getCatalogIDFromURN(urn);
 		return getItemJSONFromCatalogIdAndVersion(version, urn);
 	}
-
-//	private int getCatalogIDFromURN(int urn) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, NoURNFoundException {
-//		String sql = "SELECT id FROM library_item_container_urns WHERE urn = ?";
-//		try {
-//			PreparedStatement pstmt = getConn().prepareStatement(sql);
-//			pstmt.setInt(1, urn);
-//			ResultSet rs = pstmt.executeQuery();
-//			if (!rs.next()) {
-//				throw new NoURNFoundException("No item with urn " + urn + " exists");
-//			}
-//			int id = rs.getInt(1);
-//			return id;
-//		} catch (ClassNotFoundException ex) {
-//			throw new ApolloDatabaseExplicitException("ClassNotFoundException checking library_item_container_urns table");
-//		} catch (SQLException ex) {
-//			throw new ApolloDatabaseExplicitException("SQLException checking library_item_container_urns table");
-//		}
-//
-//	}
 
 	private String getItemJSONFromCatalogIdAndVersion(int versionId, int urn) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoLibraryItemException {
 		String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + versionId;
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			if (!rs.next()) {
 				throw new NoLibraryItemException("No library item was found with URN \"" + urn + "\" and version " + versionId);
@@ -874,8 +742,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			String json = rs.getString(1);
 			return json;
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException checking library_item_container_urns table");
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException checking library_item_container_urns table");
 		}
@@ -884,8 +750,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	private int getItemIdFromCatalogIdAndVersion(int catalogId, int versionId) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoLibraryItemException {
 		String sql = "SELECT id FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			if (!rs.next()) {
 				throw new NoLibraryItemException("No library item was found with URN \"" + catalogId + "\" and version " + versionId);
@@ -893,8 +759,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			int id = rs.getInt(1);
 			return id;
-		} catch (ClassNotFoundException ex) {
-			throw new ApolloDatabaseExplicitException("ClassNotFoundException checking library_item_containers table");
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException checking library_item_containers table");
 		}
@@ -904,7 +768,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 		Timestamp timestamp = new Timestamp(dateTime.toGregorianCalendar().getTimeInMillis());
 
-		try {
+		try (Connection conn = datasource.getConnection()) {
 			String sql = "SELECT library_item_action_history.version, library_item_action_history.date_of_action, library_item_container_urns.id, library_actions.action "
 					+ "FROM library_item_action_history "
 					+ "INNER JOIN library_item_container_urns "
@@ -912,11 +776,11 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 					+ "INNER JOIN library_actions "
 					+ "ON library_item_action_history.action_performed = library_actions.id "
 					+ "WHERE library_item_action_history.date_of_action >= ?";
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setTimestamp(1, timestamp);
 			ResultSet rs = pstmt.executeQuery();
 
-			List<ChangeLogEntry> entries = new ArrayList<ChangeLogEntry>();
+			List<ChangeLogEntry> entries = new ArrayList<>();
 			while (rs.next()) {
 				int version = rs.getInt(1);
 				Timestamp actionTime = rs.getTimestamp(2);
@@ -937,39 +801,16 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 			}
 
 			return entries;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_CHANGE_LOG, ex);
-		} catch (SQLException ex) {
-			throw createApolloDatabaseExceptionAndLog(GETTING_CHANGE_LOG, ex);
-		} catch (DatatypeConfigurationException ex) {
+		} catch (SQLException | DatatypeConfigurationException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_CHANGE_LOG, ex);
 		}
 	}
 
-//	private void checkCatalogId(int catalogId) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException {
-//		String sql = "SELECT * FROM library_item_container_urns WHERE id = " + catalogId;
-//		try {
-//			PreparedStatement pstmt = getConn().prepareStatement(sql);
-//			ResultSet rs = pstmt.executeQuery();
-//			if (!rs.next()) {
-//				throw new ApolloDatabaseKeyNotFoundException("No library_item_container_urns entry with id " + catalogId + " exists");
-//			}
-//		} catch (ClassNotFoundException ex) {
-//			throw new ApolloDatabaseExplicitException("ClassNotFoundException checking library_item_container_urns table");
-//		} catch (SQLException ex) {
-//			throw new ApolloDatabaseExplicitException("SQLException checking library_item_container_urns table");
-//		}
-//	}
-//	private <T extends Object> T getObjectFromJson(String json, Class<T> type) throws IOException {
-//		ObjectMapper mapper = new ObjectMapper();
-//		T object = mapper.readValue(json, type);
-//		return object;
-//	}
 	public QueryResult queryObjects(String sql) throws ApolloDatabaseException {
 
 		QueryResult result = new QueryResult();
-		try {
-			PreparedStatement pstmt = getConn().prepareStatement(sql);
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
 
@@ -979,7 +820,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				result.getColumnNames().add(columnName);
 			}
 
-			List<String> resultSetDataAs1DArray = new ArrayList<String>();
+			List<String> resultSetDataAs1DArray = new ArrayList<>();
 			while (rs.next()) {
 				for (int column = 1; column <= numColumns; column++) {
 					String value = rs.getString(column);
@@ -989,8 +830,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 			result.getTable().addAll(resultSetDataAs1DArray);
 			return result;
-		} catch (ClassNotFoundException ex) {
-			throw createApolloDatabaseExceptionAndLog(QUERYING, ex);
 		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(QUERYING, ex);
 		}
