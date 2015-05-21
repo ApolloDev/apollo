@@ -1,7 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.methods.run.dataserviceaccessors;
 
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -16,32 +14,12 @@ public abstract class DataServiceAccessor implements DataServiceAccessorInterfac
     }
 
     @Override
-    public boolean authenticateUser(Authentication authentication) throws DataserviceException {
-        return false;
-    }
-
-    @Override
-    public boolean authorizeUserForSoftwareCacheData(Authentication authentication, SoftwareIdentification softwareIdentification) throws DataserviceException {
-        return false;
-    }
-
-    @Override
-    public boolean authorizeUserForRunningSoftware(Authentication authentication, SoftwareIdentification softwareIdentification) throws DataserviceException {
-        return false;
-    }
-
-    @Override
-    public boolean isRunIdAssociatedWithMatchingRunMessage(String targetRunMessageAsJson, BigInteger runIdAssociatedWithRunMessageHash) throws DataserviceException {
-        return false;
-    }
-
-    @Override
     public List<BigInteger> getRunIdsAssociatedWithRun(BigInteger runId) throws DataserviceException {
         return null;
     }
 
     @Override
-    public void addRunIdsToSimulationGroup(BigInteger simulationGroupId, List<BigInteger> runIds) {
+    public void addRunIdsToSimulationGroup(BigInteger simulationGroupId, List<BigInteger> runIds) throws DataserviceException {
 
     }
 

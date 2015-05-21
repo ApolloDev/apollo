@@ -1,10 +1,8 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.apolloservice.types.ReturnObjectForRun;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessorForRunningDataService;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.runmanagerservice.methods.run.dataserviceaccessors.DataserviceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -73,21 +71,21 @@ public class RunMethodForDataService extends AbstractRunMethod {
     private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage;
 
     public RunMethodForDataService(Authentication authentication, GetOutputFilesURLsMessage message) {
-        super(authentication, DatabaseAccessorForRunningDataService.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
+        super(authentication, DatabaseAccessorForRunningDataServiceRequests.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
         this.getOutputFilesURLsMessage = message;
     }
 
     public RunMethodForDataService(Authentication authentication, GetOutputFilesURLAsZipMessage message) {
-        super(authentication, DatabaseAccessorForRunningDataService.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
+        super(authentication, DatabaseAccessorForRunningDataServiceRequests.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
         this.getOutputFilesURLAsZipMessage = message;
     }
 
     public RunMethodForDataService(Authentication authentication, GetAllOutputFilesURLAsZipMessage message) {
-        super(authentication, DatabaseAccessorForRunningDataService.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
+        super(authentication, DatabaseAccessorForRunningDataServiceRequests.getDataServiceSoftwareId(), NO_SIMULATION_GROUP_ID, message);
         this.getAllOutputFilesURLAsZipMessage = message;
     }
 
-    private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws ApolloDatabaseException {
+    private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataserviceException {
         urlsForFilesAndRunIds = new ArrayList<>();
         for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
             // create a url for each file in the list
@@ -121,7 +119,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
         if (getOutputFilesURLsMessage != null) {
             try {
                 getOutputFileURLs(getOutputFilesURLsMessage, runResult.getRunId());
-            } catch (ApolloDatabaseException ex) {
+            } catch (DataserviceException ex) {
                 MethodCallStatus status = new MethodCallStatus();
                 status.setStatus(MethodCallStatusEnum.FAILED);
                 status.setMessage("There was an exception getting the run IDs associated with the run ID " + runResult.getRunId());
