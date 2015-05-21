@@ -18,14 +18,15 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.*;
+import edu.pitt.apollo.dataservice.methods.file.GetFileContentMethod;
+import edu.pitt.apollo.dataservice.methods.softwaremethods.GetListOfRegisteredSoftwareMethod;
+import edu.pitt.apollo.dataservice.methods.url.GetURLContentMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddRoleMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddUserMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddUserRoleMethod;
 import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
-//import edu.pitt.apollo.service.dataservice.v3_0_0.GetListOfRegisteredSoftwareResponse;
-import edu.pitt.apollo.service.dataservice.v3_0_0.GetListOfRegisteredSoftwareResponse;
+import edu.pitt.apollo.service.dataservice.v3_0_0.*;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -50,6 +51,14 @@ public class DataServiceImpl implements DataServiceEI {
 	@Override
 	public AddRoleResult addRole(AddRoleMessage message) {
 		AddRoleResult result = AddRoleMethod.addRole(message);
+		return result;
+	}
+
+
+
+	@Override
+	public GetFileContentResult getFileContent(GetFileContentMessage message) {
+		GetFileContentResult result = GetFileContentMethod.getFileContent(message);
 		return result;
 	}
 
@@ -89,6 +98,7 @@ public class DataServiceImpl implements DataServiceEI {
 		return result;
 	}
 
+
 	@Override
 	public GetSoftwareIdentificationKeyForRunResult getSoftwareIdentificationKeyForRun(GetSoftwareIdentificationKeyForRunMessage message) {
 		GetSoftwareIdentificationKeyForRunResult result = GetSoftwareIdentificationKeyForRunMethod.getSoftwareIdentificationKeyForRun(message);
@@ -108,8 +118,9 @@ public class DataServiceImpl implements DataServiceEI {
 	}
 
 	@Override
-	public GetListOfRegisteredSoftwareResponse getListOfRegisteredSoftware() {
-		return null;
+	public GetListOfRegisteredSoftwareResult getListOfRegisteredSoftware() {
+		GetListOfRegisteredSoftwareResult result = GetListOfRegisteredSoftwareMethod.getListOfRegisteredSoftware();
+		return result;
 	}
 
 
@@ -118,6 +129,19 @@ public class DataServiceImpl implements DataServiceEI {
 		AddUserResult result = AddUserMethod.addUser(message);
 		return result;
 	}
+
+	@Override
+	public GetURLContentResult getURLContent(GetURLContentMessage message) {
+		GetURLContentResult result = GetURLContentMethod.getUrl(message);
+		return result;
+	}
+
+	@Override
+	public AssociateFileWithRunIdResult associateFileWithRunId(AssociateFileWithRunIdMessage message) {
+		AssociateFileWithRunIdResult result = AssociateFileWithRunIdMethod.associateFileWithRunId(message);
+		return result;
+	}
+
 
 	@Override
 	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
@@ -149,6 +173,17 @@ public class DataServiceImpl implements DataServiceEI {
 		return result;
 	}
 
+	@Override
+	public AssociateURLWithRunIdResult associateURLWithRunId(AssociateURLWithRunIdMessage message) {
+		AssociateURLWithRunIdResult result = AssociateURLWithRunIdMethod.associateURLWithRunId(message);
+		return result;
+	}
+
+	@Override
+	public ListURLsResult listURLsAssociatedToRun(ListURLsMessage message) {
+		ListURLsResult result = ListURLsAssociatedToRunMethod.listURLsAssociatedToRun(message);
+		return result;
+	}
 
 	@Override
 	public AddTextDataContentResult addTextDataContent(AddTextDataContentMessage message) {
@@ -156,6 +191,8 @@ public class DataServiceImpl implements DataServiceEI {
 
 		return result;
 	}
+
+
 
 	@Override
 	public MethodCallStatus getOutputFilesURLs(BigInteger runId) {

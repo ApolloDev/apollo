@@ -2400,6 +2400,143 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE, RUN_SIMULATION_MESSAGE, RUN_VISUALIZATION_MESSAGE, RUN_DATA_SERVICE_MESSAGE,
 	}
 
+    /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
+    public HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, String> contentIdToFileNameMap = new HashMap<BigInteger, String>();
+
+        try(Connection conn = datasource.getConnection()){
+
+
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
+            pstmt.setInt(1,runId.intValue());
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                int content_id = resultSet.getInt("content_id");
+                String file_label = resultSet.getString("label");
+                contentIdToFileNameMap.put(BigInteger.valueOf(content_id), file_label);
+
+            }
+
+        }  catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving content ID and labels for run " + runId + ": " + e.getMessage());
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
+//        }
+        return contentIdToFileNameMap;
+    }
+
+    public HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, String> contentIdToURLNameMap = new HashMap<BigInteger, String>();
+
+        try(Connection conn = datasource.getConnection()){
+
+
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
+
+            pstmt.setInt(1,runId.intValue());
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                int content_id = resultSet.getInt("content_id");
+                String url_label = resultSet.getString("label");
+                contentIdToURLNameMap.put(BigInteger.valueOf(content_id), url_label);
+
+            }
+
+        } catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving content ID and labels for run " + runId + ": " + e.getMessage());
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
+//        }
+        return contentIdToURLNameMap;
+    }
+
+    public String getFileContentForFileId(BigInteger fileId)  throws ApolloDatabaseException {
+        String fileContent = "";
+
+        try(Connection conn = datasource.getConnection()) {
+
+
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT text_content FROM run_data_content WHERE id=?");
+
+            pstmt.setInt(1, fileId.intValue());
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+               fileContent = resultSet.getString("text_content");
+            }
+        } catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving file content for file ID " + fileId + ": " + e.getMessage());
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving file content for file ID " + fileId + ": " + e.getMessage());
+//        }
+        return fileContent;
+    }
+
+    public String getURLForURLId(BigInteger urlId)  throws ApolloDatabaseException {
+        String urlAsString = "";
+
+        try(Connection conn = datasource.getConnection()){
+
+
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT text_content FROM run_data_content WHERE id=?");
+
+            pstmt.setInt(1, urlId.intValue());
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                urlAsString = resultSet.getString("text_content");
+            }
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
+//        }
+        catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
+        }
+        return urlAsString;
+    }
+
+    public int getSoftwareIdentificationKeyFromNameAndVersion(String softwareName, String softwareVersion) throws ApolloDatabaseException
+    {
+        int softwareIdentificationKey = 0;
+
+
+        try(Connection conn = datasource.getConnection()) {
+
+//            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name='"+softwareName+"' AND version='"+softwareVersion+"'");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name=? AND version=?");
+            pstmt.setString(1,softwareName);
+            pstmt.setString(2,softwareVersion);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while(resultSet.next())
+            {
+                softwareIdentificationKey = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            throw new ApolloDatabaseException("SQLException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
+//        }
+
+        return softwareIdentificationKey;
+    }
 //	public static void main(String[] args) throws IOException,
 //			ApolloDatabaseException {
 //

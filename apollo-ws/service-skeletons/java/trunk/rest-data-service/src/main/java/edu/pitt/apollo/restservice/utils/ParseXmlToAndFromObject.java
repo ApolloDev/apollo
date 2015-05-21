@@ -2,6 +2,7 @@ package edu.pitt.apollo.restservice.utils;
 
 import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
 import edu.pitt.apollo.restservice.types.AddRoleInformation;
+import edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage;
 import edu.pitt.apollo.restservice.types.UserAndRoleInformation;
 import edu.pitt.apollo.restservice.types.UserInformation;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -106,6 +107,21 @@ public class ParseXmlToAndFromObject {
         try{
             roleInformation = JAXB.unmarshal(roleInformationInputStream,AddRoleInformation.class);
             return roleInformation;
+        }
+        catch(Exception e)
+        {
+            ParsingFromXmlToObjectException ex = new ParsingFromXmlToObjectException(e.getMessage());
+            ex.setErrorMessage(e.getMessage());
+            throw ex;
+        }
+
+    }
+    public static AssociateContentWithRunIdRestMessage convertFromXmlToAssociateContentWithRunIdRestMessage(String xml) throws ParsingFromXmlToObjectException {
+        AssociateContentWithRunIdRestMessage associateContentWithRunIdRestMessage;
+        InputStream roleInformationInputStream = new ByteArrayInputStream(xml.getBytes());
+        try{
+            associateContentWithRunIdRestMessage = JAXB.unmarshal(roleInformationInputStream,AssociateContentWithRunIdRestMessage.class);
+            return associateContentWithRunIdRestMessage;
         }
         catch(Exception e)
         {
