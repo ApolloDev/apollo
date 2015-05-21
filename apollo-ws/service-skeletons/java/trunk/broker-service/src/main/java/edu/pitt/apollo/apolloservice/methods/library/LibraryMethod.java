@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.dataservice.error.ApolloServiceErrorHandler;
 import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
 import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceV300;
 import java.io.IOException;

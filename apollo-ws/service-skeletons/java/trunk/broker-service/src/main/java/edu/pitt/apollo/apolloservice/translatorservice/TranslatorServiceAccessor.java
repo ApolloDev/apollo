@@ -7,8 +7,8 @@ import java.net.URL;
 import javax.xml.ws.WebServiceException;
 
 
-import edu.pitt.apollo.apolloservice.error.ApolloServiceErrorHandler;
-import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
+import edu.pitt.apollo.dataservice.error.ApolloServiceErrorHandler;
+import edu.pitt.apollo.dataservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceEI;
