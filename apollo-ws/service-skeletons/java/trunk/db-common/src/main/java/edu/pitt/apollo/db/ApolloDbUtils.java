@@ -2517,7 +2517,6 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
         try(Connection conn = datasource.getConnection()) {
 
-//            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name='"+softwareName+"' AND version='"+softwareVersion+"'");
             PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name=? AND version=?");
             pstmt.setString(1,softwareName);
             pstmt.setString(2,softwareVersion);
@@ -2531,12 +2530,48 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         } catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
         }
-//        catch (ClassNotFoundException e) {
-//            throw new ApolloDatabaseException("ClassNotFoundException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
-//        }
+
 
         return softwareIdentificationKey;
     }
+
+	public List<Integer> getSimulationGroupIdsForRun(Integer runId) throws ApolloDatabaseException
+	{
+		List<Integer> listOfSimulationGroups = new ArrayList<Integer>();
+		try(Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement("SELECT simulation_group_id FROM simulation_group_definition WHERE  run_id=?");
+			pstmt.setInt(1, runId);
+
+			ResultSet resultSet = pstmt.executeQuery();
+
+			while(resultSet.next())
+			{
+				listOfSimulationGroups.add(resultSet.getInt("simulation_group_id"));
+			}
+		} catch (SQLException e) {
+			throw new ApolloDatabaseException("SQLException retrieving software group IDs key for run " + runId + ": " + e.getMessage());
+		}
+		return listOfSimulationGroups;
+	}
+	public void addRunIdToSimulationGroups(
+			List<BigInteger> simulationGroupIds,
+			BigInteger runId)
+			throws ApolloDatabaseException, Md5UtilsException {
+		String query = "INSERT IGNORE INTO simulation_group_definition (simulation_group_id, run_id) VALUES (?,?)";
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			for (BigInteger simGroupId : simulationGroupIds) {
+				pstmt.setLong(1, simGroupId.longValue());
+				pstmt.setLong(2, runId.longValue());
+				pstmt.execute();
+			}
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
+		}
+	}
+
+
+
 //	public static void main(String[] args) throws IOException,
 //			ApolloDatabaseException {
 //
