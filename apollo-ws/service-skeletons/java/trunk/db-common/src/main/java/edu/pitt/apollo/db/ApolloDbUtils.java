@@ -2625,10 +2625,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
     public HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
         HashMap<BigInteger, String> contentIdToFileNameMap = new HashMap<BigInteger, String>();
-        Connection conn = null;
-        try {
 
-            conn = getConn();
+        try(Connection conn = datasource.getConnection()){
+
+
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT runData.content_id, rddv.label FROM run_data runData " +
@@ -2643,20 +2643,21 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
             }
 
-        } catch (ClassNotFoundException e) {
-            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving content ID and labels for run " + runId + ": " + e.getMessage());
         }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
+//        }
         return contentIdToFileNameMap;
     }
 
     public HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
         HashMap<BigInteger, String> contentIdToURLNameMap = new HashMap<BigInteger, String>();
-        Connection conn = null;
-        try {
 
-            conn = getConn();
+        try(Connection conn = datasource.getConnection()){
+
+
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT runData.content_id, rddv.label FROM run_data runData " +
@@ -2671,20 +2672,21 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
             }
 
-        } catch (ClassNotFoundException e) {
-            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
         } catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving content ID and labels for run " + runId + ": " + e.getMessage());
         }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
+//        }
         return contentIdToURLNameMap;
     }
 
     public String getFileContentForFileId(BigInteger fileId)  throws ApolloDatabaseException {
         String fileContent = "";
-        Connection conn = null;
-        try {
 
-            conn = getConn();
+        try(Connection conn = datasource.getConnection()) {
+
+
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT text_content FROM run_data_content WHERE id=?");
@@ -2695,20 +2697,21 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             while (resultSet.next()) {
                fileContent = resultSet.getString("text_content");
             }
-        } catch (ClassNotFoundException e) {
-            throw new ApolloDatabaseException("ClassNotFoundException retrieving file content for file ID " + fileId + ": " + e.getMessage());
         } catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving file content for file ID " + fileId + ": " + e.getMessage());
         }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving file content for file ID " + fileId + ": " + e.getMessage());
+//        }
         return fileContent;
     }
 
     public String getURLForURLId(BigInteger urlId)  throws ApolloDatabaseException {
         String urlAsString = "";
-        Connection conn = null;
-        try {
 
-            conn = getConn();
+        try(Connection conn = datasource.getConnection()){
+
+
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT text_content FROM run_data_content WHERE id=?");
@@ -2719,9 +2722,11 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             while (resultSet.next()) {
                 urlAsString = resultSet.getString("text_content");
             }
-        } catch (ClassNotFoundException e) {
-            throw new ApolloDatabaseException("ClassNotFoundException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
-        } catch (SQLException e) {
+        }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
+//        }
+        catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving URL for URL ID " + urlId + ": " + e.getMessage());
         }
         return urlAsString;
@@ -2730,10 +2735,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     public int getSoftwareIdentificationKeyFromNameAndVersion(String softwareName, String softwareVersion) throws ApolloDatabaseException
     {
         int softwareIdentificationKey = 0;
-        Connection conn = null;
 
-        try {
-            conn = getConn();
+
+        try(Connection conn = datasource.getConnection()) {
+
 //            PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name='"+softwareName+"' AND version='"+softwareVersion+"'");
             PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM software_identification WHERE  name=? AND version=?");
             pstmt.setString(1,softwareName);
@@ -2747,9 +2752,10 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             }
         } catch (SQLException e) {
             throw new ApolloDatabaseException("SQLException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new ApolloDatabaseException("ClassNotFoundException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
         }
+//        catch (ClassNotFoundException e) {
+//            throw new ApolloDatabaseException("ClassNotFoundException retrieving software ID key for software name " + softwareName + " and version " + softwareVersion+": " + e.getMessage());
+//        }
 
         return softwareIdentificationKey;
     }
