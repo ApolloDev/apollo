@@ -99,7 +99,7 @@ public class UsersController {
     @RequestMapping(value = "/users", method = RequestMethod.DELETE, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String deleteUserFromUseresCollection(@ApiParam(value = "User ID", required = true) @PathVariable("userId") String userId, @ApiParam(value = "User password", required = true) @RequestParam("userPassword") String userPassword) {
+    String deleteUserFromUseresCollection(@ApiParam(value = "User ID", required = true) @RequestParam("userId") String userId, @ApiParam(value = "User password", required = true) @RequestParam("userPassword") String userPassword) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
         DeleteUserMessage message = new DeleteUserMessage();

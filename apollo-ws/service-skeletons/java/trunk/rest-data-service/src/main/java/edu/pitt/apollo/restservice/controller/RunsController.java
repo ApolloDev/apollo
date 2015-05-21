@@ -352,7 +352,7 @@ public class RunsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value="/{runId}/getAllOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
+    @RequestMapping(value="/{runId}/allOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
     public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
         BigInteger runIdAsBigInteger;
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();

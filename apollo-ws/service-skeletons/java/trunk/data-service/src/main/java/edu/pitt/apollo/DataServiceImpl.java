@@ -18,6 +18,7 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.*;
+import edu.pitt.apollo.dataservice.methods.file.GetFileContentMethod;
 import edu.pitt.apollo.dataservice.methods.softwaremethods.GetListOfRegisteredSoftwareMethod;
 import edu.pitt.apollo.dataservice.methods.url.GetURLContentMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddRoleMethod;
@@ -56,8 +57,9 @@ public class DataServiceImpl implements DataServiceEI {
 
 
 	@Override
-	public GetFileContentResult getFileContent(GetFileContentMessage getFileContent) {
-		return null;
+	public GetFileContentResult getFileContent(GetFileContentMessage message) {
+		GetFileContentResult result = GetFileContentMethod.getFileContent(message);
+		return result;
 	}
 
 	@Override
