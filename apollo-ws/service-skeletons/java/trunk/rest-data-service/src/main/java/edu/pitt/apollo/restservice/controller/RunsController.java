@@ -252,6 +252,7 @@ public class RunsController {
     public
     @ResponseBody
     String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+//                                  @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
                                   @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
