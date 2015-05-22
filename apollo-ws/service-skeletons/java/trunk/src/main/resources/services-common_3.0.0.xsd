@@ -152,6 +152,7 @@
 			<enumeration value="called_translator" />
 			<enumeration value="called_visualizer" />
 			<enumeration value="called_simulator" />
+			<enumeration value="called_data_service" />
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
