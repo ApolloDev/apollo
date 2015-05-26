@@ -1,10 +1,10 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.connector.DataServiceConnector;
-import edu.pitt.apollo.connector.rest.RestDataServiceConnector;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessorForRunningDataServiceRequests;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ import java.math.BigInteger;
  */
 public class RunDataServiceThread extends RunApolloServiceThread {
 
-	private static final String DATA_SERVICE_URL = "";
+	
 	private GetOutputFilesURLsMessage getOutputFilesURLsMessage;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage;
 	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage;
@@ -38,15 +38,18 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 	@Override
 	public void run() {
 
-		DataServiceConnector dataServiceConnector = new RestDataServiceConnector(DATA_SERVICE_URL);
+		DataServiceAccessor dataServiceAccessor;
 		RunResult runResult;
 		
 		if (getOutputFilesURLsMessage != null) {
-			runResult = dataServiceConnector.getOutputFilesURLs(runId);
+			dataServiceAccessor = new DataServiceAccessorForRunningDataServiceRequests(getOutputFilesURLsMessage);
+			runResult = dataServiceAccessor.getOutputFilesURLs(runId);
 		} else if (getOutputFilesURLAsZipMessage != null) {
-			runResult = dataServiceConnector.getOutputFilesURLAsZip(runId);
+			dataServiceAccessor = new DataServiceAccessorForRunningDataServiceRequests(getOutputFilesURLAsZipMessage);
+			runResult = dataServiceAccessor.getOutputFilesURLAsZip(runId);
 		} else if (getAllOutputFilesURLAsZipMessage != null) {
-			runResult = dataServiceConnector.getAllOutputFilesURLAsZip(runId);
+			dataServiceAccessor = new DataServiceAccessorForRunningDataServiceRequests(getAllOutputFilesURLAsZipMessage);
+			runResult = dataServiceAccessor.getAllOutputFilesURLAsZip(runId);
 		}
 
 	}
