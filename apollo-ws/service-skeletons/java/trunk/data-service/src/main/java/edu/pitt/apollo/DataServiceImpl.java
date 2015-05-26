@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.*;
 import edu.pitt.apollo.dataservice.methods.file.GetFileContentMethod;
+import edu.pitt.apollo.dataservice.methods.run.GetRunInformationMethod;
 import edu.pitt.apollo.dataservice.methods.softwaremethods.GetListOfRegisteredSoftwareMethod;
 import edu.pitt.apollo.dataservice.methods.url.GetURLContentMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddRoleMethod;
@@ -193,12 +194,11 @@ public class DataServiceImpl implements DataServiceEI {
 	}
 
 
-
 	@Override
 	public MethodCallStatus getOutputFilesURLs(BigInteger runId) {
 		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId);
 		method.downloadFiles();
-		
+
 		return null;
 	}
 
@@ -218,5 +218,9 @@ public class DataServiceImpl implements DataServiceEI {
 		return result;
 	}
 
+	public GetRunInformationResult getRunInformation(GetRunInformationMessage message) {
+		GetRunInformationResult result = GetRunInformationMethod.getRunInformation(message);
+		return result;
+	}
 
 }

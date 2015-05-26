@@ -19,7 +19,19 @@ public class CodeResolver {
     static HashMap<String, String> locationCodeMap = new HashMap<String, String>();
     static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
     //static Properties configurationProperties = null;
-    
+
+
+    public static List<BigInteger> getListOfGroupIds(String listAsString)
+    {
+        String[] groupIdsSplit = listAsString.split(",");
+        List<BigInteger> groupIdsAsList = new ArrayList<BigInteger>();
+        for(String idAsString : groupIdsSplit)
+        {
+            groupIdsAsList.add(new BigInteger(idAsString));
+        }
+        return groupIdsAsList;
+    }
+
     public static Properties getLibraryViewerConfigurationFile()
     {
 

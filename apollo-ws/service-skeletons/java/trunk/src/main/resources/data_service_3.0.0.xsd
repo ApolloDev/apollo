@@ -400,4 +400,20 @@
 	</complexType>
 
 
+	<complexType name="GetRunInformationMessage">
+		<sequence>
+			<sequence>
+				<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			</sequence>
+		</sequence>
+	</complexType>
+	<complexType name="GetRunInformationResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="associatedGroupIds" type="positiveInteger" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="serviceType" type="token" minOccurs="0" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+
 </schema>

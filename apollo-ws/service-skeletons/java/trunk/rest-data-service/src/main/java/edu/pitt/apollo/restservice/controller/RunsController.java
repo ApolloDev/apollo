@@ -6,19 +6,19 @@ import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
+import edu.pitt.apollo.RestDataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
 import edu.pitt.apollo.restservice.rest.responsemessage.*;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.MethodNotAllowedMessage;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.RequestSuccessfulMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildGetListOfContentAssociatedToRunRestMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildGetRunStatusRestMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildSoftwareIdentificationForRunMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildStatusResponseMessage;
+import edu.pitt.apollo.restservice.rest.utils.*;
 import edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage;
+import edu.pitt.apollo.restservice.utils.CodeResolver;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
 import edu.pitt.apollo.restservice.utils.ParseXmlToAndFromObject;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunStatus;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,8 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dcs27 on 5/15/15.
@@ -352,7 +354,7 @@ public class RunsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value="/{runId}/allOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
+    @RequestMapping(value="/run/{runId}/allOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
     public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
         BigInteger runIdAsBigInteger;
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
@@ -368,5 +370,55 @@ public class RunsController {
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 
     }
+
+    /*--Method to get run information such as groups, types, etc--*/
+    @GET
+      @ApiOperation(value = "Get information for run.", notes = "Returns the service type and all simulation group IDs associated with the run.", response = String.class)
+      @ApiResponses(value = {
+              @ApiResponse(code = 200, message = "")
+      })
+      @RequestMapping(value="/run/{runId}", method= RequestMethod.GET, headers="Accept=application/xml")
+      public @ResponseBody String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        GetRunInformationRestMessage returnMessage = new GetRunInformationRestMessage();
+        GetRunInformationMessage message = new GetRunInformationMessage();
+        message.setRunId(runId);
+
+        GetRunInformationResult result = impl.getRunInformation(message);
+
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildGetRunInformationRestMessage.buildFailedGetRunInformationRestMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage = BuildGetRunInformationRestMessage.buildSuccessfulGetRunInformationRestMessage(result);
+        }
+        return ConvertResponseMessagesToXml.convertGetRunInformationRestMessageToXmlJaxb(returnMessage);
+
+    }
+    @POST
+    @ApiOperation(value = "Set simulation group IDs for run.", notes = "Sets the simulation group IDs for run using a comma separated input.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String setGroupIdsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                    @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+
+        List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(groupIds);
+
+        MethodCallStatus result = impl.addSimulationGroupIdsForRunId(groupIdsAsList,runId);
+
+        if(result.getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
+        }
+        else{
+            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
 
 }
