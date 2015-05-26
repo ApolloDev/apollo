@@ -17,8 +17,8 @@ import java.math.BigInteger;
  */
 public class RunMethodForSimulation extends AbstractRunMethod {
 
-	public RunMethodForSimulation(BigInteger runId, BigInteger associatedSimulationGroupId, Object message) throws JsonUtilsException, DataServiceException {
-		super(runId, associatedSimulationGroupId);
+	public RunMethodForSimulation(BigInteger stagedRunId) throws JsonUtilsException, DataServiceException {
+		super(stagedRunId);
 	}
 
 	@Override
