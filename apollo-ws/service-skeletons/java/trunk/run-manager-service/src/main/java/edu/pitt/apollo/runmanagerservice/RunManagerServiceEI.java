@@ -13,19 +13,15 @@ public interface RunManagerServiceEI {
 
     public SyntheticPopulationGenerationResult runSyntheticPopulationGeneration(RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage);
 
-    public RunResult runSimulation(BigInteger runIdentification, Authentication authentication);
-
     public RunResult addSimulation(RunSimulationMessage runSimulationMessage);
-
-    public RunResult addSimulations(RunSimulationsMessage runSimulationsMessage);
-
-    public RunResult runSimulations(BigInteger batchRunIdentificiation, Authentication authentication);
-
+    public RunResult runSimulation(BigInteger runIdentification, Authentication authentication);
     public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest);
 
+    public RunResult addSimulations(RunSimulationsMessage runSimulationsMessage);
+    public RunResult runSimulations(BigInteger batchRunIdentificiation, Authentication authentication);
     public TerminteRunResult terminateRuns(TerminateRunRequest terminateRunRequest);
 
     public RunResult runVisualization(BigInteger runIdentification, Authentication authentication);
-
     public RunResult addVisualization(RunVisualizationMessage runVisualizationMessage);
+    public TerminateRunRequest terminateVisualization(TerminateRunRequest terminateRunRequest);
 }

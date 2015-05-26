@@ -2,6 +2,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -16,7 +17,7 @@ import java.math.BigInteger;
  */
 public class RunMethodForSimulation extends AbstractRunMethod {
 
-	public RunMethodForSimulation(BigInteger runId, BigInteger associatedSimulationGroupId, Object message) {
+	public RunMethodForSimulation(BigInteger runId, BigInteger associatedSimulationGroupId, Object message) throws JsonUtilsException, DataServiceException {
 		super(runId, associatedSimulationGroupId);
 	}
 
@@ -30,16 +31,15 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
 		RunResult runResult = new RunResult();
 		runResult.setRunId(runId);
-		runResult.setMethodCallStatus(getMethodCallStatusToReturn());
+		runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
 		return runResult;
 	}
 
 	@Override
-	protected MethodCallStatus getMethodCallStatusToReturn() {
+	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {
 		MethodCallStatus status = new MethodCallStatus();
 		status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
 		status.setMessage("The run request has been sent to the simulator");
 		return status;
 	}
-
 }

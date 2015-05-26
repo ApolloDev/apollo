@@ -75,14 +75,12 @@ public class StageMethod {
 							break;
 					}
 				} catch (InterruptedException ex) {
-					// don't care
+					// it's okay if the sleep timer is interrupted
 				}
 			}
-
 			// run is now translated
 			return getRunResultAndSimulationGroupId(MessageUtils.createRunResult(
 					runId, statusEnum, "Apollo Broker is handling the run request."), simulationGroupId);
-
 		} catch (UnrecognizedMessageTypeException e) {
 			return getRunResultAndSimulationGroupId(MessageUtils.createRunResult(
 					ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
