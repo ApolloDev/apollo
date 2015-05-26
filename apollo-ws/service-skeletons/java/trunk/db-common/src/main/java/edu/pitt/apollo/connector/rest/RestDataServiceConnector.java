@@ -7,6 +7,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -18,7 +19,11 @@ import java.util.List;
  *
  * @author nem41
  */
-public class RestDataServiceConnector implements DataServiceConnector {
+public class RestDataServiceConnector extends DataServiceConnector {
+
+	public RestDataServiceConnector(String url) {
+		super(url);
+	}
 
 	@Override
 	public boolean isRunBatch(BigInteger runId) {
@@ -166,12 +171,27 @@ public class RestDataServiceConnector implements DataServiceConnector {
 	}
 
 	@Override
-	public String getURLForURLId(BigInteger urlId) {
+	public String getURLForSoftwareId(SoftwareIdentification softwareId) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public RunResult getOutputFilesURLs(BigInteger runId) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public RunResult getOutputFilesURLAsZip(BigInteger runId) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public RunResult getAllOutputFilesURLAsZip(BigInteger runId) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 	

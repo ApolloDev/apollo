@@ -97,6 +97,14 @@ public abstract class AbstractRunMethod implements RunMethod {
 			return returnObj;
 		}
 		
+		status = dataServiceDao.getStatusOfRun(runId);
+		if (!status.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+			status.setStatus(MethodCallStatusEnum.FAILED);
+			status.setMessage("The run has not been translated. The run must be translated before being sent to the simulator.");
+			returnObj.setStatus(status);
+			return returnObj;
+		}
+		
 		RunApolloServiceThread runApolloServiceThread = RunApolloServiceThreadFactory
 				.getRunApolloServiceThread(runMessage,
 						runId, runResultAndSimulationGroupId.getSimulationGroupId());
