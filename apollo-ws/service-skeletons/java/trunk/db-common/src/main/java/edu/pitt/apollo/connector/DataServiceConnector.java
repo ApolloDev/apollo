@@ -9,6 +9,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -17,70 +18,80 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 17, 2013 Time: 4:35:10 PM Class: DbUtils IDE: NetBeans 6.9.1
  */
-public interface DataServiceConnector {
+public abstract class DataServiceConnector {
 
-	public boolean isRunBatch(BigInteger runId);
-
-	public BigInteger getSimulationGroupIdForRun(BigInteger runId);
+	protected final String serviceUrl;
 	
-
-	public List<BigInteger> getRunIdsForBatch(BigInteger batchRunId);
-
-	public RunSimulationMessage getRunSimulationMessageForRun(BigInteger runId);
-
-	public GetOutputFilesURLsMessage getGetOutputFilesURLsMessageForRun(BigInteger runId);
-
-	public GetOutputFilesURLAsZipMessage getGetOutputFilesURLAsZipMessageForRun(BigInteger runId);
-
-	public GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(BigInteger runId);
-
-	public boolean authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware);
-
-	public int getRunKey(RunSimulationMessage runSimulationMessage);
-
-	public boolean authenticateUser(Authentication authentication);
-
-	public int addTextDataContent(String content);
-
-	public int associateContentWithRunId(BigInteger runKey, int dataContentKey, int runDataDescriptionId);
-
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId);
-
-	public int getSoftwareIdentificationKeyForRun(BigInteger runId);
-
-	public BigInteger[] addDataServiceRun(GetAllOutputFilesURLAsZipMessage message);
-
-	public BigInteger[] addDataServiceRun(GetOutputFilesURLsMessage message);
-
-	public BigInteger[] addDataServiceRun(GetOutputFilesURLAsZipMessage message);
-
-	public BigInteger[] addSimulationRun(RunSimulationMessage runMessage, BigInteger memberOfSimulationGroupIdOrNull);
-
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum, String message);
-
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification);
-
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId);
-
-	public MethodCallStatus getStatusOfLastServiceToBeCalledForRun(BigInteger runId);
-
-	public BigInteger getNewSimulationGroupId();
-
-	public void addRunIdsToSimulationGroup(BigInteger simulationGroupId, List<BigInteger> runIds);
-
-	public BigInteger[] addVisualizationRun(RunVisualizationMessage runVisualizationMessage);
+	public DataServiceConnector(String url) {
+		this.serviceUrl = url;
+	}
 	
-	public void removeRunData(BigInteger runId);
+	public abstract boolean isRunBatch(BigInteger runId);
+
+	public abstract BigInteger getSimulationGroupIdForRun(BigInteger runId);
+
+	public abstract List<BigInteger> getRunIdsForBatch(BigInteger batchRunId);
+
+	public abstract RunSimulationMessage getRunSimulationMessageForRun(BigInteger runId);
+
+	public abstract GetOutputFilesURLsMessage getGetOutputFilesURLsMessageForRun(BigInteger runId);
+
+	public abstract GetOutputFilesURLAsZipMessage getGetOutputFilesURLAsZipMessageForRun(BigInteger runId);
+
+	public abstract GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(BigInteger runId);
+
+	public abstract boolean authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware);
+
+	public abstract int getRunKey(RunSimulationMessage runSimulationMessage);
+
+	public abstract boolean authenticateUser(Authentication authentication);
+
+	public abstract int addTextDataContent(String content);
+
+	public abstract int associateContentWithRunId(BigInteger runKey, int dataContentKey, int runDataDescriptionId);
+
+	public abstract SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId);
+
+	public abstract int getSoftwareIdentificationKeyForRun(BigInteger runId);
+
+	public abstract BigInteger[] addDataServiceRun(GetAllOutputFilesURLAsZipMessage message);
+
+	public abstract BigInteger[] addDataServiceRun(GetOutputFilesURLsMessage message);
+
+	public abstract BigInteger[] addDataServiceRun(GetOutputFilesURLAsZipMessage message);
+
+	public abstract BigInteger[] addSimulationRun(RunSimulationMessage runMessage, BigInteger memberOfSimulationGroupIdOrNull);
+
+	public abstract void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum, String message);
+
+	public abstract int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification);
+
+	public abstract SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId);
+
+	public abstract MethodCallStatus getStatusOfLastServiceToBeCalledForRun(BigInteger runId);
+
+	public abstract BigInteger getNewSimulationGroupId();
+
+	public abstract void addRunIdsToSimulationGroup(BigInteger simulationGroupId, List<BigInteger> runIds);
+
+	public abstract BigInteger[] addVisualizationRun(RunVisualizationMessage runVisualizationMessage);
 	
-	public MethodCallStatus getRunStatus(BigInteger runId);
+	public abstract void removeRunData(BigInteger runId);
+	
+	public abstract MethodCallStatus getRunStatus(BigInteger runId);
 
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
-    public HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId);
+    public abstract HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId);
 
-    public HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId);
+    public abstract HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId);
 
-    public String getFileContentForFileId(BigInteger fileId);
+    public abstract String getFileContentForFileId(BigInteger fileId);
 
-    public String getURLForURLId(BigInteger urlId);
+    public abstract String getURLForSoftwareId(SoftwareIdentification softwareId);
 
+	public abstract RunResult getOutputFilesURLs(BigInteger runId);
+	
+	public abstract RunResult getOutputFilesURLAsZip(BigInteger runId);
+	
+	public abstract RunResult getAllOutputFilesURLAsZip(BigInteger runId);
 }
