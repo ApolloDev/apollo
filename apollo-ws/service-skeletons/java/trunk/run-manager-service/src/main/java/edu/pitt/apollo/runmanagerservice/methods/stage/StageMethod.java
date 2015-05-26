@@ -33,7 +33,6 @@ public class StageMethod {
 	public RunResultAndSimulationGroupId stage() {
 
 		try {
-
 			dataServiceDao = DataServiceAccessorFactory.getDataServiceAccessor(message);
 
 			BigInteger[] runIdSimulationGroupId = dataServiceDao.insertRunIntoDatabase(associatedSimulationGroup);
@@ -47,7 +46,6 @@ public class StageMethod {
 			while (!statusEnum.equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE)) {
 				try {
 					switch (statusEnum) {
-
 						case FAILED:
 							return getRunResultAndSimulationGroupId(MessageUtils.createRunResult(runId,
 									MethodCallStatusEnum.FAILED, runStatus.getMessage()), null);
