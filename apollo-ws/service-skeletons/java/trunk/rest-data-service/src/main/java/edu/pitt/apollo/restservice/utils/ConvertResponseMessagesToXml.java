@@ -224,4 +224,23 @@ public class ConvertResponseMessagesToXml {
         }
         return xml;
     }
+
+    public static String convertGetRunIdsAssociatedWithSimulationGroupRestMessage(SimulationGroupRestMessage returnMessage) {
+        String xml = "";
+        try{
+            JAXBContext context = JAXBContext.newInstance(SimulationGroupRestMessage.class);
+            Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(new JAXBElement(
+                    new QName("local", "SimulationGroupRestMessage", "tns"), SimulationGroupRestMessage.class, returnMessage), stringWriter);
+
+            xml = stringWriter.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xml;
+    }
+
+
 }

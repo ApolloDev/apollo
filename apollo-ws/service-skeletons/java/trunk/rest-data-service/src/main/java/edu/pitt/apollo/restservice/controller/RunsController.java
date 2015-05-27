@@ -8,6 +8,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.RestDataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
+import edu.pitt.apollo.dataservice.methods.run.GetSimulationGroupIdsForRunIdMethod;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
 import edu.pitt.apollo.restservice.rest.responsemessage.*;
@@ -18,6 +19,7 @@ import edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage;
 import edu.pitt.apollo.restservice.utils.CodeResolver;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
 import edu.pitt.apollo.restservice.utils.ParseXmlToAndFromObject;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunStatus;
@@ -403,22 +405,25 @@ public class RunsController {
             @ApiResponse(code = 200, message = "")
     })
     @RequestMapping(value="/run/{runId}/rungroup", method= RequestMethod.GET, headers="Accept=application/xml")
-    public @ResponseBody String getRunIdsInRunGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                                    @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
+    public @ResponseBody String getRunIdsInSimulationGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                           @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         RestDataServiceImpl impl = new RestDataServiceImpl();
-        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        SimulationGroupRestMessage returnMessage = new SimulationGroupRestMessage();
 
-        List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(groupIds);
+        GetRunIdsAssociatedWithSimulationGroupMessage message = new GetRunIdsAssociatedWithSimulationGroupMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        GetRunIdsAssociatedWithSimulationGroupResult result = impl.getRunIdsAssociatedToSimulationGroupsForRunId(runId,authentication);
 
-        MethodCallStatus result = impl.addSimulationGroupIdsForRunId(groupIdsAsList, runId);
-
-        if(result.getStatus()==MethodCallStatusEnum.FAILED){
-            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildSimulationGroupRestMessage.buildFailedSimulationGroupRestMessage(result.getMethodCallStatus().getMessage());
         }
         else{
-            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+            returnMessage = BuildSimulationGroupRestMessage.buildSuccessfulSimulationGroupRestMessage(result);
         }
-        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+        return ConvertResponseMessagesToXml.convertGetRunIdsAssociatedWithSimulationGroupRestMessage(returnMessage);
 
     }
 
@@ -429,13 +434,18 @@ public class RunsController {
     })
     @RequestMapping(value="/run/{runId}/rungroup", method= RequestMethod.POST, headers="Accept=application/xml")
     public @ResponseBody String setRunIdsInGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                                    @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
+                                                    @ApiParam(value = "List of run IDs to associate.", required = true) @RequestParam("runIdsToAssociate") String runIdsToAssociate,
+                                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         RestDataServiceImpl impl = new RestDataServiceImpl();
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
 
-        List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(groupIds);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(runIdsToAssociate);
 
-        MethodCallStatus result = impl.addSimulationGroupIdsForRunId(groupIdsAsList,runId);
+        MethodCallStatus result = impl.addRundIdsToSimulationGroupForRunId(groupIdsAsList, runId,authentication);
 
         if(result.getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
