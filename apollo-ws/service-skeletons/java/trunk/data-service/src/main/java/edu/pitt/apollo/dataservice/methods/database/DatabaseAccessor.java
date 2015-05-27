@@ -131,4 +131,8 @@ public abstract class DatabaseAccessor implements DataServiceInterface {
 
     }
 
+    public void setRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, List<BigInteger> runIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
+
+    }
+
 }

@@ -397,13 +397,38 @@ public class RunsController {
     }
 
     /*--Methods to get and post rungroup data--*/
+    @GET
+    @ApiOperation(value = "Get simulation group IDs for run.", notes = "Returns the simulation group IDs for run using a comma separated input.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/rungroup", method= RequestMethod.GET, headers="Accept=application/xml")
+    public @ResponseBody String getRunIdsInRunGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                    @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+
+        List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(groupIds);
+
+        MethodCallStatus result = impl.addSimulationGroupIdsForRunId(groupIdsAsList, runId);
+
+        if(result.getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
+        }
+        else{
+            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
     @POST
     @ApiOperation(value = "Set simulation group IDs for run.", notes = "Sets the simulation group IDs for run using a comma separated input.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
     @RequestMapping(value="/run/{runId}/rungroup", method= RequestMethod.POST, headers="Accept=application/xml")
-    public @ResponseBody String setGroupIdsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+    public @ResponseBody String setRunIdsInGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                                                     @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
         RestDataServiceImpl impl = new RestDataServiceImpl();
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
