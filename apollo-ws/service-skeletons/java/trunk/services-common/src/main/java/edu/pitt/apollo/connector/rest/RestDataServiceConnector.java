@@ -2,11 +2,8 @@ package edu.pitt.apollo.connector.rest;
 
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.*;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -26,10 +23,9 @@ public class RestDataServiceConnector extends DataServiceConnector {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-
 	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
+
 	}
 
 	@Override

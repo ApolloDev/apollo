@@ -19,24 +19,25 @@ public class GetRunInformationMethod {
         GetRunInformationResult result = new GetRunInformationResult();
         MethodCallStatus mcs = new MethodCallStatus();
 
-        try(ApolloDbUtils dbUtils = new ApolloDbUtils())
-        {
-            List<Integer> listOfGroupIds =  dbUtils.getSimulationGroupIdsForRun(message.getRunId().intValue());
-            for(Integer id : listOfGroupIds)
-            {
-                result.getAssociatedGroupIds().add(BigInteger.valueOf(id));
-            }
-
-            SoftwareIdentification si = dbUtils.getSoftwareIdentificationForRun(message.getRunId());
-            result.setServiceType(si.getSoftwareType().value());
-            mcs.setStatus(MethodCallStatusEnum.COMPLETED);
-            result.setMethodCallStatus(mcs);
-        } catch (ApolloDatabaseException e) {
-            e.printStackTrace();
-            mcs.setStatus(MethodCallStatusEnum.FAILED);
-            mcs.setMessage(e.getMessage());
-            result.setMethodCallStatus(mcs);
-        }
-        return result;
+//        try(ApolloDbUtils dbUtils = new ApolloDbUtils())
+//        {
+//            List<Integer> listOfGroupIds =  dbUtils.getSimulationGroupIdsForRun(message.getRunId().intValue());
+//            for(Integer id : listOfGroupIds)
+//            {
+//                result.getAssociatedGroupIds().add(BigInteger.valueOf(id));
+//            }
+//
+//            SoftwareIdentification si = dbUtils.getSoftwareIdentificationForRun(message.getRunId());
+//            result.setServiceType(si.getSoftwareType().value());
+//            mcs.setStatus(MethodCallStatusEnum.COMPLETED);
+//            result.setMethodCallStatus(mcs);
+//        } catch (ApolloDatabaseException e) {
+//            e.printStackTrace();
+//            mcs.setStatus(MethodCallStatusEnum.FAILED);
+//            mcs.setMessage(e.getMessage());
+//            result.setMethodCallStatus(mcs);
+//        }
+//        return result;
+        return null;
     }
 }

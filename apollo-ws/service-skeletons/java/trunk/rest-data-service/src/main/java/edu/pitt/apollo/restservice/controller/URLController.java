@@ -12,12 +12,10 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetURLContentResult;
 import edu.pitt.apollo.restservice.rest.responsemessage.GetContentRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildGetContentRestMessage;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -40,11 +38,17 @@ public class URLController {
     @RequestMapping(value = "/url/{urlId}", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getURLOfRunUsingRunAndFileId(@ApiParam(value = "URL ID.", required = true) @PathVariable("urlId") BigInteger urlId) {
+    String getURLOfRunUsingRunAndFileId(@ApiParam(value = "URL ID.", required = true) @PathVariable("urlId") BigInteger urlId,
+                                        @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                        @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         GetContentRestMessage returnMessage = new GetContentRestMessage();
         DataServiceImpl impl = new DataServiceImpl();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         GetURLContentMessage message = new GetURLContentMessage();
         message.setUrlId(urlId);
+        message.setAuthentication(authentication);
         GetURLContentResult result = impl.getURLContent(message);
 
         if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED){

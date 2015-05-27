@@ -5,10 +5,14 @@ import edu.pitt.apollo.data_service_types.v3_0_0.AssociateFileWithRunIdMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.AssociateFileWithRunIdResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.AssociateURLWithRunIdMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.AssociateURLWithRunIdResult;
+import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessor;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -22,12 +26,11 @@ public class AssociateURLWithRunIdMethod {
 
         try(ApolloDbUtils dbUtils = new ApolloDbUtils())
         {
-            int contentId = dbUtils.addTextDataContent(message.getFileTextContent());
-            int sourceSoftwareId = dbUtils.getSoftwareIdentificationKeyFromNameAndVersion(message.getSourceSoftwareName(), message.getSourceSoftwareVersion());
-            int destinationSoftwareId = dbUtils.getSoftwareIdentificationKeyFromNameAndVersion(message.getDestinationSoftwareName(), message.getDestinationSoftwareVersion());
-            DbContentDataType dataTypeEnum = DbContentDataType.valueOf(message.getContentType().toString());
-            int runDataDescriptionId = dbUtils.getRunDataDescriptionId(DbContentDataFormatEnum.TEXT,message.getContentLabel(),dataTypeEnum,sourceSoftwareId,destinationSoftwareId);
-            dbUtils.associateContentWithRunId(message.getRunId(),contentId,runDataDescriptionId);
+            DatabaseAccessor dbAccessor = new DatabaseAccessor(message.getAuthentication(),dbUtils);
+            ContentDataTypeEnum dataTypeEnum = ContentDataTypeEnum.valueOf(message.getContentType().toString());
+            dbAccessor.associateContentWithRunIdWithSoftareNameAndVersionParameters(message.getRunId(), message.getFileTextContent(), message.getSourceSoftwareName(),
+                    message.getSourceSoftwareVersion(), message.getDestinationSoftwareName(), message.getDestinationSoftwareVersion(),
+                    message.getContentLabel(), ContentDataFormatEnum.URL, dataTypeEnum, message.getAuthentication());
             mcs.setStatus(MethodCallStatusEnum.COMPLETED);
             result.setMethodCallStatus(mcs);
         } catch (ApolloDatabaseException e) {
@@ -35,10 +38,10 @@ public class AssociateURLWithRunIdMethod {
             mcs.setStatus(MethodCallStatusEnum.FAILED);
             mcs.setMessage(e.getMessage());
             result.setMethodCallStatus(mcs);
-        } catch (Md5UtilsException ex) {
-            ex.printStackTrace();
+        } catch (DataServiceException e) {
+            e.printStackTrace();
             mcs.setStatus(MethodCallStatusEnum.FAILED);
-            mcs.setMessage(ex.getMessage());
+            mcs.setMessage(e.getMessage());
             result.setMethodCallStatus(mcs);
         }
         return result;

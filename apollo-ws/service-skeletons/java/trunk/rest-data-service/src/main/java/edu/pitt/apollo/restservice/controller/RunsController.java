@@ -231,11 +231,18 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
         DataServiceImpl impl = new DataServiceImpl();
         ListFilesMessage message = new ListFilesMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         message.setRunId(runId);
+        message.setAuthentication(authentication);
+
         ListFilesResult result = impl.listFilesAssociatedToRun(message);
 
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
@@ -256,6 +263,8 @@ public class RunsController {
     public
     @ResponseBody
     String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                                   @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
@@ -270,6 +279,10 @@ public class RunsController {
             message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
             message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
             message.setRunId(runId);
+            Authentication authentication = new Authentication();
+            authentication.setRequesterId(username);
+            authentication.setRequesterPassword(password);
+            message.setAuthentication(authentication);
 
             AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
 
@@ -295,11 +308,17 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/urls", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
         DataServiceImpl impl = new DataServiceImpl();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         ListURLsMessage message = new ListURLsMessage();
         message.setRunId(runId);
+        message.setAuthentication(authentication);
         ListURLsResult result = impl.listURLsAssociatedToRun(message);
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
@@ -320,13 +339,15 @@ public class RunsController {
     public
     @ResponseBody
     String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                                  @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
 
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
         try {
             AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
-            AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
+            AssociateURLWithRunIdMessage message = new AssociateURLWithRunIdMessage();
             message.setContentLabel(messageBodyContent.getContentLabel());
             message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
             message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
@@ -335,8 +356,12 @@ public class RunsController {
             message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
             message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
             message.setRunId(runId);
+            Authentication authentication = new Authentication();
+            authentication.setRequesterId(username);
+            authentication.setRequesterPassword(password);
+            message.setAuthentication(authentication);
 
-            AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+            AssociateURLWithRunIdResult result = impl.associateURLWithRunId(message);
 
             if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
                 returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());

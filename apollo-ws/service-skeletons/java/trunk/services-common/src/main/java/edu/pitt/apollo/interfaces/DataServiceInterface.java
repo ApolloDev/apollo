@@ -1,14 +1,13 @@
 package edu.pitt.apollo.interfaces;
 
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+
+import edu.pitt.apollo.services_common.v3_0_0.*;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 17, 2013 Time: 4:35:10 PM Class: DbUtils IDE: NetBeans 6.9.1
@@ -18,7 +17,7 @@ public interface DataServiceInterface {
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
 	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
-			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
+			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 

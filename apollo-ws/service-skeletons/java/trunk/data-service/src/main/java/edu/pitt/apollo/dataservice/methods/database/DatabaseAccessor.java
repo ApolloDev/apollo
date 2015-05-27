@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -142,6 +143,26 @@ public class DatabaseAccessor implements DataServiceInterface {
         }
 
     }
+
+    @Override
+    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel,
+                                          ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException{
+
+
+                try {
+                    int contentId = dbUtils.addTextDataContent(content);
+            int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(sourceSoftware);
+            int destinationSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(destinationSoftware);
+            int runDataDescriptionId = dbUtils.getRunDataDescriptionId(contentDataFormat,contentLabel,contentDataType,sourceSoftwareIdKey,destinationSoftwareIdKey);
+            dbUtils.associateContentWithRunId(runId,contentId,runDataDescriptionId);
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        } catch (Md5UtilsException e) {
+                    throw new DataServiceException(e.getMessage());
+                }
+
+    }
+
     public void addRunIdsToSimulationGroupWithRunId(BigInteger runId, List<BigInteger> listOfRunIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
         try {
             authenticateUser(authentication);
@@ -155,92 +176,128 @@ public class DatabaseAccessor implements DataServiceInterface {
         }
     }
 
-    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
-                                          SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException{
+    public void associateContentWithRunIdWithSoftareNameAndVersionParameters(BigInteger runId, String content, String sourceSoftwareName, String sourceSoftwareVersion,
+                                                                             String destinationSoftwareName, String destinationSoftwareVersion, String contentLabel,
+                                                                            ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException{
 
+
+        try {
+            SoftwareIdentification sourceSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(sourceSoftwareName, sourceSoftwareVersion);
+            SoftwareIdentification destinationSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(destinationSoftwareName, destinationSoftwareVersion);
+            associateContentWithRunId(runId, content, sourceSoftwareIdentification, destinationSoftwareIdentification, contentLabel, contentDataFormatEnum, contentDataType, authentication);
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }catch (DataServiceException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
-    @Override
+    
     public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
     }
 
-    @Override
+    
     public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
     }
 
-    @Override
+    
     public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
         return 0;
     }
 
-    @Override
+    
     public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
     }
 
-    @Override
+    
     public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
     }
 
-    @Override
+    
     public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            HashMap<BigInteger,String> fileIdsToFileNameMap =  dbUtils.getListOfFilesForRunId(runId);
+            return fileIdsToFileNameMap;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
-    @Override
+    
     public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            HashMap<BigInteger,String> urlIdsToUrlNameMap =  dbUtils.getListOfURLsForRunId(runId);
+            return urlIdsToUrlNameMap;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
-    @Override
+    
     public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            String fileContent =  dbUtils.getFileContentForFileId(fileId);
+            return fileContent;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
+
     }
 
-    @Override
+    
     public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            String urlContent =  dbUtils.getFileContentForFileId(urlId);
+            return urlContent;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
-    @Override
+    
     public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
         return null;
     }
 
-    @Override
+    
     public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }
 
-    @Override
+    
     public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }

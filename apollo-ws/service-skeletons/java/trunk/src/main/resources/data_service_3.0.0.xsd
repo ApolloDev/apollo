@@ -315,6 +315,7 @@
 	<complexType name="ListFilesMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="ListFilesResult">
@@ -327,6 +328,7 @@
 	<complexType name="ListURLsMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="ListURLsResult">
@@ -339,11 +341,13 @@
 	<complexType name="GetFileContentMessage">
 		<sequence>
 			<element name="fileId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="GetFileContentResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 			<element name="fileContents" type="token" maxOccurs="1" minOccurs="0">
 			</element>
 		</sequence>
@@ -351,6 +355,7 @@
 	<complexType name="GetURLContentMessage">
 		<sequence>
 			<element name="urlId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="GetURLContentResult">
@@ -371,6 +376,7 @@
 			<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="contentType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="AssociateFileWithRunIdResult">
@@ -390,6 +396,7 @@
 				<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
 				<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
 				<element name="contentType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
+				<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 			</sequence>
 		</sequence>
 	</complexType>
@@ -404,6 +411,7 @@
 		<sequence>
 			<sequence>
 				<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+				<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 			</sequence>
 		</sequence>
 	</complexType>
