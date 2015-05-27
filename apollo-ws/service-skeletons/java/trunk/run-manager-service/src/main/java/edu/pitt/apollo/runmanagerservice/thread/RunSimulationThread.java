@@ -3,8 +3,12 @@ package edu.pitt.apollo.runmanagerservice.thread;
 import java.math.BigInteger;
 import edu.pitt.apollo.connector.SimulatorServiceConnector;
 import edu.pitt.apollo.connector.rest.RestSimulatorServiceConnector;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessorForRunningASingleSimulation;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.SimulatorServiceAccessor;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
@@ -16,8 +20,8 @@ public class RunSimulationThread extends RunApolloServiceThread {
 
 	private final RunSimulationMessage message;
 
-	public RunSimulationThread(RunSimulationMessage message, BigInteger runId) {
-		super(runId);
+	public RunSimulationThread(RunSimulationMessage message, BigInteger runId, Authentication authentication) {
+		super(runId, authentication);
 		this.message = message;
 	}
 
@@ -28,11 +32,20 @@ public class RunSimulationThread extends RunApolloServiceThread {
 		
 		// the simulation
 		SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
-		String url = dataServiceAccessor.getURLForSoftwareId(simulatorIdentification);
-		SimulatorServiceConnector simulatorServiceConnector = new RestSimulatorServiceConnector(url);
+		try {
+			String url = dataServiceAccessor.getURLForSoftwareIdentification(simulatorIdentification, authentication);
+		} catch (DataServiceException e) {
+			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId);
+		}
+		SimulatorServiceAccessor simulatorServiceAccessor = new SimulatorServiceAccessor();
+		//SimulatorServiceConnector simulatorServiceConnector = new RestSimulatorServiceConnector(url);
 
-		RunResult result = simulatorServiceConnector.run(runId);
+		RunResult result = simulatorServiceAccessor.run(runId);
 
-		dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
+		try {
+			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, simulatorIdentification, authentication);
+		} catch (DataServiceException e) {
+			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId);
+		}
 	}
 }

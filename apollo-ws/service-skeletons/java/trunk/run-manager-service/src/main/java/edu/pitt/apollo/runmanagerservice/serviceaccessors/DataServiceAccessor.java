@@ -1,6 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.connector.rest.RestDataServiceConnector;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -8,6 +8,7 @@ import edu.pitt.apollo.services_common.v3_0_0.*;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jdl50 on 5/21/15.
@@ -19,6 +20,17 @@ public class DataServiceAccessor implements DataServiceInterface {
 	protected DataServiceConnector connector = new RestDataServiceConnector(DATA_SERVICE_URL);
 
 
+	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException {
+		Map<BigInteger, String> files = this.getListOfFilesForRunId(runId, authentication);
+		// this is inadequate!! need to filter by source and dest software id too!
+		for (BigInteger fileId : files.keySet()) {
+			String filename = files.get(fileId);
+			if (filename.equals(runMessageFilename)) {
+				return this.getFileContentForFileId(fileId, authentication);
+			}
+		}
+		throw new DataServiceException("Couldn't find "+runMessageFilename+" in database for run " + runId);
+	}
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		return null;

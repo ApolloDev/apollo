@@ -2,8 +2,9 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
@@ -17,8 +18,8 @@ import java.math.BigInteger;
  */
 public class RunMethodForSimulation extends AbstractRunMethod {
 
-	public RunMethodForSimulation(BigInteger stagedRunId) throws JsonUtilsException, DataServiceException {
-		super(stagedRunId);
+	public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
+		super(stagedRunId, authentication, "run_simulation_message.json");
 	}
 
 	@Override

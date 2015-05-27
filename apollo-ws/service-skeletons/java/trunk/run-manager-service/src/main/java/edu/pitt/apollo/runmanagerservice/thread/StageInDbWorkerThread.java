@@ -1,15 +1,14 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
-import edu.pitt.apollo.runmanagerservice.methods.run.RunMethod;
-import edu.pitt.apollo.runmanagerservice.methods.run.RunMethodForSimulation;
+import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
+import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -71,7 +70,7 @@ public class StageInDbWorkerThread implements Runnable {
         }
     }
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef) throws ApolloDatabaseException {
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef) throws DataServiceException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -196,14 +195,12 @@ public class StageInDbWorkerThread implements Runnable {
                             );
                     return;
                 }
-                RunMethod runMethod = new RunMethodForSimulation();
-                RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stage();
+                StageMethod stageMethod = new StageMethod(currentRunSimulationMessage, simulationGroupId);
+                RunResultAndSimulationGroupId runResultandSimulationGroupId = stageMethod.stage();
                 RunResult runResult = runResultandSimulationGroupId.getRunResult();
 
                 String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
                 batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-
-
 
                 if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
                     errorRef.value = true;

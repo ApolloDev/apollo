@@ -4,9 +4,10 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -65,8 +66,8 @@ public class RunMethodForDataService extends AbstractRunMethod {
 
 	private List<URLForFileAndRunId> urlsForFilesAndRunIds;
 
-	public RunMethodForDataService(BigInteger runId) throws JsonUtilsException, DataServiceException {
-		super(runId);
+	public RunMethodForDataService(BigInteger runId, Authentication authentication) throws JsonUtilsException, DataServiceException {
+		super(runId, authentication, "run_dataservice_message.json");
 	}
 
 	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataServiceException {
@@ -76,7 +77,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 			BigInteger run = runIdAndFiles.getRunId();
 			List<String> files = runIdAndFiles.getFiles();
 
-			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithRun(run);
+			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithRun(run, authentication);
 			for (BigInteger singleRun : runIdsAssociatedWithRun) {
 				for (String file : files) {
 					String urlForFile = BASE_URL + runId + "/" + FILE_PREFIX + file;
