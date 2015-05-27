@@ -1,7 +1,7 @@
 package edu.pitt.apollo.dataservice.methods.database;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
+import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
