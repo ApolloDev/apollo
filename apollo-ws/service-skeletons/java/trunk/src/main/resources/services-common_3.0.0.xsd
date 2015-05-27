@@ -22,6 +22,18 @@
 			<enumeration value="broker" />
 		</restriction>
 	</simpleType>
+        
+	<simpleType name="ContentDataTypeEnum">
+		<restriction base="string">
+			<enumeration value="SIMULATOR_LOG_FILE" />
+			<enumeration value="CONFIGURATION_FILE" />
+			<enumeration value="IMAGE" />
+			<enumeration value="MOVIE" />
+			<enumeration value="RUN_SIMULATION_MESSAGE" />
+			<enumeration value="RUN_VISUALIZATION_MESSAGE" />
+			<enumeration value="RUN_DATA_SERVICE_MESSAGE" />
+		</restriction>
+	</simpleType>
 
 	<complexType name="SoftwareLicenseIdentification">
 		<sequence>
