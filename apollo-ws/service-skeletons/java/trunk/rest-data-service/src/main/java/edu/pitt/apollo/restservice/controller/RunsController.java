@@ -185,7 +185,7 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/status", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getOutputFilesURLs(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+    String updateStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                               @ApiParam(value="Method call status enum", required=true) @RequestParam("methodCallStatusEnum") MethodCallStatusEnum statusToUpdateTo,
                               @ApiParam(value="Status message", required=true) @RequestParam("statusMessage") String statusMessage) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
