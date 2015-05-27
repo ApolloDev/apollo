@@ -30,6 +30,6 @@ public abstract class VisualizerServiceConnector {
 		this.serviceUrl = url;
 	}
 	
-	public abstract RunResult run(BigInteger runId);
+
 	
 }

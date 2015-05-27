@@ -1,13 +1,12 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
 
@@ -21,11 +20,13 @@ public abstract class AbstractRunMethod implements RunMethod {
     protected final BigInteger runId;
     protected Object runMessage;
     protected DataServiceAccessor dataServiceDao;
+    protected Authentication authentication;
 
 
-    public AbstractRunMethod(BigInteger runId) throws DataServiceException, JsonUtilsException {
+    public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException, JsonUtilsException {
         this.runId = runId;
-        runMessage = convertRunMessageJson(dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId));
+        this.authentication = authentication;
+        runMessage = convertRunMessageJson(dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename));
     }
 
     protected abstract Object convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException;
@@ -86,10 +87,18 @@ public abstract class AbstractRunMethod implements RunMethod {
             return returnObj;
         }
 
-        status = dataServiceDao.getStatusOfRun(runId);
-        if (!status.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+        try {
+            status = dataServiceDao.getRunStatus(runId, authentication);
+
+            if (!status.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+                status.setStatus(MethodCallStatusEnum.FAILED);
+                status.setMessage("The run has not been translated. The run must be translated before being sent to the simulator.");
+                returnObj.setStatus(status);
+                return returnObj;
+            }
+        } catch (DataServiceException e) {
             status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage("The run has not been translated. The run must be translated before being sent to the simulator.");
+            status.setMessage("Error getting run status for runId " + runId + ", error was:" + e.getMessage());
             returnObj.setStatus(status);
             return returnObj;
         }
@@ -97,9 +106,9 @@ public abstract class AbstractRunMethod implements RunMethod {
         try {
             RunApolloServiceThread runApolloServiceThread = RunApolloServiceThreadFactory
                     .getRunApolloServiceThread(runMessage,
-                            runId);
+                            runId, authentication);
             runApolloServiceThread.start();
-        } catch (UnrecognizedMessageTypeException | ApolloDatabaseException e) {
+        } catch (UnrecognizedMessageTypeException e) {
             status.setStatus(MethodCallStatusEnum.FAILED);
             status.setMessage(e.getClass().toString() + ": Error creating RunApolloServiceThread.  Error was: " + e.getMessage());
             returnObj.setStatus(status);

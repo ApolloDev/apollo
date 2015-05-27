@@ -10,10 +10,7 @@ import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.cxf.endpoint.Client;
@@ -63,8 +60,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     Exception error = null;
     BigInteger simulationGroupId;
     private URL configFileUrl;
-    public RunSimulationsThread(RunSimulationsMessage message, BigInteger runId) {
-        super(runId, message.getAuthentication());
+    public RunSimulationsThread(RunSimulationsMessage message, BigInteger runId, Authentication authentication) {
+        super(runId, authentication);
         this.message = message;
         try {
             this.configFileUrl = new URL(message.getBatchConfigurationFile());
@@ -184,7 +181,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
                 while ((line = br.readLine()) != null) {
 
-                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, authentication, line, message, scenarioDate, stBuild, error, counter);
+                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, line, message, scenarioDate, stBuild, error, counter);
                     executor.execute(worker);
                     if (error.value) {
                         break;
@@ -241,10 +238,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     }
 
     private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) {
-        dataServiceAccessor.associateContentWithRunId(runId, sb.toString(), brokerServiceSoftwareIdentification, endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataTypeEnum.something, authentication);
-
-        // ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
-
+        try {
+            dataServiceAccessor.associateContentWithRunId(runId, sb.toString(), brokerServiceSoftwareIdentification, endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
+        } catch (DataServiceException e) {
+            ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
+        }
     }
 
     private void startSimulations() {

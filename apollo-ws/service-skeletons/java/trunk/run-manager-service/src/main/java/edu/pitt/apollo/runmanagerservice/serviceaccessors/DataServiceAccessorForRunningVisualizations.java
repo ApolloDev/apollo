@@ -1,6 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
@@ -16,8 +15,8 @@ public class DataServiceAccessorForRunningVisualizations extends DataServiceAcce
 		this.message = message;
 	}
 
-    @Override
-    public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws DataServiceException {
-        return connector.addVisualizationRun(message);
-    }
+//    @Override
+//    public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws DataServiceException {
+//        return null;  //WHERE is this? return connector.addVisualizationRun(message);
+//    }
 }
