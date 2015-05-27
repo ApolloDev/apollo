@@ -1,4 +1,4 @@
-package edu.pitt.apollo.connector;
+package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import java.math.BigInteger;
