@@ -1,78 +1,116 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
+import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.connector.rest.RestDataServiceConnector;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.*;
+
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by jdl50 on 5/21/15.
  */
-public abstract class DataServiceAccessor implements DataServiceAccessorInterface {
+public class DataServiceAccessor implements DataServiceInterface {
     
 	private static final String DATA_SERVICE_URL = "";
 	
 	protected DataServiceConnector connector = new RestDataServiceConnector(DATA_SERVICE_URL);
-	
-	@Override
-    public void removeAllDataAssociatedWithRunId(BigInteger runId) throws DataServiceException {
 
-    }
-
-    @Override
-    public List<BigInteger> getRunIdsAssociatedWithRun(BigInteger runId) throws DataServiceException {
-        return null;
-    }
-
-    @Override
-    public void addRunIdsToSimulationGroup(BigInteger simulationGroupId, List<BigInteger> runIds) throws DataServiceException {
-
-    }
-
-    @Override
-    public BigInteger getSimulationGroupIdForRun(BigInteger runId) throws DataServiceException {
-        return null;
-    }
 
 	@Override
-	public MethodCallStatus getStatusOfRun(BigInteger runId) {
-		return connector.getRunStatus(runId);
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
 	}
 
 	@Override
-	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws DataServiceException {
-		return null; // NEED TO IMPLEMENT
+	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
 	}
 
 	@Override
-	public String getURLForSoftwareId(SoftwareIdentification softwareId) {
-		return connector.getURLForSoftwareId(softwareId);
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
 	}
 
 	@Override
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification) {
-		return connector.updateLastServiceToBeCalledForRun(runId, softwareIdentification);
+	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
 	}
 
 	@Override
-	public RunResult getAllOutputFilesURLAsZip(BigInteger runId) {
-		return connector.getAllOutputFilesURLAsZip(runId);
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
 	}
 
 	@Override
-	public RunResult getOutputFilesURLAsZip(BigInteger runId) {
-		return connector.getOutputFilesURLAsZip(runId);
+	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return 0;
 	}
 
 	@Override
-	public RunResult getOutputFilesURLs(BigInteger runId) {
-		return connector.getOutputFilesURLs(runId);
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
 	}
-	
-	
-	
-	
+
+	@Override
+	public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
+
+	@Override
+	public void removeRunData(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
+
+	@Override
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
+
+	@Override
+	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return null;
+	}
+
+	@Override
+	public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
+
+	@Override
+	public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
+
+	@Override
+	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+
+	}
 }
