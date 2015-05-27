@@ -196,9 +196,7 @@ public class StageInDbWorkerThread implements Runnable {
                             );
                     return;
                 }
-                RunMethod runMethod = new RunMethodForSimulation(
-                        simulationGroupId,
-                        currentRunSimulationMessage);
+                RunMethod runMethod = new RunMethodForSimulation();
                 RunResultAndSimulationGroupId runResultandSimulationGroupId = runMethod.stage();
                 RunResult runResult = runResultandSimulationGroupId.getRunResult();
 

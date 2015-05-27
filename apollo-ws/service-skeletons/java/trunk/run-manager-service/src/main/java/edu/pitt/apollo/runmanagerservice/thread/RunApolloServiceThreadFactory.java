@@ -21,12 +21,12 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
  */
 public class RunApolloServiceThreadFactory {
 
-	public static RunApolloServiceThread getRunApolloServiceThread(Object message, BigInteger runId, BigInteger simulationGroupId) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
+	public static RunApolloServiceThread getRunApolloServiceThread(Object message, BigInteger runId) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
 
 		if (message instanceof RunSimulationMessage) {
 			return new RunSimulationThread((RunSimulationMessage) message, runId);
 		} else if (message instanceof RunSimulationsMessage) {
-			return new RunSimulationsThread((RunSimulationsMessage) message, runId, simulationGroupId);
+			return new RunSimulationsThread((RunSimulationsMessage) message, runId);
 		} else if (message instanceof RunVisualizationMessage) {
 			return new RunVisualizationThread((RunVisualizationMessage) message, runId);
 		} else if (message instanceof GetOutputFilesURLsMessage) {

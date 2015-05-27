@@ -47,11 +47,7 @@
             <artifactId>simulator-service-client</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>data-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>library-service-client</artifactId>

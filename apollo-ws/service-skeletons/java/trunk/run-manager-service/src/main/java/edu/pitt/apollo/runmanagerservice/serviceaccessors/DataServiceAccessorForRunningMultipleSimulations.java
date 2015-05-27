@@ -18,7 +18,7 @@ public class DataServiceAccessorForRunningMultipleSimulations extends DataServic
 	}
 	
 	@Override
-    public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws DataServiceException, Md5UtilsException {
+    public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws DataServiceException {
         return new BigInteger[0];
     }
 }

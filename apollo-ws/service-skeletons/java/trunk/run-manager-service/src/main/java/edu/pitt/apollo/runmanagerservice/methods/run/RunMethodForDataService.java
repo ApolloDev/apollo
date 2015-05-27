@@ -65,8 +65,8 @@ public class RunMethodForDataService extends AbstractRunMethod {
 
 	private List<URLForFileAndRunId> urlsForFilesAndRunIds;
 
-	public RunMethodForDataService(BigInteger runId) {
-		super(runId, NO_SIMULATION_GROUP_ID);
+	public RunMethodForDataService(BigInteger runId) throws JsonUtilsException, DataServiceException {
+		super(runId);
 	}
 
 	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataServiceException {
@@ -125,21 +125,21 @@ public class RunMethodForDataService extends AbstractRunMethod {
 				throw new RunManagerServiceException("There was an exception using the data service: " + ex.getMessage());
 			}
 			GetOutputFilesURLsResult filesResult = new GetOutputFilesURLsResult();
-			filesResult.setMethodCallStatus(getMethodCallStatusToReturn());
+			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
 			filesResult.setRequestIdentification(runId);
 			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
 			return filesResult;
 		} else if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
 			String zipURL = getZipFileURL(runId);
 			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
-			filesResult.setMethodCallStatus(getMethodCallStatusToReturn());
+			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
 			filesResult.setRequestIdentification(runId);
 			filesResult.setUrl(zipURL);
 			return filesResult;
 		} else if (runMessage instanceof GetAllOutputFilesURLAsZipMessage) {
 			String zipURL = getZipFileURL(runId);
 			GetAllOutputFilesURLAsZipResult filesResult = new GetAllOutputFilesURLAsZipResult();
-			filesResult.setMethodCallStatus(getMethodCallStatusToReturn());
+			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
 			filesResult.setRequestIdentification(runId);
 			filesResult.setUrl(zipURL);
 			return filesResult;
@@ -149,7 +149,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 	}
 
 	@Override
-	protected MethodCallStatus getMethodCallStatusToReturn() {
+	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {
 		MethodCallStatus status = new MethodCallStatus();
 		status.setStatus(MethodCallStatusEnum.CALLED_DATA_SERVICE);
 		status.setMessage("The run has been submitted to the data service");

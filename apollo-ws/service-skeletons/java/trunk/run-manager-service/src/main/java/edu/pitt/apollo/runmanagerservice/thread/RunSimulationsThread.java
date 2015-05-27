@@ -63,11 +63,9 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     BigInteger simulationGroupId;
     private URL configFileUrl;
 
-    public RunSimulationsThread(RunSimulationsMessage message, BigInteger runId,
-                                BigInteger simulationGroupId) throws ApolloDatabaseException {
+    public RunSimulationsThread(RunSimulationsMessage message, BigInteger runId) throws ApolloDatabaseException {
         super(runId);
         this.message = message;
-        this.simulationGroupId = simulationGroupId;
         try {
             this.configFileUrl = new URL(message.getBatchConfigurationFile());
         } catch (MalformedURLException e) {

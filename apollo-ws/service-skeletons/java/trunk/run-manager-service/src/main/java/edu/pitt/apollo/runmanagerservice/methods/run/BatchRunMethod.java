@@ -1,10 +1,15 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
+import edu.pitt.apollo.JsonUtils;
+import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 import java.math.BigInteger;
 
@@ -14,42 +19,14 @@ import java.math.BigInteger;
 public class BatchRunMethod extends RunMethodForSimulation {
 
 
-    public BatchRunMethod(Authentication authentication, SoftwareIdentification softwareIdentification, BigInteger associatedSimulationGroupId, Object message) {
-        super(authentication, softwareIdentification, associatedSimulationGroupId, message);
+    public BatchRunMethod(BigInteger stagedRunId) throws JsonUtilsException, DataServiceException {
+        super(stagedRunId);
     }
 
     @Override
-    public RunResultAndSimulationGroupId handlePreviouslyFailedRun(BigInteger cachedRunId) {
-        return getRunResultAndSimulationGroupId(createRunResult(
-                ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-                MethodCallStatusEnum.FAILED, "The BatchRun has failed.  To restart manually, please delete the run" +
-                        "from the database and resubmit. "), null);
+    protected Object convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
+        JsonUtils jsonUtils = new JsonUtils();
+        return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunSimulationsMessage.class);
     }
 
-    @Override
-    protected MethodCallStatusEnum getSuccessfulMethodCallStatus() {
-        return MethodCallStatusEnum.LOADING_RUN_CONFIG_INTO_DATABASE;
-    }
-
-    @Override
-    protected RunResultAndSimulationGroupId handleNonFailedCachedRun(BigInteger cachedRunId, BigInteger associatedSimulationGroup) {
-
-        BigInteger simulationGroupId;
-        try {
-            simulationGroupId = dao
-                    .getSimulationGroupIdForRun(cachedRunId);
-        } catch (Exception e) {
-            return getRunResultAndSimulationGroupId(createRunResult(
-                    ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-                    MethodCallStatusEnum.FAILED,
-                    "Database error retrieving simulation group for run: " + e.getMessage()), null);
-        }
-
-        MethodCallStatus runStatus = getRunStatus(cachedRunId);
-
-
-        return getRunResultAndSimulationGroupId(createRunResult(cachedRunId,
-                runStatus.getStatus(),
-                runStatus.getMessage()), simulationGroupId);
-    }
 }
