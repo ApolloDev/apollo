@@ -5,24 +5,21 @@ import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
  * 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
-public abstract class DatabaseAccessor implements DataServiceInterface {
+public class DatabaseAccessor implements DataServiceInterface {
     protected JsonUtils jsonUtils = new JsonUtils();
     protected Md5Utils md5Utils = new Md5Utils();
 
@@ -45,7 +42,9 @@ public abstract class DatabaseAccessor implements DataServiceInterface {
 
     public boolean authenticateUser(Authentication authentication)
             throws ApolloDatabaseException {
+
         return dbUtils.authenticateUser(authentication);
+
     }
 
     public boolean authorizeUserForSoftwareCacheData(
@@ -101,29 +100,59 @@ public abstract class DatabaseAccessor implements DataServiceInterface {
     public void addRunIdsToSimulationGroup(
             BigInteger simulationGroupId,
             List<BigInteger> runIds) throws ApolloDatabaseException,Md5UtilsException {
+
         dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
-                runIds);
+                    runIds);
+
     }
 
-    public abstract BigInteger getCachedRunIdFromDatabaseOrNull()
-            throws ApolloDatabaseException, Md5UtilsException;
+    public  BigInteger getCachedRunIdFromDatabaseOrNull()
+            throws ApolloDatabaseException, Md5UtilsException{
+        return null;
+    }
 
-    protected abstract String getRunMessageAssociatedWithRunIdAsJsonOrNull(
-            BigInteger runId) throws ApolloDatabaseException;
+    protected  String getRunMessageAssociatedWithRunIdAsJsonOrNull(
+            BigInteger runId) throws ApolloDatabaseException{
+        return null;
+    }
 
-    public abstract BigInteger[] insertRunIntoDatabase(
+    public  BigInteger[] insertRunIntoDatabase(
             BigInteger memberOfSimulationGroupIdOrNull)
-            throws ApolloDatabaseException, Md5UtilsException;
+            throws ApolloDatabaseException, Md5UtilsException{
+        return null;
+    }
 
     public BigInteger getSimulationGroupIdForRun(BigInteger runId)
             throws ApolloDatabaseException {
+
         return dbUtils.getSimulationGroupIdForRun(runId);
+
+
     }
 
     /*--DAN'S ADDITIONS--*/
     public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException{
+        try {
+            authenticateUser(authentication);
+            BigInteger groupId = getSimulationGroupIdForRun(runId);
+            List<BigInteger> listOfRunIds = getRunIdsAssociatedWithRun(groupId);
+            return listOfRunIds;
+        } catch (ApolloDatabaseException e) {
+           throw new DataServiceException(e.getMessage());
+        }
 
-        return null;
+    }
+    public void addRunIdsToSimulationGroupWithRunId(BigInteger runId, List<BigInteger> listOfRunIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
+        try {
+            authenticateUser(authentication);
+            BigInteger groupId = getSimulationGroupIdForRun(runId);
+            addRunIdsToSimulationGroup(groupId,listOfRunIdsToAssociateWithSimulationGroup);
+
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        } catch (Md5UtilsException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
     public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
@@ -131,7 +160,88 @@ public abstract class DatabaseAccessor implements DataServiceInterface {
 
     }
 
-    public void setRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, List<BigInteger> runIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
+    @Override
+    public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+        return 0;
+    }
+
+    @Override
+    public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
+        return null;
+    }
+
+    @Override
+    public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
+
+    }
+
+    @Override
+    public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }
 

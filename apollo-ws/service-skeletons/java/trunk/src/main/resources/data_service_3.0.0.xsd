@@ -415,5 +415,20 @@
 		</sequence>
 	</complexType>
 
+	<complexType name="GetRunIdsAssociatedWithSimulationGroupMessage">
+		<sequence>
+			<sequence>
+				<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+				<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
+ 			</sequence>
+		</sequence>
+	</complexType>
+	<complexType name="GetRunIdsAssociatedWithSimulationGroupResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="associatedRunIds" type="positiveInteger" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
 
 </schema>
