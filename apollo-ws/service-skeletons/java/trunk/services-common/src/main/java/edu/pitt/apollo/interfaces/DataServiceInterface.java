@@ -44,6 +44,8 @@ public interface DataServiceInterface {
 
 	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException;
 
+	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException;
+	
 	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException;
 
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException;
