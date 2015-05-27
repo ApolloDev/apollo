@@ -20,6 +20,7 @@
 			<enumeration value="translator" />
 			<enumeration value="data" />
 			<enumeration value="broker" />
+                        <enumeration value="endUserApplication" />
 		</restriction>
 	</simpleType>
         

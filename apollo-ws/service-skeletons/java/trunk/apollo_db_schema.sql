@@ -74,7 +74,9 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
                                              (8,'PSC','CLARA','0.5','simulator','http://gaia.pha.psc.edu:13500/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
                                              (9,'Steve Bellan','Lancet Ebola','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-3.0.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, 'Creative Commons Attribution 4.0 International License', '4.0', 'http://creativecommons.org/licenses/by/4.0/', 'The Lancet Ebola simulator was used to produce results for the following publication:\n\nBellan SE, JRC Pulliam, J Dushoff, and LA Meyers. Asymptomatic infection, natural immunity, and Ebola dynamics. Letter, submitted to Lancet.\n\nThe original source code for the simulator is available at https://github.com/ICI3D/Ebola. The code was changed for use with the Apollo Web Services to do the following:\n\n - Read initial compartment sizes, transmission and disease parameters from an external input file\n - Produce time series output files for each compartment\n - Compute a newly exposed time series from the cumulative exposed time series'),
 											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1, NULL, NULL, NULL, NULL),
-											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1, NULL, NULL, NULL ,NULL);
+											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1, NULL, NULL, NULL ,NULL),
+                       (12,'any', 'any','any','end_user_application','not_applicable',1, NULL, NULL, NULL ,NULL);
+
 
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
