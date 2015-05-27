@@ -1,18 +1,17 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.dataservice.error.ApolloServiceErrorHandler;
+
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
-import edu.pitt.apollo.dataservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceAccessor;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceV300;
+import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -40,7 +39,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     private static final SoftwareIdentification brokerServiceSoftwareId;
     private static int BROKER_SERVICE_SOFTWARE_ID_KEY;
-
 
     static {
         brokerServiceSoftwareId = new SoftwareIdentification();
@@ -143,7 +141,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 filename = downloadUrlToFile(configFileUrl);
             } catch (BatchException ex) {
 
-                ApolloServiceErrorHandler.reportError(
+                ErrorUtils.reportError(
                         "Error downloading batch configuration file, error was: "
                                 + simulatorIdentification.getSoftwareName()
                                 + ", version: "
@@ -155,7 +153,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                                 + ex.getMessage(), runId);
                 return false;
             } catch (IOException ex) {
-                ApolloServiceErrorHandler.reportError(
+                ErrorUtils.reportError(
                         "Error downloading batch configuration file, error was: "
                                 + simulatorIdentification.getSoftwareName()
                                 + ", version: "
@@ -221,10 +219,10 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 }
                 timer.cancel();
 
-                MethodCallStatus status = GetRunStatusMethod.getRunStatus(runId);
+                MethodCallStatus status = DataServiceAccessor.(runId);
                 System.out.println("TEST COMPLETE!");
                 if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-                    ApolloServiceErrorHandler.reportError("Error staging runs in database, error was " + status.getMessage() + " for runId",
+                    ErrorUtils.reportError("Error staging runs in database, error was " + status.getMessage() + " for runId",
                             runId);
                     return false;
                 }
@@ -248,7 +246,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                             //change back to true
                         }
                     } catch (ApolloDatabaseException e) {
-                        ApolloServiceErrorHandler.reportError("Unable to create instance of ApolloDbUtils to call runTranslatorAndReturnIfWasSuccessful", runId);
+                        ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call runTranslatorAndReturnIfWasSuccessful", runId);
                     }
                 } else {
                     logger.info("Bypassing calling translator as the staging returned an error.");
@@ -256,7 +254,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
                 return false;
             } catch (ApolloDatabaseException e) {
-                ApolloServiceErrorHandler.reportError("DB Error queuing and translating runs, error was " + e.getMessage(), runId);
+                ErrorUtils.reportError("DB Error queuing and translating runs, error was " + e.getMessage(), runId);
             } finally {
                 br.close();
             }
@@ -280,27 +278,14 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                         ApolloDbUtils.DbContentDataType.CONFIGURATION_FILE, BROKER_SERVICE_SOFTWARE_ID_KEY, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
                 dbUtils.associateContentWithRunId(runId, dataContentKey, runDataDescriptionId);
             } catch (ApolloDatabaseException ex) {
-                try {
-                    ApolloServiceErrorHandler.writeErrorToDatabase(
+                ErrorUtils.reportError(
                             "ApolloDatabaseException inserting text data content for run: " + ex.getMessage(), runId);
-                } catch (ApolloDatabaseException e) {
-                    e.printStackTrace();
-                }
             } catch (Md5UtilsException md5ex) {
-                try {
-                   ApolloServiceErrorHandler.writeErrorToDatabase(
+                   ErrorUtils.reportError(
                             "Md5UtilsException inserting text data content for run: " + md5ex.getMessage(), runId);
-                } catch (ApolloDatabaseException e) {
-                e.printStackTrace();
-                }
             }
-
         } catch (ApolloDatabaseException e) {
-            try {
-                ApolloServiceErrorHandler.writeErrorToErrorFile("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
-            } catch (IOException e1) {
-                logger.error("Error writing error (Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase) to error file!: " + e.getMessage());
-            }
+                ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
         }
     }
 
@@ -315,7 +300,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 url = dbUtils.getUrlForSoftwareIdentification(simulatorIdentification);
             } catch (ApolloDatabaseKeyNotFoundException e1) {
-                ApolloServiceErrorHandler.reportError(
+                ErrorUtils.reportError(
                         "Apollo database key not found attempting to get URL for simulator: "
                                 + simulatorIdentification.getSoftwareName() + ", version: "
                                 + simulatorIdentification.getSoftwareVersion() + ", developer: "
@@ -323,7 +308,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                                 + e1.getMessage(), runId);
                 return;
             } catch (ApolloDatabaseException e) {
-                ApolloServiceErrorHandler.reportError("Error getting WSDL address for software: " + simulatorIdentification.getSoftwareName() + " error was " + e.getMessage(), runId);
+                ErrorUtils.reportError("Error getting WSDL address for software: " + simulatorIdentification.getSoftwareName() + " error was " + e.getMessage(), runId);
                 return;
             }
 
@@ -331,7 +316,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 simulatorPort = new SimulatorServiceV300(new URL(url)).getSimulatorServiceEndpoint();
             } catch (Exception e) {
-                ApolloServiceErrorHandler.reportError(
+                ErrorUtils.reportError(
                         "Unable to get simulator port for url: " + url + "\n\tError was: " + e.getMessage(),
                         runId);
                 return;
@@ -347,7 +332,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 simulatorPort.runSimulations(runId);
             } catch (WebServiceException e) {
-                ApolloServiceErrorHandler.reportError("Error calling runSimulations(): " + "\n\tError was: " + e.getMessage(),
+                ErrorUtils.reportError("Error calling runSimulations(): " + "\n\tError was: " + e.getMessage(),
                         runId);
                 return;
             }
@@ -355,11 +340,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             try {
                 dbUtils.updateLastServiceToBeCalledForRun(runId, simulatorIdentification);
             } catch (ApolloDatabaseException ex) {
-                ApolloServiceErrorHandler.reportError("Apollo database key not found attempting to update last service"
+                ErrorUtils.reportError("Apollo database key not found attempting to update last service"
                         + " call for run id " + runId + ": " + ex.getMessage(), runId);
             }
         } catch (ApolloDatabaseException e) {
-            ApolloServiceErrorHandler.reportError("Error creating an new ApolloDbUtils() object, error was " + e.getMessage(), runId);
+            ErrorUtils.reportError("Error creating an new ApolloDbUtils() object, error was " + e.getMessage(), runId);
         }
     }
 
@@ -369,7 +354,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             SoftwareIdentification simulatorIdentification = message
                     .getSimulatorIdentification();
 
-            ApolloServiceErrorHandler.reportError(
+            ErrorUtils.reportError(
                     "Error staging batch run for: "
                             + simulatorIdentification.getSoftwareName()
                             + ", version: "
