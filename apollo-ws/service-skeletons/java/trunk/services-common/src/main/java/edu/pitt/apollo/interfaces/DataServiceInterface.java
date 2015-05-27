@@ -17,6 +17,8 @@ public interface DataServiceInterface {
 
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
+	public void setRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, List<BigInteger> runIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException;
+
 	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
 			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
 

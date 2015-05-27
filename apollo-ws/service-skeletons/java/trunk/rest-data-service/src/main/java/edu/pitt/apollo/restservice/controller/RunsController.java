@@ -395,12 +395,14 @@ public class RunsController {
         return ConvertResponseMessagesToXml.convertGetRunInformationRestMessageToXmlJaxb(returnMessage);
 
     }
+
+    /*--Methods to get and post rungroup data--*/
     @POST
     @ApiOperation(value = "Set simulation group IDs for run.", notes = "Sets the simulation group IDs for run using a comma separated input.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value="/run/{runId}", method= RequestMethod.POST, headers="Accept=application/xml")
+    @RequestMapping(value="/run/{runId}/rungroup", method= RequestMethod.POST, headers="Accept=application/xml")
     public @ResponseBody String setGroupIdsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                                                     @ApiParam(value = "List of group IDs.", required = true) @RequestParam("groupIds") String groupIds){
         RestDataServiceImpl impl = new RestDataServiceImpl();

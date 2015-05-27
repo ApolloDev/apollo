@@ -7,7 +7,7 @@ import java.util.Map;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.Md5UtilsException;
-import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
+//import edu.pitt.apollo.apolloservice.translatorservice.TranslatorServiceRecordContainer;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -39,12 +39,13 @@ public abstract class DatabaseAccessorForRunningSimulations extends
 	@Override
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
 			BigInteger runId) throws ApolloDatabaseException {
-		Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap = dbUtils
-				.getDataContentForSoftware(
-						runId,
-						ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-						dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer
-								.getTranslatorSoftwareIdentification()));
+		Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap = null;
+//		Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap = dbUtils
+//				.getDataContentForSoftware(
+//						runId,
+//						ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
+//						dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer
+//								.getTranslatorSoftwareIdentification()));
 		for (String label : currentRunSimulationMessageAsJsonMap.keySet()) {
 			if (label.equals("run_simulation_message.json")) {
 				return currentRunSimulationMessageAsJsonMap.get(label)

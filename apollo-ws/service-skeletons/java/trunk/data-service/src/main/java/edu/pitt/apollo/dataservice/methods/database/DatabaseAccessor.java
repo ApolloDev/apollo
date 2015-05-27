@@ -5,7 +5,12 @@ import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +22,7 @@ import java.util.List;
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
  * 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
-public abstract class DatabaseAccessor implements DatabaseAccessorInterface {
+public abstract class DatabaseAccessor implements DataServiceInterface {
     protected JsonUtils jsonUtils = new JsonUtils();
     protected Md5Utils md5Utils = new Md5Utils();
 
@@ -114,4 +119,16 @@ public abstract class DatabaseAccessor implements DatabaseAccessorInterface {
             throws ApolloDatabaseException {
         return dbUtils.getSimulationGroupIdForRun(runId);
     }
+
+    /*--DAN'S ADDITIONS--*/
+    public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException{
+
+        return null;
+    }
+
+    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
+                                          SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException{
+
+    }
+
 }
