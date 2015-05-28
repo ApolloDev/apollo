@@ -95,12 +95,17 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getSoftwareIdentificationForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getSoftwareIdentificationForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                           @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         DataServiceImpl impl = new DataServiceImpl();
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
         message.setRunId(runId);
-
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
         GetSoftwareIdentificationForRunResult result = impl.getSoftwareIdentificationForRun(message);
         if (result.getMethodCallStatus().getStatus() == MethodCallStatusEnum.FAILED) {
             returnMessage = BuildSoftwareIdentificationForRunMessage.buildFailedGetIdentificationKeyRestMessage(result.getMethodCallStatus().getMessage());

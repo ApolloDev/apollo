@@ -53,6 +53,7 @@
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
 			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
+
 		</sequence>
 	</complexType>
 	
@@ -117,6 +118,7 @@
 	<complexType name="GetSoftwareIdentificationForRunMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -130,6 +132,7 @@
 	<complexType name="GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage">
 		<sequence>
 			<element name="softwareIdentification" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -142,6 +145,7 @@
 	<complexType name="GetSoftwareIdentificationKeyForRunMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -157,6 +161,7 @@
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 			<element name="simulatorKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 			<element name="visualizerKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -170,6 +175,7 @@
 	<complexType name="AddTextDataContentMessage">
 		<sequence>
 			<element name="url" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -187,6 +193,7 @@
 			<element name="dataType" type="tns:DbContentDataType" minOccurs="1" maxOccurs="1"></element>
 			<element name="dataSourceSoftwareIdKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 			<element name="dataDestinationSoftwareIdKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -202,6 +209,7 @@
 		<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 		<element name="dataContentKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 		<element name="runDataDescriptionId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 	</sequence>
 </complexType>
 	<complexType name="AssociateContentWithRunIdResult">
@@ -215,6 +223,7 @@
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
 			<element name="statusEnum" type="common:MethodCallStatusEnum" minOccurs="1" maxOccurs="1"></element>
 			<element name="statusMessage" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="UpdateStatusOfRunResult">
@@ -226,6 +235,7 @@
 	<complexType name="GetStatusOfRunMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="GetStatusOfRunResult">
@@ -238,6 +248,7 @@
 	<complexType name="RemoveRunDataMessage">
 		<sequence>
 			<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="RemoveRunDataResult">
@@ -250,6 +261,7 @@
 			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userEmail" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="AddUserResult">
@@ -261,6 +273,7 @@
 		<sequence>
 			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="DeleteUserResult">
@@ -275,6 +288,7 @@
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRunSoftware" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="AddUserRoleResult">
@@ -287,6 +301,7 @@
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canViewCache" type="boolean"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="AddRoleResult">
@@ -296,6 +311,7 @@
 	</complexType>
 	<complexType name="GetListOfRegisteredSoftwareMessage">
 		<sequence>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 	<complexType name="GetListOfRegisteredSoftwareResult">

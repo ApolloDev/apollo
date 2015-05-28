@@ -5,6 +5,7 @@ import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -153,8 +154,8 @@ public class DatabaseAccessor implements DataServiceInterface {
                     int contentId = dbUtils.addTextDataContent(content);
             int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(sourceSoftware);
             int destinationSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(destinationSoftware);
-            int runDataDescriptionId = dbUtils.getRunDataDescriptionId(contentDataFormat,contentLabel,contentDataType,sourceSoftwareIdKey,destinationSoftwareIdKey);
-            dbUtils.associateContentWithRunId(runId,contentId,runDataDescriptionId);
+            int runDataDescriptionId = dbUtils.getRunDataDescriptionId(contentDataFormat, contentLabel, contentDataType, sourceSoftwareIdKey, destinationSoftwareIdKey);
+            dbUtils.associateContentWithRunId(runId, contentId, runDataDescriptionId);
         } catch (ApolloDatabaseException e) {
             throw new DataServiceException(e.getMessage());
         } catch (Md5UtilsException e) {
@@ -167,7 +168,7 @@ public class DatabaseAccessor implements DataServiceInterface {
         try {
             authenticateUser(authentication);
             BigInteger groupId = getSimulationGroupIdForRun(runId);
-            addRunIdsToSimulationGroup(groupId,listOfRunIdsToAssociateWithSimulationGroup);
+            addRunIdsToSimulationGroup(groupId, listOfRunIdsToAssociateWithSimulationGroup);
 
         } catch (ApolloDatabaseException e) {
             throw new DataServiceException(e.getMessage());
@@ -194,7 +195,16 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            return dbUtils.getSoftwareIdentificationForRun(runId);
+        } catch (ApolloDatabaseKeyNotFoundException e) {
+            e.printStackTrace();
+            throw new DataServiceException(e.getMessage());
+        } catch (ApolloDatabaseException e) {
+            e.printStackTrace();
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
     

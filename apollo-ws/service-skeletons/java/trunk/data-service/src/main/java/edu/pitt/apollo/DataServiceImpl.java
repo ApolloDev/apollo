@@ -27,6 +27,7 @@ import edu.pitt.apollo.dataservice.methods.user.AddUserMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddUserRoleMethod;
 import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.*;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -148,7 +149,7 @@ public class DataServiceImpl implements DataServiceEI {
 	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
 		try {
 			return GetSoftwareIdentificationForRunMethod.buildResultMessage(message);
-		} catch (ApolloDatabaseException e) {
+		} catch (DataServiceException e) {
 			GetSoftwareIdentificationForRunResult result = new GetSoftwareIdentificationForRunResult();
 
 			MethodCallStatus status = new MethodCallStatus();
