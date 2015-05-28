@@ -17,6 +17,7 @@ import java.util.Map;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -30,14 +31,6 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareLicenseIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
@@ -603,7 +596,36 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		return result;
 
 	}
+	public SoftwareIdentification getSoftwareIdentificationFromSoftwareNameAndVersion(String softwareName, String softwareVersion) throws ApolloDatabaseUserPasswordException,
+	ApolloDatabaseKeyNotFoundException, ApolloDatabaseException
+	{
+		SoftwareIdentification si = new SoftwareIdentification();
+		si.setSoftwareName(softwareName);
+		si.setSoftwareVersion(softwareVersion);
 
+		String query = "SELECT developer,service_type FROM software_identification WHERE name=? AND version=?";
+		try(Connection conn = datasource.getConnection())
+		{
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,softwareName);
+			pstmt.setString(2,softwareVersion);
+			ResultSet rs = pstmt.executeQuery();
+
+			if(rs.next())
+			{
+
+				ApolloSoftwareTypeEnum softwareTypeEnum = ApolloSoftwareTypeEnum.fromValue(rs.getString("service_type"));
+				si.setSoftwareType(softwareTypeEnum);
+				si.setSoftwareDeveloper(rs.getString("developer"));
+
+			}
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException(
+					"SQLException attempting to get user key: "
+							+ ex.getMessage());
+		}
+		return si;
+	}
 	public int getUserKey(String userId, String userPassword)
 			throws ApolloDatabaseUserPasswordException,
 			ApolloDatabaseKeyNotFoundException, ApolloDatabaseException {
@@ -1084,8 +1106,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
 	}
 
-	public int getRunDataDescriptionId(DbContentDataFormatEnum dataFormat,
-			String dataLabel, DbContentDataType dataType,
+	public int getRunDataDescriptionId(ContentDataFormatEnum dataFormat,
+			String dataLabel, ContentDataTypeEnum dataType,
 			int dataSourceSoftwareIdKey, int dataDestinationSoftwareIdKey)
 			throws ApolloDatabaseException, ApolloDatabaseKeyNotFoundException {
 
@@ -1125,8 +1147,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public int getRunDataDescriptionId(DbContentDataFormatEnum dataFormat,
-			String dataLabel, DbContentDataType dataType,
+	public int getRunDataDescriptionId(ContentDataFormatEnum dataFormat,
+			String dataLabel, ContentDataTypeEnum dataType,
 			SoftwareIdentification dataSourceSoftwareIdentification,
 			SoftwareIdentification dataDestinationSoftwareIdentification)
 			throws ApolloDatabaseException, SQLException,
@@ -1391,9 +1413,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// use insertDataContentForRun for this
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(message));
 			int runDataDescriptionId = getRunDataDescriptionId(
-					DbContentDataFormatEnum.TEXT,
+					ContentDataFormatEnum.TEXT,
 					"run_data_service_message.json",
-					DbContentDataType.RUN_DATA_SERVICE_MESSAGE, 0,
+					ContentDataTypeEnum.RUN_DATA_SERVICE_MESSAGE, 0,
 					getSoftwareIdentificationKey(dataServiceSoftwareId));
 			// int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
@@ -1497,9 +1519,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// use insertDataContentForRun for this
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
-					DbContentDataFormatEnum.TEXT,
+					ContentDataFormatEnum.TEXT,
 					"run_simulation_message.json",
-					DbContentDataType.RUN_SIMULATION_MESSAGE,
+					ContentDataTypeEnum.RUN_SIMULATION_MESSAGE,
 					0,
 					getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
 			// int runDataId = the following line returns the runDataId, but
@@ -1941,9 +1963,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			// use insertDataContentForRun for this
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runVisualizationMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
-					DbContentDataFormatEnum.TEXT,
+					ContentDataFormatEnum.TEXT,
 					"run_visualization_message.json",
-					DbContentDataType.RUN_VISUALIZATION_MESSAGE, 0,
+					ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE, 0,
 					getSoftwareIdentificationKey(runVisualizationMessage
 							.getVisualizerIdentification()));
 			// int runDataId = the following line returns the runDataId, but
@@ -2401,23 +2423,45 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
-    public HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
-        HashMap<BigInteger, String> contentIdToFileNameMap = new HashMap<BigInteger, String>();
+    public HashMap<BigInteger,FileAndURLDescription> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
 
         try(Connection conn = datasource.getConnection()){
 
 
-
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
+			PreparedStatement pstmt = conn.prepareStatement(
+					"SELECT runData.content_id, rddv.source_software, rddv.destination_software, rddv.format, rddv.type, rddv.label FROM run_data runData "+
+							"JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT'");
+//            PreparedStatement pstmt = conn.prepareStatement(
+//                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+//                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
             pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
 
+
             while (resultSet.next()) {
+				FileAndURLDescription fileDescription = new FileAndURLDescription();
+				fileDescription.setContentFormat(ContentDataFormatEnum.valueOf(resultSet.getString("format")));
+				fileDescription.setContentType(ContentDataTypeEnum.fromValue(resultSet.getString("type")));
+				if(resultSet.getInt("source_software")!=0) {
+					SoftwareIdentification source = getSoftwareIdentification(resultSet.getInt("source_software"));
+					fileDescription.setSourceSoftwareIdentification(source);
+				}
+				else
+				{
+					fileDescription.setSourceSoftwareIdentification(null);
+				}
+				if(resultSet.getInt("destination_software")!=0)
+				{
+					SoftwareIdentification destination = getSoftwareIdentification(resultSet.getInt("destination_software"));
+					fileDescription.setDestinationSoftwareIdentification(destination);
+				}
+				else{
+					fileDescription.setDestinationSoftwareIdentification(null);
+				}
+				fileDescription.setName(resultSet.getString("label"));
                 int content_id = resultSet.getInt("content_id");
-                String file_label = resultSet.getString("label");
-                contentIdToFileNameMap.put(BigInteger.valueOf(content_id), file_label);
+				contentIdToFileDescriptionMap.put(BigInteger.valueOf(content_id), fileDescription);
 
             }
 
@@ -2427,26 +2471,48 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //        catch (ClassNotFoundException e) {
 //            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
 //        }
-        return contentIdToFileNameMap;
+        return contentIdToFileDescriptionMap;
     }
 
-    public HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
-        HashMap<BigInteger, String> contentIdToURLNameMap = new HashMap<BigInteger, String>();
+    public HashMap<BigInteger,FileAndURLDescription> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToURLDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
 
         try(Connection conn = datasource.getConnection()){
 
 
-
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
+			PreparedStatement pstmt = conn.prepareStatement(
+					"SELECT runData.content_id, rddv.source_software, rddv.destination_software, rddv.format, rddv.type, rddv.label FROM run_data runData "+
+							"JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP')");
+//            PreparedStatement pstmt = conn.prepareStatement(
+//                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+//                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
 
             pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
-                int content_id = resultSet.getInt("content_id");
-                String url_label = resultSet.getString("label");
-                contentIdToURLNameMap.put(BigInteger.valueOf(content_id), url_label);
+				FileAndURLDescription urlDescription = new FileAndURLDescription();
+				urlDescription.setContentFormat(ContentDataFormatEnum.valueOf(resultSet.getString("format")));
+				urlDescription.setContentType(ContentDataTypeEnum.fromValue(resultSet.getString("type")));
+				if(resultSet.getInt("source_software")!=0) {
+					SoftwareIdentification source = getSoftwareIdentification(resultSet.getInt("source_software"));
+					urlDescription.setSourceSoftwareIdentification(source);
+				}
+				else
+				{
+					urlDescription.setSourceSoftwareIdentification(null);
+				}
+				if(resultSet.getInt("destination_software")!=0)
+				{
+					SoftwareIdentification destination = getSoftwareIdentification(resultSet.getInt("destination_software"));
+					urlDescription.setDestinationSoftwareIdentification(destination);
+				}
+				else{
+					urlDescription.setDestinationSoftwareIdentification(null);
+				}
+
+				urlDescription.setName(resultSet.getString("label"));
+				int content_id = resultSet.getInt("content_id");
+				contentIdToURLDescriptionMap.put(BigInteger.valueOf(content_id), urlDescription);
 
             }
 
@@ -2456,7 +2522,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //        catch (ClassNotFoundException e) {
 //            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
 //        }
-        return contentIdToURLNameMap;
+        return contentIdToURLDescriptionMap;
     }
 
     public String getFileContentForFileId(BigInteger fileId)  throws ApolloDatabaseException {

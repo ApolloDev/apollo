@@ -1,7 +1,7 @@
 package edu.pitt.apollo.restservice.rest.utils;
 
 
-import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndLabel;
+import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndDescription;
 import edu.pitt.apollo.restservice.rest.responsemessage.GetListOfContentAssociatedToRunRestMessage;
 import edu.pitt.apollo.restservice.rest.responsemessage.Meta;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.ApolloDatabaseExceptionMessage;
@@ -32,12 +32,12 @@ public class BuildGetListOfContentAssociatedToRunRestMessage {
         return returnMessage;
     }
 
-    public static GetListOfContentAssociatedToRunRestMessage buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(List<ContentIdAndLabel> listOfContentIdAndLabels)
+    public static GetListOfContentAssociatedToRunRestMessage buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(List<ContentIdAndDescription> listOfContentIdAndLabels)
     {
         GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
         int returnedItems = 0;
-        for (ContentIdAndLabel cil : listOfContentIdAndLabels) {
-            returnMessage.getListOfContentIdAndLabels().add(cil);
+        for (ContentIdAndDescription cid : listOfContentIdAndLabels) {
+            returnMessage.getListOfContentIdAndDescriptions().add(cid);
             returnedItems++;
         }
         Meta meta = new Meta();

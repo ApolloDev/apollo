@@ -4,11 +4,15 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import static edu.pitt.apollo.dataservice.methods.DataServiceMethod.OUTPUT_DIRECTORY;
+
+import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
 import edu.pitt.apollo.dataservice.thread.DataServiceThread;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import java.io.File;
@@ -27,10 +31,15 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 	private GetAllOutputFilesURLAsZipMessage message;
 
-	public GetAllOutputFilesURLAsZipMethod(ApolloServiceQueue queue, BigInteger runId) {
+	public GetAllOutputFilesURLAsZipMethod(ApolloServiceQueue queue, BigInteger runId, Authentication authentication) {
 		super(queue, runId);
 
-		loadGetAllOutputFilesURLAzZipMessage();
+		if(authentication==null)
+		{
+			loadGetAllOutputFilesURLAzZipMessage();
+		}else {
+			loadGetAllOutputFilesURLAzZipMessage(authentication);
+		}
 	}
 
 	@Override
@@ -53,7 +62,6 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 		}
 
 	}
-
 	private void loadGetAllOutputFilesURLAzZipMessage() {
 		ApolloDbUtils dbUtils = null;
 		try {
@@ -72,6 +80,28 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
 		} catch (JsonUtilsException jue) {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, jue.getMessage());
+		}
+	}
+	private void loadGetAllOutputFilesURLAzZipMessage(Authentication authentication) {
+
+		ApolloDbUtils dbUtils = null;
+		try {
+			dbUtils = new ApolloDbUtils();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			DatabaseAccessor dbAccessor = new DatabaseAccessor(authentication,dbUtils);
+			dbAccessor.runDataServiceToGetAllOutputFilesURLAsZip(runId,authentication);
+//			message = dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
+			if (message == null) {
+				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
+			}
+		} catch (ApolloDatabaseException ex) {
+			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
+		} catch (DataServiceException dse) {
+			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, dse.getMessage());
 		}
 	}
 }

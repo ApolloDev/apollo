@@ -1,6 +1,6 @@
 package edu.pitt.apollo.restservice.rest.responsemessage;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndLabel;
+import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndDescription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class GetListOfContentAssociatedToRunRestMessage {
     Meta meta;
-    List<ContentIdAndLabel> listOfContentIdAndLabels = new ArrayList<ContentIdAndLabel>();
+    List<ContentIdAndDescription> listOfContentIdAndDescriptions = new ArrayList<ContentIdAndDescription>();
 
     public Meta getMeta() {
         return meta;
@@ -20,12 +20,12 @@ public class GetListOfContentAssociatedToRunRestMessage {
         this.meta = meta;
     }
 
-    public List<ContentIdAndLabel> getListOfContentIdAndLabels()
+    public List<ContentIdAndDescription> getListOfContentIdAndDescriptions()
     {
-        return listOfContentIdAndLabels;
+        return listOfContentIdAndDescriptions;
     }
-    public void setListOfContentIdAndLabels(List<ContentIdAndLabel> listOfContentIdAndLabels)
+    public void setListOfContentIdAndDescriptions(List<ContentIdAndDescription> listOfContentIdAndDescriptions)
     {
-        this.listOfContentIdAndLabels=listOfContentIdAndLabels;
+        this.listOfContentIdAndDescriptions=listOfContentIdAndDescriptions;
     }
 }

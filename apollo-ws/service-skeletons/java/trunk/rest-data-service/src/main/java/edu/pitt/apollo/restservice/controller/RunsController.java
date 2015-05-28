@@ -65,7 +65,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String deleteRunFromDatabase(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String deleteRunFromDatabase(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         DataServiceImpl impl = new DataServiceImpl();
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         RemoveRunDataMessage message = new RemoveRunDataMessage();
@@ -95,12 +97,17 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getSoftwareIdentificationForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getSoftwareIdentificationForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                           @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         DataServiceImpl impl = new DataServiceImpl();
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
         message.setRunId(runId);
-
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
         GetSoftwareIdentificationForRunResult result = impl.getSoftwareIdentificationForRun(message);
         if (result.getMethodCallStatus().getStatus() == MethodCallStatusEnum.FAILED) {
             returnMessage = BuildSoftwareIdentificationForRunMessage.buildFailedGetIdentificationKeyRestMessage(result.getMethodCallStatus().getMessage());
@@ -114,7 +121,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String postSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String postSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                      @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                      @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
@@ -129,7 +138,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.PUT, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String putSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String putSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                     @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                     @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
@@ -151,13 +162,18 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/status", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetRunStatusRestMessage returnMessage = new GetRunStatusRestMessage();
 
         GetStatusOfRunMessage message = new GetStatusOfRunMessage();
         message.setRunId(runId);
-
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
         DataServiceImpl impl = new DataServiceImpl();
 
         GetStatusOfRunResult result = impl.getStatusOfRun(message);
@@ -189,7 +205,9 @@ public class RunsController {
     @ResponseBody
     String updateStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                               @ApiParam(value="Method call status enum", required=true) @RequestParam("methodCallStatusEnum") MethodCallStatusEnum statusToUpdateTo,
-                              @ApiParam(value="Status message", required=true) @RequestParam("statusMessage") String statusMessage) {
+                              @ApiParam(value="Status message", required=true) @RequestParam("statusMessage") String statusMessage,
+                             @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                             @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         if(statusMessage.equalsIgnoreCase("") || statusMessage.trim().equalsIgnoreCase(""))
         {
@@ -205,6 +223,10 @@ public class RunsController {
         updateStatusOfRunMessage.setRunId(runId);
         updateStatusOfRunMessage.setStatusMessage(statusMessage);
         updateStatusOfRunMessage.setStatusEnum(statusToUpdateTo);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        updateStatusOfRunMessage.setAuthentication(authentication);
         DataServiceImpl impl = new DataServiceImpl();
         UpdateStatusOfRunResult result = impl.updateStatusOfRun(updateStatusOfRunMessage);
 
@@ -231,18 +253,26 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
         DataServiceImpl impl = new DataServiceImpl();
         ListFilesMessage message = new ListFilesMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         message.setRunId(runId);
+        message.setAuthentication(authentication);
+
         ListFilesResult result = impl.listFilesAssociatedToRun(message);
 
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
         }
         else{
-            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+            List<ContentIdAndDescription> list = result.getContentIdAndDescriptions();
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(list);
         }
         return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
     }
@@ -256,6 +286,8 @@ public class RunsController {
     public
     @ResponseBody
     String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                                   @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
@@ -270,6 +302,10 @@ public class RunsController {
             message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
             message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
             message.setRunId(runId);
+            Authentication authentication = new Authentication();
+            authentication.setRequesterId(username);
+            authentication.setRequesterPassword(password);
+            message.setAuthentication(authentication);
 
             AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
 
@@ -295,17 +331,23 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/urls", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         GetListOfContentAssociatedToRunRestMessage returnMessage = new GetListOfContentAssociatedToRunRestMessage();
         DataServiceImpl impl = new DataServiceImpl();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         ListURLsMessage message = new ListURLsMessage();
         message.setRunId(runId);
+        message.setAuthentication(authentication);
         ListURLsResult result = impl.listURLsAssociatedToRun(message);
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
         }
         else{
-            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndDescriptions());
         }
         return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
 
@@ -320,13 +362,15 @@ public class RunsController {
     public
     @ResponseBody
     String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                                  @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
 
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         DataServiceImpl impl = new DataServiceImpl();
         try {
             AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
-            AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
+            AssociateURLWithRunIdMessage message = new AssociateURLWithRunIdMessage();
             message.setContentLabel(messageBodyContent.getContentLabel());
             message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
             message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
@@ -335,8 +379,12 @@ public class RunsController {
             message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
             message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
             message.setRunId(runId);
+            Authentication authentication = new Authentication();
+            authentication.setRequesterId(username);
+            authentication.setRequesterPassword(password);
+            message.setAuthentication(authentication);
 
-            AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+            AssociateURLWithRunIdResult result = impl.associateURLWithRunId(message);
 
             if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
                 returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
@@ -357,17 +405,73 @@ public class RunsController {
             @ApiResponse(code = 200, message = "")
     })
     @RequestMapping(value="/run/{runId}/allOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
-    public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+    public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         BigInteger runIdAsBigInteger;
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         Meta meta = new Meta();
-
         meta.setNumberOfReturnedResults(0);
         meta.setStatus(RequestSuccessfulMessage.getStatus());
         meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
 
-        DataServiceImpl impl = new DataServiceImpl();
-        impl.getAllOutputFilesURLAsZip(runId);
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getAllOutputFilesURLAsZip(runId, authentication);
+
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
+    @POST
+    @ApiOperation(value = "Get URLs of output files.", notes = "Starts the process to get the URL of the output files given a run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/outputFilesURLs/", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String getOutputFilesURLs(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        BigInteger runIdAsBigInteger;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        Meta meta = new Meta();
+        meta.setNumberOfReturnedResults(0);
+        meta.setStatus(RequestSuccessfulMessage.getStatus());
+        meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
+
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getOutputFilesURLs(runId, authentication);
+
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
+    @POST
+    @ApiOperation(value = "Get URL of output files Zip.", notes = "Starts the process to get the URL of the output files as zip given a run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/outputFilesURLsAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String getOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                   @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                   @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        BigInteger runIdAsBigInteger;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        Meta meta = new Meta();
+        meta.setNumberOfReturnedResults(0);
+        meta.setStatus(RequestSuccessfulMessage.getStatus());
+        meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
+
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getOutputFilesURLAsZip(runId, authentication);
 
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 
@@ -380,7 +484,9 @@ public class RunsController {
               @ApiResponse(code = 200, message = "")
       })
       @RequestMapping(value="/run/{runId}", method= RequestMethod.GET, headers="Accept=application/xml")
-      public @ResponseBody String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+      public @ResponseBody String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                    @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                    @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         RestDataServiceImpl impl = new RestDataServiceImpl();
         GetRunInformationRestMessage returnMessage = new GetRunInformationRestMessage();
         GetRunInformationMessage message = new GetRunInformationMessage();
@@ -415,7 +521,7 @@ public class RunsController {
         Authentication authentication = new Authentication();
         authentication.setRequesterId(username);
         authentication.setRequesterPassword(password);
-        GetRunIdsAssociatedWithSimulationGroupResult result = impl.getRunIdsAssociatedToSimulationGroupsForRunId(runId,authentication);
+        GetRunIdsAssociatedWithSimulationGroupResult result = impl.getRunIdsAssociatedToSimulationGroupsForRunId(runId, authentication);
 
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildSimulationGroupRestMessage.buildFailedSimulationGroupRestMessage(result.getMethodCallStatus().getMessage());
@@ -445,7 +551,7 @@ public class RunsController {
         authentication.setRequesterPassword(password);
         List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(runIdsToAssociate);
 
-        MethodCallStatus result = impl.addRundIdsToSimulationGroupForRunId(groupIdsAsList, runId,authentication);
+        MethodCallStatus result = impl.addRundIdsToSimulationGroupForRunId(groupIdsAsList, runId, authentication);
 
         if(result.getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
@@ -457,5 +563,63 @@ public class RunsController {
 
     }
 
+    /*--Methods to get and post last service to run for run id--*/
+    @GET
+    @ApiOperation(value = "Get last service to be called.", notes = "Returns the software identification for the last service to be called for a given run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/lastServiceToBeCalled", method= RequestMethod.GET, headers="Accept=application/xml")
+    public @ResponseBody String getLastServiceToBeCalledForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                           @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
+        GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
+        message.setRunId(runId);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
+        GetSoftwareIdentificationForRunResult result = impl.getLastServiceToBeCalledForRun(message);
+        if (result.getMethodCallStatus().getStatus() == MethodCallStatusEnum.FAILED) {
+            returnMessage = BuildSoftwareIdentificationForRunMessage.buildFailedGetIdentificationKeyRestMessage(result.getMethodCallStatus().getMessage());
+        } else {
+            returnMessage = BuildSoftwareIdentificationForRunMessage.buildSuccessfulGetIdentificationKeyRestMessage(result.getSoftwareIdentification());
+        }
+        return ConvertResponseMessagesToXml.convertGetSoftwareIdentificationForRunMessageToXmlJaxb(returnMessage);
 
+    }
+
+    @POST
+    @ApiOperation(value = "Set simulation group IDs for run.", notes = "Sets the simulation group IDs for run using a comma separated input.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/lastServiceToBeCalled", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String updateLastServiceToBeCalledForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                 @ApiParam(value = "Software name", required = true) @RequestParam("softwareName") String softwareName,
+                                                                  @ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
+                                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        UpdateLastServiceToBeCalledForRunMessage message = new UpdateLastServiceToBeCalledForRunMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
+        message.setRunId(runId);
+        message.setSoftwareName(softwareName);
+        message.setSoftwareVersion(softwareVersion);
+
+        UpdateLastServiceToBeCalledForRunResult result = impl.updateLastServiceToBeCalledForRunResult(message);
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+    }
 }

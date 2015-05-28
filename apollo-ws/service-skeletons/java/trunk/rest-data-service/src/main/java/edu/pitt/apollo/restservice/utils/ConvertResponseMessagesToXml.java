@@ -243,4 +243,20 @@ public class ConvertResponseMessagesToXml {
     }
 
 
+    public static String convertGetURLForSoftwareIdentificationRestMessageToXmlJaxB(GetURLForSoftwareIdentificationRestMessage returnMessage) {
+        String xml = "";
+        try{
+            JAXBContext context = JAXBContext.newInstance(GetURLForSoftwareIdentificationRestMessage.class);
+            Marshaller marshaller = context.createMarshaller();
+            final StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(new JAXBElement(
+                    new QName("local", "GetURLForSoftwareIdentificationRestMessage", "tns"), GetURLForSoftwareIdentificationRestMessage.class, returnMessage), stringWriter);
+
+            xml = stringWriter.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xml;
+    }
 }

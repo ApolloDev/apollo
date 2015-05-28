@@ -27,7 +27,9 @@ import edu.pitt.apollo.dataservice.methods.user.AddUserMethod;
 import edu.pitt.apollo.dataservice.methods.user.AddUserRoleMethod;
 import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -114,7 +116,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public ListFilesResult listFilesAssociatedToRun(ListFilesMessage message) {
-		ListFilesResult result = ListFilesAssociatedToRunMethod.listFilesAssocaitedToRun(message);
+		ListFilesResult result = ListFilesAssociatedToRunMethod.listFilesAssociatedToRun(message);
 		return result;
 	}
 
@@ -148,7 +150,7 @@ public class DataServiceImpl implements DataServiceEI {
 	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
 		try {
 			return GetSoftwareIdentificationForRunMethod.buildResultMessage(message);
-		} catch (ApolloDatabaseException e) {
+		} catch (DataServiceException e) {
 			GetSoftwareIdentificationForRunResult result = new GetSoftwareIdentificationForRunResult();
 
 			MethodCallStatus status = new MethodCallStatus();
@@ -162,7 +164,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId) {
-		GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId);
+		GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId, null);
 		method.downloadFiles();
 
 		return null;
@@ -186,6 +188,7 @@ public class DataServiceImpl implements DataServiceEI {
 		return result;
 	}
 
+
 	@Override
 	public AddTextDataContentResult addTextDataContent(AddTextDataContentMessage message) {
 		AddTextDataContentResult result = AddTextDataContentMethod.addTextDataContent(message);
@@ -196,7 +199,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getOutputFilesURLs(BigInteger runId) {
-		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId);
+		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,null);
 		method.downloadFiles();
 
 		return null;
@@ -206,9 +209,8 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId) {
-		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId);
+		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId,null);
 		method.downloadFiles();
-		
 		return null;
 	}
 

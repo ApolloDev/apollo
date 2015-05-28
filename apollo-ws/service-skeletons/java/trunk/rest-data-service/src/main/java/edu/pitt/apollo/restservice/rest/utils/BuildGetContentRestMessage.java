@@ -1,6 +1,6 @@
 package edu.pitt.apollo.restservice.rest.utils;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.ContentIdAndLabel;
+
 import edu.pitt.apollo.restservice.rest.responsemessage.GetContentRestMessage;
 import edu.pitt.apollo.restservice.rest.responsemessage.Meta;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.ApolloDatabaseExceptionMessage;

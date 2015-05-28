@@ -1,7 +1,9 @@
 package edu.pitt.apollo.interfaces;
 
+import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface DataServiceInterface {
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
 	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
-			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
+			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
@@ -33,9 +35,9 @@ public interface DataServiceInterface {
 
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
 
 	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException;
 

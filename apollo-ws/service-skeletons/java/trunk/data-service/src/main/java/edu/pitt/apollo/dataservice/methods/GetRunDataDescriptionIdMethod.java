@@ -6,6 +6,8 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
 import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -25,8 +27,8 @@ public class GetRunDataDescriptionIdMethod {
         try{
             ApolloDbUtils dbUtils = new ApolloDbUtils();
 
-            DbContentDataFormatEnum formatEnum = DbContentDataFormatEnum.valueOf(message.getDataFormat().value());
-            DbContentDataType contentTypeEnum = DbContentDataType.valueOf(message.getDataType().value());
+            ContentDataFormatEnum formatEnum = ContentDataFormatEnum.valueOf(message.getDataFormat().value());
+            ContentDataTypeEnum contentTypeEnum = ContentDataTypeEnum.valueOf(message.getDataType().value());
             int runDescriptionId = dbUtils.getRunDataDescriptionId(formatEnum, message.getDataLabel(), contentTypeEnum, message.getDataSourceSoftwareIdKey().intValue(), message.getDataDestinationSoftwareIdKey().intValue());
 
             mcs.setStatus(MethodCallStatusEnum.COMPLETED);
