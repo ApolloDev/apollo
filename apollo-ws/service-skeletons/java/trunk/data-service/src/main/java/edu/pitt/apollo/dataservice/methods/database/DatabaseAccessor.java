@@ -229,7 +229,17 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        try{
+            authenticateUser(authentication);
+            SoftwareIdentification si = dbUtils.getLastServiceToBeCalledForRun(runId);
+            return si;
+        } catch (ApolloDatabaseKeyNotFoundException adk) {
+            adk.printStackTrace();
+            throw new DataServiceException(adk.getMessage());
+        } catch (ApolloDatabaseException ade) {
+            ade.printStackTrace();
+            throw new DataServiceException(ade.getMessage());
+        }
     }
 
     @Override

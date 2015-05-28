@@ -419,7 +419,7 @@ public class RunsController {
         meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
 
         RestDataServiceImpl impl = new RestDataServiceImpl();
-        impl.getAllOutputFilesURLAsZip(runId,authentication);
+        impl.getAllOutputFilesURLAsZip(runId, authentication);
 
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 
@@ -471,7 +471,7 @@ public class RunsController {
         meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
 
         RestDataServiceImpl impl = new RestDataServiceImpl();
-        impl.getOutputFilesURLAsZip(runId,authentication);
+        impl.getOutputFilesURLAsZip(runId, authentication);
 
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 
@@ -521,7 +521,7 @@ public class RunsController {
         Authentication authentication = new Authentication();
         authentication.setRequesterId(username);
         authentication.setRequesterPassword(password);
-        GetRunIdsAssociatedWithSimulationGroupResult result = impl.getRunIdsAssociatedToSimulationGroupsForRunId(runId,authentication);
+        GetRunIdsAssociatedWithSimulationGroupResult result = impl.getRunIdsAssociatedToSimulationGroupsForRunId(runId, authentication);
 
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildSimulationGroupRestMessage.buildFailedSimulationGroupRestMessage(result.getMethodCallStatus().getMessage());
@@ -551,7 +551,7 @@ public class RunsController {
         authentication.setRequesterPassword(password);
         List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(runIdsToAssociate);
 
-        MethodCallStatus result = impl.addRundIdsToSimulationGroupForRunId(groupIdsAsList, runId,authentication);
+        MethodCallStatus result = impl.addRundIdsToSimulationGroupForRunId(groupIdsAsList, runId, authentication);
 
         if(result.getStatus()==MethodCallStatusEnum.FAILED){
             returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMessage());
@@ -563,5 +563,31 @@ public class RunsController {
 
     }
 
+    /*--Methods to get and post last service to run for run id--*/
+    @GET
+    @ApiOperation(value = "Get last service to be called.", notes = "Returns the software identification for the last service to be called for a given run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/lastServiceToBeCalled", method= RequestMethod.GET, headers="Accept=application/xml")
+    public @ResponseBody String getLastServiceToBeCalledforGivenRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                           @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
+        GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
+        message.setRunId(runId);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
+        GetSoftwareIdentificationForRunResult result = impl.getLastServiceToBeCalledForRun(message);
+        if (result.getMethodCallStatus().getStatus() == MethodCallStatusEnum.FAILED) {
+            returnMessage = BuildSoftwareIdentificationForRunMessage.buildFailedGetIdentificationKeyRestMessage(result.getMethodCallStatus().getMessage());
+        } else {
+            returnMessage = BuildSoftwareIdentificationForRunMessage.buildSuccessfulGetIdentificationKeyRestMessage(result.getSoftwareIdentification());
+        }
+        return ConvertResponseMessagesToXml.convertGetSoftwareIdentificationForRunMessageToXmlJaxb(returnMessage);
 
+    }
 }
