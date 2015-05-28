@@ -16,7 +16,7 @@ public class DataServiceAccessorFactory {
 	static public DataServiceAccessor getDataServiceAccessor(Object message) throws UnrecognizedMessageTypeException {
 
 		if (message instanceof RunSimulationMessage) {
-			return new DataServiceAccessorForRunningASingleSimulation((RunSimulationMessage) message);
+			return new DataServiceAccessor();
 		} else if (message instanceof RunVisualizationMessage) {
 			return new DataServiceAccessorForRunningVisualizations((RunVisualizationMessage) message);
 		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
@@ -26,7 +26,7 @@ public class DataServiceAccessorFactory {
 		} else if (message instanceof GetOutputFilesURLsMessage) {
 			return new DataServiceAccessorForRunningDataServiceRequests((GetOutputFilesURLsMessage) message);
 		} else if (message instanceof RunSimulationsMessage) {
-			return new DataServiceAccessorForRunningMultipleSimulations((RunSimulationsMessage) message);
+			return new DataServiceAccessor();
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type creating data service accessor");
 		}

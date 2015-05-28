@@ -7,8 +7,8 @@ import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
-import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -37,10 +37,11 @@ public class StageInDbWorkerThread implements Runnable {
     private final SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder;
     private final XMLGregorianCalendar scenarioDate;
     private final BigInteger batchRunId;
-    private final BigInteger simulationGroupId;
+    private final BigInteger parentRunId;
     private final SoftwareIdentification simulatorIdentification;
     private final RunSimulationsThread.BooleanRef errorRef;
     private final RunSimulationsThread.CounterRef counterRef;
+    private final Authentication authentication;
     Md5Utils md5Utils = new Md5Utils();
     JsonUtils jsonUtils = new JsonUtils();
 
@@ -70,16 +71,17 @@ public class StageInDbWorkerThread implements Runnable {
         }
     }
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger simulationGroupId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef) throws DataServiceException {
+    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger parentRunId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef, Authentication authentication) throws DataServiceException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
         this.scenarioDate = scenarioDate;
         this.batchRunId = batchRunId;
-        this.simulationGroupId = simulationGroupId;
+        this.parentRunId = parentRunId;
         this.simulatorIdentification = simulatorIdentification;
         this.errorRef = errorRef;
         this.counterRef = counterRef;
+        this.authentication = authentication;
 
     }
 
@@ -195,9 +197,8 @@ public class StageInDbWorkerThread implements Runnable {
                             );
                     return;
                 }
-                StageMethod stageMethod = new StageMethod(currentRunSimulationMessage, simulationGroupId);
-                RunResultAndSimulationGroupId runResultandSimulationGroupId = stageMethod.stage();
-                RunResult runResult = runResultandSimulationGroupId.getRunResult();
+                StageMethod stageMethod = new StageMethod(currentRunSimulationMessage, parentRunId, authentication);
+                RunResult runResult = stageMethod.stage();
 
                 String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
                 batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");

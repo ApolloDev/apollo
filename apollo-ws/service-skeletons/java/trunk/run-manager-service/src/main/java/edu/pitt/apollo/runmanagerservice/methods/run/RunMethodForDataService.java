@@ -77,7 +77,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 			BigInteger run = runIdAndFiles.getRunId();
 			List<String> files = runIdAndFiles.getFiles();
 
-			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithRun(run, authentication);
+			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
 			for (BigInteger singleRun : runIdsAssociatedWithRun) {
 				for (String file : files) {
 					String urlForFile = BASE_URL + runId + "/" + FILE_PREFIX + file;

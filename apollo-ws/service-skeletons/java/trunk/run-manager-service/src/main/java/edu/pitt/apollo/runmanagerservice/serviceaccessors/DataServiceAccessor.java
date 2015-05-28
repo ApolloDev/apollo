@@ -47,8 +47,8 @@ public class DataServiceAccessor implements DataServiceInterface {
 	}
 
 	@Override
-	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return null;
+	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+		return connector.insertRun(message, authentication);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class DataServiceAccessor implements DataServiceInterface {
 	}
 
 	@Override
-	public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 
 	}
 

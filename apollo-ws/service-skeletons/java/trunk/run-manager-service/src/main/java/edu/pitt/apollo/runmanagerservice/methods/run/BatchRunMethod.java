@@ -3,7 +3,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -19,8 +19,8 @@ import java.math.BigInteger;
 public class BatchRunMethod extends RunMethodForSimulation {
 
 
-    public BatchRunMethod(BigInteger stagedRunId) throws JsonUtilsException, DataServiceException {
-        super(stagedRunId);
+    public BatchRunMethod(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
+        super(stagedRunId, authentication);
     }
 
     @Override

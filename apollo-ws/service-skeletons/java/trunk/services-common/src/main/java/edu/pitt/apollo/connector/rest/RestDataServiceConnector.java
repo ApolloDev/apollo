@@ -38,7 +38,7 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	}
 
 	@Override
-	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

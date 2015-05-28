@@ -166,7 +166,7 @@ public class DatabaseAccessor implements DataServiceInterface {
     }
 
     @Override
-    public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+    public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
         return null;
     }
 

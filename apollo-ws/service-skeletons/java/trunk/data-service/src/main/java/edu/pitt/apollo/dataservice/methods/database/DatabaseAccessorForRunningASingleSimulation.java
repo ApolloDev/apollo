@@ -30,8 +30,8 @@ public class DatabaseAccessorForRunningASingleSimulation extends
 	}
 
 	@Override
-	public BigInteger[] insertRunIntoDatabase(
-			BigInteger memberOfSimulationGroupIdOrNull)
+	public BigInteger insertRunIntoDatabase(
+			Object message, Authentication authentication)
 			throws ApolloDatabaseException, Md5UtilsException {
 
 		RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(runMessage);

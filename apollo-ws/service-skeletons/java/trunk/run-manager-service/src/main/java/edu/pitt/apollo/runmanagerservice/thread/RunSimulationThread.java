@@ -6,7 +6,6 @@ import edu.pitt.apollo.connector.rest.RestSimulatorServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessorForRunningASingleSimulation;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.SimulatorServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
@@ -28,7 +27,7 @@ public class RunSimulationThread extends RunApolloServiceThread {
 	@Override
 	public void run() {
 
-		DataServiceAccessor dataServiceAccessor = new DataServiceAccessorForRunningASingleSimulation(message);
+		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
 		
 		// the simulation
 		SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();

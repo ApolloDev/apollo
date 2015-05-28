@@ -177,11 +177,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
                 CounterRef counter = new CounterRef();
                 error.value = false;
                 Timer timer = new Timer();
-                timer.schedule(new StatusUpdaterThread(runId, counter, error), 0, 1000);
+                timer.schedule(new StatusUpdaterThread(dataServiceAccessor, runId, counter, error, authentication), 0, 1000);
 
                 while ((line = br.readLine()) != null) {
 
-                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, line, message, scenarioDate, stBuild, error, counter);
+                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, line, message, scenarioDate, stBuild, error, counter, authentication);
                     executor.execute(worker);
                     if (error.value) {
                         break;

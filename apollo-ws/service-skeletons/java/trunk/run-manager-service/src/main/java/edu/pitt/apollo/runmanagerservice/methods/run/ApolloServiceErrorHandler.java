@@ -2,7 +2,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.ErrorUtils;
-import edu.pitt.apollo.runmanagerservice.exception.DataServiceException;
+import edu.pitt.apollo.exception.DataServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

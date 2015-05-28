@@ -19,7 +19,7 @@ public interface DataServiceInterface {
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException;
 
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException;
 
@@ -27,7 +27,7 @@ public interface DataServiceInterface {
 
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException;
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException;
 
 	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException;
 
