@@ -180,8 +180,6 @@ public class DatabaseAccessor implements DataServiceInterface {
     public void associateContentWithRunIdWithSoftareNameAndVersionParameters(BigInteger runId, String content, String sourceSoftwareName, String sourceSoftwareVersion,
                                                                              String destinationSoftwareName, String destinationSoftwareVersion, String contentLabel,
                                                                             ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException{
-
-
         try {
             SoftwareIdentification sourceSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(sourceSoftwareName, sourceSoftwareVersion);
             SoftwareIdentification destinationSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(destinationSoftwareName, destinationSoftwareVersion);
@@ -214,7 +212,13 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
-
+        try {
+            authenticateUser(authentication);
+            dbUtils.updateStatusOfRun(runId, statusEnumToSet, messageToSet);
+        } catch (ApolloDatabaseException e) {
+            e.printStackTrace();
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
     
@@ -239,7 +243,12 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            return dbUtils.getStatusOfLastServiceToBeCalledForRun(runId);
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
     

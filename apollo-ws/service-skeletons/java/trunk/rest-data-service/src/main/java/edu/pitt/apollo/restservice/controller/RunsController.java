@@ -65,7 +65,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String deleteRunFromDatabase(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String deleteRunFromDatabase(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         DataServiceImpl impl = new DataServiceImpl();
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         RemoveRunDataMessage message = new RemoveRunDataMessage();
@@ -119,7 +121,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String postSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String postSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                      @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                      @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
@@ -134,7 +138,9 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.PUT, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String putSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String putSoftwareIdentification(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                     @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                     @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetSoftwareIdentificationForRunRestMessage returnMessage = new GetSoftwareIdentificationForRunRestMessage();
         GetSoftwareIdentificationForRunMessage message = new GetSoftwareIdentificationForRunMessage();
@@ -156,13 +162,18 @@ public class RunsController {
     @RequestMapping(value = "/run/{runId}/status", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId) {
+    String getStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
 
         GetRunStatusRestMessage returnMessage = new GetRunStatusRestMessage();
 
         GetStatusOfRunMessage message = new GetStatusOfRunMessage();
         message.setRunId(runId);
-
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
         DataServiceImpl impl = new DataServiceImpl();
 
         GetStatusOfRunResult result = impl.getStatusOfRun(message);
@@ -194,7 +205,9 @@ public class RunsController {
     @ResponseBody
     String updateStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                               @ApiParam(value="Method call status enum", required=true) @RequestParam("methodCallStatusEnum") MethodCallStatusEnum statusToUpdateTo,
-                              @ApiParam(value="Status message", required=true) @RequestParam("statusMessage") String statusMessage) {
+                              @ApiParam(value="Status message", required=true) @RequestParam("statusMessage") String statusMessage,
+                             @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                             @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         if(statusMessage.equalsIgnoreCase("") || statusMessage.trim().equalsIgnoreCase(""))
         {
@@ -210,6 +223,10 @@ public class RunsController {
         updateStatusOfRunMessage.setRunId(runId);
         updateStatusOfRunMessage.setStatusMessage(statusMessage);
         updateStatusOfRunMessage.setStatusEnum(statusToUpdateTo);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        updateStatusOfRunMessage.setAuthentication(authentication);
         DataServiceImpl impl = new DataServiceImpl();
         UpdateStatusOfRunResult result = impl.updateStatusOfRun(updateStatusOfRunMessage);
 
@@ -388,7 +405,9 @@ public class RunsController {
             @ApiResponse(code = 200, message = "")
     })
     @RequestMapping(value="/run/{runId}/allOutputFilesURLAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
-    public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+    public @ResponseBody String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         BigInteger runIdAsBigInteger;
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         Meta meta = new Meta();
@@ -411,7 +430,9 @@ public class RunsController {
               @ApiResponse(code = 200, message = "")
       })
       @RequestMapping(value="/run/{runId}", method= RequestMethod.GET, headers="Accept=application/xml")
-      public @ResponseBody String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId){
+      public @ResponseBody String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                    @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                    @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         RestDataServiceImpl impl = new RestDataServiceImpl();
         GetRunInformationRestMessage returnMessage = new GetRunInformationRestMessage();
         GetRunInformationMessage message = new GetRunInformationMessage();
