@@ -469,6 +469,21 @@
 			<element name="wsdlURL" type="token" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
+	<complexType name="UpdateLastServiceToBeCalledForRunMessage">
+		<sequence>
+			<sequence>
+				<element name="softwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="softwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+				<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
+			</sequence>
+		</sequence>
+	</complexType>
+	<complexType name="UpdateLastServiceToBeCalledForRunResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+		</sequence>
+	</complexType>
 
 
 </schema>

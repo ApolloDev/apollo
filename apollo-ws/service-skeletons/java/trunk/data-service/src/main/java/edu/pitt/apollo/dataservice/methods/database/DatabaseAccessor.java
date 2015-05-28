@@ -224,6 +224,24 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+        try{
+            authenticateUser(authentication);
+            return dbUtils.updateLastServiceToBeCalledForRun(runId,softwareIdentification);
+        } catch (ApolloDatabaseException e) {
+            e.printStackTrace();
+            throw new DataServiceException(e.getMessage());
+        }
+    }
+
+    public int updateLastServiceToBeCalledForRunWithRunIdSoftwareNameAndSoftwareVersion(BigInteger runId, String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException{
+        try {
+            authenticateUser(authentication);
+            SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName, softwareVersion);
+            updateLastServiceToBeCalledForRun(runId,si,authentication);
+        } catch (ApolloDatabaseException ade) {
+            ade.printStackTrace();
+            throw new DataServiceException(ade.getMessage());
+        }
         return 0;
     }
 

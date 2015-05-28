@@ -570,7 +570,7 @@ public class RunsController {
             @ApiResponse(code = 200, message = "")
     })
     @RequestMapping(value="/run/{runId}/lastServiceToBeCalled", method= RequestMethod.GET, headers="Accept=application/xml")
-    public @ResponseBody String getLastServiceToBeCalledforGivenRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+    public @ResponseBody String getLastServiceToBeCalledForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
                                                            @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
                                                            @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         RestDataServiceImpl impl = new RestDataServiceImpl();
@@ -589,5 +589,37 @@ public class RunsController {
         }
         return ConvertResponseMessagesToXml.convertGetSoftwareIdentificationForRunMessageToXmlJaxb(returnMessage);
 
+    }
+
+    @POST
+    @ApiOperation(value = "Set simulation group IDs for run.", notes = "Sets the simulation group IDs for run using a comma separated input.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/lastServiceToBeCalled", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String updateLastServiceToBeCalledForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                 @ApiParam(value = "Software name", required = true) @RequestParam("softwareName") String softwareName,
+                                                                  @ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
+                                                 @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                 @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        UpdateLastServiceToBeCalledForRunMessage message = new UpdateLastServiceToBeCalledForRunMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
+        message.setRunId(runId);
+        message.setSoftwareName(softwareName);
+        message.setSoftwareVersion(softwareVersion);
+
+        UpdateLastServiceToBeCalledForRunResult result = impl.updateLastServiceToBeCalledForRunResult(message);
+        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+        }
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
     }
 }

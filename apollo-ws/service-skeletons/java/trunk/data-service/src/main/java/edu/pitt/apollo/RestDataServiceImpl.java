@@ -5,10 +5,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.GetAllOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLsMethod;
-import edu.pitt.apollo.dataservice.methods.run.GetLastServiceToBeCalledForRun;
-import edu.pitt.apollo.dataservice.methods.run.GetRunInformationMethod;
-import edu.pitt.apollo.dataservice.methods.run.GetSimulationGroupIdsForRunIdMethod;
-import edu.pitt.apollo.dataservice.methods.run.SetSimulationGroupIdsForRunIdMethod;
+import edu.pitt.apollo.dataservice.methods.run.*;
 import edu.pitt.apollo.dataservice.methods.softwaremethods.GetURLForSoftwareIdentification;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -68,4 +65,11 @@ public class RestDataServiceImpl extends DataServiceImpl {
         GetSoftwareIdentificationForRunResult result = GetLastServiceToBeCalledForRun.getLastServiceToBeCalledForRun(message);
         return result;
     }
+
+    public UpdateLastServiceToBeCalledForRunResult updateLastServiceToBeCalledForRunResult(UpdateLastServiceToBeCalledForRunMessage message)
+    {
+        UpdateLastServiceToBeCalledForRunResult result = UpdateLastServiceToBeCalledForRun.updateLastServiceToBeCalledForRun(message);
+        return result;
+    }
+
 }
