@@ -29,6 +29,7 @@ import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.service.dataservice.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 
@@ -187,6 +188,7 @@ public class DataServiceImpl implements DataServiceEI {
 		return result;
 	}
 
+
 	@Override
 	public AddTextDataContentResult addTextDataContent(AddTextDataContentMessage message) {
 		AddTextDataContentResult result = AddTextDataContentMethod.addTextDataContent(message);
@@ -207,9 +209,8 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId) {
-		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId);
+		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId,null);
 		method.downloadFiles();
-		
 		return null;
 	}
 

@@ -410,14 +410,16 @@ public class RunsController {
                                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
         BigInteger runIdAsBigInteger;
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
         Meta meta = new Meta();
-
         meta.setNumberOfReturnedResults(0);
         meta.setStatus(RequestSuccessfulMessage.getStatus());
         meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
 
-        DataServiceImpl impl = new DataServiceImpl();
-        impl.getAllOutputFilesURLAsZip(runId);
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getAllOutputFilesURLAsZip(runId,authentication);
 
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 

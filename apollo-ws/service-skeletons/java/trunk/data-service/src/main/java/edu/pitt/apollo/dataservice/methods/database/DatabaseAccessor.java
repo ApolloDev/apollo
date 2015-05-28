@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.methods.database;
 
 import edu.pitt.apollo.JsonUtils;
+import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -334,6 +335,14 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
+        try {
+            authenticateUser(authentication);
+            dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
+        } catch (ApolloDatabaseException ade) {
+            throw new DataServiceException(ade.getMessage());
+        } catch (JsonUtilsException jue) {
+            throw new DataServiceException(jue.getMessage());
+        }
 
     }
 
