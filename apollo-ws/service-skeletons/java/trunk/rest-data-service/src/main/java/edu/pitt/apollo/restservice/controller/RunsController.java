@@ -72,6 +72,10 @@ public class RunsController {
         StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
         RemoveRunDataMessage message = new RemoveRunDataMessage();
         message.setRunId(runId);
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
         RemoveRunDataResult result = impl.removeRunData(message);
 
         if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED)
