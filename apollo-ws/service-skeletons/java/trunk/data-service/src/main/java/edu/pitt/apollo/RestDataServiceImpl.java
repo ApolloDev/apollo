@@ -3,6 +3,8 @@ package edu.pitt.apollo;
 
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.GetAllOutputFilesURLAsZipMethod;
+import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLAsZipMethod;
+import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLsMethod;
 import edu.pitt.apollo.dataservice.methods.run.GetRunInformationMethod;
 import edu.pitt.apollo.dataservice.methods.run.GetSimulationGroupIdsForRunIdMethod;
 import edu.pitt.apollo.dataservice.methods.run.SetSimulationGroupIdsForRunIdMethod;
@@ -45,6 +47,18 @@ public class RestDataServiceImpl extends DataServiceImpl {
     public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId,Authentication authentication) {
         GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId,authentication);
         method.downloadFiles();
+        return null;
+    }
+    public MethodCallStatus getOutputFilesURLs(BigInteger runId,Authentication authentication) {
+        GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,authentication);
+        method.downloadFiles();
+        return null;
+    }
+
+    public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId,Authentication authentication) {
+        GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId,authentication);
+        method.downloadFiles();
+
         return null;
     }
 }

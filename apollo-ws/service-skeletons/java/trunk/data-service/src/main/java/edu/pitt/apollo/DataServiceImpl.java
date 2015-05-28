@@ -164,7 +164,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId) {
-		GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId);
+		GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId, null);
 		method.downloadFiles();
 
 		return null;
@@ -199,7 +199,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public MethodCallStatus getOutputFilesURLs(BigInteger runId) {
-		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId);
+		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,null);
 		method.downloadFiles();
 
 		return null;

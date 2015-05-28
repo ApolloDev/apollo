@@ -325,12 +325,26 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
-
+        try {
+            authenticateUser(authentication);
+            dbUtils.getGetOutputFilesURLsMessageForRun(runId);
+        } catch (ApolloDatabaseException ade) {
+            throw new DataServiceException(ade.getMessage());
+        } catch (JsonUtilsException jue) {
+            throw new DataServiceException(jue.getMessage());
+        }
     }
 
     
     public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
-
+        try {
+            authenticateUser(authentication);
+            dbUtils.getGetOutputFilesURLAsZipMessageForRun(runId);
+        } catch (ApolloDatabaseException ade) {
+            throw new DataServiceException(ade.getMessage());
+        } catch (JsonUtilsException jue) {
+            throw new DataServiceException(jue.getMessage());
+        }
     }
 
     

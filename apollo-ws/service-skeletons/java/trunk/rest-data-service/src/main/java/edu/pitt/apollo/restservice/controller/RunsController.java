@@ -425,6 +425,58 @@ public class RunsController {
 
     }
 
+    @POST
+    @ApiOperation(value = "Get URLs of output files.", notes = "Starts the process to get the URL of the output files given a run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/outputFilesURLs/", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String getOutputFilesURLs(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                          @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                          @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        BigInteger runIdAsBigInteger;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        Meta meta = new Meta();
+        meta.setNumberOfReturnedResults(0);
+        meta.setStatus(RequestSuccessfulMessage.getStatus());
+        meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
+
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getOutputFilesURLs(runId, authentication);
+
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
+    @POST
+    @ApiOperation(value = "Get URL of output files Zip.", notes = "Starts the process to get the URL of the output files as zip given a run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value="/run/{runId}/outputFilesURLsAsZip/", method= RequestMethod.POST, headers="Accept=application/xml")
+    public @ResponseBody String getOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                                   @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                                   @ApiParam(value = "Password", required = true) @RequestParam("password") String password){
+        BigInteger runIdAsBigInteger;
+        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        Meta meta = new Meta();
+        meta.setNumberOfReturnedResults(0);
+        meta.setStatus(RequestSuccessfulMessage.getStatus());
+        meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
+
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        impl.getOutputFilesURLAsZip(runId,authentication);
+
+        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+    }
+
     /*--Method to get run information such as groups, types, etc--*/
     @GET
       @ApiOperation(value = "Get information for run.", notes = "Returns the service type and all simulation group IDs associated with the run.", response = String.class)
