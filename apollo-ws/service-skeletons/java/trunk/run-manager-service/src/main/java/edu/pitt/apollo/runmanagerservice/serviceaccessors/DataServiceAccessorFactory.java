@@ -18,13 +18,13 @@ public class DataServiceAccessorFactory {
 		if (message instanceof RunSimulationMessage) {
 			return new DataServiceAccessor();
 		} else if (message instanceof RunVisualizationMessage) {
-			return new DataServiceAccessorForRunningVisualizations((RunVisualizationMessage) message);
+			return new DataServiceAccessor();
 		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
-			return new DataServiceAccessorForRunningDataServiceRequests((GetAllOutputFilesURLAsZipMessage) message);
+			return new DataServiceAccessor();
 		} else if (message instanceof GetOutputFilesURLAsZipMessage) {
-			return new DataServiceAccessorForRunningDataServiceRequests((GetOutputFilesURLAsZipMessage) message);
+			return new DataServiceAccessor();
 		} else if (message instanceof GetOutputFilesURLsMessage) {
-			return new DataServiceAccessorForRunningDataServiceRequests((GetOutputFilesURLsMessage) message);
+			return new DataServiceAccessor();
 		} else if (message instanceof RunSimulationsMessage) {
 			return new DataServiceAccessor();
 		} else {

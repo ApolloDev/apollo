@@ -21,10 +21,10 @@ public class DataServiceAccessor implements DataServiceInterface {
 
 
 	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException {
-		Map<BigInteger, String> files = this.getListOfFilesForRunId(runId, authentication);
+		Map<BigInteger, FileAndURLDescription> files = this.getListOfFilesForRunId(runId, authentication);
 		// this is inadequate!! need to filter by source and dest software id too!
 		for (BigInteger fileId : files.keySet()) {
-			String filename = files.get(fileId);
+			String filename = files.get(fileId).getName();
 			if (filename.equals(runMessageFilename)) {
 				return this.getFileContentForFileId(fileId, authentication);
 			}
@@ -34,11 +34,6 @@ public class DataServiceAccessor implements DataServiceInterface {
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		return null;
-	}
-
-	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataTypeEnum contentDataType, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-
 	}
 
 	@Override
@@ -82,16 +77,6 @@ public class DataServiceAccessor implements DataServiceInterface {
 	}
 
 	@Override
-	public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return null;
-	}
-
-	@Override
-	public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return null;
-	}
-
-	@Override
 	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		return null;
 	}
@@ -112,17 +97,27 @@ public class DataServiceAccessor implements DataServiceInterface {
 	}
 
 	@Override
-	public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-
+	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-
+	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 
+	@Override
+	public RunResult runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }
