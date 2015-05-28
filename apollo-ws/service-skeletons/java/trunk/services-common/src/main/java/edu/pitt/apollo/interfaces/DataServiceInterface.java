@@ -35,9 +35,9 @@ public interface DataServiceInterface {
 
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
 
 	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException;
 

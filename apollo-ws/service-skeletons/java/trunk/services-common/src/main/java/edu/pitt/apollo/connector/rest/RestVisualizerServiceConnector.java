@@ -29,9 +29,6 @@ public class RestVisualizerServiceConnector extends VisualizerServiceConnector {
 		super(url);
 	}
 
-	@Override
-	public RunResult run(BigInteger runId) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
+
 	
 }

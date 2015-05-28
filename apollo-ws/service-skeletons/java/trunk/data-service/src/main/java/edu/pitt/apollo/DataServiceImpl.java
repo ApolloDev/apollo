@@ -114,7 +114,7 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public ListFilesResult listFilesAssociatedToRun(ListFilesMessage message) {
-		ListFilesResult result = ListFilesAssociatedToRunMethod.listFilesAssocaitedToRun(message);
+		ListFilesResult result = ListFilesAssociatedToRunMethod.listFilesAssociatedToRun(message);
 		return result;
 	}
 

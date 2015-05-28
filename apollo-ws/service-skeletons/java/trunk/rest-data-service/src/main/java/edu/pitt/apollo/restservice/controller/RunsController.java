@@ -249,7 +249,8 @@ public class RunsController {
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
         }
         else{
-            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+            List<ContentIdAndDescription> list = result.getContentIdAndDescriptions();
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(list);
         }
         return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
     }
@@ -324,7 +325,7 @@ public class RunsController {
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
         }
         else{
-            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndLabels());
+            returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getContentIdAndDescriptions());
         }
         return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
 

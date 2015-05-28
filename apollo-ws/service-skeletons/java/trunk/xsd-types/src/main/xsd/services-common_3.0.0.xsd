@@ -202,5 +202,18 @@
 		</sequence>
 	</complexType>
 
+	<complexType name="FileAndURLDescription">
+		<sequence>
+			<element name="sourceSoftwareIdentification" type="tns:SoftwareIdentification"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="destinationSoftwareIdentification" type="tns:SoftwareIdentification"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="name" type="string" maxOccurs="1"
+					 minOccurs="1" />
+			<element name="contentType" type="tns:ContentDataTypeEnum" minOccurs="1" maxOccurs="1"/>
+			<element name="contentFormat" type="tns:ContentDataFormatEnum" minOccurs="1" maxOccurs="1"/>
+		</sequence>
+	</complexType>
+
 </schema>
 	

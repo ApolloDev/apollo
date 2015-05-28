@@ -27,10 +27,10 @@
 			<enumeration value="RUN_DATA_SERVICE_MESSAGE" />
 		</restriction>
 	</simpleType>
-	<complexType name="ContentIdAndLabel">
+	<complexType name="ContentIdAndDescription">
 		<sequence>
 			<element name="contentId" type="positiveInteger"></element>
-			<element name="label" type="token"></element>
+			<element name="contentDescription" type="common:FileAndURLDescription"></element>
 		</sequence>
 	</complexType>
 
@@ -321,7 +321,7 @@
 	<complexType name="ListFilesResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
-			<element name="contentIdAndLabels" type="tns:ContentIdAndLabel" maxOccurs="unbounded" minOccurs="0">
+			<element name="contentIdAndDescriptions" type="tns:ContentIdAndDescription" maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
@@ -334,7 +334,7 @@
 	<complexType name="ListURLsResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
-			<element name="contentIdAndLabels" type="tns:ContentIdAndLabel" maxOccurs="unbounded" minOccurs="0">
+			<element name="contentIdAndDescriptions" type="tns:ContentIdAndDescription" maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>

@@ -10,10 +10,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 public class DatabaseAccessorForRunningASingleSimulation extends
@@ -105,12 +102,12 @@ public class DatabaseAccessorForRunningASingleSimulation extends
 	}
 
 	@Override
-	public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
 		return null;
 	}
 
 	@Override
-	public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
 		return null;
 	}
 

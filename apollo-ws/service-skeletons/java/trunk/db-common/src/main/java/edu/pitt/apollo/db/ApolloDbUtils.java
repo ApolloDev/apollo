@@ -2423,23 +2423,45 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
-    public HashMap<BigInteger,String> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
-        HashMap<BigInteger, String> contentIdToFileNameMap = new HashMap<BigInteger, String>();
+    public HashMap<BigInteger,FileAndURLDescription> getListOfFilesForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
 
         try(Connection conn = datasource.getConnection()){
 
 
-
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
+			PreparedStatement pstmt = conn.prepareStatement(
+					"SELECT runData.content_id, rddv.source_software, rddv.destination_software, rddv.format, rddv.type, rddv.label FROM run_data runData "+
+							"JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT'");
+//            PreparedStatement pstmt = conn.prepareStatement(
+//                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+//                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND rddv.format='TEXT';");
             pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
 
+
             while (resultSet.next()) {
+				FileAndURLDescription fileDescription = new FileAndURLDescription();
+				fileDescription.setContentFormat(ContentDataFormatEnum.valueOf(resultSet.getString("format")));
+				fileDescription.setContentType(ContentDataTypeEnum.fromValue(resultSet.getString("type")));
+				if(resultSet.getInt("source_software")!=0) {
+					SoftwareIdentification source = getSoftwareIdentification(resultSet.getInt("source_software"));
+					fileDescription.setSourceSoftwareIdentification(source);
+				}
+				else
+				{
+					fileDescription.setSourceSoftwareIdentification(null);
+				}
+				if(resultSet.getInt("destination_software")!=0)
+				{
+					SoftwareIdentification destination = getSoftwareIdentification(resultSet.getInt("destination_software"));
+					fileDescription.setDestinationSoftwareIdentification(destination);
+				}
+				else{
+					fileDescription.setDestinationSoftwareIdentification(null);
+				}
+				fileDescription.setName(resultSet.getString("label"));
                 int content_id = resultSet.getInt("content_id");
-                String file_label = resultSet.getString("label");
-                contentIdToFileNameMap.put(BigInteger.valueOf(content_id), file_label);
+				contentIdToFileDescriptionMap.put(BigInteger.valueOf(content_id), fileDescription);
 
             }
 
@@ -2449,26 +2471,48 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //        catch (ClassNotFoundException e) {
 //            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
 //        }
-        return contentIdToFileNameMap;
+        return contentIdToFileDescriptionMap;
     }
 
-    public HashMap<BigInteger,String> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
-        HashMap<BigInteger, String> contentIdToURLNameMap = new HashMap<BigInteger, String>();
+    public HashMap<BigInteger,FileAndURLDescription> getListOfURLsForRunId(BigInteger runId)  throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToURLDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
 
         try(Connection conn = datasource.getConnection()){
 
 
-
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
-                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
+			PreparedStatement pstmt = conn.prepareStatement(
+					"SELECT runData.content_id, rddv.source_software, rddv.destination_software, rddv.format, rddv.type, rddv.label FROM run_data runData "+
+							"JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP')");
+//            PreparedStatement pstmt = conn.prepareStatement(
+//                    "SELECT runData.content_id, rddv.label FROM run_data runData " +
+//                            "JOIN run_data_description_view rddv ON rddv.run_data_description_id=runData.description_id WHERE runData.run_id=? AND (rddv.format='URL' OR rddv.format='ZIP');");
 
             pstmt.setInt(1,runId.intValue());
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
-                int content_id = resultSet.getInt("content_id");
-                String url_label = resultSet.getString("label");
-                contentIdToURLNameMap.put(BigInteger.valueOf(content_id), url_label);
+				FileAndURLDescription urlDescription = new FileAndURLDescription();
+				urlDescription.setContentFormat(ContentDataFormatEnum.valueOf(resultSet.getString("format")));
+				urlDescription.setContentType(ContentDataTypeEnum.fromValue(resultSet.getString("type")));
+				if(resultSet.getInt("source_software")!=0) {
+					SoftwareIdentification source = getSoftwareIdentification(resultSet.getInt("source_software"));
+					urlDescription.setSourceSoftwareIdentification(source);
+				}
+				else
+				{
+					urlDescription.setSourceSoftwareIdentification(null);
+				}
+				if(resultSet.getInt("destination_software")!=0)
+				{
+					SoftwareIdentification destination = getSoftwareIdentification(resultSet.getInt("destination_software"));
+					urlDescription.setDestinationSoftwareIdentification(destination);
+				}
+				else{
+					urlDescription.setDestinationSoftwareIdentification(null);
+				}
+
+				urlDescription.setName(resultSet.getString("label"));
+				int content_id = resultSet.getInt("content_id");
+				contentIdToURLDescriptionMap.put(BigInteger.valueOf(content_id), urlDescription);
 
             }
 
@@ -2478,7 +2522,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //        catch (ClassNotFoundException e) {
 //            throw new ApolloDatabaseException("ClassNotFoundException retrieving content ID and labels for run ID " + runId + ": " + e.getMessage());
 //        }
-        return contentIdToURLNameMap;
+        return contentIdToURLDescriptionMap;
     }
 
     public String getFileContentForFileId(BigInteger fileId)  throws ApolloDatabaseException {

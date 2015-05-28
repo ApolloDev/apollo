@@ -233,22 +233,22 @@ public class DatabaseAccessor implements DataServiceInterface {
     }
 
     
-    public HashMap<BigInteger, String> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+    public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
-            HashMap<BigInteger,String> fileIdsToFileNameMap =  dbUtils.getListOfFilesForRunId(runId);
-            return fileIdsToFileNameMap;
+            HashMap<BigInteger,FileAndURLDescription> fileIdsToFileDescriptionMap =  dbUtils.getListOfFilesForRunId(runId);
+            return fileIdsToFileDescriptionMap;
         } catch (ApolloDatabaseException e) {
             throw new DataServiceException(e.getMessage());
         }
     }
 
     
-    public HashMap<BigInteger, String> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+    public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
-            HashMap<BigInteger,String> urlIdsToUrlNameMap =  dbUtils.getListOfURLsForRunId(runId);
-            return urlIdsToUrlNameMap;
+            HashMap<BigInteger,FileAndURLDescription> urlIdsToUrlDescriptionMap =  dbUtils.getListOfURLsForRunId(runId);
+            return urlIdsToUrlDescriptionMap;
         } catch (ApolloDatabaseException e) {
             throw new DataServiceException(e.getMessage());
         }
