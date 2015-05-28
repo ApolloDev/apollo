@@ -1,13 +1,14 @@
 package edu.pitt.apollo.connector;
 
-import java.math.BigInteger;
+import edu.pitt.apollo.interfaces.TranslatorServiceInterface;
 
 /**
  *
  * @author nem41
  */
-public interface TranslatorServiceConnector {
-	
-	public void translate(BigInteger runId);
-	
+public abstract class TranslatorServiceConnector extends ServiceConnector implements TranslatorServiceInterface {
+
+	public TranslatorServiceConnector(String url) {
+		super(url);
+	}
 }

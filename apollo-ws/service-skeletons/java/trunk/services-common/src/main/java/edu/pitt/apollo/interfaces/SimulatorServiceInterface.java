@@ -1,8 +1,7 @@
 package edu.pitt.apollo.interfaces;
 
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
 
 import java.math.BigInteger;
 
@@ -11,7 +10,9 @@ import java.math.BigInteger;
  */
 public interface SimulatorServiceInterface {
 
-    public RunResult run(BigInteger runId);
-    public RunResult runSimulations(BigInteger runId);
-    public TerminteRunResult terminate(TerminateRunRequest terminateRunRequest);
+	public void run(BigInteger runId) throws SimulatorServiceException;
+
+	public void runSimulations(BigInteger runId) throws SimulatorServiceException;
+
+	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException;
 }

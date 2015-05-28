@@ -1,4 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
+
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
@@ -13,12 +14,16 @@ import java.util.Map;
 /**
  * Created by jdl50 on 5/21/15.
  */
-public class DataServiceAccessor implements DataServiceInterface {
-    
-	private static final String DATA_SERVICE_URL = "";
-	
-	protected DataServiceConnector connector = new RestDataServiceConnector(DATA_SERVICE_URL);
+public class DataServiceAccessor extends ServiceAccessor implements DataServiceInterface {
 
+	private static final String DATA_SERVICE_URL = "";
+
+	protected DataServiceConnector connector;
+
+	public DataServiceAccessor() {
+		super(DATA_SERVICE_URL);
+		connector = new RestDataServiceConnector(url);
+	}
 
 	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException {
 		Map<BigInteger, FileAndURLDescription> files = this.getListOfFilesForRunId(runId, authentication);
@@ -29,8 +34,9 @@ public class DataServiceAccessor implements DataServiceInterface {
 				return this.getFileContentForFileId(fileId, authentication);
 			}
 		}
-		throw new DataServiceException("Couldn't find "+runMessageFilename+" in database for run " + runId);
+		throw new DataServiceException("Couldn't find " + runMessageFilename + " in database for run " + runId);
 	}
+
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		return null;
@@ -112,12 +118,12 @@ public class DataServiceAccessor implements DataServiceInterface {
 	}
 
 	@Override
-	public RunResult runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

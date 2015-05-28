@@ -95,7 +95,7 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	}
 
 	@Override
-	public RunResult runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

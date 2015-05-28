@@ -1,13 +1,13 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.VisulizerServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.VisualizerServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
 /**
@@ -24,17 +24,21 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 	public void run() {
 
 		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
-
+		String url;
 		try {
-			String url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);
+			url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);
 		} catch (DataServiceException e) {
 			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId);
+			return;
 		}
 
-		VisualizerServiceAccessor visualizerServiceAccessor = new VisualizerServiceAccessor();
-		//VisualizerServiceConnector visualizerServiceConnector = new RestVisualizerServiceConnector(url);
-
-		RunResult result = visualizerServiceAccessor.run(runId);
+		try {
+			VisualizerServiceAccessor visualizerServiceAccessor = new VisualizerServiceAccessor(url);
+			visualizerServiceAccessor.run(runId);
+		} catch (VisulizerServiceException ex) {
+			ApolloServiceErrorHandler.reportError("Error running visualizer, error was:" + ex.getMessage(), runId);
+			return;
+		}
 
 		try {
 			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
