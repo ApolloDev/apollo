@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
+import edu.pitt.apollo.connector.VisualizerServiceConnector;
 import edu.pitt.apollo.exception.VisulizerServiceException;
 import edu.pitt.apollo.interfaces.VisualizerServiceInterface;
 
@@ -10,15 +11,15 @@ import java.math.BigInteger;
  */
 public class VisualizerServiceAccessor extends ServiceAccessor implements VisualizerServiceInterface {
 
+	private VisualizerServiceConnector connector;
+
 	public VisualizerServiceAccessor(String url) {
 		super(url);
 	}
-	
+
 	@Override
 	public void run(BigInteger runId) throws VisulizerServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		connector.run(runId);
 	}
 
-
- 
 }

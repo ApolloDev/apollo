@@ -1,5 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
+import edu.pitt.apollo.connector.TranslatorServiceConnector;
+import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.interfaces.TranslatorServiceInterface;
 import java.math.BigInteger;
 
@@ -9,15 +11,15 @@ import java.math.BigInteger;
  */
 public class TranslatorServiceAccessor extends ServiceAccessor implements TranslatorServiceInterface {
 
+	private TranslatorServiceConnector connector;
+
 	public TranslatorServiceAccessor(String url) {
 		super(url);
 	}
-	
-//	protected TranslatorServiceConnector connector = new RestTranslatorServiceConnector();
-	
+
 	@Override
-	public void translateRun(BigInteger runId) {
-//		connector.translateRun(runId);
+	public void translateRun(BigInteger runId) throws TranslatorServiceException {
+		connector.translateRun(runId);
 	}
-	
+
 }

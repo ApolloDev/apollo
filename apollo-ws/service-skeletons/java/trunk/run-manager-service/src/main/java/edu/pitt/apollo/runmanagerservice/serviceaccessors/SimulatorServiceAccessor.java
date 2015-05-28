@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
+import edu.pitt.apollo.connector.SimulatorServiceConnector;
 import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.interfaces.SimulatorServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
@@ -11,23 +12,25 @@ import java.math.BigInteger;
  */
 public class SimulatorServiceAccessor extends ServiceAccessor implements SimulatorServiceInterface {
 
+	private SimulatorServiceConnector connector;
+	
 	public SimulatorServiceAccessor(String url) {
 		super(url);
 	}
 
 	@Override
 	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		connector.terminate(terminateRunRequest);
 	}
 
 	@Override
 	public void run(BigInteger runId) throws SimulatorServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		connector.run(runId);
 	}
 
 	@Override
 	public void runSimulations(BigInteger runId) throws SimulatorServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		connector.runSimulations(runId);
 	}
 
 }

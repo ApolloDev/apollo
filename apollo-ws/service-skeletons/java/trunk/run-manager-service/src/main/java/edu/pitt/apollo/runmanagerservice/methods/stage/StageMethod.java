@@ -1,11 +1,11 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessorFactory;
 import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.utils.MessageUtils;
@@ -15,7 +15,6 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ public class StageMethod {
 	public RunResult stage() {
 
 		try {
-			dataServiceDao = DataServiceAccessorFactory.getDataServiceAccessor(message);
+			dataServiceDao = new DataServiceAccessor();
 
 			BigInteger runId = dataServiceDao.insertRun(message, authentication);
 			if (parentRunId != null) {
@@ -98,19 +97,14 @@ public class StageMethod {
 			// run is now translated
 			return (MessageUtils.createRunResult(
 					runId, statusEnum, "Apollo Broker is handling the run request."));
-		} catch (UnrecognizedMessageTypeException e) {
-			return MessageUtils.createRunResult(
-					ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-					MethodCallStatusEnum.FAILED, "Unrecognized message type: " + message.getClass().getName()
-					+ ".  Error was: " + e.getMessage());
 		} catch (DataServiceException ex) {
 			return (MessageUtils.createRunResult(
 					ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
 					MethodCallStatusEnum.FAILED, "Database exception staging run: " + ex.getMessage()));
-		} catch (RunManagerServiceException ex) {
+		} catch (TranslatorServiceException ex) {
 			return (MessageUtils.createRunResult(
 					ApolloServiceErrorHandler.JOB_ID_FOR_FATAL_ERROR,
-					MethodCallStatusEnum.FAILED, "Run manager service exception staging run: " + ex.getMessage()));
+					MethodCallStatusEnum.FAILED, "Translator service service exception staging run: " + ex.getMessage()));
 		}
 	}
 
