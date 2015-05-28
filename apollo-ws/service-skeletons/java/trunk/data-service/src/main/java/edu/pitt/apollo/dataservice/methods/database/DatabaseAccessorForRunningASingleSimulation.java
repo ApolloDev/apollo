@@ -26,8 +26,7 @@ public class DatabaseAccessorForRunningASingleSimulation extends
 		this.runMessage = runSimulationMessage;
 	}
 
-	@Override
-	public BigInteger insertRunIntoDatabase(
+	public BigInteger[] insertRunIntoDatabase(
 			Object message, Authentication authentication)
 			throws ApolloDatabaseException, Md5UtilsException {
 
@@ -63,11 +62,6 @@ public class DatabaseAccessorForRunningASingleSimulation extends
 
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
 		return null;
 	}
 

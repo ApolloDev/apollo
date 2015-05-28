@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
@@ -206,10 +207,11 @@ public class DatabaseAccessor implements DataServiceInterface {
         }
     }
 
-    
-    public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+    @Override
+    public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
         return null;
     }
+
 
     
     public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
@@ -392,6 +394,11 @@ public class DatabaseAccessor implements DataServiceInterface {
             throw new DataServiceException(jue.getMessage());
         }
 
+    }
+
+    @Override
+    public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+        return null;
     }
 
 }

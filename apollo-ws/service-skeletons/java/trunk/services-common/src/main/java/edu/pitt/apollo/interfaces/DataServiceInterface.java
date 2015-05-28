@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
@@ -52,4 +53,6 @@ public interface DataServiceInterface {
 	public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException;
 
 	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException;
+
+	public Map<Integer,ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException;
 }

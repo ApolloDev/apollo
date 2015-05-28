@@ -7,6 +7,7 @@ import edu.pitt.apollo.services_common.v3_0_0.*;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -106,6 +107,11 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	@Override
 	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+		return null;
 	}
 
 	@Override
