@@ -237,12 +237,11 @@ public class DatabaseAccessor implements DataServiceInterface {
         try {
             authenticateUser(authentication);
             SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName, softwareVersion);
-            updateLastServiceToBeCalledForRun(runId,si,authentication);
+           return updateLastServiceToBeCalledForRun(runId,si,authentication);
         } catch (ApolloDatabaseException ade) {
             ade.printStackTrace();
             throw new DataServiceException(ade.getMessage());
         }
-        return 0;
     }
 
     
@@ -266,6 +265,13 @@ public class DatabaseAccessor implements DataServiceInterface {
     }
 
     public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
+        try {
+            authenticateUser(authentication);
+            dbUtils.removeRunData(runId);
+        } catch (ApolloDatabaseException ade) {
+            ade.printStackTrace();
+            throw new DataServiceException(ade.getMessage());
+        }
 
     }
 
