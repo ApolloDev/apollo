@@ -1,15 +1,14 @@
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.DataServiceImpl;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetRunIdsAssociatedWithSimulationGroupMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetRunIdsAssociatedWithSimulationGroupResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetRunInformationMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetRunInformationResult;
+
+import edu.pitt.apollo.data_service_types.v3_0_0.*;
 import edu.pitt.apollo.dataservice.methods.run.GetRunInformationMethod;
 import edu.pitt.apollo.dataservice.methods.run.GetSimulationGroupIdsForRunIdMethod;
 import edu.pitt.apollo.dataservice.methods.run.SetSimulationGroupIdsForRunIdMethod;
+import edu.pitt.apollo.dataservice.methods.softwaremethods.GetURLForSoftwareIdentification;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -31,6 +30,11 @@ public class RestDataServiceImpl extends DataServiceImpl {
 
     public GetRunIdsAssociatedWithSimulationGroupResult getRunIdsAssociatedToSimulationGroupsForRunId(BigInteger runId, Authentication authentication) {
         GetRunIdsAssociatedWithSimulationGroupResult result = GetSimulationGroupIdsForRunIdMethod.getSimulationGroupIdsForRun(runId, authentication);
+        return result;
+    }
+
+    public GetURLForSoftwareIdentificationResult getURLForSoftwareIdentification(GetURLForSoftwareIdentificationMessage message){
+        GetURLForSoftwareIdentificationResult result = GetURLForSoftwareIdentification.getURLForSoftwareIdentification(message);
         return result;
     }
 }

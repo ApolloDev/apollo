@@ -454,5 +454,21 @@
 		</sequence>
 	</complexType>
 
+	<complexType name="GetURLForSoftwareIdentificationMessage">
+		<sequence>
+			<sequence>
+				<element name="softwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="softwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+				<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
+			</sequence>
+		</sequence>
+	</complexType>
+	<complexType name="GetURLForSoftwareIdentificationResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="wsdlURL" type="token" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
 
 </schema>

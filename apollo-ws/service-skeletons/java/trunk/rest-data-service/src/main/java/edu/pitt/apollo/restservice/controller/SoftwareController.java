@@ -6,17 +6,20 @@ import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
+import edu.pitt.apollo.RestDataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetListOfRegisteredSoftwareResult;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetURLForSoftwareIdentificationMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetURLForSoftwareIdentificationResult;
 import edu.pitt.apollo.restservice.rest.responsemessage.GetListOfRegisteredSoftwareRestMessage;
+import edu.pitt.apollo.restservice.rest.responsemessage.GetURLForSoftwareIdentificationRestMessage;
 import edu.pitt.apollo.restservice.rest.utils.BuildGetListOfRegisteredSoftwareRestMessage;
+import edu.pitt.apollo.restservice.rest.utils.softwarerestmessages.BuildGetURLForSoftwareIdentificationRestMessage;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,7 +44,8 @@ public class SoftwareController {
     @RequestMapping(value = "/software", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String getListOfSoftwareFromCollection() {
+    String getListOfSoftwareFromCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
         DataServiceImpl impl = new DataServiceImpl();
         GetListOfRegisteredSoftwareRestMessage returnMessage = new GetListOfRegisteredSoftwareRestMessage();
         GetListOfRegisteredSoftwareResult result = impl.getListOfRegisteredSoftware();
@@ -56,18 +60,49 @@ public class SoftwareController {
     }
 
 
-    @ApiIgnore
-    @POST
-    @ApiOperation(value ="Add software identification.", notes = "Adds a new software identification to the software collection.", response = String.class)
+    @GET
+    @ApiOperation(value ="Get URL of software.", notes = "Returns the WSDL URL of the given software name and version.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/software", method = RequestMethod.POST, headers = "Accept=application/xml")
-    public
-    @ResponseBody
-    String addSoftwareIdentifcationToCollection() {
-        return null;
+    @RequestMapping(value = "/software/url", method = RequestMethod.GET, headers = "Accept=application/xml")
+    public @ResponseBody String getURLForSoftwareIdentification(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                           @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+                                           @ApiParam(value="Software name", required = true) @RequestParam("softwareName") String softwareName,
+                                           @ApiParam(value="Software version", required = true) @RequestParam("softwareVersion") String softwareVersion) {
+        RestDataServiceImpl impl = new RestDataServiceImpl();
+        GetURLForSoftwareIdentificationRestMessage returnMessage = new GetURLForSoftwareIdentificationRestMessage();
+        GetURLForSoftwareIdentificationMessage message = new GetURLForSoftwareIdentificationMessage();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        message.setAuthentication(authentication);
+        message.setSoftwareName(softwareName);
+        message.setSoftwareVersion(softwareVersion);
+        GetURLForSoftwareIdentificationResult result = impl.getURLForSoftwareIdentification(message);
+
+        if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED) {
+            returnMessage =  BuildGetURLForSoftwareIdentificationRestMessage.buildFailedGetURLForSoftwareIdentificationMessage(result.getMethodCallStatus().getMessage());
+        }
+        else{
+            returnMessage =  BuildGetURLForSoftwareIdentificationRestMessage.buildSuccessfulGetURLForSoftwareIdentificationMessage(result.getWsdlURL());
+        }
+        String xml = ConvertResponseMessagesToXml.convertGetURLForSoftwareIdentificationRestMessageToXmlJaxB(returnMessage);
+        return xml;
+
     }
+//    @ApiIgnore
+//    @POST
+//    @ApiOperation(value ="Add software identification.", notes = "Adds a new software identification to the software collection.", response = String.class)
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "")
+//    })
+//    @RequestMapping(value = "/software", method = RequestMethod.POST, headers = "Accept=application/xml")
+//    public
+//    @ResponseBody
+//    String addSoftwareIdentifcationToCollection() {
+//        return null;
+//    }
     //We cannot delete the software collection (DELETE), or put anything at this level (PUT).
 
     /*--Methods for individual software in the collectionb--*/

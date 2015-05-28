@@ -163,8 +163,7 @@ public class DatabaseAccessor implements DataServiceInterface {
                 }
 
     }
-
-    public void addRunIdsToSimulationGroupWithRunId(BigInteger runId, List<BigInteger> listOfRunIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
+  public void addRunIdsToSimulationGroupWithRunId(BigInteger runId, List<BigInteger> listOfRunIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException{
         try {
             authenticateUser(authentication);
             BigInteger groupId = getSimulationGroupIdForRun(runId);
@@ -175,6 +174,7 @@ public class DatabaseAccessor implements DataServiceInterface {
         } catch (Md5UtilsException e) {
             throw new DataServiceException(e.getMessage());
         }
+
     }
 
     public void associateContentWithRunIdWithSoftareNameAndVersionParameters(BigInteger runId, String content, String sourceSoftwareName, String sourceSoftwareVersion,
@@ -231,12 +231,11 @@ public class DatabaseAccessor implements DataServiceInterface {
         return null;
     }
 
-    
+    @Override
     public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
 
     }
 
-    
     public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
 
     }
@@ -303,7 +302,24 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     
     public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
-        return null;
+        try {
+            authenticateUser(authentication);
+            String wsdlURL =  dbUtils.getUrlForSoftwareIdentification(softwareId);
+            return wsdlURL;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
+    }
+
+    public String getURLForSoftwareIdentificationWithSoftwareNameAndVersion(String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
+        try {
+            authenticateUser(authentication);
+            SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName,softwareVersion);
+            String wsdlURL =  getURLForSoftwareIdentification(si,authentication);
+            return wsdlURL;
+        } catch (ApolloDatabaseException e) {
+            throw new DataServiceException(e.getMessage());
+        }
     }
 
     
