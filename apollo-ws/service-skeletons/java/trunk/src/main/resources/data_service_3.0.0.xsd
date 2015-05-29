@@ -52,6 +52,7 @@
 	<complexType name="GetOutputFilesURLsMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
+			<element name="softwareIdentification" type="common:SoftwareIdentification" />
 			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
 
 		</sequence>

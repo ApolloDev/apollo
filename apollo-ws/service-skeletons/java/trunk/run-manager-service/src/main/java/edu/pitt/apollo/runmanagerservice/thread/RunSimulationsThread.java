@@ -1,22 +1,17 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.interfaces.SimulatorServiceInterface;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.SimulatorServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
 
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_0_0.*;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceException;
@@ -60,8 +55,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     Exception error = null;
     BigInteger simulationGroupId;
     private URL configFileUrl;
-    public RunSimulationsThread(RunSimulationsMessage message, BigInteger runId, Authentication authentication) {
-        super(runId, authentication);
+    public RunSimulationsThread(RunSimulationsMessage message, SoftwareIdentification softwareId, BigInteger runId, Authentication authentication) {
+        super(runId, softwareId, authentication);
         this.message = message;
         try {
             this.configFileUrl = new URL(message.getBatchConfigurationFile());
@@ -124,8 +119,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
     public boolean queueAndTranslateRuns() {
         String filename = null;
-        SoftwareIdentification simulatorIdentification = message
-                .getSimulatorIdentification();
 
         XMLGregorianCalendar scenarioDate = (XMLGregorianCalendar) message.getBaseInfectiousDiseaseScenario().getScenarioDate().clone();
         try {
@@ -135,11 +128,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
                 ErrorUtils.reportError(
                         "Error downloading batch configuration file, error was: "
-                                + simulatorIdentification.getSoftwareName()
+                                + softwareId.getSoftwareName()
                                 + ", version: "
-                                + simulatorIdentification.getSoftwareVersion()
+                                + softwareId.getSoftwareVersion()
                                 + ", developer: "
-                                + simulatorIdentification
+                                + softwareId
                                 .getSoftwareDeveloper()
                                 + " for run id " + runId + ": "
                                 + ex.getMessage(), runId);
@@ -147,11 +140,11 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             } catch (IOException ex) {
                 ErrorUtils.reportError(
                         "Error downloading batch configuration file, error was: "
-                                + simulatorIdentification.getSoftwareName()
+                                + softwareId.getSoftwareName()
                                 + ", version: "
-                                + simulatorIdentification.getSoftwareVersion()
+                                + softwareId.getSoftwareVersion()
                                 + ", developer: "
-                                + simulatorIdentification
+                                + softwareId
                                 .getSoftwareDeveloper()
                                 + " for run id " + runId + ": "
                                 + ex.getMessage(), runId);
@@ -181,7 +174,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
                 while ((line = br.readLine()) != null) {
 
-                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, simulatorIdentification, line, message, scenarioDate, stBuild, error, counter, authentication);
+                    Runnable worker = new StageInDbWorkerThread(runId, simulationGroupId, softwareId, line, message, scenarioDate, stBuild, error, counter, authentication);
                     executor.execute(worker);
                     if (error.value) {
                         break;
@@ -239,7 +232,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 
     private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) {
         try {
-            dataServiceAccessor.associateContentWithRunId(runId, sb.toString(), brokerServiceSoftwareIdentification, endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
+            dataServiceAccessor.associateContentWithRunId(runId, sb.toString(), brokerServiceSoftwareIdentification, 
+					endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataFormatEnum.TEXT, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
         } catch (DataServiceException e) {
             ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", runId);
         }
@@ -248,7 +242,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     private void startSimulations() {
         SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
 
-            String url = null;
+            String url;
             try {
                 url = dataServiceAccessor.getURLForSoftwareIdentification(simulatorIdentification, authentication);
             } catch (DataServiceException e1) {
@@ -262,9 +256,9 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             }
 
             try{
-                SimulatorServiceAccessor simulatorServiceAccessor = new SimulatorServiceAccessor();
+                SimulatorServiceAccessor simulatorServiceAccessor = new SimulatorServiceAccessor(url);
                 simulatorServiceAccessor.runSimulations(runId);
-            } catch (WebServiceException e) {
+            } catch (SimulatorServiceException | WebServiceException e) {
                 ErrorUtils.reportError("Error calling runSimulations(): " + "\n\tError was: " + e.getMessage(),
                         runId);
                 return;
