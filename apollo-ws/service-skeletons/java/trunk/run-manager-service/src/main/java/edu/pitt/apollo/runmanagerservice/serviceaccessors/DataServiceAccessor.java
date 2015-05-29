@@ -3,7 +3,6 @@ package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
-import edu.pitt.apollo.connector.rest.RestDataServiceConnector;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
 import java.math.BigInteger;
