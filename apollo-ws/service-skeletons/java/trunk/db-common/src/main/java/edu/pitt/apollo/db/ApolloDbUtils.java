@@ -1282,6 +1282,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			pstmt.setString(2, softwareIdentification.getSoftwareName());
 			pstmt.setString(3, softwareIdentification.getSoftwareVersion());
 			pstmt.setString(4, softwareIdentification.getSoftwareType().toString());
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return rs.getString(1);
@@ -2634,6 +2635,47 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
 		}
+	}
+
+	public BigInteger getRunDataDescriptionIdFromFileLabel(String fileLabel)
+			throws ApolloDatabaseException {
+		BigInteger runDataDescriptionId = new BigInteger("0");
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement("SELECT run_data_description_id AS id FROM run_data_description_view rddv WHERE label=?");
+			pstmt.setString(1,fileLabel);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next())
+			{
+				runDataDescriptionId = BigInteger.valueOf(rs.getInt("id"));
+			}
+
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
+		}
+		return runDataDescriptionId;
+	}
+
+	public BigInteger getContentIdFromRunIdAndDataDescriptionId(BigInteger runId, BigInteger runDataDescriptionId )
+			throws ApolloDatabaseException {
+		BigInteger contentId = new BigInteger("0");
+		try (Connection conn = datasource.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement("SELECT content_id AS id FROM run_data WHERE run_id=? AND description_id=?");
+			pstmt.setInt(1,runId.intValue());
+			pstmt.setInt(2,runDataDescriptionId.intValue());
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next())
+			{
+				contentId = BigInteger.valueOf(rs.getInt("id"));
+			}
+
+		} catch (SQLException ex) {
+			throw new ApolloDatabaseException("SQLException adding run IDs to simulation group: " + ex.getMessage());
+		}
+		return contentId;
 	}
 
 

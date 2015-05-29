@@ -6,6 +6,7 @@ import edu.pitt.apollo.dataservice.methods.GetAllOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLAsZipMethod;
 import edu.pitt.apollo.dataservice.methods.GetOutputFilesURLsMethod;
 import edu.pitt.apollo.dataservice.methods.run.*;
+import edu.pitt.apollo.dataservice.methods.softwaremethods.GetListOfRegisteredSoftwareMethod;
 import edu.pitt.apollo.dataservice.methods.softwaremethods.GetURLForSoftwareIdentification;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -44,18 +45,18 @@ public class RestDataServiceImpl extends DataServiceImpl {
     }
     public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId,Authentication authentication) {
         GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId,authentication);
-        method.downloadFiles();
+//        method.downloadFiles();
         return null;
     }
     public MethodCallStatus getOutputFilesURLs(BigInteger runId,Authentication authentication) {
         GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,authentication);
-        method.downloadFiles();
+        //method.downloadFiles();
         return null;
     }
 
     public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId,Authentication authentication) {
         GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId,authentication);
-        method.downloadFiles();
+        //method.downloadFiles();
 
         return null;
     }
@@ -69,6 +70,11 @@ public class RestDataServiceImpl extends DataServiceImpl {
     public UpdateLastServiceToBeCalledForRunResult updateLastServiceToBeCalledForRunResult(UpdateLastServiceToBeCalledForRunMessage message)
     {
         UpdateLastServiceToBeCalledForRunResult result = UpdateLastServiceToBeCalledForRun.updateLastServiceToBeCalledForRun(message);
+        return result;
+    }
+
+    public GetListOfRegisteredSoftwareResult getListOfRegisteredSoftware(Authentication authentication) {
+        GetListOfRegisteredSoftwareResult result = GetListOfRegisteredSoftwareMethod.getListOfRegisteredSoftware(authentication);
         return result;
     }
 
