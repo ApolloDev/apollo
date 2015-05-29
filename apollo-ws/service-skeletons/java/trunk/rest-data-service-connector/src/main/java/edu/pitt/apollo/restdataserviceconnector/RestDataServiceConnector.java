@@ -1,4 +1,4 @@
-package edu.pitt.apollo.connector.rest;
+package edu.pitt.apollo.restdataserviceconnector;
 
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
