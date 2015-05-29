@@ -96,7 +96,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 		try {
 			DatabaseAccessor dbAccessor = new DatabaseAccessor(authentication,dbUtils);
-			dbAccessor.runDataServiceToGetAllOutputFilesURLAsZip(runId, authentication);
+			dbAccessor.runDataService(runId, authentication);
 		} catch (ApolloDatabaseException ex) {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, ex.getMessage());
 		} catch (DataServiceException dse) {

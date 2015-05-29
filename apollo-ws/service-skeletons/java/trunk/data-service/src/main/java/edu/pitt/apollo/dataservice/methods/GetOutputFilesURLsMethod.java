@@ -112,7 +112,7 @@ public class GetOutputFilesURLsMethod extends DataServiceMethod {
 		}
 		try {
 			DatabaseAccessor dbAccessor = new DatabaseAccessor(authentication,dbUtils);
-			dbAccessor.runDataServiceToGetOutputFilesURLs(runId,authentication);
+			dbAccessor.runDataService(runId,authentication);
 //			message = dbUtils.getGetOutputFilesURLsMessageForRun(runId);
 			if (message == null) {
 				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");

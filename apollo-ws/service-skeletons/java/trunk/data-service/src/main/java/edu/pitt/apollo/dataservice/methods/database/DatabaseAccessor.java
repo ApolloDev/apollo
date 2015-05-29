@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.methods.database;
 
 import edu.pitt.apollo.*;
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
@@ -12,11 +13,13 @@ import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +45,7 @@ public class DatabaseAccessor implements DataServiceInterface{
     protected static final String ZIP_FILE_NAME;
     protected static final int DATA_SERVICE_SOFTWARE_KEY;
     private static final String FILE_PREFIX = "run_%d_";
+    private static final String RUN_DATA_SEVICE_MESSAGE_FILENAME = "run_data_service_message.json";
     protected static final SoftwareIdentification dataServiceSoftwareId;
     static Logger logger = LoggerFactory.getLogger(DatabaseAccessor.class);
     protected final ApolloServiceQueue queue = new ApolloServiceQueue();
@@ -442,6 +446,48 @@ public class DatabaseAccessor implements DataServiceInterface{
 
     @Override
     public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+        String messageContent;
+        try {
+
+            BigInteger dbMessageDescriptionId = dbUtils.getRunDataDescriptionIdFromFileLabel(RUN_DATA_SEVICE_MESSAGE_FILENAME);
+            BigInteger messageContentId = dbUtils.getContentIdFromRunIdAndDataDescriptionId(runId, dbMessageDescriptionId);
+           messageContent = dbUtils.getFileContentForFileId(messageContentId);
+        } catch (ApolloDatabaseException ade) {
+            ade.printStackTrace();
+            throw new DataServiceException(ade.getMessage());
+        }
+        boolean messageTypeFound = false;
+        try{
+            jsonUtils.getObjectFromJson(messageContent,GetAllOutputFilesURLAsZipMessage.class);
+            runDataServiceToGetAllOutputFilesURLAsZip(runId,authentication);
+            messageTypeFound=true;
+        } catch (JsonUtilsException jue) {
+            jue.printStackTrace();
+        }
+        try{
+            if(!messageTypeFound) {
+                jsonUtils.getObjectFromJson(messageContent, GetOutputFilesURLAsZipMessage.class);
+                runDataServiceToGetOutputFilesURLAsZip(runId, authentication);
+                messageTypeFound = true;
+            }
+        } catch (JsonUtilsException jue) {
+            jue.printStackTrace();
+        }
+        try{
+            if(!messageTypeFound){
+                if(!messageTypeFound) {
+                    jsonUtils.getObjectFromJson(messageContent, GetOutputFilesURLsMessage.class);
+                    runDataServiceToGetOutputFilesURLs(runId, authentication);
+                    messageTypeFound = true;
+                }
+            }
+        } catch (JsonUtilsException jue) {
+            jue.printStackTrace();
+        }
+        if(!messageTypeFound){
+            logger.error("Error in runDataService method of the DatabaseAccessor, Run ID suppied does not resolve to a data service message type.");
+            throw new DataServiceException("Run ID does not resolve to a data service message type.");
+        }
 
     }
 
