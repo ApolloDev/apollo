@@ -4,7 +4,11 @@ import edu.pitt.apollo.connector.SimulatorServiceConnector;
 import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
 import java.math.BigInteger;
 import java.net.URL;
 import org.apache.cxf.endpoint.Client;
@@ -43,17 +47,28 @@ public class SoapSimulatorServiceConnector extends SimulatorServiceConnector {
 
 	@Override
 	public void run(BigInteger runId) throws SimulatorServiceException {
-		port.runSimulation(runId);
+		MethodCallStatus status = port.runSimulation(runId);
+		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+			throw new SimulatorServiceException("The run simulation request to the simulator failed: " + status.getMessage());
+		}
 	}
 
 	@Override
 	public void runSimulations(BigInteger runId) throws SimulatorServiceException {
-		port.runSimulations(runId);
+		RunResult result = port.runSimulations(runId);
+		MethodCallStatus status = result.getMethodCallStatus();
+		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+			throw new SimulatorServiceException("The run simulations request to the simulator failed: " + status.getMessage());
+		}
 	}
 
 	@Override
 	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
-		port.terminateRun(terminateRunRequest);
+		TerminteRunResult response = port.terminateRun(terminateRunRequest);
+		MethodCallStatus status = response.getMethodCallStatus();
+		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+			throw new SimulatorServiceException("The terminate run request to the simulator failed: " + status.getMessage());
+		}
 	}
 
 }

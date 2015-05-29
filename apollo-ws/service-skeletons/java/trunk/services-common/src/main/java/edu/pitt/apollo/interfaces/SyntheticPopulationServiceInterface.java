@@ -1,5 +1,7 @@
 package edu.pitt.apollo.interfaces;
 
+import edu.pitt.apollo.exception.SyntheticPopulationServiceException;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
 import java.math.BigInteger;
 
 /**
@@ -7,7 +9,7 @@ import java.math.BigInteger;
  */
 public interface SyntheticPopulationServiceInterface {
 
-    public void killRun(BigInteger runId);
+    public void killRun(BigInteger runId) throws SyntheticPopulationServiceException;
 
-    public java.math.BigInteger runSyntheticPopulationGeneration(edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage);
+    public BigInteger runSyntheticPopulationGeneration(RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage) throws SyntheticPopulationServiceException;
 }
