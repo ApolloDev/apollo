@@ -308,8 +308,6 @@ public class DatabaseAccessor implements DataServiceInterface{
         return null;
     }
 
-
-    
     public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
