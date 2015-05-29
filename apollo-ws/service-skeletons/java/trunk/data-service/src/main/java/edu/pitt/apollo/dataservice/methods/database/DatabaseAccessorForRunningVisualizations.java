@@ -84,10 +84,6 @@ public class DatabaseAccessorForRunningVisualizations extends DatabaseAccessor {
 		return null;
 	}
 
-	@Override
-	public BigInteger insertRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {

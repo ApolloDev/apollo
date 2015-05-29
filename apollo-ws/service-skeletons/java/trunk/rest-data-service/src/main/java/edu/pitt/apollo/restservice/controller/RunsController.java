@@ -424,7 +424,7 @@ public class RunsController {
 
         RestDataServiceImpl impl = new RestDataServiceImpl();
         impl.getAllOutputFilesURLAsZip(runId, authentication);
-
+        returnMessage.setMeta(meta);
         return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
 
     }

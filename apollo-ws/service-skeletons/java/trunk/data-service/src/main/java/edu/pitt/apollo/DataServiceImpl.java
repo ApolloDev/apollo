@@ -122,8 +122,9 @@ public class DataServiceImpl implements DataServiceEI {
 
 	@Override
 	public GetListOfRegisteredSoftwareResult getListOfRegisteredSoftware() {
-		GetListOfRegisteredSoftwareResult result = GetListOfRegisteredSoftwareMethod.getListOfRegisteredSoftware();
-		return result;
+//		GetListOfRegisteredSoftwareResult result = GetListOfRegisteredSoftwareMethod.getListOfRegisteredSoftware();
+//		return result;
+		return null;
 	}
 
 

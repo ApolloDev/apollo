@@ -46,9 +46,12 @@ public class SoftwareController {
     @ResponseBody
     String getListOfSoftwareFromCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
                                            @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
-        DataServiceImpl impl = new DataServiceImpl();
+        RestDataServiceImpl impl = new RestDataServiceImpl();
         GetListOfRegisteredSoftwareRestMessage returnMessage = new GetListOfRegisteredSoftwareRestMessage();
-        GetListOfRegisteredSoftwareResult result = impl.getListOfRegisteredSoftware();
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(username);
+        authentication.setRequesterPassword(password);
+        GetListOfRegisteredSoftwareResult result = impl.getListOfRegisteredSoftware(authentication);
 
         if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED) {
             returnMessage =  BuildGetListOfRegisteredSoftwareRestMessage.buildFailedGetIdentificationKeyRestMessage(result.getMethodCallStatus().getMessage());

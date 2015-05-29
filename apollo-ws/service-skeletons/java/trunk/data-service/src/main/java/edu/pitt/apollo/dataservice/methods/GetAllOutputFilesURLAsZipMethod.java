@@ -31,6 +31,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 	private GetAllOutputFilesURLAsZipMessage message;
 
+
 	public GetAllOutputFilesURLAsZipMethod(ApolloServiceQueue queue, BigInteger runId, Authentication authentication) {
 		super(queue, runId);
 
@@ -38,7 +39,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 		{
 			loadGetAllOutputFilesURLAzZipMessage();
 		}else {
-			loadGetAllOutputFilesURLAzZipMessage(authentication);
+			loadGetAllOutputFilesURLAzZipMessageAndDownloadFiles(authentication);
 		}
 	}
 
@@ -51,6 +52,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 			e.printStackTrace();
 		}
 
+
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
 		DataServiceThread thread = new DataServiceAllFilesThread(runId, message.getRunId(), queue, dbUtils, outputDirectory, ZIP_FILE_NAME, message.getFileNames());
 
@@ -62,6 +64,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 		}
 
 	}
+
 	private void loadGetAllOutputFilesURLAzZipMessage() {
 		ApolloDbUtils dbUtils = null;
 		try {
@@ -82,7 +85,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, jue.getMessage());
 		}
 	}
-	private void loadGetAllOutputFilesURLAzZipMessage(Authentication authentication) {
+	private void loadGetAllOutputFilesURLAzZipMessageAndDownloadFiles(Authentication authentication) {
 
 		ApolloDbUtils dbUtils = null;
 		try {
@@ -93,7 +96,7 @@ public class GetAllOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 		try {
 			DatabaseAccessor dbAccessor = new DatabaseAccessor(authentication,dbUtils);
-			dbAccessor.runDataServiceToGetAllOutputFilesURLAsZip(runId,authentication);
+			dbAccessor.runDataServiceToGetAllOutputFilesURLAsZip(runId, authentication);
 //			message = dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
 			if (message == null) {
 				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
