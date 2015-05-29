@@ -41,7 +41,7 @@ public class BuildSimulationGroupRestMessage {
         meta.setStatus(RequestSuccessfulMessage.getStatus());
         meta.setStatusMessage(RequestSuccessfulMessage.getMessage());
         returnMessage.setMeta(meta);
-        returnMessage.setListOfRunIds(result.getAssociatedRunIds());
+        returnMessage.setListOfGroupIds(result.getAssociatedRunIds());
         return returnMessage;
     }
 }

@@ -48,7 +48,7 @@ public class RestDataServiceImpl extends DataServiceImpl {
 //        method.downloadFiles();
         return null;
     }
-    public MethodCallStatus getOutputFilesURLs(BigInteger runId,Authentication authentication) {
+    public MethodCallStatus getOutputFilesURLs(BigInteger runId,Authentication authentication){
         GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,authentication);
         //method.downloadFiles();
         return null;

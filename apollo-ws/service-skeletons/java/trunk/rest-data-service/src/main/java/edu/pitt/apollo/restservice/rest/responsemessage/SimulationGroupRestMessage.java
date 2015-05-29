@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class SimulationGroupRestMessage {
     Meta meta;
-    List<BigInteger> listOfRunIds;
+    List<BigInteger> listOfGroupIds;
 
     public Meta getMeta() {
         return meta;
@@ -16,10 +16,10 @@ public class SimulationGroupRestMessage {
     public void setMeta(Meta meta) {
         this.meta = meta;
     }
-    public List<BigInteger> getListOfRunIds() {
-        return listOfRunIds;
+    public List<BigInteger> getListOfGroupIds() {
+        return listOfGroupIds;
     }
-    public void setListOfRunIds(List<BigInteger> listOfRunIds) {
-        this.listOfRunIds = listOfRunIds;
+    public void setListOfGroupIds(List<BigInteger> listOfGroupIds) {
+        this.listOfGroupIds = listOfGroupIds;
     }
 }

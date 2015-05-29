@@ -215,5 +215,57 @@
 		</sequence>
 	</complexType>
 
+	<complexType name="Deserialization">
+		<sequence>
+			<element name="format" type="token"></element>
+			<element name="className" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="classNameSpace" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="MetaRequest">
+		<sequence>
+			<element name="deserialization" type="tns:Deserialization" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="MetaResponse">
+		<sequence>
+			<element name="status" type="positiveInteger"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="statusMessage" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="source" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="numberOfReturnedResults" type="positiveInteger" minOccurs="1" maxOccurs="1">
+			</element>
+			<element name="deserialization" type="tns:Deserialization" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Response">
+		<sequence>
+			<element name="Meta" type="tns:MetaRequest"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="serializedObject" type="token" maxOccurs="unbounded"
+					 minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<complexType name="Request">
+		<sequence>
+			<element name="Meta" type="tns:MetaResponse"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="serializedObject" type="token" maxOccurs="1"
+					 minOccurs="1" />
+		</sequence>
+	</complexType>
+
 </schema>
 	
