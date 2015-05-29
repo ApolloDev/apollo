@@ -50,13 +50,13 @@ public class RestDataServiceImpl extends DataServiceImpl {
     }
     public MethodCallStatus getOutputFilesURLs(BigInteger runId,Authentication authentication) {
         GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,authentication);
-        method.downloadFiles();
+        //method.downloadFiles();
         return null;
     }
 
     public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId,Authentication authentication) {
         GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId,authentication);
-        method.downloadFiles();
+        //method.downloadFiles();
 
         return null;
     }

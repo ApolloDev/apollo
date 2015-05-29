@@ -2,8 +2,14 @@ package edu.pitt.apollo.dataservice.methods.database;
 
 import edu.pitt.apollo.*;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
 import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
+import edu.pitt.apollo.dataservice.thread.DataServiceSpecifiedFilesThread;
 import edu.pitt.apollo.dataservice.thread.DataServiceThread;
+import edu.pitt.apollo.dataservice.types.FileInformation;
+import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -19,10 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
@@ -38,6 +41,7 @@ public class DatabaseAccessor implements DataServiceInterface{
     private static final String ZIP_FILE_NAME_KEY = "zip_file_name";
     protected static final String ZIP_FILE_NAME;
     protected static final int DATA_SERVICE_SOFTWARE_KEY;
+    private static final String FILE_PREFIX = "run_%d_";
     protected static final SoftwareIdentification dataServiceSoftwareId;
     static Logger logger = LoggerFactory.getLogger(DatabaseAccessor.class);
     protected final ApolloServiceQueue queue = new ApolloServiceQueue();
@@ -436,6 +440,11 @@ public class DatabaseAccessor implements DataServiceInterface{
         }
     }
 
+    @Override
+    public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+
+    }
+
     public String getURLForSoftwareIdentificationWithSoftwareNameAndVersion(String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
@@ -449,25 +458,92 @@ public class DatabaseAccessor implements DataServiceInterface{
 
     
     public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
+        GetOutputFilesURLsMessage message;
         try {
             authenticateUser(authentication);
-            dbUtils.getGetOutputFilesURLsMessageForRun(runId);
+            message = dbUtils.getGetOutputFilesURLsMessageForRun(runId);
+            if (message == null) {
+                RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
+            }
         } catch (ApolloDatabaseException ade) {
             throw new DataServiceException(ade.getMessage());
         } catch (JsonUtilsException jue) {
             throw new DataServiceException(jue.getMessage());
         }
+
+        FileInformationCollection fileInformationCollection = new FileInformationCollection();
+        for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
+            // create a url for each file in the list
+            BigInteger run = runIdAndFiles.getRunId();
+            List<FileInformation> fileInformationForRun = new ArrayList<FileInformation>();
+            fileInformationCollection.put(run, fileInformationForRun);
+            List<String> files = runIdAndFiles.getFiles();
+            for (String file : files) {
+                String outputFilePath = OUTPUT_DIRECTORY + runId + File.separator + FILE_PREFIX + file;
+
+                FileInformation fileInformation = new FileInformation();
+                fileInformation.setFilePath(outputFilePath);
+                fileInformation.setRunId(run.intValue());
+                fileInformation.setFileName(file);
+                fileInformationForRun.add(fileInformation);
+            }
+
+        }
+        DataServiceSpecifiedFilesThread thread = new DataServiceSpecifiedFilesThread(runId, fileInformationCollection,
+                queue, dbUtils);
+
+        MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
+        if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+            RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, queueStatus.getMessage());
+        } else {
+            RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.RUNNING, "The data service request was successful");
+        }
     }
 
     
     public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
+        GetOutputFilesURLAsZipMessage message;
         try {
             authenticateUser(authentication);
-            dbUtils.getGetOutputFilesURLAsZipMessageForRun(runId);
+            message = dbUtils.getGetOutputFilesURLAsZipMessageForRun(runId);
+            if (message == null) {
+                RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
+            }
         } catch (ApolloDatabaseException ade) {
             throw new DataServiceException(ade.getMessage());
         } catch (JsonUtilsException jue) {
             throw new DataServiceException(jue.getMessage());
+        }
+        FileInformationCollection fileInformationCollection = new FileInformationCollection();
+        String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
+        String zipFileName = String.format(ZIP_FILE_NAME, runId);
+        fileInformationCollection.setZipFiles(true);
+        fileInformationCollection.setZipFileName(zipFileName);
+        fileInformationCollection.setOutputDirectory(outputDirectory);
+
+        for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
+            // create a url for each file in the list
+            BigInteger run = runIdAndFiles.getRunId();
+            List<FileInformation> fileInformationForRun = new ArrayList<FileInformation>();
+            fileInformationCollection.put(run, fileInformationForRun);
+            List<String> files = runIdAndFiles.getFiles();
+            for (String file : files) {
+                String outputFilePath = outputDirectory + FILE_PREFIX + file;
+                FileInformation fileInformation = new FileInformation();
+                fileInformation.setFilePath(outputFilePath);
+                fileInformation.setRunId(run.intValue());
+                fileInformation.setFileName(file);
+                fileInformationForRun.add(fileInformation);
+            }
+        }
+
+        DataServiceSpecifiedFilesThread thread = new DataServiceSpecifiedFilesThread(runId, fileInformationCollection,
+                queue, dbUtils);
+        MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
+        if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+            RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, queueStatus.getMessage());
+        } else {
+            RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.RUNNING, "The data service request was successful");
         }
     }
 
@@ -507,15 +583,5 @@ public class DatabaseAccessor implements DataServiceInterface{
         }
     }
 
-    public GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage(BigInteger runId, Authentication authentication) throws DataServiceException {
-        try {
-            authenticateUser(authentication);
-            return dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
-        } catch (ApolloDatabaseException ade) {
-            throw new DataServiceException(ade.getMessage());
-        } catch (JsonUtilsException jue) {
-            throw new DataServiceException(jue.getMessage());
-        }
-    }
 
 }
