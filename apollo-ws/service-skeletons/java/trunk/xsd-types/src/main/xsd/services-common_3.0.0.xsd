@@ -258,7 +258,7 @@
 
 	<complexType name="Response">
 		<sequence>
-			<element name="requestMeta" type="tns:ResponseMeta"
+			<element name="responseMeta" type="tns:ResponseMeta"
 					 maxOccurs="1" minOccurs="1" />
 			<element name="serializedObject" type="token" maxOccurs="unbounded"
 					 minOccurs="0" />
@@ -267,7 +267,7 @@
 
 	<complexType name="Request">
 		<sequence>
-			<element name="responseMeta" type="tns:RequestMeta"
+			<element name="requestMeta" type="tns:RequestMeta"
 					 maxOccurs="1" minOccurs="1" />
 			<element name="serializedObject" type="token" maxOccurs="1"
 					 minOccurs="1" />

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.restservice.utils;
 
-import edu.pitt.apollo.restservice.controller.HomeController;
+//import edu.pitt.apollo.restservice.controller.HomeController;
 import edu.pitt.apollo.restservice.exceptions.SchemaDefinitionNotFoundException;
 import edu.pitt.apollo.restservice.exceptions.XsdNotFoundException;
 
@@ -17,7 +17,7 @@ public class XmlValidationTools {
 
     public static boolean validateXMLSchemaXml(String xml) throws SchemaDefinitionNotFoundException, XsdNotFoundException{
 
-        ClassLoader cLoader = HomeController.class.getClassLoader();
+//        ClassLoader cLoader = HomeController.class.getClassLoader();
 
         try{
             getSchemaDefinitionFromXml(xml);

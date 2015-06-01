@@ -1,11 +1,9 @@
 package edu.pitt.apollo.restservice.controller;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.RestDataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetListOfRegisteredSoftwareResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetURLForSoftwareIdentificationMessage;
@@ -17,14 +15,10 @@ import edu.pitt.apollo.restservice.rest.utils.softwarerestmessages.BuildGetURLFo
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import java.math.BigInteger;
-import java.util.List;
 
 
 /*

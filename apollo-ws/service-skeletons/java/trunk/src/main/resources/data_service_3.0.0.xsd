@@ -208,12 +208,11 @@
 	<complexType name="AssociateContentWithRunIdMessage">
 	<sequence>
 		<element name="fileContentOrUrl" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="sourceSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="sourceSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="destinationSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="sourceSoftware" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+		<element name="destinationSoftware" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
 		<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="contentType" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="contentDataFormat" type="common:ContentDataFormatEnum" minOccurs="1" maxOccurs="1"></element>
+		<element name="contentDataType" type="common:ContentDataTypeEnum" minOccurs="1" maxOccurs="1"></element>
 		<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 	</sequence>
 	</complexType>
