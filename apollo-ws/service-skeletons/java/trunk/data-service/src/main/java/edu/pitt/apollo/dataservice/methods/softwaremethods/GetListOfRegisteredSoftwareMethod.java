@@ -1,6 +1,5 @@
 package edu.pitt.apollo.dataservice.methods.softwaremethods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetListOfRegisteredSoftwareResult;
 import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessor;
 import edu.pitt.apollo.db.ApolloDbUtils;
