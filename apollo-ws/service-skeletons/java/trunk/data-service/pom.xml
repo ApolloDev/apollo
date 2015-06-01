@@ -135,10 +135,10 @@
         <!--<finalName>syntheticpopulation-service</finalName>-->
     </build>
 
-    <profiles>
+<!--    <profiles>
         <profile>
             <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
+             To use Metro by default, move activation element to its profile below 
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -183,5 +183,5 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+    </profiles>-->
 </project>

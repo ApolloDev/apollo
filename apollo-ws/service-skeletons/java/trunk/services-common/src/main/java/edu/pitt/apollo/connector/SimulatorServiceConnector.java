@@ -1,5 +1,6 @@
 package edu.pitt.apollo.connector;
 
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.interfaces.SimulatorServiceInterface;
 
 /**
@@ -9,7 +10,7 @@ import edu.pitt.apollo.interfaces.SimulatorServiceInterface;
 public abstract class SimulatorServiceConnector extends ServiceConnector implements SimulatorServiceInterface {
 	
 	
-	public SimulatorServiceConnector(String url) {
+	public SimulatorServiceConnector(String url) throws SimulatorServiceException {
 		super(url);
 	}
 }

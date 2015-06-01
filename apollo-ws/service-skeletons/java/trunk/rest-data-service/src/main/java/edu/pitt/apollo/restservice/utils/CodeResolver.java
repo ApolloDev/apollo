@@ -4,6 +4,7 @@ import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
 import edu.pitt.apollo.types.v3_0_0.*;
 
 
+
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ public class CodeResolver {
 
     public static List<BigInteger> getListOfGroupIds(String listAsString)
     {
+
         String[] groupIdsSplit = listAsString.split(",");
         List<BigInteger> groupIdsAsList = new ArrayList<BigInteger>();
         for(String idAsString : groupIdsSplit)

@@ -8,8 +8,8 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.RestDataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.dataservice.methods.run.GetSimulationGroupIdsForRunIdMethod;
-import edu.pitt.apollo.db.ApolloDbUtils;
+
+
 import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
 import edu.pitt.apollo.restservice.rest.responsemessage.*;
 import edu.pitt.apollo.restservice.rest.statuscodesandmessages.MethodNotAllowedMessage;
@@ -19,10 +19,8 @@ import edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage;
 import edu.pitt.apollo.restservice.utils.CodeResolver;
 import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
 import edu.pitt.apollo.restservice.utils.ParseXmlToAndFromObject;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunStatus;
+import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.utilities.rest.JaxBConversionForRequestAndResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -278,6 +276,7 @@ public class RunsController {
             List<ContentIdAndDescription> list = result.getContentIdAndDescriptions();
             returnMessage = BuildGetListOfContentAssociatedToRunRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(list);
         }
+
         return ConvertResponseMessagesToXml.convertGetListOfContentAssociatedToRunRestMessage(returnMessage);
     }
 
@@ -293,36 +292,49 @@ public class RunsController {
                                   @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
                                   @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                                   @ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) {
-        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
-        DataServiceImpl impl = new DataServiceImpl();
+
+
         try {
-            AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
-            AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
-            message.setContentLabel(messageBodyContent.getContentLabel());
-            message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
-            message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
-            message.setDestinationSoftwareVersion(messageBodyContent.getDestinationSoftwareVersion());
-            message.setSourceSoftwareName(messageBodyContent.getSourceSoftwareName());
-            message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
-            message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
-            message.setRunId(runId);
-            Authentication authentication = new Authentication();
-            authentication.setRequesterId(username);
-            authentication.setRequesterPassword(password);
-            message.setAuthentication(authentication);
+            Object requestMessageObject = JaxBConversionForRequestAndResponse.getObjectFromXmlMessage(associationData,"edu.pitt.apollo.restservice.types.AssociateContentWithRunIdRestMessage");
 
-            AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+            StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
+            DataServiceImpl impl = new DataServiceImpl();
+            try {
+                AssociateContentWithRunIdRestMessage messageBodyContent = ParseXmlToAndFromObject.convertFromXmlToAssociateContentWithRunIdRestMessage(associationData);
+                AssociateFileWithRunIdMessage message = new AssociateFileWithRunIdMessage();
+                message.setContentLabel(messageBodyContent.getContentLabel());
+                message.setContentType(DbContentDataType.valueOf(messageBodyContent.getContentType()));
+                message.setDestinationSoftwareName(messageBodyContent.getDestinationSoftwareName());
+                message.setDestinationSoftwareVersion(messageBodyContent.getDestinationSoftwareVersion());
+                message.setSourceSoftwareName(messageBodyContent.getSourceSoftwareName());
+                message.setSourceSoftwareVersion(messageBodyContent.getSourceSoftwareVersion());
+                message.setFileTextContent(messageBodyContent.getFileContentOrUrl());
+                message.setRunId(runId);
+                Authentication authentication = new Authentication();
+                authentication.setRequesterId(username);
+                authentication.setRequesterPassword(password);
+                message.setAuthentication(authentication);
 
-            if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
-                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+                AssociateFileWithRunIdResult result = impl.associateFileWithRunId(message);
+
+                if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED){
+                    returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
+                }
+                else{
+                    returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
+                }
+            } catch (ParsingFromXmlToObjectException e) {
+                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getErrorMessage());
             }
-            else{
-                returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
-            }
-        } catch (ParsingFromXmlToObjectException e) {
-            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getErrorMessage());
+            return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+
+
+
     }
     //We cannot create a new collection at the files level (PUT), and we cannot DELETE the files collection (DELETE).
 

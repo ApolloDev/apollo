@@ -1,229 +1,115 @@
-/* Copyright 2012 University of Pittsburgh
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License.  You may obtain a copy of
- * the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
+
 package edu.pitt.apollo;
 
-import java.math.BigInteger;
-
-import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.dataservice.methods.*;
-import edu.pitt.apollo.dataservice.methods.file.GetFileContentMethod;
-import edu.pitt.apollo.dataservice.methods.run.GetRunInformationMethod;
-import edu.pitt.apollo.dataservice.methods.softwaremethods.GetListOfRegisteredSoftwareMethod;
-import edu.pitt.apollo.dataservice.methods.url.GetURLContentMethod;
-import edu.pitt.apollo.dataservice.methods.user.AddRoleMethod;
-import edu.pitt.apollo.dataservice.methods.user.AddUserMethod;
-import edu.pitt.apollo.dataservice.methods.user.AddUserRoleMethod;
-import edu.pitt.apollo.dataservice.methods.user.DeleteUserMethod;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.service.dataservice.v3_0_0.*;
+import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.jws.WebService;
+/**
+ *
+ * @author nem41
+ */
+public class DataServiceImpl implements DataServiceInterface {
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/dataservice/v3_0_0/", portName = "DataServiceEndpoint", serviceName = "DataService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI")
-public class DataServiceImpl implements DataServiceEI {
-
-	private static final ApolloServiceQueue serviceQueue;
-
-	static {
-		serviceQueue = new ApolloServiceQueue();
+	@Override
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public ListOutputFilesForSoftwareResult listOutputFilesForSoftware(
-			ListOutputFilesForSoftwareMessage listOutputFilesForSoftwareMessage) {
-		// TODO Auto-generated method stub
-		return null;
+	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public AddRoleResult addRole(AddRoleMessage message) {
-		AddRoleResult result = AddRoleMethod.addRole(message);
-		return result;
-	}
-
-
-
-	@Override
-	public GetFileContentResult getFileContent(GetFileContentMessage message) {
-		GetFileContentResult result = GetFileContentMethod.getFileContent(message);
-		return result;
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public AssociateContentWithRunIdResult associateContentWithRunId(AssociateContentWithRunIdMessage message) {
-		AssociateContentWithRunIdResult result = AssociateContentWithRunIdMethod.associateContentWithRunIdResult(message);
-		return result;
+	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetDataContentForSoftwareResult getDataContentForSoftware(GetDataContentForSoftwareMessage getDataContentForSoftware) {
-//		GetDataContentForSoftwareResult result = GetDataContentForSoftwareMethod.getDataContentForSoftware();
-		return null;
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetStatusOfRunResult getStatusOfRun(GetStatusOfRunMessage message) {
-		GetStatusOfRunResult result = GetStatusOfRunMethod.getStatusOfRunAndGetResult(message);
-		return result;
+	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public RemoveRunDataResult removeRunData(RemoveRunDataMessage message) {
-		RemoveRunDataResult result = RemoveRunDataMethod.removeRunDataAndGetResult(message);
-		return result;
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetRunDataDescriptionIdResult getRunDataDescriptionId(GetRunDataDescriptionIdMessage message) {
-		GetRunDataDescriptionIdResult result = GetRunDataDescriptionIdMethod.buildRunDataDescriptionIdResultMessage(message);
-		return result;
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetSoftwareIdentificationKeyFromSoftwareIdentificationResult getSoftwareIdentificationKeyFromSoftwareIdentification(GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage message) {
-		GetSoftwareIdentificationKeyFromSoftwareIdentificationResult result = GetSoftwareIdentificationKeyFromSoftwareIdentificationMethod.getSoftwareIdentificationKeyFromSoftwareIdentification(message);
-		return result;
-	}
-
-
-	@Override
-	public GetSoftwareIdentificationKeyForRunResult getSoftwareIdentificationKeyForRun(GetSoftwareIdentificationKeyForRunMessage message) {
-		GetSoftwareIdentificationKeyForRunResult result = GetSoftwareIdentificationKeyForRunMethod.getSoftwareIdentificationKeyForRun(message);
-		return result;
+	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public DeleteUserResult deleteUser(DeleteUserMessage message) {
-		DeleteUserResult result = DeleteUserMethod.deleteUser(message);
-		return result;
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public ListFilesResult listFilesAssociatedToRun(ListFilesMessage message) {
-		ListFilesResult result = ListFilesAssociatedToRunMethod.listFilesAssociatedToRun(message);
-		return result;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetListOfRegisteredSoftwareResult getListOfRegisteredSoftware() {
-//		GetListOfRegisteredSoftwareResult result = GetListOfRegisteredSoftwareMethod.getListOfRegisteredSoftware();
-//		return result;
-		return null;
-	}
-
-
-	@Override
-	public AddUserResult addUser(AddUserMessage message) {
-		AddUserResult result = AddUserMethod.addUser(message);
-		return result;
+	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public GetURLContentResult getURLContent(GetURLContentMessage message) {
-		GetURLContentResult result = GetURLContentMethod.getUrl(message);
-		return result;
+	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public AssociateFileWithRunIdResult associateFileWithRunId(AssociateFileWithRunIdMessage message) {
-		AssociateFileWithRunIdResult result = AssociateFileWithRunIdMethod.associateFileWithRunId(message);
-		return result;
-	}
-
-
-	@Override
-	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage message) {
-		try {
-			return GetSoftwareIdentificationForRunMethod.buildResultMessage(message);
-		} catch (DataServiceException e) {
-			GetSoftwareIdentificationForRunResult result = new GetSoftwareIdentificationForRunResult();
-
-			MethodCallStatus status = new MethodCallStatus();
-			status.setMessage(e.getMessage());
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			result.setMethodCallStatus(status);
-			return result;
-		}
-
+	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public MethodCallStatus getOutputFilesURLAsZip(BigInteger runId) {
-		GetOutputFilesURLAsZipMethod method = new GetOutputFilesURLAsZipMethod(serviceQueue, runId, null);
-		method.downloadFiles();
-
-		return null;
+	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public AddUserRoleResult addUserRole(AddUserRoleMessage message) {
-		AddUserRoleResult result = AddUserRoleMethod.addUserRole(message);
-		return result;
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public AssociateURLWithRunIdResult associateURLWithRunId(AssociateURLWithRunIdMessage message) {
-		AssociateURLWithRunIdResult result = AssociateURLWithRunIdMethod.associateURLWithRunId(message);
-		return result;
+	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public ListURLsResult listURLsAssociatedToRun(ListURLsMessage message) {
-		ListURLsResult result = ListURLsAssociatedToRunMethod.listURLsAssociatedToRun(message);
-		return result;
+	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
-
-
-	@Override
-	public AddTextDataContentResult addTextDataContent(AddTextDataContentMessage message) {
-		AddTextDataContentResult result = AddTextDataContentMethod.addTextDataContent(message);
-
-		return result;
-	}
-
-
-	@Override
-	public MethodCallStatus getOutputFilesURLs(BigInteger runId) {
-		GetOutputFilesURLsMethod method = new GetOutputFilesURLsMethod(serviceQueue, runId,null);
-		method.downloadFiles();
-
-		return null;
-	}
-
-
-
-	@Override
-	public MethodCallStatus getAllOutputFilesURLAsZip(BigInteger runId) {
-		GetAllOutputFilesURLAsZipMethod method = new GetAllOutputFilesURLAsZipMethod(serviceQueue, runId,null);
-		method.downloadFiles();
-		return null;
-	}
-
-	@Override
-	public UpdateStatusOfRunResult updateStatusOfRun(UpdateStatusOfRunMessage message) {
-		UpdateStatusOfRunResult result = UpdateStatusOfRunMethod.updateStatusOfRunAndGetResult(message);
-		return result;
-	}
-
-	public GetRunInformationResult getRunInformation(GetRunInformationMessage message) {
-		GetRunInformationResult result = GetRunInformationMethod.getRunInformation(message);
-		return result;
-	}
-
+	
 }

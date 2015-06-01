@@ -207,12 +207,18 @@
 
 	<complexType name="AssociateContentWithRunIdMessage">
 	<sequence>
-		<element name="runId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
-		<element name="dataContentKey" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
-		<element name="runDataDescriptionId" type="positiveInteger" minOccurs="1" maxOccurs="1"></element>
+		<element name="fileContentOrUrl" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="sourceSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="sourceSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="destinationSoftwareName" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="destinationSoftwareVersion" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
+		<element name="contentType" type="token" minOccurs="1" maxOccurs="1"></element>
 		<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 	</sequence>
-</complexType>
+	</complexType>
+
+
 	<complexType name="AssociateContentWithRunIdResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>

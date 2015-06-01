@@ -24,7 +24,7 @@ public class AssociateContentWithRunIdMethod {
         try(ApolloDbUtils dbUtils = new ApolloDbUtils()) {
 
 
-            int dataContentKey = dbUtils.associateContentWithRunId(message.getRunId(), message.getDataContentKey().intValue(), message.getRunDataDescriptionId().intValue());
+//            int dataContentKey = dbUtils.associateContentWithRunId(message.getRunId(), message.getDataContentKey().intValue(), message.getRunDataDescriptionId().intValue());
 
             mcs.setStatus(MethodCallStatusEnum.COMPLETED);
 

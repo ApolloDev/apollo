@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class GetListOfContentAssociatedToRunRestMessage {
     Meta meta;
-    List<ContentIdAndDescription> listOfContentIdAndDescriptions = new ArrayList<ContentIdAndDescription>();
+    List<Object> listOfContentIdAndDescriptions = new ArrayList<Object>();
 
     public Meta getMeta() {
         return meta;
@@ -20,11 +20,11 @@ public class GetListOfContentAssociatedToRunRestMessage {
         this.meta = meta;
     }
 
-    public List<ContentIdAndDescription> getListOfContentIdAndDescriptions()
+    public List<Object> getListOfContentIdAndDescriptions()
     {
         return listOfContentIdAndDescriptions;
     }
-    public void setListOfContentIdAndDescriptions(List<ContentIdAndDescription> listOfContentIdAndDescriptions)
+    public void setListOfContentIdAndDescriptions(List<Object> listOfContentIdAndDescriptions)
     {
         this.listOfContentIdAndDescriptions=listOfContentIdAndDescriptions;
     }

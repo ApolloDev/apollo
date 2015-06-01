@@ -215,5 +215,64 @@
 		</sequence>
 	</complexType>
 
+	<simpleType name="SerializationFormat">
+		<restriction base="string">
+			<enumeration value="JSON" />
+			<enumeration value="XML" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="SerializationConfiguration">
+		<sequence>
+			<element name="format" type="tns:SerializationFormat"></element>
+			<element name="className" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="classNameSpace" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="RequestMeta">
+		<sequence>
+			<element name="serializationConfiguration" type="tns:SerializationConfiguration" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ResponseMeta">
+		<sequence>
+			<element name="status" type="positiveInteger"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="statusMessage" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="source" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="numberOfReturnedResults" type="positiveInteger" minOccurs="1" maxOccurs="1">
+			</element>
+			<element name="serializationConfiguration" type="tns:SerializationConfiguration" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Response">
+		<sequence>
+			<element name="requestMeta" type="tns:ResponseMeta"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="serializedObject" type="token" maxOccurs="unbounded"
+					 minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<complexType name="Request">
+		<sequence>
+			<element name="responseMeta" type="tns:RequestMeta"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="serializedObject" type="token" maxOccurs="1"
+					 minOccurs="1" />
+		</sequence>
+	</complexType>
+
 </schema>
 	
