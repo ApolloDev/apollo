@@ -114,18 +114,22 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger[] insertRunIntoDatabase(BigInteger memberOfSimulationGroupIdOrNull) throws ApolloDatabaseException, Md5UtilsException {
+	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
 		int md5CollisionId;
-		BigInteger[] runIds = null;
-		if (getOutputFilesURLsMessage != null) {
-			md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
-			runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-		} else if (getOutputFilesURLAsZipMessage != null) {
-			md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLAsZipMessage) + 1;
-			runIds = dbUtils.addDataServiceRun(getOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-		} else if (getAllOutputFilesURLAsZipMessage != null) {
-			md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
-			runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+		BigInteger runIds = null;
+		try {
+			if (getOutputFilesURLsMessage != null) {
+				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
+				runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+			} else if (getOutputFilesURLAsZipMessage != null) {
+				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLAsZipMessage) + 1;
+				runIds = dbUtils.addDataServiceRun(getOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+			} else if (getAllOutputFilesURLAsZipMessage != null) {
+				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
+				runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+			}
+		} catch (Md5UtilsException | ApolloDatabaseException e) {
+			throw new DataServiceException("Error inserting run into database, error was: " + "(" + e.getClass().getName() + ") " + e.getMessage());
 		}
 
 		return runIds;
