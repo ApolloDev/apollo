@@ -60,33 +60,34 @@ public class DatabaseAccessorForRunningJobs extends
 		return null;
 	}
 
-	@Override
-	public synchronized BigInteger getCachedRunIdFromDatabaseOrNull()
-			throws ApolloDatabaseException, Md5UtilsException {
-		String hash = md5Utils.getMd5(runMessage);
-		logger.info("Thread" + Thread.currentThread().getName() + " hash: " + hash);
-
-		List<BigInteger> runIds = dbUtils
-				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
-						softwareIdentification, hash);
-		if (runIds.size() > 0) {
-			logger.debug("Possible cache hit!  Checking to see if it's a true hit or if we have a collision...");
-			// String targetRunSimulationMessageAsJson =
-			// dbUtils.getJSONString(runSimulationMessage,
-			// RunSimulationMessage.class);
-			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
-				if (isRunIdAssociatedWithMatchingRunMessage(
-						jsonUtils.getJSONString(runMessage),
-						runIdAssociatedWithRunSimulationMessageHash)) {
-					return runIdAssociatedWithRunSimulationMessageHash;
-				}
-			}
-			throw new ApolloDatabaseException("Collision detected, but a true extremely unlikely.");
-
-		} else {
-			return null;
-		}
-	}
+	//not used for the time being...
+//	@Override
+//	public synchronized BigInteger getCachedRunIdFromDatabaseOrNull()
+//			throws ApolloDatabaseException, Md5UtilsException {
+//		String hash = md5Utils.getMd5(runMessage);
+//		logger.info("Thread" + Thread.currentThread().getName() + " hash: " + hash);
+//
+//		List<BigInteger> runIds = dbUtils
+//				.getSimulationRunIdsAssociatedWithRunSimulationMessageHashGivenHash(
+//						softwareIdentification, hash);
+//		if (runIds.size() > 0) {
+//			logger.debug("Possible cache hit!  Checking to see if it's a true hit or if we have a collision...");
+//			// String targetRunSimulationMessageAsJson =
+//			// dbUtils.getJSONString(runSimulationMessage,
+//			// RunSimulationMessage.class);
+//			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
+//				if (isRunIdAssociatedWithMatchingRunMessage(
+//						jsonUtils.getJSONString(runMessage),
+//						runIdAssociatedWithRunSimulationMessageHash)) {
+//					return runIdAssociatedWithRunSimulationMessageHash;
+//				}
+//			}
+//			throw new ApolloDatabaseException("Collision detected, but a true extremely unlikely.");
+//
+//		} else {
+//			return null;
+//		}
+//	}
 
 	@Override
 	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {

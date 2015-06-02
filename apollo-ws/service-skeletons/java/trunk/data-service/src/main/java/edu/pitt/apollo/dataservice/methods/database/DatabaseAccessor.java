@@ -13,12 +13,9 @@ import edu.pitt.apollo.dataservice.types.FileInformation;
 import edu.pitt.apollo.dataservice.types.FileInformationCollection;
 import edu.pitt.apollo.dataservice.utils.RunUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
-import edu.pitt.apollo.service.dataservice.v3_0_0.GetAllOutputFilesURLAsZip;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -207,11 +204,6 @@ public class DatabaseAccessor implements DataServiceInterface {
         dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
                 runIds);
 
-    }
-
-    public BigInteger getCachedRunIdFromDatabaseOrNull()
-            throws ApolloDatabaseException, Md5UtilsException {
-        return null;
     }
 
     protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
