@@ -11,7 +11,7 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.restservice.rest.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;

@@ -9,8 +9,8 @@ import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.restservice.rest.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.restservice.utils.CodeResolver;
+import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.restservice.utils.RestDataServiceUtils;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.utilities.SerializerFactory;
@@ -27,7 +27,7 @@ public class AddRunIdsToSimulationGroupForRun {
 
 	public static String addRunIdsToSimulationGroupForRun(String username, String password, BigInteger runId, String runIdList, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
 
-		List<BigInteger> groupIdsAsList = CodeResolver.getListOfGroupIds(runIdList);
+		List<BigInteger> groupIdsAsList = RestDataServiceUtils.getListOfGroupIds(runIdList);
 
 		DataServiceImpl impl = new DataServiceImpl();
 

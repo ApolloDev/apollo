@@ -10,7 +10,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.RunInformation;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.restservice.rest.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;

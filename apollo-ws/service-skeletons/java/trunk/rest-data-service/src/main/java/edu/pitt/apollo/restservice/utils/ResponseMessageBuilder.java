@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.pitt.apollo.restservice.rest.utils;
+package edu.pitt.apollo.restservice.utils;
 
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.Response;

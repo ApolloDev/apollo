@@ -4,7 +4,7 @@ import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-import edu.pitt.apollo.restservice.utils.CodeResolver;
+import edu.pitt.apollo.restservice.utils.RestDataServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,7 +60,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
     }
 
     protected ApiInfo apiInfo() {
-        Properties configProperties = CodeResolver.getLibraryViewerConfigurationFile();
+        Properties configProperties = RestDataServiceUtils.getLibraryViewerConfigurationFile();
 
         String contextForSite = configProperties.getProperty("contextPathForSite");
         ApiInfo apiInfo = new ApiInfo(

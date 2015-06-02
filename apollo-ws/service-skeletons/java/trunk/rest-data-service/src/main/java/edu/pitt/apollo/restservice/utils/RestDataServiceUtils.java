@@ -1,23 +1,16 @@
 package edu.pitt.apollo.restservice.utils;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
-import edu.pitt.apollo.types.v3_0_0.*;
-
-
-
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CodeResolver {
+public class RestDataServiceUtils {
 
-    static HashMap<String, String> locationCodeMap = new HashMap<String, String>();
+    static HashMap<String, String> locationCodeMap = new HashMap<>();
     static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
     //static Properties configurationProperties = null;
 
@@ -26,7 +19,7 @@ public class CodeResolver {
     {
 
         String[] groupIdsSplit = listAsString.split(",");
-        List<BigInteger> groupIdsAsList = new ArrayList<BigInteger>();
+        List<BigInteger> groupIdsAsList = new ArrayList<>();
         for(String idAsString : groupIdsSplit)
         {
             groupIdsAsList.add(new BigInteger(idAsString));
