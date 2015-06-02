@@ -19,6 +19,10 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
  */
 public class DatabaseAccessorFactory {
 
+	public static DatabaseAccessor getDatabaseAccessor(Authentication authentication, ApolloDbUtils dbUtils) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
+		return new DatabaseAccessor(authentication, dbUtils);
+	}
+
 	public static DatabaseAccessor getDatabaseAccessor(Object message, Authentication authentication, ApolloDbUtils dbUtils) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
 
 		if (message instanceof RunSimulationMessage || message instanceof RunSimulationsMessage) {

@@ -1,7 +1,12 @@
 
 package edu.pitt.apollo;
 
+import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessor;
+import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessorFactory;
+import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
@@ -42,7 +47,15 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 
 	@Override
 	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		try {
+			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message, authentication, new ApolloDbUtils());
+			return databaseAccessor.insertRun(message, authentication);
+		} catch (UnrecognizedMessageTypeException e) {
+			e.printStackTrace();
+		} catch (ApolloDatabaseException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
