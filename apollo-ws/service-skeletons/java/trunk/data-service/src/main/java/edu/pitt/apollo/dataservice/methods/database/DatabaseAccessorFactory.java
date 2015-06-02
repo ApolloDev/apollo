@@ -14,17 +14,17 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 /**
  *
- * Author: Nick Millett Email: nick.millett@gmail.com Date: Jul 30, 2014 Time:
- * 3:46:22 PM Class: DatabaseAccessorFactory
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Jul 30, 2014 Time: 3:46:22 PM Class: DatabaseAccessorFactory
  */
 public class DatabaseAccessorFactory {
 
-	public static DatabaseAccessor getDatabaseAccessor(Authentication authentication, ApolloDbUtils dbUtils) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
+	public static DatabaseAccessor getDatabaseAccessor(Authentication authentication) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
+		ApolloDbUtils dbUtils = new ApolloDbUtils();
 		return new DatabaseAccessor(authentication, dbUtils);
 	}
 
-	public static DatabaseAccessor getDatabaseAccessor(Object message, Authentication authentication, ApolloDbUtils dbUtils) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
-
+	public static DatabaseAccessor getDatabaseAccessor(Object message, Authentication authentication) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
+		ApolloDbUtils dbUtils = new ApolloDbUtils();
 		if (message instanceof RunSimulationMessage || message instanceof RunSimulationsMessage) {
 			((RunSimulationMessage) message).getAuthentication()
 					.setRequesterPassword("");
@@ -49,7 +49,7 @@ public class DatabaseAccessorFactory {
 			return new DatabaseAccessorForRunningDataService((GetOutputFilesURLAsZipMessage) message, authentication, dbUtils);
 		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
 			return new DatabaseAccessorForRunningDataService((GetAllOutputFilesURLAsZipMessage) message, authentication, dbUtils);
-		}else {
+		} else {
 			throw new UnrecognizedMessageTypeException(
 					"Unrecognized message type in DatabaseAccessorFactory");
 		}
