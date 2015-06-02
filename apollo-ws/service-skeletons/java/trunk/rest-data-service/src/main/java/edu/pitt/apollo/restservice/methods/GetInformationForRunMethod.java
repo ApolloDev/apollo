@@ -5,18 +5,15 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.RunInformation;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 
@@ -24,19 +21,13 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class GetInformationForRunMethod {
+public class GetInformationForRunMethod extends BaseDataServiceAccessorMethod {
 
-	public static String getInformationForRun(String username, String password, BigInteger runId, SerializationFormat serializationFormat) throws SerializationException, UnsupportedSerializationFormatException {
+	public GetInformationForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		DataServiceImpl impl = new DataServiceImpl();
-
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String getInformationForRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {
 
 		try {
 

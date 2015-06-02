@@ -5,16 +5,12 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.restservice.utils.RestDataServiceUtils;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.utilities.SerializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -23,21 +19,15 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class AddRunIdsToSimulationGroupForRun {
+public class AddRunIdsToSimulationGroupForRun extends BaseDataServiceAccessorMethod {
 
-	public static String addRunIdsToSimulationGroupForRun(String username, String password, BigInteger runId, String runIdList, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
+	public AddRunIdsToSimulationGroupForRun(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
+
+	public String addRunIdsToSimulationGroupForRun(BigInteger runId, String runIdList) throws UnsupportedSerializationFormatException, SerializationException {
 
 		List<BigInteger> groupIdsAsList = RestDataServiceUtils.getListOfGroupIds(runIdList);
-
-		DataServiceImpl impl = new DataServiceImpl();
-
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
 
 		try {
 			impl.addRunIdsToSimulationGroupForRun(runId, groupIdsAsList, authentication);

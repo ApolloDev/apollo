@@ -5,34 +5,24 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import org.springframework.http.HttpStatus;
 
 /**
  *
  * @author nem41
  */
-public class AddUserMethod {
-	
-	public static String addUser(String username, String password, String usernameToAdd, String passwordToAdd, String userEmail, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
+public class AddUserMethod extends BaseDataServiceAccessorMethod {
 
-		DataServiceImpl impl = new DataServiceImpl();
+	public AddUserMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String addUser(String usernameToAdd, String passwordToAdd, String userEmail) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
 			impl.addUser(usernameToAdd, passwordToAdd, userEmail, authentication);
@@ -44,5 +34,5 @@ public class AddUserMethod {
 
 		return serializer.serializeObject(responseBuilder.getResponse());
 	}
-	
+
 }

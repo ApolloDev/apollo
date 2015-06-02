@@ -5,17 +5,14 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,19 +22,13 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class GetRegisteredSoftwareMethod {
+public class GetRegisteredSoftwareMethod extends BaseDataServiceAccessorMethod {
 
-	public static String getRegisteredSoftware(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
+	public GetRegisteredSoftwareMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		DataServiceImpl impl = new DataServiceImpl();
-
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
 			Map<Integer, ServiceRegistrationRecord> mapOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);

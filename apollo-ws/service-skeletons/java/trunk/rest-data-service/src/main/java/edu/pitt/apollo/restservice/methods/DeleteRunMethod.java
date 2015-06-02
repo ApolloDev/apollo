@@ -5,15 +5,11 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 
@@ -21,15 +17,13 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class DeleteRunMethod {
+public class DeleteRunMethod extends BaseDataServiceAccessorMethod {
 
-	public static String deleteRun(String username, String password, BigInteger runId, SerializationFormat serializationFormat) throws SerializationException, UnsupportedSerializationFormatException {
-		DataServiceImpl impl = new DataServiceImpl();
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
+	public DeleteRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
+	public String deleteRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {
 
 		try {
 			impl.removeRunData(runId, authentication);
@@ -38,7 +32,6 @@ public class DeleteRunMethod {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
 		return serializer.serializeObject(responseBuilder.getResponse());
 	}
 

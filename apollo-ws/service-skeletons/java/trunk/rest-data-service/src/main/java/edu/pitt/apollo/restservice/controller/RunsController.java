@@ -48,7 +48,7 @@ public class RunsController {
 	String postRunToRunsCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 			@ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
-		return InsertRunMethod.insertRun(username, password, messageBody, SerializationFormat.XML);
+		return new InsertRunMethod(username, password, SerializationFormat.XML).insertRun(messageBody);
 	}
 	//Cannot delete the RUNS collection (DELETE), cannot create a collection at this level (PUT), and cannot get a list of all runs (GET, for now).
 
@@ -64,7 +64,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws SerializationException, UnsupportedSerializationFormatException {
 
-		return DeleteRunMethod.deleteRun(username, password, runId, SerializationFormat.XML);
+		return new DeleteRunMethod(username, password, SerializationFormat.XML).deleteRun(runId);
 	}
 	//We cannot run data through this method (POST), cannot reace new run data (PUT), and as of now we do not havea reason to get data from this level (GET).
 
@@ -81,7 +81,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetSoftwareIdentificationForRunMethod.getSoftwareIdentificationForRun(username, password, runId, SerializationFormat.XML);
+		return new GetSoftwareIdentificationForRunMethod(username, password, SerializationFormat.XML).getSoftwareIdentificationForRun(runId);
 	}
 
 //	@ApiIgnore
@@ -130,7 +130,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetStatusOfRunMethod.getStatusForRun(username, password, runId, SerializationFormat.XML);
+		return new GetStatusOfRunMethod(username, password, SerializationFormat.XML).getStatusForRun(runId);
 	}
 
 	@POST
@@ -146,7 +146,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return SetStatusOfRunMethod.setStatusOfRun(username, password, runId, statusToUpdateTo, username, SerializationFormat.XML);
+		return new SetStatusOfRunMethod(username, password, SerializationFormat.XML).setStatusOfRun(runId, statusToUpdateTo, username);
 	}
 	//Cannot create a new status for a run as it will always exist (PUT), and cannot delete a run status as a user (DELETE).
 
@@ -163,7 +163,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetListOfFilesForRunMethod.getListOfFilesForRun(username, password, runId, SerializationFormat.XML);
+		return new GetListOfFilesForRunMethod(username, password, SerializationFormat.XML).getListOfFilesForRun(runId);
 	}
 
 	@POST
@@ -178,7 +178,7 @@ public class RunsController {
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 			@ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return AssociateContentWithRunIdMethod.associateContentWithRunId(username, password, runId, password, SerializationFormat.XML);
+		return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, password);
 	}
 
 	//We cannot create a new collection at the files level (PUT), and we cannot DELETE the files collection (DELETE).
@@ -195,7 +195,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetListOfURLsForRunMethod.getListOfURLsForRunMethod(username, password, runId, SerializationFormat.XML);
+		return new GetListOfURLsForRunMethod(username, password, SerializationFormat.XML).getListOfURLsForRunMethod(runId);
 	}
 
 	@POST
@@ -210,7 +210,7 @@ public class RunsController {
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 			@ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return AssociateContentWithRunIdMethod.associateContentWithRunId(username, password, runId, associationData, SerializationFormat.XML);
+		return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, associationData);
 	}
 	//We cannot create a new collection at the URL level (PUT), and we cannot DELETE the URLs collection (DELETE).
 
@@ -224,8 +224,8 @@ public class RunsController {
 	String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
-		
-		return RunDataServiceMethod.runDataService(username, password, runId, SerializationFormat.XML);
+
+		return new RunDataServiceMethod(username, password, SerializationFormat.XML).runDataService(runId);
 	}
 
 	/*--Method to get run information such as groups, types, etc--*/
@@ -239,8 +239,8 @@ public class RunsController {
 	String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws SerializationException, UnsupportedSerializationFormatException {
-		
-		return GetInformationForRunMethod.getInformationForRun(username, password, runId, SerializationFormat.XML);
+
+		return new GetInformationForRunMethod(username, password, SerializationFormat.XML).getInformationForRun(runId);
 	}
 
 	/*--Methods to get and post rungroup data--*/
@@ -255,7 +255,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetRunIdsInSimulationGroupForRunMethod.getRunIdsInSimulationGroupForRun(username, password, runId, SerializationFormat.XML);
+		return new GetRunIdsInSimulationGroupForRunMethod(username, password, SerializationFormat.XML).getRunIdsInSimulationGroupForRun(runId);
 	}
 
 	@POST
@@ -270,7 +270,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return AddRunIdsToSimulationGroupForRun.addRunIdsToSimulationGroupForRun(username, password, runId, username, SerializationFormat.XML);
+		return new AddRunIdsToSimulationGroupForRun(username, password, SerializationFormat.XML).addRunIdsToSimulationGroupForRun(runId, username);
 
 	}
 
@@ -286,7 +286,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetLastServiceToBeCalledForRunMethod.getLastServiceToBeCalledForRun(username, password, runId, SerializationFormat.XML);
+		return new GetLastServiceToBeCalledForRunMethod(username, password, SerializationFormat.XML).getLastServiceToBeCalledForRun(runId);
 	}
 
 	@POST
@@ -303,8 +303,8 @@ public class RunsController {
 			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
-		
-		return SetLastServiceToBeCalledForRunMethod.setLastServiceToBeCalledForRunMethod(username, password, runId, softwareName, 
-				softwareVersion, softwareDeveloper, softwareTypeEnum, SerializationFormat.XML);
+
+		return new SetLastServiceToBeCalledForRunMethod(username, password, SerializationFormat.XML).setLastServiceToBeCalledForRunMethod(runId, softwareName,
+				softwareVersion, softwareDeveloper, softwareTypeEnum);
 	}
 }

@@ -5,37 +5,27 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import org.springframework.http.HttpStatus;
 
 /**
  *
  * @author nem41
  */
-public class DeleteUserMethod {
-	
-	public static String deleteUser(String username, String password, String usernameToDelete, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
+public class DeleteUserMethod extends BaseDataServiceAccessorMethod {
 
-		DataServiceImpl impl = new DataServiceImpl();
+	public DeleteUserMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String deleteUser(String usernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			impl.deleteUser(username, authentication);
+			impl.deleteUser(usernameToDelete, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 		} catch (DataServiceException ex) {
@@ -44,6 +34,5 @@ public class DeleteUserMethod {
 
 		return serializer.serializeObject(responseBuilder.getResponse());
 	}
-	
-	
+
 }
