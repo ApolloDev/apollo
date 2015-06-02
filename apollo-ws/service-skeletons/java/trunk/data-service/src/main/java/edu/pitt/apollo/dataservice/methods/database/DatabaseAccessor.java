@@ -18,6 +18,7 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
+import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -35,7 +36,7 @@ import java.util.*;
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
  * 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
-public class DatabaseAccessor implements DataServiceInterface, RunManagementInterface, ContentManagementInterface {
+public class DatabaseAccessor implements DataServiceInterface, RunManagementInterface, UserManagementInterface, ContentManagementInterface {
 
     protected static final String OUTPUT_DIRECTORY;
     protected static final String OUTPUT_FILE_NAME;
@@ -592,6 +593,26 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
         }
 
     }
+
+	@Override
+	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void deleteUser(String username, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void addUserRole(String username, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void addUser(String userId, String userPassword, String userEmail, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 
 
 }
