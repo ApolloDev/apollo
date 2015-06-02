@@ -222,7 +222,7 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="SerializationConfiguration">
+	<complexType name="ObjectSerializationInformation">
 		<sequence>
 			<element name="format" type="tns:SerializationFormat"></element>
 			<element name="className" type="token"
@@ -235,7 +235,8 @@
 	</complexType>
 	<complexType name="RequestMeta">
 		<sequence>
-			<element name="serializationConfiguration" type="tns:SerializationConfiguration" minOccurs="1" maxOccurs="1"></element>
+			<element name="requestBodySerializationInformation" type="tns:ObjectSerializationInformation" minOccurs="1" maxOccurs="1"></element>
+			<element name="isBodySerialized" type="boolean"></element>
 		</sequence>
 	</complexType>
 
@@ -252,7 +253,8 @@
 			</element>
 			<element name="numberOfReturnedResults" type="positiveInteger" minOccurs="1" maxOccurs="1">
 			</element>
-			<element name="serializationConfiguration" type="tns:SerializationConfiguration" minOccurs="1" maxOccurs="1"></element>
+			<element name="responseBodySerializationInformation" type="tns:ObjectSerializationInformation" minOccurs="1" maxOccurs="1"></element>
+			<element name="isBodySerialized" type="boolean"></element>
 		</sequence>
 	</complexType>
 
@@ -260,7 +262,7 @@
 		<sequence>
 			<element name="responseMeta" type="tns:ResponseMeta"
 					 maxOccurs="1" minOccurs="1" />
-			<element name="serializedObject" type="token" maxOccurs="unbounded"
+			<element name="responseBody" type="token" maxOccurs="unbounded"
 					 minOccurs="0" />
 		</sequence>
 	</complexType>
@@ -269,7 +271,7 @@
 		<sequence>
 			<element name="requestMeta" type="tns:RequestMeta"
 					 maxOccurs="1" minOccurs="1" />
-			<element name="serializedObject" type="token" maxOccurs="1"
+			<element name="requestBody" type="token" maxOccurs="1"
 					 minOccurs="1" />
 		</sequence>
 	</complexType>

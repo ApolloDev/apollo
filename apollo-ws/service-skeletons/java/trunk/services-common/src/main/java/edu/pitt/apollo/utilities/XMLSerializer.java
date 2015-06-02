@@ -12,10 +12,14 @@ import javax.xml.namespace.QName;
  *
  * @author nem41
  */
-public class XMLSerializer implements Serializer {
+public class XMLSerializer extends Serializer {
+
+	public XMLSerializer(String namespace, String prefix) {
+		super(namespace, prefix);
+	}
 
 	@Override
-	public String serializeObject(Object obj, String namespace, String prefix) throws SerializationException {
+	public String serializeObject(Object obj) throws SerializationException {
 		String xml = "";
 		try {
 

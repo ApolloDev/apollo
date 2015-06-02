@@ -2,7 +2,10 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.RunManagementInterface;
+import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
@@ -20,7 +23,7 @@ import java.util.Map;
  *
  * @author nem41
  */
-public class DataServiceImpl implements DataServiceInterface {
+public class DataServiceImpl implements DataServiceInterface, RunManagementInterface, ContentManagementInterface, UserManagementInterface {
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
@@ -48,7 +51,7 @@ public class DataServiceImpl implements DataServiceInterface {
 	}
 
 	@Override
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -83,17 +86,12 @@ public class DataServiceImpl implements DataServiceInterface {
 	}
 
 	@Override
-	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
 	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
+	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -109,6 +107,16 @@ public class DataServiceImpl implements DataServiceInterface {
 
 	@Override
 	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void addUserRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void addUser(String userId, String userPassword, String userEmail, Authentication authentication) throws DataServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 	

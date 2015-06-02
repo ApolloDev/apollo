@@ -437,11 +437,10 @@
 			</sequence>
 		</sequence>
 	</complexType>
-	<complexType name="GetRunInformationResult">
+	<complexType name="RunInformation">
 		<sequence>
-			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 			<element name="associatedGroupIds" type="positiveInteger" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="serviceType" type="token" minOccurs="0" maxOccurs="1"></element>
+			<element name="softwareIdentification" type="common:SoftwareIdentification" minOccurs="0" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
