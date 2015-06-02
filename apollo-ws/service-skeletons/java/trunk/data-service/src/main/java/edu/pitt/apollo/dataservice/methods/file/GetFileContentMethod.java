@@ -20,7 +20,7 @@ public class GetFileContentMethod {
         try(ApolloDbUtils dbUtils = new ApolloDbUtils())
         {
             DatabaseAccessor dbAccessor = new DatabaseAccessor(message.getAuthentication(),dbUtils);
-            String fileContent =dbAccessor.getFileContentForFileId(message.getFileId(), message.getAuthentication());
+            String fileContent =dbAccessor.getContentForContentId(message.getFileId(), message.getAuthentication());
             mcs.setStatus(MethodCallStatusEnum.COMPLETED);
             result.setFileContents(fileContent);
             result.setMethodCallStatus(mcs);

@@ -15,7 +15,9 @@ import edu.pitt.apollo.dataservice.utils.RunUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -33,7 +35,7 @@ import java.util.*;
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
  * 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
-public class DatabaseAccessor implements DataServiceInterface {
+public class DatabaseAccessor implements DataServiceInterface, RunManagementInterface, ContentManagementInterface {
 
     protected static final String OUTPUT_DIRECTORY;
     protected static final String OUTPUT_FILE_NAME;
@@ -219,7 +221,6 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     }
 
-    /*--DAN'S ADDITIONS--*/
     public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
@@ -274,10 +275,10 @@ public class DatabaseAccessor implements DataServiceInterface {
         }
     }
 
-    public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+    public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
-            return dbUtils.updateLastServiceToBeCalledForRun(runId, softwareIdentification);
+            dbUtils.updateLastServiceToBeCalledForRun(runId, softwareIdentification);
         } catch (ApolloDatabaseException e) {
             e.printStackTrace();
             throw new DataServiceException(e.getMessage());
@@ -341,7 +342,8 @@ public class DatabaseAccessor implements DataServiceInterface {
         }
     }
 
-    public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
+    @Override
+    public String getContentForContentId(BigInteger fileId, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
             String fileContent = dbUtils.getFileContentForFileId(fileId);
@@ -354,16 +356,6 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
 
-    }
-
-    public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
-        try {
-            authenticateUser(authentication);
-            String urlContent = dbUtils.getFileContentForFileId(urlId);
-            return urlContent;
-        } catch (ApolloDatabaseException e) {
-            throw new DataServiceException(e.getMessage());
-        }
     }
 
     public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
@@ -471,11 +463,11 @@ public class DatabaseAccessor implements DataServiceInterface {
 
     }
 
-    public int updateLastServiceToBeCalledForRunWithRunIdSoftwareNameAndSoftwareVersion(BigInteger runId, String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
+    public void updateLastServiceToBeCalledForRunWithRunIdSoftwareNameAndSoftwareVersion(BigInteger runId, String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
         try {
             authenticateUser(authentication);
             SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName, softwareVersion);
-            return updateLastServiceToBeCalledForRun(runId, si, authentication);
+            updateLastServiceToBeCalledForRun(runId, si, authentication);
         } catch (ApolloDatabaseException ade) {
             ade.printStackTrace();
             throw new DataServiceException(ade.getMessage());

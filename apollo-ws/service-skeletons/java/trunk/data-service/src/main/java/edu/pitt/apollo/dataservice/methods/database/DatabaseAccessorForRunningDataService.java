@@ -152,8 +152,8 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
-		return 0;
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+		
 	}
 
 	@Override
@@ -183,16 +183,6 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 
 	@Override
 	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws DataServiceException {
 		return null;
 	}
 

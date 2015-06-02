@@ -20,7 +20,7 @@ public class GetURLContentMethod {
         try(ApolloDbUtils dbUtils = new ApolloDbUtils())
         {
             DatabaseAccessor dbAccessor = new DatabaseAccessor(message.getAuthentication(),dbUtils);
-            String url = dbAccessor.getURLForURLId(message.getUrlId(), message.getAuthentication());
+            String url = dbAccessor.getContentForContentId(message.getUrlId(), message.getAuthentication());
             mcs.setStatus(MethodCallStatusEnum.COMPLETED);
             result.setURL(url);
             result.setMethodCallStatus(mcs);

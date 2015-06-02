@@ -9,12 +9,11 @@ import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
  */
 public class SerializerFactory {
 
-	public static Serializer getSerializer(SerializationFormat format) throws UnsupportedSerializationFormatException {
+	public static Serializer getSerializer(SerializationFormat format, String nameSpace, String prefix) throws UnsupportedSerializationFormatException {
 
 		switch (format) {
-
 			case XML:
-				return new XMLSerializer();
+				return new XMLSerializer(nameSpace, prefix);
 			default:
 				throw new UnsupportedSerializationFormatException("The serialization format " + format + " is not currently supported");
 		}
