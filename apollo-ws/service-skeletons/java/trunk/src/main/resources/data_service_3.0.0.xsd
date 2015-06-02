@@ -306,7 +306,16 @@
 		<sequence>
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
-			<element name="canViewCache" type="boolean"></element>
+			<element name="canRequestPrivileged" type="boolean"></element>
+			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AddRoleToUserMessage">
+		<sequence>
+			<element name="userName" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="canRun" type="boolean"></element>
+			<element name="canRequestPrivileged" type="boolean"></element>
 			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>

@@ -1,25 +1,17 @@
 package edu.pitt.apollo.restservice.controller;
 
 import com.wordnik.swagger.annotations.*;
-import edu.pitt.apollo.DataServiceImpl;
-import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.restservice.exceptions.ParsingFromXmlToObjectException;
-import edu.pitt.apollo.restservice.rest.responsemessage.StatusOnlyResponseMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildStatusResponseMessage;
-import edu.pitt.apollo.restservice.types.UserAndRoleInformation;
-import edu.pitt.apollo.restservice.types.UserInformation;
-import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
-import edu.pitt.apollo.restservice.utils.ParseXmlToAndFromObject;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.restservice.methods.AddRoleToUserMethod;
+import edu.pitt.apollo.restservice.methods.AddUserMethod;
+import edu.pitt.apollo.restservice.methods.DeleteUserMethod;
+import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import java.math.BigInteger;
 
 /**
  * Created by dcs27 on 5/15/15.
@@ -51,31 +43,13 @@ public class UsersController {
     @RequestMapping(value = "/users", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String addUserToUsersList(@ApiParam(value = "User information XML.", required = true) @RequestBody String userInformationXml) {
+    String addUserToUsersList(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "User name to add", required = true) @RequestParam("userNameToAdd") String uernameToAdd,
+			@ApiParam(value = "Password to add", required = true) @RequestParam("passwordToAdd") String passwordToAdd,
+			@ApiParam(value = "User email", required = true) @RequestParam("userEmail") String userEmail) throws UnsupportedSerializationFormatException, SerializationException {
 
-        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
-        DataServiceImpl impl = new DataServiceImpl();
-        /*--Parse XML to UserInformationObject--*/
-        try {
-            UserInformation userInformation = ParseXmlToAndFromObject.convertFromXmlToUserInformation(userInformationXml);
-            AddUserMessage message = new AddUserMessage();
-            message.setUserId(userInformation.getUserId());
-            message.setUserPassword(userInformation.getUserPassword());
-            message.setUserEmail(userInformation.getUserEmail());
-            AddUserResult result = impl.addUser(message);
-
-            if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED)
-            {
-                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
-            }
-            else
-            {
-                returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
-            }
-        } catch (ParsingFromXmlToObjectException e) {
-            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getMessage());
-        }
-        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+        return AddUserMethod.addUser(username, password, uernameToAdd, passwordToAdd, userEmail, SerializationFormat.XML);
     }
     //We cannot delete the users collection (DELETE) and we cannot PUT (add a collection) to the users collection.
 
@@ -99,20 +73,11 @@ public class UsersController {
     @RequestMapping(value = "/users", method = RequestMethod.DELETE, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String deleteUserFromUseresCollection(@ApiParam(value = "User ID", required = true) @RequestParam("userId") String userId, @ApiParam(value = "User password", required = true) @RequestParam("userPassword") String userPassword) {
-        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
-        DataServiceImpl impl = new DataServiceImpl();
-        DeleteUserMessage message = new DeleteUserMessage();
-        message.setUserId(userId);
-        message.setUserPassword(userPassword);
-        DeleteUserResult result = impl.deleteUser(message);
-        if(result.getMethodCallStatus().getStatus()==MethodCallStatusEnum.FAILED) {
-            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
-        }
-        else{
-            returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
-        }
-        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+    String deleteUserFromUseresCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "User name to add", required = true) @RequestParam("userNameToAdd") String uernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
+        
+		return DeleteUserMethod.deleteUser(username, password, uernameToDelete, SerializationFormat.XML);
     }
 
 
@@ -149,44 +114,11 @@ public class UsersController {
     @RequestMapping(value = "/user/{userId}/roles", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String addRoleToUser(@ApiParam(value = "User ID", required = true) @PathVariable("userId") String userId,@ApiParam(value = "User and role information XML.", required = true) @RequestBody String userAndRoleInformationXml) {
-        StatusOnlyResponseMessage returnMessage = new StatusOnlyResponseMessage();
-        DataServiceImpl impl = new DataServiceImpl();
-        /*--Parse XML to UserInformationObject--*/
-        try {
-//            UserAndRoleInformation userAndRoleInformation = new UserAndRoleInformation();
-//            SoftwareIdentification si = new SoftwareIdentification();
-//            si.setSoftwareDeveloper("Pitt");
-//            si.setSoftwareName("SEIR");
-//            si.setSoftwareType(ApolloSoftwareTypeEnum.SIMULATOR);
-//            si.setSoftwareVersion("2.1");
-//            userAndRoleInformation.setCanRequestPrivileged(true);
-//            userAndRoleInformation.setSoftwareIdentification(si);
-//            userAndRoleInformation.setCanRunSoftware(true);
-//            userAndRoleInformation.setUserPassword("asdf");
-//
-//            String xml = ParseXmlToAndFromObject.convertFromUserAndRoleInformationToXml(userAndRoleInformation);
-//            System.out.println(xml);
-            UserAndRoleInformation userAndRoleInformation = ParseXmlToAndFromObject.convertFromXmlToUserAndRoleInformationXml(userAndRoleInformationXml);
-            AddUserRoleMessage message = new AddUserRoleMessage();
-            message.setUserId(userId);
-            message.setUserPassword(userAndRoleInformation.getUserPassword());
-            message.setSoftwareIdentification(userAndRoleInformation.getSoftwareIdentification());
-            message.setCanRunSoftware(userAndRoleInformation.isCanRunSoftware());
-            message.setCanRequestPrivileged(userAndRoleInformation.isCanRequestPrivileged());
-            AddUserRoleResult result = impl.addUserRole(message);
-            if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED)
-            {
-                returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(result.getMethodCallStatus().getMessage());
-            }
-            else
-            {
-                returnMessage = BuildStatusResponseMessage.buildSuccessfulStatusResponseMessage();
-            }
-        } catch (ParsingFromXmlToObjectException e) {
-            returnMessage = BuildStatusResponseMessage.buildFailedStatusResponseMessage(e.getMessage());
-        }
-        return ConvertResponseMessagesToXml.convertStatusResponseMessagetoXmlJaxb(returnMessage);
+    String addRoleToUser(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
+        
+		return AddRoleToUserMethod.addRole(username, password, requestBody, SerializationFormat.XML);
     }
     //Cannot DELETE all roles of a user (DELETE), and CANNOT PUT a new collection or resource at this level (PUT).
 

@@ -4,20 +4,13 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
-import edu.pitt.apollo.DataServiceImpl;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetFileContentMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetFileContentResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetURLContentMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetURLContentResult;
-import edu.pitt.apollo.restservice.rest.responsemessage.GetContentRestMessage;
-import edu.pitt.apollo.restservice.rest.utils.BuildGetContentRestMessage;
-import edu.pitt.apollo.restservice.utils.ConvertResponseMessagesToXml;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.restservice.methods.GetContentByIdMethod;
+import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import java.math.BigInteger;
 
@@ -40,24 +33,9 @@ public class URLController {
     @ResponseBody
     String getURLOfRunUsingRunAndFileId(@ApiParam(value = "URL ID.", required = true) @PathVariable("urlId") BigInteger urlId,
                                         @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-                                        @ApiParam(value = "Password", required = true) @RequestParam("password") String password) {
-        GetContentRestMessage returnMessage = new GetContentRestMessage();
-        DataServiceImpl impl = new DataServiceImpl();
-        Authentication authentication = new Authentication();
-        authentication.setRequesterId(username);
-        authentication.setRequesterPassword(password);
-        GetURLContentMessage message = new GetURLContentMessage();
-        message.setUrlId(urlId);
-        message.setAuthentication(authentication);
-        GetURLContentResult result = impl.getURLContent(message);
-
-        if(result.getMethodCallStatus().getStatus()== MethodCallStatusEnum.FAILED){
-            returnMessage = BuildGetContentRestMessage.buildFailedGetListOfFilesAssociatedToRunRestMessage(result.getMethodCallStatus().getMessage());
-        }
-        else{
-            returnMessage = BuildGetContentRestMessage.buildSuccessfulGetListOfFilesAssociatedToRunRestMessage(result.getURL());
-        }
-        return ConvertResponseMessagesToXml.convertGetContentRestMessage(returnMessage);
+                                        @ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+        
+		return GetContentByIdMethod.getContent(username, password, urlId, SerializationFormat.XML);
     }
 
 
