@@ -70,34 +70,34 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		return DATA_SERVICE_SOFTWARE_ID;
 	}
 
-	@Override
-	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException, Md5UtilsException {
-		List<BigInteger> runIds = null;
-		String targetRunSimulationMessageAsJson = null;
-		if (getOutputFilesURLsMessage != null) {
-			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLsMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLsMessage);
-
-		} else if (getOutputFilesURLAsZipMessage != null) {
-			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLAsZipMessage);
-		} else if (getAllOutputFilesURLAsZipMessage != null) {
-			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
-		}
-
-		if (runIds != null && targetRunSimulationMessageAsJson != null && runIds.size() > 0) {
-			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
-				if (isRunIdAssociatedWithMatchingRunMessage(targetRunSimulationMessageAsJson,
-						runIdAssociatedWithRunSimulationMessageHash)) {
-					return runIdAssociatedWithRunSimulationMessageHash;
-				}
-			}
-			return null;
-		} else {
-			return null;
-		}
-	}
+//	@Override
+//	public BigInteger getCachedRunIdFromDatabaseOrNull() throws ApolloDatabaseException, Md5UtilsException {
+//		List<BigInteger> runIds = null;
+//		String targetRunSimulationMessageAsJson = null;
+//		if (getOutputFilesURLsMessage != null) {
+//			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLsMessage, DATA_SERVICE_SOFTWARE_ID);
+//			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLsMessage);
+//
+//		} else if (getOutputFilesURLAsZipMessage != null) {
+//			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
+//			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLAsZipMessage);
+//		} else if (getAllOutputFilesURLAsZipMessage != null) {
+//			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
+//			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
+//		}
+//
+//		if (runIds != null && targetRunSimulationMessageAsJson != null && runIds.size() > 0) {
+//			for (BigInteger runIdAssociatedWithRunSimulationMessageHash : runIds) {
+//				if (isRunIdAssociatedWithMatchingRunMessage(targetRunSimulationMessageAsJson,
+//						runIdAssociatedWithRunSimulationMessageHash)) {
+//					return runIdAssociatedWithRunSimulationMessageHash;
+//				}
+//			}
+//			return null;
+//		} else {
+//			return null;
+//		}
+//	}
 
 	@Override
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
