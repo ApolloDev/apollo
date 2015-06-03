@@ -21,10 +21,7 @@ import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
@@ -211,23 +208,23 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                         + runId);
     }
 
-    public GetOutputFilesURLsMessage getGetOutputFilesURLsMessageForRun(
-            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
-        Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
-        for (String name : contentForRun.keySet()) {
-            if (name.equals("run_data_service_message.json")) {
-                InputStream contentInputStream = new ByteArrayInputStream(
-                        contentForRun.get(name).toByteArray());
-
-                return (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(
-                        contentInputStream, GetOutputFilesURLsMessage.class);
-            }
-        }
-
-        throw new ApolloDatabaseException(
-                "Could not find run_data_service_message.json content associated with run ID"
-                        + runId);
-    }
+//    public GetOutputFilesURLsMessage getGetOutputFilesURLsMessageForRun(
+//            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
+//        Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
+//        for (String name : contentForRun.keySet()) {
+//            if (name.equals("run_data_service_message.json")) {
+//                InputStream contentInputStream = new ByteArrayInputStream(
+//                        contentForRun.get(name).toByteArray());
+//
+//                return (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(
+//                        contentInputStream, GetOutputFilesURLsMessage.class);
+//            }
+//        }
+//
+//        throw new ApolloDatabaseException(
+//                "Could not find run_data_service_message.json content associated with run ID"
+//                        + runId);
+//    }
 
     public GetOutputFilesURLAsZipMessage getGetOutputFilesURLAsZipMessageForRun(
             BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
@@ -247,23 +244,23 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                         + runId);
     }
 
-    public GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(
-            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
-        Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
-        for (String name : contentForRun.keySet()) {
-            if (name.equals("run_data_service_message.json")) {
-                InputStream contentInputStream = new ByteArrayInputStream(
-                        contentForRun.get(name).toByteArray());
-
-                return (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(
-                        contentInputStream, GetAllOutputFilesURLAsZipMessage.class);
-            }
-        }
-
-        throw new ApolloDatabaseException(
-                "Could not find run_data_service_message.json content associated with run ID"
-                        + runId);
-    }
+//    public GetAllOutputFilesURLAsZipMessage getGetAllOutputFilesURLAsZipMessageForRun(
+//            BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
+//        Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
+//        for (String name : contentForRun.keySet()) {
+//            if (name.equals("run_data_service_message.json")) {
+//                InputStream contentInputStream = new ByteArrayInputStream(
+//                        contentForRun.get(name).toByteArray());
+//
+//                return (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(
+//                        contentInputStream, GetAllOutputFilesURLAsZipMessage.class);
+//            }
+//        }
+//
+//        throw new ApolloDatabaseException(
+//                "Could not find run_data_service_message.json content associated with run ID"
+//                        + runId);
+//    }
 
     private int getRoleDescriptionId(int softwareId,
                                      boolean requestToRunSoftware, boolean requestPrivileged)
@@ -1328,35 +1325,35 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
     }
 
-    public BigInteger addDataServiceRun(GetAllOutputFilesURLAsZipMessage message, int md5CollisionId,
-                                          Authentication authentication,
-                                          SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException, Md5UtilsException {
-
-//		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
-//		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-//		runIdAndLabel.setRunIdentification(message.getRunId());
-//		runIds.add(runIdAndLabel);
+//    public BigInteger addDataServiceRun(GetAllOutputFilesURLAsZipMessage message, int md5CollisionId,
+//                                          Authentication authentication,
+//                                          SoftwareIdentification dataServiceSoftwareId)
+//            throws ApolloDatabaseException, Md5UtilsException {
 //
-        return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
-    }
+////		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
+////		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+////		runIdAndLabel.setRunIdentification(message.getRunId());
+////		runIds.add(runIdAndLabel);
+////
+//        return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
+//    }
 
     //
-    public BigInteger addDataServiceRun(GetOutputFilesURLsMessage message, int md5CollisionId,
-                                          Authentication authentication,
-                                          SoftwareIdentification dataServiceSoftwareId)
-            throws ApolloDatabaseException, Md5UtilsException {
-//
-//		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
-//		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
-//		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
-//			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-//			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
-//			runIds.add(runIdAndLabel);
-//		}
-//
-        return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
-    }
+//    public BigInteger addDataServiceRun(GetOutputFilesURLsMessage message, int md5CollisionId,
+//                                          Authentication authentication,
+//                                          SoftwareIdentification dataServiceSoftwareId)
+//            throws ApolloDatabaseException, Md5UtilsException {
+////
+////		List<RunIdentificationAndLabel> runIds = new ArrayList<RunIdentificationAndLabel>();
+////		List<RunIdAndFiles> runIdsAndFilesList = message.getRunIdsAndFiles();
+////		for (RunIdAndFiles runIdAndFiles : runIdsAndFilesList) {
+////			RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
+////			runIdAndLabel.setRunIdentification(runIdAndFiles.getRunId());
+////			runIds.add(runIdAndLabel);
+////		}
+////
+//        return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
+//    }
 
     public BigInteger addDataServiceRun(GetOutputFilesURLAsZipMessage message, int md5CollisionId,
                                           Authentication authentication,

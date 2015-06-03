@@ -4,6 +4,7 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.io.File;
@@ -18,22 +19,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: Jan 16, 2015
- * Time: 3:54:13 PM
- * Class: DataServiceMethod
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Jan 16, 2015 Time: 3:54:13 PM Class: DataServiceMethod
  */
 public abstract class DataServiceMethod {
 
-	protected static ApolloDbUtils dbUtils;
+//	protected static ApolloDbUtils dbUtils;
 	protected final BigInteger runId;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
-	protected static final int DATA_SERVICE_SOFTWARE_KEY;
+//	protected static final int DATA_SERVICE_SOFTWARE_KEY;
 	protected static final Logger logger = LoggerFactory.getLogger(DataServiceMethod.class);
-	protected final ApolloServiceQueue queue;
+//	protected final ApolloServiceQueue queue;
 	private static final String APOLLO_DIR;
-	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
 	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";
 	private static final String OUTPUT_FILE_NAME_KEY = "output_file_name";
@@ -41,6 +37,11 @@ public abstract class DataServiceMethod {
 	protected static final String OUTPUT_FILE_NAME;
 	private static final String ZIP_FILE_NAME_KEY = "zip_file_name";
 	protected static final String ZIP_FILE_NAME;
+	protected static final ApolloServiceQueue serviceQueue;
+
+	static {
+		serviceQueue = new ApolloServiceQueue();
+	}
 
 	static {
 		dataServiceSoftwareId = new SoftwareIdentification();
@@ -94,18 +95,18 @@ public abstract class DataServiceMethod {
 
 			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
 
-			try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-
-				try {
-					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
-				} catch (ApolloDatabaseException ex) {
-					logger.error(ex.getMessage());
-					throw new ExceptionInInitializerError("ApolloDatabaseException getting the key for the data service software ID");
-				}
-			} catch (ApolloDatabaseException ex) {
-				throw new ExceptionInInitializerError("ApolloDatabaseException creating ApolloDbUtils: " + ex.getMessage());
-			}
+//			try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
+//				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
+//
+//				try {
+//					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
+//				} catch (ApolloDatabaseException ex) {
+//					logger.error(ex.getMessage());
+//					throw new ExceptionInInitializerError("ApolloDatabaseException getting the key for the data service software ID");
+//				}
+//			} catch (ApolloDatabaseException ex) {
+//				throw new ExceptionInInitializerError("ApolloDatabaseException creating ApolloDbUtils: " + ex.getMessage());
+//			}
 //			} catch (IOException ex) {
 //				throw new ExceptionInInitializerError("Error creating ApolloDbUtils when initializing the data service: "
 //						+ ex.getMessage());
@@ -115,11 +116,10 @@ public abstract class DataServiceMethod {
 		}
 	}
 
-	protected DataServiceMethod(ApolloServiceQueue queue, BigInteger runId) {
-		this.queue = queue;
+	protected DataServiceMethod(BigInteger runId) {
 		this.runId = runId;
 	}
 
-	public abstract void downloadFiles();
+	public abstract void runDataService() throws DataServiceException;
 
 }

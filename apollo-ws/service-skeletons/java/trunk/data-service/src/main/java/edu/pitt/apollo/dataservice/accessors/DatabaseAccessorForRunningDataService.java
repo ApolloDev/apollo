@@ -1,11 +1,9 @@
-package edu.pitt.apollo.dataservice.methods.database;
+package edu.pitt.apollo.dataservice.accessors;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
 
 import edu.pitt.apollo.Md5UtilsException;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
@@ -13,8 +11,6 @@ import edu.pitt.apollo.services_common.v3_0_0.*;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,9 +23,7 @@ import java.util.Map;
  */
 public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 
-	private GetOutputFilesURLsMessage getOutputFilesURLsMessage = null;
 	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage = null;
-	private GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage = null;
 
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
 
@@ -44,23 +38,23 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareVersion("1.0");
 	}
 
-	public DatabaseAccessorForRunningDataService(GetOutputFilesURLsMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
-		super(authentication, dbUtils);
-		this.getOutputFilesURLsMessage = message;
-		dataServiceSoftwareKey = getDataServiceSoftwareKey();
-	}
+//	public DatabaseAccessorForRunningDataService(GetOutputFilesURLsMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+//		super(authentication, dbUtils);
+//		this.getOutputFilesURLsMessage = message;
+//		dataServiceSoftwareKey = getDataServiceSoftwareKey();
+//	}
 
-	public DatabaseAccessorForRunningDataService(GetOutputFilesURLAsZipMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
-		super(authentication, dbUtils);
+	public DatabaseAccessorForRunningDataService(GetOutputFilesURLAsZipMessage message, Authentication authentication) throws ApolloDatabaseException {
+		super(authentication);
 		this.getOutputFilesURLAsZipMessage = message;
 		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
 
-	public DatabaseAccessorForRunningDataService(GetAllOutputFilesURLAsZipMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
-		super(authentication, dbUtils);
-		this.getAllOutputFilesURLAsZipMessage = message;
-		dataServiceSoftwareKey = getDataServiceSoftwareKey();
-	}
+//	public DatabaseAccessorForRunningDataService(GetAllOutputFilesURLAsZipMessage message, Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+//		super(authentication, dbUtils);
+//		this.getAllOutputFilesURLAsZipMessage = message;
+//		dataServiceSoftwareKey = getDataServiceSoftwareKey();
+//	}
 
 	private int getDataServiceSoftwareKey() throws ApolloDatabaseException {
 		return dbUtils.getSoftwareIdentificationKey(DATA_SERVICE_SOFTWARE_ID);
@@ -119,91 +113,22 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		int md5CollisionId;
 		BigInteger runIds = null;
 		try {
-			if (getOutputFilesURLsMessage != null) {
-				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
-				runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-			} else if (getOutputFilesURLAsZipMessage != null) {
+//			if (getOutputFilesURLsMessage != null) {
+//				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
+//				runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+//			} else 
+				if (getOutputFilesURLAsZipMessage != null) {
 				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLAsZipMessage) + 1;
 				runIds = dbUtils.addDataServiceRun(getOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-			} else if (getAllOutputFilesURLAsZipMessage != null) {
-				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
-				runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-			}
+			} 
+//				else if (getAllOutputFilesURLAsZipMessage != null) {
+//				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
+//				runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+//			}
 		} catch (Md5UtilsException | ApolloDatabaseException e) {
 			throw new DataServiceException("Error inserting run into database, error was: " + "(" + e.getClass().getName() + ") " + e.getMessage());
 		}
 
 		return runIds;
-	}
-
-	@Override
-	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-
-	@Override
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
-
-	}
-
-	@Override
-	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
-		
-	}
-
-	@Override
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public void addRunIdsToSimulationGroupForRun(BigInteger simulationGroupId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
-
-	}
-
-	@Override
-	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
-
-	}
-
-	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
-		return null;
-	}
-
-	@Override
-	public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
-
-	}
-
-	@Override
-	public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
-
-	}
-
-	@Override
-	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
-
 	}
 }

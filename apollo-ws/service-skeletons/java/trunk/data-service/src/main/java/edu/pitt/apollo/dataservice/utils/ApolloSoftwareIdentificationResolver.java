@@ -1,4 +1,4 @@
-package edu.pitt.apollo.dataservice.methods.database;
+package edu.pitt.apollo.dataservice.utils;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
