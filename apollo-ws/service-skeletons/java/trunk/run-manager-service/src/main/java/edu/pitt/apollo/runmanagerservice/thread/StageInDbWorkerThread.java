@@ -5,6 +5,7 @@ import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
@@ -31,9 +32,8 @@ import java.util.List;
 public class StageInDbWorkerThread implements Runnable {
 
 
-    private final RunSimulationsMessage message;
-
     static Logger logger = LoggerFactory.getLogger(StageInDbWorkerThread.class);
+    private final RunSimulationsMessage message;
     private final SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder;
     private final XMLGregorianCalendar scenarioDate;
     private final BigInteger batchRunId;
@@ -41,35 +41,8 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private final RunSimulationsThread.BooleanRef errorRef;
     private final RunSimulationsThread.CounterRef counterRef;
-    private final Authentication authentication;
-    Md5Utils md5Utils = new Md5Utils();
-    JsonUtils jsonUtils = new JsonUtils();
-
     private final String line;
-
-    private class BatchConfigRecord {
-
-        Double r0;
-        Double infectiousPeriod;
-        Double latentPeriod;
-        Double percentSusceptible;
-        Double percentExposed;
-        Double percentInfectious;
-        Double percentRecovered;
-        int dayOfWeekOffset;
-
-        public BatchConfigRecord(String[] columns) {
-            // column 0 is the ODS model ID
-            percentSusceptible = Double.valueOf(columns[1]);
-            percentExposed = Double.valueOf(columns[2]);
-            percentInfectious = Double.valueOf(columns[3]);
-            percentRecovered = Double.valueOf(columns[4]);
-            r0 = Double.valueOf(columns[5]);
-            latentPeriod = Double.valueOf(columns[6]);
-            infectiousPeriod = Double.valueOf(columns[7]);
-            dayOfWeekOffset = Integer.parseInt(columns[8]);
-        }
-    }
+    JsonUtils jsonUtils = new JsonUtils();
 
     public StageInDbWorkerThread(BigInteger batchRunId, BigInteger parentRunId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef, Authentication authentication) throws DataServiceException {
         this.line = line;
@@ -81,8 +54,6 @@ public class StageInDbWorkerThread implements Runnable {
         this.simulatorIdentification = simulatorIdentification;
         this.errorRef = errorRef;
         this.counterRef = counterRef;
-        this.authentication = authentication;
-
     }
 
     private PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
@@ -197,13 +168,14 @@ public class StageInDbWorkerThread implements Runnable {
                             );
                     return;
                 }
-                StageMethod stageMethod = new StageMethod(currentRunSimulationMessage, parentRunId, authentication);
-                RunResult runResult = stageMethod.stage();
+                StageMethod stageMethod = null;
+                try {
+                    stageMethod = new StageMethod(currentRunSimulationMessage, parentRunId);
+                    BigInteger runId = stageMethod.stage();
 
-                String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runResult.getRunId();
-                batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-
-                if (!isNonErrorCachedStatus(runResult.getMethodCallStatus().getStatus())) {
+                    String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
+                    batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
+                } catch (RunManagementException e) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
@@ -211,7 +183,7 @@ public class StageInDbWorkerThread implements Runnable {
                                             + paramLineOrNullIfEndOfStream
                                             + " of the batch configuration file. "
                                             + "Broker returned the following status: "
-                                            + "(" + runResult.getMethodCallStatus().getStatus() + ")" + runResult.getMethodCallStatus().getMessage() + " for software "
+                                            + "(" + e.getMessage() + " for software "
                                             + simulatorIdentification
                                             .getSoftwareVersion()
                                             + ", developer: "
@@ -225,5 +197,29 @@ public class StageInDbWorkerThread implements Runnable {
             }
         }
         counterRef.count += 1;
+    }
+
+    private class BatchConfigRecord {
+
+        Double r0;
+        Double infectiousPeriod;
+        Double latentPeriod;
+        Double percentSusceptible;
+        Double percentExposed;
+        Double percentInfectious;
+        Double percentRecovered;
+        int dayOfWeekOffset;
+
+        public BatchConfigRecord(String[] columns) {
+            // column 0 is the ODS model ID
+            percentSusceptible = Double.valueOf(columns[1]);
+            percentExposed = Double.valueOf(columns[2]);
+            percentInfectious = Double.valueOf(columns[3]);
+            percentRecovered = Double.valueOf(columns[4]);
+            r0 = Double.valueOf(columns[5]);
+            latentPeriod = Double.valueOf(columns[6]);
+            infectiousPeriod = Double.valueOf(columns[7]);
+            dayOfWeekOffset = Integer.parseInt(columns[8]);
+        }
     }
 }

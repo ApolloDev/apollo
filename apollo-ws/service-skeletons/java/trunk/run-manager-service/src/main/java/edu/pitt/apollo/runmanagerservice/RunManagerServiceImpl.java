@@ -1,74 +1,73 @@
 package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.interfaces.RunManagementInterface;
+import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
-import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
+import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopulationGenerationResult;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by jdl50 on 6/3/15.
  */
-public class RunManagerServiceImpl implements RunManagerServiceEI {
-
-
+public class RunManagerServiceImpl implements RunManagementInterface {
 
     @Override
-    public SyntheticPopulationGenerationResult runSyntheticPopulationGeneration(RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage) {
+    public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
         return null;
     }
 
     @Override
-    public RunResult addSimulation(RunSimulationMessage runSimulationMessage) {
-        DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
-        return null;
-        //dataServiceAccessor.insertRun(runSimulationMessage)
-    }
-
-    @Override
-    public RunResult runSimulation(BigInteger runIdentification, Authentication authentication) {
+    public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
         return null;
     }
 
     @Override
-    public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
+    public BigInteger insertRun(Object message) throws RunManagementException {
+        final BigInteger NULL_PARENT_RUN_ID = null;
+        StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID);
+        return stageMethod.stage();
+    }
+
+    @Override
+    public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
+
+    }
+
+    @Override
+    public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
+
+    }
+
+    @Override
+    public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
         return null;
     }
 
     @Override
-    public RunResult addSimulations(RunSimulationsMessage runSimulationsMessage) {
-        return null;
+    public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
+
     }
 
     @Override
-    public RunResult runSimulations(BigInteger batchRunIdentificiation, Authentication authentication) {
-        return null;
+    public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
+
     }
 
     @Override
-    public TerminteRunResult terminateRuns(TerminateRunRequest terminateRunRequest) {
-        return null;
-    }
-
-    @Override
-    public RunResult runVisualization(BigInteger runIdentification, Authentication authentication) {
-        return null;
-    }
-
-    @Override
-    public RunResult addVisualization(RunVisualizationMessage runVisualizationMessage) {
-        return null;
-    }
-
-    @Override
-    public TerminateRunRequest terminateVisualization(TerminateRunRequest terminateRunRequest) {
+    public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
         return null;
     }
 }
+
+
+
+

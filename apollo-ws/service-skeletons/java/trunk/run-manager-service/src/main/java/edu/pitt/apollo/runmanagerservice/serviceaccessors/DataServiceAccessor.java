@@ -1,6 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
@@ -38,62 +39,62 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 	}
 	
 	@Override
-	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		return connector.getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
 	}
 	
 	@Override
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		return connector.getSoftwareIdentificationForRun(runId, authentication);
 	}
 	
 	@Override
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
-		return connector.insertRun(message, authentication);
+	public BigInteger insertRun(Object message) throws RunManagementException {
+		return connector.insertRun(message);
 	}
 	
 	@Override
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
 		connector.updateStatusOfRun(runId, statusEnumToSet, messageToSet, authentication);
 	}
 	
 	@Override
-	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
 		connector.updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
 	}
 	
 	@Override
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		return connector.getLastServiceToBeCalledForRun(runId, authentication);
 	}
 	
 	@Override
-	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
 		connector.addRunIdsToSimulationGroupForRun(runId, runIds, authentication);
 	}
 	
 	@Override
-	public void removeRunData(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
 		connector.removeRunData(runId, authentication);
 	}
 	
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		return connector.getRunStatus(runId, authentication);
 	}
 
 	@Override
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
 		connector.removeFileAssociationWithRun(runId, fileId, authentication);
 	}
 	
 	@Override
-	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DataServiceException {
 		return connector.getContentForContentId(urlId, authentication);
 	}
 	
 	@Override
-	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
 		return connector.getURLForSoftwareIdentification(softwareId, authentication);
 	}
 	

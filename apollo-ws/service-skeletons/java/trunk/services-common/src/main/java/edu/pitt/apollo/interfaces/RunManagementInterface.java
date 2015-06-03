@@ -2,6 +2,7 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -15,22 +16,22 @@ import java.util.List;
  */
 public interface RunManagementInterface {
 
-	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public BigInteger insertRun(Object message) throws DataServiceException;
+	public BigInteger insertRun(Object message) throws RunManagementException;
 
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException;
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException;
 
-	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException;
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException;
 
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException;
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException;
 
-	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException;
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException;
 
 }
