@@ -4,7 +4,6 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
-import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
