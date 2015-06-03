@@ -1,4 +1,4 @@
-package edu.pitt.apollo.dataservice.methods.database;
+package edu.pitt.apollo.dataservice.accessors;
 
 /**
  * Created by jdl50 on 5/21/15.

@@ -1,7 +1,7 @@
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessor;
-import edu.pitt.apollo.dataservice.methods.database.DatabaseAccessorFactory;
+import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
+import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;

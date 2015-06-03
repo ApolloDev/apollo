@@ -1,5 +1,6 @@
-package edu.pitt.apollo.dataservice.methods.database;
+package edu.pitt.apollo.dataservice.accessors;
 
+import edu.pitt.apollo.dataservice.utils.ApolloSoftwareIdentificationResolver;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.List;
@@ -32,9 +33,8 @@ public class DatabaseAccessorForRunningJobs extends
 	//private Class runMessageClass;
 
 	public DatabaseAccessorForRunningJobs(Authentication authentication, String runMessageFileName, ContentDataTypeEnum contentDataTypeEnum,
-			SoftwareIdentification softwareIdentification,
-			ApolloDbUtils dbUtils/*,( Class clazz*/) throws ApolloDatabaseException {
-		super(authentication, dbUtils);
+			SoftwareIdentification softwareIdentification) throws ApolloDatabaseException {
+		super(authentication);
 		//this.runMessageClass = clazz;
 		this.runMessageFileName = runMessageFileName;
 		this.contentDataTypeEnum = contentDataTypeEnum;

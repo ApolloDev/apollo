@@ -1,16 +1,8 @@
-package edu.pitt.apollo.dataservice.methods.database;
+package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.*;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
-import edu.pitt.apollo.dataservice.thread.DataServiceAllFilesThread;
-import edu.pitt.apollo.dataservice.thread.DataServiceSpecifiedFilesThread;
-import edu.pitt.apollo.dataservice.thread.DataServiceThread;
-import edu.pitt.apollo.dataservice.types.FileInformation;
-import edu.pitt.apollo.dataservice.types.FileInformationCollection;
-import edu.pitt.apollo.dataservice.utils.RunUtils;
+import edu.pitt.apollo.dataservice.methods.DataServiceMethod;
+import edu.pitt.apollo.dataservice.methods.DataServiceMethodFactory;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
@@ -123,93 +115,22 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 		}
 	}
 
-	protected final ApolloServiceQueue queue = new ApolloServiceQueue();
 	protected final ApolloDbUtils dbUtils;
 	protected final Authentication authentication;
 	protected JsonUtils jsonUtils = new JsonUtils();
 	protected Md5Utils md5Utils = new Md5Utils();
 
-	public DatabaseAccessor(Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
+	public DatabaseAccessor(Authentication authentication) throws ApolloDatabaseException {
 		this.authentication = authentication;
-		this.dbUtils = dbUtils;
+		this.dbUtils = new ApolloDbUtils();
 	}
 
-//    public void removeAllDataAssociatedWithRunId(BigInteger runId)
-//            throws ApolloDatabaseException {
-//        dbUtils.removeRunData(runId);
-//    }
-//    public boolean authenticateUser(Authentication authentication)
-//            throws ApolloDatabaseException {
-//
-//        return dbUtils.authenticateUser(authentication);
-//
-//    }
-//    public boolean authorizeUserForSoftwareCacheData(
-//            Authentication authentication,
-//            SoftwareIdentification softwareIdentification)
-//            throws ApolloDatabaseException {
-//        boolean requestRunSimulator = false;
-//        return dbUtils.authorizeUser(authentication, softwareIdentification,
-//                requestRunSimulator);
-//    }
-//
-//    public boolean authorizeUserForRunningSoftware(
-//            Authentication authentication,
-//            SoftwareIdentification softwareIdentification)
-//            throws ApolloDatabaseException {
-//        boolean requestRunSimulator = true;
-//        return dbUtils.authorizeUser(authentication, softwareIdentification,
-//                requestRunSimulator);
-//    }
-//    protected final boolean isRunIdAssociatedWithMatchingRunMessage(
-//            String targetRunMessageAsJson,
-//            BigInteger runIdAssociatedWithRunMessageHash)
-//            throws ApolloDatabaseException {
-//
-//        String runSimulationMessageAssociatedWithRunIdAsJson = getRunMessageAssociatedWithRunIdAsJsonOrNull(runIdAssociatedWithRunMessageHash);
-//
-//        if (runSimulationMessageAssociatedWithRunIdAsJson == null) {
-//            throw new ApolloDatabaseException(
-//                    "There was no run_simulation_message.json content for run ID "
-//                            + runIdAssociatedWithRunMessageHash);
-//        }
-//
-//        boolean result = targetRunMessageAsJson
-//                .equals(runSimulationMessageAssociatedWithRunIdAsJson);
-//        if (!result) {
-//            String targetHash = md5Utils.getMd5FromString(targetRunMessageAsJson);
-//            String existingHash = md5Utils.getMd5FromString(runSimulationMessageAssociatedWithRunIdAsJson);
-//
-//            logger.warn("Warning!!! (" + targetHash + ") " + targetRunMessageAsJson +
-//                    " \n is not equal to \n " +
-//                    "(" + existingHash + ")" + runSimulationMessageAssociatedWithRunIdAsJson);
-//
-//        }
-//        return result;
-//
-//    }
-//    public List<BigInteger> getRunIdsAssociatedWithRun(BigInteger runId)
-//            throws ApolloDatabaseException {
-//        return dbUtils.getRunIdsForBatch(runId);
-//    }
-//    public void addRunIdsToSimulationGroup(
-//            BigInteger simulationGroupId,
-//            List<BigInteger> runIds) throws ApolloDatabaseException, Md5UtilsException {
-//
-//        dbUtils.addRunIdsToSimulationGroup(simulationGroupId,
-//                runIds);
-//
-//    }
+
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
 			BigInteger runId) throws ApolloDatabaseException {
 		return null;
 	}
 
-//    public BigInteger getSimulationGroupIdForRun(BigInteger runId)
-//            throws ApolloDatabaseException {
-//
-//        return dbUtils.getSimulationGroupIdForRun(runId);
-//    }
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
 		try {
@@ -370,48 +291,20 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 
 	@Override
 	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+
+		authenticateUser(authentication);
+
 		String messageContent;
 		try {
-
 			BigInteger dbMessageDescriptionId = dbUtils.getRunDataDescriptionIdFromFileLabel(RUN_DATA_SEVICE_MESSAGE_FILENAME);
 			BigInteger messageContentId = dbUtils.getContentIdFromRunIdAndDataDescriptionId(runId, dbMessageDescriptionId);
 			messageContent = dbUtils.getFileContentForFileId(messageContentId);
 		} catch (ApolloDatabaseException ade) {
-			ade.printStackTrace();
 			throw new DataServiceException(ade.getMessage());
 		}
-		boolean messageTypeFound = false;
-		try {
-			jsonUtils.getObjectFromJson(messageContent, GetAllOutputFilesURLAsZipMessage.class);
-			runDataServiceToGetAllOutputFilesURLAsZip(runId, authentication);
-			messageTypeFound = true;
-		} catch (JsonUtilsException jue) {
-			jue.printStackTrace();
-		}
-		try {
-			if (!messageTypeFound) {
-				jsonUtils.getObjectFromJson(messageContent, GetOutputFilesURLAsZipMessage.class);
-				runDataServiceToGetOutputFilesURLAsZip(runId, authentication);
-				messageTypeFound = true;
-			}
-		} catch (JsonUtilsException jue) {
-			jue.printStackTrace();
-		}
-		try {
-			if (!messageTypeFound) {
-				if (!messageTypeFound) {
-					jsonUtils.getObjectFromJson(messageContent, GetOutputFilesURLsMessage.class);
-					runDataServiceToGetOutputFilesURLs(runId, authentication);
-					messageTypeFound = true;
-				}
-			}
-		} catch (JsonUtilsException jue) {
-			jue.printStackTrace();
-		}
-		if (!messageTypeFound) {
-			logger.error("Error in runDataService method of the DatabaseAccessor, Run ID suppied does not resolve to a data service message type.");
-			throw new DataServiceException("Run ID does not resolve to a data service message type.");
-		}
+		
+		DataServiceMethod dataServiceMethod = DataServiceMethodFactory.getDataServiceMethod(messageContent, runId);
+		dataServiceMethod.runDataService();
 
 	}
 
@@ -423,169 +316,6 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 		} catch (ApolloDatabaseException ade) {
 			throw new DataServiceException(ade.getMessage());
 		}
-	}
-
-//    public void addRunIdsToSimulationGroupWithRunId(BigInteger runId, List<BigInteger> listOfRunIdsToAssociateWithSimulationGroup, Authentication authentication) throws DataServiceException {
-//        try {
-//            authenticateUser(authentication);
-//            BigInteger groupId = getSimulationGroupIdForRun(runId);
-//            addRunIdsToSimulationGroup(groupId, listOfRunIdsToAssociateWithSimulationGroup);
-//
-//        } catch (ApolloDatabaseException | Md5UtilsException e) {
-//            throw new DataServiceException(e.getMessage());
-//        }
-//
-//    }
-//	public void associateContentWithRunIdWithSoftareNameAndVersionParameters(BigInteger runId, String content, String sourceSoftwareName, String sourceSoftwareVersion,
-//			String destinationSoftwareName, String destinationSoftwareVersion, String contentLabel,
-//			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
-//		try {
-//			SoftwareIdentification sourceSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(sourceSoftwareName, sourceSoftwareVersion);
-//			SoftwareIdentification destinationSoftwareIdentification = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(destinationSoftwareName, destinationSoftwareVersion);
-//			associateContentWithRunId(runId, content, sourceSoftwareIdentification, destinationSoftwareIdentification, contentLabel, contentDataFormatEnum, contentDataType, authentication);
-//		} catch (ApolloDatabaseException | DataServiceException e) {
-//			throw new DataServiceException(e.getMessage());
-//		}
-//	}
-//	private SoftwareIdentification getSoftwareIdentificationFromMessage(Object message) {
-//		if (message instanceof RunSimulationMessage) {
-//			return ((RunSimulationMessage) message).getSimulatorIdentification();
-//		}
-//		if (message instanceof RunSimulationsMessage) {
-//			return ((RunSimulationsMessage) message).getSimulatorIdentification();
-//		}
-//		if (message instanceof RunVisualizationMessage) {
-//			return ((RunVisualizationMessage) message).getVisualizerIdentification();
-//		}
-//		return null;
-//
-//	}
-//	public void updateLastServiceToBeCalledForRunWithRunIdSoftwareNameAndSoftwareVersion(BigInteger runId, String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
-//		try {
-//			authenticateUser(authentication);
-//			SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName, softwareVersion);
-//			updateLastServiceToBeCalledForRun(runId, si, authentication);
-//		} catch (ApolloDatabaseException ade) {
-//			ade.printStackTrace();
-//			throw new DataServiceException(ade.getMessage());
-//		}
-//	}
-//	public String getURLForSoftwareIdentificationWithSoftwareNameAndVersion(String softwareName, String softwareVersion, Authentication authentication) throws DataServiceException {
-//		try {
-//			authenticateUser(authentication);
-//			SoftwareIdentification si = dbUtils.getSoftwareIdentificationFromSoftwareNameAndVersion(softwareName, softwareVersion);
-//			String wsdlURL = getURLForSoftwareIdentification(si, authentication);
-//			return wsdlURL;
-//		} catch (ApolloDatabaseException e) {
-//			throw new DataServiceException(e.getMessage());
-//		}
-//	}
-	public void runDataServiceToGetOutputFilesURLs(BigInteger runId, Authentication authentication) throws DataServiceException {
-		GetOutputFilesURLsMessage message;
-		try {
-			authenticateUser(authentication);
-			message = dbUtils.getGetOutputFilesURLsMessageForRun(runId);
-			if (message == null) {
-				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
-			}
-		} catch (ApolloDatabaseException | JsonUtilsException ade) {
-			throw new DataServiceException(ade.getMessage());
-		}
-
-		FileInformationCollection fileInformationCollection = new FileInformationCollection();
-		for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
-			// create a url for each file in the list
-			BigInteger run = runIdAndFiles.getRunId();
-			List<FileInformation> fileInformationForRun = new ArrayList<FileInformation>();
-			fileInformationCollection.put(run, fileInformationForRun);
-			List<String> files = runIdAndFiles.getFiles();
-			for (String file : files) {
-				String outputFilePath = OUTPUT_DIRECTORY + runId + File.separator + FILE_PREFIX + file;
-
-				FileInformation fileInformation = new FileInformation();
-				fileInformation.setFilePath(outputFilePath);
-				fileInformation.setRunId(run.intValue());
-				fileInformation.setFileName(file);
-				fileInformationForRun.add(fileInformation);
-			}
-
-		}
-		DataServiceSpecifiedFilesThread thread = new DataServiceSpecifiedFilesThread(runId, fileInformationCollection,
-				queue, dbUtils);
-
-		MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
-		if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, queueStatus.getMessage());
-		} else {
-			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.RUNNING, "The data service request was successful");
-		}
-	}
-
-	public void runDataServiceToGetOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
-		GetOutputFilesURLAsZipMessage message;
-		try {
-			authenticateUser(authentication);
-			message = dbUtils.getGetOutputFilesURLAsZipMessageForRun(runId);
-			if (message == null) {
-				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
-			}
-		} catch (ApolloDatabaseException | JsonUtilsException ade) {
-			throw new DataServiceException(ade.getMessage());
-		}
-		FileInformationCollection fileInformationCollection = new FileInformationCollection();
-		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
-		String zipFileName = String.format(ZIP_FILE_NAME, runId);
-		fileInformationCollection.setZipFiles(true);
-		fileInformationCollection.setZipFileName(zipFileName);
-		fileInformationCollection.setOutputDirectory(outputDirectory);
-
-		for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
-			// create a url for each file in the list
-			BigInteger run = runIdAndFiles.getRunId();
-			List<FileInformation> fileInformationForRun = new ArrayList<FileInformation>();
-			fileInformationCollection.put(run, fileInformationForRun);
-			List<String> files = runIdAndFiles.getFiles();
-			for (String file : files) {
-				String outputFilePath = outputDirectory + FILE_PREFIX + file;
-				FileInformation fileInformation = new FileInformation();
-				fileInformation.setFilePath(outputFilePath);
-				fileInformation.setRunId(run.intValue());
-				fileInformation.setFileName(file);
-				fileInformationForRun.add(fileInformation);
-			}
-		}
-
-		DataServiceSpecifiedFilesThread thread = new DataServiceSpecifiedFilesThread(runId, fileInformationCollection,
-				queue, dbUtils);
-		MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
-		if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, queueStatus.getMessage());
-		} else {
-			RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.RUNNING, "The data service request was successful");
-		}
-	}
-
-	public void runDataServiceToGetAllOutputFilesURLAsZip(BigInteger runId, Authentication authentication) throws DataServiceException {
-		try {
-			authenticateUser(authentication);
-			GetAllOutputFilesURLAsZipMessage message = dbUtils.getGetAllOutputFilesURLAsZipMessageForRun(runId);
-			if (message == null) {
-				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null");
-			}
-
-			String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
-			DataServiceThread thread = new DataServiceAllFilesThread(runId, message.getRunId(), queue, dbUtils, outputDirectory, ZIP_FILE_NAME, message.getFileNames());
-
-			MethodCallStatus queueStatus = queue.addThreadToQueueAndRun(thread);
-			if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.FAILED, queueStatus.getMessage());
-			} else {
-				RunUtils.updateStatus(dbUtils, runId, MethodCallStatusEnum.RUNNING, "The data service request was successful");
-			}
-		} catch (ApolloDatabaseException | JsonUtilsException e) {
-			throw new DataServiceException(e.getMessage());
-		}
-
 	}
 
 	@Override
