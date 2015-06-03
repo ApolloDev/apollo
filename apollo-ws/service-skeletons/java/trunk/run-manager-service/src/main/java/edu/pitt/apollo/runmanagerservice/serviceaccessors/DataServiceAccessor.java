@@ -1,8 +1,10 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
+import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
 import java.math.BigInteger;
@@ -13,7 +15,7 @@ import java.util.Map;
 /**
  * Created by jdl50 on 5/21/15.
  */
-public class DataServiceAccessor extends ServiceAccessor implements DataServiceInterface {
+public class DataServiceAccessor extends ServiceAccessor implements DataServiceInterface, RunManagementInterface, ContentManagementInterface {
 	
 	private static final String DATA_SERVICE_URL = "";
 	
@@ -29,7 +31,7 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 		for (BigInteger fileId : files.keySet()) {
 			String filename = files.get(fileId).getName();
 			if (filename.equals(runMessageFilename)) {
-				return this.getFileContentForFileId(fileId, authentication);
+				return this.getContentForContentId(fileId, authentication);
 			}
 		}
 		throw new DataServiceException("Couldn't find " + runMessageFilename + " in database for run " + runId);
@@ -56,8 +58,8 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 	}
 	
 	@Override
-	public int updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return connector.updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		connector.updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
 	}
 	
 	@Override
@@ -79,20 +81,15 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		return connector.getRunStatus(runId, authentication);
 	}
-	
-	@Override
-	public String getFileContentForFileId(BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return connector.getFileContentForFileId(fileId, authentication);
-	}
-	
+
 	@Override
 	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
 		connector.removeFileAssociationWithRun(runId, fileId, authentication);
 	}
 	
 	@Override
-	public String getURLForURLId(BigInteger urlId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
-		return connector.getURLForURLId(urlId, authentication);
+	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws edu.pitt.apollo.exception.DataServiceException {
+		return connector.getContentForContentId(urlId, authentication);
 	}
 	
 	@Override

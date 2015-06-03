@@ -1,6 +1,7 @@
 package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.*;
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.dataservice.methods.DataServiceMethod;
 import edu.pitt.apollo.dataservice.methods.DataServiceMethodFactory;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -14,6 +15,8 @@ import edu.pitt.apollo.interfaces.DataServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,6 +128,28 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 		this.dbUtils = new ApolloDbUtils();
 	}
 
+    private Authentication cloneAndStripAuthentication(Authentication srcAuthentication) {
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(srcAuthentication.getRequesterId());
+        authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
+        srcAuthentication.setRequesterId("");
+        srcAuthentication.setRequesterPassword("");
+        return authentication;
+    }
+
+    protected Authentication stripAuthentication(Object message) throws DataServiceException {
+        Authentication authentication;
+        if (message instanceof RunSimulationMessage) {
+            authentication = ((RunSimulationMessage) message).getAuthentication();
+        } else if (message instanceof RunSimulationsMessage) {
+            authentication = ((RunSimulationsMessage) message).getAuthentication();
+        } else if (message instanceof RunVisualizationMessage) {
+            authentication = ((RunVisualizationMessage) message).getAuthentication();
+        } else {
+            throw new DataServiceException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
+        }
+        return cloneAndStripAuthentication(authentication);
+    }
 
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
 			BigInteger runId) throws ApolloDatabaseException {
@@ -171,7 +196,7 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	}
 
 	@Override
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws DataServiceException {
 		throw new DataServiceException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 

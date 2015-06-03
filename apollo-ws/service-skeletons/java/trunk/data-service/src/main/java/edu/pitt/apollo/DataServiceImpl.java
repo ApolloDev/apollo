@@ -64,10 +64,10 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 	}
 
 	@Override
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws DataServiceException {
 		try {
-			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message, authentication);
-			return databaseAccessor.insertRun(message, authentication);
+			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
+			return databaseAccessor.insertRun(message);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException e) {
 			throw new DataServiceException(e.getMessage());
 		}

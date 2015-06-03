@@ -1,12 +1,15 @@
 package edu.pitt.apollo.db;
 
+
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 import static edu.pitt.apollo.db.ApolloDbUtils.logger;
+
 import edu.pitt.apollo.types.v3_0_0.AaaDummyType;
 import edu.pitt.apollo.types.v3_0_0.AbioticEcosystem;
 import edu.pitt.apollo.types.v3_0_0.AbioticEcosystemCensus;
@@ -217,6 +220,7 @@ import edu.pitt.apollo.types.v3_0_0.WeibullDistribution;
 import edu.pitt.apollo.types.v3_0_0.WithinGroupTransmissionProbability;
 import edu.pitt.apollo.types.v3_0_0.WolbachiaControlStrategy;
 import edu.pitt.apollo.types.v3_0_0.WolbachiaReleaseSiteEnum;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -237,6 +241,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
@@ -247,7 +252,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
  * Date: Oct 6, 2014
@@ -256,33 +260,42 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BaseApolloDbUtils implements AutoCloseable {
 
-	static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
+    static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
 
-	private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
-	protected final DataSource datasource;
+    private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
+    protected final DataSource datasource;
 
-	private static final String APOLLO_DIR;
-	private static final String SALT_FILE_NAME = "salt.txt";
-	protected static final String SYSTEM_SALT;
-	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
-	JsonUtils jsonUtils = new JsonUtils();
-	Md5Utils md5Utils = new Md5Utils();
+    private static final String APOLLO_DIR;
+    private static final String SALT_FILE_NAME = "salt.txt";
+    protected static final String SYSTEM_SALT;
+    private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
+    JsonUtils jsonUtils = new JsonUtils();
+    Md5Utils md5Utils = new Md5Utils();
 //	Connection dbcon;
 //	Properties properties;
 //	private final boolean AUTO_COMMIT;
 
-	public BaseApolloDbUtils(boolean autocommit, String resourceName) throws ApolloDatabaseException {
-		if (!dataSourceMap.containsKey(resourceName)) {
-			try {
-				Context initCtx = new InitialContext();
-				Context envCtx = (Context) initCtx.lookup("java:comp/env");
-				dataSourceMap.put(resourceName, (DataSource) envCtx.lookup("jdbc/" + resourceName));
-			} catch (NamingException e) {
-				logger.error("Error initializing db resource:" + e.getMessage());
-			}
-		}
+    public BaseApolloDbUtils(boolean autocommit, String resourceName) throws ApolloDatabaseException {
+        if (!dataSourceMap.containsKey(resourceName)) {
+            try {
+                Context initCtx = new InitialContext();
+                Context envCtx = (Context) initCtx.lookup("java:comp/env");
+                dataSourceMap.put(resourceName, (DataSource) envCtx.lookup("jdbc/" + resourceName));
+            } catch (NamingException e) {
+                logger.error("Error initializing db resource:" + e.getMessage());
+                com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
+                        = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+                ds.setServerName("");
+                ds.setPortNumber(0);
+                ds.setDatabaseName("");
+                ds.setUser("");
+                ds.setPassword("");
+                dataSourceMap.put(resourceName, ds);
+            }
 
-		datasource = dataSourceMap.get(resourceName);
+        }
+        datasource = dataSourceMap.get(resourceName);
+    }
 //		try {
 //			dbcon = datasource.getConnection();
 //			connectionsOpen.addAndGet(1);
@@ -291,7 +304,7 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 //			throw new ApolloDatabaseException("SQLException initializing DB Utils: " + ex.getMessage());
 //		}
 
-	}
+
 //	public BaseApolloDbUtils(File databasePropertiesFile, boolean autocommit) throws IOException {
 //		InputStream fis = new FileInputStream(databasePropertiesFile);
 //		properties = new Properties();
@@ -308,23 +321,10 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 //		AUTO_COMMIT = autocommit;
 //	}
 
-	public abstract int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
-			ApolloDatabaseUserPasswordException, ApolloDatabaseException;
 
 
-
-	@Override
-	public void close() throws ApolloDatabaseException {
-//		try {
-//			dbcon.close();
-//			connectionsOpen.addAndGet(-1);
-//		} catch (SQLException ex) {
-//			throw new ApolloDatabaseException("Could not close connection");
-//		}
-	}
-
-
-
+    public abstract int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
+            ApolloDatabaseUserPasswordException, ApolloDatabaseException;
 
 
 //	protected void establishDbConn() throws ClassNotFoundException, SQLException {
@@ -367,7 +367,17 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 //		return dbcon;
 //	}
 
-//	public void closeConnection() throws ApolloDatabaseException {
+    @Override
+    public void close() throws ApolloDatabaseException {
+//		try {
+//			dbcon.close();
+//			connectionsOpen.addAndGet(-1);
+//		} catch (SQLException ex) {
+//			throw new ApolloDatabaseException("Could not close connection");
+//		}
+    }
+
+    //	public void closeConnection() throws ApolloDatabaseException {
 //		if (dbcon != null) {
 //			try {
 //				dbcon.close();
@@ -377,44 +387,40 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
 //			}
 //		}
 //	}
-	protected String getHashOfUserPasswordAndSalt(String password, String salt) {
+    protected String getHashOfUserPasswordAndSalt(String password, String salt) {
 
-		String passwordAndSalt = password + salt + SYSTEM_SALT;
-		return md5Utils.getMd5FromString(passwordAndSalt);
-	}
+        String passwordAndSalt = password + salt + SYSTEM_SALT;
+        return md5Utils.getMd5FromString(passwordAndSalt);
+    }
 
+    protected String getSaltForPassword() {
+        Random random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
+    }    static {
+        Map<String, String> env = System.getenv();
+        String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        if (apolloDir != null) {
+            if (!apolloDir.endsWith(File.separator)) {
+                apolloDir += File.separator;
+            }
+            APOLLO_DIR = apolloDir;
+            logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
+                    + APOLLO_DIR);
+        } else {
+            logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+                    + " environment variable not found!");
+            APOLLO_DIR = "";
+        }
 
+        File saltFile = new File(APOLLO_DIR + SALT_FILE_NAME);
+        Scanner saltFileScanner;
+        try {
+            saltFileScanner = new Scanner(saltFile);
+        } catch (FileNotFoundException ex) {
+            throw new ExceptionInInitializerError("File \"" + saltFile.getAbsolutePath() + "\" could not be found");
+        }
 
-	protected String getSaltForPassword() {
-		Random random = new SecureRandom();
-		return new BigInteger(130, random).toString(32);
-	}
-
-	static {
-		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-		if (apolloDir != null) {
-			if (!apolloDir.endsWith(File.separator)) {
-				apolloDir += File.separator;
-			}
-			APOLLO_DIR = apolloDir;
-			logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
-					+ APOLLO_DIR);
-		} else {
-			logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
-					+ " environment variable not found!");
-			APOLLO_DIR = "";
-		}
-
-		File saltFile = new File(APOLLO_DIR + SALT_FILE_NAME);
-		Scanner saltFileScanner;
-		try {
-			saltFileScanner = new Scanner(saltFile);
-		} catch (FileNotFoundException ex) {
-			throw new ExceptionInInitializerError("File \"" + saltFile.getAbsolutePath() + "\" could not be found");
-		}
-
-		SYSTEM_SALT = saltFileScanner.nextLine();
-		saltFileScanner.close();
-	}
+        SYSTEM_SALT = saltFileScanner.nextLine();
+        saltFileScanner.close();
+    }
 }
