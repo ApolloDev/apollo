@@ -5,17 +5,13 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.utilities.SerializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 
@@ -23,19 +19,14 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class SetLastServiceToBeCalledForRunMethod {
+public class SetLastServiceToBeCalledForRunMethod extends BaseDataServiceAccessorMethod {
 
-	public static String setLastServiceToBeCalledForRunMethod(String username, String password, BigInteger runId, String softwareName, String softwareVersion,
-			String softwareDeveloper, ApolloSoftwareTypeEnum softwareType, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
+	public SetLastServiceToBeCalledForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
-		DataServiceImpl impl = new DataServiceImpl();
-
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
-
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String setLastServiceToBeCalledForRunMethod(BigInteger runId, String softwareName, String softwareVersion,
+			String softwareDeveloper, ApolloSoftwareTypeEnum softwareType) throws UnsupportedSerializationFormatException, SerializationException {
 
 		SoftwareIdentification softwareId = new SoftwareIdentification();
 		softwareId.setSoftwareDeveloper(softwareDeveloper);

@@ -5,16 +5,12 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.utilities.SerializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 
@@ -22,22 +18,18 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class SetStatusOfRunMethod {
+public class SetStatusOfRunMethod extends BaseDataServiceAccessorMethod {
 
-	public static String setStatusOfRun(String username, String password, BigInteger runId, MethodCallStatusEnum statusEnum,
-			String message, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
+	public SetStatusOfRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
 
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+	public String setStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnum,
+			String message) throws UnsupportedSerializationFormatException, SerializationException {
+
 		if (message.equalsIgnoreCase("") || message.trim().equalsIgnoreCase("")) {
 			responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "A valid status message is required.");
 		} else {
-
-			Authentication authentication = new Authentication();
-			authentication.setRequesterId(username);
-			authentication.setRequesterPassword(password);
-
-			DataServiceImpl impl = new DataServiceImpl();
 
 			try {
 				impl.updateStatusOfRun(runId, statusEnum, message, authentication);

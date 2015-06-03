@@ -461,48 +461,51 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     public int addRole(SoftwareIdentification softwareIdentification,
-                       boolean canRun, boolean canViewCache) throws ApolloDatabaseException {
+                       boolean canRun, boolean allowPrivilegedRequest, String roleDescription) throws ApolloDatabaseException {
 
-        int softwareIdKey;
-        try {
-            softwareIdKey = getSoftwareIdentificationKey(softwareIdentification);
-        } catch (ApolloDatabaseKeyNotFoundException e) {
-            throw new ApolloDatabaseKeyNotFoundException(
-                    "The softwareIdentifiation object provided to addRole() does not have an entry in the software_identification table. Error was: "
-                            + e.getMessage());
-        }
-
-        try (Connection conn = datasource.getConnection()) {
-
-            int roleKey;
-            try {
-                roleKey = getRoleKey(softwareIdKey, canRun, canViewCache);
-                return roleKey;
-            } catch (ApolloDatabaseKeyNotFoundException e) {
-                // this means that we need to insert
-            }
-
-            String query = "INSERT INTO ROLES (software_id, can_run, can_view_cached_results) values (?, ?, ?)";
-
-            PreparedStatement pstmt = conn.prepareStatement(query,
-                    Statement.RETURN_GENERATED_KEYS);
-
-            pstmt.setInt(1, softwareIdKey);
-            pstmt.setBoolean(2, canRun);
-            pstmt.setBoolean(3, canViewCache);
-            pstmt.execute();
-            ResultSet rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                roleKey = rs.getInt(1);
-                return roleKey;
-            } else {
-                throw new ApolloDatabaseException(
-                        "No primary key returned from addRole().");
-            }
-        } catch (SQLException ex) {
-            throw new ApolloDatabaseException("SQLException adding user role: " + ex.getMessage());
-        }
-
+		// THIS NEEDS A REWRITE
+		
+//        int softwareIdKey;
+//        try {
+//            softwareIdKey = getSoftwareIdentificationKey(softwareIdentification);
+//        } catch (ApolloDatabaseKeyNotFoundException e) {
+//            throw new ApolloDatabaseKeyNotFoundException(
+//                    "The softwareIdentifiation object provided to addRole() does not have an entry in the software_identification table. Error was: "
+//                            + e.getMessage());
+//        }
+//
+//        try (Connection conn = datasource.getConnection()) {
+//
+//            int roleKey;
+//            try {
+//                roleKey = getRoleKey(softwareIdKey, canRun, canViewCache);
+//                return roleKey;
+//            } catch (ApolloDatabaseKeyNotFoundException e) {
+//                // this means that we need to insert
+//            }
+//
+//            String query = "INSERT INTO ROLES (software_id, can_run, can_view_cached_results) values (?, ?, ?)";
+//
+//            PreparedStatement pstmt = conn.prepareStatement(query,
+//                    Statement.RETURN_GENERATED_KEYS);
+//
+//            pstmt.setInt(1, softwareIdKey);
+//            pstmt.setBoolean(2, canRun);
+//            pstmt.setBoolean(3, canViewCache);
+//            pstmt.execute();
+//            ResultSet rs = pstmt.getGeneratedKeys();
+//            if (rs.next()) {
+//                roleKey = rs.getInt(1);
+//                return roleKey;
+//            } else {
+//                throw new ApolloDatabaseException(
+//                        "No primary key returned from addRole().");
+//            }
+//        } catch (SQLException ex) {
+//            throw new ApolloDatabaseException("SQLException adding user role: " + ex.getMessage());
+//        }
+		
+		return 0;
     }
 
     private int getRoleKey(int softwareIdKey, boolean canRun,

@@ -28,7 +28,8 @@ public class RunManagerServiceImpl implements RunManagerServiceEI {
     @Override
     public RunResult addSimulation(RunSimulationMessage runSimulationMessage) {
         DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
-        dataServiceAccessor.insertRun(runSimulationMessage)
+        return null;
+        //dataServiceAccessor.insertRun(runSimulationMessage)
     }
 
     @Override

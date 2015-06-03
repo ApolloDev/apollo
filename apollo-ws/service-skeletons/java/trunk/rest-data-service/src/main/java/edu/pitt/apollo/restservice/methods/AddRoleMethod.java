@@ -5,14 +5,12 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.data_service_types.v3_0_0.AddRoleMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.Request;
 import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
@@ -20,8 +18,6 @@ import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;
 import org.springframework.http.HttpStatus;
 
@@ -29,11 +25,14 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class AddRoleMethod {
-	
-	public static String addRole(String username, String password, String messageBody, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException, SerializationException {
-		
-		ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();
+public class AddRoleMethod extends BaseDataServiceAccessorMethod {
+
+	public AddRoleMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+		super(username, password, serializationFormat);
+	}
+
+	public String addRole(String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
+
 		try {
 			Request requestMessageObject = new XMLDeserializer().getObjectFromMessage(messageBody, Request.class);
 			RequestMeta meta = requestMessageObject.getRequestMeta();
@@ -52,12 +51,6 @@ public class AddRoleMethod {
 			} else {
 				AddRoleMessage message = (AddRoleMessage) object;
 
-				DataServiceImpl impl = new DataServiceImpl();
-
-				Authentication authentication = new Authentication();
-				authentication.setRequesterId(username);
-				authentication.setRequesterPassword(password);
-
 				SoftwareIdentification softwareId = message.getSoftwareIdentification();
 				boolean canRunSoftware = message.isCanRun();
 				boolean canRequestPrivileged = message.isCanRequestPrivileged();
@@ -74,9 +67,8 @@ public class AddRoleMethod {
 			responseBuilder.setStatus(HttpStatus.OK, ex.getMessage());
 		}
 
-		Serializer serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
 		return serializer.serializeObject(responseBuilder.getResponse());
-		
+
 	}
-	
+
 }

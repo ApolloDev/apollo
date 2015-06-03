@@ -35,7 +35,7 @@ public class SoftwareController {
 	String getListOfSoftwareFromCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetRegisteredSoftwareMethod.getRegisteredSoftware(username, password, SerializationFormat.XML);
+		return new GetRegisteredSoftwareMethod(username, password, SerializationFormat.XML).getRegisteredSoftware();
 	}
 
 	@GET
@@ -52,7 +52,7 @@ public class SoftwareController {
 			@ApiParam(value = "Software developer", required = true) @RequestParam("softwareDeveloper") String softwareDeveloper,
 			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return GetURLOfSoftwareMethod.getURLOfSoftwareMethod(username, password, softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum, SerializationFormat.XML);
+		return new GetURLOfSoftwareMethod(username, password, SerializationFormat.XML).getURLOfSoftwareMethod(softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum);
 	}
 //    @ApiIgnore
 //    @POST

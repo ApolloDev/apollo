@@ -44,7 +44,7 @@ public class RolesController {
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 			@ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return AddRoleMethod.addRole(username, password, requestBody, SerializationFormat.XML);
+		return new AddRoleMethod(username, password, SerializationFormat.XML).addRole(requestBody);
 	}
     //We cannot delete the roles collection (DELETE) and we cannot PUT (add a collection) to the users collection.
 

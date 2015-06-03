@@ -15,42 +15,37 @@ import javax.ws.rs.GET;
 import java.math.BigInteger;
 
 /**
- * Created by dcs27 on 5/18/15.
- * Purpose: This class contains the RESTful interfaces associated with individual file retrieval and manipulation.
+ * Created by dcs27 on 5/18/15. Purpose: This class contains the RESTful interfaces associated with individual file retrieval and manipulation.
  */
-
-
 @Controller
 @RequestMapping("/ws")
 public class FileController {
 
-    /*--Methods for the file resource of a run--*/
-    @GET
-    @ApiOperation(value = "Get file.", notes = "Returns the requested file.", response = String.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "")
-    })
-    @RequestMapping(value = "/file/{fileId}", method = RequestMethod.GET, headers = "Accept=application/xml")
-    public
-    @ResponseBody
-    String getFileOfRunUsingRunAndFileId(@ApiParam(value = "File ID.", required = true) @PathVariable("fileId") BigInteger fileId,
-                                         @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-                                         @ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
-        
-		return GetContentByIdMethod.getContent(username, password, fileId, SerializationFormat.XML);
-    }
+	/*--Methods for the file resource of a run--*/
+	@GET
+	@ApiOperation(value = "Get file.", notes = "Returns the requested file.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/file/{fileId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "File ID.", required = true) @PathVariable("fileId") BigInteger fileId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-   /* @DELETE
-    @ApiOperation(value = "Remove file reference.", notes = "Removes the reference of a file from the given run ID.", response = String.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "")
-    })
-    @RequestMapping(value = "/file/{fileId}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
-    public
-    @ResponseBody
-    String removeReferenceOfFileFromRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,@ApiParam(value = "File ID.", required = true) @PathVariable("fileId") BigInteger fileId) {
-        return null;
-    }*/
+		return new GetContentByIdMethod(username, password, SerializationFormat.XML).getContent(fileId);
+	}
+
+	/* @DELETE
+	 @ApiOperation(value = "Remove file reference.", notes = "Removes the reference of a file from the given run ID.", response = String.class)
+	 @ApiResponses(value = {
+	 @ApiResponse(code = 200, message = "")
+	 })
+	 @RequestMapping(value = "/file/{fileId}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
+	 public
+	 @ResponseBody
+	 String removeReferenceOfFileFromRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,@ApiParam(value = "File ID.", required = true) @PathVariable("fileId") BigInteger fileId) {
+	 return null;
+	 }*/
     //We cannot create anything at the file level (PUT), and we cannot edit a file at this level (POST).
-
 }

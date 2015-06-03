@@ -64,10 +64,10 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 	}
 
 	@Override
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws DataServiceException {
 		try {
-			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message, authentication);
-			return databaseAccessor.insertRun(message, authentication);
+			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
+			return databaseAccessor.insertRun(message);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException e) {
 			throw new DataServiceException(e.getMessage());
 		}
@@ -234,10 +234,31 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 	}
 
 	@Override
-	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest, Authentication authentication) throws DataServiceException {
+	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest, 
+			String roleDescription, Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
-			dba.addRole(softwareIdentification, canRunSoftware, allowPrivilegedRequest, authentication);
+			dba.addRole(softwareIdentification, canRunSoftware, allowPrivilegedRequest, roleDescription, authentication);
+		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
+	}
+
+	@Override
+	public void authenticateUser(Authentication authentication) throws DataServiceException {
+		try {
+			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
+			dba.authenticateUser(authentication);
+		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
+	}
+
+	@Override
+	public void authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware) throws DataServiceException {
+		try {
+			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
+			dba.authorizeUser(authentication, softwareIdentification, requestToRunSoftware);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}
