@@ -131,6 +131,29 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
     protected Md5Utils md5Utils = new Md5Utils();
 
 
+    private Authentication cloneAndStripAuthentication(Authentication srcAuthentication) {
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(srcAuthentication.getRequesterId());
+        authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
+        srcAuthentication.setRequesterId("");
+        srcAuthentication.setRequesterPassword("");
+        return authentication;
+    }
+
+    protected Authentication stripAuthentication(Object message) throws DataServiceException {
+        Authentication authentication;
+        if (message instanceof RunSimulationMessage) {
+            authentication = ((RunSimulationMessage) message).getAuthentication();
+        } else if (message instanceof RunSimulationsMessage) {
+            authentication = ((RunSimulationsMessage) message).getAuthentication();
+        } else if (message instanceof RunVisualizationMessage) {
+            authentication = ((RunVisualizationMessage) message).getAuthentication();
+        } else {
+            throw new DataServiceException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
+        }
+        return cloneAndStripAuthentication(authentication);
+    }
+
     public DatabaseAccessor(Authentication authentication, ApolloDbUtils dbUtils) throws ApolloDatabaseException {
         this.authentication = authentication;
         this.dbUtils = dbUtils;
@@ -262,7 +285,7 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
     }
 
     @Override
-    public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+    public BigInteger insertRun(Object message) throws DataServiceException {
         throw new DataServiceException("insertRun() is not supported in the base DatabaseAccessor.");
     }
 

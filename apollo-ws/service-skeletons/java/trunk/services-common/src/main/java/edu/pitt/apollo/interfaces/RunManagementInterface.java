@@ -19,7 +19,7 @@ public interface RunManagementInterface {
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException;
 
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException;
+	public BigInteger insertRun(Object message) throws DataServiceException;
 
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException;
 

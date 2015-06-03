@@ -90,7 +90,9 @@ public class DatabaseAccessorForRunningJobs extends
 //	}
 
 	@Override
-	public BigInteger insertRun(Object message, Authentication authentication) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws DataServiceException {
+		Authentication authentication = stripAuthentication(message);
+
 		RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
 		try {
 			runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
