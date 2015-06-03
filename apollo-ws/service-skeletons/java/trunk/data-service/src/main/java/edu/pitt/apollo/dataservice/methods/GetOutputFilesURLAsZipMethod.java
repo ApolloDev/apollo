@@ -26,6 +26,7 @@ public class GetOutputFilesURLAsZipMethod extends DataServiceMethod {
 
 	@Override
 	public void runDataService() throws DataServiceException {
+		
 
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
 		DataServiceThread thread = new DataServiceOutputFilesAsZipThread(runId, message.getRunId(), 

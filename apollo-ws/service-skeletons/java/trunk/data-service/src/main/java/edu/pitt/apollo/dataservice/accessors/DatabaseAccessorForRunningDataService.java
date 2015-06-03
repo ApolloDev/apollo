@@ -7,6 +7,7 @@ import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
 import java.io.ByteArrayOutputStream;
@@ -108,7 +109,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws RunManagementException {
 		Authentication authentication = stripAuthentication(message);
 		int md5CollisionId;
 		BigInteger runIds = null;
@@ -126,7 +127,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //				runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
 //			}
 		} catch (Md5UtilsException | ApolloDatabaseException e) {
-			throw new DataServiceException("Error inserting run into database, error was: " + "(" + e.getClass().getName() + ") " + e.getMessage());
+			throw new RunManagementException("Error inserting run into database, error was: " + "(" + e.getClass().getName() + ") " + e.getMessage());
 		}
 
 		return runIds;

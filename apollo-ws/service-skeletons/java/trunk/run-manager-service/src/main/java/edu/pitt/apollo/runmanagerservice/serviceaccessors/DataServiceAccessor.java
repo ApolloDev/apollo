@@ -79,7 +79,7 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 	}
 	
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
 		return connector.getRunStatus(runId, authentication);
 	}
 

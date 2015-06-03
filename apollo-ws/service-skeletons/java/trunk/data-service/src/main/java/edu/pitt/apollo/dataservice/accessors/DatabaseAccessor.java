@@ -8,6 +8,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
@@ -137,7 +138,7 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
         return authentication;
     }
 
-    protected Authentication stripAuthentication(Object message) throws DataServiceException {
+    protected Authentication stripAuthentication(Object message) throws RunManagementException {
         Authentication authentication;
         if (message instanceof RunSimulationMessage) {
             authentication = ((RunSimulationMessage) message).getAuthentication();
@@ -146,7 +147,7 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
         } else if (message instanceof RunVisualizationMessage) {
             authentication = ((RunVisualizationMessage) message).getAuthentication();
         } else {
-            throw new DataServiceException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
+            throw new RunManagementException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
         }
         return cloneAndStripAuthentication(authentication);
     }
@@ -157,14 +158,14 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	}
 
 	@Override
-	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			List<BigInteger> listOfRunIds = dbUtils.getRunIdsForBatch(runId);
 
 			return listOfRunIds;
-		} catch (ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+			throw new RunManagementException(e.getMessage());
 		}
 
 	}
@@ -186,80 +187,80 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	}
 
 	@Override
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			return dbUtils.getSoftwareIdentificationForRun(runId);
-		} catch (ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+			throw new RunManagementException(e.getMessage());
 		}
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws DataServiceException {
-		throw new DataServiceException("insertRun() is not supported in the base DatabaseAccessor.");
+	public BigInteger insertRun(Object message) throws RunManagementException {
+		throw new RunManagementException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 
 	@Override
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			dbUtils.updateStatusOfRun(runId, statusEnumToSet, messageToSet);
-		} catch (ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+			throw new RunManagementException(e.getMessage());
 		}
 	}
 
 	@Override
-	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			dbUtils.updateLastServiceToBeCalledForRun(runId, softwareIdentification);
-		} catch (ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+			throw new RunManagementException(e.getMessage());
 		}
 	}
 
 	@Override
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			SoftwareIdentification si = dbUtils.getLastServiceToBeCalledForRun(runId);
 			return si;
-		} catch (ApolloDatabaseException ade) {
-			throw new DataServiceException(ade.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException ade) {
+			throw new RunManagementException(ade.getMessage());
 		}
 	}
 
 	@Override
-	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			BigInteger simulationGroupId = dbUtils.getSimulationGroupIdForRun(runId);
 			dbUtils.addRunIdsToSimulationGroup(simulationGroupId, runIds);
-		} catch (Md5UtilsException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (UserNotAuthenticatedException | Md5UtilsException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			dbUtils.removeRunData(runId);
-		} catch (ApolloDatabaseException ade) {
-			throw new DataServiceException(ade.getMessage());
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException ade) {
+			throw new RunManagementException(ade.getMessage());
 		}
 
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException, UserNotAuthenticatedException {
 		try {
 			authenticateUser(authentication);
 			return dbUtils.getStatusOfLastServiceToBeCalledForRun(runId);
 		} catch (ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+			throw new RunManagementException(e.getMessage());
 		}
 	}
 
@@ -381,14 +382,14 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	}
 
 	@Override
-	public void authenticateUser(Authentication authentication) throws DataServiceException {
+	public void authenticateUser(Authentication authentication) throws RunManagementException, UserNotAuthenticatedException {
 		try {
 			boolean userAuthenticated = dbUtils.authenticateUser(authentication);
 			if (!userAuthenticated) {
 				throw new UserNotAuthenticatedException("The user could not be authenticated (incorrect username or password)");
 			}
 		} catch (ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 

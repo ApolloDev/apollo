@@ -4,6 +4,7 @@ import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.DataServiceInterface;
@@ -31,12 +32,12 @@ import java.util.logging.Logger;
 public class DataServiceImpl implements DataServiceInterface, RunManagementInterface, ContentManagementInterface, UserManagementInterface {
 
 	@Override
-	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
-		} catch (ApolloDatabaseException | UnrecognizedMessageTypeException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
@@ -54,72 +55,72 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 	}
 
 	@Override
-	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getSoftwareIdentificationForRun(runId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws RunManagementException {
 		try {
 			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
 			return databaseAccessor.insertRun(message);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException e) {
-			throw new DataServiceException(e.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws DataServiceException {
+	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			dba.updateStatusOfRun(runId, statusEnumToSet, messageToSet, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			Logger.getLogger(DataServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
 	@Override
-	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			dba.updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getLastServiceToBeCalledForRun(runId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws DataServiceException {
+	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			dba.addRunIdsToSimulationGroupForRun(runId, runIds, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public void removeRunData(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			dba.removeRunData(runId, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 

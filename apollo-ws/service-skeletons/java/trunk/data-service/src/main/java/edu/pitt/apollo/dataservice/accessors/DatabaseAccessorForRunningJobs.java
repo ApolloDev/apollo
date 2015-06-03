@@ -11,6 +11,7 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -90,7 +91,7 @@ public class DatabaseAccessorForRunningJobs extends
 //	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws DataServiceException {
+	public BigInteger insertRun(Object message) throws RunManagementException {
 		Authentication authentication = stripAuthentication(message);
 
 		RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
@@ -113,14 +114,14 @@ public class DatabaseAccessorForRunningJobs extends
 							softwareIdentification,
 							ApolloSoftwareIdentificationResolver.getTranslatorSoftwareIdentification(), authentication);
 				} else {
-					throw new DataServiceException(("Error inserting run into database, unknown message type: " + message.getClass().getName()));
+					throw new RunManagementException(("Error inserting run into database, unknown message type: " + message.getClass().getName()));
 				}
 			} else {
 				return runIdAndHighestMD5CollisionIdForRun.getRunId();
 			}
 			return runIdSimulationGroupId[0];
 		} catch (ApolloDatabaseException | Md5UtilsException e) {
-			throw new DataServiceException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
+			throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
 		}
 	}
 

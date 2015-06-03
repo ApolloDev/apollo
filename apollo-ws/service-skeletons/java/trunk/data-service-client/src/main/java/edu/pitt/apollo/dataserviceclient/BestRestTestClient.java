@@ -44,7 +44,7 @@ public class BestRestTestClient {
 
 
         DataServiceImpl dataService = new DataServiceImpl();
-        System.out.println(dataService.insertRun(runSimulationMessage, getAuthentication()));
+        System.out.println(dataService.insertRun(runSimulationMessage);
 
 
     }

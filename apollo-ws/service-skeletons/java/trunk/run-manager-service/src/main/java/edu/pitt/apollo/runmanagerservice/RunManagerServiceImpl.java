@@ -1,16 +1,10 @@
 package edu.pitt.apollo.runmanagerservice;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_0.*;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -63,7 +57,7 @@ public class RunManagerServiceImpl implements RunManagementInterface {
     }
 
     @Override
-    public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
+    public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
     }
 }

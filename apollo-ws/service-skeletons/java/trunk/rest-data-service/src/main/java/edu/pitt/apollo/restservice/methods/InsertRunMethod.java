@@ -55,7 +55,7 @@ public class InsertRunMethod extends BaseDataServiceAccessorMethod {
 			} else {
 
 				try {
-					impl.insertRun(object, authentication);
+					impl.insertRun(object);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 				} catch (DataServiceException ex) {
