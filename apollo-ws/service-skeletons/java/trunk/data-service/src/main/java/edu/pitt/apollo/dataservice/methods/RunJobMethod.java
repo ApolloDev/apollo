@@ -2,8 +2,6 @@ package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -21,14 +19,11 @@ import org.slf4j.LoggerFactory;
  *
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Jan 16, 2015 Time: 3:54:13 PM Class: DataServiceMethod
  */
-public abstract class DataServiceMethod {
+public abstract class RunJobMethod {
 
-//	protected static ApolloDbUtils dbUtils;
 	protected final BigInteger runId;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
-//	protected static final int DATA_SERVICE_SOFTWARE_KEY;
-	protected static final Logger logger = LoggerFactory.getLogger(DataServiceMethod.class);
-//	protected final ApolloServiceQueue queue;
+	protected static final Logger logger = LoggerFactory.getLogger(RunJobMethod.class);
 	private static final String APOLLO_DIR;
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
 	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";
@@ -95,28 +90,12 @@ public abstract class DataServiceMethod {
 
 			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
 
-//			try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-//				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-//
-//				try {
-//					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
-//				} catch (ApolloDatabaseException ex) {
-//					logger.error(ex.getMessage());
-//					throw new ExceptionInInitializerError("ApolloDatabaseException getting the key for the data service software ID");
-//				}
-//			} catch (ApolloDatabaseException ex) {
-//				throw new ExceptionInInitializerError("ApolloDatabaseException creating ApolloDbUtils: " + ex.getMessage());
-//			}
-//			} catch (IOException ex) {
-//				throw new ExceptionInInitializerError("Error creating ApolloDbUtils when initializing the data service: "
-//						+ ex.getMessage());
-//			}
 		} else {
 			throw new ExceptionInInitializerError("No Apollo Work Dir evironment variable found when initializing data service!");
 		}
 	}
 
-	protected DataServiceMethod(BigInteger runId) {
+	protected RunJobMethod(BigInteger runId) {
 		this.runId = runId;
 	}
 

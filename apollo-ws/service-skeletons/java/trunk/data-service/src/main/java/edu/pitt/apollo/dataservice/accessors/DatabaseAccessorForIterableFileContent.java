@@ -24,8 +24,6 @@ public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor imp
 	private static final String FILE_NAME_ID = "name";
 	private Connection conn;
 	private ResultSet resultSet;
-	private boolean didNext;
-	private boolean hasNext;
 
 	public DatabaseAccessorForIterableFileContent(Authentication authentication) throws ApolloDatabaseException {
 		super(authentication);
@@ -50,19 +48,7 @@ public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor imp
 
 	@Override
 	public boolean hasNext() {
-		if (resultSet != null) {
-			if (!didNext) {
-				try {
-					hasNext = resultSet.next();
-				} catch (SQLException ex) {
-					throw new RuntimeException("SQLException getting next result set row: " + ex.getMessage());
-				}
-				didNext = true;
-			}
-			return hasNext;
-		} else {
-			return false;
-		}
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -70,15 +56,16 @@ public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor imp
 
 		FileContentForRun fileContent = new FileContentForRun();
 		try {
-			if (!didNext) {
-				resultSet.next();
+			if (resultSet.next()) {
+
+				fileContent.setRunId(resultSet.getInt(RUN_ID_COLUMN_NAME));
+				fileContent.setFileName(resultSet.getString(FILE_NAME_ID));
+				fileContent.setFileName(resultSet.getString(FILE_CONTENT_COLUMN_NAME));
+
+				return fileContent;
+			} else {
+				return null;
 			}
-
-			fileContent.setRunId(resultSet.getInt(RUN_ID_COLUMN_NAME));
-			fileContent.setFileName(resultSet.getString(FILE_NAME_ID));
-			fileContent.setFileName(resultSet.getString(FILE_CONTENT_COLUMN_NAME));
-
-			return fileContent;
 		} catch (SQLException ex) {
 			throw new RuntimeException("SQLException getting data from result set row: " + ex.getMessage());
 		}

@@ -3,7 +3,7 @@ package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
-import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by jdl50 on 5/21/15.
  */
-public class DataServiceAccessor extends ServiceAccessor implements DataServiceInterface, RunManagementInterface, ContentManagementInterface {
+public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface {
 	
 	private static final String DATA_SERVICE_URL = "";
 	

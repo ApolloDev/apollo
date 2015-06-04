@@ -2398,8 +2398,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
-    public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId) throws ApolloDatabaseException {
-        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
+    public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId) throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<>();
 
         try (Connection conn = datasource.getConnection()) {
 
