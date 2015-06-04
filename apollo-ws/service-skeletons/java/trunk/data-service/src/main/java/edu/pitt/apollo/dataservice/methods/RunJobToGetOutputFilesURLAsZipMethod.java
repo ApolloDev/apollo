@@ -1,6 +1,6 @@
 package edu.pitt.apollo.dataservice.methods;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import static edu.pitt.apollo.dataservice.methods.RunJobMethod.OUTPUT_DIRECTORY;
 
 import edu.pitt.apollo.dataservice.thread.DataServiceOutputFilesAsZipThread;
@@ -17,9 +17,9 @@ import java.math.BigInteger;
  */
 public class RunJobToGetOutputFilesURLAsZipMethod extends RunJobMethod {
 
-	private GetOutputFilesURLAsZipMessage message;
+	private DataRetrievalRequestMessage message;
 
-	public RunJobToGetOutputFilesURLAsZipMethod(GetOutputFilesURLAsZipMessage message, BigInteger runId) {
+	public RunJobToGetOutputFilesURLAsZipMethod(DataRetrievalRequestMessage message, BigInteger runId) {
 		super(runId);
 	}
 

@@ -2,7 +2,7 @@ package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -41,7 +41,7 @@ public class RunJobMethodFactory {
 		RunJobMethod method;
 
 		try {
-			GetOutputFilesURLAsZipMessage message = (GetOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(messageContent, GetOutputFilesURLAsZipMessage.class);
+			DataRetrievalRequestMessage message = (DataRetrievalRequestMessage) jsonUtils.getObjectFromJson(messageContent, DataRetrievalRequestMessage.class);
 			method = new RunJobToGetOutputFilesURLAsZipMethod(message, runId);
 		} catch (JsonUtilsException jue) {
 			throw new DataServiceException("Could not parse run data service message as a known message type");

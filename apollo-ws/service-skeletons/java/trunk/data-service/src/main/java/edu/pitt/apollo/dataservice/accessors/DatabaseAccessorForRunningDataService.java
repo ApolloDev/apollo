@@ -3,10 +3,8 @@ package edu.pitt.apollo.dataservice.accessors;
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
 
 import edu.pitt.apollo.Md5UtilsException;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
@@ -24,7 +22,7 @@ import java.util.Map;
  */
 public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 
-	private GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage = null;
+	private DataRetrievalRequestMessage DataRetrievalRequestMessage = null;
 
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
 
@@ -45,9 +43,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 //	}
 
-	public DatabaseAccessorForRunningDataService(GetOutputFilesURLAsZipMessage message, Authentication authentication) throws ApolloDatabaseException {
+	public DatabaseAccessorForRunningDataService(DataRetrievalRequestMessage message, Authentication authentication) throws ApolloDatabaseException {
 		super(authentication);
-		this.getOutputFilesURLAsZipMessage = message;
+		this.DataRetrievalRequestMessage = message;
 		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
 
@@ -73,9 +71,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLsMessage, DATA_SERVICE_SOFTWARE_ID);
 //			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLsMessage);
 //
-//		} else if (getOutputFilesURLAsZipMessage != null) {
-//			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
-//			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getOutputFilesURLAsZipMessage);
+//		} else if (DataRetrievalRequestMessage != null) {
+//			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(DataRetrievalRequestMessage, DATA_SERVICE_SOFTWARE_ID);
+//			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(DataRetrievalRequestMessage);
 //		} else if (getAllOutputFilesURLAsZipMessage != null) {
 //			runIds = dbUtils.getRunIdsAssociatedWithMessageHashAndSoftware(getAllOutputFilesURLAsZipMessage, DATA_SERVICE_SOFTWARE_ID);
 //			targetRunSimulationMessageAsJson = jsonUtils.getJSONString(getAllOutputFilesURLAsZipMessage);
@@ -118,9 +116,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
 //				runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
 //			} else 
-				if (getOutputFilesURLAsZipMessage != null) {
-				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLAsZipMessage) + 1;
-				runIds = dbUtils.addDataServiceRun(getOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
+				if (DataRetrievalRequestMessage != null) {
+				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(DataRetrievalRequestMessage) + 1;
+				runIds = dbUtils.addDataServiceRun(DataRetrievalRequestMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
 			} 
 //				else if (getAllOutputFilesURLAsZipMessage != null) {
 //				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;

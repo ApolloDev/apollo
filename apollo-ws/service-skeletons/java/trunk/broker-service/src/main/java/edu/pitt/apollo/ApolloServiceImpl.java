@@ -350,10 +350,10 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	public GetOutputFilesURLAsZipResult getOutputFilesURLAsZip(
-			GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage) {
+			DataRetrievalRequestMessage DataRetrievalRequestMessage) {
 		RunMethod method = new RunMethodForDataService(
-				getOutputFilesURLAsZipMessage.getAuthentication(),
-				getOutputFilesURLAsZipMessage);
+				DataRetrievalRequestMessage.getAuthentication(),
+				DataRetrievalRequestMessage);
 		return (GetOutputFilesURLAsZipResult) method.stageAndRun()
 				.getObjectToReturnFromBroker();
 	}

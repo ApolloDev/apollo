@@ -10,6 +10,7 @@ import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeExcept
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -105,7 +106,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 //		} catch (JsonUtilsException ex) {
 //			// try next message type
 //			try {
-				object = (GetOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetOutputFilesURLAsZipMessage.class);
+		object = (DataRetrievalRequestMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, DataRetrievalRequestMessage.class);
 //			} catch (JsonUtilsException ex1) {
 //				// try next message type
 //				object = (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetOutputFilesURLsMessage.class);
@@ -128,7 +129,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 //			filesResult.setRequestIdentification(runId);
 //			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
 //			return filesResult;
-//		} else if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
+//		} else if (runMessage instanceof DataRetrievalRequestMessage) {
 //			String zipURL = getZipFileURL(runId);
 //			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
 //			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
@@ -136,13 +137,11 @@ public class RunMethodForDataService extends AbstractRunMethod {
 //			filesResult.setUrl(zipURL);
 //			return filesResult;
 //		} else 
-		if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
-			String zipURL = getZipFileURL(runId);
-			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
-			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-			filesResult.setRequestIdentification(runId);
-			filesResult.setUrl(zipURL);
-			return filesResult;
+		if (runMessage instanceof DataRetrievalRequestMessage) {
+			RunResult runResult = new RunResult();
+			runResult.setRunId(runId);
+			runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+			return runResult;
 		} else {
 			throw new UnrecognizedMessageTypeException("The run message for the data service was of an unrecognized type");
 		}
