@@ -5,8 +5,8 @@
  */
 package edu.pitt.apollo.restservice.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
@@ -17,19 +17,19 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class RunDataServiceMethod extends BaseDataServiceAccessorMethod {
+public class RunDataServiceJobMethod extends BaseDataServiceAccessorMethod {
 
-	public RunDataServiceMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+	public RunDataServiceJobMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
 		super(username, password, serializationFormat);
 	}
 
-	public String runDataService(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {
+	public String runDataServiceJob(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			impl.runDataService(runId, authentication);
+			impl.run(runId, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (DataServiceException ex) {
+		} catch (SimulatorServiceException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

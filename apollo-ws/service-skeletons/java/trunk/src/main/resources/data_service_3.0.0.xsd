@@ -274,6 +274,7 @@
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>
+			<element name="roleDescription" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>

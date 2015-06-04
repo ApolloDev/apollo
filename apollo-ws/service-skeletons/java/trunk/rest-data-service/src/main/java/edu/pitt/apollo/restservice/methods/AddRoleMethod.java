@@ -54,9 +54,10 @@ public class AddRoleMethod extends BaseDataServiceAccessorMethod {
 				SoftwareIdentification softwareId = message.getSoftwareIdentification();
 				boolean canRunSoftware = message.isCanRun();
 				boolean canRequestPrivileged = message.isCanRequestPrivileged();
+				String roleDescription = message.getRoleDescription();
 
 				try {
-					impl.addRole(softwareId, canRunSoftware, canRequestPrivileged, authentication);
+					impl.addRole(softwareId, canRunSoftware, canRequestPrivileged, roleDescription, authentication);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 				} catch (DataServiceException ex) {
