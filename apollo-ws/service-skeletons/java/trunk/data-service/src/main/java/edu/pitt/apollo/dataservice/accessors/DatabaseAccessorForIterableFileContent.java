@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author nem41
  */
-public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor implements Iterator<FileContentForRun>, Closeable {
+public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor implements Iterator<FileContentForRun>, AutoCloseable {
 
 	private static final String RUN_ID_COLUMN_NAME = "id";
 	private static final String FILE_CONTENT_COLUMN_NAME = "text_content";
