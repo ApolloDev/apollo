@@ -33,7 +33,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 		DATA_SERVICE_SOFTWARE_ID = new SoftwareIdentification();
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareDeveloper("UPitt");
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareName("Data Service");
-		DATA_SERVICE_SOFTWARE_ID.setSoftwareType(ApolloSoftwareTypeEnum.DATA);
+		DATA_SERVICE_SOFTWARE_ID.setSoftwareType(ApolloSoftwareTypeEnum.DATA_SERVICE);
 		DATA_SERVICE_SOFTWARE_ID.setSoftwareVersion("1.0");
 	}
 

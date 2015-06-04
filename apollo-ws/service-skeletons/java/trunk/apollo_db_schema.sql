@@ -377,11 +377,13 @@ INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for infectious, infectious.txt '); /* 73 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for recovered, recovered.txt '); /* 74 */
 INSERT INTO run_data_description (label) values ('TSV Lancet Ebola Simulator log file for newly_exposed, newly_exposed.txt '); /* 75 */
-INSERT INTO run_data_description (label) values ('Run Data Service message JSON, run_data_service_message.json '); /* 76*/
+INSERT INTO run_data_description (label) values ('Data Retrieval Request Message JSON, data_retrieval_request_message.json '); /* 76*/
 INSERT INTO run_data_description (label) values ('Batch inputs file with run IDs, batch_inputs_with_run_ids.txt '); /* 77*/
 INSERT INTO run_data_description (label) values ('FRED ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 78*/
 INSERT INTO run_data_description (label) values ('FluTE ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 79*/
 INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 80*/
+INSERT INTO run_data_description (label) values ('RunSimulationsMessage JSON, run_simulations_message.json '); /* 81*/
+
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
 	(1, 1, 'TEXT'), 
@@ -836,8 +838,8 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(75, 5, '4'),
     
 	(76, 1, 'TEXT'), 
-	(76, 2, 'run_data_service_message.json'),
-	(76, 3, 'RUN_DATA_SERVICE_MESSAGE'),
+	(76, 2, 'data_retrieval_request_message.json'),
+	(76, 3, 'DATA_RETRIEVAL_REQUEST_MESSAGE'),
 	(76, 4, '0'),
 	(76, 5, '10'),
     
@@ -853,17 +855,23 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
 	(78, 4, '3'),
 	(78, 5, '0'),
     
-    (79, 1, 'TEXT'), 
+  (79, 1, 'TEXT'), 
 	(79, 2, 'ods_required_output_for_model_validation.csv'),
 	(79, 3, 'SIMULATOR_LOG_FILE'),
 	(79, 4, '6'),
 	(79, 5, '0'),
     
-    (80, 1, 'TEXT'), 
+  (80, 1, 'TEXT'), 
 	(80, 2, 'ods_required_output_for_model_validation.csv'),
 	(80, 3, 'SIMULATOR_LOG_FILE'),
 	(80, 4, '2'),
-	(80, 5, '0');
+	(80, 5, '0'),
+
+  (81, 1, 'TEXT'), 
+  (81, 2, 'run_simulations_message.json'),
+  (81, 3, 'RUN_SIMULATIONS_MESSAGE'),
+  (81, 4, '0'),
+  (81, 5, '1');
     
 CREATE VIEW run_data_description_view AS
 SELECT

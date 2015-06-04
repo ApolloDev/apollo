@@ -1414,8 +1414,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             int dataContentKey = addTextDataContent(jsonUtils.getJSONString(message));
             int runDataDescriptionId = getRunDataDescriptionId(
                     ContentDataFormatEnum.TEXT,
-                    "run_data_service_message.json",
-                    ContentDataTypeEnum.RUN_DATA_SERVICE_MESSAGE, 0,
+                    "data_retrieval_request_message.json",
+                    ContentDataTypeEnum.DATA_RETRIEVAL_REQUEST_MESSAGE, 0,
                     getSoftwareIdentificationKey(dataServiceSoftwareId));
             // int runDataId = the following line returns the runDataId, but
             // it's not used at this point.

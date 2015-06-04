@@ -27,7 +27,7 @@ public class DatabaseAccessorFactory {
             return new DatabaseAccessorForRunningJobs(
                     ((RunSimulationsMessage) message).getAuthentication(),
                     "run_simulations_message.json",
-                    ContentDataTypeEnum.RUN_SIMULATION_MESSAGE,
+                    ContentDataTypeEnum.RUN_SIMULATIONS_MESSAGE,
                     ((RunSimulationsMessage) message).getSimulatorIdentification());
         } else if (message instanceof RunVisualizationMessage) {
             return new DatabaseAccessorForRunningJobs(
