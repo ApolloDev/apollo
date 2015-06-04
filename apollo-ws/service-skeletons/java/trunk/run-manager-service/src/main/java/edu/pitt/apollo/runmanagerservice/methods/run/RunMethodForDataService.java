@@ -116,36 +116,36 @@ public class RunMethodForDataService extends AbstractRunMethod {
 		return object;
 	}
 
-	@Override
-	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
-//		if (runMessage instanceof GetOutputFilesURLsMessage) {
-//			try {
-//				getOutputFileURLs((GetOutputFilesURLsMessage) runMessage, runId);
-//			} catch (DataServiceException ex) {
-//				throw new RunManagerServiceException("There was an exception using the data service: " + ex.getMessage());
-//			}
-//			GetOutputFilesURLsResult filesResult = new GetOutputFilesURLsResult();
-//			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-//			filesResult.setRequestIdentification(runId);
-//			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
-//			return filesResult;
-//		} else if (runMessage instanceof DataRetrievalRequestMessage) {
-//			String zipURL = getZipFileURL(runId);
-//			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
-//			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-//			filesResult.setRequestIdentification(runId);
-//			filesResult.setUrl(zipURL);
-//			return filesResult;
-//		} else 
-		if (runMessage instanceof DataRetrievalRequestMessage) {
-			RunResult runResult = new RunResult();
-			runResult.setRunId(runId);
-			runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-			return runResult;
-		} else {
-			throw new UnrecognizedMessageTypeException("The run message for the data service was of an unrecognized type");
-		}
-	}
+//	@Override
+//	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
+////		if (runMessage instanceof GetOutputFilesURLsMessage) {
+////			try {
+////				getOutputFileURLs((GetOutputFilesURLsMessage) runMessage, runId);
+////			} catch (DataServiceException ex) {
+////				throw new RunManagerServiceException("There was an exception using the data service: " + ex.getMessage());
+////			}
+////			GetOutputFilesURLsResult filesResult = new GetOutputFilesURLsResult();
+////			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+////			filesResult.setRequestIdentification(runId);
+////			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
+////			return filesResult;
+////		} else if (runMessage instanceof DataRetrievalRequestMessage) {
+////			String zipURL = getZipFileURL(runId);
+////			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
+////			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+////			filesResult.setRequestIdentification(runId);
+////			filesResult.setUrl(zipURL);
+////			return filesResult;
+////		} else 
+//		if (runMessage instanceof DataRetrievalRequestMessage) {
+//			RunResult runResult = new RunResult();
+//			runResult.setRunId(runId);
+//			runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+//			return runResult;
+//		} else {
+//			throw new UnrecognizedMessageTypeException("The run message for the data service was of an unrecognized type");
+//		}
+//	}
 
 	@Override
 	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {

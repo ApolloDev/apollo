@@ -13,7 +13,7 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 public class ReturnObjectForRun {
 
 	private MethodCallStatus status;
-	private Object objectToReturnFromBroker;
+//	private Object objectToReturnFromBroker;
 
 	/**
 	 * @return the status
@@ -29,17 +29,17 @@ public class ReturnObjectForRun {
 		this.status = status;
 	}
 
-	/**
-	 * @return the objectToReturnFromBroker
-	 */
-	public Object getObjectToReturnFromBroker() {
-		return objectToReturnFromBroker;
-	}
-
-	/**
-	 * @param objectToReturnFromBroker the objectToReturnFromBroker to set
-	 */
-	public void setObjectToReturnFromBroker(Object objectToReturnFromBroker) {
-		this.objectToReturnFromBroker = objectToReturnFromBroker;
-	}
+//	/**
+//	 * @return the objectToReturnFromBroker
+//	 */
+//	public Object getObjectToReturnFromBroker() {
+//		return objectToReturnFromBroker;
+//	}
+//
+//	/**
+//	 * @param objectToReturnFromBroker the objectToReturnFromBroker to set
+//	 */
+//	public void setObjectToReturnFromBroker(Object objectToReturnFromBroker) {
+//		this.objectToReturnFromBroker = objectToReturnFromBroker;
+//	}
 }
