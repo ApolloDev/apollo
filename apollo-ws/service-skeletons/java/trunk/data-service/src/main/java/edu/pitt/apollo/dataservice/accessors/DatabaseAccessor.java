@@ -428,7 +428,7 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

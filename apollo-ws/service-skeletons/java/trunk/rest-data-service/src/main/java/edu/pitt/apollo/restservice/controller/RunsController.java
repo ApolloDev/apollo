@@ -270,7 +270,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return new AddRunIdsToSimulationGroupForRun(username, password, SerializationFormat.XML).addRunIdsToSimulationGroupForRun(runId, username);
+		return new AddRunIdsToSimulationGroupForRun(username, password, SerializationFormat.XML).addRunIdsToSimulationGroupForRun(runId, runIdsToAssociate);
 
 	}
 

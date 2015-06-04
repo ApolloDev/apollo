@@ -22,7 +22,6 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -273,7 +272,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

@@ -81,10 +81,10 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
         }
     }
 
-    @Override
-    public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
-
-    }
+	@Override
+	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }
 
 
