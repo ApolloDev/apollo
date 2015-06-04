@@ -18,7 +18,7 @@
 			<enumeration value="visualizer" />
 			<enumeration value="syntheticPopulationGenerator" />
 			<enumeration value="translator" />
-			<enumeration value="dataService" />
+			<enumeration value="data" />
 			<enumeration value="broker" />
                         <enumeration value="endUserApplication" />
 		</restriction>
