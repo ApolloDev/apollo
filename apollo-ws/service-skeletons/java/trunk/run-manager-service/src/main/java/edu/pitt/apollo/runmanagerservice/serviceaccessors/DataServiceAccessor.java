@@ -6,7 +6,6 @@ import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.SimulatorServiceException;
-import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
@@ -17,9 +16,9 @@ import java.util.Map;
 /**
  * Created by jdl50 on 5/21/15.
  */
-public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
+public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface {
 	
-	private static final String DATA_SERVICE_URL = "";
+	public static final String DATA_SERVICE_URL = "";
 	
 	protected DataServiceConnector connector;
 	
@@ -132,15 +131,5 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 	@Override
 	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
 		return connector.getListOfURLsForRunId(runId, authentication);
-	}
-
-	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
-		connector.run(runId, authentication);
-	}
-
-	@Override
-	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

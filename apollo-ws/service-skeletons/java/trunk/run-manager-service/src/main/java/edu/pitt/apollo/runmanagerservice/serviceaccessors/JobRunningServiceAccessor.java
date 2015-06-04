@@ -11,11 +11,11 @@ import java.math.BigInteger;
 /**
  * Created by jdl50 on 5/27/15.
  */
-public class SimulatorServiceAccessor extends ServiceAccessor implements JobRunningServiceInterface {
+public class JobRunningServiceAccessor extends ServiceAccessor implements JobRunningServiceInterface {
 
 	private JobRunningServiceConnector connector;
 	
-	public SimulatorServiceAccessor(String url) {
+	public JobRunningServiceAccessor(String url) {
 		super(url);
 	}
 
