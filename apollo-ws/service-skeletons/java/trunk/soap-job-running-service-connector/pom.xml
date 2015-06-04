@@ -5,7 +5,7 @@
         <artifactId>apollo-ws</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>soap-simulator-service-connector</artifactId>
+    <artifactId>soap-job-running-service-connector</artifactId>
     <packaging>jar</packaging>
 
     <licenses>

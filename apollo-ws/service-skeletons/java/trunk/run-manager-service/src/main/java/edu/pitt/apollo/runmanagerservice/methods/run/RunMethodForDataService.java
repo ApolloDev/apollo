@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -70,29 +69,28 @@ public class RunMethodForDataService extends AbstractRunMethod {
 		super(runId, authentication, "run_dataservice_message.json");
 	}
 
-	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataServiceException {
-		urlsForFilesAndRunIds = new ArrayList<>();
-		for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
-			// create a url for each file in the list
-			BigInteger run = runIdAndFiles.getRunId();
-			List<String> files = runIdAndFiles.getFiles();
-
-			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
-			for (BigInteger singleRun : runIdsAssociatedWithRun) {
-				for (String file : files) {
-					String urlForFile = BASE_URL + runId + "/" + FILE_PREFIX + file;
-					urlForFile = String.format(urlForFile, singleRun);
-
-					URLForFileAndRunId urlForFileAndRunId = new URLForFileAndRunId();
-					urlForFileAndRunId.setRunId(singleRun);
-					urlForFileAndRunId.setUrl(urlForFile);
-					urlForFileAndRunId.setFile(file);
-					urlsForFilesAndRunIds.add(urlForFileAndRunId);
-				}
-			}
-		}
-	}
-
+//	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataServiceException {
+//		urlsForFilesAndRunIds = new ArrayList<>();
+//		for (RunIdAndFiles runIdAndFiles : message.getRunIdsAndFiles()) {
+//			// create a url for each file in the list
+//			BigInteger run = runIdAndFiles.getRunId();
+//			List<String> files = runIdAndFiles.getFiles();
+//
+//			List<BigInteger> runIdsAssociatedWithRun = dataServiceDao.getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
+//			for (BigInteger singleRun : runIdsAssociatedWithRun) {
+//				for (String file : files) {
+//					String urlForFile = BASE_URL + runId + "/" + FILE_PREFIX + file;
+//					urlForFile = String.format(urlForFile, singleRun);
+//
+//					URLForFileAndRunId urlForFileAndRunId = new URLForFileAndRunId();
+//					urlForFileAndRunId.setRunId(singleRun);
+//					urlForFileAndRunId.setUrl(urlForFile);
+//					urlForFileAndRunId.setFile(file);
+//					urlsForFilesAndRunIds.add(urlForFileAndRunId);
+//				}
+//			}
+//		}
+//	}
 	private String getZipFileURL(BigInteger runId) {
 		return BASE_URL + runId + "/" + String.format(ZIP_FILE_NAME, runId);
 	}
@@ -102,44 +100,45 @@ public class RunMethodForDataService extends AbstractRunMethod {
 		JsonUtils jsonUtils = new JsonUtils();
 		Object object;
 
-		try {
-			object = (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetAllOutputFilesURLAsZipMessage.class);
-		} catch (JsonUtilsException ex) {
-			// try next message type
-			try {
+//		try {
+//			object = (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetAllOutputFilesURLAsZipMessage.class);
+//		} catch (JsonUtilsException ex) {
+//			// try next message type
+//			try {
 				object = (GetOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetOutputFilesURLAsZipMessage.class);
-			} catch (JsonUtilsException ex1) {
-				// try next message type
-				object = (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetOutputFilesURLsMessage.class);
-			}
-		}
+//			} catch (JsonUtilsException ex1) {
+//				// try next message type
+//				object = (GetOutputFilesURLsMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetOutputFilesURLsMessage.class);
+//			}
+//		}
 
 		return object;
 	}
 
 	@Override
 	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
-		if (runMessage instanceof GetOutputFilesURLsMessage) {
-			try {
-				getOutputFileURLs((GetOutputFilesURLsMessage) runMessage, runId);
-			} catch (DataServiceException ex) {
-				throw new RunManagerServiceException("There was an exception using the data service: " + ex.getMessage());
-			}
-			GetOutputFilesURLsResult filesResult = new GetOutputFilesURLsResult();
-			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-			filesResult.setRequestIdentification(runId);
-			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
-			return filesResult;
-		} else if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
+//		if (runMessage instanceof GetOutputFilesURLsMessage) {
+//			try {
+//				getOutputFileURLs((GetOutputFilesURLsMessage) runMessage, runId);
+//			} catch (DataServiceException ex) {
+//				throw new RunManagerServiceException("There was an exception using the data service: " + ex.getMessage());
+//			}
+//			GetOutputFilesURLsResult filesResult = new GetOutputFilesURLsResult();
+//			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+//			filesResult.setRequestIdentification(runId);
+//			filesResult.getUrlsForRunIdsAndFiles().addAll(urlsForFilesAndRunIds);
+//			return filesResult;
+//		} else if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
+//			String zipURL = getZipFileURL(runId);
+//			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
+//			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+//			filesResult.setRequestIdentification(runId);
+//			filesResult.setUrl(zipURL);
+//			return filesResult;
+//		} else 
+		if (runMessage instanceof GetOutputFilesURLAsZipMessage) {
 			String zipURL = getZipFileURL(runId);
 			GetOutputFilesURLAsZipResult filesResult = new GetOutputFilesURLAsZipResult();
-			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-			filesResult.setRequestIdentification(runId);
-			filesResult.setUrl(zipURL);
-			return filesResult;
-		} else if (runMessage instanceof GetAllOutputFilesURLAsZipMessage) {
-			String zipURL = getZipFileURL(runId);
-			GetAllOutputFilesURLAsZipResult filesResult = new GetAllOutputFilesURLAsZipResult();
 			filesResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
 			filesResult.setRequestIdentification(runId);
 			filesResult.setUrl(zipURL);
