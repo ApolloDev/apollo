@@ -4,11 +4,17 @@ import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleInfectiousDiseaseScenario;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.interfaces.RunManagementInterface;
+import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_0_0.FixedDuration;
 
 import java.io.*;
+import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.Properties;
 
 /**
@@ -43,9 +49,11 @@ public class BestRestTestClient {
         System.out.println("Set LPD to: " + latentPeriodDuration);
 
 
-        DataServiceImpl dataService = new DataServiceImpl();
-        System.out.println(dataService.insertRun(runSimulationMessage);
-
-
+        RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
+        BigInteger runId = runManagementInterface.insertRun(runSimulationMessage);
+        MethodCallStatus status = runManagementInterface.getRunStatus(runId, getAuthentication());
+        while (status.getStatus() != (MethodCallStatusEnum.COMPLETED)) {
+            System.out.println("Status of run " + runId + " is (" + status.getStatus().value() + ")" + status.getMessage());
+        }
     }
 }

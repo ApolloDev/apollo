@@ -1,10 +1,17 @@
 package edu.pitt.apollo.runmanagerservice;
 
+import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulation;
 import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -12,7 +19,7 @@ import java.util.List;
 /**
  * Created by jdl50 on 6/3/15.
  */
-public class RunManagerServiceImpl implements RunManagementInterface {
+public class RunManagerServiceImpl implements RunManagementInterface, JobRunningServiceInterface {
 
     @Override
     public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
@@ -59,6 +66,24 @@ public class RunManagerServiceImpl implements RunManagementInterface {
     @Override
     public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
         return null;
+    }
+
+    @Override
+    public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+        DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+        try {
+            SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
+            String urlOfSimulator = dataServiceAccessor.getURLForSoftwareIdentification(softwareIdentification, authentication);
+            SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator);
+            soapJobRunningServiceConnector.run(runId, authentication);
+        } catch (DataServiceException e) {
+            throw new SimulatorServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
+
     }
 }
 
