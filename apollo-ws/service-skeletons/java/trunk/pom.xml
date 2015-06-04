@@ -57,13 +57,15 @@
 		<module>xsd-types</module>
  		<module>db-common</module>
  		<module>services-common</module>
+
+
 		
  		<module>translator-service-skeleton</module>
 
  		<module>config-examples</module>
- 		<module>broker-service</module>
+ 		<!-- <module>broker-service</module>
  		<module>broker-service-war</module>
-		<module>broker-service-client</module>
+		<module>broker-service-client</module> -->
 
 		<module>library-service</module>
 		<module>library-service-war</module>
@@ -72,6 +74,9 @@
         <module>data-service</module>
 		<module>data-service-war</module>
 		<module>data-service-client</module>
+
+		<module>run-manager-service</module>
+
 
  		<module>simulator-service</module>
  		<module>simulator-service-war</module>
@@ -84,6 +89,10 @@
  		<module>visualizer-service</module>
  		<module>visualizer-service-war</module>
 		<module>visualizer-service-client</module>
+
+		<module>soap-job-running-service-connector</module>
+
+
 	</modules>
 
 	<dependencies>

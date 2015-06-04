@@ -285,11 +285,7 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
                 logger.error("Error initializing db resource:" + e.getMessage());
                 com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
                         = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
-                ds.setServerName("");
-                ds.setPortNumber(0);
-                ds.setDatabaseName("");
-                ds.setUser("");
-                ds.setPassword("");
+              
                 dataSourceMap.put(resourceName, ds);
             }
 
