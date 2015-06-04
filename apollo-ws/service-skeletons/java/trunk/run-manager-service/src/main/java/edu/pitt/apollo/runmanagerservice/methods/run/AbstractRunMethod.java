@@ -30,7 +30,7 @@ public abstract class AbstractRunMethod implements RunMethod {
 
     protected abstract Object convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException;
 
-    protected abstract Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException;
+//    protected abstract Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException;
 
     protected abstract MethodCallStatus getDefaultSuccessfulMethodCallStatus();
 
@@ -78,13 +78,13 @@ public abstract class AbstractRunMethod implements RunMethod {
         ReturnObjectForRun returnObj = new ReturnObjectForRun();
         returnObj.setStatus(status);
 
-        try {
-            returnObj.setObjectToReturnFromBroker(getObjectToReturn(runId));
-        } catch (RunManagerServiceException ex) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage("There was an exception getting the object to return from the run manager service: " + ex.getMessage());
-            return returnObj;
-        }
+//        try {
+////            returnObj.setObjectToReturnFromBroker(getObjectToReturn(runId));
+//        } catch (RunManagerServiceException ex) {
+//            status.setStatus(MethodCallStatusEnum.FAILED);
+//            status.setMessage("There was an exception getting the object to return from the run manager service: " + ex.getMessage());
+//            return returnObj;
+//        }
 
         try {
             status = dataServiceDao.getRunStatus(runId, authentication);

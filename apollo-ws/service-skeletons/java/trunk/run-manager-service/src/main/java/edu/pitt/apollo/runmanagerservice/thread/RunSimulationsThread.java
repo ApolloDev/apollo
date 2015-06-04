@@ -2,7 +2,7 @@ package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.SimulatorServiceAccessor;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
@@ -256,8 +256,8 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             }
 
             try{
-                SimulatorServiceAccessor simulatorServiceAccessor = new SimulatorServiceAccessor(url);
-                simulatorServiceAccessor.runSimulations(runId);
+                JobRunningServiceAccessor simulatorServiceAccessor = new JobRunningServiceAccessor(url);
+                simulatorServiceAccessor.run(runId, authentication);
             } catch (SimulatorServiceException | WebServiceException e) {
                 ErrorUtils.reportError("Error calling runSimulations(): " + "\n\tError was: " + e.getMessage(),
                         runId);

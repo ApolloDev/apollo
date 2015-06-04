@@ -3,22 +3,22 @@ package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
-import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.connector.DataServiceConnector;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by jdl50 on 5/21/15.
  */
-public class DataServiceAccessor extends ServiceAccessor implements DataServiceInterface, RunManagementInterface, ContentManagementInterface {
+public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface {
 	
-	private static final String DATA_SERVICE_URL = "";
+	public static final String DATA_SERVICE_URL = "";
 	
 	protected DataServiceConnector connector;
 	
@@ -103,23 +103,33 @@ public class DataServiceAccessor extends ServiceAccessor implements DataServiceI
 		connector.associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
 	}
 	
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return connector.getListOfFilesForRunId(runId, authentication);
-	}
-	
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		return connector.getListOfURLsForRunId(runId, authentication);
-	}
+//	@Override
+//	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+//		return connector.getListOfFilesForRunId(runId, authentication);
+//	}
+//	
+//	@Override
+//	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+//		return connector.getListOfURLsForRunId(runId, authentication);
+//	}
 	
 	@Override
 	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		return connector.getListOfRegisteredSoftwareRecords(authentication);
 	}
 	
+//	@Override
+//	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+//		connector.runDataService(runId, authentication);
+//	}
+
 	@Override
-	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
-		connector.runDataService(runId, authentication);
+	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		return connector.getListOfFilesForRunId(runId, authentication);
+	}
+
+	@Override
+	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+		return connector.getListOfURLsForRunId(runId, authentication);
 	}
 }

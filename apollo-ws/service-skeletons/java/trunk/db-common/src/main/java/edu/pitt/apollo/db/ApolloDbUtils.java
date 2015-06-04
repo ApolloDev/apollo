@@ -21,7 +21,7 @@ import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
@@ -226,7 +226,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //                        + runId);
 //    }
 
-    public GetOutputFilesURLAsZipMessage getGetOutputFilesURLAsZipMessageForRun(
+    public DataRetrievalRequestMessage getDataRetrievalRequestMessageForRun(
             BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
         Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
         for (String name : contentForRun.keySet()) {
@@ -234,8 +234,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                 InputStream contentInputStream = new ByteArrayInputStream(
                         contentForRun.get(name).toByteArray());
 
-                return (GetOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(
-                        contentInputStream, GetOutputFilesURLAsZipMessage.class);
+                return (DataRetrievalRequestMessage) jsonUtils.getObjectFromJson(
+                        contentInputStream, DataRetrievalRequestMessage.class);
             }
         }
 
@@ -1355,7 +1355,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //        return addDataServiceRunForAllMessageTypes(message, md5CollisionId, authentication, dataServiceSoftwareId);
 //    }
 
-    public BigInteger addDataServiceRun(GetOutputFilesURLAsZipMessage message, int md5CollisionId,
+    public BigInteger addDataServiceRun(DataRetrievalRequestMessage message, int md5CollisionId,
                                           Authentication authentication,
                                           SoftwareIdentification dataServiceSoftwareId)
             throws ApolloDatabaseException, Md5UtilsException {
@@ -2398,8 +2398,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
     }
 
     /*---DAN'S ADDITIONS FOR REST INTERFACE--*/
-    public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId) throws ApolloDatabaseException {
-        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<BigInteger, FileAndURLDescription>();
+    public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId) throws ApolloDatabaseException {
+        HashMap<BigInteger, FileAndURLDescription> contentIdToFileDescriptionMap = new HashMap<>();
 
         try (Connection conn = datasource.getConnection()) {
 

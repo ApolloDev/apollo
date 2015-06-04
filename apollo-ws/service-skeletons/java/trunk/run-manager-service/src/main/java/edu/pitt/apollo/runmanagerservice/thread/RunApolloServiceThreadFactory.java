@@ -1,9 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
@@ -30,15 +28,15 @@ public class RunApolloServiceThreadFactory {
 		} else if (message instanceof RunVisualizationMessage) {
 			softwareId = ((RunVisualizationMessage) message).getVisualizerIdentification();
 			return new RunVisualizationThread(runId, softwareId, authentication);
-		} else if (message instanceof GetOutputFilesURLsMessage) {
-			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
+//		} else if (message instanceof GetOutputFilesURLsMessage) {
+//			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
+//			return new RunDataServiceThread(runId, softwareId, authentication);
+		} else if (message instanceof DataRetrievalRequestMessage) {
+			softwareId = ((DataRetrievalRequestMessage) message).getSoftwareIdentification();
 			return new RunDataServiceThread(runId, softwareId, authentication);
-		} else if (message instanceof GetOutputFilesURLAsZipMessage) {
-			softwareId = ((GetOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
-			return new RunDataServiceThread(runId, softwareId, authentication);
-		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
-			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
-			return new RunDataServiceThread(runId, softwareId, authentication);
+//		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
+//			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
+//			return new RunDataServiceThread(runId, softwareId, authentication);
 		} else {
 			throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
 		}

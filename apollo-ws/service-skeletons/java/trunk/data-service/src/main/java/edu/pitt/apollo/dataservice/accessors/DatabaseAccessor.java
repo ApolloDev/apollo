@@ -2,17 +2,19 @@ package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.*;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.dataservice.methods.DataServiceMethod;
-import edu.pitt.apollo.dataservice.methods.DataServiceMethodFactory;
+import edu.pitt.apollo.dataservice.methods.RunJobMethod;
+import edu.pitt.apollo.dataservice.methods.RunJobMethodFactory;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
-import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
+import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -31,7 +33,7 @@ import java.util.*;
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 2:26:02 PM Class: DatabaseAccessor IDE: NetBeans 6.9.1
  */
-public class DatabaseAccessor implements DataServiceInterface, RunManagementInterface, UserManagementInterface, ContentManagementInterface {
+public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagementInterface, UserManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
 
 	protected static final String OUTPUT_DIRECTORY;
 	protected static final String OUTPUT_FILE_NAME;
@@ -44,7 +46,6 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	private static final String APOLLO_DIR;
 	private static final String ZIP_FILE_NAME_KEY = "zip_file_name";
 	private static final String FILE_PREFIX = "run_%d_";
-	private static final String RUN_DATA_SEVICE_MESSAGE_FILENAME = "run_data_service_message.json";
 	static Logger logger = LoggerFactory.getLogger(DatabaseAccessor.class);
 
 	static {
@@ -129,32 +130,46 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 		this.dbUtils = new ApolloDbUtils();
 	}
 
-    private Authentication cloneAndStripAuthentication(Authentication srcAuthentication) {
-        Authentication authentication = new Authentication();
-        authentication.setRequesterId(srcAuthentication.getRequesterId());
-        authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
-        srcAuthentication.setRequesterId("");
-        srcAuthentication.setRequesterPassword("");
-        return authentication;
-    }
+	private Authentication cloneAndStripAuthentication(Authentication srcAuthentication) {
+		Authentication authentication = new Authentication();
+		authentication.setRequesterId(srcAuthentication.getRequesterId());
+		authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
+		srcAuthentication.setRequesterId("");
+		srcAuthentication.setRequesterPassword("");
+		return authentication;
+	}
 
-    protected Authentication stripAuthentication(Object message) throws RunManagementException {
-        Authentication authentication;
-        if (message instanceof RunSimulationMessage) {
-            authentication = ((RunSimulationMessage) message).getAuthentication();
-        } else if (message instanceof RunSimulationsMessage) {
-            authentication = ((RunSimulationsMessage) message).getAuthentication();
-        } else if (message instanceof RunVisualizationMessage) {
-            authentication = ((RunVisualizationMessage) message).getAuthentication();
-        } else {
-            throw new RunManagementException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
-        }
-        return cloneAndStripAuthentication(authentication);
-    }
+	protected Authentication stripAuthentication(Object message) throws RunManagementException {
+		Authentication authentication;
+		if (message instanceof RunSimulationMessage) {
+			authentication = ((RunSimulationMessage) message).getAuthentication();
+		} else if (message instanceof RunSimulationsMessage) {
+			authentication = ((RunSimulationsMessage) message).getAuthentication();
+		} else if (message instanceof RunVisualizationMessage) {
+			authentication = ((RunVisualizationMessage) message).getAuthentication();
+		} else {
+			throw new RunManagementException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
+		}
+		return cloneAndStripAuthentication(authentication);
+	}
 
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
 			BigInteger runId) throws ApolloDatabaseException {
 		return null;
+	}
+
+	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, String fileNameToMatch, Authentication authentication) throws DataServiceException {
+		Map<BigInteger, FileAndURLDescription> contentMap = getListOfFilesForRunId(runId, authentication);
+
+		for (Iterator<BigInteger> itr = contentMap.keySet().iterator(); itr.hasNext();) {
+			BigInteger contentId = itr.next();
+			FileAndURLDescription desc = contentMap.get(contentId);
+			if (!desc.getName().equals(fileNameToMatch)) {
+				itr.remove();
+			}
+		}
+
+		return contentMap;
 	}
 
 	@Override
@@ -265,10 +280,10 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 	}
 
 	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
 		try {
 			authenticateUser(authentication);
-			HashMap<BigInteger, FileAndURLDescription> fileIdsToFileDescriptionMap = dbUtils.getListOfFilesForRunId(runId);
+			Map<BigInteger, FileAndURLDescription> fileIdsToFileDescriptionMap = dbUtils.getListOfFilesForRunId(runId);
 			return fileIdsToFileDescriptionMap;
 		} catch (ApolloDatabaseException e) {
 			throw new DataServiceException(e.getMessage());
@@ -315,24 +330,24 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 		}
 	}
 
-	@Override
-	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
-
-		authenticateUser(authentication);
-
-		String messageContent;
-		try {
-			BigInteger dbMessageDescriptionId = dbUtils.getRunDataDescriptionIdFromFileLabel(RUN_DATA_SEVICE_MESSAGE_FILENAME);
-			BigInteger messageContentId = dbUtils.getContentIdFromRunIdAndDataDescriptionId(runId, dbMessageDescriptionId);
-			messageContent = dbUtils.getFileContentForFileId(messageContentId);
-		} catch (ApolloDatabaseException ade) {
-			throw new DataServiceException(ade.getMessage());
-		}
-		
-		DataServiceMethod dataServiceMethod = DataServiceMethodFactory.getDataServiceMethod(messageContent, runId);
-		dataServiceMethod.runDataService();
-
-	}
+//	@Override
+//	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
+//
+//		authenticateUser(authentication);
+//
+//		String messageContent;
+//		try {
+//			BigInteger dbMessageDescriptionId = dbUtils.getRunDataDescriptionIdFromFileLabel(RUN_DATA_SEVICE_MESSAGE_FILENAME);
+//			BigInteger messageContentId = dbUtils.getContentIdFromRunIdAndDataDescriptionId(runId, dbMessageDescriptionId);
+//			messageContent = dbUtils.getFileContentForFileId(messageContentId);
+//		} catch (ApolloDatabaseException ade) {
+//			throw new DataServiceException(ade.getMessage());
+//		}
+//
+//		RunJobMethod dataServiceMethod = RunJobMethodFactory.getDataServiceMethod(messageContent, runId);
+//		dataServiceMethod.runDataService();
+//
+//	}
 
 	@Override
 	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
@@ -405,6 +420,16 @@ public class DatabaseAccessor implements DataServiceInterface, RunManagementInte
 			throw new DataServiceException(ex.getMessage());
 		}
 
+	}
+
+	@Override
+	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

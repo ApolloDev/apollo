@@ -17,7 +17,7 @@ package edu.pitt.apollo.apolloclient;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
@@ -72,7 +72,7 @@ public class DataServiceClient {
 
 	private static void testGettingOutputFilesURLAsZip(ApolloServiceEI port) throws IOException {
 
-		GetOutputFilesURLAsZipMessage message = new GetOutputFilesURLAsZipMessage();
+		DataRetrievalRequestMessage message = new DataRetrievalRequestMessage();
 		message.setAuthentication(getAuthentication());
 
 		RunIdAndFiles runIdAndFiles = new RunIdAndFiles();

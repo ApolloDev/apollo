@@ -3,11 +3,9 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.JsonUtils;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.runmanagerservice.exception.RunManagerServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 import java.math.BigInteger;
@@ -28,13 +26,13 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 		return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunSimulationMessage.class);
 	}
 
-	@Override
-	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
-		RunResult runResult = new RunResult();
-		runResult.setRunId(runId);
-		runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-		return runResult;
-	}
+//	@Override
+//	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
+//		RunResult runResult = new RunResult();
+//		runResult.setRunId(runId);
+//		runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
+//		return runResult;
+//	}
 
 	@Override
 	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {

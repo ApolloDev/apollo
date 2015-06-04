@@ -6,7 +6,7 @@
 package edu.pitt.apollo.restservice.methods;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
@@ -49,9 +49,9 @@ public class InsertRunMethod extends BaseDataServiceAccessorMethod {
 			Object object = deserializer.getObjectFromMessage(messageBody, className, classNamespace);
 
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
-					&& !(object instanceof RunVisualizationMessage) && !(object instanceof GetAllOutputFilesURLAsZipMessage)) {
+					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)) {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage and GetAllOutputFilesURLAsZipMessage");
+						+ "The valid types are: DataRetrievalRequestMessage");
 			} else {
 
 				try {

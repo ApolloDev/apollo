@@ -2,7 +2,7 @@ package edu.pitt.apollo.dataservice.accessors;
 
 
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -35,9 +35,9 @@ public class DatabaseAccessorFactory {
                     "run_visualization_message.json",
                     ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE,
                     ((RunVisualizationMessage) message).getVisualizerIdentification());
-        } else if (message instanceof GetOutputFilesURLAsZipMessage) {
-            Authentication authentication = ((GetOutputFilesURLAsZipMessage) message).getAuthentication();
-            return new DatabaseAccessorForRunningDataService((GetOutputFilesURLAsZipMessage) message, authentication);
+        } else if (message instanceof DataRetrievalRequestMessage) {
+            Authentication authentication = ((DataRetrievalRequestMessage) message).getAuthentication();
+            return new DatabaseAccessorForRunningDataService((DataRetrievalRequestMessage) message, authentication);
         } else {
             throw new UnrecognizedMessageTypeException(
                     "Unrecognized message type in DatabaseAccessorFactory");

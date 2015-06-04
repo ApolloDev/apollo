@@ -49,7 +49,7 @@
 		</sequence>
 	</complexType>
     
-        <complexType name="GetOutputFilesURLAsZipMessage">
+        <complexType name="DataRetrievalRequestMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
 			<element name="softwareIdentification" type="common:SoftwareIdentification" />
@@ -59,13 +59,13 @@
 		</sequence>
 	</complexType>
     
-    <complexType name="GetOutputFilesURLAsZipResult">
+    <!--<complexType name="DataRetrievalResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 			<element name="requestIdentification" type="common:RunIdentification"></element>
 			<element name="url" type="anyURI"></element>
 		</sequence>
-	</complexType>
+	</complexType>-->
     
     	<complexType name="RunIdAndFiles">
 		<sequence>
@@ -274,6 +274,7 @@
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>
+			<element name="roleDescription" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>

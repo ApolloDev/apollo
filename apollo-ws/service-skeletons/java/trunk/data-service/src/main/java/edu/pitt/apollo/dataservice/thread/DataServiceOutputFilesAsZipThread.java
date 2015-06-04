@@ -49,12 +49,12 @@ public class DataServiceOutputFilesAsZipThread extends DataServiceThread {
 			try (DatabaseAccessorForIterableFileContent dba = new DatabaseAccessorForIterableFileContent(authentication)) {
 
 				dba.retrieveAllFilesForRunIdsAssociatedWithSimulationGroupForRun(runIdFromMessage, fileNamesToMatch);
-				while (dba.hasNext()) {
+				FileContentForRun fileContentForRun;
+				while ((fileContentForRun = dba.next()) != null) {
 
-					FileContentForRun fileContent = dba.next();
-					int simulationRunId = fileContent.getRunId();
-					String textContent = fileContent.getFileContent();
-					String name = fileContent.getFileName();
+					int simulationRunId = fileContentForRun.getRunId();
+					String textContent = fileContentForRun.getFileContent();
+					String name = fileContentForRun.getFileName();
 
 					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
 						if (!fileNamesToMatch.contains(name)) {

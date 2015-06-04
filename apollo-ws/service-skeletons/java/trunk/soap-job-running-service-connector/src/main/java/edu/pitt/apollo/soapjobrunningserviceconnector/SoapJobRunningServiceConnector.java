@@ -1,12 +1,12 @@
-package edu.pitt.apollo.soapsimulatorserviceconnector;
+package edu.pitt.apollo.soapjobrunningserviceconnector;
 
-import edu.pitt.apollo.connector.SimulatorServiceConnector;
+import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceV300;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
 import java.math.BigInteger;
@@ -20,11 +20,11 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
  *
  * @author nem41
  */
-public class SoapSimulatorServiceConnector extends SimulatorServiceConnector {
+public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 
 	private SimulatorServiceEI port;
 
-	public SoapSimulatorServiceConnector(String url) throws SimulatorServiceException {
+	public SoapJobRunningServiceConnector(String url) throws SimulatorServiceException {
 		super(url);
 		initialize();
 	}
@@ -46,19 +46,10 @@ public class SoapSimulatorServiceConnector extends SimulatorServiceConnector {
 	}
 
 	@Override
-	public void run(BigInteger runId) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
 		MethodCallStatus status = port.runSimulation(runId);
 		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
 			throw new SimulatorServiceException("The run simulation request to the simulator failed: " + status.getMessage());
-		}
-	}
-
-	@Override
-	public void runSimulations(BigInteger runId) throws SimulatorServiceException {
-		RunResult result = port.runSimulations(runId);
-		MethodCallStatus status = result.getMethodCallStatus();
-		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-			throw new SimulatorServiceException("The run simulations request to the simulator failed: " + status.getMessage());
 		}
 	}
 

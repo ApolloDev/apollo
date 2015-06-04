@@ -18,7 +18,7 @@ import edu.pitt.apollo.restservice.methods.GetRunIdsInSimulationGroupForRunMetho
 import edu.pitt.apollo.restservice.methods.GetSoftwareIdentificationForRunMethod;
 import edu.pitt.apollo.restservice.methods.GetStatusOfRunMethod;
 import edu.pitt.apollo.restservice.methods.InsertRunMethod;
-import edu.pitt.apollo.restservice.methods.RunDataServiceMethod;
+import edu.pitt.apollo.restservice.methods.RunDataServiceJobMethod;
 import edu.pitt.apollo.restservice.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.restservice.methods.SetStatusOfRunMethod;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -225,7 +225,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return new RunDataServiceMethod(username, password, SerializationFormat.XML).runDataService(runId);
+		return new RunDataServiceJobMethod(username, password, SerializationFormat.XML).runDataServiceJob(runId);
 	}
 
 	/*--Method to get run information such as groups, types, etc--*/

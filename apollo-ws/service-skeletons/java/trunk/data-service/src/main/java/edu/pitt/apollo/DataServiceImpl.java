@@ -2,12 +2,16 @@ package edu.pitt.apollo;
 
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
+import edu.pitt.apollo.dataservice.methods.RunJobMethod;
+import edu.pitt.apollo.dataservice.methods.RunJobMethodFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
-import edu.pitt.apollo.interfaces.DataServiceInterface;
+import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
+import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -18,6 +22,7 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +34,7 @@ import java.util.logging.Logger;
  *
  * @author nem41
  */
-public class DataServiceImpl implements DataServiceInterface, RunManagementInterface, ContentManagementInterface, UserManagementInterface {
+public class DataServiceImpl implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, UserManagementInterface, JobRunningServiceInterface {
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
@@ -135,7 +140,7 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 	}
 
 	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getListOfFilesForRunId(runId, authentication);
@@ -179,16 +184,6 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getURLForSoftwareIdentification(softwareId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void runDataService(BigInteger runId, Authentication authentication) throws DataServiceException {
-		try {
-			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
-			dba.runDataService(runId, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}
@@ -263,6 +258,23 @@ public class DataServiceImpl implements DataServiceInterface, RunManagementInter
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}
+	}
+
+	@Override
+	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+		RunJobMethod dataServiceMethod;
+		try {
+			dataServiceMethod = RunJobMethodFactory.getDataServiceMethod(runId, authentication);
+			dataServiceMethod.runDataService();
+		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
+			throw new SimulatorServiceException(ex.getMessage());
+		}
+		
+	}
+
+	@Override
+	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }
