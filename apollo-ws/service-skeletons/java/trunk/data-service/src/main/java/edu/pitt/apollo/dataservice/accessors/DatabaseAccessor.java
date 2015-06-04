@@ -53,7 +53,7 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 		dataServiceSoftwareId.setSoftwareDeveloper("UPitt");
 		dataServiceSoftwareId.setSoftwareName("Data Service");
 		dataServiceSoftwareId.setSoftwareVersion("1.0");
-		dataServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.DATA);
+		dataServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.DATA_SERVICE);
 		Map<String, String> env = System.getenv();
 		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		System.out.println("apolloDir: " + apolloDir);
