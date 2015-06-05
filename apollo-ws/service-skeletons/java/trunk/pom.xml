@@ -59,11 +59,11 @@
         <module>services-common</module>
 
         <module>soap-job-running-service-connector</module>
-        <module>soap-syntheticpopulation-service-connector</module>
-        <module>soap-translator-service-connector</module>
-        <module>soap-visualizer-service-connector</module>
-        <module>rest-data-service-connector</module>
-        <module>rest-run-manager-service-connector</module>
+        <module>syntheticpopulation-service-soap-connector</module>
+        <module>translator-service-soap-connector</module>
+        <module>visualizer-service-soap-connector</module>
+        <module>data-service-rest-connector</module>
+        <module>run-manager-service-rest-connector</module>
                 
         <module>translator-service-skeleton</module>
 
@@ -80,7 +80,7 @@
         <module>data-service-war</module>
         <module>data-service-client</module>
 
-        <module>rest-data-service</module>
+        <module>data-service-rest-frontend</module>
 
         <module>run-manager-service</module>
         <module>run-manager-service-rest-frontend</module>

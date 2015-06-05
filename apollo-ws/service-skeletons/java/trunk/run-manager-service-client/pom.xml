@@ -9,7 +9,7 @@
   </parent>
   <groupId>edu.pitt.apollo</groupId>
   <artifactId>run-manager-service-client</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>run-manager-service-client</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -29,11 +29,6 @@
     <dependency>
       <groupId>edu.pitt.apollo</groupId>
       <artifactId>data-service</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>edu.pitt.apollo</groupId>
-      <artifactId>services-common</artifactId>
       <version>3.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>

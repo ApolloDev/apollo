@@ -124,11 +124,11 @@
             <version>3.0.0-SNAPSHOT</version>
         </dependency>-->
         
-        <dependency>
+        <!-- <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
             <version>3.0.0-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
         
     </dependencies>
 
