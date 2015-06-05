@@ -4,6 +4,8 @@ import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.examples.runsimulationmessages.ExampleInfectiousDiseaseScenario;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -37,7 +39,7 @@ public class BestRestTestClient {
         return auth;
     }
 
-    public static void main(String[] args) throws IOException, DataServiceException {
+    public static void main(String[] args) throws IOException, DataServiceException, SimulatorServiceException {
         RunSimulationMessage runSimulationMessage =
                 ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
@@ -51,9 +53,22 @@ public class BestRestTestClient {
 
         RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
         BigInteger runId = runManagementInterface.insertRun(runSimulationMessage);
-        MethodCallStatus status = runManagementInterface.getRunStatus(runId, getAuthentication());
-        while (status.getStatus() != (MethodCallStatusEnum.COMPLETED)) {
+        while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+            MethodCallStatus status = runManagementInterface.getRunStatus(runId, getAuthentication()) ;
             System.out.println("Status of run " + runId + " is (" + status.getStatus().value() + ")" + status.getMessage());
+        }
+
+        JobRunningServiceInterface jobRunningServiceInterface = new RunManagerServiceImpl();
+        jobRunningServiceInterface.run(runId, getAuthentication());
+
+        while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.COMPLETED)) {
+            MethodCallStatus status = runManagementInterface.getRunStatus(runId, getAuthentication()) ;
+            System.out.println("Status of run " + runId + " is (" + status.getStatus().value() + ")" + status.getMessage());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

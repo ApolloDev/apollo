@@ -14,6 +14,7 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_0_0.ParameterValue;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
@@ -38,6 +39,13 @@ public class StageMethod {
         this.authentication = getAuthentication(message);
     }
 
+    private Authentication cloneAuthentication(Authentication srcAuthentication) {
+        Authentication authentication = new Authentication();
+        authentication.setRequesterId(srcAuthentication.getRequesterId());
+        authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
+        return authentication;
+    }
+
     private Authentication getAuthentication(Object message) throws RunManagementException {
         Authentication authentication;
         if (message instanceof RunSimulationMessage) {
@@ -49,7 +57,7 @@ public class StageMethod {
         } else {
             throw new RunManagementException("Unsupported message type of " + message.getClass().getName() + " passed to the Stage method of the RunManagerService.");
         }
-        return authentication;
+        return cloneAuthentication(authentication);
     }
 
     public BigInteger stage() throws RunManagementException {
@@ -58,8 +66,8 @@ public class StageMethod {
             dataServiceDao = new DataServiceAccessor();
 
             BigInteger runId = dataServiceDao.insertRun(message);
-            if (true) {
-                dataServiceDao.addRunIdsToSimulationGroupForRun(parentRunId, Arrays.asList(new BigInteger[] {parentRunId}), authentication);
+            if (parentRunId != null) {
+                dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[] {parentRunId}), authentication);
             }
 
             //BigInteger simulationGroupId = runIdSimulationGroupId[1];
@@ -86,17 +94,21 @@ public class StageMethod {
                 throw new RunManagementException("There was no translator URL available!");
             }
 
+
             // run is loaded, now call translator
             TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
             translatorDao.translateRun(runId);
 
-            runStatus = dataServiceDao.getRunStatus(runId, authentication);
-            statusEnum = runStatus.getStatus();
-
-            while (!statusEnum.equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+            while (!dataServiceDao.getRunStatus(runId, authentication).getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
                 try {
                     switch (statusEnum) {
                         case FAILED:
+                            break;
+                        case RUN_TERMINATED:
+                            break;
+                        case UNKNOWN_RUNID:
+                            break;
+                        case UNAUTHORIZED:
                             break;
                         default:
                             Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);

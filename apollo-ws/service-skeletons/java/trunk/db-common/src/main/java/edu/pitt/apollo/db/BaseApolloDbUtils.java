@@ -221,19 +221,12 @@ import edu.pitt.apollo.types.v3_0_0.WithinGroupTransmissionProbability;
 import edu.pitt.apollo.types.v3_0_0.WolbachiaControlStrategy;
 import edu.pitt.apollo.types.v3_0_0.WolbachiaReleaseSiteEnum;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -282,11 +275,24 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
                 Context envCtx = (Context) initCtx.lookup("java:comp/env");
                 dataSourceMap.put(resourceName, (DataSource) envCtx.lookup("jdbc/" + resourceName));
             } catch (NamingException e) {
-                logger.error("Error initializing db resource:" + e.getMessage());
-                com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
-                        = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
-              
-                dataSourceMap.put(resourceName, ds);
+
+                logger.error("Error initializing db resource, falling back to default configuration:" + e.getMessage());
+                try {
+                    Properties properties = new Properties();
+                    properties.load(new BufferedReader(new FileReader(APOLLO_DIR + "database.properties")));
+
+                    com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
+                            = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+
+                    ds.setServerName(properties.getProperty("server"));
+                    ds.setPortNumber(Integer.valueOf(properties.getProperty("port")));
+                    ds.setDatabaseName(properties.getProperty("database_name"));
+                    ds.setUser(properties.getProperty("user"));
+                    ds.setPassword(properties.getProperty("password"));
+                    dataSourceMap.put(resourceName, ds);
+                } catch (IOException ex) {
+                    logger.error("Fallback failed, error creating default datasource!  Error was: " + ex.getMessage());
+                }
             }
 
         }

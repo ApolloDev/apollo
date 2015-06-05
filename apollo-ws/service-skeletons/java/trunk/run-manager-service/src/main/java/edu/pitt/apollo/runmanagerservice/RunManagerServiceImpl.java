@@ -65,7 +65,8 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 
     @Override
     public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
-        return null;
+        DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+        return dataServiceAccessor.getRunStatus(runId, authentication);
     }
 
     @Override
