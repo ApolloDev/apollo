@@ -21,7 +21,7 @@ import java.util.Properties;
  */
 public class BestRestTestClient {
 
-    private static final String REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE = "data_service_test_client.properties";
+    private static final String REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE = "run_manager_service_test_client.properties";
 
     private static Authentication getAuthentication() throws FileNotFoundException, IOException {
         File props = new File(REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);

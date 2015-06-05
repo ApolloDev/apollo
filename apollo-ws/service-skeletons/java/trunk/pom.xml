@@ -68,6 +68,7 @@
         <module>translator-service-skeleton</module>
 
         <module>config-examples</module>
+
         <module>broker-service</module>
         <module>broker-service-war</module>
         <module>broker-service-client</module>
@@ -79,10 +80,10 @@
         <module>data-service</module>
         <module>data-service-war</module>
         <module>data-service-client</module>
-
         <module>data-service-rest-frontend</module>
 
         <module>run-manager-service</module>
+        <module>run-manager-service-client</module>
         <module>run-manager-service-rest-frontend</module>
 
         <module>simulator-service</module>
@@ -157,19 +158,6 @@
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-rt-transports-http</artifactId>
                     <version>${cxf.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <!-- See http://metro.java.net/guide/Using_Mavenized_Metro_Binaries.html 
-            for more Metro/Maven config info -->
-            <id>Metro</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.glassfish.metro</groupId>
-                    <artifactId>webservices-rt</artifactId>
-                    <version>2.2.1-1</version>
                 </dependency>
             </dependencies>
         </profile>
