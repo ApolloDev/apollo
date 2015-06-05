@@ -83,7 +83,7 @@
         <module>rest-data-service</module>
 
         <module>run-manager-service</module>
-        <module>rest-run-manager-service</module>
+        <module>run-manager-service-rest-frontend</module>
 
         <module>simulator-service</module>
         <module>simulator-service-war</module>
