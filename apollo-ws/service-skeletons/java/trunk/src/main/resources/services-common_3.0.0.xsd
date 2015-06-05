@@ -20,7 +20,8 @@
 			<enumeration value="translator" />
 			<enumeration value="data" />
 			<enumeration value="broker" />
-                        <enumeration value="endUserApplication" />
+            <enumeration value="endUserApplication" />
+            <enumeration value="runManager" />
 		</restriction>
 	</simpleType>
         
@@ -202,6 +203,13 @@
 				minOccurs="1" />
 		</sequence>
 	</complexType>
+
+	<simpleType name="RunActionEnum">
+		<restriction base="string">
+			<enumeration value="start" />
+			<enumeration value="terminate" />
+		</restriction>
+	</simpleType>
 
 	<complexType name="FileAndURLDescription">
 		<sequence>

@@ -1,59 +1,53 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
-import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.UrlOutputResource;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
 
-import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.Map;
 
 /**
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: May 9, 2014
- * Time: 2:05:11 PM
- * Class: GetVisualizerOutputResourcesMethod
- * IDE: NetBeans 6.9.1
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: May 9, 2014 Time: 2:05:11 PM Class: GetVisualizerOutputResourcesMethod IDE: NetBeans 6.9.1
  */
-public class GetVisualizerOutputResourcesMethod {
+public class GetVisualizerOutputResourcesMethod extends BaseDataServiceAccessorMethod {
 
-    public static GetVisualizerOutputResourcesResult getVisualizerOutputResources(BigInteger runIdentification) {
+	public GetVisualizerOutputResourcesMethod(String dataServiceUrl) {
+		super(dataServiceUrl);
+	}
 
-        GetVisualizerOutputResourcesResult result = new GetVisualizerOutputResourcesResult();
-        MethodCallStatus status = new MethodCallStatus();
-        result.setMethodCallStatus(status);
+	public GetVisualizerOutputResourcesResult getVisualizerOutputResources(BigInteger runId, Authentication authentication) {
 
-        try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
+		GetVisualizerOutputResourcesResult result = new GetVisualizerOutputResourcesResult();
+		MethodCallStatus status;
 
-            Map<String, ByteArrayOutputStream> map = dbUtils.getDataContentForSoftware(runIdentification,
-                    dbUtils.getSoftwareIdentificationKeyForRun(runIdentification), 0);
+		try {
+			Map<BigInteger, FileAndURLDescription> urlsMap = connector.getListOfURLsForRunId(runId, authentication);
 
-            if (map.isEmpty()) {
-                status.setStatus(MethodCallStatusEnum.FAILED);
-                status.setMessage("There were no visualizer resources available for run "
-                        + runIdentification);
-                return result;
-            }
+			for (BigInteger urlId : urlsMap.keySet()) {
 
-            for (String label : map.keySet()) {
-                UrlOutputResource resource = new UrlOutputResource();
-                resource.setDescription(label);
-                resource.setURL(map.get(label).toString());
-                result.getUrlOutputResources().add(resource);
-            }
+				FileAndURLDescription description = urlsMap.get(urlId);
+				UrlOutputResource resource = new UrlOutputResource();
 
-            status.setStatus(MethodCallStatusEnum.COMPLETED);
-            status.setMessage("The resources are available");
-            return result;
+				String url = connector.getContentForContentId(urlId, authentication);
+				resource.setURL(url);
+				resource.setDescription(description.getName());
+				result.getUrlOutputResources().add(resource);
+			}
+		} catch (DataServiceException ex) {
+			status = getFailedMethodCallStatus("Exception getting urls from data service: " + ex.getMessage());
+			result.setMethodCallStatus(status);
+			return result;
+		}
 
-        } catch (ApolloDatabaseException ex) {
-            status.setMessage(ex.getMessage());
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            return result;
-        }
-    }
+		status = new MethodCallStatus();
+		status.setMessage("The urls were successfully obtained.");
+		status.setStatus(MethodCallStatusEnum.COMPLETED);
+		result.setMethodCallStatus(status);
+		return result;
+	}
 }

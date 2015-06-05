@@ -54,8 +54,11 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 	}
 
 	@Override
-	public void terminate(TerminateRunRequest terminateRunRequest) throws SimulatorServiceException {
-		TerminteRunResult response = port.terminateRun(terminateRunRequest);
+	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+		TerminateRunRequest request = new TerminateRunRequest();
+		request.setAuthentication(authentication);
+		request.setRunIdentification(runId);
+		TerminteRunResult response = port.terminateRun(request);
 		MethodCallStatus status = response.getMethodCallStatus();
 		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
 			throw new SimulatorServiceException("The terminate run request to the simulator failed: " + status.getMessage());

@@ -42,11 +42,16 @@ import edu.pitt.apollo.apolloservice.methods.library.RemoveGroupAccessToLibraryI
 import edu.pitt.apollo.apolloservice.methods.library.SetLibraryItemAsNotReleasedMethod;
 import edu.pitt.apollo.apolloservice.methods.library.SetReleaseVersionForLibraryItemMethod;
 import edu.pitt.apollo.apolloservice.methods.library.UpdateLibraryItemContainerMethod;
-import edu.pitt.apollo.dataservice.methods.run.*;
+import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartDataServiceJobMethod;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
+import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
+import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentMessage;
@@ -73,7 +78,10 @@ import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
 import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
+import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
@@ -89,11 +97,75 @@ import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPop
 import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopulationGenerationResult;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
 	private static final BigInteger NO_SIMULATION_GROUP_ID = null;
+	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
+	private static final String DATA_SERVICE_URL_PROPERTY_TOKEN = "dataServiceUrl";
+	private static final String AUTHENTICATION_USER = "authenticationUser";
+	private static final String AUTHENTICATION_PASSWORD = "authenticationPassword";
+	private static final String runManagerServiceUrl;
+	private static final String dataServiceUrl;
+	private static final Authentication authentication;
+	private static ApolloServiceQueue apolloServiceQueue;
+
+	static {
+
+		apolloServiceQueue = new ApolloServiceQueue();
+
+		String apolloDir = ApolloServiceConstants.APOLLO_DIR;
+
+		File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
+		Properties brokerServiceProperties = new Properties();
+		try {
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+
+				dataServiceUrl = brokerServiceProperties.getProperty(DATA_SERVICE_URL_PROPERTY_TOKEN);
+
+				String authenticationUser = brokerServiceProperties.getProperty(AUTHENTICATION_USER);
+				String authenticationPassword = brokerServiceProperties.getProperty(AUTHENTICATION_PASSWORD);
+
+				authentication = new Authentication();
+				authentication.setRequesterId(authenticationUser);
+				authentication.setRequesterPassword(authenticationPassword);
+
+				DataServiceConnector dataServiceConnector = new RestDataServiceConnector(dataServiceUrl);
+				String initRunManagerServiceUrl = null;
+				try {
+					Map<Integer, ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
+
+					for (ServiceRegistrationRecord record : softwareRecords.values()) {
+						SoftwareIdentification softwareId = record.getSoftwareIdentification();
+						if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
+							initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
+						}
+					}
+				} catch (DataServiceException ex) {
+					throw new ExceptionInInitializerError(ex.getMessage());
+				}
+
+				if (initRunManagerServiceUrl == null) {
+					throw new ExceptionInInitializerError("No registered software with type RUN_MANAGER was found");
+				} else {
+					runManagerServiceUrl = initRunManagerServiceUrl;
+				}
+
+			}
+		} catch (IOException ex) {
+			throw new ExceptionInInitializerError(ex.getMessage());
+		}
+	}
+
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
 	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.UnRegisterService")
@@ -138,8 +210,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getConfigurationFileForSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.GetConfigurationFileForSimulationResponse")
 	public GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(
 			@WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
-		return GetConfigurationFileForSimulationMethod
-				.getConfigurationFileForSimulation(runIdentification);
+		return new GetConfigurationFileForSimulationMethod(dataServiceUrl).getConfigurationFile(runIdentification, authentication);
 	}
 
 	@Override
@@ -149,7 +220,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.GetRunStatusResponse")
 	public MethodCallStatus getRunStatus(
 			@WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
-		return GetRunStatusMethod.getRunStatus(runIdentification);
+		return new GetRunStatusMethod(runManagerServiceUrl).getRunStatus(runIdentification, authentication);
 	}
 
 	@Override
@@ -158,7 +229,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/getRegisteredServices")
 	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.GetRegisteredServicesResponse")
 	public List<ServiceRecord> getRegisteredServices() {
-		return GetRegisteredServicesMethod.getRegisteredServices();
+		return new GetRegisteredServicesMethod(dataServiceUrl).getRegisteredServices(authentication);
 	}
 
 	@Override
@@ -182,13 +253,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public RunResult runVisualization(
 			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 
-			RunMethod runMethod = new RunMethodForSimulationAndVisualization(
-					runVisualizationMessage.getAuthentication(),
-					runVisualizationMessage.getVisualizerIdentification(),
-					NO_SIMULATION_GROUP_ID,
-					runVisualizationMessage);
-
-			return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
+		InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(runManagerServiceUrl, apolloServiceQueue);
+		return method.insertAndStartRun(runVisualizationMessage, authentication);
 	}
 
 	@Override
@@ -209,13 +275,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.RunSimulationResponse")
 	public RunResult runSimulation(
 			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-		RunMethod runMethod = new RunMethodForSimulationAndVisualization(
-				runSimulationMessage.getAuthentication(),
-				runSimulationMessage.getSimulatorIdentification(),
-				NO_SIMULATION_GROUP_ID,
-				runSimulationMessage);
 
-		return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
+		InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(runManagerServiceUrl, apolloServiceQueue);
+		return method.insertAndStartRun(runSimulationMessage, authentication);
 	}
 
 	@Override
@@ -225,26 +287,15 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "getVisualizerOutputResourcesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.GetVisualizerOutputResourcesResponse")
 	public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
 			@WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
-		return GetVisualizerOutputResourcesMethod
-				.getVisualizerOutputResources(runIdentification);
+		return new GetVisualizerOutputResourcesMethod(dataServiceUrl).getVisualizerOutputResources(runIdentification, authentication);
 	}
 
 	@Override
 	public RunResult runSimulations(
 			edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
-		RunMethod runMethod = new BatchRunMethod(
-				runSimulationsMessage.getAuthentication(),
-				runSimulationsMessage.getSimulatorIdentification(),
-				NO_SIMULATION_GROUP_ID,
-				runSimulationsMessage);
 
-		return (RunResult) runMethod.stageAndRun().getObjectToReturnFromBroker();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		// db4o.close();
+		InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(runManagerServiceUrl, apolloServiceQueue);
+		return method.insertAndStartRun(runSimulationsMessage, authentication);
 	}
 
 	@Override
@@ -254,6 +305,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return null;
 	}
 
+	// LIBRARY METHODS
 	@Override
 	public GetCommentsResult getCommentsForLibraryItem(
 			GetCommentsMessage getCommentsForLibraryItemMessage) {
@@ -343,46 +395,46 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
+	public AddLibraryItemContainerResult addLibraryItemContainer(
+			AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
+		return AddLibraryItemContainerMethod
+				.addLibraryItemContainer(addLibraryItemContainerMessage);
+
+	}
+
+	// END LIBRARY METHODS
+	@Override
 	public ListOutputFilesForSoftwareResult listOutputFilesForSoftware(
 			ListOutputFilesForSoftwareMessage listOutputFilesForSoftwareMessage) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public GetOutputFilesURLAsZipResult getOutputFilesURLAsZip(
-			DataRetrievalRequestMessage DataRetrievalRequestMessage) {
-		RunMethod method = new RunMethodForDataService(
-				DataRetrievalRequestMessage.getAuthentication(),
-				DataRetrievalRequestMessage);
-		return (GetOutputFilesURLAsZipResult) method.stageAndRun()
-				.getObjectToReturnFromBroker();
-	}
-
-	@Override
-	public GetOutputFilesURLsResult getOutputFilesURLs(
-			GetOutputFilesURLsMessage getOutputFilesURLsMessage) {
-		RunMethod method = new RunMethodForDataService(
-				getOutputFilesURLsMessage.getAuthentication(),
-				getOutputFilesURLsMessage);
-		return (GetOutputFilesURLsResult) method.stageAndRun().getObjectToReturnFromBroker();
-	}
-
-	@Override
 	public GetAllOutputFilesURLAsZipResult getAllOutputFilesURLAsZip(
 			GetAllOutputFilesURLAsZipMessage getAllOutputFilesURLAsZipMessage) {
-		RunMethod method = new RunMethodForDataService(
-				getAllOutputFilesURLAsZipMessage.getAuthentication(),
-				getAllOutputFilesURLAsZipMessage);
-		return (GetAllOutputFilesURLAsZipResult) method.stageAndRun()
-				.getObjectToReturnFromBroker();
+
+		DataRetrievalRequestMessage dataRetrievalRequestMessage = new DataRetrievalRequestMessage();
+		dataRetrievalRequestMessage.getOptionalFileNamesToMatch().addAll(getAllOutputFilesURLAsZipMessage.getFileNames());
+		dataRetrievalRequestMessage.setAuthentication(getAllOutputFilesURLAsZipMessage.getAuthentication());
+		dataRetrievalRequestMessage.setSoftwareIdentification(getAllOutputFilesURLAsZipMessage.getSoftwareIdentification());
+		dataRetrievalRequestMessage.setRunId(getAllOutputFilesURLAsZipMessage.getRunId());
+		
+		InsertAndStartDataServiceJobMethod method = new InsertAndStartDataServiceJobMethod(runManagerServiceUrl, apolloServiceQueue);
+		RunResult runResult = method.insertAndStartRun(dataRetrievalRequestMessage, authentication);
+		GetAllOutputFilesURLAsZipResult result = new GetAllOutputFilesURLAsZipResult();
+		result.setMethodCallStatus(runResult.getMethodCallStatus());
+		result.setRequestIdentification(runResult.getRunId());
+		return result;
 	}
 
 	@Override
-	public AddLibraryItemContainerResult addLibraryItemContainer(
-			AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
-		return AddLibraryItemContainerMethod
-				.addLibraryItemContainer(addLibraryItemContainerMessage);
+	public GetOutputFilesURLAsZipResult getOutputFilesURLAsZip(GetOutputFilesURLAsZipMessage getOutputFilesURLAsZipMessage) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 
+	@Override
+	public GetOutputFilesURLsResult getOutputFilesURLs(GetOutputFilesURLsMessage getOutputFilesURLsMessage) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }
