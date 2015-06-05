@@ -6,6 +6,7 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>data-service-rest-connector</artifactId>
+    <name>Data Service Rest Connector</name>
     <packaging>jar</packaging>
 
     <licenses>

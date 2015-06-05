@@ -5,8 +5,9 @@
         <artifactId>apollo-ws</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>soap-job-running-service-connector</artifactId>
+    <artifactId>job-running-service-soap-connector</artifactId>
     <packaging>jar</packaging>
+    <name>Job Running Service SOAP Connector</name>
 
     <licenses>
         <license>

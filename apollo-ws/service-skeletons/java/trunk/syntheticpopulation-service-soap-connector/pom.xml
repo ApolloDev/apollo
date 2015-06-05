@@ -5,7 +5,8 @@
         <artifactId>apollo-ws</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>syntheticpopulation-service-soap-connector</artifactId>
+    <artifactId>synthetic-population-service-soap-connector</artifactId>
+    <name>Synthetic Population Service SOAP Connector</name>
     <packaging>jar</packaging>
 
     <licenses>

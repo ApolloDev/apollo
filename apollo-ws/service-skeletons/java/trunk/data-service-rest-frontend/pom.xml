@@ -8,7 +8,7 @@
     <version>3.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>data-service-rest-frontend</name>
+    <name>Data Service Rest Front-end</name>
     <url>http://maven.apache.org</url>
 
     <properties>

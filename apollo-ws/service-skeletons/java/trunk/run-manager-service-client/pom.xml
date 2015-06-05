@@ -7,10 +7,11 @@
     <artifactId>apollo-ws</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
+
   <groupId>edu.pitt.apollo</groupId>
   <artifactId>run-manager-service-client</artifactId>
   <version>3.0.0-SNAPSHOT</version>
-  <name>run-manager-service-client</name>
+  <name>Run Manager Service Client</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

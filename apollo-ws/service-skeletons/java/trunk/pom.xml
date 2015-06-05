@@ -58,8 +58,8 @@
         <module>db-common</module>
         <module>services-common</module>
 
-        <module>soap-job-running-service-connector</module>
-        <module>syntheticpopulation-service-soap-connector</module>
+        <module>job-running-service-soap-connector</module>
+        <module>synthetic-population-service-soap-connector</module>
         <module>translator-service-soap-connector</module>
         <module>visualizer-service-soap-connector</module>
         <module>data-service-rest-connector</module>
