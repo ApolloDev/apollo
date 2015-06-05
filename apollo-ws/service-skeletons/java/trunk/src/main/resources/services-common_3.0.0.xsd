@@ -21,6 +21,7 @@
 			<enumeration value="data" />
 			<enumeration value="broker" />
             <enumeration value="endUserApplication" />
+            <enumeration value="runManager" />
 		</restriction>
 	</simpleType>
         

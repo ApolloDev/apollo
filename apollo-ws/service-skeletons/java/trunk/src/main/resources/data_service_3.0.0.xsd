@@ -467,5 +467,56 @@
 		</sequence>
 	</complexType>
 
+		<complexType name="GetOutputFilesURLsMessage">
+		<sequence>
+			<element name="authentication" type="common:Authentication" />
+			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
+
+		</sequence>
+	</complexType>
+	
+	<complexType name="GetOutputFilesURLsResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="requestIdentification" type="common:RunIdentification"></element>
+			<element name="urlsForRunIdsAndFiles" type="tns:URLForFileAndRunId" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="GetOutputFilesURLAsZipMessage">
+		<sequence>
+			<element name="authentication" type="common:Authentication" />
+			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="GetOutputFilesURLAsZipResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="requestIdentification" type="common:RunIdentification"></element>
+			<element name="url" type="anyURI"></element>
+		</sequence>
+	</complexType>
+    
+        <complexType name="GetAllOutputFilesURLAsZipMessage">
+		<sequence>
+			<element name="authentication" type="common:Authentication" />
+			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="runId" type="common:RunIdentification" minOccurs="1" maxOccurs="1"></element>
+            <element name="fileNames" type="token" minOccurs="0"
+				maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+    
+    <complexType name="GetAllOutputFilesURLAsZipResult">
+		<sequence>
+			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
+			<element name="requestIdentification" type="common:RunIdentification"></element>
+			<element name="url" type="anyURI"></element>
+		</sequence>
+	</complexType>
+
 
 </schema>
