@@ -8,6 +8,7 @@ import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.RunSimulation;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
@@ -71,6 +72,7 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 
     @Override
     public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+
         DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
         try {
             SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);

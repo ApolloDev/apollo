@@ -17,6 +17,7 @@ import java.util.Map;
 import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.Md5Utils;
 import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -1498,7 +1499,9 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
             List<BigInteger> runIds = new ArrayList<>();
             runIds.add(runId);
-            addRunIdsToSimulationGroup(simulationGroupId, runIds);
+            if (!(runMessage instanceof RunSimulationsMessage)) {
+                addRunIdsToSimulationGroup(simulationGroupId, runIds);
+            }
 
             // ALSO NEED TO ADD serialized runSimulationMessage(JSON) to
             // run_data_content table...

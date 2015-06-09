@@ -18,6 +18,7 @@ import edu.pitt.apollo.types.v3_0_0.ParameterValue;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class StageMethod {
 
             BigInteger runId = dataServiceDao.insertRun(message);
             if (parentRunId != null) {
-                dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[] {parentRunId}), authentication);
+                dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[]{parentRunId}), authentication);
             }
 
             //BigInteger simulationGroupId = runIdSimulationGroupId[1];
@@ -95,9 +96,11 @@ public class StageMethod {
             }
 
 
-            // run is loaded, now call translator
-            TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
-            translatorDao.translateRun(runId);
+            if (!(message instanceof RunSimulationsMessage)) {
+                // run is loaded, now call translator
+                TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
+                translatorDao.translateRun(runId);
+            }
 
             while (!dataServiceDao.getRunStatus(runId, authentication).getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
                 try {
@@ -118,8 +121,14 @@ public class StageMethod {
                     // it's okay if the sleep timer is interrupted
                 }
             }
+
             // run is now translated
+            if (message instanceof RunSimulationsMessage) {
+                BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
+            }
             return runId;
+        } catch (MalformedURLException ex) {
+            throw new RunManagementException("Malformed URL exception staging run : " + ex.getMessage());
         } catch (DataServiceException ex) {
             throw new RunManagementException("Database exception staging run: " + ex.getMessage());
         } catch (TranslatorServiceException ex) {

@@ -28,8 +28,9 @@ import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class RunSimulationsThread extends RunApolloServiceThread {
-
+public class RunSimulationsThread
+{ //extends RunApolloServiceThread {
+/*
     public static final Random rng = new Random(System.currentTimeMillis());
     private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     private static final SoftwareIdentification brokerServiceSoftwareIdentification;
@@ -92,29 +93,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
             }
         }
         return f;
-    }
-
-    public static String downloadUrlToFile(URL configFileUrl)
-            throws BatchException, IOException {
-        ReadableByteChannel rbc;
-
-        try {
-            rbc = Channels.newChannel(configFileUrl.openStream());
-
-            File storageFile = getTemporaryFile();
-            if (storageFile != null) {
-                FileOutputStream fos = new FileOutputStream(storageFile);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                fos.close();
-                return storageFile.getAbsolutePath();
-            } else {
-                throw new BatchException(
-                        "Unable to create temporary storage file for the batch processing.");
-            }
-        } catch (IOException e) {
-            throw new IOException("Error downloading URL:" + configFileUrl
-                    + ".  Error was: " + e.getMessage(), e);
-        }
     }
 
     public boolean queueAndTranslateRuns() {
@@ -301,12 +279,6 @@ public class RunSimulationsThread extends RunApolloServiceThread {
 //        message.getAuthentication().setRequesterPassword("");
 //    }
 
-    public class BooleanRef {
-        boolean value;
-    }
-
-    public class CounterRef {
-        int count = 0;
-    }
+*/
 
 }

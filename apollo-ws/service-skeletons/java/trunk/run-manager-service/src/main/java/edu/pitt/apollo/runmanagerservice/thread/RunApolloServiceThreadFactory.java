@@ -24,7 +24,8 @@ public class RunApolloServiceThreadFactory {
 			return new RunSimulationThread(runId, softwareId, authentication);
 		} else if (message instanceof RunSimulationsMessage) {
 			softwareId = ((RunSimulationsMessage) message).getSimulatorIdentification();
-			return new RunSimulationsThread((RunSimulationsMessage) message, softwareId, runId, authentication);
+			return null;
+			//return new RunSimulationsThread((RunSimulationsMessage) message, softwareId, runId, authentication);
 		} else if (message instanceof RunVisualizationMessage) {
 			softwareId = ((RunVisualizationMessage) message).getVisualizerIdentification();
 			return new RunVisualizationThread(runId, softwareId, authentication);

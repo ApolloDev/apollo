@@ -7,6 +7,7 @@ import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
+import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
@@ -37,21 +38,19 @@ public class StageInDbWorkerThread implements Runnable {
     private final SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder;
     private final XMLGregorianCalendar scenarioDate;
     private final BigInteger batchRunId;
-    private final BigInteger parentRunId;
     private final SoftwareIdentification simulatorIdentification;
-    private final RunSimulationsThread.BooleanRef errorRef;
-    private final RunSimulationsThread.CounterRef counterRef;
+    private final BatchStageMethod.BooleanRef errorRef;
+    private final BatchStageMethod.CounterRef counterRef;
     private final String line;
     JsonUtils jsonUtils = new JsonUtils();
 
-    public StageInDbWorkerThread(BigInteger batchRunId, BigInteger parentRunId, SoftwareIdentification simulatorIdentification, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, RunSimulationsThread.BooleanRef errorRef, RunSimulationsThread.CounterRef counterRef, Authentication authentication) throws DataServiceException {
+    public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef, Authentication authentication) throws DataServiceException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
         this.scenarioDate = scenarioDate;
         this.batchRunId = batchRunId;
-        this.parentRunId = parentRunId;
-        this.simulatorIdentification = simulatorIdentification;
+        this.simulatorIdentification = message.getSimulatorIdentification();
         this.errorRef = errorRef;
         this.counterRef = counterRef;
     }
@@ -170,7 +169,7 @@ public class StageInDbWorkerThread implements Runnable {
                 }
                 StageMethod stageMethod = null;
                 try {
-                    stageMethod = new StageMethod(currentRunSimulationMessage, parentRunId);
+                    stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
                     BigInteger runId = stageMethod.stage();
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
