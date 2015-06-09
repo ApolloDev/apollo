@@ -33,7 +33,10 @@ import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -159,4 +162,11 @@ public class RestServiceUtils {
 		return getObjectsFromResponseBody(response, clazz);
 	}
 
+	public void makeDeleteRequestAndCheckResponse(String uri) throws RestServiceException {
+		
+		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, HttpEntity.EMPTY, Response.class);
+		Response response = responseEntity.getBody();
+		checkResponseCode(response);
+	}
+	
 }

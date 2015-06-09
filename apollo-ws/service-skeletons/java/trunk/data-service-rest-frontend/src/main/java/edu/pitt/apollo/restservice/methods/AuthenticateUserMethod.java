@@ -9,6 +9,7 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import org.springframework.http.HttpStatus;
 
@@ -16,17 +17,19 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class AddUserMethod extends BaseDataServiceAccessorMethod {
+public class AuthenticateUserMethod extends BaseDataServiceAccessorMethod {
 
-	public AddUserMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+	public AuthenticateUserMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
 		super(username, password, serializationFormat);
 	}
 
-	public String addUser(String usernameToAdd, String passwordToAdd, String userEmail) throws SerializationException {
-
+	public String authenticateUser(String username, String password) throws SerializationException {
+		Authentication authenticationForUser = new Authentication();
+		authenticationForUser.setRequesterId(username);
+		authenticationForUser.setRequesterPassword(password);
+		
 		try {
-			impl.addUser(usernameToAdd, passwordToAdd, userEmail, authentication);
-
+			impl.authenticateUser(authenticationForUser);
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 		} catch (DataServiceException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

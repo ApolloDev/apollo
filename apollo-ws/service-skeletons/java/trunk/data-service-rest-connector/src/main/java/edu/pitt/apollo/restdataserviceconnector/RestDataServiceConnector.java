@@ -245,23 +245,27 @@ public class RestDataServiceConnector extends DataServiceConnector {
 
 	@Override
 	public void deleteUser(String username, Authentication authentication) throws DataServiceException {
-		// this needs to be thought out some more in the rest data service
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + "user/" + username + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			restServiceUtils.makeDeleteRequestAndCheckResponse(uri);
+		} catch (RestServiceException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
-		
+
 		String uri = "user/" + username + "/roles?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-		
-		AddRoleToUserMessage message= new AddRoleToUserMessage();
+
+		AddRoleToUserMessage message = new AddRoleToUserMessage();
 		message.setAuthentication(authentication);
 		message.setCanRequestPrivileged(canRequestPrivileged);
 		message.setCanRun(canRunSoftware);
 		message.setSoftwareIdentification(softwareIdentification);
 		message.setUserName(uri);
 		message.setUserPassword(userPassword);
-		
+
 		try {
 			restServiceUtils.makePostRequestAndCheckResponse(uri, message);
 		} catch (RestServiceException ex) {
@@ -282,12 +286,27 @@ public class RestDataServiceConnector extends DataServiceConnector {
 
 	@Override
 	public void authenticateUser(Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + "user/" + authentication.getRequesterId() + "/authenticate";
+		uri += "?password=" + authentication.getRequesterPassword();
+		try {
+			restServiceUtils.makeGetRequestAndCheckResponse(uri);
+		} catch (RestServiceException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public void authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + "users/" + authentication.getRequesterId() + "/authorize?password=" + authentication.getRequesterPassword();
+		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
+				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType()
+				+ "&requestToRunSoftware=" + requestToRunSoftware;
+
+		try {
+			restServiceUtils.makeGetRequestAndCheckResponse(uri);
+		} catch (RestServiceException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
