@@ -190,7 +190,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getListOfRegisteredSoftwareRecords(authentication);

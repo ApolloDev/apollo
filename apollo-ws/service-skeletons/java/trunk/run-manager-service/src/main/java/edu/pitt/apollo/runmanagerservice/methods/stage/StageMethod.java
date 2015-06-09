@@ -19,6 +19,7 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -136,8 +137,8 @@ public class StageMethod {
 
     private String getTranslatorServiceUrl(DataServiceAccessor dataServiceDao, Authentication authentication) throws DataServiceException {
 
-        Map<Integer, ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
-        for (ServiceRegistrationRecord record : software.values()) {
+        List<ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
+        for (ServiceRegistrationRecord record : software) {
             if (record.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.TRANSLATOR)) {
                 return record.getUrl();
             }

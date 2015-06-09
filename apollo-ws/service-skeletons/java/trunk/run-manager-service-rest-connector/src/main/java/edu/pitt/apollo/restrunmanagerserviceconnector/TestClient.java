@@ -17,8 +17,6 @@ package edu.pitt.apollo.restrunmanagerserviceconnector;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.math.BigInteger;
 import java.util.List;
 

@@ -128,7 +128,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 //	}
 	
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		return softwareRegistryInterface.getListOfRegisteredSoftwareRecords(authentication);
 	}
 	

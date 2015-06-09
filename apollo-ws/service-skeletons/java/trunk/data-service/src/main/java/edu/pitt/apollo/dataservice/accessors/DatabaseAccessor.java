@@ -350,10 +350,10 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 //	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		try {
 			authenticateUser(authentication);
-			return dbUtils.getRegisteredSoftware();
+			return new ArrayList(dbUtils.getRegisteredSoftware().values());
 		} catch (ApolloDatabaseException ade) {
 			throw new DataServiceException(ade.getMessage());
 		}

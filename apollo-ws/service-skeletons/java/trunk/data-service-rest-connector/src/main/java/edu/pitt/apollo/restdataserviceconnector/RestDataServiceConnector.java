@@ -2,19 +2,15 @@ package edu.pitt.apollo.restdataserviceconnector;
 
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
+import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
 
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -22,13 +18,22 @@ import org.springframework.web.client.RestTemplate;
  */
 public class RestDataServiceConnector extends DataServiceConnector {
 
+	private final String restServiceUrl;
+	private final RestServiceUtils restServiceUtils = new RestServiceUtils();
+
 	public RestDataServiceConnector(String url) {
 		super(url);
+		restServiceUrl = serviceUrl + "/ws/";
 	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+		String uri = restServiceUrl + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRegistrationRecord.class);
+		} catch (RestServiceException ex) {
+			throw new DataServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
@@ -74,23 +79,9 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		String uri = serviceUrl + "/ws/run/" + runId + "/status";
-		RestTemplate template = new RestTemplate();
-		Response response = template.getForObject(uri, Response.class);
-
-		ResponseMeta meta = response.getResponseMeta();
-		BigInteger status = meta.getStatus();
-		if (status.intValue() != HttpStatus.OK.value()) {
-			// there was an error
-			throw new RunManagementException("The response code returned from the service was "
-					+ status + ". The message is: " + meta.getStatusMessage());
-		}
-
-		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 		try {
-			Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
-			MethodCallStatus runStatus = deserializer.getObjectFromMessage(response.getResponseBody().get(0), MethodCallStatus.class);
-			return runStatus;
-		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
 	}

@@ -15,7 +15,6 @@ import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -31,11 +30,11 @@ public class GetRegisteredSoftwareMethod extends BaseDataServiceAccessorMethod {
 	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			Map<Integer, ServiceRegistrationRecord> mapOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
+			List<ServiceRegistrationRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
 
 			List<String> serializedServiceRecords = new ArrayList<>();
 
-			for (ServiceRegistrationRecord record : mapOfRecords.values()) {
+			for (ServiceRegistrationRecord record : listOfRecords) {
 				String serializedRecord = serializer.serializeObject(record);
 				serializedServiceRecords.add(serializedRecord);
 			}

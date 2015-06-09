@@ -142,9 +142,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 				DataServiceConnector dataServiceConnector = new RestDataServiceConnector(dataServiceUrl);
 				String initRunManagerServiceUrl = null;
 				try {
-					Map<Integer, ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
+					List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
 
-					for (ServiceRegistrationRecord record : softwareRecords.values()) {
+					for (ServiceRegistrationRecord record : softwareRecords) {
 						SoftwareIdentification softwareId = record.getSoftwareIdentification();
 						if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
 							initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);

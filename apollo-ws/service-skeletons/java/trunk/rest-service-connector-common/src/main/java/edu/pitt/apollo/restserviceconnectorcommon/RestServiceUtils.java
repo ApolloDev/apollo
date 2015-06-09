@@ -34,6 +34,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -41,11 +42,17 @@ import org.springframework.http.HttpStatus;
  */
 public class RestServiceUtils {
 
+	RestTemplate template = new RestTemplate();
+
+	public RestServiceUtils() {
+
+	}
+
 	public static String getUsernameAndPasswordQueryParams(Authentication authentication) {
 		return "username=" + authentication.getRequesterId() + "&password=" + authentication.getRequesterPassword();
 	}
 
-	public static void checkResponseCode(Response response) throws RestServiceException {
+	public void checkResponseCode(Response response) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
 		BigInteger status = meta.getStatus();
 		if (status.intValue() != HttpStatus.OK.value()) {
@@ -55,7 +62,7 @@ public class RestServiceUtils {
 		}
 	}
 
-	public static <T> T getObjectFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
+	public <T> T getObjectFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
 		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 		try {
@@ -67,7 +74,7 @@ public class RestServiceUtils {
 		}
 	}
 
-	public static <T> List<T> getObjectsFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
+	public <T> List<T> getObjectsFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
 		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 		try {
@@ -86,7 +93,7 @@ public class RestServiceUtils {
 		}
 	}
 
-	public static Request getRequestObjectWithSerializedBody(Object bodyObject) throws RestServiceException {
+	public Request getRequestObjectWithSerializedBody(Object bodyObject) throws RestServiceException {
 		Request request = new Request();
 		RequestMeta requestMeta = new RequestMeta();
 		requestMeta.setIsBodySerialized(true);
@@ -101,8 +108,55 @@ public class RestServiceUtils {
 		} catch (SerializationException | UnsupportedSerializationFormatException ex) {
 			throw new RestServiceException(ex.getMessage());
 		}
-		
+
 		return request;
+	}
+
+	// helper methods
+	public void checkResponse(Response response) throws RestServiceException {
+		checkResponseCode(response);
+	}
+
+	public void makeGetRequestAndCheckResponse(String uri) throws RestServiceException {
+		Response response = template.getForObject(uri, Response.class);
+		checkResponse(response);
+	}
+
+	public void makePostRequestAndCheckResponse(String uri, Object object) throws RestServiceException {
+		Response response = template.postForObject(uri, object, Response.class);
+		checkResponse(response);
+	}
+
+	public <T> T makeGetRequestCheckResponseAndGetObject(String uri, Class<T> clazz) throws RestServiceException {
+		Response response = template.getForObject(uri, Response.class);
+		return checkResponseAndGetObject(response, clazz);
+	}
+
+	public <T> List<T> makeGetRequestCheckResponseAndGetObjects(String uri, Class<T> clazz) throws RestServiceException {
+		Response response = template.getForObject(uri, Response.class);
+		return checkResponseAndGetObjects(response, clazz);
+	}
+
+	public <T> T makePostRequestCheckResponseAndGetObject(String uri, Object object, Class<T> clazz) throws RestServiceException {
+		Request request = getRequestObjectWithSerializedBody(object);
+		Response response = template.postForObject(uri, request, Response.class);
+		return checkResponseAndGetObject(response, clazz);
+	}
+
+	public <T> List<T> makePostRequestCheckResponseAndGetObjects(String uri, Object object, Class<T> clazz) throws RestServiceException {
+		Request request = getRequestObjectWithSerializedBody(object);
+		Response response = template.postForObject(uri, request, Response.class);
+		return checkResponseAndGetObjects(response, clazz);
+	}
+
+	public <T> T checkResponseAndGetObject(Response response, Class<T> clazz) throws RestServiceException {
+		checkResponseCode(response);
+		return getObjectFromResponseBody(response, clazz);
+	}
+
+	public <T> List<T> checkResponseAndGetObjects(Response response, Class<T> clazz) throws RestServiceException {
+		checkResponseCode(response);
+		return getObjectsFromResponseBody(response, clazz);
 	}
 
 }
