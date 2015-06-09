@@ -164,6 +164,7 @@ public class BestRestTestClient {
 
     public static void main(String[] args) throws IOException, DataServiceException, SimulatorServiceException {
         RunSimulationMessage runSimulationMessage = BestRestTestClient.getRunSimulationMessage();
+        logger.debug("Hello!");
         RunSimulationsMessage runSimulationsMessage = BestRestTestClient.getRunSimulationsMessage(100);
         run(runSimulationsMessage);
     }

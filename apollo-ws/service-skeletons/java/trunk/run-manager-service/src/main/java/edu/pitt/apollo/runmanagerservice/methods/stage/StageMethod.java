@@ -16,6 +16,8 @@ import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_0_0.ParameterValue;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 public class StageMethod {
 
+    static Logger logger = LoggerFactory.getLogger(StageMethod.class);
     private static final long STATUS_CHECK_INTERVAL_TIME_IN_MILLIS = 5000;
     private final Object message;
 
@@ -76,14 +79,16 @@ public class StageMethod {
             MethodCallStatus runStatus = dataServiceDao.getRunStatus(runId, authentication);
             MethodCallStatusEnum statusEnum = runStatus.getStatus();
 
-            long statusStartTime = System.currentTimeMillis();
-            while (!statusEnum.equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE)) {
+            MethodCallStatus methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
+            while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE) && (!statusEnum.equals(MethodCallStatusEnum.TRANSLATION_COMPLETED))) {
                 try {
                     switch (statusEnum) {
                         case FAILED:
                             throw new RunManagementException("Run " + runId + " FAILED with message " + runStatus.getMessage());
                         default:
+                            logger.debug("Status for run "+ runId + " was: (" + methodCallStatus.getMessage() + ") " + methodCallStatus.getStatus());
                             Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);
+                            methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
                             break;
                     }
                 } catch (InterruptedException ex) {
@@ -102,8 +107,8 @@ public class StageMethod {
                 TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
                 translatorDao.translateRun(runId);
 
-
-                while (!dataServiceDao.getRunStatus(runId, authentication).getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+                methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
+                while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
                     try {
                         switch (statusEnum) {
                             case FAILED:
@@ -115,7 +120,9 @@ public class StageMethod {
                             case UNAUTHORIZED:
                                 break;
                             default:
+                                logger.debug("Status was: (" + methodCallStatus.getMessage() + ") " + methodCallStatus.getStatus());
                                 Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);
+                                methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
                                 break;
                         }
                     } catch (InterruptedException ex) {

@@ -31,25 +31,11 @@ import java.util.concurrent.Executors;
  */
 public class BatchStageMethod {
 
-    public class BooleanRef {
-        public boolean value;
-    }
-
-    public class CounterRef {
-        public int count = 0;
-    }
-
-    private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     public static final Random rng = new Random(System.currentTimeMillis());
-    static Logger logger = org.slf4j.LoggerFactory.getLogger(BatchStageMethod.class);
-    private RunSimulationsMessage runSimulationsMessage;
-    private URL configFileUrl = null;
-    private Authentication authentication;
-    BigInteger batchRunId = null;
-    DataServiceAccessor dataServiceAccessor =  null;
-
+    private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     private static final SoftwareIdentification brokerServiceSoftwareIdentification;
     private static final SoftwareIdentification endUserSoftwareIdentifcation;
+    static Logger logger = org.slf4j.LoggerFactory.getLogger(BatchStageMethod.class);
 
     static {
         brokerServiceSoftwareIdentification = new SoftwareIdentification();
@@ -65,7 +51,11 @@ public class BatchStageMethod {
         endUserSoftwareIdentifcation.setSoftwareVersion("any");
     }
 
-
+    BigInteger batchRunId = null;
+    DataServiceAccessor dataServiceAccessor = null;
+    private RunSimulationsMessage runSimulationsMessage;
+    private URL configFileUrl = null;
+    private Authentication authentication;
     public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage, Authentication authentication) throws MalformedURLException {
         this.dataServiceAccessor = new DataServiceAccessor();
         this.batchRunId = batchRunId;
@@ -104,16 +94,6 @@ public class BatchStageMethod {
         return f;
     }
 
-    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) {
-        try {
-            dataServiceAccessor.associateContentWithRunId(batchRunId, sb.toString(), brokerServiceSoftwareIdentification,
-                    endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataFormatEnum.TEXT, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
-        } catch (DataServiceException e) {
-            ErrorUtils.reportError("Unable to create instance of ApolloDbUtils to call addBatchInputsWithRunIdsFileToDatabase", batchRunId);
-        }
-    }
-
-
     public static String downloadUrlToFile(URL configFileUrl)
             throws BatchException, IOException {
         ReadableByteChannel rbc;
@@ -137,6 +117,13 @@ public class BatchStageMethod {
         }
     }
 
+    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) throws DataServiceException {
+
+        dataServiceAccessor.associateContentWithRunId(batchRunId, sb.toString(), brokerServiceSoftwareIdentification,
+                endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataFormatEnum.TEXT, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
+
+    }
+
     public boolean stage() {
         String filename = null;
 
@@ -145,7 +132,7 @@ public class BatchStageMethod {
             try {
                 filename = downloadUrlToFile(configFileUrl);
             } catch (BatchException | IOException ex) {
-                ErrorUtils.reportError("Error downloading batch configuration file, error was: " + ex.getMessage(), batchRunId);
+                ErrorUtils.reportError(batchRunId, "Error downloading batch configuration file, error was: " + ex.getMessage(), authentication);
                 return false;
             }
 
@@ -205,8 +192,8 @@ public class BatchStageMethod {
                 MethodCallStatus status = dataServiceAccessor.getRunStatus(batchRunId, authentication);
                 System.out.println("TEST COMPLETE!");
                 if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-                    ErrorUtils.reportError("Error staging runs in database, error was " + status.getMessage() + " for runId",
-                            batchRunId);
+                    ErrorUtils.reportError(batchRunId, "Error staging runs in database, error was " + status.getMessage() + " for runId",
+                            authentication);
                     return false;
                 }
 
@@ -215,7 +202,7 @@ public class BatchStageMethod {
 
                 return false;
             } catch (DataServiceException e) {
-                ErrorUtils.reportError("DB Error queuing and translating runs, error was " + e.getMessage(), batchRunId);
+                ErrorUtils.reportError(batchRunId, "DB Error queuing and translating runs, error was " + e.getMessage(), authentication);
             } finally {
                 br.close();
             }
@@ -226,6 +213,14 @@ public class BatchStageMethod {
             return false;
         }
 
+    }
+
+    public class BooleanRef {
+        public boolean value;
+    }
+
+    public class CounterRef {
+        public int count = 0;
     }
 
 }
