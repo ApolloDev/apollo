@@ -15,7 +15,7 @@ public interface UserManagementInterface {
 
 	public void deleteUser(String username, Authentication authentication) throws DataServiceException;
 
-	public void addUserRole(String username, SoftwareIdentification softwareIdentification,
+	public void addUserRole(String username, String userPasssword, SoftwareIdentification softwareIdentification,
 			boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException;
 
 	public void addUser(String userId, String userPassword, String userEmail, Authentication authentication) throws DataServiceException;

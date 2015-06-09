@@ -376,10 +376,10 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public void addUserRole(String username, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
 		authenticateUser(authentication);
 		try {
-			dbUtils.addUserRole(username, username, softwareIdentification, canRunSoftware, canRequestPrivileged);
+			dbUtils.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged);
 		} catch (ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}

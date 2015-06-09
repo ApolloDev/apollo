@@ -71,9 +71,9 @@ public class UsersController {
 	public @ResponseBody
 	String deleteUserFromUseresCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
-			@ApiParam(value = "User name to add", required = true) @RequestParam("userNameToAdd") String uernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "User name to delete", required = true) @RequestParam("userNameToAdd") String usernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return new DeleteUserMethod(username, password, SerializationFormat.XML).deleteUser(uernameToDelete);
+		return new DeleteUserMethod(username, password, SerializationFormat.XML).deleteUser(usernameToDelete);
 	}
 
 

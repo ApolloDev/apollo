@@ -19,7 +19,7 @@ import java.math.BigInteger;
  */
 @Controller
 @RequestMapping("/ws")
-public class FileController {
+public class ContentController {
 
 	/*--Methods for the file resource of a run--*/
 	@GET
@@ -27,13 +27,13 @@ public class FileController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
-	@RequestMapping(value = "/file/{fileId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	@RequestMapping(value = "/content/{contentId}", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "File ID.", required = true) @PathVariable("fileId") BigInteger fileId,
+	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "File ID.", required = true) @PathVariable("contentId") BigInteger contentId,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return new GetContentByIdMethod(username, password, SerializationFormat.XML).getContent(fileId);
+		return new GetContentByIdMethod(username, password, SerializationFormat.XML).getContent(contentId);
 	}
 
 	/* @DELETE

@@ -200,10 +200,10 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public void addUserRole(String username, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
-			dba.addUserRole(username, softwareIdentification, canRunSoftware, canRequestPrivileged, authentication);
+			dba.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}

@@ -256,7 +256,7 @@
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 		</sequence>
 	</complexType>
-	<complexType name="AddUserRoleMessage">
+	<!--<complexType name="AddUserRoleMessage">
 		<sequence>
 			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
@@ -270,7 +270,7 @@
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 		</sequence>
-	</complexType>
+	</complexType>-->
 	<complexType name="AddRoleMessage">
 		<sequence>
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
@@ -283,6 +283,7 @@
 	<complexType name="AddRoleToUserMessage">
 		<sequence>
 			<element name="userName" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>

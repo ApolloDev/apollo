@@ -52,12 +52,13 @@ public class AddRoleToUserMethod extends BaseDataServiceAccessorMethod {
 				AddRoleToUserMessage message = (AddRoleToUserMessage) object;
 
 				String usernameForRole = message.getUserName();
+				String userPasswordForRole = message.getUserPassword();
 				SoftwareIdentification softwareId = message.getSoftwareIdentification();
 				boolean canRunSoftware = message.isCanRun();
 				boolean canRequestPrivileged = message.isCanRequestPrivileged();
 
 				try {
-					impl.addUserRole(usernameForRole, softwareId, canRunSoftware, canRequestPrivileged, authentication);
+					impl.addUserRole(usernameForRole, userPasswordForRole, softwareId, canRunSoftware, canRequestPrivileged, authentication);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 				} catch (DataServiceException ex) {

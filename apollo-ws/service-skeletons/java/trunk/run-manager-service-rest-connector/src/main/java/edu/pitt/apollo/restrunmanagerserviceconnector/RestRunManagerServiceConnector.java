@@ -16,18 +16,18 @@ import java.util.List;
  */
 public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
-	private final String restServiceUrl;
+	private final String restServiceUri;
 	private final RestServiceUtils restServiceUtils = new RestServiceUtils();
 
 	public RestRunManagerServiceConnector(String url) {
 		super(url);
-		restServiceUrl = serviceUrl + "/ws/";
+		restServiceUri = serviceUrl + "/ws/";
 	}
 
 	// implementation methods
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, BigInteger.class);
 		} catch (RestServiceException ex) {
@@ -38,7 +38,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 
-		String uri = restServiceUrl + "run/" + runId + "/softwareIdentification?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/softwareIdentification?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, SoftwareIdentification.class);
 		} catch (RestServiceException ex) {
@@ -48,8 +48,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public BigInteger insertRun(RunMessage message) throws RunManagementException {
-		String uri = restServiceUrl + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
-
+		String uri = restServiceUri + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
 		try {
 			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, BigInteger.class);
 		} catch (RestServiceException ex) {
@@ -59,7 +58,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		uri += "&methodCallStatusEnum=" + statusEnumToSet + "&statusMessage=" + messageToSet;
 		try {
 			restServiceUtils.makeGetRequestAndCheckResponse(uri);
@@ -82,7 +81,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "/lastServiceToBeCalled?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/lastServiceToBeCalled?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, SoftwareIdentification.class);
 		} catch (RestServiceException ex) {
@@ -92,7 +91,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 
 		StringBuilder listOfRunIds = new StringBuilder();
 		for (BigInteger id : runIds) {
@@ -109,7 +108,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
 		} catch (RestServiceException ex) {
@@ -119,7 +118,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUrl + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
 		} catch (RestServiceException ex) {
