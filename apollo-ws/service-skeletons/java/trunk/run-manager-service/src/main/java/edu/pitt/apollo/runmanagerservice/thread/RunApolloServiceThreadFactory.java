@@ -19,7 +19,7 @@ public class RunApolloServiceThreadFactory {
 	public static RunApolloServiceThread getRunApolloServiceThread(Object message, BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException {
 
 		SoftwareIdentification softwareId;
-		if (message instanceof RunSimulationMessage) {
+		if ((message instanceof RunSimulationMessage) || (message instanceof RunSimulationsMessage)) {
 			softwareId = ((RunSimulationMessage) message).getSimulatorIdentification();
 			return new RunSimulationThread(runId, softwareId, authentication);
 		} else if (message instanceof RunSimulationsMessage) {

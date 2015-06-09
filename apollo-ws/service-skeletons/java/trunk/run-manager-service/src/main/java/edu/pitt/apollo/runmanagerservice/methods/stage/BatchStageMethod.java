@@ -137,7 +137,7 @@ public class BatchStageMethod {
         }
     }
 
-    public boolean queueAndTranslateRuns() {
+    public boolean stage() {
         String filename = null;
 
         XMLGregorianCalendar scenarioDate = (XMLGregorianCalendar) runSimulationsMessage.getBaseInfectiousDiseaseScenario().getScenarioDate().clone();

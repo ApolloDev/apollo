@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * @author nem41
+ * @author jdl50
  */
 public class StageMethod {
 
@@ -38,6 +38,7 @@ public class StageMethod {
         this.message = message;
         this.parentRunId = parentRunId;
         this.authentication = getAuthentication(message);
+
     }
 
     private Authentication cloneAuthentication(Authentication srcAuthentication) {
@@ -100,31 +101,34 @@ public class StageMethod {
                 // run is loaded, now call translator
                 TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
                 translatorDao.translateRun(runId);
-            }
 
-            while (!dataServiceDao.getRunStatus(runId, authentication).getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
-                try {
-                    switch (statusEnum) {
-                        case FAILED:
-                            break;
-                        case RUN_TERMINATED:
-                            break;
-                        case UNKNOWN_RUNID:
-                            break;
-                        case UNAUTHORIZED:
-                            break;
-                        default:
-                            Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);
-                            break;
+
+                while (!dataServiceDao.getRunStatus(runId, authentication).getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+                    try {
+                        switch (statusEnum) {
+                            case FAILED:
+                                break;
+                            case RUN_TERMINATED:
+                                break;
+                            case UNKNOWN_RUNID:
+                                break;
+                            case UNAUTHORIZED:
+                                break;
+                            default:
+                                Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);
+                                break;
+                        }
+                    } catch (InterruptedException ex) {
+                        // it's okay if the sleep timer is interrupted
                     }
-                } catch (InterruptedException ex) {
-                    // it's okay if the sleep timer is interrupted
                 }
             }
 
             // run is now translated
             if (message instanceof RunSimulationsMessage) {
                 BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
+                batchStageMethod.stage();
+
             }
             return runId;
         } catch (MalformedURLException ex) {
@@ -132,26 +136,17 @@ public class StageMethod {
         } catch (DataServiceException ex) {
             throw new RunManagementException("Database exception staging run: " + ex.getMessage());
         } catch (TranslatorServiceException ex) {
-            throw new RunManagementException("Translator service service exception staging run: " + ex.getMessage());
+            throw new RunManagementException("Translator service exception staging run: " + ex.getMessage());
         }
     }
 
-    protected RunResultAndSimulationGroupId getRunResultAndSimulationGroupId(RunResult runResult, BigInteger simulationGroupId) {
-        RunResultAndSimulationGroupId runResultAndSimulationGroupId = new RunResultAndSimulationGroupId();
-        runResultAndSimulationGroupId.setRunResult(runResult);
-        runResultAndSimulationGroupId.setSimulationGroupId(simulationGroupId);
-        return runResultAndSimulationGroupId;
-    }
-
     private String getTranslatorServiceUrl(DataServiceAccessor dataServiceDao, Authentication authentication) throws DataServiceException {
-
         Map<Integer, ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
         for (ServiceRegistrationRecord record : software.values()) {
             if (record.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.TRANSLATOR)) {
                 return record.getUrl();
             }
         }
-
         return null;
     }
 

@@ -80,7 +80,7 @@ public class BestRestTestClient {
 
         while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.COMPLETED)) {
             MethodCallStatus status = runManagementInterface.getRunStatus(runId, getAuthentication());
-            System.out.println("Status of run " + runId + " is (" + status.getStatus().value() + ")" + status.getMessage());
+            System.out.println("Status of run " + runId + " is (" + status.getStatus().value() + ") " + status.getMessage());
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

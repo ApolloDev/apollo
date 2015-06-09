@@ -41,6 +41,7 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private final BatchStageMethod.BooleanRef errorRef;
     private final BatchStageMethod.CounterRef counterRef;
+    private final Authentication authentication;
     private final String line;
     JsonUtils jsonUtils = new JsonUtils();
 
@@ -53,6 +54,7 @@ public class StageInDbWorkerThread implements Runnable {
         this.simulatorIdentification = message.getSimulatorIdentification();
         this.errorRef = errorRef;
         this.counterRef = counterRef;
+        this.authentication =authentication;
     }
 
     private PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
@@ -147,6 +149,8 @@ public class StageInDbWorkerThread implements Runnable {
                 try {
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
+                    currentRunSimulationMessage.getAuthentication().setRequesterId(authentication.getRequesterId());
+                    currentRunSimulationMessage.getAuthentication().setRequesterPassword(authentication.getRequesterPassword());
 //                    try {
 //                        System.out.println("From " + paramLineOrNullIfEndOfStream + " Creating worker for run " + md5Utils.getMd5(currentRunSimulationMessage) + " (" + currentRunSimulationMessage + ")" + "\n");
 //                    } catch (Md5UtilsException e) {
