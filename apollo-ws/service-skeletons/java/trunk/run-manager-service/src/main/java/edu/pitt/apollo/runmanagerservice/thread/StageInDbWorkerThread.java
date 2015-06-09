@@ -74,8 +74,8 @@ public class StageInDbWorkerThread implements Runnable {
         RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
         runSimulationMessage.setAuthentication(template.getAuthentication());
         runSimulationMessage.setInfectiousDiseaseScenario(copyInfectiousDiseaseScenarioForTemplate(template.getBaseInfectiousDiseaseScenario()));
-        runSimulationMessage.setSimulatorIdentification(template
-                .getSimulatorIdentification());
+        runSimulationMessage.setSoftwareIdentification(template
+                .getSoftwareIdentification());
         runSimulationMessage.setSimulatorTimeSpecification(template
                 .getSimulatorTimeSpecification());
 

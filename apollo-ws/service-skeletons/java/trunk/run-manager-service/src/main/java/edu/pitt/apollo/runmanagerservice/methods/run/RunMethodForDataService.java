@@ -10,6 +10,7 @@ import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeExcept
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 
 import java.io.FileInputStream;
@@ -97,9 +98,9 @@ public class RunMethodForDataService extends AbstractRunMethod {
 	}
 
 	@Override
-	protected Object convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
+	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
 		JsonUtils jsonUtils = new JsonUtils();
-		Object object;
+		RunMessage object;
 
 //		try {
 //			object = (GetAllOutputFilesURLAsZipMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, GetAllOutputFilesURLAsZipMessage.class);

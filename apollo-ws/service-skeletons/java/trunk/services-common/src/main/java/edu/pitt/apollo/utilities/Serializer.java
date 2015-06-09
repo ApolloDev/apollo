@@ -7,6 +7,7 @@ package edu.pitt.apollo.utilities;
 public abstract class Serializer implements SerializerInterface {
 
 	public static final String APOLLO_NAMESPACE = "http://types.apollo.pitt.edu/v3_0_0";
+	public static final String SERVICES_COMMON_NAMESPACE = "http://services-common.apollo.pitt.edu/v3_0_0/";
 	public static final String APOLLO_NAMESPACE_TNS_PREFIX = "tns";
 	
 	protected final String namespace;

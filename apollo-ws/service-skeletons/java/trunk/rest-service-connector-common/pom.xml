@@ -5,8 +5,8 @@
         <artifactId>apollo-ws</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>run-manager-service-rest-connector</artifactId>
-    <name>Run Manager Service Rest Connector</name>
+    <artifactId>rest-service-connector-common</artifactId>
+    <name>Rest Service Connector Common</name>
     <packaging>jar</packaging>
 
     <licenses>
@@ -41,9 +41,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>rest-service-connector-common</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.1.2.RELEASE</version>
         </dependency>
     </dependencies>
 

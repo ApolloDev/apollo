@@ -32,7 +32,7 @@ public class ApolloServiceTypeFactory {
 			SoftwareIdentification visualizerSoftwareIdentification, RunIdentificationAndLabel... runIdentificationsAndLabels) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
 		runVisualizationMessage.setAuthentication(visualizerAuthentication);
-		runVisualizationMessage.setVisualizerIdentification(visualizerSoftwareIdentification);
+		runVisualizationMessage.setSoftwareIdentification(visualizerSoftwareIdentification);
 		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels) {
 			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
 		}

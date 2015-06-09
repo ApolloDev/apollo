@@ -2,13 +2,19 @@ package edu.pitt.apollo.restdataserviceconnector;
 
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.utilities.Deserializer;
+import edu.pitt.apollo.utilities.DeserializerFactory;
 
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -36,7 +42,7 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -66,8 +72,27 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
+		String uri = serviceUrl + "/ws/run/" + runId + "/status";
+		RestTemplate template = new RestTemplate();
+		Response response = template.getForObject(uri, Response.class);
+
+		ResponseMeta meta = response.getResponseMeta();
+		BigInteger status = meta.getStatus();
+		if (status.intValue() != HttpStatus.OK.value()) {
+			// there was an error
+			throw new RunManagementException("The response code returned from the service was "
+					+ status + ". The message is: " + meta.getStatusMessage());
+		}
+
+		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
+		try {
+			Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
+			MethodCallStatus runStatus = deserializer.getObjectFromMessage(response.getResponseBody().get(0), MethodCallStatus.class);
+			return runStatus;
+		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
+			throw new RunManagementException(ex.getMessage());
+		}
 	}
 
 	@Override

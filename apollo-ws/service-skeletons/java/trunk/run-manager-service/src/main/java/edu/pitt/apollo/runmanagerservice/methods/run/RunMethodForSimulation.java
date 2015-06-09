@@ -6,6 +6,7 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 
 import java.math.BigInteger;
@@ -21,7 +22,7 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 	}
 
 	@Override
-	protected Object convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
+	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
 		JsonUtils jsonUtils = new JsonUtils();
 		return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunSimulationMessage.class);
 	}

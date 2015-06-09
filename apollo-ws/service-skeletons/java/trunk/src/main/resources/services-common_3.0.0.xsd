@@ -3,6 +3,27 @@
 	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_0/"
 	elementFormDefault="qualified">
 
+	<!-- need to add an element here for any class you want to be able to serialize with JAXB -->
+	<element name="MethodCallStatusElement" type="tns:MethodCallStatus"/>
+	<element name="SoftwareLicenseIdentificationElement" type="tns:SoftwareLicenseIdentification"/>
+	<element name="SoftwareIdentificationElement" type="tns:SoftwareIdentification"/>
+	<element name="RunResultElement" type="tns:RunResult"/>
+	<element name="RunStatusElement" type="tns:RunStatus"/>
+	<element name="RunIdentificationAndLabelElement" type="tns:RunIdentificationAndLabel"/>
+	<element name="TerminateRunRequestElement" type="tns:TerminateRunRequest"/>
+	<element name="ServiceRegistrationRecordElement" type="tns:ServiceRegistrationRecord"/>
+	<element name="UrlOutputResourceElement" type="tns:UrlOutputResource"/>
+	<element name="ServiceRecordElement" type="tns:ServiceRecord"/>
+	<element name="TerminteRunResultElement" type="tns:TerminteRunResult"/>
+	<element name="RunIdentificationElement" type="tns:RunIdentification"/>
+	<element name="FileAndURLDescriptionElement" type="tns:SoftwareIdentification"/>
+	<element name="ObjectSerializationInformationElement" type="tns:ObjectSerializationInformation"/>
+	<element name="RequestMetaElement" type="tns:RequestMeta"/>
+	<element name="ResponseMetaElement" type="tns:ResponseMeta"/>
+	<element name="RequestElement" type="tns:Request"/>
+	<element name="ResponseElement" type="tns:Response"/>
+	<element name="RunMessageElement" type="tns:RunMessage"/>
+
 
 	<simpleType name="SoftwareOutputStratificationGranularity">
 		<restriction base="string">
@@ -45,6 +66,13 @@
 			<enumeration value="ZIP" />
 		</restriction>
 	</simpleType>
+
+	<complexType name="RunMessage">
+		<sequence>
+			<element name="authentication" type="tns:Authentication"></element>
+			<element name="softwareIdentification" type="tns:SoftwareIdentification"></element>
+		</sequence>
+	</complexType>
 
 	<complexType name="SoftwareLicenseIdentification">
 		<sequence>

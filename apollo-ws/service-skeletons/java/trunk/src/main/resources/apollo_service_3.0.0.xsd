@@ -13,13 +13,9 @@
 	</import>
 
 	<complexType name="RunSimulationsMessage">
+		<complexContent>
+		<extension base="common:RunMessage">
 		<sequence>
-			<element name="simulatorIdentification" type="common:SoftwareIdentification"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="authentication" type="common:Authentication"
-				maxOccurs="1" minOccurs="1">
-			</element>
 			<element name="simulatorTimeSpecification" type="apollo:SimulatorTimeSpecification"
 				maxOccurs="1" minOccurs="1">
 			</element>
@@ -29,6 +25,8 @@
 			<element name="md5HashOfbatchConfigurationFile" type="token" />
 			
 		</sequence>
+	</extension>
+</complexContent>
 	</complexType>
 
 

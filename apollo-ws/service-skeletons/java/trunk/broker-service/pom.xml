@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>syntheticpopulation-service-client</artifactId>
+            <artifactId>synthetic-population-service-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -109,13 +109,13 @@
         
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>rest-run-manager-service-connector</artifactId>
+            <artifactId>run-manager-service-rest-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
         
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>rest-data-service-connector</artifactId>
+            <artifactId>data-service-rest-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
        

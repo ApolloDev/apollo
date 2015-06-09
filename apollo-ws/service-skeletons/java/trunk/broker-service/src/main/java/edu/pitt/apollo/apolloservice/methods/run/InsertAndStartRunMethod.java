@@ -7,6 +7,7 @@ import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import java.math.BigInteger;
 
@@ -23,7 +24,7 @@ public abstract class InsertAndStartRunMethod extends BaseRunManagementServiceAc
 		this.queue = queue;
 	}
 
-	public RunResult insertAndStartRun(Object message, Authentication authentication) {
+	public RunResult insertAndStartRun(RunMessage message, Authentication authentication) {
 
 		RunResult runResult = new RunResult();
 		MethodCallStatus status;

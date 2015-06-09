@@ -23,14 +23,14 @@ public class XMLSerializer extends Serializer {
 		String xml = "";
 		try {
 
-			JAXBContext context = JAXBContext.newInstance(Object.class);
+			JAXBContext context = JAXBContext.newInstance(obj.getClass());
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 			final StringWriter stringWriter = new StringWriter();
 
 			marshaller.marshal(new JAXBElement(
-					new QName(namespace, obj.getClass().getSimpleName(), prefix), Object.class, obj), stringWriter);
+					new QName(namespace, obj.getClass().getSimpleName(), prefix), obj.getClass(), obj), stringWriter);
 
 			xml = stringWriter.toString();
 		} catch (JAXBException e) {

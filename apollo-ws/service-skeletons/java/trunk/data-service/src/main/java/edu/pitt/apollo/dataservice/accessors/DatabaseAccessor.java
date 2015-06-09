@@ -212,7 +212,7 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		throw new RunManagementException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 
@@ -270,11 +270,11 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException, UserNotAuthenticatedException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			return dbUtils.getStatusOfLastServiceToBeCalledForRun(runId);
-		} catch (ApolloDatabaseException e) {
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}

@@ -58,47 +58,54 @@
         <module>db-common</module>
         <module>services-common</module>
 
-        <module>job-running-service-soap-connector</module>
-        <module>synthetic-population-service-soap-connector</module>
-        <module>translator-service-soap-connector</module>
-        <module>visualizer-service-soap-connector</module>
         <module>data-service-rest-connector</module>
         <module>run-manager-service-rest-connector</module>
+        <module>rest-service-connector-common</module>
                 
         <module>translator-service-skeleton</module>
 
-        <module>config-examples</module>
+        <module>library-service</module>
+        <module>library-service-client</module>
+        <module>library-service-war</module>
+        
+        <module>data-service</module>
+        <module>data-service-client</module>
+        <module>data-service-war</module>
+        <module>data-service-rest-frontend</module>
+
+        <module>simulator-service</module>
+        <module>simulator-service-client</module>
+        <module>simulator-service-war</module>
+
+        <module>visualizer-service</module>
+        <module>visualizer-service-client</module>
+        <module>visualizer-service-war</module>
+
+        <module>job-running-service-soap-connector</module>
+        <module>translator-service-soap-connector</module>
+        <module>visualizer-service-soap-connector</module>
+
+        <module>synthetic-population-service</module>
+        <module>synthetic-population-service-client</module>
+        <module>synthetic-population-service-war</module>
+        <module>synthetic-population-service-soap-connector</module>
+
+        <module>run-manager-service</module>
+        <module>run-manager-service-rest-frontend</module>
 
         <module>broker-service</module>
         <module>broker-service-war</module>
-        <module>broker-service-client</module>
 
-        <module>library-service</module>
-        <module>library-service-war</module>
-        <module>library-service-client</module>
-        
-        <module>data-service</module>
-        <module>data-service-war</module>
-        <module>data-service-client</module>
-        <module>data-service-rest-frontend</module>
-
-        <module>run-manager-service</module>
+        <module>config-examples</module>
         <module>run-manager-service-client</module>
-        <module>run-manager-service-rest-frontend</module>
-
-        <module>simulator-service</module>
-        <module>simulator-service-war</module>
-        <module>simulator-service-client</module>
-
-        <module>synthetic-population-service</module>
-        <module>synthetic-population-service-war</module>
-        <module>synthetic-population-service-client</module>
-
-        <module>visualizer-service</module>
-        <module>visualizer-service-war</module>
-        <module>visualizer-service-client</module>
-
+        <module>broker-service-client</module>
+       
         
+
+
+
+
+
 
 
     </modules>

@@ -5,7 +5,6 @@ import edu.pitt.apollo.exception.SimulatorServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
-import edu.pitt.apollo.runmanagerserviceclient.ApolloServiceTypeFactory;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
@@ -24,8 +23,7 @@ public class BestRestTestClient {
     private static final String REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE = "run_manager_service_test_client.properties";
 
     private static Authentication getAuthentication() throws FileNotFoundException, IOException {
-        File props = new File(REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
-        InputStream fis = new FileInputStream(props);
+        InputStream fis = BestRestTestClient.class.getResourceAsStream("./" + REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
         Properties properties = new Properties();
         properties.load(fis);
         fis.close();

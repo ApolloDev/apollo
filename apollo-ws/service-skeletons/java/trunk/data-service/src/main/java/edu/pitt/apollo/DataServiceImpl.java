@@ -20,6 +20,7 @@ import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.math.BigInteger;
@@ -69,7 +70,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		try {
 			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
 			return databaseAccessor.insertRun(message);
@@ -129,12 +130,12 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getRunStatus(runId, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 

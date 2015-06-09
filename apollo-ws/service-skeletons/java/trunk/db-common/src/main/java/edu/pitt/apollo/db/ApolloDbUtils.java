@@ -429,7 +429,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         int userKey = getUserKey(auth.getRequesterId(),
                 auth.getRequesterPassword());
         int softwareKey = getSoftwareIdentificationKey(runSimulationMessage
-                .getSimulatorIdentification());
+                .getSoftwareIdentification());
 
         String hash = md5Utils.getMd5(runSimulationMessage);
 
@@ -1612,7 +1612,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             RunVisualizationMessage runVisualizationMessageToHash)
             throws ApolloDatabaseException, Md5UtilsException {
         int softwareKey = getSoftwareIdentificationKey(runVisualizationMessageToHash
-                .getVisualizerIdentification());
+                .getSoftwareIdentification());
         String md5Hash = md5Utils.getMd5(runVisualizationMessageToHash);
 
         try (Connection conn = datasource.getConnection()) {
@@ -1912,7 +1912,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         int userKey = getUserKey(userName, password);
 
         int softwareKey = getSoftwareIdentificationKey(runVisualizationMessage
-                .getVisualizerIdentification());
+                .getSoftwareIdentification());
 
         try (Connection conn = datasource.getConnection()) {
             //conn = getConn();
@@ -1952,7 +1952,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                     "run_visualization_message.json",
                     ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE, 0,
                     getSoftwareIdentificationKey(runVisualizationMessage
-                            .getVisualizerIdentification()));
+                            .getSoftwareIdentification()));
             // int runDataId = the following line returns the runDataId, but
             // it's not used at this point.
             associateContentWithRunId(new BigInteger(String.valueOf(runId)),
@@ -2637,15 +2637,15 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
         return contentId;
     }
 
-    public enum DbContentDataFormatEnum {
-
-        TEXT, URL, ZIP,
-    }
-
-    public enum DbContentDataType {
-
-        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE, RUN_SIMULATION_MESSAGE, RUN_VISUALIZATION_MESSAGE, RUN_DATA_SERVICE_MESSAGE,
-    }
+//    public enum DbContentDataFormatEnum {
+//
+//        TEXT, URL, ZIP,
+//    }
+//
+//    public enum DbContentDataType {
+//
+//        SIMULATOR_LOG_FILE, CONFIGURATION_FILE, IMAGE, MOVIE, RUN_SIMULATION_MESSAGE, RUN_VISUALIZATION_MESSAGE, RUN_DATA_SERVICE_MESSAGE,
+//    }
 
 
 //	public static void main(String[] args) throws IOException,

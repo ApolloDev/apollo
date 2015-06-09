@@ -240,7 +240,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     }
 
     private void startSimulations() {
-        SoftwareIdentification simulatorIdentification = message.getSimulatorIdentification();
+        SoftwareIdentification simulatorIdentification = message.getSoftwareIdentification();
 
             String url;
             try {
@@ -277,7 +277,7 @@ public class RunSimulationsThread extends RunApolloServiceThread {
     public void run() {
         if (error != null) {
             SoftwareIdentification simulatorIdentification = message
-                    .getSimulatorIdentification();
+                    .getSoftwareIdentification();
 
             ErrorUtils.reportError(
                     "Error staging batch run for: "
