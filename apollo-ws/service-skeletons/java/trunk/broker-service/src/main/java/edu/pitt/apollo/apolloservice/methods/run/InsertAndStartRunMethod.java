@@ -3,7 +3,7 @@ package edu.pitt.apollo.apolloservice.methods.run;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.apolloservice.thread.WaitForTranslationAndStartRunThread;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;

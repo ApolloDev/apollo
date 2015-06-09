@@ -2,7 +2,7 @@ package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
@@ -74,7 +74,7 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
 		try {
 			SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
@@ -82,12 +82,12 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 			SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator);
 			soapJobRunningServiceConnector.run(runId, authentication);
 		} catch (DataServiceException e) {
-			throw new SimulatorServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
+			throw new JobRunningServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
 		}
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

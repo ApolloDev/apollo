@@ -7,7 +7,7 @@ import edu.pitt.apollo.dataservice.methods.RunJobMethodFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
@@ -261,19 +261,19 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		RunJobMethod dataServiceMethod;
 		try {
 			dataServiceMethod = RunJobMethodFactory.getDataServiceMethod(runId, authentication);
 			dataServiceMethod.runDataService();
 		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new SimulatorServiceException(ex.getMessage());
+			throw new JobRunningServiceException(ex.getMessage());
 		}
 		
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

@@ -32,7 +32,7 @@ public abstract class BaseRunManagerServiceAccessorMethod {
 
 		responseBuilder = new ResponseMessageBuilder();
 		
-		serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.SERVICES_COMMON_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+		serializer = SerializerFactory.getSerializer(serializationFormat);
 
 		impl = new RunManagerServiceImpl();
 

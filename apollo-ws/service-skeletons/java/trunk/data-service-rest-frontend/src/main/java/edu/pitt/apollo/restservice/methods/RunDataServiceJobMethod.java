@@ -6,7 +6,7 @@
 package edu.pitt.apollo.restservice.methods;
 
 import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
@@ -29,7 +29,7 @@ public class RunDataServiceJobMethod extends BaseDataServiceAccessorMethod {
 			impl.run(runId, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (SimulatorServiceException ex) {
+		} catch (JobRunningServiceException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

@@ -16,14 +16,20 @@
 package edu.pitt.apollo.restserviceconnectorcommon;
 
 import edu.pitt.apollo.exception.DeserializationException;
+import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_0_0.Request;
+import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
 import edu.pitt.apollo.services_common.v3_0_0.Response;
 import edu.pitt.apollo.services_common.v3_0_0.ResponseMeta;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
+import edu.pitt.apollo.utilities.Serializer;
+import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +84,25 @@ public class RestServiceUtils {
 		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
 			throw new RestServiceException(ex.getMessage());
 		}
+	}
+
+	public static Request getRequestObjectWithSerializedBody(Object bodyObject) throws RestServiceException {
+		Request request = new Request();
+		RequestMeta requestMeta = new RequestMeta();
+		requestMeta.setIsBodySerialized(true);
+
+		try {
+			Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
+			ObjectSerializationInformation objectSerializationInformation = serializer.getObjectSerializationInformation(bodyObject);
+			requestMeta.setRequestBodySerializationInformation(objectSerializationInformation);
+
+			String serializedObject = serializer.serializeObject(bodyObject);
+			request.setRequestBody(serializedObject);
+		} catch (SerializationException | UnsupportedSerializationFormatException ex) {
+			throw new RestServiceException(ex.getMessage());
+		}
+		
+		return request;
 	}
 
 }

@@ -1,7 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
@@ -31,7 +31,7 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 		try {
 			jobRunningServiceAccessor.run(runId, authentication);
 
-		} catch (SimulatorServiceException ex) {
+		} catch (JobRunningServiceException ex) {
 			ApolloServiceErrorHandler.reportError("Error running data service, error was:" + ex.getMessage(), runId);
 			return;
 		}

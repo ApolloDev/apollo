@@ -1,7 +1,7 @@
 package edu.pitt.apollo.runmanagerserviceclient;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
@@ -34,7 +34,7 @@ public class BestRestTestClient {
         return auth;
     }
 
-    public static void main(String[] args) throws IOException, DataServiceException, SimulatorServiceException {
+    public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
         RunSimulationMessage runSimulationMessage =
                 ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 

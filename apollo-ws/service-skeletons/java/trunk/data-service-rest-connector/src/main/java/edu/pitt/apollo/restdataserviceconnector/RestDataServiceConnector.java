@@ -4,7 +4,7 @@ import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.utilities.Deserializer;
@@ -156,12 +156,12 @@ public class RestDataServiceConnector extends DataServiceConnector {
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

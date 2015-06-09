@@ -5,7 +5,7 @@ import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -69,7 +69,7 @@ public class WaitForTranslationAndStartRunThread extends ApolloServiceThread {
 			try {
 				connector.run(runId, authentication);
 				connector.updateStatusOfRun(runId, statusOnceServiceCalled.getStatus(), statusOnceServiceCalled.getMessage(), authentication);
-			} catch (SimulatorServiceException ex) {
+			} catch (JobRunningServiceException ex) {
 				connector.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, "The service call failed for run ID " + runId + ": " + ex.getMessage(), authentication);
 			}
 		} catch (RunManagementException ex) {

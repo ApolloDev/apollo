@@ -9,7 +9,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
@@ -423,12 +423,12 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
