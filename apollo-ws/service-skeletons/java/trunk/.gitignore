@@ -1,6 +1,0 @@
-*/target/**
-*.iml
-dependency-reduced-pom.xml
-db-common/src/main/resources/apollo_db_schema.sql
-.idea
-nb-configuration.xml
