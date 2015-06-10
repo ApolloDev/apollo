@@ -6,7 +6,6 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
@@ -30,10 +29,10 @@ import java.util.Properties;
 /**
  * Created by jdl50 on 6/2/15.
  */
-public class BestRestTestClient {
+public class TestClient {
 
     private static final String REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE = "run_manager_service_test_client.properties";
-    static Logger logger = LoggerFactory.getLogger(BestRestTestClient.class.getName());
+    static Logger logger = LoggerFactory.getLogger(TestClient.class.getName());
 
     public enum SimulatorIdentificationEnum {
         FRED,
@@ -42,7 +41,7 @@ public class BestRestTestClient {
     }
 
     private static Authentication getAuthentication() throws FileNotFoundException, IOException {
-        InputStream fis = BestRestTestClient.class.getResourceAsStream("./" + REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
+        InputStream fis = TestClient.class.getResourceAsStream("/" + REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
         Properties properties = new Properties();
         properties.load(fis);
         fis.close();
@@ -102,7 +101,7 @@ public class BestRestTestClient {
         runSimulationsMessage.setAuthentication(runSimulationMessage
                 .getAuthentication());
         runSimulationsMessage.setSoftwareIdentification(runSimulationMessage
-                .getSimulatorIdentification());
+                .getSoftwareIdentification());
         runSimulationsMessage
                 .setSimulatorTimeSpecification(runSimulationMessage
                         .getSimulatorTimeSpecification());
@@ -163,9 +162,9 @@ public class BestRestTestClient {
     }
 
     public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
-        RunSimulationMessage runSimulationMessage = BestRestTestClient.getRunSimulationMessage();
+        RunSimulationMessage runSimulationMessage = TestClient.getRunSimulationMessage();
         logger.debug("Hello!");
-        RunSimulationsMessage runSimulationsMessage = BestRestTestClient.getRunSimulationsMessage(100);
+        RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(100);
         run(runSimulationsMessage);
     }
 
