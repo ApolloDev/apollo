@@ -3,6 +3,27 @@
 	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_0/"
 	elementFormDefault="qualified">
 
+	<!-- need to add an element here for any class you want to be able to serialize with JAXB -->
+	<element name="MethodCallStatusElement" type="tns:MethodCallStatus"/>
+	<element name="SoftwareLicenseIdentificationElement" type="tns:SoftwareLicenseIdentification"/>
+	<element name="SoftwareIdentificationElement" type="tns:SoftwareIdentification"/>
+	<element name="RunResultElement" type="tns:RunResult"/>
+	<element name="RunStatusElement" type="tns:RunStatus"/>
+	<element name="RunIdentificationAndLabelElement" type="tns:RunIdentificationAndLabel"/>
+	<element name="TerminateRunRequestElement" type="tns:TerminateRunRequest"/>
+	<element name="ServiceRegistrationRecordElement" type="tns:ServiceRegistrationRecord"/>
+	<element name="UrlOutputResourceElement" type="tns:UrlOutputResource"/>
+	<element name="ServiceRecordElement" type="tns:ServiceRecord"/>
+	<element name="TerminteRunResultElement" type="tns:TerminteRunResult"/>
+	<element name="RunIdentificationElement" type="tns:RunIdentification"/>
+	<element name="FileAndURLDescriptionElement" type="tns:SoftwareIdentification"/>
+	<element name="ObjectSerializationInformationElement" type="tns:ObjectSerializationInformation"/>
+	<element name="RequestMetaElement" type="tns:RequestMeta"/>
+	<element name="ResponseMetaElement" type="tns:ResponseMeta"/>
+	<element name="RequestElement" type="tns:Request"/>
+	<element name="ResponseElement" type="tns:Response"/>
+	<element name="RunMessageElement" type="tns:RunMessage"/>
+
 
 	<simpleType name="SoftwareOutputStratificationGranularity">
 		<restriction base="string">
@@ -20,8 +41,38 @@
 			<enumeration value="translator" />
 			<enumeration value="data" />
 			<enumeration value="broker" />
+            <enumeration value="endUserApplication" />
+            <enumeration value="runManager" />
 		</restriction>
 	</simpleType>
+        
+	<simpleType name="ContentDataTypeEnum">
+		<restriction base="string">
+			<enumeration value="SIMULATOR_LOG_FILE" />
+			<enumeration value="CONFIGURATION_FILE" />
+			<enumeration value="IMAGE" />
+			<enumeration value="MOVIE" />
+			<enumeration value="RUN_SIMULATION_MESSAGE" />
+			<enumeration value="RUN_SIMULATIONS_MESSAGE" />
+			<enumeration value="RUN_VISUALIZATION_MESSAGE" />
+			<enumeration value="DATA_RETRIEVAL_REQUEST_MESSAGE" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ContentDataFormatEnum">
+		<restriction base="string">
+			<enumeration value="TEXT" />
+			<enumeration value="URL" />
+			<enumeration value="ZIP" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="RunMessage">
+		<sequence>
+			<element name="authentication" type="tns:Authentication"></element>
+			<element name="softwareIdentification" type="tns:SoftwareIdentification"></element>
+		</sequence>
+	</complexType>
 
 	<complexType name="SoftwareLicenseIdentification">
 		<sequence>
@@ -152,6 +203,7 @@
 			<enumeration value="called_translator" />
 			<enumeration value="called_visualizer" />
 			<enumeration value="called_simulator" />
+			<enumeration value="called_data_service" />
 			<enumeration value="translating" />
 			<enumeration value="translation_completed" />
 			<enumeration value="initializing" />
@@ -177,6 +229,87 @@
 				maxOccurs="1" minOccurs="1" />
 			<element name="message" type="string" maxOccurs="1"
 				minOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<simpleType name="RunActionEnum">
+		<restriction base="string">
+			<enumeration value="start" />
+			<enumeration value="terminate" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="FileAndURLDescription">
+		<sequence>
+			<element name="sourceSoftwareIdentification" type="tns:SoftwareIdentification"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="destinationSoftwareIdentification" type="tns:SoftwareIdentification"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="name" type="string" maxOccurs="1"
+					 minOccurs="1" />
+			<element name="contentType" type="tns:ContentDataTypeEnum" minOccurs="1" maxOccurs="1"/>
+			<element name="contentFormat" type="tns:ContentDataFormatEnum" minOccurs="1" maxOccurs="1"/>
+		</sequence>
+	</complexType>
+
+	<simpleType name="SerializationFormat">
+		<restriction base="string">
+			<enumeration value="JSON" />
+			<enumeration value="XML" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="ObjectSerializationInformation">
+		<sequence>
+			<element name="format" type="tns:SerializationFormat"></element>
+			<element name="className" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="classNameSpace" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="RequestMeta">
+		<sequence>
+			<element name="requestBodySerializationInformation" type="tns:ObjectSerializationInformation" minOccurs="1" maxOccurs="1"></element>
+			<element name="isBodySerialized" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ResponseMeta">
+		<sequence>
+			<element name="status" type="positiveInteger"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="statusMessage" type="token"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="source" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="numberOfReturnedResults" type="positiveInteger" minOccurs="1" maxOccurs="1">
+			</element>
+			<element name="responseBodySerializationInformation" type="tns:ObjectSerializationInformation" minOccurs="1" maxOccurs="1"></element>
+			<element name="isBodySerialized" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Response">
+		<sequence>
+			<element name="responseMeta" type="tns:ResponseMeta"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="responseBody" type="token" maxOccurs="unbounded"
+					 minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<complexType name="Request">
+		<sequence>
+			<element name="requestMeta" type="tns:RequestMeta"
+					 maxOccurs="1" minOccurs="1" />
+			<element name="requestBody" type="token" maxOccurs="1"
+					 minOccurs="1" />
 		</sequence>
 	</complexType>
 

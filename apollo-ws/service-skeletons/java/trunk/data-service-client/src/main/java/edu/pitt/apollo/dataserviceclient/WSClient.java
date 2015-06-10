@@ -15,11 +15,6 @@ package edu.pitt.apollo.dataserviceclient;
  * the License.
  */
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
-import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceEI;
-import edu.pitt.apollo.service.dataservice.v3_0_0.DataServiceV300;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import java.io.File;
 import java.io.FileInputStream;

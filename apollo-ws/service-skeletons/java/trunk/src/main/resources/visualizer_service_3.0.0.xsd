@@ -12,13 +12,15 @@
 	<import schemaLocation="apollo-types_3.0.0.xsd" namespace="http://types.apollo.pitt.edu/v3_0_0/"></import>
 
 	<complexType name="RunVisualizationMessage">
+		<complexContent>
+		<extension base="common:RunMessage">
 		<sequence>
-			<element name="visualizerIdentification" type="common:SoftwareIdentification" />
-			<element name="authentication" type="common:Authentication" />
 			<element name="simulationRunIds" type="common:RunIdentificationAndLabel"
 				maxOccurs="unbounded" minOccurs="1">
 			</element>
 		</sequence>
+	</extension>
+</complexContent>
 	</complexType>
 
 	<complexType name="RunVisualizationResult">

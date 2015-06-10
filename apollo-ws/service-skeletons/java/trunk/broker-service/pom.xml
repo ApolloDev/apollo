@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <distributionManagement>
-       <repository>
+        <repository>
             <id>rods-nexus-deployment</id>
             <name>RODS Nexus</name>
             <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
@@ -47,11 +47,7 @@
             <artifactId>simulator-service-client</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>data-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>library-service-client</artifactId>
@@ -64,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>syntheticpopulation-service-client</artifactId>
+            <artifactId>synthetic-population-service-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -110,13 +106,19 @@
             <artifactId>db-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-       
+        
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>translator-service-skeleton</artifactId>
-            <type>jar</type>
+            <artifactId>run-manager-service-rest-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>data-service-rest-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+       
     </dependencies>
 
     <build>

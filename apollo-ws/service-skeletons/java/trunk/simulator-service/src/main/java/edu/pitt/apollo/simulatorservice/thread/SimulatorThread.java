@@ -4,9 +4,7 @@ import edu.pitt.apollo.*;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
@@ -162,7 +160,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
 
 		try {
-			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			int visualizerSoftwareKey = dbUtils.getSoftwareIdentificationKey(visualizerSoftwareId);
 
 			addTextDataContentForSeries(content, seriesName, sourceSoftwareIdKey, visualizerSoftwareKey);
@@ -189,8 +187,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 		int runDataDescriptionId;
 		try {
-			runDataDescriptionId = dbUtils.getRunDataDescriptionId(ApolloDbUtils.DbContentDataFormatEnum.TEXT, seriesName + ".txt",
-					ApolloDbUtils.DbContentDataType.SIMULATOR_LOG_FILE, sourceSoftwareIdKey,
+			runDataDescriptionId = dbUtils.getRunDataDescriptionId(ContentDataFormatEnum.TEXT, seriesName + ".txt",
+					ContentDataTypeEnum.SIMULATOR_LOG_FILE, sourceSoftwareIdKey,
 					destinationSoftwareIdKey);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, "ApolloDatabaseKeyNotFoundException attempting to get run data "
@@ -218,7 +216,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		Map<String, ByteArrayOutputStream> map;
 		try {
 			int translatorKey = dbUtils.getSoftwareIdentificationKey(translatorSoftwareId);
-			int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			map = dbUtils.getDataContentForSoftware(runId,
 					translatorKey, simulatorKey);
 			// update this

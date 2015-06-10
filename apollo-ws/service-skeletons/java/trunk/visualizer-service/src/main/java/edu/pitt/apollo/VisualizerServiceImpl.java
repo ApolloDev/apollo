@@ -42,7 +42,7 @@ class VisualizerServiceImpl implements VisualizerServiceEI {
 
         List<RunIdentificationAndLabel> runIdsAndLabels = runVisualizationMessage.getSimulationRunIds();
 
-        ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIdsAndLabels, runVisualizationMessage.getVisualizerIdentification());
+        ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIdsAndLabels, runVisualizationMessage.getSoftwareIdentification());
         Thread thread = new Thread(runnable);
         thread.start();
     }
