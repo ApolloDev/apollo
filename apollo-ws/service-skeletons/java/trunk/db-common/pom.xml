@@ -62,14 +62,7 @@
             <version>2.4.1</version>
             <type>jar</type>
             <scope>compile</scope>
-        </dependency>-->
-
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>xsd-types</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-                
+        </dependency>-->       
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataFormatEnum;
-import edu.pitt.apollo.db.ApolloDbUtils.DbContentDataType;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;

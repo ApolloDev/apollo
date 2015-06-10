@@ -22,7 +22,7 @@ public class AddUserMethod extends BaseDataServiceAccessorMethod {
 		super(username, password, serializationFormat);
 	}
 
-	public String addUser(String usernameToAdd, String passwordToAdd, String userEmail) throws UnsupportedSerializationFormatException, SerializationException {
+	public String addUser(String usernameToAdd, String passwordToAdd, String userEmail) throws SerializationException {
 
 		try {
 			impl.addUser(usernameToAdd, passwordToAdd, userEmail, authentication);

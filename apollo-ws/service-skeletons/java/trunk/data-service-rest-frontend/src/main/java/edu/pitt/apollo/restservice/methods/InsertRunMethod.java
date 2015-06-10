@@ -15,6 +15,7 @@ import edu.pitt.apollo.restservice.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.Request;
 import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.utilities.Deserializer;
@@ -46,7 +47,7 @@ public class InsertRunMethod extends BaseDataServiceAccessorMethod {
 			String className = config.getClassName();
 			String classNamespace = config.getClassNameSpace();
 
-			Object object = deserializer.getObjectFromMessage(messageBody, className, classNamespace);
+			RunMessage object = (RunMessage) deserializer.getObjectFromMessage(messageBody, className, classNamespace);
 
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
 					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)) {

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.interfaces;
 
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 
 import java.math.BigInteger;
@@ -10,7 +10,7 @@ import java.math.BigInteger;
  */
 public interface JobRunningServiceInterface {
 
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException;
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException;
 
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException;
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException;
 }

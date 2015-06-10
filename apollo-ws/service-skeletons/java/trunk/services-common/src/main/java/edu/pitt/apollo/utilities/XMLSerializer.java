@@ -1,6 +1,7 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import java.io.StringWriter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -14,8 +15,8 @@ import javax.xml.namespace.QName;
  */
 public class XMLSerializer extends Serializer {
 
-	public XMLSerializer(String namespace, String prefix) {
-		super(namespace, prefix);
+	public XMLSerializer() {
+		super(SerializationFormat.XML);
 	}
 
 	@Override
@@ -23,14 +24,16 @@ public class XMLSerializer extends Serializer {
 		String xml = "";
 		try {
 
-			JAXBContext context = JAXBContext.newInstance(Object.class);
+			JAXBContext context = JAXBContext.newInstance(obj.getClass());
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 			final StringWriter stringWriter = new StringWriter();
 
+			String namespace = convertNamespaceFromJavaToXSD(obj.getClass().getPackage().getName());
+			
 			marshaller.marshal(new JAXBElement(
-					new QName(namespace, obj.getClass().getSimpleName(), prefix), Object.class, obj), stringWriter);
+					new QName(namespace, obj.getClass().getSimpleName(), Serializer.APOLLO_NAMESPACE_TNS_PREFIX), obj.getClass(), obj), stringWriter);
 
 			xml = stringWriter.toString();
 		} catch (JAXBException e) {

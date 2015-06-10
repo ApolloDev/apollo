@@ -63,7 +63,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 	}
 	
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		return runManagementInterface.insertRun(message);
 	}
 	
@@ -93,7 +93,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 	}
 	
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		return runManagementInterface.getRunStatus(runId, authentication);
 	}
 
@@ -128,7 +128,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 //	}
 	
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		return softwareRegistryInterface.getListOfRegisteredSoftwareRecords(authentication);
 	}
 	

@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>syntheticpopulation-service</artifactId>
+			<artifactId>synthetic-population-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

@@ -32,7 +32,7 @@ public abstract class BaseDataServiceAccessorMethod {
 
 		responseBuilder = new ResponseMessageBuilder();
 		
-		serializer = SerializerFactory.getSerializer(serializationFormat, Serializer.APOLLO_NAMESPACE, Serializer.APOLLO_NAMESPACE_TNS_PREFIX);
+		serializer = SerializerFactory.getSerializer(serializationFormat);
 
 		impl = new DataServiceImpl();
 

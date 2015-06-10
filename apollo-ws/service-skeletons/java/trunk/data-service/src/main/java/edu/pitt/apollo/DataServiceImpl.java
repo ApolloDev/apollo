@@ -7,7 +7,7 @@ import edu.pitt.apollo.dataservice.methods.RunJobMethodFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
@@ -20,6 +20,7 @@ import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import java.math.BigInteger;
@@ -69,7 +70,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		try {
 			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
 			return databaseAccessor.insertRun(message);
@@ -129,12 +130,12 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getRunStatus(runId, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DataServiceException(ex.getMessage());
+			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
@@ -189,7 +190,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
 			return dba.getListOfRegisteredSoftwareRecords(authentication);
@@ -199,10 +200,10 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public void addUserRole(String username, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
 		try {
 			DatabaseAccessor dba = DatabaseAccessorFactory.getDatabaseAccessor(authentication);
-			dba.addUserRole(username, softwareIdentification, canRunSoftware, canRequestPrivileged, authentication);
+			dba.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged, authentication);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}
@@ -260,19 +261,19 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		RunJobMethod dataServiceMethod;
 		try {
 			dataServiceMethod = RunJobMethodFactory.getDataServiceMethod(runId, authentication);
 			dataServiceMethod.runDataService();
 		} catch (DataServiceException | UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new SimulatorServiceException(ex.getMessage());
+			throw new JobRunningServiceException(ex.getMessage());
 		}
 		
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

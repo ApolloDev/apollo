@@ -50,13 +50,15 @@
 	</complexType>
     
         <complexType name="DataRetrievalRequestMessage">
+        	<complexContent>
+		<extension base="common:RunMessage">
 		<sequence>
-			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
 			<element name="runId" type="common:RunIdentification" minOccurs="1" maxOccurs="1"></element>
             <element name="optionalFileNamesToMatch" type="token" minOccurs="0"
 				maxOccurs="unbounded"/>
 		</sequence>
+	</extension>
+</complexContent>
 	</complexType>
     
     <!--<complexType name="DataRetrievalResult">
@@ -254,7 +256,7 @@
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 		</sequence>
 	</complexType>
-	<complexType name="AddUserRoleMessage">
+	<!--<complexType name="AddUserRoleMessage">
 		<sequence>
 			<element name="userId" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
@@ -268,7 +270,7 @@
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
 		</sequence>
-	</complexType>
+	</complexType>-->
 	<complexType name="AddRoleMessage">
 		<sequence>
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
@@ -281,6 +283,7 @@
 	<complexType name="AddRoleToUserMessage">
 		<sequence>
 			<element name="userName" type="token" minOccurs="1" maxOccurs="1"></element>
+			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>

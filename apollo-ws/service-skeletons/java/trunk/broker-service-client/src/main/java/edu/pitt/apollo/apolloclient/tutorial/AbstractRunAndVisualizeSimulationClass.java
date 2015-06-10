@@ -74,7 +74,7 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 
 		SoftwareIdentification softwareIdentificationForTimeSeriesVisualizer = ApolloServiceTypeFactory
 				.getSoftwareIdentificationForVisualizer(visualizerIdentificationEnum);
-		runVisualizationMessage.setVisualizerIdentification(softwareIdentificationForTimeSeriesVisualizer);
+		runVisualizationMessage.setSoftwareIdentification(softwareIdentificationForTimeSeriesVisualizer);
 
 		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels)
 			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);

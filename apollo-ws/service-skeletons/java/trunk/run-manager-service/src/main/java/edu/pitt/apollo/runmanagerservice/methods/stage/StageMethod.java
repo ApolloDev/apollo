@@ -11,10 +11,10 @@ import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_0.ParameterValue;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,13 +32,13 @@ public class StageMethod {
 
     static Logger logger = LoggerFactory.getLogger(StageMethod.class);
     private static final long STATUS_CHECK_INTERVAL_TIME_IN_MILLIS = 5000;
-    private final Object message;
+    private final RunMessage message;
 
     private final Authentication authentication;
     private final BigInteger parentRunId;
     protected DataServiceAccessor dataServiceDao;
 
-    public StageMethod(Object message, BigInteger parentRunId) throws RunManagementException {
+    public StageMethod(RunMessage message, BigInteger parentRunId) throws RunManagementException {
         this.message = message;
         this.parentRunId = parentRunId;
         this.authentication = getAuthentication(message);
@@ -148,8 +149,9 @@ public class StageMethod {
     }
 
     private String getTranslatorServiceUrl(DataServiceAccessor dataServiceDao, Authentication authentication) throws DataServiceException {
-        Map<Integer, ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
-        for (ServiceRegistrationRecord record : software.values()) {
+
+        List<ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
+        for (ServiceRegistrationRecord record : software) {
             if (record.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.TRANSLATOR)) {
                 return record.getUrl();
             }

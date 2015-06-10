@@ -40,7 +40,11 @@
     </distributionManagement>
 
     <dependencies>
-        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>rest-service-connector-common</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

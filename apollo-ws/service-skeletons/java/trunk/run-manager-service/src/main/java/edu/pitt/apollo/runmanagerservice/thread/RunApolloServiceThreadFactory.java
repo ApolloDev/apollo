@@ -4,6 +4,7 @@ import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -16,25 +17,18 @@ import java.math.BigInteger;
  */
 public class RunApolloServiceThreadFactory {
 
-	public static RunApolloServiceThread getRunApolloServiceThread(Object message, BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException {
+	public static RunApolloServiceThread getRunApolloServiceThread(RunMessage message, BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException {
 
 		SoftwareIdentification softwareId;
 		if ((message instanceof RunSimulationMessage) || (message instanceof RunSimulationsMessage)) {
-			softwareId = ((RunSimulationMessage) message).getSimulatorIdentification();
-			return new RunSimulationThread(runId, softwareId, authentication);
-		} else if (message instanceof RunSimulationsMessage) {
-			softwareId = ((RunSimulationsMessage) message).getSimulatorIdentification();
-			return null;
-			//return new RunSimulationsThread((RunSimulationsMessage) message, softwareId, runId, authentication);
+			return new RunSimulationThread(runId, message.getSoftwareIdentification(), authentication);
 		} else if (message instanceof RunVisualizationMessage) {
-			softwareId = ((RunVisualizationMessage) message).getVisualizerIdentification();
-			return new RunVisualizationThread(runId, softwareId, authentication);
+			return new RunVisualizationThread(runId, message.getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetOutputFilesURLsMessage) {
 //			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
 //			return new RunDataServiceThread(runId, softwareId, authentication);
 		} else if (message instanceof DataRetrievalRequestMessage) {
-			softwareId = ((DataRetrievalRequestMessage) message).getSoftwareIdentification();
-			return new RunDataServiceThread(runId, softwareId, authentication);
+			return new RunDataServiceThread(runId, message.getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
 //			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
 //			return new RunDataServiceThread(runId, softwareId, authentication);

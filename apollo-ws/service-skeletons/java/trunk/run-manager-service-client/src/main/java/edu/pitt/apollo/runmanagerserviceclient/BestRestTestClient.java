@@ -7,14 +7,14 @@ import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
-import edu.pitt.apollo.runmanagerserviceclient.ApolloServiceTypeFactory;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_0_0.FixedDuration;
 import org.slf4j.Logger;
@@ -42,8 +42,7 @@ public class BestRestTestClient {
     }
 
     private static Authentication getAuthentication() throws FileNotFoundException, IOException {
-        File props = new File(REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
-        InputStream fis = new FileInputStream(props);
+        InputStream fis = BestRestTestClient.class.getResourceAsStream("./" + REST_DATA_SERVICE_TEST_CLIENT_PROPERTIES_FILE);
         Properties properties = new Properties();
         properties.load(fis);
         fis.close();
@@ -54,7 +53,8 @@ public class BestRestTestClient {
         return auth;
     }
 
-    private static RunSimulationMessage getRunSimulationMessage() throws IOException, SimulatorServiceException, DataServiceException {
+   
+    private static RunSimulationMessage getRunSimulationMessage() throws IOException, DataServiceException {
         RunSimulationMessage runSimulationMessage =
                 ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
@@ -67,7 +67,7 @@ public class BestRestTestClient {
         return runSimulationMessage;
     }
 
-    private static void run(Object message) throws IOException, SimulatorServiceException, DataServiceException {
+    private static void run(RunMessage message) throws IOException, JobRunningServiceException, DataServiceException {
         RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
         BigInteger runId = runManagementInterface.insertRun(message);
         while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
@@ -101,7 +101,7 @@ public class BestRestTestClient {
                         .getInfectiousDiseaseScenario());
         runSimulationsMessage.setAuthentication(runSimulationMessage
                 .getAuthentication());
-        runSimulationsMessage.setSimulatorIdentification(runSimulationMessage
+        runSimulationsMessage.setSoftwareIdentification(runSimulationMessage
                 .getSimulatorIdentification());
         runSimulationsMessage
                 .setSimulatorTimeSpecification(runSimulationMessage
@@ -162,7 +162,7 @@ public class BestRestTestClient {
         return message;
     }
 
-    public static void main(String[] args) throws IOException, DataServiceException, SimulatorServiceException {
+    public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
         RunSimulationMessage runSimulationMessage = BestRestTestClient.getRunSimulationMessage();
         logger.debug("Hello!");
         RunSimulationsMessage runSimulationsMessage = BestRestTestClient.getRunSimulationsMessage(100);

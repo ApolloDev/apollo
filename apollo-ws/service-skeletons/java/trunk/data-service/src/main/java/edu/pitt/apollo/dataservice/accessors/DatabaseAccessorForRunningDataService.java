@@ -107,7 +107,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		Authentication authentication = stripAuthentication(message);
 		int md5CollisionId;
 		BigInteger runIds = null;

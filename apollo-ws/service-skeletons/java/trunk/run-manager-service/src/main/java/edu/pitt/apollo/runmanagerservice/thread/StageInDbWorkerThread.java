@@ -51,7 +51,7 @@ public class StageInDbWorkerThread implements Runnable {
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
         this.scenarioDate = scenarioDate;
         this.batchRunId = batchRunId;
-        this.simulatorIdentification = message.getSimulatorIdentification();
+        this.simulatorIdentification = message.getSoftwareIdentification();
         this.errorRef = errorRef;
         this.counterRef = counterRef;
         this.authentication =authentication;
@@ -75,8 +75,8 @@ public class StageInDbWorkerThread implements Runnable {
         RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
         runSimulationMessage.setAuthentication(template.getAuthentication());
         runSimulationMessage.setInfectiousDiseaseScenario(copyInfectiousDiseaseScenarioForTemplate(template.getBaseInfectiousDiseaseScenario()));
-        runSimulationMessage.setSimulatorIdentification(template
-                .getSimulatorIdentification());
+        runSimulationMessage.setSoftwareIdentification(template
+                .getSoftwareIdentification());
         runSimulationMessage.setSimulatorTimeSpecification(template
                 .getSimulatorTimeSpecification());
 

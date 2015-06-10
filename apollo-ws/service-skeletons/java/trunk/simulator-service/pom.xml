@@ -34,6 +34,12 @@
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>db-common</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>edu.pitt.apollo</groupId>
+                    <artifactId>xsd-types</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
       
     </dependencies>

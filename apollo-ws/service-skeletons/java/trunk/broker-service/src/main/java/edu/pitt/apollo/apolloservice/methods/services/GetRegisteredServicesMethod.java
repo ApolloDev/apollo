@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -29,9 +28,9 @@ public class GetRegisteredServicesMethod extends BaseDataServiceAccessorMethod {
 
 		List<ServiceRecord> serviceRecords = new ArrayList<>();
 		try {
-			Map<Integer, ServiceRegistrationRecord> serviceRegistrationRecords = connector.getListOfRegisteredSoftwareRecords(authentication);
+			List<ServiceRegistrationRecord> serviceRegistrationRecords = connector.getListOfRegisteredSoftwareRecords(authentication);
 
-			for (ServiceRegistrationRecord record : serviceRegistrationRecords.values()) {
+			for (ServiceRegistrationRecord record : serviceRegistrationRecords) {
 				ServiceRecord serviceRecord = new ServiceRecord();
 				serviceRecord.setSoftwareIdentification(record.getSoftwareIdentification());
 				serviceRecord.setUrl(record.getUrl());

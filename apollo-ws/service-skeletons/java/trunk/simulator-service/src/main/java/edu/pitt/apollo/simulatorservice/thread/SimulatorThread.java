@@ -160,7 +160,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
 
 		try {
-			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			int visualizerSoftwareKey = dbUtils.getSoftwareIdentificationKey(visualizerSoftwareId);
 
 			addTextDataContentForSeries(content, seriesName, sourceSoftwareIdKey, visualizerSoftwareKey);
@@ -216,7 +216,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		Map<String, ByteArrayOutputStream> map;
 		try {
 			int translatorKey = dbUtils.getSoftwareIdentificationKey(translatorSoftwareId);
-			int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSimulatorIdentification());
+			int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			map = dbUtils.getDataContentForSoftware(runId,
 					translatorKey, simulatorKey);
 			// update this

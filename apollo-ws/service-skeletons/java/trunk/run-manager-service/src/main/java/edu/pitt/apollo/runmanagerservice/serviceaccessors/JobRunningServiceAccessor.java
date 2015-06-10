@@ -1,7 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
 import edu.pitt.apollo.connector.JobRunningServiceConnector;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 
@@ -19,12 +19,12 @@ public class JobRunningServiceAccessor extends ServiceAccessor implements JobRun
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		connector.run(runId, authentication);
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		connector.terminate(runId, authentication);
 	}
 

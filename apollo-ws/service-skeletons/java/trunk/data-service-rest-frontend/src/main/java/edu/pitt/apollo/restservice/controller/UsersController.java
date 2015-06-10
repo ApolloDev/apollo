@@ -5,12 +5,18 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restservice.methods.AddRoleToUserMethod;
 import edu.pitt.apollo.restservice.methods.AddUserMethod;
+import edu.pitt.apollo.restservice.methods.AuthenticateUserMethod;
+import edu.pitt.apollo.restservice.methods.AuthorizeUserMethod;
 import edu.pitt.apollo.restservice.methods.DeleteUserMethod;
+import edu.pitt.apollo.restservice.methods.GetSoftwareIdentificationForRunMethod;
+import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
+import java.math.BigInteger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 
 /**
@@ -32,6 +38,38 @@ public class UsersController {
 	 String getListOfUsers() {
 	 return null;
 	 }*/
+	@GET
+	@ApiOperation(value = "Authenticate user.", notes = "Authenticates the user.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/user/{userName}/authenticate", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String authenticateUser(@ApiParam(value = "User name.", required = true) @PathVariable("userName") String userName,
+			@ApiParam(value = "Password for user to be authenticated", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new AuthenticateUserMethod("", "", SerializationFormat.XML).authenticateUser(userName, password);
+	}
+
+	@GET
+	@ApiOperation(value = "Authorize user.", notes = "Authorizes the user to run a given software.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/user/{userName}/authorize", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String authorizeUser(@ApiParam(value = "User name.", required = true) @PathVariable("userName") String userName,
+			@ApiParam(value = "Password for user to be authorized", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Software name", required = true) @RequestParam("softwareName") String softwareName,
+			@ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
+			@ApiParam(value = "Software developer", required = true) @RequestParam("softwareDeveloper") String softwareDeveloper,
+			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum,
+			@ApiParam(value = "Can the user run the software", required = true) @RequestParam("requestToRunSoftware") boolean requestToRunSoftware) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new AuthorizeUserMethod("", "", SerializationFormat.XML).authorizeUser(userName, password,
+				softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum, requestToRunSoftware);
+	}
+
 	@POST
 //    @ApiImplicitParam(dataType = "string", name = "userInformationXml", paramType = "body", required = true)
 	@ApiOperation(value = "Add user.", notes = "Adds the user to the users collection.", response = String.class)
@@ -63,17 +101,17 @@ public class UsersController {
 	 return null;
 	 }*/
 	@DELETE
-	@ApiOperation(value = "Delete user.", notes = "Removes a user from the users collection with the given user ID.", response = String.class)
+	@ApiOperation(value = "Delete user.", notes = "Removes a user with the given user ID.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
-	@RequestMapping(value = "/users", method = RequestMethod.DELETE, headers = "Accept=application/xml")
+	@RequestMapping(value = "/user/{userName}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
 	public @ResponseBody
-	String deleteUserFromUseresCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
-			@ApiParam(value = "User name to add", required = true) @RequestParam("userNameToAdd") String uernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
+	String deleteUserFromUseresCollection(@ApiParam(value = "Run ID.", required = true) @PathVariable("userName") String nameOfUserToDelete,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
-		return new DeleteUserMethod(username, password, SerializationFormat.XML).deleteUser(uernameToDelete);
+		return new DeleteUserMethod(username, password, SerializationFormat.XML).deleteUser(nameOfUserToDelete);
 	}
 
 

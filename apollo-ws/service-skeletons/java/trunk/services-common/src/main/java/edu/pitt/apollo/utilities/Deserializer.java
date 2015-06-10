@@ -16,7 +16,7 @@ public abstract class Deserializer {
 
 	public abstract Object getObjectFromMessage(String xml, String className, String classNamespace) throws DeserializationException;
 
-	protected String convertNamespaceFromXSDToJava(String xsdNamespace) throws DeserializationException {
+	public static String convertNamespaceFromXSDToJava(String xsdNamespace) throws DeserializationException {
 
 		Matcher matcher = xsdNAmespacePattern.matcher(xsdNamespace);
 		if (matcher.find()) {

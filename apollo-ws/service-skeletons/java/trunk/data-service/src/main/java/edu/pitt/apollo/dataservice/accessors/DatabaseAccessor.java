@@ -9,7 +9,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SimulatorServiceException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
@@ -212,7 +212,7 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public BigInteger insertRun(Object message) throws RunManagementException {
+	public BigInteger insertRun(RunMessage message) throws RunManagementException {
 		throw new RunManagementException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 
@@ -270,11 +270,11 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException, UserNotAuthenticatedException {
+	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
 			authenticateUser(authentication);
 			return dbUtils.getStatusOfLastServiceToBeCalledForRun(runId);
-		} catch (ApolloDatabaseException e) {
+		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}
@@ -350,10 +350,10 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 //	}
 
 	@Override
-	public Map<Integer, ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		try {
 			authenticateUser(authentication);
-			return dbUtils.getRegisteredSoftware();
+			return new ArrayList(dbUtils.getRegisteredSoftware().values());
 		} catch (ApolloDatabaseException ade) {
 			throw new DataServiceException(ade.getMessage());
 		}
@@ -376,10 +376,10 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public void addUserRole(String username, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
+	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DataServiceException {
 		authenticateUser(authentication);
 		try {
-			dbUtils.addUserRole(username, username, softwareIdentification, canRunSoftware, canRequestPrivileged);
+			dbUtils.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged);
 		} catch (ApolloDatabaseException ex) {
 			throw new DataServiceException(ex.getMessage());
 		}
@@ -423,12 +423,12 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public void run(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public void terminate(BigInteger runId, Authentication authentication) throws SimulatorServiceException {
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 

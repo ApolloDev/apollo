@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>syntheticpopulation-service</artifactId>
+            <artifactId>synthetic-population-service</artifactId>
             <!-- Classifier below used with Maven Assembly Plugin to specify subset 
             of above artifact needed. -->
             <classifier>jaxws</classifier>
