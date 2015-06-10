@@ -1,7 +1,0 @@
-#summary The description of a SimulatorService
-
-= Introduction =
-
-A SimulatorService is a web service that is hosted by the developer of a Simulator.  This type of web service takes a SimulatorConfiguration object as input, and writes the results of a simulation to a database.
-
-The methods exposed by a SimulatorService are documented [SimulatorServiceInterfaceDocumentation here].

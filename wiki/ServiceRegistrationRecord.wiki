@@ -1,3 +1,0 @@
-#summary Description of the ServiceRegistrationRecord type
-
-http://apollo.googlecode.com/svn/wiki/img/ServiceRegistrationRecord.png
