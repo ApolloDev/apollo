@@ -67,18 +67,24 @@ public class RestServiceUtils {
 
 	public <T> T getObjectFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
-		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
-		try {
-			Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
-			T object = deserializer.getObjectFromMessage(response.getResponseBody().get(0), clazz);
-			return object;
-		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
-			throw new RestServiceException(ex.getMessage());
+
+		if (meta.isIsBodySerialized()) {
+			SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
+			try {
+				Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
+				T object = deserializer.getObjectFromMessage(response.getResponseBody().get(0), clazz);
+				return object;
+			} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
+				throw new RestServiceException(ex.getMessage());
+			}
+		} else {
+			return (T) response.getResponseBody().get(0);
 		}
 	}
 
 	public <T> List<T> getObjectsFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
+		if (meta.isIsBodySerialized()) {
 		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 		try {
 			Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
@@ -93,6 +99,13 @@ public class RestServiceUtils {
 			return deserializedObjects;
 		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
 			throw new RestServiceException(ex.getMessage());
+		}
+		} else {
+			List<T> list = new ArrayList<>();
+			for (String s : response.getResponseBody()) {
+				list.add((T) s);
+			}
+			return list;
 		}
 	}
 
@@ -163,10 +176,10 @@ public class RestServiceUtils {
 	}
 
 	public void makeDeleteRequestAndCheckResponse(String uri) throws RestServiceException {
-		
+
 		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, HttpEntity.EMPTY, Response.class);
 		Response response = responseEntity.getBody();
 		checkResponseCode(response);
 	}
-	
+
 }

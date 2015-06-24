@@ -1281,7 +1281,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
             pstmt.setString(1, softwareIdentification.getSoftwareDeveloper());
             pstmt.setString(2, softwareIdentification.getSoftwareName());
             pstmt.setString(3, softwareIdentification.getSoftwareVersion());
-            pstmt.setString(4, softwareIdentification.getSoftwareType().toString());
+            pstmt.setString(4, softwareIdentification.getSoftwareType().value());
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

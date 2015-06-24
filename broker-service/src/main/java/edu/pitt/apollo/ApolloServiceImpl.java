@@ -141,28 +141,24 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 				DataServiceConnector dataServiceConnector = new RestDataServiceConnector(dataServiceUrl);
 				String initRunManagerServiceUrl = null;
-				try {
-					List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
+				List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
 
-					for (ServiceRegistrationRecord record : softwareRecords) {
-						SoftwareIdentification softwareId = record.getSoftwareIdentification();
-						if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
-							initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
-						}
+				for (ServiceRegistrationRecord record : softwareRecords) {
+					SoftwareIdentification softwareId = record.getSoftwareIdentification();
+					if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
+						initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
 					}
-				} catch (DataServiceException ex) {
-					throw new ExceptionInInitializerError(ex.getMessage());
 				}
 
 				if (initRunManagerServiceUrl == null) {
-					throw new ExceptionInInitializerError("No registered software with type RUN_MANAGER was found");
+					throw new RuntimeException("No registered software with type RUN_MANAGER was found");
 				} else {
 					runManagerServiceUrl = initRunManagerServiceUrl;
 				}
 
 			}
-		} catch (IOException ex) {
-			throw new ExceptionInInitializerError(ex.getMessage());
+		} catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
 		}
 	}
 
@@ -418,7 +414,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		dataRetrievalRequestMessage.setAuthentication(getAllOutputFilesURLAsZipMessage.getAuthentication());
 		dataRetrievalRequestMessage.setSoftwareIdentification(getAllOutputFilesURLAsZipMessage.getSoftwareIdentification());
 		dataRetrievalRequestMessage.setRunId(getAllOutputFilesURLAsZipMessage.getRunId());
-		
+
 		InsertAndStartDataServiceJobMethod method = new InsertAndStartDataServiceJobMethod(runManagerServiceUrl, apolloServiceQueue);
 		RunResult runResult = method.insertAndStartRun(dataRetrievalRequestMessage, authentication);
 		GetAllOutputFilesURLAsZipResult result = new GetAllOutputFilesURLAsZipResult();
