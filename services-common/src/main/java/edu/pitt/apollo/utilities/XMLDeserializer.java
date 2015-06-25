@@ -21,7 +21,7 @@ public class XMLDeserializer extends Deserializer {
 	public Object getObjectFromMessage(String xml, String className, String classNamespace) throws DeserializationException {
 		
 		String javaPackage = convertNamespaceFromXSDToJava(classNamespace);
-		String classWithPackage = classNamespace + "." + className;
+		String classWithPackage = javaPackage + "." + className;
 		
 		try {
 			Class<?> classToParseTo = Class.forName(classWithPackage);

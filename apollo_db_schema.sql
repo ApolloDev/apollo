@@ -76,7 +76,7 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl',1, NULL, NULL, NULL, NULL),
 											 (11,'UPitt', 'Broker Service','3.0.0','broker','http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/brokerservice?wsdl',1, NULL, NULL, NULL ,NULL),
                        (12,'any', 'any','any','endUserApplication','not_applicable',1, NULL, NULL, NULL ,NULL),
-(13,'UPitt', 'Run Manager','3.0.0','runManager','http://localhost:8080/run-manager-service-3.0.0-SNAPSHOT/',1, NULL, NULL, NULL ,NULL);
+(13,'UPitt', 'Run Manager','3.0.0','runManager','http://localhost:8080/run-manager-service-war-3.0.0-SNAPSHOT/',1, NULL, NULL, NULL ,NULL);
 
 
 CREATE TABLE roles (

@@ -32,11 +32,15 @@ import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -85,21 +89,21 @@ public class RestServiceUtils {
 	public <T> List<T> getObjectsFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
 		if (meta.isIsBodySerialized()) {
-		SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
-		try {
-			Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
-			List<T> deserializedObjects = new ArrayList<>();
+			SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
+			try {
+				Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
+				List<T> deserializedObjects = new ArrayList<>();
 
-			List<String> serializedObjects = response.getResponseBody();
-			for (String serializedObject : serializedObjects) {
-				T object = deserializer.getObjectFromMessage(serializedObject, clazz);
-				deserializedObjects.add(object);
+				List<String> serializedObjects = response.getResponseBody();
+				for (String serializedObject : serializedObjects) {
+					T object = deserializer.getObjectFromMessage(serializedObject, clazz);
+					deserializedObjects.add(object);
+				}
+
+				return deserializedObjects;
+			} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
+				throw new RestServiceException(ex.getMessage());
 			}
-
-			return deserializedObjects;
-		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
-			throw new RestServiceException(ex.getMessage());
-		}
 		} else {
 			List<T> list = new ArrayList<>();
 			for (String s : response.getResponseBody()) {
@@ -121,6 +125,7 @@ public class RestServiceUtils {
 
 			String serializedObject = serializer.serializeObject(bodyObject);
 			request.setRequestBody(serializedObject);
+			request.setRequestMeta(requestMeta);
 		} catch (SerializationException | UnsupportedSerializationFormatException ex) {
 			throw new RestServiceException(ex.getMessage());
 		}
@@ -154,9 +159,27 @@ public class RestServiceUtils {
 	}
 
 	public <T> T makePostRequestCheckResponseAndGetObject(String uri, Object object, Class<T> clazz) throws RestServiceException {
+
+		try {
 		Request request = getRequestObjectWithSerializedBody(object);
-		Response response = template.postForObject(uri, request, Response.class);
-		return checkResponseAndGetObject(response, clazz);
+
+		List<HttpMessageConverter<?>> converters = new ArrayList<>();
+		converters.add(new RequestHttpMessageConverter());
+		template.setMessageConverters(converters);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		headers.setContentType(MediaType.APPLICATION_XML);
+		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
+
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
+
+//		Response response = template.postForObject(uri, request, Response.class);
+		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
+		} catch (Exception ex) {
+			System.out.println("exception: " + ex.getMessage());
+			return null;
+		}
 	}
 
 	public <T> List<T> makePostRequestCheckResponseAndGetObjects(String uri, Object object, Class<T> clazz) throws RestServiceException {
