@@ -215,7 +215,7 @@ public class RestDataServiceConnector extends DataServiceConnector {
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
-		String uri = "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
 				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
 		try {

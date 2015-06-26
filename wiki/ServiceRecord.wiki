@@ -1,3 +1,0 @@
-#summary Description of the ServiceRecord type
-
-http://apollo.googlecode.com/svn/wiki/img/ServiceRecord.png

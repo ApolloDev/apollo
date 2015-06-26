@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public abstract class Deserializer {
 
-	private static final Pattern xsdNAmespacePattern = Pattern.compile("http:\\/\\/(.*?)\\/(.*)\\/");
+	private static final Pattern xsdNamespacePattern = Pattern.compile("http:\\/\\/(.*?)\\/(.*)\\/");
 
 	public abstract <T> T getObjectFromMessage(String xml, Class<T> classToParseTo) throws DeserializationException;
 
@@ -18,10 +18,10 @@ public abstract class Deserializer {
 
 	public static String convertNamespaceFromXSDToJava(String xsdNamespace) throws DeserializationException {
 
-		Matcher matcher = xsdNAmespacePattern.matcher(xsdNamespace);
+		Matcher matcher = xsdNamespacePattern.matcher(xsdNamespace);
 		if (matcher.find()) {
 			String packageName = matcher.group(1);
-			String[] packageNameSplit = packageName.split(".");
+			String[] packageNameSplit = packageName.split("\\.");
 			String javaNamespace = "";
 			for (int i = packageNameSplit.length - 1; i >= 0; i--) {
 				javaNamespace += packageNameSplit[i] + ".";

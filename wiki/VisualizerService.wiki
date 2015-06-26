@@ -1,7 +1,0 @@
-#summary Description of a VisualizerService
-
-= Introduction =
-
-A VisualizerService is a web service that is hosted by the developer of a Visualizer.  This type of web service takes a VisualizerConfiguration object as input, and returns a visualization of a simulation.
-
-The methods that are exposed by a VisualizerService are documented [VisualizerServiceInterfaceDocumentation here].

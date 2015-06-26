@@ -1,3 +1,0 @@
-#summary Description of a VisualizerConfiguration type
-
-http://apollo.googlecode.com/svn/wiki/img/VisualizerConfiguration.png
