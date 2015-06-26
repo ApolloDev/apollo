@@ -1,15 +1,12 @@
-<<<<<<< HEAD
 .DS_Store
 .classpath
 .project
 .settings
-=======
->>>>>>> master
 apollo-ws/service-skeletons/java/trunk/xsd-types/src/main/xsd/
 dependency-reduced-pom.xml
 target/
 *.iml
-<<<<<<< HEAD
-=======
+db-common/src/main/resources/apollo_db_schema.sql
+**/*.idea/
+xsd-types/src/main/xsd/
 catalog-*.xml
->>>>>>> master
