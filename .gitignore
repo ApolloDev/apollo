@@ -10,3 +10,4 @@ db-common/src/main/resources/apollo_db_schema.sql
 **/*.idea/
 xsd-types/src/main/xsd/
 catalog-*.xml
+nb-configuration.xml
