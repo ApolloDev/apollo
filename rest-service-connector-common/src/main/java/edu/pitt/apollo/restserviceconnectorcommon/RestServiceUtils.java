@@ -50,9 +50,18 @@ import org.springframework.web.client.RestTemplate;
 public class RestServiceUtils {
 
 	RestTemplate template = new RestTemplate();
+	HttpHeaders headers = new HttpHeaders();
 
 	public RestServiceUtils() {
+		// add the neccesary converts to the template
+		List<HttpMessageConverter<?>> converters = new ArrayList<>();
+		converters.add(new RequestHttpMessageConverter());
+		converters.add(new ResponseHttpMessageConverter());
+		template.setMessageConverters(converters);
 
+		// set the headers
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		headers.setContentType(MediaType.APPLICATION_XML);
 	}
 
 	public static String getUsernameAndPasswordQueryParams(Authentication authentication) {
@@ -149,43 +158,33 @@ public class RestServiceUtils {
 	}
 
 	public <T> T makeGetRequestCheckResponseAndGetObject(String uri, Class<T> clazz) throws RestServiceException {
-		Response response = template.getForObject(uri, Response.class);
-		return checkResponseAndGetObject(response, clazz);
+		HttpEntity<Request> entity = new HttpEntity<>(headers);
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
+
+		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
 	}
 
 	public <T> List<T> makeGetRequestCheckResponseAndGetObjects(String uri, Class<T> clazz) throws RestServiceException {
-		Response response = template.getForObject(uri, Response.class);
-		return checkResponseAndGetObjects(response, clazz);
+		HttpEntity<Request> entity = new HttpEntity<>(headers);
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
+		
+		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
 	public <T> T makePostRequestCheckResponseAndGetObject(String uri, Object object, Class<T> clazz) throws RestServiceException {
 
-		try {
 		Request request = getRequestObjectWithSerializedBody(object);
-
-		List<HttpMessageConverter<?>> converters = new ArrayList<>();
-		converters.add(new RequestHttpMessageConverter());
-		template.setMessageConverters(converters);
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
-		headers.setContentType(MediaType.APPLICATION_XML);
 		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
-
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 
-//		Response response = template.postForObject(uri, request, Response.class);
 		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
-		} catch (Exception ex) {
-			System.out.println("exception: " + ex.getMessage());
-			return null;
-		}
 	}
 
 	public <T> List<T> makePostRequestCheckResponseAndGetObjects(String uri, Object object, Class<T> clazz) throws RestServiceException {
 		Request request = getRequestObjectWithSerializedBody(object);
-		Response response = template.postForObject(uri, request, Response.class);
-		return checkResponseAndGetObjects(response, clazz);
+		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
+		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
 	public <T> T checkResponseAndGetObject(Response response, Class<T> clazz) throws RestServiceException {
