@@ -390,7 +390,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
                 pstmt.setString(2, softwareIdentification.getSoftwareName());
                 pstmt.setString(3, softwareIdentification.getSoftwareVersion());
                 pstmt.setString(4, softwareIdentification.getSoftwareType()
-                        .toString());
+                        .value());
                 ResultSet rs = pstmt.executeQuery();
                 int softwareIdKey = -1;
                 if (rs.next()) {
