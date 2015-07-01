@@ -163,9 +163,8 @@ public class TestClient {
 
     public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
         RunSimulationMessage runSimulationMessage = TestClient.getRunSimulationMessage();
-        logger.debug("Hello!");
-        RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(100);
-        run(runSimulationsMessage);
+        //RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(20);
+        run(runSimulationMessage);
     }
 
 
