@@ -109,9 +109,10 @@ public class StageMethod {
                 translatorDao.translateRun(runId);
 
                 methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
-                while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+                while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)
+						&& !methodCallStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                     try {
-                        switch (statusEnum) {
+                        switch (methodCallStatus.getStatus()) {
                             case FAILED:
                                 break;
                             case RUN_TERMINATED:
@@ -130,14 +131,13 @@ public class StageMethod {
                         // it's okay if the sleep timer is interrupted
                     }
                 }
-            }
+            } else {
+				BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
+                batchStageMethod.stage();
+			}
 
             // run is now translated
-            if (message instanceof RunSimulationsMessage) {
-                BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
-                batchStageMethod.stage();
-
-            }
+ 
             return runId;
         } catch (MalformedURLException ex) {
             throw new RunManagementException("Malformed URL exception staging run : " + ex.getMessage());

@@ -197,7 +197,6 @@
     </repositories>
 
     <build>
-        <finalName>apollo-rest-interface</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -227,5 +226,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
 </project>
