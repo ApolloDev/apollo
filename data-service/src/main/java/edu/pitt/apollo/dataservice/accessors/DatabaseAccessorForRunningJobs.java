@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
-import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;

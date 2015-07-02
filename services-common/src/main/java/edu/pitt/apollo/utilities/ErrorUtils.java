@@ -1,5 +1,6 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.utilities;
 
+import edu.pitt.apollo.FileLocks;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

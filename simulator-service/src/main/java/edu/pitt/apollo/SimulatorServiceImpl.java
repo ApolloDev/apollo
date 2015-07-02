@@ -14,11 +14,8 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.SQLException;
 import java.util.Map;
 
 import javax.jws.WebMethod;
@@ -32,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
-import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
@@ -54,7 +50,6 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 	private static final String DATABASE_PROPERTIES_FILENAME = "database.properties";
 
 	protected static String APOLLO_DIR = "";
-	protected static ApolloDbUtils dbUtils;
 	protected static SoftwareIdentification translatorSoftwareId;
 	protected static final ApolloServiceQueue serviceQueue = new ApolloServiceQueue();
 
@@ -68,7 +63,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 //        try {
 		// set the started file for the run
 //            System.out.println("creating run directory: " + getRunDirectory(runId));
-		RunUtils.updateStatus(dbUtils, simulationRunId, MethodCallStatusEnum.QUEUED, "The simulator run is queued");
+		RunUtils.updateStatus(simulationRunId, MethodCallStatusEnum.QUEUED, "The simulator run is queued");
 //        } catch (IOException ex) {
 //            try {
 //                RunUtils.updateStatus(dbUtils, MethodCallStatusEnum.FAILED, "IOException attempting to create started file for run "
@@ -83,7 +78,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 //        SimulatorServiceQueue.startAddSimulatorToQueueThread(worker);
 		MethodCallStatus status = serviceQueue.addThreadToQueueAndRun(worker);
 		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-			RunUtils.updateStatus(dbUtils, simulationRunId, status.getStatus(), status.getMessage());
+			RunUtils.updateStatus(simulationRunId, status.getStatus(), status.getMessage());
 		}
 		return null;
 	}
@@ -146,7 +141,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 //		}
         
 		try {
-			dbUtils = new ApolloDbUtils();
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			Map<Integer, ServiceRegistrationRecord> softwareIdMap = dbUtils.getRegisteredSoftware();
 			for (Integer id : softwareIdMap.keySet()) {
 				SoftwareIdentification softwareId = softwareIdMap.get(id).getSoftwareIdentification();

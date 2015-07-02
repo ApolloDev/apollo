@@ -2,7 +2,7 @@ package edu.pitt.apollo.dataservice.accessors;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
 
-import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
-import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import org.slf4j.Logger;

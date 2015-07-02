@@ -1,8 +1,8 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
 import edu.pitt.apollo.DataServiceImpl;
-import edu.pitt.apollo.JsonUtils;
-import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
@@ -10,7 +10,6 @@ import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 
-import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;

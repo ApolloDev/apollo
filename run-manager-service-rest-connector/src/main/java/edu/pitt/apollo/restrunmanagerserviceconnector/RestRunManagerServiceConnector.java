@@ -128,7 +128,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		String uri = "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		uri += "&action=" + RunActionEnum.START;
 		try {
 			restServiceUtils.makePostRequestAndCheckResponse(uri, "");

@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.pitt.apollo.JsonUtilsException;
-import edu.pitt.apollo.Md5Utils;
-import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import org.apache.commons.codec.digest.DigestUtils;

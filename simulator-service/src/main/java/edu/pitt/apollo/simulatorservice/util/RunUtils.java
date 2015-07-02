@@ -8,18 +8,14 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class RunUtils {
 
-    public static void updateStatus(ApolloDbUtils dbUtils, BigInteger runId, MethodCallStatusEnum statusEnum, String message) {
-        try {
-            dbUtils.updateStatusOfRun(runId, statusEnum, message);
-        } catch (ApolloDatabaseException ex) {
-            try {
-                dbUtils.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, "ApolloDatabaseException updating status for run ID "
-                        + runId + ": " + ex.getMessage());
-            } catch (ApolloDatabaseException ex1) {
-                ex1.printStackTrace();
-            }
-        }
-    }
+	public static void updateStatus(BigInteger runId, MethodCallStatusEnum statusEnum, String message) {
+		try {
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
+			dbUtils.updateStatusOfRun(runId, statusEnum, message);
+		} catch (ApolloDatabaseException ex) {
+			ex.printStackTrace();
+		}
+	}
 
 //    public static synchronized String createRunDir(String directory)
 //            throws IOException {
@@ -29,7 +25,6 @@ public class RunUtils {
 //
 //        return dir.getAbsolutePath();
 //    }
-
 //    public static synchronized String setStarted(String directory) throws IOException {
 //
 //        createRunDir(directory);
@@ -50,7 +45,6 @@ public class RunUtils {
 //    public static boolean statusFileExists(String directory, MethodCallStatusEnum status) {
 //        return new File(directory + File.separator + status.toString().toLowerCase() + ".txt").exists();
 //    }
-
 //    public static synchronized void setFinished(String directory)
 //            throws IOException {
 //
@@ -67,7 +61,6 @@ public class RunUtils {
 //        fw.write(msg);
 //        fw.close();
 //    }
-
 //    public static synchronized String getError(String directory) throws IOException {
 //
 //        File error = new File(directory + File.separator + "error.txt");
@@ -89,7 +82,6 @@ public class RunUtils {
 //        scanner.close();
 //        return results;
 //    }
-
 //    public static MethodCallStatus getStatus(String directory, int runId)
 //            throws IOException {
 //
@@ -124,9 +116,8 @@ public class RunUtils {
 //            return status;
 //        }
 //    }
+	public static String getMd5HashFromString(String string) {
 
-    public static String getMd5HashFromString(String string) {
-
-        return DigestUtils.md5Hex(string);
-    }
+		return DigestUtils.md5Hex(string);
+	}
 }

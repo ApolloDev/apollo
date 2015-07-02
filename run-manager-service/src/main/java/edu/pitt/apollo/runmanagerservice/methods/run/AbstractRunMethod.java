@@ -1,9 +1,9 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
-import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;

@@ -148,13 +148,15 @@ public class RestServiceUtils {
 	}
 
 	public void makeGetRequestAndCheckResponse(String uri) throws RestServiceException {
-		Response response = template.getForObject(uri, Response.class);
-		checkResponse(response);
+		HttpEntity<Request> entity = new HttpEntity<>(headers);
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
+		checkResponse(responseEntity.getBody());
 	}
 
 	public void makePostRequestAndCheckResponse(String uri, Object object) throws RestServiceException {
-		Response response = template.postForObject(uri, object, Response.class);
-		checkResponse(response);
+		HttpEntity<Request> entity = new HttpEntity<>(headers);
+		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
+		checkResponse(responseEntity.getBody());
 	}
 
 	public <T> T makeGetRequestCheckResponseAndGetObject(String uri, Class<T> clazz) throws RestServiceException {
@@ -167,7 +169,7 @@ public class RestServiceUtils {
 	public <T> List<T> makeGetRequestCheckResponseAndGetObjects(String uri, Class<T> clazz) throws RestServiceException {
 		HttpEntity<Request> entity = new HttpEntity<>(headers);
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
-		
+
 		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
@@ -187,6 +189,13 @@ public class RestServiceUtils {
 		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
+	public void makeDeleteRequestAndCheckResponse(String uri) throws RestServiceException {
+
+		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, HttpEntity.EMPTY, Response.class);
+		Response response = responseEntity.getBody();
+		checkResponseCode(response);
+	}
+
 	public <T> T checkResponseAndGetObject(Response response, Class<T> clazz) throws RestServiceException {
 		checkResponseCode(response);
 		return getObjectFromResponseBody(response, clazz);
@@ -195,13 +204,6 @@ public class RestServiceUtils {
 	public <T> List<T> checkResponseAndGetObjects(Response response, Class<T> clazz) throws RestServiceException {
 		checkResponseCode(response);
 		return getObjectsFromResponseBody(response, clazz);
-	}
-
-	public void makeDeleteRequestAndCheckResponse(String uri) throws RestServiceException {
-
-		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, HttpEntity.EMPTY, Response.class);
-		Response response = responseEntity.getBody();
-		checkResponseCode(response);
 	}
 
 }
