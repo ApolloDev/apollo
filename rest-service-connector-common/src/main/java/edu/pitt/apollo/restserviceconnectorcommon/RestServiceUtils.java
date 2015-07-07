@@ -177,7 +177,6 @@ public class RestServiceUtils {
 
 		Request request = getRequestObjectWithSerializedBody(object);
 		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
-		System.out.println("requesting URI: " + uri);
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 
 		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
