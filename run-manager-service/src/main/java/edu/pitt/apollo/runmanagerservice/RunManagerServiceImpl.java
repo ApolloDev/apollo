@@ -81,7 +81,7 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 		try {
 			SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
 			String urlOfSimulator = dataServiceAccessor.getURLForSoftwareIdentification(softwareIdentification, authentication);
-			SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator);
+			SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator, softwareIdentification);
 			soapJobRunningServiceConnector.run(runId, authentication);
 		} catch (DataServiceException e) {
 			throw new JobRunningServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());

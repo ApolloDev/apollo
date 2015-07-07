@@ -1,5 +1,6 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
+import edu.pitt.apollo.ApolloServiceConstants;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +50,6 @@ public class DatabaseUtility {
 	private SoftwareIdentification visuazlierSoftwareId;
 	static final Properties properties = new Properties();
 	private static String APOLLO_DIR;
-	protected static ApolloDbUtils dbUtils;
 
 	static {
 		InputStream input;
@@ -79,15 +79,6 @@ public class DatabaseUtility {
 //			logger.error("Error creating ApolloDbUtils when initializing the Visualizer database utility: "
 //					+ ex.getMessage());
 //		}
-		try {
-			dbUtils = new ApolloDbUtils();
-		} catch (ApolloDatabaseException ex) {
-			throw new ExceptionInInitializerError("Could not create ApolloDbUtils: " + ex.getMessage());
-		}
-	}
-
-	public static ApolloDbUtils getDbUtils() {
-		return dbUtils;
 	}
 
 	public static String getDatabasePropertiesFilename() {
@@ -101,6 +92,7 @@ public class DatabaseUtility {
 
 	public String getSimulatorSoftwareNameForRun(BigInteger runId) throws TimeSeriesVisualizerException {
 		try {
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			SoftwareIdentification id = dbUtils.getSoftwareIdentificationForRun(runId);
 			return id.getSoftwareName();
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
@@ -247,9 +239,10 @@ public class DatabaseUtility {
 			List<TimeSeriesCurveTypeEnum> infectionSatesToRetrieve) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
-
+		ApolloDbUtils dbUtils;
 		int visualizerKey;
 		try {
+			dbUtils = new ApolloDbUtils();
 			visualizerKey = dbUtils.getSoftwareIdentificationKey(visuazlierSoftwareId);
 		} catch (ApolloDatabaseException ex) {
 			throw new TimeSeriesVisualizerException(ex.getMessage());
@@ -300,7 +293,7 @@ public class DatabaseUtility {
 	public String getSoftwareNameForRunId(BigInteger runId) throws TimeSeriesVisualizerException {
 
 		try {
-
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			SoftwareIdentification softwareId = dbUtils.getSoftwareIdentificationForRun(runId);
 			return softwareId.getSoftwareName();
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
@@ -318,8 +311,10 @@ public class DatabaseUtility {
 	private void addTextDataContentForUrl(String url, String imageName, BigInteger visualizerRunId)
 			throws TimeSeriesVisualizerException {
 
+		ApolloDbUtils dbUtils;
 		int dataContentKey;
 		try {
+			dbUtils = new ApolloDbUtils();
 			dataContentKey = dbUtils.addTextDataContent(url);
 		} catch (ApolloDatabaseException ex) {
 			throw new TimeSeriesVisualizerException("ApolloDatabaseException attempting to add text data "
@@ -334,7 +329,7 @@ public class DatabaseUtility {
 		int runDataDescriptionId;
 		try {
 			runDataDescriptionId = dbUtils.getRunDataDescriptionId(ContentDataFormatEnum.URL, imageName,
-					ContentDataTypeEnum.IMAGE, dbUtils.getSoftwareIdentificationKey(visuazlierSoftwareId), 0);
+					ContentDataTypeEnum.IMAGE, dbUtils.getSoftwareIdentificationKey(visuazlierSoftwareId), ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
 		} catch (ApolloDatabaseKeyNotFoundException ex) {
 			throw new TimeSeriesVisualizerException(
 					"ApolloDatabaseKeyNotFoundException attempting to get run data "

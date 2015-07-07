@@ -79,6 +79,7 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 		MethodCallStatus status = serviceQueue.addThreadToQueueAndRun(worker);
 		if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
 			RunUtils.updateStatus(simulationRunId, status.getStatus(), status.getMessage());
+			return status;
 		}
 		return null;
 	}
