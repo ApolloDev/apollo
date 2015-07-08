@@ -69,12 +69,7 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 				    // SOAP visualizer requires RunVisualizationMessage as a parameter, not just runID, so we have to load it
 					// temporarily we need ApolloDbUtils, should remove this in the future
 					ApolloDbUtils dbUtils = new ApolloDbUtils();
-					int vizKey;
-					if (softwareIdentification.getSoftwareName().toLowerCase().contains("gaia")) {
-						vizKey = 5;
-					} else {
-						vizKey = 4;
-					}
+					int vizKey = dbUtils.getSoftwareIdentificationKey(softwareIdentification);
 					RunVisualizationMessage runMessage = dbUtils.getRunVisualizationMessageForRun(runId, vizKey);
 					
 					// runVisualization also does not return a status at this time
