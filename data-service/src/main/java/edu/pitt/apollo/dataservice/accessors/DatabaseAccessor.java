@@ -5,8 +5,6 @@ import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.*;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.dataservice.methods.RunJobMethod;
-import edu.pitt.apollo.dataservice.methods.RunJobMethodFactory;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
@@ -215,7 +213,7 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 	}
 
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		throw new RunManagementException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 

@@ -62,7 +62,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 	}
 	
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		return runManagementInterface.insertRun(message);
 	}
 	

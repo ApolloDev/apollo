@@ -172,7 +172,7 @@ public class StageInDbWorkerThread implements Runnable {
                 StageMethod stageMethod = null;
                 try {
                     stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
-                    BigInteger runId = stageMethod.stage();
+                    BigInteger runId = stageMethod.stage().getRunId();
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");

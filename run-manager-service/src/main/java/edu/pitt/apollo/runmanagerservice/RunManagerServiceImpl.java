@@ -33,7 +33,7 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 	}
 
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		final BigInteger NULL_PARENT_RUN_ID = null;
 		StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID);
 		return stageMethod.stage();

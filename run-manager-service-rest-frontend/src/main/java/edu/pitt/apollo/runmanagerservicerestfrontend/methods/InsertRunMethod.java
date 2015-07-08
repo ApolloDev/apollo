@@ -12,6 +12,7 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.Request;
 import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
@@ -58,14 +59,14 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 			} else {
 
 				try {
-					BigInteger runId = impl.insertRun(object);
+					InsertRunResult insertRunResult = impl.insertRun(object);
 
 					ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
-					objectSerializationInformation.setClassNameSpace(Serializer.APOLLO_NAMESPACE);
-					objectSerializationInformation.setClassName(runId.getClass().getSimpleName());
+					objectSerializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);
+					objectSerializationInformation.setClassName(insertRunResult.getClass().getSimpleName());
 					objectSerializationInformation.setFormat(SerializationFormat.XML);
 
-					String serializedObject = serializer.serializeObject(runId);
+					String serializedObject = serializer.serializeObject(insertRunResult);
 					responseBuilder.setResponseBodySerializationInformation(objectSerializationInformation).addContentToBody(serializedObject).setIsBodySerialized(true);
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 				} catch (DataServiceException ex) {

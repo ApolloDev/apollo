@@ -9,6 +9,7 @@ import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
@@ -66,26 +67,28 @@ public class StageMethod {
 		return cloneAuthentication(authentication);
 	}
 
-	public BigInteger stage() throws RunManagementException {
+	public InsertRunResult stage() throws RunManagementException {
 
 		try {
 			dataServiceDao = new DataServiceAccessor();
 
-			BigInteger runId = dataServiceDao.insertRun(message);
+			InsertRunResult insertRunResult = dataServiceDao.insertRun(message);
+			if (insertRunResult.isRunCached()) {
+				return insertRunResult;
+			}
+			
+			BigInteger runId = insertRunResult.getRunId();
 			if (parentRunId != null) {
 				dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[]{parentRunId}), authentication);
 			}
 
-			//BigInteger simulationGroupId = runIdSimulationGroupId[1];
-			MethodCallStatus runStatus = dataServiceDao.getRunStatus(runId, authentication);
-			MethodCallStatusEnum statusEnum = runStatus.getStatus();
-
 			MethodCallStatus methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
-			while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE) && (!statusEnum.equals(MethodCallStatusEnum.TRANSLATION_COMPLETED))) {
+			while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE) 
+					&& (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED))) {
 				try {
-					switch (statusEnum) {
+					switch (methodCallStatus.getStatus()) {
 						case FAILED:
-							throw new RunManagementException("Run " + runId + " FAILED with message " + runStatus.getMessage());
+							throw new RunManagementException("Run " + runId + " FAILED with message " + methodCallStatus.getMessage());
 						default:
 							logger.debug("Status for run " + runId + " was: (" + methodCallStatus.getMessage() + ") " + methodCallStatus.getStatus());
 							Thread.sleep(STATUS_CHECK_INTERVAL_TIME_IN_MILLIS);
@@ -141,7 +144,7 @@ public class StageMethod {
 			}
 
 			// run is now translated
-			return runId;
+			return insertRunResult;
 		} catch (MalformedURLException ex) {
 			throw new RunManagementException("Malformed URL exception staging run : " + ex.getMessage());
 		} catch (DataServiceException ex) {

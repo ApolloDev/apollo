@@ -12,6 +12,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
@@ -89,9 +90,10 @@ public class DatabaseAccessorForRunningJobs extends
 //		}
 //	}
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		Authentication authentication = stripAuthentication(message);
 
+		InsertRunResult insertRunResult = new InsertRunResult();
 		RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
 		try {
 			runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
@@ -110,6 +112,7 @@ public class DatabaseAccessorForRunningJobs extends
 			}
 			BigInteger[] runIdSimulationGroupId;
 			if (needToAddRun) {
+				insertRunResult.setRunCached(false);
 				if (runMessageFileName != null) {
 
 					runIdSimulationGroupId = dbUtils.addSimulationRun(
@@ -122,9 +125,12 @@ public class DatabaseAccessorForRunningJobs extends
 					throw new RunManagementException(("Error inserting run into database, unknown message type: " + message.getClass().getName()));
 				}
 			} else {
-				return runIdAndHighestMD5CollisionIdForRun.getRunId();
+				insertRunResult.setRunCached(true);
+				insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
+				return insertRunResult;
 			}
-			return runIdSimulationGroupId[0];
+			insertRunResult.setRunId(runIdSimulationGroupId[0]);
+			return insertRunResult;
 		} catch (ApolloDatabaseException | Md5UtilsException e) {
 			throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
 		}

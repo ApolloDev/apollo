@@ -3,6 +3,7 @@ package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
@@ -20,7 +21,7 @@ public interface RunManagementInterface {
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public BigInteger insertRun(RunMessage message) throws RunManagementException;
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException;
 
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException;
 

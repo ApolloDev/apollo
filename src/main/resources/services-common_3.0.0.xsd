@@ -23,6 +23,7 @@
 	<element name="RequestElement" type="tns:Request"/>
 	<element name="ResponseElement" type="tns:Response"/>
 	<element name="RunMessageElement" type="tns:RunMessage"/>
+	<element name="InsertRunResultElement" type="tns:InsertRunResult"/>
 
 
 	<simpleType name="SoftwareOutputStratificationGranularity">
@@ -106,6 +107,14 @@
 		<sequence>
 			<element name="runId" type="tns:RunIdentification" />
 			<element name="methodCallStatus" type="tns:MethodCallStatus">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="InsertRunResult">
+		<sequence>
+			<element name="runId" type="tns:RunIdentification" />
+			<element name="runCached" type="boolean">
 			</element>
 		</sequence>
 	</complexType>

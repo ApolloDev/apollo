@@ -12,6 +12,7 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.dataservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_0.Request;
 import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
@@ -20,6 +21,7 @@ import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
+import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.XMLDeserializer;
 import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import java.math.BigInteger;
@@ -47,8 +49,6 @@ public class InsertRunMethod extends BaseDataServiceAccessorMethod {
 
 			String className = config.getClassName();
 			String classNamespace = config.getClassNameSpace();
-
-			System.out.println("HI");
 			
 			RunMessage object = (RunMessage) deserializer.getObjectFromMessage(messageBody, className, classNamespace);
 
@@ -59,9 +59,16 @@ public class InsertRunMethod extends BaseDataServiceAccessorMethod {
 			} else {
 
 				try {
-					BigInteger runId = impl.insertRun(object);
+					InsertRunResult insertRunResult = impl.insertRun(object);
+					
+					String serializedObject = serializer.serializeObject(insertRunResult);
 
-					responseBuilder.addContentToBody(runId.toString()).setIsBodySerialized(false);
+					ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
+					objectSerializationInformation.setClassName(insertRunResult.getClass().getSimpleName());
+					objectSerializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);
+					objectSerializationInformation.setFormat(SerializationFormat.XML);
+					
+					responseBuilder.addContentToBody(serializedObject).setIsBodySerialized(true).setResponseBodySerializationInformation(objectSerializationInformation);
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
 				} catch (DataServiceException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
