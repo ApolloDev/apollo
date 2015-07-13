@@ -308,7 +308,7 @@
 		<sequence>
 			<element name="responseMeta" type="tns:ResponseMeta"
 					 maxOccurs="1" minOccurs="1" />
-			<element name="responseBody" type="token" maxOccurs="unbounded"
+			<element name="responseBody" type="string" maxOccurs="unbounded"
 					 minOccurs="0" />
 		</sequence>
 	</complexType>
@@ -317,7 +317,7 @@
 		<sequence>
 			<element name="requestMeta" type="tns:RequestMeta"
 					 maxOccurs="1" minOccurs="1" />
-			<element name="requestBody" type="token" maxOccurs="1"
+			<element name="requestBody" type="string" maxOccurs="1"
 					 minOccurs="1" />
 		</sequence>
 	</complexType>
