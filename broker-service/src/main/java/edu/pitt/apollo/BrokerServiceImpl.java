@@ -15,6 +15,9 @@
  */
 package edu.pitt.apollo;
 
+import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
+import edu.pitt.apollo.connector.DataServiceConnector;
+import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -22,6 +25,9 @@ import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
+import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
+import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
+import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
@@ -32,9 +38,14 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  *
@@ -42,94 +53,199 @@ import java.util.Map;
  */
 public class BrokerServiceImpl implements ContentManagementInterface, RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface {
 
+	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
+	private static final String DATA_SERVICE_URL_PROPERTY_TOKEN = "dataServiceUrl";
+	private static final String AUTHENTICATION_USER = "authenticationUser";
+	private static final String AUTHENTICATION_PASSWORD = "authenticationPassword";
+	private static String runManagerServiceUrl;
+	private static String dataServiceUrl;
+	private static Authentication dataServiceAuthentication;
+	private static RunManagerServiceConnector runManagerServiceConnector;
+	private static DataServiceConnector dataServiceConnector;
+
+	private static RunManagerServiceConnector getRunManagerServiceConnector() throws RunManagementException {
+		try {
+			if (runManagerServiceConnector == null) {
+				runManagerServiceConnector = new RestRunManagerServiceConnector(getRunManagerServiceUrl());
+			}
+
+			return runManagerServiceConnector;
+		} catch (IOException ex) {
+			throw new RunManagementException("IOException loading run manager service connector: " + ex.getMessage());
+		}
+	}
+
+	private static DataServiceConnector getDataServiceConnector() throws DataServiceException {
+		try {
+			if (dataServiceConnector == null) {
+				dataServiceConnector = new RestDataServiceConnector(getDataServiceUrl());
+			}
+			return dataServiceConnector;
+		} catch (IOException ex) {
+			throw new DataServiceException("IOException loading data service connector: " + ex.getMessage());
+		}
+	}
+
+	protected static String getDataServiceUrl() throws IOException {
+		if (dataServiceUrl == null) {
+			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
+
+			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
+			Properties brokerServiceProperties = new Properties();
+
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+				dataServiceUrl = brokerServiceProperties.getProperty(DATA_SERVICE_URL_PROPERTY_TOKEN);
+			}
+		}
+		return dataServiceUrl;
+	}
+
+	protected static Authentication getDataServiceAuthentication() throws IOException {
+		if (dataServiceAuthentication == null) {
+			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
+
+			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
+			Properties brokerServiceProperties = new Properties();
+
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+
+				String authenticationUser = brokerServiceProperties.getProperty(AUTHENTICATION_USER);
+				String authenticationPassword = brokerServiceProperties.getProperty(AUTHENTICATION_PASSWORD);
+
+				dataServiceAuthentication = new Authentication();
+				dataServiceAuthentication.setRequesterId(authenticationUser);
+				dataServiceAuthentication.setRequesterPassword(authenticationPassword);
+			}
+		}
+		return dataServiceAuthentication;
+	}
+
+	protected static String getRunManagerServiceUrl() throws IOException {
+		if (runManagerServiceUrl == null) {
+			String initRunManagerServiceUrl = null;
+			Authentication authentication = getDataServiceAuthentication();
+			try {
+				DataServiceConnector dataServiceConnector = getDataServiceConnector();
+				List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
+
+				for (ServiceRegistrationRecord record : softwareRecords) {
+					SoftwareIdentification softwareId = record.getSoftwareIdentification();
+					if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
+						initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
+					}
+				}
+
+				if (initRunManagerServiceUrl == null) {
+					throw new RuntimeException("No registered software with type RUN_MANAGER was found");
+				} else {
+					runManagerServiceUrl = initRunManagerServiceUrl;
+				}
+			} catch (Exception ex) {
+				throw new RuntimeException(ex.getMessage());
+			}
+		}
+		return runManagerServiceUrl;
+	}
+
 	@Override
 	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getDataServiceConnector().associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
 	}
 
 	@Override
 	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getDataServiceConnector().getListOfFilesForRunId(runId, authentication);
 	}
 
 	@Override
 	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getDataServiceConnector().getListOfURLsForRunId(runId, authentication);
 	}
 
 	@Override
 	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getDataServiceConnector().removeFileAssociationWithRun(runId, fileId, authentication);
 	}
 
 	@Override
 	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getDataServiceConnector().getContentForContentId(urlId, authentication);
 	}
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getDataServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
 	}
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getRunManagerServiceConnector().getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
 	}
 
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getRunManagerServiceConnector().getSoftwareIdentificationForRun(runId, authentication);
 	}
 
 	@Override
 	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getRunManagerServiceConnector().insertRun(message);
 	}
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getRunManagerServiceConnector().updateStatusOfRun(runId, statusEnumToSet, messageToSet, authentication);
 	}
 
 	@Override
 	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getRunManagerServiceConnector().updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
 	}
 
 	@Override
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getRunManagerServiceConnector().getLastServiceToBeCalledForRun(runId, authentication);
 	}
 
 	@Override
 	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getRunManagerServiceConnector().addRunIdsToSimulationGroupForRun(runId, runIds, authentication);
 	}
 
 	@Override
 	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		getRunManagerServiceConnector().removeRunData(runId, authentication);
 	}
 
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getRunManagerServiceConnector().getRunStatus(runId, authentication);
 	}
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		try {
+			getRunManagerServiceConnector().run(runId, authentication);
+		} catch (RunManagementException ex) {
+			throw new JobRunningServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		try {
+			getRunManagerServiceConnector().terminate(runId, authentication);
+		} catch (RunManagementException ex) {
+			throw new JobRunningServiceException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return getDataServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
 	}
-	
 }

@@ -49,9 +49,7 @@ import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMeth
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
-import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.data_service_types.v3_0_0.*;
-import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentMessage;
@@ -78,10 +76,7 @@ import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
-import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
 import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
@@ -100,96 +95,18 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
-    private static final BigInteger NO_SIMULATION_GROUP_ID = null;
-    private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
-    private static final String DATA_SERVICE_URL_PROPERTY_TOKEN = "dataServiceUrl";
-    private static final String AUTHENTICATION_USER = "authenticationUser";
-    private static final String AUTHENTICATION_PASSWORD = "authenticationPassword";
-    private static Authentication dataServiceAuthentication;
-    private static String runManagerServiceUrl;
-    private static String dataServiceUrl;
-    private static ApolloServiceQueue apolloServiceQueue;
+    private static final ApolloServiceQueue apolloServiceQueue;
 
     static {
         apolloServiceQueue = new ApolloServiceQueue();
     }
 
     Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
-
-    private static String getDataServiceUrl() throws IOException {
-        if (dataServiceUrl == null) {
-            String apolloDir = ApolloServiceConstants.APOLLO_DIR;
-
-            File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
-            Properties brokerServiceProperties = new Properties();
-
-            try (InputStream input = new FileInputStream(configurationFile)) {
-                // load a properties file
-                brokerServiceProperties.load(input);
-                dataServiceUrl = brokerServiceProperties.getProperty(DATA_SERVICE_URL_PROPERTY_TOKEN);
-            }
-        }
-        return dataServiceUrl;
-    }
-
-    private static Authentication getDataServiceAuthentication() throws IOException {
-        if (dataServiceAuthentication == null) {
-            String apolloDir = ApolloServiceConstants.APOLLO_DIR;
-
-            File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
-            Properties brokerServiceProperties = new Properties();
-
-            try (InputStream input = new FileInputStream(configurationFile)) {
-                // load a properties file
-                brokerServiceProperties.load(input);
-
-                String authenticationUser = brokerServiceProperties.getProperty(AUTHENTICATION_USER);
-                String authenticationPassword = brokerServiceProperties.getProperty(AUTHENTICATION_PASSWORD);
-
-                dataServiceAuthentication = new Authentication();
-                dataServiceAuthentication.setRequesterId(authenticationUser);
-                dataServiceAuthentication.setRequesterPassword(authenticationPassword);
-            }
-        }
-        return dataServiceAuthentication;
-    }
-
-    private static String getRunManagerServiceUrl() throws IOException {
-        if (runManagerServiceUrl == null) {
-            DataServiceConnector dataServiceConnector = new RestDataServiceConnector(getDataServiceUrl());
-            String initRunManagerServiceUrl = null;
-            Authentication authentication = getDataServiceAuthentication();
-            try {
-                List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
-
-                for (ServiceRegistrationRecord record : softwareRecords) {
-                    SoftwareIdentification softwareId = record.getSoftwareIdentification();
-                    if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
-                        initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
-                    }
-                }
-
-                if (initRunManagerServiceUrl == null) {
-                    throw new RuntimeException("No registered software with type RUN_MANAGER was found");
-                } else {
-                    runManagerServiceUrl = initRunManagerServiceUrl;
-                }
-            } catch (Exception ex) {
-                throw new RuntimeException(ex.getMessage());
-            }
-        }
-        return runManagerServiceUrl;
-    }
 
     @Override
     public GetVersionsResult getVersionNumbersForLibraryItem(
@@ -278,8 +195,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
         InsertAndStartDataServiceJobMethod method = null;
         try {
-            method = new InsertAndStartDataServiceJobMethod(getRunManagerServiceUrl(), apolloServiceQueue);
-            RunResult runResult = method.insertAndStartRun(dataRetrievalRequestMessage, getDataServiceAuthentication());
+            method = new InsertAndStartDataServiceJobMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            RunResult runResult = method.insertAndStartRun(dataRetrievalRequestMessage, BrokerServiceImpl.getDataServiceAuthentication());
             GetAllOutputFilesURLAsZipResult result = new GetAllOutputFilesURLAsZipResult();
             result.setMethodCallStatus(runResult.getMethodCallStatus());
             result.setRequestIdentification(runResult.getRunId());
@@ -346,8 +263,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
             edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
         InsertAndStartSimulationMethod method = null;
         try {
-            method = new InsertAndStartSimulationMethod(getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationsMessage, getDataServiceAuthentication());
+            method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            return method.insertAndStartRun(runSimulationsMessage, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -361,7 +278,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.GetRegisteredServicesResponse")
     public List<ServiceRecord> getRegisteredServices() {
         try {
-            return new GetRegisteredServicesMethod(getDataServiceUrl()).getRegisteredServices(getDataServiceAuthentication());
+            return new GetRegisteredServicesMethod(BrokerServiceImpl.getDataServiceUrl()).getRegisteredServices(BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -407,7 +324,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     public GetConfigurationFileForSimulationResult getConfigurationFileForSimulation(
             @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
         try {
-            return new GetConfigurationFileForSimulationMethod(getDataServiceUrl()).getConfigurationFile(runIdentification, getDataServiceAuthentication());
+            return new GetConfigurationFileForSimulationMethod(BrokerServiceImpl.getDataServiceUrl()).getConfigurationFile(runIdentification, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -442,8 +359,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     public RunResult runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
         try {
-            InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationMessage, getDataServiceAuthentication());
+            InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            return method.insertAndStartRun(runSimulationMessage, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -464,8 +381,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
     public RunResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
         try {
-            InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runVisualizationMessage, getDataServiceAuthentication());
+            InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            return method.insertAndStartRun(runVisualizationMessage, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -480,7 +397,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     public MethodCallStatus getRunStatus(
             @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
         try {
-            return new GetRunStatusMethod(getRunManagerServiceUrl()).getRunStatus(runIdentification, getDataServiceAuthentication());
+            return new GetRunStatusMethod(BrokerServiceImpl.getRunManagerServiceUrl()).getRunStatus(runIdentification, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -495,7 +412,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     public GetVisualizerOutputResourcesResult getVisualizerOutputResources(
             @WebParam(name = "runIdentification", targetNamespace = "") BigInteger runIdentification) {
         try {
-            return new GetVisualizerOutputResourcesMethod(getDataServiceUrl()).getVisualizerOutputResources(runIdentification, getDataServiceAuthentication());
+            return new GetVisualizerOutputResourcesMethod(BrokerServiceImpl.getDataServiceUrl()).getVisualizerOutputResources(runIdentification, BrokerServiceImpl.getDataServiceAuthentication());
         } catch (IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
