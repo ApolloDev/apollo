@@ -1,10 +1,9 @@
-package edu.pitt.apollo.dataservicerestfrontend.config;
+package edu.pitt.apollo.brokerservicerestfrontend.config;
 
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-import edu.pitt.apollo.dataservicerestfrontend.utils.RestDataServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,13 +13,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.Properties;
 
 import static org.ajar.swaggermvcui.SwaggerSpringMvcUi.WEB_JAR_RESOURCE_LOCATION;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "edu.pitt.apollo.ebolaViewer.controller.api.v2")
+@ComponentScan(basePackages = "edu.pitt.apollo.restservice.controller")
 @EnableSwagger
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
