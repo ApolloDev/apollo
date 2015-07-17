@@ -54,7 +54,7 @@ public class InsertRunMethod extends BaseBrokerServiceAccessorMethod {
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
 					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)) {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: DataRetrievalRequestMessage");
+						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage");
 			} else {
 
 				try {

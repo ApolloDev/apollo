@@ -44,8 +44,6 @@ import edu.pitt.apollo.apolloservice.methods.library.SetReleaseVersionForLibrary
 import edu.pitt.apollo.apolloservice.methods.library.UpdateLibraryItemContainerMethod;
 import edu.pitt.apollo.apolloservice.methods.run.GetRunStatusMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartDataServiceJobMethod;
-import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
-import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.apolloservice.methods.services.GetRegisteredServicesMethod;
 import edu.pitt.apollo.apolloservice.methods.services.RegisterServiceMethod;
 import edu.pitt.apollo.apolloservice.methods.services.UnregisterServiceMethod;
@@ -100,11 +98,6 @@ import java.io.IOException;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
-    private static final ApolloServiceQueue apolloServiceQueue;
-
-    static {
-        apolloServiceQueue = new ApolloServiceQueue();
-    }
 
     Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
 
@@ -195,7 +188,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
         InsertAndStartDataServiceJobMethod method = null;
         try {
-            method = new InsertAndStartDataServiceJobMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            method = new InsertAndStartDataServiceJobMethod(BrokerServiceImpl.getRunManagerServiceUrl(), BrokerServiceImpl.apolloServiceQueue);
             RunResult runResult = method.insertAndStartRun(dataRetrievalRequestMessage, BrokerServiceImpl.getDataServiceAuthentication());
             GetAllOutputFilesURLAsZipResult result = new GetAllOutputFilesURLAsZipResult();
             result.setMethodCallStatus(runResult.getMethodCallStatus());
@@ -261,14 +254,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @Override
     public RunResult runSimulations(
             edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
-        InsertAndStartSimulationMethod method = null;
-        try {
-            method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationsMessage, BrokerServiceImpl.getDataServiceAuthentication());
-        } catch (IOException e) {
-            logger.error(e.getClass().getName() + ": " + e.getMessage());
-            return null;
-        }
+        return new BrokerServiceImpl().runSimulations(runSimulationsMessage);
     }
 
     @Override
@@ -358,13 +344,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.RunSimulationResponse")
     public RunResult runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-        try {
-            InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationMessage, BrokerServiceImpl.getDataServiceAuthentication());
-        } catch (IOException e) {
-            logger.error(e.getClass().getName() + ": " + e.getMessage());
-            return null;
-        }
+        return new BrokerServiceImpl().runSimulation(runSimulationMessage);
     }
 
     @Override
@@ -380,13 +360,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
     @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_0/", className = "edu.pitt.apollo.service.apolloservice.v3_0_0.RunVisualizationResponse")
     public RunResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-        try {
-            InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runVisualizationMessage, BrokerServiceImpl.getDataServiceAuthentication());
-        } catch (IOException e) {
-            logger.error(e.getClass().getName() + ": " + e.getMessage());
-            return null;
-        }
+        return new BrokerServiceImpl().runVisualization(runVisualizationMessage);
     }
 
     @Override

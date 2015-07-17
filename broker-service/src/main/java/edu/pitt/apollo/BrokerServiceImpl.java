@@ -16,6 +16,8 @@
 package edu.pitt.apollo;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
@@ -36,8 +38,11 @@ import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
+import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +51,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.jws.WebParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -62,6 +70,12 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	private static Authentication dataServiceAuthentication;
 	private static RunManagerServiceConnector runManagerServiceConnector;
 	private static DataServiceConnector dataServiceConnector;
+	protected static final ApolloServiceQueue apolloServiceQueue;
+	Logger logger = LoggerFactory.getLogger(BrokerServiceImpl.class);
+
+	static {
+		apolloServiceQueue = new ApolloServiceQueue();
+	}
 
 	private static RunManagerServiceConnector getRunManagerServiceConnector() throws RunManagementException {
 		try {
@@ -247,5 +261,37 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	@Override
 	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
 		return getDataServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
+	}
+
+	public RunResult runSimulation(RunSimulationMessage runSimulationMessage) {
+		try {
+			InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+			return method.insertAndStartRun(runSimulationMessage, BrokerServiceImpl.getDataServiceAuthentication());
+		} catch (IOException e) {
+			logger.error(e.getClass().getName() + ": " + e.getMessage());
+			return null;
+		}
+	}
+
+	public RunResult runVisualization(RunVisualizationMessage runVisualizationMessage) {
+		try {
+			InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+			return method.insertAndStartRun(runVisualizationMessage, BrokerServiceImpl.getDataServiceAuthentication());
+		} catch (IOException e) {
+			logger.error(e.getClass().getName() + ": " + e.getMessage());
+			return null;
+		}
+	}
+
+	public RunResult runSimulations(
+			edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
+		InsertAndStartSimulationMethod method = null;
+		try {
+			method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+			return method.insertAndStartRun(runSimulationsMessage, BrokerServiceImpl.getDataServiceAuthentication());
+		} catch (IOException e) {
+			logger.error(e.getClass().getName() + ": " + e.getMessage());
+			return null;
+		}
 	}
 }

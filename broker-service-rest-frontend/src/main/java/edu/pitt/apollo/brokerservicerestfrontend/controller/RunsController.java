@@ -13,6 +13,7 @@ import edu.pitt.apollo.brokerservicerestfrontend.methods.GetLastServiceToBeCalle
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetRunIdsInSimulationGroupForRunMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetSoftwareIdentificationForRunMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetStatusOfRunMethod;
+import edu.pitt.apollo.brokerservicerestfrontend.methods.InsertAndStartRunMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.InsertRunMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.StartRunMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
@@ -47,7 +48,7 @@ public class RunsController {
 		
 		return new GetRunIdsInSimulationGroupForRunMethod(username, password, SerializationFormat.XML).getRunIdsInSimulationGroupForRun(runId);
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get software identification.", notes = "Returns the software identification for the given run ID.", response = String.class)
 	@ApiResponses(value = {
@@ -63,7 +64,7 @@ public class RunsController {
 	}
 	
 	@POST
-	@ApiOperation(value = "Insert run.", notes = "Inserts a given run into the runs collection.", response = String.class)
+	@ApiOperation(value = "Insert and start run.", notes = "Inserts a given run into the runs collection and starts the run.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
@@ -72,7 +73,7 @@ public class RunsController {
 	String postRunToRunsCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 			@ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
-		return new InsertRunMethod(username, password, SerializationFormat.XML).insertRun(messageBody);
+		return new InsertAndStartRunMethod(username, password, SerializationFormat.XML).insertAndStartRun(messageBody);
 	}
 	
 	@POST
@@ -181,8 +182,8 @@ public class RunsController {
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedRunActionException {
 		
 		switch (action) {
-			case START:
-				return new StartRunMethod(username, password, SerializationFormat.XML).startRun(runId);
+//			case START:
+//				return new StartRunMethod(username, password, SerializationFormat.XML).startRun(runId);
 			case TERMINATE:
 				return new TerminateRunMethod(username, password, SerializationFormat.XML).terminateRun(runId);
 			default:
