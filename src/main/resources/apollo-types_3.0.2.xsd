@@ -66,13 +66,6 @@
 	</simpleType>
 
 
-
-
-
-
-
-
-
 	<complexType name="SimulatorTimeSpecification">
 		<sequence>
 			<element name="unitOfTimeForSimulatorTimeStep" type="tns:UnitOfTimeEnum"
@@ -932,10 +925,7 @@
 	<!-- <complexType name="SyntheticPopulationGenerationResult"> -->
 	<!-- <sequence> -->
 	<!-- <element name="runId" type="tns:RunIdentification" /> -->
-	<!--
-		<element name="syntheticPopulationOutputResource"
-		type="tns:UrlOutputResource"
-	-->
+	<!-- <element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource" -->
 	<!-- maxOccurs="unbounded" minOccurs="1" /> -->
 	<!-- </sequence> -->
 	<!-- </complexType> -->
@@ -1209,7 +1199,7 @@
 					<choice>
 						<element name="ecosystemOnScenarioDate" type="tns:EcosystemData"
 							maxOccurs="1" minOccurs="1"></element>
-						<element name="ecosystemOnScenarioDatePointer" type="tns:EcosystemPointer"
+						<element name="ecosystemOnScenarioDatePointer" type="tns:PointerToData"
 							maxOccurs="1" minOccurs="1"></element>
 					</choice>
 				</sequence>
@@ -1271,12 +1261,14 @@
 		</complexContent>
 	</complexType>
 
-	<complexType name="EcosystemPointer">
+	<complexType name="PointerToData">
 		<complexContent>
 			<extension base="tns:EcosystemAtPointInTime">
 				<sequence>
-					<element name="url" type="token" maxOccurs="unbounded"
+					<element name="xmlFormat" type="token" maxOccurs="unbounded"
 						minOccurs="0" />
+					<element name="csvFormat" type="string" maxOccurs="unbounded"
+						minOccurs="0"></element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -1493,11 +1485,8 @@
 					minOccurs="1" />
 				<element name="transmissionProbability" type="tns:TransmissionProbability"
 					maxOccurs="unbounded" minOccurs="1" />
-				<!--
-					<element name="forGlobalEpidemicSimulator"
-					type="tns:GesParametersForContactAndTransmission" maxOccurs="1"
-					minOccurs="1" />
-				-->
+				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
+					maxOccurs="1" minOccurs="1" /> -->
 			</choice>
 		</sequence>
 	</complexType>
@@ -1636,13 +1625,13 @@
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
-					<element name="ecosystemOnScenarioDate" type="string"
+					<element name="ecosystemOnScenarioDate" type="tns:Ecosystem"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="lifeCycles" type="tns:LifeCycle"
-						maxOccurs="unbounded" minOccurs="0" />
-					<element name="behaviors" type="tns:Behavior"
-						maxOccurs="unbounded" minOccurs="0">
+					<element name="lifeCycles" type="tns:LifeCycle" maxOccurs="unbounded"
+						minOccurs="0" />
+					<element name="behaviors" type="tns:Behavior" maxOccurs="unbounded"
+						minOccurs="0">
 					</element>
 					<element name="reproductions" type="tns:Reproduction"
 						maxOccurs="1" minOccurs="0">
@@ -2344,10 +2333,7 @@
 	<!-- <element name="methodCallStatus" type="tns:MethodCallStatus" -->
 	<!-- maxOccurs="1" minOccurs="1"> -->
 	<!-- </element> -->
-	<!--
-		<element name="populationAndEnvironmentCensus"
-		type="tns:PopulationAndEnvironmentCensus"
-	-->
+	<!-- <element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" -->
 	<!-- maxOccurs="1" minOccurs="1"> -->
 	<!-- </element> -->
 	<!-- </sequence> -->
@@ -2446,16 +2432,102 @@
 
 	<complexType name="Individual">
 		<sequence>
+			<element name="individualId" type="nonNegativeInteger"
+				maxOccurs="1" minOccurs="1">
+			</element>
 			<element name="speciesId" type="tns:NcbiTaxonId" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="characteristics" type="string" maxOccurs="unbounded"
+			<element name="age" type="tns:FixedDuration" maxOccurs="1"
 				minOccurs="0"></element>
-			<element name="conditionalBehaviors" type="tns:ConditionalIndividualBehavior"
+			<element name="characteristics" type="tns:Characteristic"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
+
+	<complexType name="IndividualAndEpidemiologicalCharacteristics">
+		<complexContent>
+			<extension base="tns:Individual">
+				<sequence>
+					<element name="individualInfection" type="tns:IndividualInfection"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="individualDisease" type="tns:IndividualDisease"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="exposurePeriodContacts" type="nonNegativeInteger"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="exposurePeriodDefinition" type="nonNegativeInteger"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="transmissionPeriodContacts" type="nonNegativeInteger"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+					<element name="transmissionPeriodDefinition" type="nonNegativeInteger"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="IndividualInfection">
+		<sequence>
+			<element name="pathogenId" type="tns:NcbiTaxonId" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="infectionOutcomesWithDates" type="tns:InfectionOutcomeWithDate"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+		<complexType name="InfectionOutcomeWithDate">
+		<sequence>
+			<element name="infectionOutcome" type="tns:InfectionOutcomeEnum" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="date" type="date"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+		<simpleType name="InfectionOutcomeEnum">
+		<restriction base="string">
+			<enumeration value="infectious" />
+			<enumeration value="immune" />
+		</restriction>
+	</simpleType>
+
+
+	<complexType name="IndividualDisease">
+		<sequence>
+			<element name="snomedId" type="tns:SnomedId" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="diseaseOutcomesWithDates" type="tns:DiseaseOutcomeWithDate"
+			maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+		<complexType name="DiseaseOutcomeWithDate">
+			<sequence>
+			<element name="infectionOutcome" type="tns:InfectionOutcomeEnum" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="date" type="date"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+	
+	
 
 	<complexType name="ConditionalIndividualBehavior">
 		<sequence>
@@ -3587,7 +3659,7 @@
 	<complexType name="Population" />
 
 
-	<complexType name="PopulationPointer">
+	<complexType name="PopulationPointerToData">
 		<complexContent>
 			<extension base="tns:Population">
 				<sequence>
@@ -3615,6 +3687,9 @@
 					</element>
 					<element name="count" type="integer" maxOccurs="1"
 						minOccurs="0"></element>
+					<element name="conditionalIndividualBehaviors" type="tns:ConditionalIndividualBehavior"
+						maxOccurs="unbounded" minOccurs="0">
+					</element>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -3627,4 +3702,26 @@
 	<element name="NewElement" type="string"></element>
 
 	<complexType name="PopulationColonizationCensus"></complexType>
+
+	<complexType name="Characteristic">
+		<sequence>
+			<choice>
+				<element name="enumeratedName" type="tns:CharacteristicEnum"
+					maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="userInventedName" type="string" maxOccurs="1"
+					minOccurs="1"></element>
+			</choice>
+			<element name="value" type="tns:CategoryDefinition"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+    <simpleType name="CharacteristicEnum">
+    		<restriction base="string">
+			<enumeration value="x" />
+			<enumeration value="y" />
+		</restriction>
+    </simpleType>
 </schema>
