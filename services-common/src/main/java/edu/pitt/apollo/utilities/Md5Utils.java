@@ -1,5 +1,6 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.utilities;
 
+import edu.pitt.apollo.exception.Md5UtilsException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;

@@ -2,8 +2,9 @@ package edu.pitt.apollo.dataservice.accessors;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
 
-import edu.pitt.apollo.Md5UtilsException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
@@ -14,20 +15,15 @@ import java.util.Map;
 
 /**
  *
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: Jan 22, 2015
- * Time: 10:24:52 AM
- * Class: DatabaseAccessorForRunningDataService
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Jan 22, 2015 Time: 10:24:52 AM Class: DatabaseAccessorForRunningDataService
  */
 public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 
-	private DataRetrievalRequestMessage DataRetrievalRequestMessage = null;
+	private DataRetrievalRequestMessage dataRetrievalRequestMessage = null;
 
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
 
 	private static int dataServiceSoftwareKey;
-
 
 	static {
 		DATA_SERVICE_SOFTWARE_ID = new SoftwareIdentification();
@@ -42,10 +38,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //		this.getOutputFilesURLsMessage = message;
 //		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 //	}
-
 	public DatabaseAccessorForRunningDataService(DataRetrievalRequestMessage message, Authentication authentication) throws ApolloDatabaseException {
 		super(authentication);
-		this.DataRetrievalRequestMessage = message;
+		this.dataRetrievalRequestMessage = message;
 		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
 
@@ -54,7 +49,6 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //		this.getAllOutputFilesURLAsZipMessage = message;
 //		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 //	}
-
 	private int getDataServiceSoftwareKey() throws ApolloDatabaseException {
 		return dbUtils.getSoftwareIdentificationKey(DATA_SERVICE_SOFTWARE_ID);
 	}
@@ -91,7 +85,6 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 //			return null;
 //		}
 //	}
-
 	@Override
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId) throws ApolloDatabaseException {
 		Map<String, ByteArrayOutputStream> currentRunMessageAsJsonMap
@@ -107,27 +100,31 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 	}
 
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
-		Authentication authentication = stripAuthentication(message);
-		int md5CollisionId;
-		BigInteger runIds = null;
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
+		InsertRunResult insertRunResult = new InsertRunResult();
 		try {
-//			if (getOutputFilesURLsMessage != null) {
-//				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getOutputFilesURLsMessage) + 1;
-//				runIds = dbUtils.addDataServiceRun(getOutputFilesURLsMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-//			} else 
-				if (DataRetrievalRequestMessage != null) {
-				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(DataRetrievalRequestMessage) + 1;
-				runIds = dbUtils.addDataServiceRun(DataRetrievalRequestMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-			} 
-//				else if (getAllOutputFilesURLAsZipMessage != null) {
-//				md5CollisionId = dbUtils.getHighestMD5CollisionIdForRun(getAllOutputFilesURLAsZipMessage) + 1;
-//				runIds = dbUtils.addDataServiceRun(getAllOutputFilesURLAsZipMessage, md5CollisionId, authentication, DATA_SERVICE_SOFTWARE_ID);
-//			}
+
+			if (dataRetrievalRequestMessage != null) {
+				RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
+
+				if (runIdAndHighestMD5CollisionIdForRun.getCollisionId() > 0) {
+					//just assume they are the same for now...it's not like MD5 will collide, but we should verify
+					insertRunResult.setRunCached(true);
+					insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
+				} else {
+					insertRunResult.setRunCached(false);
+					BigInteger runId = dbUtils.addDataServiceRun(dataRetrievalRequestMessage, runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1, authentication, DATA_SERVICE_SOFTWARE_ID);
+					insertRunResult.setRunId(runId);
+				}
+
+				return insertRunResult;
+			} else {
+				throw new RunManagementException("The data retrieval request message was null");
+			}
+
 		} catch (Md5UtilsException | ApolloDatabaseException e) {
 			throw new RunManagementException("Error inserting run into database, error was: " + "(" + e.getClass().getName() + ") " + e.getMessage());
 		}
 
-		return runIds;
 	}
 }

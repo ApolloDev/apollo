@@ -1,8 +1,11 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.ErrorUtils;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.utilities.ErrorUtils;
+import static edu.pitt.apollo.utilities.ErrorUtils.checkFileExists;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

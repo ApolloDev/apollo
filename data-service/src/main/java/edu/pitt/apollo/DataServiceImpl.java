@@ -18,6 +18,7 @@ import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
@@ -70,7 +71,7 @@ public class DataServiceImpl implements SoftwareRegistryInterface, RunManagement
 	}
 
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		try {
 			DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(message);
 			return databaseAccessor.insertRun(message);

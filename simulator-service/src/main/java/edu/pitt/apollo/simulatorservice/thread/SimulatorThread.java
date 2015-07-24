@@ -4,6 +4,8 @@ import edu.pitt.apollo.*;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
+import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.services_common.v3_0_0.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
@@ -11,10 +13,8 @@ import edu.pitt.apollo.simulatorservice.util.RunUtils;
 import edu.pitt.apollo.types.v3_0_0.Location;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -26,18 +26,16 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	protected RunSimulationMessage message;
 	private final boolean useFile;
 	private final boolean useDatabase;
-	protected final ApolloDbUtils dbUtils;
 	private final SoftwareIdentification translatorSoftwareId;
 	protected static SoftwareIdentification visualizerSoftwareId;
 	private static SoftwareIdentification dataServiceSoftwareId;
 	private static int dataServiceSoftwareKey;
 
-	public SimulatorThread(BigInteger runId, ApolloServiceQueue queue, ApolloDbUtils dbUtils, SoftwareIdentification translatorSoftwareId,
+	public SimulatorThread(BigInteger runId, ApolloServiceQueue queue, SoftwareIdentification translatorSoftwareId,
 			boolean useFile, boolean useDatabase) {
 		super(runId, queue);
 		this.useFile = useFile;
 		this.useDatabase = useDatabase;
-		this.dbUtils = dbUtils;
 		this.translatorSoftwareId = translatorSoftwareId;
 
 		loadRunSimulationMessage();
@@ -73,21 +71,18 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 
 	private void loadRunSimulationMessage() {
 		try {
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			message = dbUtils.getRunSimulationMessageForRun(runId);
 			if (message == null) {
 				updateStatus(MethodCallStatusEnum.FAILED, "The runSimulationMessage obtained from the database was null for run " + runId);
 			}
-		} catch (ApolloDatabaseException ex) {
-			updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
-		} catch (JsonUtilsException jue) {
-			updateStatus(MethodCallStatusEnum.FAILED, jue.getMessage());
-		} catch (IOException ex) {
+		} catch (ApolloDatabaseException | JsonUtilsException | IOException ex) {
 			updateStatus(MethodCallStatusEnum.FAILED, ex.getMessage());
 		}
 	}
 
 	protected void updateStatus(MethodCallStatusEnum statusEnum, String message) {
-		RunUtils.updateStatus(dbUtils, runId, statusEnum, message);
+		RunUtils.updateStatus(runId, statusEnum, message);
 	}
 
 	protected void storeOutput() throws IOException, SimulatorServiceException {
@@ -160,6 +155,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	private void addTextDataContentForSeriesForVisualizer(String content, String seriesName) throws IOException {
 
 		try {
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			int visualizerSoftwareKey = dbUtils.getSoftwareIdentificationKey(visualizerSoftwareId);
 
@@ -170,8 +166,9 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		}
 	}
 
-	private void addTextDataContentForSeries(String content, String seriesName, int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws IOException {
+	private void addTextDataContentForSeries(String content, String seriesName, int sourceSoftwareIdKey, int destinationSoftwareIdKey) throws IOException, ApolloDatabaseException {
 		int dataContentKey;
+		ApolloDbUtils dbUtils = new ApolloDbUtils();
 		try {
 			dataContentKey = dbUtils.addTextDataContent(content);
 		} catch (ApolloDatabaseException ex) {
@@ -215,6 +212,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 		// first get the configuration file from the database
 		Map<String, ByteArrayOutputStream> map;
 		try {
+			ApolloDbUtils dbUtils = new ApolloDbUtils();
 			int translatorKey = dbUtils.getSoftwareIdentificationKey(translatorSoftwareId);
 			int simulatorKey = dbUtils.getSoftwareIdentificationKey(message.getSoftwareIdentification());
 			map = dbUtils.getDataContentForSoftware(runId,

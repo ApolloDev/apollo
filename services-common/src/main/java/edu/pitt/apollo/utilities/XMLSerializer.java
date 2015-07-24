@@ -21,17 +21,17 @@ public class XMLSerializer extends Serializer {
 
 	@Override
 	public String serializeObject(Object obj) throws SerializationException {
+		
 		String xml = "";
 		try {
-
-			JAXBContext context = JAXBContext.newInstance(obj.getClass());
+			
+			JAXBContext context = JAXBContext.newInstance(ApolloClassList.classList);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 			final StringWriter stringWriter = new StringWriter();
 
 			String namespace = convertNamespaceFromJavaToXSD(obj.getClass().getPackage().getName());
-			
 			marshaller.marshal(new JAXBElement(
 					new QName(namespace, obj.getClass().getSimpleName(), Serializer.APOLLO_NAMESPACE_TNS_PREFIX), obj.getClass(), obj), stringWriter);
 

@@ -1,8 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.JsonUtils;
-import edu.pitt.apollo.JsonUtilsException;
-import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -12,7 +11,6 @@ import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_0_0.*;
@@ -174,7 +172,7 @@ public class StageInDbWorkerThread implements Runnable {
                 StageMethod stageMethod = null;
                 try {
                     stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
-                    BigInteger runId = stageMethod.stage();
+                    BigInteger runId = stageMethod.stage().getRunId();
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");

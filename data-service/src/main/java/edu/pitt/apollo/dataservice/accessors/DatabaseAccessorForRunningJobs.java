@@ -1,28 +1,27 @@
 package edu.pitt.apollo.dataservice.accessors;
 
+import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.dataservice.utils.ApolloSoftwareIdentificationResolver;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Map;
 
-import edu.pitt.apollo.Md5UtilsException;
-import edu.pitt.apollo.db.ApolloDbUtils;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time:
- * 11:56:26 AM Class: DatabaseAccessorForRunningSimulations IDE: NetBeans 6.9.1
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 11:56:26 AM Class: DatabaseAccessorForRunningSimulations IDE: NetBeans 6.9.1
  */
 public class DatabaseAccessorForRunningJobs extends
 		DatabaseAccessor {
@@ -90,11 +89,11 @@ public class DatabaseAccessorForRunningJobs extends
 //			return null;
 //		}
 //	}
-
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		Authentication authentication = stripAuthentication(message);
 
+		InsertRunResult insertRunResult = new InsertRunResult();
 		RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
 		try {
 			runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
@@ -105,22 +104,33 @@ public class DatabaseAccessorForRunningJobs extends
 				needToAddRun = false;
 			}
 
+			SoftwareIdentification destSoftwareId;
+			if (message instanceof RunVisualizationMessage) {
+				destSoftwareId = message.getSoftwareIdentification();
+			} else {
+				destSoftwareId = ApolloSoftwareIdentificationResolver.getTranslatorSoftwareIdentification();
+			}
 			BigInteger[] runIdSimulationGroupId;
 			if (needToAddRun) {
+				insertRunResult.setRunCached(false);
 				if (runMessageFileName != null) {
 
 					runIdSimulationGroupId = dbUtils.addSimulationRun(
 							message, runMessageFileName, contentDataTypeEnum,
 							runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1,
 							softwareIdentification,
-							ApolloSoftwareIdentificationResolver.getTranslatorSoftwareIdentification(), authentication);
+							ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
+							destSoftwareId, authentication);
 				} else {
 					throw new RunManagementException(("Error inserting run into database, unknown message type: " + message.getClass().getName()));
 				}
 			} else {
-				return runIdAndHighestMD5CollisionIdForRun.getRunId();
+				insertRunResult.setRunCached(true);
+				insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
+				return insertRunResult;
 			}
-			return runIdSimulationGroupId[0];
+			insertRunResult.setRunId(runIdSimulationGroupId[0]);
+			return insertRunResult;
 		} catch (ApolloDatabaseException | Md5UtilsException e) {
 			throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
 		}

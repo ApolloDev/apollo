@@ -41,15 +41,17 @@ public class ImageGeneratorRunnable implements Runnable {
 	
 	@Override
 	public void run() {
-		ApolloDbUtils dbUtils = DatabaseUtility.getDbUtils();
+		ApolloDbUtils dbUtils;
 
 		try {
+			dbUtils = new ApolloDbUtils();
 			dbUtils.updateStatusOfRun(visualizerRunId, MethodCallStatusEnum.RUNNING,
 					"Started at " + sdf.format(new Date(System.currentTimeMillis())));
 		} catch (ApolloDatabaseException e) {
 			logger.error("Error setting the status of {} run {} to RUNNING.  Error message was {}.", ImageGenerator.SOFTWARE_NAME,
 					visualizerRunId, e.getMessage());
 			logger.debug("Stack trace:" + e.getStackTrace().toString());
+			return;
 		}
 
 		try {

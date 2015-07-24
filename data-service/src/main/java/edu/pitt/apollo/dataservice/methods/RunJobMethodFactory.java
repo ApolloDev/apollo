@@ -1,7 +1,7 @@
 package edu.pitt.apollo.dataservice.methods;
 
-import edu.pitt.apollo.JsonUtils;
-import edu.pitt.apollo.JsonUtilsException;
+import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;

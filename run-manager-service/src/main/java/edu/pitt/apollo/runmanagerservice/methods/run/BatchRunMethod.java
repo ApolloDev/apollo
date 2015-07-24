@@ -1,12 +1,12 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.JsonUtils;
-import edu.pitt.apollo.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.services_common.v3_0_0.Authentication;
 import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
 import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.utilities.JsonUtils;
 
 import java.math.BigInteger;
 

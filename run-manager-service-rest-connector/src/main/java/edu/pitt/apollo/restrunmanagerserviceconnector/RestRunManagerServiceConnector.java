@@ -47,10 +47,10 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 	}
 
 	@Override
-	public BigInteger insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		String uri = restServiceUri + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
 		try {
-			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, BigInteger.class);
+			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, InsertRunResult.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -128,7 +128,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		String uri = "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		uri += "&action=" + RunActionEnum.START;
 		try {
 			restServiceUtils.makePostRequestAndCheckResponse(uri, "");

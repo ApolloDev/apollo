@@ -1,4 +1,4 @@
-package edu.pitt.apollo;
+package edu.pitt.apollo.exception;
 
 import edu.pitt.apollo.types.v3_0_0.ExpectedUtility;
 

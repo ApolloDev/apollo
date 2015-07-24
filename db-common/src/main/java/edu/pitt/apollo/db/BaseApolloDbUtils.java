@@ -1,8 +1,8 @@
 package edu.pitt.apollo.db;
 
 
-import edu.pitt.apollo.JsonUtils;
-import edu.pitt.apollo.Md5Utils;
+import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;

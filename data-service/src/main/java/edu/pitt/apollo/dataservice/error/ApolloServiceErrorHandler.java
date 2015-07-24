@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.ErrorUtils;
+import edu.pitt.apollo.utilities.ErrorUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;

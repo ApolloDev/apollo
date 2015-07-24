@@ -3,8 +3,11 @@
 	xmlns:tns="http://types.apollo.pitt.edu/v3_0_0/" elementFormDefault="qualified">
 
 	<element name="EpidemicElement" type="tns:Epidemic"/>
+    <element name="InfectiousDiseaseScenarioElement" type="tns:InfectiousDiseaseScenario"/>
+    <element name="FixedDurationElement" type="tns:FixedDuration"/>
+    <element name="DurationElement" type="tns:Duration"/>
 
-
+    
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />

@@ -60,13 +60,11 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
     }
 
     protected ApiInfo apiInfo() {
-        Properties configProperties = RestDataServiceUtils.getLibraryViewerConfigurationFile();
 
-        String contextForSite = configProperties.getProperty("contextPathForSite");
         ApiInfo apiInfo = new ApiInfo(
                 "Apollo Web Services API",
                 "The Apollo Web Services API provides methods for accessing collections, resources, and aspects contained within the Apollo Web Services.  Using the RESTful model, each access is associated with a URL. ",
-                contextForSite+"/tos",
+                null,
                 "jdl50@pitt.edu",
                 null,
                 null

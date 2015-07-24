@@ -1494,7 +1494,7 @@
 				<element name="transmissionProbability"
 						 type="tns:TransmissionProbability" maxOccurs="unbounded"
 						 minOccurs="1" />
-				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission" 
+				<!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission"
 					maxOccurs="1" minOccurs="1" /> -->
 				<element name="innoculationRate" type="tns:Rate" maxOccurs="1" minOccurs="0"></element>
 			</choice>
