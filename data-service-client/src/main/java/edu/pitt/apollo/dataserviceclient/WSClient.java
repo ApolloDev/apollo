@@ -15,7 +15,7 @@ package edu.pitt.apollo.dataserviceclient;
  * the License.
  */
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
 public class WSClient {
 
 	private static final String WSDL_LOC = "http://localhost:8080/data-service-war-3.0.0-SNAPSHOT/services/dataservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/dataservice/v3_0_0/", "DataService_v3.0.0");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/dataservice/v3_0_2/", "DataService_v3.0.0");
 	private static final String DATA_SERVICE_CONNECTION_PROPERTIES_FILE = "data_service_connection.properties";
 
 	public static final String APOLLO_DIR;

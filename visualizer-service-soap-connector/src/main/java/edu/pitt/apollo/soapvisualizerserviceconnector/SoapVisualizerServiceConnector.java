@@ -2,8 +2,8 @@ package edu.pitt.apollo.soapvisualizerserviceconnector;
 
 import edu.pitt.apollo.connector.VisualizerServiceConnector;
 import edu.pitt.apollo.exception.VisulizerServiceException;
-import edu.pitt.apollo.service.visualizerservice.v3_0_0.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v3_0_0.VisualizerServiceV300;
+import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceV300;
 import java.math.BigInteger;
 import java.net.URL;
 import org.apache.cxf.endpoint.Client;

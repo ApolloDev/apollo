@@ -2,14 +2,14 @@ package edu.pitt.apollo.dataservice.methods;
 
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessor;
 import edu.pitt.apollo.dataservice.accessors.DatabaseAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
 import java.math.BigInteger;
 import java.util.Map;
 

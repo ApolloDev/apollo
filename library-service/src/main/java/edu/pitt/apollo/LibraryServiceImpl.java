@@ -17,8 +17,8 @@ package edu.pitt.apollo;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
 
 import java.io.File;
 import java.util.Map;
@@ -28,30 +28,30 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddReviewerCommentResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetCommentsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetCommentsResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.ModifyGroupOwnershipMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.ModifyGroupOwnershipResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.QueryMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.QueryResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetLibraryItemAsNotReleasedResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.AddReviewerCommentMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.AddReviewerCommentResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetCommentsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetCommentsResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.ModifyGroupOwnershipMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.ModifyGroupOwnershipResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.QueryMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.QueryResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetLibraryItemAsNotReleasedMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetLibraryItemAsNotReleasedResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.libraryservice.methods.AddLibraryItemMethod;
 import edu.pitt.apollo.libraryservice.methods.AddReviewerCommentMethod;
 import edu.pitt.apollo.libraryservice.methods.GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod;
@@ -64,10 +64,10 @@ import edu.pitt.apollo.libraryservice.methods.QueryLibraryMethod;
 import edu.pitt.apollo.libraryservice.methods.SetLibraryItemAsNotReleasedMethod;
 import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
-import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
 
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI")
 public class LibraryServiceImpl implements LibraryServiceEI {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.types;
 
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 
 /**
  *

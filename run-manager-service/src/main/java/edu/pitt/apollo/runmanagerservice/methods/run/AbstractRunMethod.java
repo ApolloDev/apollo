@@ -8,7 +8,7 @@ import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
 
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 
 import java.math.BigInteger;
 

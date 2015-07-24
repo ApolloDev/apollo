@@ -1,7 +1,7 @@
 package edu.pitt.apollo.utilities;
 
-import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 
 /**
  *
@@ -9,8 +9,8 @@ import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
  */
 public abstract class Serializer implements SerializerInterface {
 
-	public static final String APOLLO_NAMESPACE = "http://types.apollo.pitt.edu/v3_0_0";
-	public static final String SERVICES_COMMON_NAMESPACE = "http://services-common.apollo.pitt.edu/v3_0_0/";
+	public static final String APOLLO_NAMESPACE = "http://types.apollo.pitt.edu/v3_0_2";
+	public static final String SERVICES_COMMON_NAMESPACE = "http://services-common.apollo.pitt.edu/v3_0_2/";
 	public static final String APOLLO_NAMESPACE_TNS_PREFIX = "tns";
 	
 	protected final SerializationFormat serializationFormat;

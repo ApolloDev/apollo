@@ -18,20 +18,20 @@ import java.util.Map;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 
 import java.sql.Connection;
 

@@ -6,11 +6,11 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.services_common.v3_0_0.*;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
-import edu.pitt.apollo.types.v3_0_0.Location;
+import edu.pitt.apollo.types.v3_0_2.Location;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v3_0_0/"
-		xmlns:tns="http://types.apollo.pitt.edu/v3_0_0/" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v3_0_2/"
+		xmlns:tns="http://types.apollo.pitt.edu/v3_0_2/" elementFormDefault="qualified">
 
-	<include schemaLocation=""></include>
 	<simpleType name="Probability">
 		<restriction base="double">
 			<minInclusive value="0" />
@@ -2658,8 +2657,6 @@
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
-					<element name="vectorTaxonId" type="tns:NcbiTaxonId"
-							 maxOccurs="1" minOccurs="0" />
 					<element name="netHolingRate" type="tns:LogNormalDistribution"
 							 maxOccurs="1" minOccurs="0" />
 					<element name="insecticideEfficacyDecayRate" type="tns:Rate"

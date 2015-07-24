@@ -6,12 +6,12 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
 
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>run-manager-service-client</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <name>Run Manager Service Client</name>
     <url>http://maven.apache.org</url>
     <properties>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>translator-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>edu.pitt.apollo</groupId>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>run-manager-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>edu.pitt.apollo</groupId>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>data-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>edu.pitt.apollo</groupId>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>visualizer-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>edu.pitt.apollo</groupId>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>config-examples</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>edu.pitt.apollo</groupId>

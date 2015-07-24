@@ -2,8 +2,8 @@ package edu.pitt.apollo.soaptranslatorserviceconnector;
 
 import edu.pitt.apollo.connector.TranslatorServiceConnector;
 import edu.pitt.apollo.exception.TranslatorServiceException;
-import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceEI;
-import edu.pitt.apollo.service.translatorservice.v3_0_0.TranslatorServiceV300;
+import edu.pitt.apollo.service.translatorservice.v3_0_2.TranslatorServiceEI;
+import edu.pitt.apollo.service.translatorservice.v3_0_2.TranslatorServiceV300;
 import java.math.BigInteger;
 import java.net.URL;
 

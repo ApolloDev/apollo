@@ -7,22 +7,22 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.Infection;
-import edu.pitt.apollo.types.v3_0_0.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v3_0_0.InfectionStateEnum;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDisease;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_0.Location;
-import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensus;
-import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v3_0_0.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_0.ReproductionNumber;
-import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
+import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
+import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeWithProbability;
+import edu.pitt.apollo.types.v3_0_2.FixedDuration;
+import edu.pitt.apollo.types.v3_0_2.Infection;
+import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.types.v3_0_2.InfectionStateEnum;
+import edu.pitt.apollo.types.v3_0_2.InfectiousDisease;
+import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v3_0_2.Location;
+import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensus;
+import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusData;
+import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusDataCell;
+import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
+import edu.pitt.apollo.types.v3_0_2.ReproductionNumber;
+import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
 
 public class ExampleInfectiousDiseaseScenario {
 

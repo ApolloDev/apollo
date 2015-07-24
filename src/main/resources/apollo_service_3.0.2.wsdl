@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v3_0_0/"
+	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="ApolloService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_0/">
+	name="ApolloService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/">
 	<wsdl:types>
 
-		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_0/"
-			xmlns:apollo="http://types.apollo.pitt.edu/v3_0_0/"
-			xmlns:apollo-service="http://apollo-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:sst="http://simulator-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:vst="http://visualizer-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:lst="http://library-service-types.apollo.pitt.edu/v3_0_0/"
-            xmlns:dst="http://data-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_0/">
+		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
+			xmlns:apollo="http://types.apollo.pitt.edu/v3_0_2/"
+			xmlns:apollo-service="http://apollo-service-types.apollo.pitt.edu/v3_0_2/"
+			xmlns:sst="http://simulator-service-types.apollo.pitt.edu/v3_0_2/"
+			xmlns:vst="http://visualizer-service-types.apollo.pitt.edu/v3_0_2/"
+			xmlns:lst="http://library-service-types.apollo.pitt.edu/v3_0_2/"
+            xmlns:dst="http://data_service_types.apollo.pitt.edu/v3_0_2/"
+			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/"
+			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_2/">
 			<xsd:import schemaLocation="apollo-types_3.0.0.xsd"
-				namespace="http://types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 
 			<xsd:import schemaLocation="simulator_service_3.0.0.xsd"
-				namespace="http://simulator-service-types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://simulator-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 
 			<xsd:import schemaLocation="apollo_service_3.0.0.xsd"
-				namespace="http://apollo-service-types.apollo.pitt.edu/v3_0_0/" />
+				namespace="http://apollo-service-types.apollo.pitt.edu/v3_0_2/" />
 
 			<xsd:import schemaLocation="services-common_3.0.0.xsd"
-				namespace="http://services-common.apollo.pitt.edu/v3_0_0/">
+				namespace="http://services-common.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 			<xsd:import schemaLocation="visualizer_service_3.0.0.xsd"
-				namespace="http://visualizer-service-types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://visualizer-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 			<xsd:import schemaLocation="synthetic_population_service_3.0.0.xsd"
-				namespace="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 			<xsd:import schemaLocation="library_service_3.0.0.xsd"
-				namespace="http://library-service-types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://library-service-types.apollo.pitt.edu/v3_0_2/">
 
                 </xsd:import>
                 <xsd:import schemaLocation="data_service_3.0.0.xsd"
-				namespace="http://data-service-types.apollo.pitt.edu/v3_0_0/">
+				namespace="http://data_service_types.apollo.pitt.edu/v3_0_2/">
                 </xsd:import>
                 
              
@@ -989,7 +989,7 @@
 		<wsdl:operation name="getLibraryItemContainer">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getLibraryItemContainer" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getLibraryItemContainer" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1002,7 +1002,7 @@
 		<wsdl:operation name="addLibraryItemContainer">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/addLibraryItemContainer" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/addLibraryItemContainer" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1015,7 +1015,7 @@
 		<wsdl:operation name="updateLibraryItemContainer">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/updateLibraryItemContainer" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/updateLibraryItemContainer" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1028,7 +1028,7 @@
 		<wsdl:operation name="setReleaseVersionForLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/setReleaseVersionForLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/setReleaseVersionForLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1041,7 +1041,7 @@
 		<wsdl:operation name="addReviewerCommentToLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/addReviewerCommentToLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/addReviewerCommentToLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1054,7 +1054,7 @@
 		<wsdl:operation name="getCommentsForLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getCommentsForLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getCommentsForLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1067,7 +1067,7 @@
 		<wsdl:operation name="getVersionNumbersForLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getVersionNumbersForLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getVersionNumbersForLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1080,7 +1080,7 @@
 		<wsdl:operation name="getLibraryItemReleaseVersion">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getLibraryItemReleaseVersion" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getLibraryItemReleaseVersion" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1093,7 +1093,7 @@
 		<wsdl:operation name="query">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/query" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/query" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1106,7 +1106,7 @@
 		<wsdl:operation name="grantGroupAccessToLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/grantGroupAccessToLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/grantGroupAccessToLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1119,7 +1119,7 @@
 		<wsdl:operation name="removeGroupAccessToLibraryItem">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/removeGroupAccessToLibraryItem" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/removeGroupAccessToLibraryItem" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1133,7 +1133,7 @@
 		<wsdl:operation name="getLibraryItemURNs">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getLibraryItemURNs" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getLibraryItemURNs" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1147,7 +1147,7 @@
 			name="getChangeLogForLibraryItemsModifiedSinceDateTime">
 
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getChangeLogForLibraryItemsModifiedSinceDateTime" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getChangeLogForLibraryItemsModifiedSinceDateTime" />
 			<wsdl:input>
 
 				<soap:body use="literal" />
@@ -1159,7 +1159,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="runSimulations">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/runSimulations" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/runSimulations" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1169,7 +1169,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="runVisualization">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/runVisualization" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/runVisualization" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1179,7 +1179,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getRunStatus">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getRunStatus" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getRunStatus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1189,7 +1189,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="registerService">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/registerService" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/registerService" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1199,7 +1199,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="unRegisterService">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/unRegisterService" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/unRegisterService" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1209,7 +1209,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getRegisteredServices">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getRegisteredServices" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getRegisteredServices" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1219,7 +1219,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="runSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/runSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/runSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1229,7 +1229,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="runSyntheticPopulationGeneration">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/runSyntheticPopulationGeneration" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/runSyntheticPopulationGeneration" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1239,7 +1239,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getConfigurationFileForSimulation">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getConfigurationFileForSimulation" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getConfigurationFileForSimulation" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1249,7 +1249,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getPopulationAndEnvironmentCensus">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getPopulationAndEnvironmentCensus" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getPopulationAndEnvironmentCensus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1260,7 +1260,7 @@
 		<wsdl:operation
 			name="getScenarioLocationCodesSupportedBySimulator">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getScenarioLocationCodesSupportedBySimulator" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getScenarioLocationCodesSupportedBySimulator" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1270,7 +1270,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getVisualizerOutputResources">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getVisualizerOutputResources" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getVisualizerOutputResources" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1280,7 +1280,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="terminateRun">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/terminateRun" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/terminateRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1290,7 +1290,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="listOutputFilesForSoftware">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/listOutputFilesForSoftware" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/listOutputFilesForSoftware" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1300,7 +1300,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getOutputFilesURLs">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getOutputFilesURLs" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getOutputFilesURLs" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1310,7 +1310,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getOutputFilesURLAsZip">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getOutputFilesURLAsZip" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getOutputFilesURLAsZip" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1320,7 +1320,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="getAllOutputFilesURLAsZip">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/getAllOutputFilesURLAsZip" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/getAllOutputFilesURLAsZip" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -1330,7 +1330,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="setLibraryItemAsNotReleased">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_0/setLibraryItemAsNotReleased" />
+				soapAction="http://service.apollo.pitt.edu/apolloservice/v3_0_2/setLibraryItemAsNotReleased" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>

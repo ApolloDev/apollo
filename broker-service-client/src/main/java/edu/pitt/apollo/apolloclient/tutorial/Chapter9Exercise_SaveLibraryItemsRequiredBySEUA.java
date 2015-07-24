@@ -22,32 +22,32 @@ import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatment;
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatmentEfficacy;
-import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v3_0_0.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v3_0_0.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.Location;
-import edu.pitt.apollo.types.v3_0_0.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v3_0_0.OperatorEnum;
-import edu.pitt.apollo.types.v3_0_0.PlaceClosureControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.PlaceEnum;
-import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v3_0_0.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v3_0_0.Vaccination;
-import edu.pitt.apollo.types.v3_0_0.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV300;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.types.v3_0_2.AntiviralTreatment;
+import edu.pitt.apollo.types.v3_0_2.AntiviralTreatmentEfficacy;
+import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
+import edu.pitt.apollo.types.v3_0_2.ControlStrategyTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
+import edu.pitt.apollo.types.v3_0_2.DiseaseSurveillanceCapability;
+import edu.pitt.apollo.types.v3_0_2.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v3_0_2.FixedDuration;
+import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v3_0_2.Location;
+import edu.pitt.apollo.types.v3_0_2.NamedPrioritizationSchemeEnum;
+import edu.pitt.apollo.types.v3_0_2.OperatorEnum;
+import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlStrategy;
+import edu.pitt.apollo.types.v3_0_2.PlaceEnum;
+import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
+import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
+import edu.pitt.apollo.types.v3_0_2.TreatmentPreventableOutcomeEnum;
+import edu.pitt.apollo.types.v3_0_2.TreatmentSystemLogistics;
+import edu.pitt.apollo.types.v3_0_2.UnitOfMeasureEnum;
+import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.Vaccination;
+import edu.pitt.apollo.types.v3_0_2.VaccinationEfficacyForSimulatorConfiguration;
 
 /**
  *

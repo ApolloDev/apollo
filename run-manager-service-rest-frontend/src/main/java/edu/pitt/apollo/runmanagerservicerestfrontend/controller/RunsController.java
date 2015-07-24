@@ -18,7 +18,7 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.methods.StartRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetStatusOfRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.TerminateRunMethod;
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

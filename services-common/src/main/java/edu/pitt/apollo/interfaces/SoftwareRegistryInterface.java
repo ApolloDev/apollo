@@ -2,7 +2,7 @@ package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DataServiceException;
 
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import java.util.List;
 
 /**

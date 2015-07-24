@@ -4,7 +4,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>run-manager-service</artifactId>
     <name>Run Manager Service</name>
@@ -46,19 +46,19 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>job-running-service-soap-connector</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>data-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>translator-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

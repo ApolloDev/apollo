@@ -3,7 +3,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>translator-service-soap-connector</artifactId>
     <name>Translator Service SOAP Connector</name>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>translator-service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.2-SNAPSHOT</version>
         </dependency>
         
     </dependencies>

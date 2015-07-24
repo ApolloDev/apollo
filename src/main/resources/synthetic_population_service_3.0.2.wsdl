@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
-	xmlns:tns="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/"
+	xmlns:tns="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
-	targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/"
+	targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
 	
 	<wsdl:types>
 		<xsd:schema elementFormDefault="qualified"
-			targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/"
-			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_0/"
-			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_0/">
+			targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/"
+			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/"
+			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_2/">
 
 			<!-- <xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import> -->
-			<xsd:import schemaLocation="synthetic_population_service_3.0.0.xsd" namespace="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_0/"></xsd:import>
-			<xsd:import schemaLocation="services-common_3.0.0.xsd" namespace="http://services-common.apollo.pitt.edu/v3_0_0/"></xsd:import>
+			<xsd:import schemaLocation="synthetic_population_service_3.0.0.xsd" namespace="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/"></xsd:import>
+			<xsd:import schemaLocation="services-common_3.0.0.xsd" namespace="http://services-common.apollo.pitt.edu/v3_0_2/"></xsd:import>
 			
 			<xsd:element name="runSyntheticPopulationGeneration">
 				<xsd:complexType>
@@ -117,7 +117,7 @@
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="runSyntheticPopulationGeneration">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/runSyntheticPopulationGeneration" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/runSyntheticPopulationGeneration" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -129,7 +129,7 @@
 
 		<wsdl:operation name="getRunStatus">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/getRunStatus" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/getRunStatus" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
@@ -140,7 +140,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="killRun">
 			<soap:operation
-				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_0/killRun" />
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/killRun" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>

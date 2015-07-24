@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
 
 /**
  *

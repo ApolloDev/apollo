@@ -21,14 +21,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunResponse;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceResult;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunResponse;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceV300;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.ServiceResult;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopulationRunStatusMessage;
 
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException {

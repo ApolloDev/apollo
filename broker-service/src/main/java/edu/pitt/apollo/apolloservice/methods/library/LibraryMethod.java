@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceV300;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV300;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.slf4j.Logger;

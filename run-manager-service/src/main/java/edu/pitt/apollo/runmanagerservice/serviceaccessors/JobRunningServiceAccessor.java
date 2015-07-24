@@ -3,7 +3,7 @@ package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 
 import java.math.BigInteger;
 

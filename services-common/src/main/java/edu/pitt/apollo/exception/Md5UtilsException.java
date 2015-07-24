@@ -1,6 +1,6 @@
 package edu.pitt.apollo.exception;
 
-import edu.pitt.apollo.types.v3_0_0.ExpectedUtility;
+import edu.pitt.apollo.types.v3_0_2.ExpectedUtility;
 
 /**
  * Created by jdl50 on 5/18/15.

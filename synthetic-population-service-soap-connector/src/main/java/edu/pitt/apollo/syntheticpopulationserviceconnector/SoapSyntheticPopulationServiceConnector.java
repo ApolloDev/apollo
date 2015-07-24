@@ -2,12 +2,12 @@ package edu.pitt.apollo.syntheticpopulationserviceconnector;
 
 import edu.pitt.apollo.connector.SyntheticPopulationServiceConnector;
 import edu.pitt.apollo.exception.SyntheticPopulationServiceException;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunResponse;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunResponse;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceV300;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.RunSyntheticPopulationGenerationMessage;
 import java.math.BigInteger;
 import java.net.URL;
 

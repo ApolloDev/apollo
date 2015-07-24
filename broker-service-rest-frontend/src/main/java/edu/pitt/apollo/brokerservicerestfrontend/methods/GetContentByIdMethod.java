@@ -9,7 +9,7 @@ import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 

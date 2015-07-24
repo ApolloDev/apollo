@@ -8,7 +8,7 @@ import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 
 import java.math.BigInteger;
 import java.util.List;
