@@ -7,22 +7,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v3_0_2.FixedDuration;
-import edu.pitt.apollo.types.v3_0_2.Infection;
-import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v3_0_2.InfectionStateEnum;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDisease;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.Location;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensus;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.ReproductionNumber;
-import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.*;
 
 public class ExampleInfectiousDiseaseScenario {
 
@@ -39,9 +24,9 @@ public class ExampleInfectiousDiseaseScenario {
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId(pathogenTaxonId);
 		infection.setPathogen(pathogen);
-		infection.setHostTaxonId(hostTaxonId);
+		infection.setHost(hostTaxonId);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost =
+		InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiousHost =
 						getInfectionAcquisitionFromInfectiousHost(
 								hostTaxonId, reproductionNumber, latentPeriod, 
 								infectiousPeriod, unitOfTimeEnum);
@@ -50,7 +35,7 @@ public class ExampleInfectiousDiseaseScenario {
 		return infection;
 	}
 
-	private static InfectionAcquisitionFromInfectiousHost getInfectionAcquisitionFromInfectiousHost(
+	private static InfectionAcquisitionFromInfectedHost getInfectionAcquisitionFromInfectiousHost(
 			String infectiousHostTaxonId, double reproductionNumber, double latentPeriod, double infectiousPeriod,
 			UnitOfTimeEnum unitOfTimeEnum) {
 
@@ -62,18 +47,18 @@ public class ExampleInfectiousDiseaseScenario {
 		latentPeriodDuration.setUnitOfTime(unitOfTimeEnum);
 		latentPeriodDuration.setValue(latentPeriod);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiouHost =
-				new InfectionAcquisitionFromInfectiousHost();
+        InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiouHost =
+				new InfectionAcquisitionFromInfectedHost();
 		
 		
 		ReproductionNumber reproNum = new ReproductionNumber();
 		reproNum.setExactValue(reproductionNumber);
 		
 		infectionAcquisitionFromInfectiouHost.getBasicReproductionNumbers().add(reproNum);
-		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
+		infectionAcquisitionFromInfectiouHost.setInfectedHost(infectiousHostTaxonId);
 		infectionAcquisitionFromInfectiouHost.setInfectiousPeriodDuration(infectiousPeriodDuration);
 		infectionAcquisitionFromInfectiouHost.setLatentPeriodDuration(latentPeriodDuration);
-		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
+		infectionAcquisitionFromInfectiouHost.setInfectedHost(infectiousHostTaxonId);
 
 		return infectionAcquisitionFromInfectiouHost;
 	}
@@ -81,7 +66,7 @@ public class ExampleInfectiousDiseaseScenario {
 	private static InfectiousDisease getInfectiousDisease(String diseaseId, String pathogenTaxonId, String hostTaxonId,
 			DiseaseOutcomeEnum diseaseOutcomeEnum, double probablyOfDiseaseOutcome) {
 		InfectiousDisease disease = new InfectiousDisease();
-		disease.setDiseaseId(diseaseId);
+		disease.setDisease(diseaseId);
 		disease.setSpeciesWithDisease(hostTaxonId);
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId(pathogenTaxonId);
@@ -122,8 +107,12 @@ public class ExampleInfectiousDiseaseScenario {
 			XMLGregorianCalendar scenarioDate, Infection scenarioInfection, InfectiousDisease scenarioInfectiousDisease,
 			PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus) {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
-		
-		scenario.setLocation(location);
+
+        EcosystemAtPointInTime eapit = new EcosystemAtPointInTime();
+        eapit.setLocation(location);
+        eapit.setEcosystemOnScenarioDate(new EcosystemData());
+
+		scenario.setEcosystemOnScenarioDate(eapit);
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);

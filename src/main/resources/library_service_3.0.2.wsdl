@@ -2,12 +2,12 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:tns="http://service.apollo.pitt.edu/libraryservice/v3_0_2/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="LibraryService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/libraryservice/v3_0_2/">
+	name="LibraryService_v3.0.2" targetNamespace="http://service.apollo.pitt.edu/libraryservice/v3_0_2/">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/libraryservice/v3_0_2/"
 			xmlns:lst="http://library-service-types.apollo.pitt.edu/v3_0_2/">
 
-			<xsd:import schemaLocation="library_service_3.0.0.xsd"
+			<xsd:import schemaLocation="library_service_3.0.2.xsd"
 				namespace="http://library-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 
@@ -611,10 +611,10 @@
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
-	<wsdl:service name="LibraryService_v3.0.0">
+	<wsdl:service name="LibraryService_v3.0.2">
 		<wsdl:port binding="tns:LibraryServiceBinding" name="LibraryServiceEndpoint">
 			<soap:address
-				location="http://localhost:8080/libraryservice3.0.0/services/libraryservice" />
+				location="http://localhost:8080/libraryservice3.0.2/services/libraryservice" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

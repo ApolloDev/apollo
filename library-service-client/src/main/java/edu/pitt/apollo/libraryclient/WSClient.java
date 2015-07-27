@@ -32,7 +32,7 @@ import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV300;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.types.v3_0_2.Census;
 import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
@@ -79,7 +79,7 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV300 ls = new LibraryServiceV300(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV302 ls = new LibraryServiceV302(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();

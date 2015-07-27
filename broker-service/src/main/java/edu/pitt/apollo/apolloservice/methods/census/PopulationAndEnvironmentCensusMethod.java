@@ -57,7 +57,7 @@ public abstract class PopulationAndEnvironmentCensusMethod {
             Location l = new Location();
             l.setApolloLocationCode(cols[0]);
             c.setLocation(l);
-            c.setNameOfAdministativeUnit(cols[1]);
+//            c.setNameOfAdministativeUnit(cols[1]);
             c.setNumberOfPeople(new BigInteger(cols[2]));
             c.setNumberOfSchools(new BigInteger(cols[3]));
             c.setNumberOfWorkplaces(new BigInteger(cols[4]));

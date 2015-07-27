@@ -18,17 +18,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>translator-service</artifactId>
-            <version>3.0.2-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>edu.pitt.apollo</groupId>
-                    <artifactId>xsd-types</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>edu.pitt.apollo</groupId>-->
+            <!--<artifactId>translator-service</artifactId>-->
+            <!--<version>3.0.2-SNAPSHOT</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>edu.pitt.apollo</groupId>-->
+                    <!--<artifactId>xsd-types</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>run-manager-service</artifactId>

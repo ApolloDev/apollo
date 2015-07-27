@@ -10,6 +10,7 @@ import edu.pitt.apollo.services_common.v3_0_2.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
+import edu.pitt.apollo.types.v3_0_2.EcosystemAtPointInTime;
 import edu.pitt.apollo.types.v3_0_2.Location;
 
 import java.io.ByteArrayOutputStream;
@@ -88,7 +89,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	protected void storeOutput() throws IOException, SimulatorServiceException {
 		if (useDatabase) {
 			// get location
-			Location location = message.getInfectiousDiseaseScenario().getLocation();
+            EcosystemAtPointInTime ecosystemAtPointInTime = (EcosystemAtPointInTime) message.getInfectiousDiseaseScenario().getEcosystemOnScenarioDate();
+			Location location = ecosystemAtPointInTime.getLocation();
 			String locationString;
 			if (location.getApolloLocationCode() != null) {
 				locationString = location.getApolloLocationCode();

@@ -1,22 +1,7 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v3_0_2.FixedDuration;
-import edu.pitt.apollo.types.v3_0_2.Infection;
-import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v3_0_2.InfectionStateEnum;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDisease;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.Location;
-import edu.pitt.apollo.types.v3_0_2.LocationDefinition;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensus;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.ReproductionNumber;
-import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,15 +32,15 @@ public class ExampleInfectiousDiseaseScenario {
 		scenario.setScenarioDate(xmlCal);
 
 		Infection infection = new Infection();
-		InfectionAcquisitionFromInfectiousHost iafih = new InfectionAcquisitionFromInfectiousHost();
+		InfectionAcquisitionFromInfectedHost iafih = new InfectionAcquisitionFromInfectedHost();
 
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId("114727");
 		pathogen.setCladeName("Influenza A (H1N1)pdm09");
 		infection.setPathogen(pathogen);
-		infection.setHostTaxonId("9606");
+		infection.setHost("9606");
 
-		iafih.setInfectiousHostTaxonId("9606");
+		iafih.setInfectedHost("9606");
 
 		ReproductionNumber r0 = new ReproductionNumber();
 		r0.setExactValue(1.3);
@@ -74,7 +59,7 @@ public class ExampleInfectiousDiseaseScenario {
 		infection.getInfectionAcquisitionsFromInfectiousHosts().add(iafih);
 
 		InfectiousDisease disease = new InfectiousDisease();
-		disease.setDiseaseId("Influenza");
+		disease.setDisease("Influenza");
 		disease.setCausalPathogen(pathogen);
 		disease.setSpeciesWithDisease("9606");
 
@@ -93,7 +78,10 @@ public class ExampleInfectiousDiseaseScenario {
 		LocationDefinition locationDefinition = new LocationDefinition();
 		locationDefinition.getLocationsIncluded().add("42003");
 		location.setLocationDefinition(locationDefinition);
-		scenario.setLocation(location);
+
+        EcosystemAtPointInTime ecosystemAtPointInTime = new EcosystemAtPointInTime();
+        ecosystemAtPointInTime.setLocation(location);
+        scenario.setEcosystemOnScenarioDate(ecosystemAtPointInTime);
 
 		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 

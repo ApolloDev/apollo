@@ -2,7 +2,7 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="ApolloService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/">
+	name="ApolloService_v3.0.2" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/">
 	<wsdl:types>
 
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
@@ -14,31 +14,31 @@
             xmlns:dst="http://data_service_types.apollo.pitt.edu/v3_0_2/"
 			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/"
 			xmlns:services="http://services-common.apollo.pitt.edu/v3_0_2/">
-			<xsd:import schemaLocation="apollo-types_3.0.0.xsd"
+			<xsd:import schemaLocation="apollo_types_3.0.2.xsd"
 				namespace="http://types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 
-			<xsd:import schemaLocation="simulator_service_3.0.0.xsd"
+			<xsd:import schemaLocation="simulator_service_3.0.2.xsd"
 				namespace="http://simulator-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
 
-			<xsd:import schemaLocation="apollo_service_3.0.0.xsd"
+			<xsd:import schemaLocation="apollo_service_3.0.2.xsd"
 				namespace="http://apollo-service-types.apollo.pitt.edu/v3_0_2/" />
 
-			<xsd:import schemaLocation="services-common_3.0.0.xsd"
+			<xsd:import schemaLocation="services_common_3.0.2.xsd"
 				namespace="http://services-common.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
-			<xsd:import schemaLocation="visualizer_service_3.0.0.xsd"
+			<xsd:import schemaLocation="visualizer_service_3.0.2.xsd"
 				namespace="http://visualizer-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
-			<xsd:import schemaLocation="synthetic_population_service_3.0.0.xsd"
+			<xsd:import schemaLocation="synthetic_population_service_3.0.2.xsd"
 				namespace="http://synthetic-population-service-types.apollo.pitt.edu/v3_0_2/">
 			</xsd:import>
-			<xsd:import schemaLocation="library_service_3.0.0.xsd"
+			<xsd:import schemaLocation="library_service_3.0.2.xsd"
 				namespace="http://library-service-types.apollo.pitt.edu/v3_0_2/">
 
                 </xsd:import>
-                <xsd:import schemaLocation="data_service_3.0.0.xsd"
+                <xsd:import schemaLocation="data_service_3.0.2.xsd"
 				namespace="http://data_service_types.apollo.pitt.edu/v3_0_2/">
                 </xsd:import>
                 
@@ -1340,7 +1340,7 @@
 		</wsdl:operation>
 	</wsdl:binding>
 
-	<wsdl:service name="ApolloService_v3.0.0">
+	<wsdl:service name="ApolloService_v3.0.2">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
 				location="http://localhost:8080/apolloservice202/services/apolloservice" />

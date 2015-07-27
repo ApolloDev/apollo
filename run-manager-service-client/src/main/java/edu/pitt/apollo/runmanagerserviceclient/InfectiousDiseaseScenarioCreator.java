@@ -66,7 +66,10 @@ public class InfectiousDiseaseScenarioCreator {
 
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 
-		scenario.setLocation(getLocation(location));
+        EcosystemAtPointInTime ecosystemAtPointInTime = new EcosystemAtPointInTime();
+        ecosystemAtPointInTime.setLocation(getLocation(location));
+
+		scenario.setEcosystemOnScenarioDate(ecosystemAtPointInTime);
 		scenario.setScenarioDate(getScenarioDate());
 		scenario.getInfections().add(getBaseInfection());
 		scenario.getPopulationInfectionAndImmunityCensuses().add(getBasePopulationInfectionAndImmunityCensus(location));
@@ -116,15 +119,15 @@ public class InfectiousDiseaseScenarioCreator {
 
 		infection.getInfectionAcquisitionsFromInfectiousHosts().add(getBaseInfectionAquisition());
 		infection.setPathogen(getApolloPathogenCode());
-		infection.setHostTaxonId(INFECTIOUS_HOST_TAXON_ID);
+		infection.setHost(INFECTIOUS_HOST_TAXON_ID);
 		infection.getInfectiousDiseases().add(getBaseInfectiousDisease());
 
 		return infection;
 	}
 
-	private static InfectionAcquisitionFromInfectiousHost getBaseInfectionAquisition() {
+	private static InfectionAcquisitionFromInfectedHost getBaseInfectionAquisition() {
 
-		InfectionAcquisitionFromInfectiousHost acquisition = new InfectionAcquisitionFromInfectiousHost();
+        InfectionAcquisitionFromInfectedHost acquisition = new InfectionAcquisitionFromInfectedHost();
 
 		ReproductionNumber reproductionNumber = new ReproductionNumber();
 		reproductionNumber.setExactValue(DEFAULT_R0);
@@ -140,7 +143,7 @@ public class InfectiousDiseaseScenarioCreator {
 		latentPeriodDuration.setValue(DEFAULT_LATENT_PERIOD);
 		acquisition.setLatentPeriodDuration(latentPeriodDuration);
 
-		acquisition.setInfectiousHostTaxonId(INFECTIOUS_HOST_TAXON_ID);
+		acquisition.setInfectedHost(INFECTIOUS_HOST_TAXON_ID);
 
 		return acquisition;
 	}
@@ -150,7 +153,7 @@ public class InfectiousDiseaseScenarioCreator {
 		InfectiousDisease disease = new InfectiousDisease();
 		disease.setSpeciesWithDisease(INFECTIOUS_HOST_TAXON_ID);
 		disease.setCausalPathogen(getApolloPathogenCode());
-		disease.setDiseaseId(DISEASE_ID);
+		disease.setDisease(DISEASE_ID);
 
 		DiseaseOutcomeWithProbability outcomeWithProbability = new DiseaseOutcomeWithProbability();
 		outcomeWithProbability.setDiseaseOutcome(DiseaseOutcomeEnum.ASYMPTOMATIC);
