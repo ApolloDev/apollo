@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV300;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_2.RunResult;
@@ -196,7 +196,7 @@ public class TutorialWebServiceClient {
 
 	static {
 		try {
-			ApolloServiceV300 ss = new ApolloServiceV300(new URL(WSDL_LOC),
+			ApolloServiceV302 ss = new ApolloServiceV302(new URL(WSDL_LOC),
 					SERVICE_NAME);
 			port = ss.getApolloServiceEndpoint();
 		} catch (MalformedURLException ex) {

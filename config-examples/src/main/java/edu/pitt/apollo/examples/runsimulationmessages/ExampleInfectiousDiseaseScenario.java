@@ -7,22 +7,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v3_0_2.FixedDuration;
-import edu.pitt.apollo.types.v3_0_2.Infection;
-import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectedHost;
-import edu.pitt.apollo.types.v3_0_2.InfectionStateEnum;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDisease;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.Location;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensus;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v3_0_2.PopulationInfectionAndImmunityCensusDataCell;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.ReproductionNumber;
-import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.*;
+
 
 public class ExampleInfectiousDiseaseScenario {
 
@@ -41,6 +27,7 @@ public class ExampleInfectiousDiseaseScenario {
 		infection.setPathogen(pathogen);
 		infection.setHost(hostTaxonId);
 
+
 		InfectionAcquisitionFromInfectedHost InfectionAcquisitionFromInfectedHost =
 						getInfectionAcquisitionFromInfectedHost(
 								hostTaxonId, reproductionNumber, latentPeriod, 
@@ -50,7 +37,9 @@ public class ExampleInfectiousDiseaseScenario {
 		return infection;
 	}
 
+
 	private static InfectionAcquisitionFromInfectedHost getInfectionAcquisitionFromInfectedHost(
+
 			String infectiousHostTaxonId, double reproductionNumber, double latentPeriod, double infectiousPeriod,
 			UnitOfTimeEnum unitOfTimeEnum) {
 
@@ -62,7 +51,8 @@ public class ExampleInfectiousDiseaseScenario {
 		latentPeriodDuration.setUnitOfTime(unitOfTimeEnum);
 		latentPeriodDuration.setValue(latentPeriod);
 
-		InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiouHost =
+        InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiouHost =
+
 				new InfectionAcquisitionFromInfectedHost();
 		
 		
@@ -122,8 +112,14 @@ public class ExampleInfectiousDiseaseScenario {
 			XMLGregorianCalendar scenarioDate, Infection scenarioInfection, InfectiousDisease scenarioInfectiousDisease,
 			PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus) {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
-		
-		//scenario.setLocation(location); Where did this go?!
+
+
+        EcosystemAtPointInTime eapit = new EcosystemAtPointInTime();
+        eapit.setLocation(location);
+        eapit.setEcosystemOnScenarioDate(new EcosystemData());
+
+		scenario.setEcosystemOnScenarioDate(eapit);
+
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);

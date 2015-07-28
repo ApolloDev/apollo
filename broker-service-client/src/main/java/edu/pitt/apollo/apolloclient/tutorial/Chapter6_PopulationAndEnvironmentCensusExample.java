@@ -62,8 +62,8 @@ public class Chapter6_PopulationAndEnvironmentCensusExample {
 		System.out.println(indent + "Location Code: "
 				+ populationAndEnvironmentCensus.getLocation().getApolloLocationCode());
 		System.out.println(indent + "Date: " + populationAndEnvironmentCensus.getReferenceDate());
-		System.out.println(indent + "Name of Administrative Unit: "
-				+ populationAndEnvironmentCensus.getNameOfAdministativeUnit());
+//		System.out.println(indent + "Name of Administrative Unit: "
+//				+ populationAndEnvironmentCensus.getNameOfAdministativeUnit());
 
 		System.out
 				.println(indent + "Number of People: " + populationAndEnvironmentCensus.getNumberOfPeople());

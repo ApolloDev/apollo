@@ -2,7 +2,7 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:tns="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="ApolloService_v3.0.0" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/">
+	name="ApolloService_v3.0.2" targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/">
 	<wsdl:types>
 
 		<xsd:schema targetNamespace="http://service.apollo.pitt.edu/apolloservice/v3_0_2/"
@@ -1340,7 +1340,7 @@
 		</wsdl:operation>
 	</wsdl:binding>
 
-	<wsdl:service name="ApolloService_v3.0.0">
+	<wsdl:service name="ApolloService_v3.0.2">
 		<wsdl:port binding="tns:ApolloServiceBinding" name="ApolloServiceEndpoint">
 			<soap:address
 				location="http://localhost:8080/apolloservice202/services/apolloservice" />

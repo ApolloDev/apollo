@@ -89,14 +89,9 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	protected void storeOutput() throws IOException, SimulatorServiceException {
 		if (useDatabase) {
 			// get location
-			String locationString = ((EcosystemAtPointInTime) message.getInfectiousDiseaseScenario().getEcosystemOnScenarioDate()).getLocation();
-//			String locationString;
-//			if (location.getApolloLocationCode() != null) {
-//				locationString = location.getApolloLocationCode();
-//			} else {
-//				// else use first location included
-//				locationString = location.getLocationDefinition().getLocationsIncluded().get(0);
-//			}
+            EcosystemAtPointInTime ecosystemAtPointInTime = (EcosystemAtPointInTime) message.getInfectiousDiseaseScenario().getEcosystemOnScenarioDate();
+			String locationString = ecosystemAtPointInTime.getLocation().getApolloLocationCode();
+
 			storeFileOutputToDatabase(locationString);
 			updateStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN, "The simulator log files were written");
 

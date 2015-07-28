@@ -88,7 +88,7 @@ public class StageInDbWorkerThread implements Runnable {
         FixedDuration infectiousPeriod = new FixedDuration();
         infectiousPeriod.setValue(batchConfigRecord.infectiousPeriod);
         infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
-        InfectionAcquisitionFromInfectiousHost infection = runSimulationMessage
+        InfectionAcquisitionFromInfectedHost infection = runSimulationMessage
                 .getInfectiousDiseaseScenario().getInfections().get(0)
                 .getInfectionAcquisitionsFromInfectiousHosts().get(0);
 

@@ -241,7 +241,7 @@
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
-	<wsdl:service name="SimulatorService_v3.0.0">
+	<wsdl:service name="SimulatorService_v3.0.2">
 		<wsdl:port binding="tns:SimulatorServiceBinding" name="SimulatorServiceEndpoint">
 			<soap:address
 				location="http://localhost:8080/simulatorservice202/services/simulatorservice" />

@@ -42,7 +42,7 @@
     <dependencies>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>translator-service</artifactId>
+            <artifactId>translator-service-skeleton</artifactId>
             <version>3.0.2-SNAPSHOT</version>
         </dependency>
         

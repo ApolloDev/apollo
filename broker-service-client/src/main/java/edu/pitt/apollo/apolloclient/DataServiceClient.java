@@ -23,7 +23,7 @@ import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsMessage;
 import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsResult;
 import edu.pitt.apollo.data_service_types.v3_0_2.RunIdAndFiles;
 import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV300;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +62,7 @@ public class DataServiceClient {
 
 	public static void main(String[] args) throws MalformedURLException, IOException {
 
-		ApolloServiceV300 ls = new ApolloServiceV300(new URL(WSDL_LOC), SERVICE);
+		ApolloServiceV302 ls = new ApolloServiceV302(new URL(WSDL_LOC), SERVICE);
 		ApolloServiceEI port = ls.getApolloServiceEndpoint();
 
 //		testGettingOutputFilesURLAsZip(port);

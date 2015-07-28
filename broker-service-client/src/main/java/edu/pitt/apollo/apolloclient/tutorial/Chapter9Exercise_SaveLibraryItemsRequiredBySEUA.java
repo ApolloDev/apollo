@@ -23,7 +23,7 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV300;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.types.v3_0_2.AntiviralTreatment;
 import edu.pitt.apollo.types.v3_0_2.AntiviralTreatmentEfficacy;
@@ -452,7 +452,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 	public static void main(String[] args) throws InterruptedException,
 			IOException, DatatypeConfigurationException {
 
-		ApolloServiceV300 service = new ApolloServiceV300(new URL(WSDL_LOC));
+		ApolloServiceV302 service = new ApolloServiceV302(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 		addAcVcm(port);

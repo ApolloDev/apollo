@@ -5,7 +5,7 @@ import edu.pitt.apollo.exception.SyntheticPopulationServiceException;
 import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunRequest;
 import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunResponse;
 import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceV300;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.RunSyntheticPopulationGenerationMessage;
 import java.math.BigInteger;
@@ -26,7 +26,7 @@ public class SoapSyntheticPopulationServiceConnector extends SyntheticPopulation
 
 	private void initialize() throws SyntheticPopulationServiceException {
 		try {
-			port = new SyntheticPopulationServiceV300(new URL(serviceUrl)).getSyntheticPopulationServiceEndpoint();
+			port = new SyntheticPopulationServiceV302(new URL(serviceUrl)).getSyntheticPopulationServiceEndpoint();
 		} catch (Exception ex) {
 			throw new SyntheticPopulationServiceException("Exception getting synthetic population service endpoint: " + ex.getMessage());
 		}
