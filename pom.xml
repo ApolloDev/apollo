@@ -82,7 +82,7 @@
         <module>visualizer-service-war</module>
 
         <module>job-running-service-soap-connector</module>
-        <module>translator-service-soap-connector</module>
+       <!-- <module>translator-service-soap-connector</module> -->
         <module>visualizer-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
@@ -90,8 +90,8 @@
         <module>synthetic-population-service-war</module>
         <module>synthetic-population-service-soap-connector</module>
 
-        <module>run-manager-service</module>
-        <module>run-manager-service-rest-frontend</module>
+      <!--  <module>run-manager-service</module>
+        <module>run-manager-service-rest-frontend</module> -->
 
         <module>broker-service</module>
         <module>broker-service-war</module>

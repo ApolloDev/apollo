@@ -12,7 +12,7 @@ import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
 import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeWithProbability;
 import edu.pitt.apollo.types.v3_0_2.FixedDuration;
 import edu.pitt.apollo.types.v3_0_2.Infection;
-import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectedHost;
 import edu.pitt.apollo.types.v3_0_2.InfectionStateEnum;
 import edu.pitt.apollo.types.v3_0_2.InfectiousDisease;
 import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
@@ -39,18 +39,18 @@ public class ExampleInfectiousDiseaseScenario {
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId(pathogenTaxonId);
 		infection.setPathogen(pathogen);
-		infection.setHostTaxonId(hostTaxonId);
+		infection.setHost(hostTaxonId);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiousHost =
-						getInfectionAcquisitionFromInfectiousHost(
+		InfectionAcquisitionFromInfectedHost InfectionAcquisitionFromInfectedHost =
+						getInfectionAcquisitionFromInfectedHost(
 								hostTaxonId, reproductionNumber, latentPeriod, 
 								infectiousPeriod, unitOfTimeEnum);
-		infection.getInfectionAcquisitionsFromInfectiousHosts().add(infectionAcquisitionFromInfectiousHost);
+		infection.getInfectionAcquisitionsFromInfectiousHosts().add(InfectionAcquisitionFromInfectedHost);
 
 		return infection;
 	}
 
-	private static InfectionAcquisitionFromInfectiousHost getInfectionAcquisitionFromInfectiousHost(
+	private static InfectionAcquisitionFromInfectedHost getInfectionAcquisitionFromInfectedHost(
 			String infectiousHostTaxonId, double reproductionNumber, double latentPeriod, double infectiousPeriod,
 			UnitOfTimeEnum unitOfTimeEnum) {
 
@@ -62,18 +62,18 @@ public class ExampleInfectiousDiseaseScenario {
 		latentPeriodDuration.setUnitOfTime(unitOfTimeEnum);
 		latentPeriodDuration.setValue(latentPeriod);
 
-		InfectionAcquisitionFromInfectiousHost infectionAcquisitionFromInfectiouHost =
-				new InfectionAcquisitionFromInfectiousHost();
+		InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiouHost =
+				new InfectionAcquisitionFromInfectedHost();
 		
 		
 		ReproductionNumber reproNum = new ReproductionNumber();
 		reproNum.setExactValue(reproductionNumber);
 		
 		infectionAcquisitionFromInfectiouHost.getBasicReproductionNumbers().add(reproNum);
-		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
+		infectionAcquisitionFromInfectiouHost.setInfectedHost(infectiousHostTaxonId);
 		infectionAcquisitionFromInfectiouHost.setInfectiousPeriodDuration(infectiousPeriodDuration);
 		infectionAcquisitionFromInfectiouHost.setLatentPeriodDuration(latentPeriodDuration);
-		infectionAcquisitionFromInfectiouHost.setInfectiousHostTaxonId(infectiousHostTaxonId);
+		infectionAcquisitionFromInfectiouHost.setInfectedHost(infectiousHostTaxonId);
 
 		return infectionAcquisitionFromInfectiouHost;
 	}
@@ -81,7 +81,7 @@ public class ExampleInfectiousDiseaseScenario {
 	private static InfectiousDisease getInfectiousDisease(String diseaseId, String pathogenTaxonId, String hostTaxonId,
 			DiseaseOutcomeEnum diseaseOutcomeEnum, double probablyOfDiseaseOutcome) {
 		InfectiousDisease disease = new InfectiousDisease();
-		disease.setDiseaseId(diseaseId);
+		disease.setDisease(diseaseId);
 		disease.setSpeciesWithDisease(hostTaxonId);
 		ApolloPathogenCode pathogen = new ApolloPathogenCode();
 		pathogen.setNcbiTaxonId(pathogenTaxonId);
@@ -123,7 +123,7 @@ public class ExampleInfectiousDiseaseScenario {
 			PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus) {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 		
-		scenario.setLocation(location);
+		//scenario.setLocation(location); Where did this go?!
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);
