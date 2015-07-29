@@ -9,6 +9,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import edu.pitt.apollo.types.v3_0_2.*;
 
+
 public class ExampleInfectiousDiseaseScenario {
 
 	public static final String INCITS_CODE_FOR_ALLEGHENY_COUNTY = "42003";
@@ -26,16 +27,19 @@ public class ExampleInfectiousDiseaseScenario {
 		infection.setPathogen(pathogen);
 		infection.setHost(hostTaxonId);
 
-		InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiousHost =
-						getInfectionAcquisitionFromInfectiousHost(
+
+		InfectionAcquisitionFromInfectedHost InfectionAcquisitionFromInfectedHost =
+						getInfectionAcquisitionFromInfectedHost(
 								hostTaxonId, reproductionNumber, latentPeriod, 
 								infectiousPeriod, unitOfTimeEnum);
-		infection.getInfectionAcquisitionsFromInfectiousHosts().add(infectionAcquisitionFromInfectiousHost);
+		infection.getInfectionAcquisitionsFromInfectiousHosts().add(InfectionAcquisitionFromInfectedHost);
 
 		return infection;
 	}
 
-	private static InfectionAcquisitionFromInfectedHost getInfectionAcquisitionFromInfectiousHost(
+
+	private static InfectionAcquisitionFromInfectedHost getInfectionAcquisitionFromInfectedHost(
+
 			String infectiousHostTaxonId, double reproductionNumber, double latentPeriod, double infectiousPeriod,
 			UnitOfTimeEnum unitOfTimeEnum) {
 
@@ -48,6 +52,7 @@ public class ExampleInfectiousDiseaseScenario {
 		latentPeriodDuration.setValue(latentPeriod);
 
         InfectionAcquisitionFromInfectedHost infectionAcquisitionFromInfectiouHost =
+
 				new InfectionAcquisitionFromInfectedHost();
 		
 		
@@ -108,11 +113,13 @@ public class ExampleInfectiousDiseaseScenario {
 			PopulationInfectionAndImmunityCensus scenarioPopulationInfectionAndImmunityCensus) {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 
+
         EcosystemAtPointInTime eapit = new EcosystemAtPointInTime();
         eapit.setLocation(location);
         eapit.setEcosystemOnScenarioDate(new EcosystemData());
 
 		scenario.setEcosystemOnScenarioDate(eapit);
+
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);

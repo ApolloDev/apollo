@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 public class WSClient {
 
 	public static final String WSDL_LOC = "http://gaia.pha.psc.edu:13500/pscsimu?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/simulatorservice/v3_0_2/", "SimulatorService_v3.0.0");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/simulatorservice/v3_0_2/", "SimulatorService_v3.0.2");
 
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
 

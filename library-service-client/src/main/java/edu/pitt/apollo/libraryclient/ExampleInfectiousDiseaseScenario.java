@@ -1,5 +1,6 @@
 package edu.pitt.apollo.libraryclient;
 
+
 import edu.pitt.apollo.types.v3_0_2.*;
 
 import java.text.ParseException;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
@@ -78,6 +80,7 @@ public class ExampleInfectiousDiseaseScenario {
 		LocationDefinition locationDefinition = new LocationDefinition();
 		locationDefinition.getLocationsIncluded().add("42003");
 		location.setLocationDefinition(locationDefinition);
+
 
         EcosystemAtPointInTime ecosystemAtPointInTime = new EcosystemAtPointInTime();
         ecosystemAtPointInTime.setLocation(location);
