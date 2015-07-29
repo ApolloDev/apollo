@@ -54,27 +54,6 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="TranslatorConfiguration">
-		<sequence>
-			<choice>
-			<element name="modelVariant" type="string"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="apolloLibraryURNOfModelVariant" type="positiveInteger"
-				maxOccurs="1" minOccurs="0">
-			</element>
-		</choice>
-			<choice>
-			<element name="baseConfiguration" type="string"
-				maxOccurs="1" minOccurs="0">
-			</element>
-			<element name="apolloLibraryURNOfBaseConfiguration" type="positiveInteger"
-				maxOccurs="1" minOccurs="0">
-			</element>
-		</choice>
-		</sequence>
-	</complexType>
-
 	<complexType name="RunSimulationMessage">
 		<complexContent>
 		<extension base="common:RunMessage">
@@ -86,8 +65,6 @@
 				maxOccurs="1" minOccurs="1" />
 			<!-- <element name="softwareOutputStratificationGranularity" type="common:SoftwareOutputStratificationGranularity" 
 				minOccurs="1" maxOccurs="1"/> -->
-				<element name="translatorConfiguration" type="tns:TranslatorConfiguration"
-				maxOccurs="1" minOccurs="0" />
 		</sequence>
 		</extension>
 	</complexContent>
