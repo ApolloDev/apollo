@@ -210,11 +210,11 @@ public class TutorialWebServiceClient {
 	// }
 	//
 	// public static AddLibraryItemResult addLibraryItem(Authentication
-	// authentication, ApolloIndexableItem apolloIndexableItem, String
+	// authentication, RootApolloLibraryItem RootApolloLibraryItem, String
 	// itemDescription,
 	// String itemSource, String itemType, ArrayList<String> itemIndexingLabels)
 	// {
-	// return port.addLibraryItem(authentication, apolloIndexableItem,
+	// return port.addLibraryItem(authentication, RootApolloLibraryItem,
 	// itemDescription, itemSource, itemType, itemIndexingLabels);
 	// }
 

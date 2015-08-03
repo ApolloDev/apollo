@@ -12,7 +12,7 @@
 		<sequence>
 			<element name="catalogEntry" type="tns:CatalogEntry"
 				maxOccurs="1" minOccurs="1" />
-			<element name="libraryItem" type="Q1:ApolloIndexableItem"
+			<element name="libraryItem" type="Q1:RootApolloLibraryItem"
 				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -21,7 +21,7 @@
 		<sequence>
 			<element name="itemDescription" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="itemType" type="string" maxOccurs="1"
+			<element name="javaClassName" type="string" maxOccurs="1"
 				minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -31,6 +31,16 @@
 			<element name="status" type="pref:MethodCallStatus"></element>
 			<element name="libraryItemContainer" type="tns:LibraryItemContainer"></element>
 		</sequence>
+	</complexType>
+
+	<complexType name="TextContainer">
+		<complexContent>
+			<extension base="Q1:RootApolloLibraryItem">
+				<sequence>
+					<element name="text" type="string"/>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 	<complexType name="AddLibraryItemContainerResult">
