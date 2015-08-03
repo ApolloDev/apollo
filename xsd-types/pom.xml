@@ -219,8 +219,7 @@
                     <bindingDirectory>src/main/xjb</bindingDirectory>
                     <schemaDirectory>src/main/xsd</schemaDirectory>
                     <schemaIncludes>
-                        <include>*.xsd</include>
-                        <!-- <include>apollo_types_3.0.2.xsd</include>
+                        <include>apollo_types_3.0.2.xsd</include>
                         <include>library_service_3.0.2.xsd</include>
                         <include>simulator_service_3.0.2.xsd</include>
                         <include>services_common_3.0.2.xsd</include>
@@ -228,7 +227,7 @@
                         <include>visualizer_service_3.0.2.xsd</include>
                         <include>apollo_service_3.0.2.xsd</include>
                         <include>data_service_3.0.2.xsd</include>
-                        <include>synthetic_population_service_3.0.2.xsd</include>-->
+                        <include>synthetic_population_service_3.0.2.xsd</include>
                     </schemaIncludes>
                     <extension>true</extension>
 

@@ -58,7 +58,7 @@ public class ExampleInfectiousDiseaseScenario {
 		infectiousPeriod.setValue(6.0);
 		iafih.setInfectiousPeriodDuration(latentPeriod);
 
-		infection.getInfectionAcquisitionsFromInfectiousHosts().add(iafih);
+		infection.getInfectionAcquisitionsFromInfectedHosts().add(iafih);
 
 		InfectiousDisease disease = new InfectiousDisease();
 		disease.setDisease("Influenza");
@@ -81,10 +81,7 @@ public class ExampleInfectiousDiseaseScenario {
 		locationDefinition.getLocationsIncluded().add("42003");
 		location.setLocationDefinition(locationDefinition);
 
-
-        EcosystemAtPointInTime ecosystemAtPointInTime = new EcosystemAtPointInTime();
-        ecosystemAtPointInTime.setLocation(location);
-        scenario.setEcosystemOnScenarioDate(ecosystemAtPointInTime);
+        scenario.setScenarioLocation(location);
 
 		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 

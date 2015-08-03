@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import java.text.ParseException;
@@ -219,9 +220,9 @@ public class WSClient {
 		return port.addLibraryItemContainer(message);
 	}
 
-	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy();
+		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -238,9 +239,9 @@ public class WSClient {
 
 	}
 
-	private static AddLibraryItemContainerResult addAntiviralControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addAntiviralControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy();
+		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -295,9 +296,9 @@ public class WSClient {
 
 	}
 
-	private static UpdateLibraryItemContainerResult updateVaccinationControlStrategyInLibrary(Authentication auth, LibraryServiceEI port, int urn) {
+	private static UpdateLibraryItemContainerResult updateVaccinationControlStrategyInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy();
+		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 

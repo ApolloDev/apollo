@@ -90,7 +90,7 @@ public class StageInDbWorkerThread implements Runnable {
         infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
         InfectionAcquisitionFromInfectedHost infection = runSimulationMessage
                 .getInfectiousDiseaseScenario().getInfections().get(0)
-                .getInfectionAcquisitionsFromInfectiousHosts().get(0);
+                .getInfectionAcquisitionsFromInfectedHosts().get(0);
 
         infection.setLatentPeriodDuration(latentPeriod);
         infection.setInfectiousPeriodDuration(infectiousPeriod);

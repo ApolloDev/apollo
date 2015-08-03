@@ -1,6 +1,7 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import edu.pitt.apollo.*;
+import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
@@ -10,8 +11,6 @@ import edu.pitt.apollo.services_common.v3_0_2.*;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
-import edu.pitt.apollo.types.v3_0_2.EcosystemAtPointInTime;
-import edu.pitt.apollo.types.v3_0_2.Location;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -89,8 +88,7 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	protected void storeOutput() throws IOException, SimulatorServiceException {
 		if (useDatabase) {
 			// get location
-            EcosystemAtPointInTime ecosystemAtPointInTime = (EcosystemAtPointInTime) message.getInfectiousDiseaseScenario().getEcosystemOnScenarioDate();
-			String locationString = ecosystemAtPointInTime.getLocation().getApolloLocationCode();
+			String locationString = message.getInfectiousDiseaseScenario().getScenarioLocation().getApolloLocationCode();
 
 			storeFileOutputToDatabase(locationString);
 			updateStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN, "The simulator log files were written");

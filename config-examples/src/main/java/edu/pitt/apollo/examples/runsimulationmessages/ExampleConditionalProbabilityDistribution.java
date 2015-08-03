@@ -185,7 +185,7 @@ public class ExampleConditionalProbabilityDistribution {
 		uncertainDuration.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
-				.getInfectionAcquisitionsFromInfectiousHosts().get(0).setLatentPeriodDuration(uncertainDuration);
+				.getInfectionAcquisitionsFromInfectedHosts().get(0).setLatentPeriodDuration(uncertainDuration);
 
 		return runSimulationMessage;
 	}

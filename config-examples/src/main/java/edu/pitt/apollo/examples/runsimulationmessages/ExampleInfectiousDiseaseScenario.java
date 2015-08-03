@@ -32,7 +32,7 @@ public class ExampleInfectiousDiseaseScenario {
 						getInfectionAcquisitionFromInfectedHost(
 								hostTaxonId, reproductionNumber, latentPeriod, 
 								infectiousPeriod, unitOfTimeEnum);
-		infection.getInfectionAcquisitionsFromInfectiousHosts().add(InfectionAcquisitionFromInfectedHost);
+		infection.getInfectionAcquisitionsFromInfectedHosts().add(InfectionAcquisitionFromInfectedHost);
 
 		return infection;
 	}
@@ -114,11 +114,7 @@ public class ExampleInfectiousDiseaseScenario {
 		InfectiousDiseaseScenario scenario = new InfectiousDiseaseScenario();
 
 
-        EcosystemAtPointInTime eapit = new EcosystemAtPointInTime();
-        eapit.setLocation(location);
-        eapit.setEcosystemOnScenarioDate(new EcosystemData());
-
-		scenario.setEcosystemOnScenarioDate(eapit);
+        scenario.setScenarioLocation(location);
 
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);

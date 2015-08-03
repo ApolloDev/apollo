@@ -59,7 +59,7 @@ public class TestClient {
 				= ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
 		FixedDuration latentPeriodDuration = (FixedDuration) runSimulationMessage.getInfectiousDiseaseScenario().
-				getInfections().get(0).getInfectionAcquisitionsFromInfectiousHosts().get(0)
+				getInfections().get(0).getInfectionAcquisitionsFromInfectedHosts().get(0)
 				.getInfectiousPeriodDuration();
 
 		latentPeriodDuration.setValue(new Double(String.valueOf(latentPeriodDuration.getValue()) + System.currentTimeMillis()));

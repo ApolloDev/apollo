@@ -50,7 +50,7 @@ public class ExampleUnconditionalProbabilityDistribution  {
 				.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
-				.getInfectionAcquisitionsFromInfectiousHosts().get(0).setLatentPeriodDuration(uncertainDurationOfLatentPeriod);
+				.getInfectionAcquisitionsFromInfectedHosts().get(0).setLatentPeriodDuration(uncertainDurationOfLatentPeriod);
 
 		return runSimulationMessage;
 	}

@@ -2,27 +2,14 @@ package edu.pitt.apollo.examples.runsimulationmessages;
 
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v3_0_2.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_2.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v3_0_2.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_2.Duration;
-import edu.pitt.apollo.types.v3_0_2.FixedDuration;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_2.Location;
-import edu.pitt.apollo.types.v3_0_2.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v3_0_2.OperatorEnum;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_2.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_2.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v3_0_2.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v3_0_2.Vaccination;
-import edu.pitt.apollo.types.v3_0_2.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types.v3_0_2.*;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class ExampleVaccinationControlStrategy {
 
@@ -97,7 +84,8 @@ public class ExampleVaccinationControlStrategy {
 
 	
 	public  RunSimulationMessage addVaccinationControlStrategyToRunSimulationMessage(RunSimulationMessage message) {
-		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies().add(getVaccinationControlStrategy());
+		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies()
+                .add(getVaccinationControlStrategy(message.getInfectiousDiseaseScenario().getScenarioDate()));
 		return message;
 	}
 
@@ -119,20 +107,47 @@ public class ExampleVaccinationControlStrategy {
 		return temporalTriggerDefinition;
 	}
 
-	private TreatmentSystemLogistics getTreatmentSystemLogistics() {
-		TreatmentSystemLogistics treatmentSystemLogistics = new TreatmentSystemLogistics();
-		treatmentSystemLogistics.setDescription("The logistics of an example vaccination control strategy.");
-		treatmentSystemLogistics.setLocation(getLocation());
+	private LogisticalSystem getLogisticalSystem(XMLGregorianCalendar startDate) {
 
-		for (int i = 0; i < 90; i++)
-			treatmentSystemLogistics.getSupplySchedulePerDay().add(new BigInteger("3500"));
-		treatmentSystemLogistics.setSupplyScheduleUnits(UnitOfMeasureEnum.DAILY_DOSE);
+        LogisticalSystem logisticalSystem = new LogisticalSystem();
+        logisticalSystem.setProduct("Example vaccine");
+        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+        Schedule outputSchedule = new Schedule();
+        outputNode.setOutputSchedule(outputSchedule);
+        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-		for (int i = 0; i < 90; i++)
-			treatmentSystemLogistics.getAdministrationCapacityPerDay().add(new BigInteger("3500"));
-		treatmentSystemLogistics.setAdministrationCapacityUnits(UnitOfMeasureEnum.DAILY_DOSE);
+        Calendar calendar = startDate.toGregorianCalendar();
 
-		return treatmentSystemLogistics;
+        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+        Schedule capacitySchedule = new Schedule();
+        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        capacityNode.setCapacitySchedule(capacitySchedule);
+
+        try {
+            for (int i = 0; i < 90; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("3500"));
+                outputSchedule.getScheduleElements().add(element);
+
+
+                ScheduleElement capacityElement = new ScheduleElement();
+                capacityElement.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                capacityElement.setQuantity(new BigInteger("3500"));
+                capacitySchedule.getScheduleElements().add(capacityElement);
+
+                calendar.add(Calendar.DATE, 1);
+            }
+        } catch (DatatypeConfigurationException ex) {
+            throw new RuntimeException("DataTypeConfigurationException: " + ex.getMessage());
+        }
+
+        outputNode.getChildren().add(capacityNode);
+        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+        return logisticalSystem;
 	}
 
 	private Vaccination getVaccination() {
@@ -152,7 +167,7 @@ public class ExampleVaccinationControlStrategy {
 		return vaccination;
 	}
 
-	private  IndividualTreatmentControlStrategy getVaccinationControlStrategy() {
+	private  IndividualTreatmentControlStrategy getVaccinationControlStrategy(XMLGregorianCalendar startDate) {
 		IndividualTreatmentControlStrategy vaccinationControlStrategy = new IndividualTreatmentControlStrategy();
 
 		/* inherited from InfectiousDiseaseControlStrategy */
@@ -162,6 +177,7 @@ public class ExampleVaccinationControlStrategy {
 		vaccinationControlStrategy.getControlStrategyStopTime().add(getTemporalTriggerDefinitionForControlStrategyStopTime());
 		vaccinationControlStrategy.setControlStrategyResponseDelay(getResponseDelay());
 		vaccinationControlStrategy.setControlStrategyStandDownDelay(getControlStrategyStandDownDelay());
+        vaccinationControlStrategy.getLogisticalSystems().add(getLogisticalSystem(startDate));
 
 		/* from IndividualTreatmentControlStrategy */
 		vaccinationControlStrategy.setPathogen(getPathogen());
