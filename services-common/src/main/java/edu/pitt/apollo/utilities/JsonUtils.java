@@ -15,8 +15,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jdl50 on 5/15/15.
@@ -39,7 +38,9 @@ public class JsonUtils {
         jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
         JAXBContext jc;
         try {
-            jc = (JAXBContext) JAXBContext.newInstance(ApolloClassList.classList, jaxbProperties);
+            List<Class> list = Arrays.asList(ApolloClassList.classList);
+            list.add(clazz);
+            jc = (JAXBContext) JAXBContext.newInstance(list.toArray(new Class[0]), jaxbProperties);
             JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
             StreamSource ss = new StreamSource(jsonInputStream);
             return unmarshaller.unmarshal(ss, clazz).getValue();
@@ -47,6 +48,7 @@ public class JsonUtils {
             throw new JsonUtilsException("JAXBException creating object from JSON: " + ex.getMessage());
         }
     }
+
 
     public synchronized final ByteArrayOutputStream getJsonBytes(Object obj) throws JAXBException {
         Class clazz = obj.getClass();
@@ -57,7 +59,13 @@ public class JsonUtils {
             Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
             jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 //		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
-            JAXBContext jc = (JAXBContext) JAXBContext.newInstance(ApolloClassList.classList,
+
+        List<Class> lis = Arrays.asList(ApolloClassList.classList);
+        ArrayList<Class> list = new ArrayList<Class>();
+        list.addAll(lis);
+        list.add(clazz);
+
+            JAXBContext jc = (JAXBContext) JAXBContext.newInstance(list.toArray(new Class[0]),
                     jaxbProperties);
             marshaller = jc.createMarshaller();
             marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);

@@ -153,7 +153,7 @@
 
 	<complexType name="Infection">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1">
@@ -183,7 +183,7 @@
 
 	<complexType name="Contamination">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
@@ -200,7 +200,7 @@
 
 	<complexType name="Colonization">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1" />
@@ -792,7 +792,7 @@
 
 	<complexType name="InfectiousDiseaseControlStrategy">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1" />
@@ -1021,7 +1021,7 @@
 
 	<complexType name="Treatment">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1" />
@@ -1377,7 +1377,7 @@
 	<complexType name="SensitivityAnalysisResult" />
 	<complexType name="InfectiousDiseaseDecisionModel">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="controlStrategies" type="tns:InfectiousDiseaseControlStrategy"
 						maxOccurs="unbounded" minOccurs="1" />
@@ -1392,7 +1392,7 @@
 
 	<complexType name="DecisionAnalysis">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="decisionModel" type="tns:InfectiousDiseaseDecisionModel"
 						maxOccurs="1" minOccurs="1" />
@@ -1417,7 +1417,7 @@
 
 
 
-	<complexType name="ApolloIndexableItem" />
+	<complexType name="RootApolloLibraryItem" />
 
 	<simpleType name="PathogenTaxonID">
 		<restriction base="positiveInteger" />
@@ -1627,7 +1627,7 @@
 
 	<complexType name="InfectiousDiseaseScenario">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="scenarioDate" type="dateTime" maxOccurs="1"
 						minOccurs="1" />
@@ -1672,7 +1672,7 @@
 
 	<complexType name="Epidemic">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="causalPathogens" type="tns:ApolloPathogenCode"
 						maxOccurs="unbounded" minOccurs="1" />
@@ -1883,7 +1883,7 @@
 
 	<complexType name="InfectiousDisease">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="disease" type="tns:SnomedId" maxOccurs="1"
 						minOccurs="1" />
@@ -2236,7 +2236,7 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="ApolloIndexableItemTypeEnum">
+	<simpleType name="RootApolloLibraryItemTypeEnum">
 		<restriction base="string">
 			<enumeration value="InfectionType" />
 			<enumeration value="InfectionAcquisitionType" />
@@ -2387,7 +2387,7 @@
 
 	<complexType name="CensusData">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="date" type="dateTime" maxOccurs="1"
 						minOccurs="0">
@@ -2402,7 +2402,7 @@
 
 	<complexType name="Census">
 		<complexContent>
-			<extension base="tns:ApolloIndexableItem">
+			<extension base="tns:RootApolloLibraryItem">
 				<sequence>
 					<element name="description" type="string" maxOccurs="1"
 						minOccurs="1">
