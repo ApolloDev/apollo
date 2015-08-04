@@ -55,11 +55,11 @@
             <version>3.0.2-SNAPSHOT</version>
         </dependency>
 
-       <!-- <dependency>
+       <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>translator-service</artifactId>
             <version>3.0.2-SNAPSHOT</version>
-        </dependency> -->
+        </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>

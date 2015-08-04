@@ -23,9 +23,9 @@ public class TranslatorServiceAccessor extends ServiceAccessor implements Transl
 
 	@Override
 	public void translateRun(BigInteger runId) throws TranslatorServiceException {
-/*		//connector.translateRun(runId);
+		//connector.translateRun(runId);
 		TranslatorServiceImpl translatorService = new TranslatorServiceImpl();
-		translatorService.translateRun(runId); */
+		translatorService.translateRun(runId);
 	}
 
 }
