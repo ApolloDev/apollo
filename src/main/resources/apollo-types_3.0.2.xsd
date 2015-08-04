@@ -2658,8 +2658,6 @@
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
-					<element name="vectorTaxonId" type="tns:NcbiTaxonId"
-							 maxOccurs="1" minOccurs="0" />
 					<element name="netHolingRate" type="tns:LogNormalDistribution"
 							 maxOccurs="1" minOccurs="0" />
 					<element name="insecticideEfficacyDecayRate" type="tns:Rate"
