@@ -119,7 +119,13 @@ public class ExampleInfectiousDiseaseScenario {
 		scenario.setScenarioDate(scenarioDate);
 		scenario.getInfections().add(scenarioInfection);
 		scenario.getInfections().get(0).getInfectiousDiseases().add(scenarioInfectiousDisease);
-		scenario.getPopulationInfectionAndImmunityCensuses().add(scenarioPopulationInfectionAndImmunityCensus);
+
+        Population population = new Population();
+        population.setLocation(location.getApolloLocationCode());
+        population.setTaxonId("9606");
+        population.getInfectionAndImmunityCensuses().add(scenarioPopulationInfectionAndImmunityCensus);
+
+		scenario.getPopulations().add(population);
 		return scenario;
 	}
 
@@ -163,7 +169,6 @@ public class ExampleInfectiousDiseaseScenario {
 		census.setLocation(locationDescribedByCensus);
 		census.setReferenceDate(censusReferenceDate);
 		census.setCensusData(populationInfectionAndImmunityCensusData);
-		census.setPopulationSpecies(hostTaxonId);
 		census.setPathogen(apolloPathogenCodeForCensus);
 		return census;
 	}
