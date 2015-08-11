@@ -169,7 +169,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 				return -1;
 			} catch (SQLException ex) {
-				try {
+                libraryLogger.error("Rolling back due to SQLException: " + ex.getMessage());
+                try {
 					conn.rollback();
 				} catch (SQLException ex1) {
 					throw createApolloDatabaseExceptionAndLog(ADDING_USER, ex1);
@@ -203,7 +204,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 				conn.commit();
 			} catch (SQLException ex) {
-				try {
+                libraryLogger.error("Rolling back due to SQLException: " + ex.getMessage());
+                try {
 					conn.rollback();
 				} catch (SQLException ex1) {
 					throw createApolloDatabaseExceptionAndLog(ADDING_USER_ROLE, ex1);
@@ -413,7 +415,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 				return result;
 			} catch (SQLException ex) {
-				try {
+                libraryLogger.error("Rolling back due to SQLException: " + ex.getMessage());
+                try {
 					conn.rollback();
 				} catch (SQLException ex1) {
 					throw createApolloDatabaseExceptionAndLog(ADDING_LIBARY_ITEM, ex1);
@@ -507,7 +510,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				throw new ApolloDatabaseException("There was an error " + ADDING_REVIEWER_COMMENT
 						+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
 			} catch (SQLException ex) {
-				try {
+                libraryLogger.error("Rolling back due to SQLException: " + ex.getMessage());
+                try {
 					conn.rollback();
 				} catch (SQLException ex1) {
 					throw createApolloDatabaseExceptionAndLog(ADDING_REVIEWER_COMMENT, ex1);
@@ -625,7 +629,8 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				throw new ApolloDatabaseException("There was an error " + SETTING_RELEASE_VERSION
 						+ ". There is no item with the specified URN: \"" + urn + "\" and version " + version);
 			} catch (SQLException ex) {
-				try {
+                libraryLogger.error("Rolling back due to SQLException: " + ex.getMessage());
+                try {
 					conn.rollback();
 				} catch (SQLException ex1) {
 					throw createApolloDatabaseExceptionAndLog(SETTING_RELEASE_VERSION, ex1);
