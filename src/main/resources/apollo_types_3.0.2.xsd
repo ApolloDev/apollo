@@ -240,8 +240,6 @@
 		<complexContent>
 			<extension base="tns:Census">
 				<sequence>
-					<element name="populationSpecies" type="tns:NcbiTaxonId"
-						maxOccurs="1" minOccurs="1" />
 					<element name="pathogen" type="tns:ApolloPathogenCode"
 						maxOccurs="1" minOccurs="1">
 					</element>
@@ -1251,11 +1249,13 @@
 			<element name="dataType" type="tns:DataTypeEnum" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="xmlFormat" type="token" maxOccurs="1"
-				minOccurs="0" />
-			<element name="csvFormat" type="string" maxOccurs="1"
-				minOccurs="0">
-			</element>
+			<choice>
+				<element name="xmlFormat" type="anyURI" maxOccurs="1"
+					minOccurs="1" />
+				<element name="csvFormat" type="anyURI" maxOccurs="1"
+					minOccurs="1">
+				</element>
+			</choice>
 		</sequence>
 	</complexType>
 
@@ -1615,17 +1615,8 @@
 					<element name="scenarioLocation" type="tns:Location"
 						maxOccurs="1" minOccurs="1">
 					</element>
-					<element name="syntheticEcosystems" type="tns:PointerToData"
-						maxOccurs="unbounded" minOccurs="1">
-					</element>
-					<element name="lifeCycles" type="tns:LifeCycle" maxOccurs="unbounded"
-						minOccurs="0" />
-					<element name="behaviors" type="tns:Behavior" maxOccurs="unbounded"
-						minOccurs="0">
-					</element>
-					<element name="reproductions" type="tns:Reproduction"
-						maxOccurs="1" minOccurs="0">
-					</element>
+					<element name="populations" type="tns:Population"
+						maxOccurs="unbounded" minOccurs="1" />
 					<element name="infections" type="tns:Infection" maxOccurs="unbounded"
 						minOccurs="1" />
 					<element name="colonizations" type="tns:Colonization"
@@ -1633,12 +1624,7 @@
 					</element>
 					<element name="contaminations" type="tns:Contamination"
 						maxOccurs="unbounded" minOccurs="0" />
-					<element name="populationInfectionAndImmunityCensuses"
-						type="tns:PopulationInfectionAndImmunityCensus" maxOccurs="unbounded"
-						minOccurs="1" />
-					<element name="populationColonizationCensuses" type="tns:PopulationColonizationCensus"
-						maxOccurs="unbounded" minOccurs="0">
-					</element>
+
 					<element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus"
 						maxOccurs="unbounded" minOccurs="0">
 					</element>
@@ -2268,6 +2254,7 @@
 			<enumeration value="house" />
 			<enumeration value="insecticideTreatedNets" />
 			<enumeration value="individualTreatments" />
+			<enumeration value="netHoles" />
 		</restriction>
 	</simpleType>
 
@@ -2431,9 +2418,6 @@
 			<element name="individualId" type="nonNegativeInteger"
 				maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="speciesId" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="1">
-			</element>
 			<element name="age" type="tns:FixedDuration" maxOccurs="1"
 				minOccurs="0"></element>
 			<element name="characteristics" type="tns:Characteristic"
@@ -2524,14 +2508,18 @@
 
 
 	<complexType name="ConditionalIndividualBehavior">
-		<sequence>
-			<element name="behavior" type="tns:BehaviorEnum" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="conditionalProbability" type="tns:ConditionalProbabilityDistribution"
-				maxOccurs="1" minOccurs="1">
-			</element>
-		</sequence>
+		<complexContent>
+			<extension base="tns:Behavior">
+				<sequence>
+					<element name="behavior" type="tns:BehaviorEnum" maxOccurs="1"
+						minOccurs="1">
+					</element>
+					<element name="conditionalProbability" type="tns:ConditionalProbabilityDistribution"
+						maxOccurs="1" minOccurs="1">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 
 
@@ -2642,10 +2630,13 @@
 		<complexContent>
 			<extension base="tns:VectorControlStrategy">
 				<sequence>
-					<element name="netHolingRate" type="tns:LogNormalDistribution"
-						maxOccurs="1" minOccurs="0" />
+					<element name="netHolingRate" type="tns:Rate"
+						maxOccurs="1" minOccurs="1" />
+					<element name="nightlyProbabilityOfUse" type="tns:Probability"
+						maxOccurs="1" minOccurs="1">
+					</element>
 					<element name="insecticideEfficacyDecayRate" type="tns:Rate"
-						maxOccurs="1" minOccurs="0" />
+						maxOccurs="1" minOccurs="1" />
 				</sequence>
 			</extension>
 		</complexContent>
@@ -2938,9 +2929,6 @@
 
 	<complexType name="LifeCycle">
 		<sequence>
-			<element name="taxonId" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="1">
-			</element>
 			<element name="lifeStagesWithDurationsAndMortalities" type="tns:LifeStageWithDurationAndMortality"
 				maxOccurs="unbounded" minOccurs="1">
 			</element>
@@ -2958,10 +2946,6 @@
 
 
 	<complexType name="Behavior">
-		<sequence>
-			<element name="taxonId" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="0" />
-		</sequence>
 	</complexType>
 
 	<complexType name="MosquitoBehavior">
@@ -3054,11 +3038,6 @@
 	</simpleType>
 
 	<complexType name="Reproduction">
-		<sequence>
-			<element name="taxonId" type="tns:NcbiTaxonId" maxOccurs="1"
-				minOccurs="1">
-			</element>
-		</sequence>
 	</complexType>
 
 	<complexType name="MosquitoReproduction">
@@ -3697,15 +3676,37 @@
 			<element name="taxonId" type="tns:NcbiTaxonId" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="individuals" type="tns:Individual" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="households" type="tns:Household" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="count" type="integer" maxOccurs="1" minOccurs="0"></element>
-			<element name="conditionalIndividualBehaviors" type="tns:ConditionalIndividualBehavior"
+			<element name="count" type="positiveInteger" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="infectionAndImmunityCensuses" type="tns:PopulationInfectionAndImmunityCensus"
 				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="colonizationCensuses" type="tns:PopulationColonizationCensus"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<choice>
+				<element name="individualsAndHouseholds" type="tns:IndividualsAndHouseholds"
+					maxOccurs="1" minOccurs="0">
+				</element>
+				<element name="pointerToIndividualsAndHouseholds" type="tns:PointerToData"
+					maxOccurs="1" minOccurs="0">
+				</element>
+			</choice>
+				<element name="individualBiologyAndBehavior" type="tns:IndividualBiologyAndBehavior"
+					maxOccurs="1" minOccurs="0">
+				</element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="IndividualBiologyAndBehavior">
+		<sequence>
+			<element name="lifeCycle" type="tns:LifeCycle" maxOccurs="1"
+				minOccurs="0" />
+            <element name="reproduction" type="tns:Reproduction" maxOccurs="1" minOccurs="0">
+			</element>
+            <element name="behavior" type="tns:Behavior" maxOccurs="1"
+				minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
@@ -3857,5 +3858,14 @@
 		</sequence>
 	</complexType>
 
+
+	<complexType name="IndividualsAndHouseholds">
+		<sequence>
+			<element name="individuals" type="tns:Individual" maxOccurs="unbounded"
+				minOccurs="1"></element>
+			<element name="households" type="tns:Household" maxOccurs="unbounded"
+				minOccurs="0"></element>
+		</sequence>
+	</complexType>
 </schema>
 

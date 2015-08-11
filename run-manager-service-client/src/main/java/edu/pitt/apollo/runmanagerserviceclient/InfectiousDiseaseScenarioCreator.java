@@ -68,7 +68,13 @@ public class InfectiousDiseaseScenarioCreator {
         scenario.setScenarioLocation(getLocation(location));
         scenario.setScenarioDate(getScenarioDate());
         scenario.getInfections().add(getBaseInfection());
-        scenario.getPopulationInfectionAndImmunityCensuses().add(getBasePopulationInfectionAndImmunityCensus(location));
+
+        Population population = new Population();
+        population.setLocation(location);
+        population.setTaxonId(INFECTIOUS_HOST_TAXON_ID);
+        population.getInfectionAndImmunityCensuses().add(getBasePopulationInfectionAndImmunityCensus(location));
+
+        scenario.getPopulations().add(population);
 
         return scenario;
     }
@@ -102,7 +108,6 @@ public class InfectiousDiseaseScenarioCreator {
 
         census.setCensusData(censusData);
         census.setPathogen(getApolloPathogenCode());
-        census.setPopulationSpecies(INFECTIOUS_HOST_TAXON_ID);
         census.setSimulatorTime(0);
         census.setLocation(getLocation(location));
 

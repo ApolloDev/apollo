@@ -86,7 +86,6 @@ public class ExampleInfectiousDiseaseScenario {
 		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 
 		census.setDescription("");
-		census.setPopulationSpecies("9606");
 		census.setSimulatorTime(0);
 		census.setPathogen(pathogen);
 		census.setLocation(location);
@@ -117,7 +116,13 @@ public class ExampleInfectiousDiseaseScenario {
 
 		census.setCensusData(data);
 
-		scenario.getPopulationInfectionAndImmunityCensuses().add(census);
+        Population population = new Population();
+        population.setTaxonId("9606");
+        population.setLocation("42003");
+        population.getInfectionAndImmunityCensuses().add(census);
+
+
+		scenario.getPopulations().add(population);
 
 		return scenario;
 	}
