@@ -8,6 +8,20 @@
 	<import schemaLocation="apollo_types_3.0.2.xsd" namespace="http://types.apollo.pitt.edu/v3_0_2/"></import>
 	<import schemaLocation="services_common_3.0.2.xsd"
 		namespace="http://services-common.apollo.pitt.edu/v3_0_2/"></import>
+
+
+	<complexType name="LibraryCollection">
+		<complexContent>
+			<extension base="Q1:RootApolloLibraryItem">
+				<sequence>
+					<element name="name" type="token" minOccurs="1" maxOccurs="1"></element>
+					<element name="description" type="string" minOccurs="0" maxOccurs="1"></element>
+					<element name="membersOfCollection" type="int" minOccurs="0" maxOccurs="unbounded"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
 	<complexType name="LibraryItemContainer">
 		<sequence>
 			<element name="catalogEntry" type="tns:CatalogEntry"

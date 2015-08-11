@@ -23,8 +23,8 @@ import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
 import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
 import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,15 +32,21 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 
 /**
  *
@@ -71,6 +77,28 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 
 	public LibraryDbUtils() throws ApolloDatabaseException {
 		super(LIBRARY_AUTO_COMMIT, LIBRARY_DB_RESOURCE_NAME);
+
+	}
+
+	@Override
+	protected void setupResource(String resourceName) {
+		try {
+			Properties properties = new Properties();
+			properties.load(new BufferedReader(new FileReader(APOLLO_DIR + "library_database.properties")));
+
+			org.postgresql.ds.PGSimpleDataSource ds = new PGSimpleDataSource();
+			//com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
+			//		= new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+
+			ds.setServerName(properties.getProperty("server"));
+			ds.setPortNumber(Integer.valueOf(properties.getProperty("port")));
+			ds.setDatabaseName(properties.getProperty("database_name"));
+			ds.setUser(properties.getProperty("user"));
+			ds.setPassword(properties.getProperty("password"));
+			dataSourceMap.put(resourceName, ds);
+		} catch (IOException ex) {
+			logger.error("Fallback failed, error creating default datasource!  Error was: " + ex.getMessage());
+		}
 	}
 
 	protected LibraryDbUtils(String resourceName) throws ApolloDatabaseException {
@@ -844,8 +872,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	}
 
 	public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException, JAXBException, SQLException {
-
-		LibraryDbUtils dbUtils = new LibraryDbUtils();
 
 		Authentication authentication = new Authentication();
 		authentication.setRequesterId("library_demo");

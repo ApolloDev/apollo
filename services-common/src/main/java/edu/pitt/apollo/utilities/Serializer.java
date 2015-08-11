@@ -11,6 +11,7 @@ public abstract class Serializer implements SerializerInterface {
 
 	public static final String APOLLO_NAMESPACE = "http://types.apollo.pitt.edu/v3_0_2";
 	public static final String SERVICES_COMMON_NAMESPACE = "http://services-common.apollo.pitt.edu/v3_0_2/";
+	public static final String LIBRARY_SERVICE_NAMESPACE = "http://library-service-types.apollo.pitt.edu/v3_0_2/";
 	public static final String APOLLO_NAMESPACE_TNS_PREFIX = "tns";
 	
 	protected final SerializationFormat serializationFormat;

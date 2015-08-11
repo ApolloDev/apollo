@@ -17,6 +17,7 @@ package edu.pitt.apollo;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.interfaces.LibraryServiceInterface;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
 
@@ -68,7 +69,7 @@ import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
 
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI")
-public class LibraryServiceImpl implements LibraryServiceEI {
+public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInterface {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
 	public static final String APOLLO_DIR;
