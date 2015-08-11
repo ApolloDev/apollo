@@ -4,6 +4,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
+import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import java.math.BigInteger;
+import java.util.Properties;
 
 /**
  * Created by dcs27 on 5/18/15. Purpose: This class contains the RESTful interfaces associated with individual file retrieval and manipulation.
@@ -70,8 +72,8 @@ public class ItemsController {
 
 	public static void main(String[] args) throws UnsupportedSerializationFormatException, SerializationException {
 		Authentication authentication = new Authentication();
-		authentication.setRequesterId("test1");
-		authentication.setRequesterPassword("pass1");
+		authentication.setRequesterId(args[1]);
+		authentication.setRequesterPassword(args[2]);
 
 		AddLibraryItemContainerMessage alicm =  new AddLibraryItemContainerMessage();
 		alicm.setAuthentication(authentication);
@@ -106,7 +108,8 @@ public class ItemsController {
 
 		ItemsController ic = new ItemsController();
 		try {
-			ic.postRunToRunsCollection("testUser", "testPassword", serializer.serializeObject(request));
+
+			ic.postRunToRunsCollection(args[1], args[2], serializer.serializeObject(request));
 		} catch (UnsupportedSerializationFormatException e) {
 			e.printStackTrace();
 		}

@@ -16,6 +16,8 @@ import javax.sql.DataSource;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
@@ -35,6 +37,12 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
     protected static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
     protected static String APOLLO_DIR;
     static Logger logger = LoggerFactory.getLogger(BaseApolloDbUtils.class);
+    protected final DataSource datasource;
+    JsonUtils jsonUtils = new JsonUtils();
+    //	Connection dbcon;
+//	Properties properties;
+//	private final boolean AUTO_COMMIT;
+    Md5Utils md5Utils = new Md5Utils();
 
     static {
         Map<String, String> env = System.getenv();
@@ -64,12 +72,12 @@ public abstract class BaseApolloDbUtils implements AutoCloseable {
         saltFileScanner.close();
     }
 
-    protected final DataSource datasource;
-    JsonUtils jsonUtils = new JsonUtils();
-//	Connection dbcon;
-//	Properties properties;
-//	private final boolean AUTO_COMMIT;
-    Md5Utils md5Utils = new Md5Utils();
+    protected Connection getConnection(boolean autoCommit) throws SQLException {
+        Connection connection = datasource.getConnection();
+        connection.setAutoCommit(autoCommit);
+        return connection;
+    }
+
 //		try {
 //			dbcon = datasource.getConnection();
 //			connectionsOpen.addAndGet(1);
