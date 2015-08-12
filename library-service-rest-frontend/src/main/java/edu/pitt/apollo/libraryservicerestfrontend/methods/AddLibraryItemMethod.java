@@ -7,6 +7,7 @@ import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
 import edu.pitt.apollo.service.apolloservice.v3_0_2.AddLibraryItemContainer;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.AddLibraryItemContainerResponse;
 import edu.pitt.apollo.services_common.v3_0_2.*;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
@@ -23,34 +24,15 @@ import sun.security.krb5.internal.crypto.Des;
 public class AddLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
     public AddLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-        super(username, password, serializationFormat);
+        super(username, password, serializationFormat, AddLibraryItemContainerResult.class);
     }
 
     public String addLibraryItem(String messageBody) {
         try {
-            AddLibraryItemContainerMessage addLibraryItemContainerMessage = (AddLibraryItemContainerMessage) ResponseDeserializer.deserialize(messageBody);
-            AddLibraryItemContainerResult result = impl.addLibraryItemContainer(addLibraryItemContainerMessage);
-
-            ObjectSerializationInformation serializationInformation = new ObjectSerializationInformation();
-            serializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);
-            serializationInformation.setClassName(result.getClass().getSimpleName());
-            serializationInformation.setFormat(SerializationFormat.XML);
-
-            String serializedObject = serializer.serializeObject(result);
-
-            responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE).setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedObject).setIsBodySerialized(true);
-
-
-        } catch (DeserializationException | SerializationException | UnsupportedSerializationFormatException ex) {
-            responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        }
-
-        try {
-            return serializer.serializeObject(responseBuilder.getResponse());
-        } catch (SerializationException e) {
+            Object result = impl.addLibraryItemContainer((AddLibraryItemContainerMessage) ResponseDeserializer.deserialize(messageBody));
+            return getResponseAsString(result);
+        } catch (DeserializationException | UnsupportedSerializationFormatException e) {
             return "Error: " + e.getMessage();
         }
-
-
     }
 }

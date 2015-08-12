@@ -9,8 +9,7 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.library_service_types.v3_0_2.*;
-import edu.pitt.apollo.libraryservicerestfrontend.methods.AddLibraryItemMethod;
-import edu.pitt.apollo.libraryservicerestfrontend.methods.GetLibraryItemMethod;
+import edu.pitt.apollo.libraryservicerestfrontend.methods.*;
 import edu.pitt.apollo.services_common.v3_0_2.*;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
@@ -19,6 +18,7 @@ import edu.pitt.apollo.utilities.SerializerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import java.math.BigInteger;
@@ -34,14 +34,74 @@ public class ItemsController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
-	@RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+	@RequestMapping(value = "/items/{urn}/versions/{version}", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
 	public @ResponseBody
 	String getLibraryItem(
-			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
-			@ApiParam(value = "Item Version", required = false) @RequestParam("version") int version,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
+			@ApiParam(value = "Item Version", required = false) @PathVariable("version") int version) throws UnsupportedSerializationFormatException, SerializationException {
 		return new GetLibraryItemMethod(username, password, SerializationFormat.XML).getLibraryItem(urn, version);
+	}
+
+
+	/*--Methods for the file resource of a run--*/
+	@GET
+	@ApiOperation(value = "Get an item.", notes = "Returns the requested item.", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/items/{urn}/versions/public", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+	public @ResponseBody
+	String getLibraryItemReleaseVersion(
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn) throws UnsupportedSerializationFormatException, SerializationException {
+		return new GetLibraryItemReleaseVersionMethod(username, password, SerializationFormat.XML).getLibraryItemReleaseVersion(urn);
+	}
+
+	@POST
+	@ApiOperation(value = "Get an item.", notes = "Returns the requested item.", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/items/{urn}/versions/{version}/public", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
+	public @ResponseBody
+	String setLibraryItemReleaseVersion(
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
+			@ApiParam(value = "Item Version", required = true) @PathVariable("version") int version,
+			@ApiParam(value = "Item comment", required = true) @PathVariable("comment") String comment) throws UnsupportedSerializationFormatException, SerializationException {
+		return new SetLibraryItemReleaseVersionMethod(username, password, SerializationFormat.XML).setLibraryItemReleaseVersion(urn, version, comment);
+	}
+
+	@POST
+	@ApiOperation(value = "Get an item.", notes = "Returns the requested item.", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/items/{urn}/versions/{version}/public/", method = RequestMethod.DELETE, headers = "Accept=applicaton/xml")
+	public @ResponseBody
+	String setLibraryItemAsNotReleased(
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn) throws UnsupportedSerializationFormatException, SerializationException {
+		return new SetLibraryItemAsNotReleasedMethod(username, password, SerializationFormat.XML).setLibraryItemAsNotReleased(urn);
+	}
+
+
+	@POST
+	@ApiOperation(value = "Insert and start run.", notes = "Inserts a given run into the runs collection and starts the run.", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/items/{urn}", method = RequestMethod.POST, headers = "Accept=application/xml")
+	public @ResponseBody
+	String addLibraryItem(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+								   @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+								   @ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException {
+		return new AddLibraryItemMethod(username, password, SerializationFormat.XML).addLibraryItem(messageBody);
 	}
 
 	@POST
@@ -51,11 +111,13 @@ public class ItemsController {
 	})
 	@RequestMapping(value = "/items/", method = RequestMethod.POST, headers = "Accept=application/xml")
 	public @ResponseBody
-	String postRunToRunsCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+	String updateLibraryItem(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 								   @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 								   @ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException {
-		return new AddLibraryItemMethod(username, password, SerializationFormat.XML).addLibraryItem(messageBody);
+		return new UpdateLibraryItemMethod(username, password, SerializationFormat.XML).updateLibraryItem(messageBody);
 	}
+
+
 
 
 
@@ -77,6 +139,8 @@ public class ItemsController {
 		authentication.setRequesterId(args[1]);
 		authentication.setRequesterPassword(args[2]);
 
+
+		UpdateLibraryItemContainerMessage ulicm = new UpdateLibraryItemContainerMessage();
 		AddLibraryItemContainerMessage alicm =  new AddLibraryItemContainerMessage();
 		alicm.setAuthentication(authentication);
 		alicm.setComment("Hello this is a comment");
@@ -92,6 +156,10 @@ public class ItemsController {
 		lic.setCatalogEntry(ce);
 
 		alicm.setLibraryItemContainer(lic);
+		ulicm.setLibraryItemContainer(lic);
+		ulicm.setUrn(5);
+		ulicm.setAuthentication(authentication);
+		ulicm.setComment("Test comment!!!!");
 
 		Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
 		String serializedString = serializer.serializeObject(alicm);
@@ -110,14 +178,14 @@ public class ItemsController {
 
 		ItemsController ic = new ItemsController();
 		try {
-
 			//ic.postRunToRunsCollection(args[1], args[2], serializer.serializeObject(request));
-			String item = ic.getLibraryItem(5, 1, args[1], args[2]);
+			String item = ic.getLibraryItem(args[1], args[2], 5, 1);
 			Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
 			Response response = (Response) deserializer.getObjectFromMessage(item, Response.class);
 			GetLibraryItemContainerResult mylic = (GetLibraryItemContainerResult) deserializer.getObjectFromMessage(response.getResponseBody().get(0), GetLibraryItemContainerResult.class);
 			TextContainer mytc = (TextContainer) mylic.getLibraryItemContainer().getLibraryItem();
-							System.out.println(mytc.getText());
+			System.out.println(mytc.getText());
+			ic.updateLibraryItem(args[1], args[2], serializer.serializeObject(request));
 		} catch (UnsupportedSerializationFormatException e) {
 			e.printStackTrace();
 		} catch (DeserializationException e) {
