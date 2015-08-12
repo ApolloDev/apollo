@@ -5,14 +5,15 @@ import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v3_0_2.TextContainer;
+import edu.pitt.apollo.library_service_types.v3_0_2.*;
 import edu.pitt.apollo.libraryservicerestfrontend.methods.AddLibraryItemMethod;
+import edu.pitt.apollo.libraryservicerestfrontend.methods.GetLibraryItemMethod;
 import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.utilities.Deserializer;
+import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,6 @@ import javax.ws.rs.POST;
 import java.math.BigInteger;
 import java.util.Properties;
 
-/**
- * Created by dcs27 on 5/18/15. Purpose: This class contains the RESTful interfaces associated with individual file retrieval and manipulation.
- */
 @Controller
 @RequestMapping("/ws")
 public class ItemsController {
@@ -36,13 +34,14 @@ public class ItemsController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
-	@RequestMapping(value = "/items/{itemId}", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+	@RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
 	public @ResponseBody
-	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "Item ID", required = true) @PathVariable("itemId") BigInteger itemId,
+	String getLibraryItem(
+			@ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
+			@ApiParam(value = "Item Version", required = false) @RequestParam("version") int version,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
-
-		return "Hello";
+		return new GetLibraryItemMethod(username, password, SerializationFormat.XML).getLibraryItem(urn, version);
 	}
 
 	@POST
@@ -57,6 +56,9 @@ public class ItemsController {
 								   @ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException {
 		return new AddLibraryItemMethod(username, password, SerializationFormat.XML).addLibraryItem(messageBody);
 	}
+
+
+
 	/* @DELETE
 	 @ApiOperation(value = "Remove file reference.", notes = "Removes the reference of a file from the given run ID.", response = String.class)
 	 @ApiResponses(value = {
@@ -93,7 +95,7 @@ public class ItemsController {
 
 		Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
 		String serializedString = serializer.serializeObject(alicm);
-		System.out.println(serializedString);
+		//System.out.println(serializedString);
 
 		Request request = new Request();
 		request.setRequestBody(serializedString);
@@ -109,9 +111,19 @@ public class ItemsController {
 		ItemsController ic = new ItemsController();
 		try {
 
-			ic.postRunToRunsCollection(args[1], args[2], serializer.serializeObject(request));
+			//ic.postRunToRunsCollection(args[1], args[2], serializer.serializeObject(request));
+			String item = ic.getLibraryItem(5, 1, args[1], args[2]);
+			Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+			Response response = (Response) deserializer.getObjectFromMessage(item, Response.class);
+			GetLibraryItemContainerResult mylic = (GetLibraryItemContainerResult) deserializer.getObjectFromMessage(response.getResponseBody().get(0), GetLibraryItemContainerResult.class);
+			TextContainer mytc = (TextContainer) mylic.getLibraryItemContainer().getLibraryItem();
+							System.out.println(mytc.getText());
 		} catch (UnsupportedSerializationFormatException e) {
 			e.printStackTrace();
+		} catch (DeserializationException e) {
+			e.printStackTrace();
 		}
+
+
 	}
 }

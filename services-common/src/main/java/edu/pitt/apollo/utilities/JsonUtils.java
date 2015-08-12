@@ -25,7 +25,7 @@ public class JsonUtils {
     static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     static Map<Class, JAXBMarshaller> marshallerMap = new HashMap<Class, JAXBMarshaller>();
-    
+
 
     public final Object getObjectFromJson(String json, Class clazz) throws JsonUtilsException {
         InputStream jsonInputStream = new ByteArrayInputStream(json.getBytes());
@@ -38,7 +38,9 @@ public class JsonUtils {
         jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
         JAXBContext jc;
         try {
-            List<Class> list = Arrays.asList(ApolloClassList.classList);
+            List<Class> lis = Arrays.asList(ApolloClassList.classList);
+            ArrayList<Class> list = new ArrayList<Class>();
+            list.addAll(lis);
             list.add(clazz);
             jc = (JAXBContext) JAXBContext.newInstance(list.toArray(new Class[0]), jaxbProperties);
             JAXBUnmarshaller unmarshaller = jc.createUnmarshaller();
@@ -56,8 +58,8 @@ public class JsonUtils {
 //        if (marshallerMap.containsKey(clazz)) {
 //            marshaller = marshallerMap.get(clazz);
 //        } else {
-            Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
-            jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+        Map<String, Object> jaxbProperties = new HashMap<String, Object>(2);
+        jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 //		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 
         List<Class> lis = Arrays.asList(ApolloClassList.classList);
@@ -65,10 +67,10 @@ public class JsonUtils {
         list.addAll(lis);
         list.add(clazz);
 
-            JAXBContext jc = (JAXBContext) JAXBContext.newInstance(list.toArray(new Class[0]),
-                    jaxbProperties);
-            marshaller = jc.createMarshaller();
-            marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
+        JAXBContext jc = (JAXBContext) JAXBContext.newInstance(list.toArray(new Class[0]),
+                jaxbProperties);
+        marshaller = jc.createMarshaller();
+        marshaller.setProperty(JAXBMarshaller.JAXB_FORMATTED_OUTPUT, true);
 //            marshallerMap.put(clazz, marshaller);
 //        }
 
