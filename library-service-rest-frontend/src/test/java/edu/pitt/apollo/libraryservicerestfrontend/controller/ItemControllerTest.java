@@ -181,6 +181,16 @@ public class ItemControllerTest extends TestCase {
     }
 
     @Test
+    public void testSetItemAsNotReleased() {
+        ItemsController ic = new ItemsController();
+        try {
+            String result = ic.setLibraryItemAsNotReleased(username, password, TEST_URN);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
     public void testGetItem() {
         ItemsController ic = new ItemsController();
         String item = null;
