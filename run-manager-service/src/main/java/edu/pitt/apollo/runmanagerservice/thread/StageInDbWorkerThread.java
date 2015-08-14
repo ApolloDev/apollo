@@ -98,7 +98,7 @@ public class StageInDbWorkerThread implements Runnable {
 
         List<PopulationInfectionAndImmunityCensusDataCell> censusDataCells = runSimulationMessage
                 .getInfectiousDiseaseScenario()
-                .getPopulationInfectionAndImmunityCensuses().get(0)
+                .getPopulations().get(0).getInfectionAndImmunityCensuses().get(0)
                 .getCensusData().getCensusDataCells();
 
         censusDataCells.clear();

@@ -3,6 +3,7 @@ package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 import edu.pitt.apollo.connector.TranslatorServiceConnector;
 import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.interfaces.TranslatorServiceInterface;
+import edu.pitt.apollo.translatorservice.TranslatorServiceImpl;
 //import edu.pitt.apollo.translatorservice.TranslatorServiceImpl;
 
 import java.math.BigInteger;
