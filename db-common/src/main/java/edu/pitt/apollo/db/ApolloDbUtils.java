@@ -43,7 +43,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
 	private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-	private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB";
+	private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_302";
 	static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
 	static Map<String, Integer> populationAxisCache = new HashMap<>();
 	static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
