@@ -43,7 +43,7 @@ import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopula
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v3_0_2/",
 portName="SyntheticPopulationServiceEndpoint",
-serviceName="SyntheticPopulationService_v3.0.0", 
+serviceName="SyntheticPopulationService_v3.0.2",
 endpointInterface="edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceEI")
 class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 	private void emailAdmin(String message) {

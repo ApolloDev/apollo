@@ -52,7 +52,7 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 			runIdentificationAndLabel.setRunLabel("test");
 			runIdentificationAndLabel.setRunIdentification(simulatorRunId);
 			runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.TIME_SERIES);
-			runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.GAIA);
+		//	runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.GAIA);
 		} else {
 			System.out.println("There was an error running the simulations.");
 		}
@@ -76,8 +76,8 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 				.getSoftwareIdentificationForVisualizer(visualizerIdentificationEnum);
 		runVisualizationMessage.setSoftwareIdentification(softwareIdentificationForTimeSeriesVisualizer);
 
-		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels)
-			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
+//		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels)
+//			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
 
 		BigInteger visualizationRunId = TutorialWebServiceClient.runVisualization(runVisualizationMessage);
 

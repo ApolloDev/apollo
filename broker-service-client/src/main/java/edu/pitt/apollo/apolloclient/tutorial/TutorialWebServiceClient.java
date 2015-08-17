@@ -41,12 +41,12 @@ public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-3.0.2-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(
 			"http://service.apollo.pitt.edu/apolloservice/v3_0_2/",
-			"ApolloService_v3.0.0");
+			"ApolloService_v3.0.2");
 	public static final long TWO_SECONDS = 2000;
 	public static final boolean RUN_IS_NOT_COMPLETED_OR_FAILED = true;
 	public static final boolean RUN_WAS_SUCCESSFUL = true;

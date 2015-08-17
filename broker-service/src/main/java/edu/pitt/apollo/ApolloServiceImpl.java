@@ -95,7 +95,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_2/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v3_0_2/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v3.0.2", endpointInterface = "edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
 

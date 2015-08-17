@@ -40,7 +40,7 @@ import javax.xml.namespace.QName;
 public class DataServiceClient {
 
 	private static final String WSDL_LOC = "http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/apolloservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/apolloservice/v3_0_2/", "ApolloService_v3.0.0");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/apolloservice/v3_0_2/", "ApolloService_v3.0.2");
 	private static final String DATA_SERVICE_CONNECTION_PROPERTIES_FILE = "data_service_connection.properties";
 
 	public static final String APOLLO_DIR;

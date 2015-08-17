@@ -81,7 +81,7 @@ public class ApolloServiceTypeFactory {
 		case SEIR:
 			softwareId.setSoftwareDeveloper("UPitt");
 			softwareId.setSoftwareName("SEIR");
-			softwareId.setSoftwareVersion("1.0");
+			softwareId.setSoftwareVersion("3.0");
 			break;
 		default:
 			softwareId = null;

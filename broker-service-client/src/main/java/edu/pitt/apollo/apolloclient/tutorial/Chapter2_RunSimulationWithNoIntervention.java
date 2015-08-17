@@ -63,6 +63,11 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
+
+        runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
+                .getInfectionAcquisitionsFromInfectedHosts().get(0)
+                .getBasicReproductionNumbers().get(0).setExactValue(1.73);
+
 		String contentForRun = getJSONString(runSimulationMessage);
 		Map<String, Object> properties = new HashMap<String, Object>(2);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");

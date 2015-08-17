@@ -68,7 +68,7 @@ import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
 
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_0_2/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.0.2", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI")
 public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInterface {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);

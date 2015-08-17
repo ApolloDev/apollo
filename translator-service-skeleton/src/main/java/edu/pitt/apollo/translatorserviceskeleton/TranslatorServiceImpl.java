@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import javax.jws.WebService;
 
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v3_0_2/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v3.0.0", endpointInterface = "edu.pitt.apollo.service.translatorservice.v3_0_2.TranslatorServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/translatorservice/v3_0_2/", portName = "TranslatorServiceEndpoint", serviceName = "TranslatorService_v3.0.2", endpointInterface = "edu.pitt.apollo.service.translatorservice.v3_0_2.TranslatorServiceEI")
 public class TranslatorServiceImpl implements TranslatorServiceEI {
 
 

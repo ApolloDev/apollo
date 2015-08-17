@@ -1,5 +1,6 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -123,6 +124,7 @@ public class ExampleInfectiousDiseaseScenario {
         Population population = new Population();
         population.setLocation(location.getApolloLocationCode());
         population.setTaxonId("9606");
+        population.setCount(new BigInteger("1200000"));
         population.getInfectionAndImmunityCensuses().add(scenarioPopulationInfectionAndImmunityCensus);
 
 		scenario.getPopulations().add(population);
