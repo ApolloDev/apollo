@@ -61,7 +61,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 		String uri = restServiceUri + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		uri += "&methodCallStatusEnum=" + statusEnumToSet + "&statusMessage=" + messageToSet;
 		try {
-			restServiceUtils.makeGetRequestAndCheckResponse(uri);
+			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -73,7 +73,7 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
 				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
 		try {
-			restServiceUtils.makeGetRequestAndCheckResponse(uri);
+			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
