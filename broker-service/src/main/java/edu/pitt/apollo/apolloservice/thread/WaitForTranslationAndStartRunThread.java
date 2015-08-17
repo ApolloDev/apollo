@@ -65,10 +65,11 @@ public class WaitForTranslationAndStartRunThread extends ApolloServiceThread {
 					break;
 				}
 			}
-			
+
 			try {
-				connector.run(runId, authentication);
-				connector.updateStatusOfRun(runId, statusOnceServiceCalled.getStatus(), statusOnceServiceCalled.getMessage(), authentication);
+                // update status first, or it may override the service we are trying to call updating the status
+                connector.updateStatusOfRun(runId, statusOnceServiceCalled.getStatus(), statusOnceServiceCalled.getMessage(), authentication);
+                connector.run(runId, authentication);
 			} catch (JobRunningServiceException ex) {
 				connector.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, "The service call failed for run ID " + runId + ": " + ex.getMessage(), authentication);
 			}

@@ -88,7 +88,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 		
-		return new SetStatusOfRunMethod(username, password, SerializationFormat.XML).setStatusOfRun(runId, statusToUpdateTo, username);
+		return new SetStatusOfRunMethod(username, password, SerializationFormat.XML).setStatusOfRun(runId, statusToUpdateTo, statusMessage);
 	}
 	
 	@POST

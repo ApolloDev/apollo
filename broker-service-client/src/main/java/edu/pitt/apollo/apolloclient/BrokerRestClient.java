@@ -27,7 +27,7 @@ public class BrokerRestClient {
 
             runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
                     .getInfectionAcquisitionsFromInfectedHosts().get(0)
-                    .getBasicReproductionNumbers().get(0).setExactValue(1.74);
+                    .getBasicReproductionNumbers().get(0).setExactValue(1.76);
 
             InsertRunResult result = connector.insertRun(runSimulationMessage);
 
