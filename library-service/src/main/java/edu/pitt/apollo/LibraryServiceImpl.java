@@ -138,7 +138,7 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
 
     @Override
     public QueryResult query(String query, Authentication authentication) {
-        return QueryLibraryMethod.queryLibrary(libraryDbUtils, query, authentication);
+        return QueryLibraryMethod.queryLibrary(libraryDbUtils, readonlyLibraryDbUtils, query, authentication);
     }
 
     @Override
