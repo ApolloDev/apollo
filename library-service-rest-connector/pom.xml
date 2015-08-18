@@ -22,5 +22,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+      <dependency>
+          <groupId>edu.pitt.apollo</groupId>
+          <artifactId>rest-service-connector-common</artifactId>
+          <version>3.0.2-SNAPSHOT</version>
+      </dependency>
+
   </dependencies>
 </project>
