@@ -26,7 +26,7 @@ public class SoftwareController {
 	/*--Methods for the Software collection--*/
 
 	@GET
-	@ApiOperation(value = "List of all software in the collection.", notes = "Returns the list containing the software ID and name of all software in the collection.", response = String.class)
+	@ApiOperation(value = "Get list of all registered software", notes = "Returns a list containing the IDs and names of all software registered with Apollo.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
@@ -39,7 +39,7 @@ public class SoftwareController {
 	}
 
 	@GET
-	@ApiOperation(value = "Get URL of software.", notes = "Returns the WSDL URL of the given software name and version.", response = String.class)
+	@ApiOperation(value = "Get URL of software", notes = "Returns the WSDL URL associated with the given software name and version.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})

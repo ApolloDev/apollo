@@ -18,7 +18,7 @@ import static org.ajar.swaggermvcui.SwaggerSpringMvcUi.WEB_JAR_RESOURCE_LOCATION
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "edu.pitt.apollo.restservice.controller")
+@ComponentScan(basePackages = "edu.pitt.apollo.brokerservicerestfrontend.controller")
 @EnableSwagger
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
@@ -60,8 +60,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
     protected ApiInfo apiInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Apollo Web Services API",
-                "The Apollo Web Services API provides methods for accessing collections, resources, and aspects contained within the Apollo Web Services.  Using the RESTful model, each access is associated with a URL. ",
+                "Apollo Broker Service API",
+                "The Apollo Broker Service API provides methods for accessing collections, resources, and aspects contained within the Apollo Web Services network. Using the RESTful model, each access is associated with a URL.",
                 null,
                 "jdl50@pitt.edu",
                 null,

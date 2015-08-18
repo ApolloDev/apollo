@@ -23,13 +23,13 @@ public class ContentController {
 
 	/*--Methods for the file resource of a run--*/
 	@GET
-	@ApiOperation(value = "Get file.", notes = "Returns the requested file.", response = String.class)
+	@ApiOperation(value = "Get content", notes = "Returns the requested content (URL or file) associated with the provided content ID.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
 	@RequestMapping(value = "/content/{contentId}", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "File ID.", required = true) @PathVariable("contentId") BigInteger contentId,
+	String getFileOfRunUsingRunAndFileId(@ApiParam(value = "Content ID.", required = true) @PathVariable("contentId") BigInteger contentId,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 
