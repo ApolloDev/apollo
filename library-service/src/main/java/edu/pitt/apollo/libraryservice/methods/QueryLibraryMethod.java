@@ -19,16 +19,14 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class QueryLibraryMethod {
 
-	public static QueryResult queryLibrary(LibraryDbUtils dbUtils, LibraryDbUtils readOnlyDbUtils, QueryMessage message) {
+	public static QueryResult queryLibrary(LibraryDbUtils readOnlyDbUtils, String query, Authentication authentication) {
 
-		Authentication authentication = message.getAuthentication();
-		String query = message.getQuery();
 
 		QueryResult result = new QueryResult();
 		MethodCallStatus status = new MethodCallStatus();
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+			boolean userAuthorized = readOnlyDbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
 				result = readOnlyDbUtils.queryObjects(query);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);

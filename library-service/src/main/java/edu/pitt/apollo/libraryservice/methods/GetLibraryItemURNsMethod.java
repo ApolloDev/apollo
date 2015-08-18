@@ -12,10 +12,9 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 public class GetLibraryItemURNsMethod {
 
 	public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
-			GetLibraryItemURNsMessage getLibraryItemURIsMessage) {
+															  String itemType, Authentication authentication) {
 
-		Authentication authentication = getLibraryItemURIsMessage.getAuthentication();
-		String itemType = getLibraryItemURIsMessage.getItemType();
+
 
 		//execute query
 		GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();

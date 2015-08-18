@@ -25,11 +25,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod {
 
-	public static GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(LibraryDbUtils dbUtils, 
-			GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage message) {
-		
-		Authentication authentication = message.getAuthentication();
-		XMLGregorianCalendar dateTime = message.getDateTime();
+	public static GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(LibraryDbUtils dbUtils,
+																														  XMLGregorianCalendar dateTime, Authentication authentication) {
+
 		
 		GetChangeLogForLibraryItemsModifiedSinceDateTimeResult result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
 		MethodCallStatus status = new MethodCallStatus();

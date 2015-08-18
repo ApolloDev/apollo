@@ -19,12 +19,7 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class AddReviewerCommentMethod {
 
-	public static AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, AddReviewerCommentMessage message) {
-		
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		String comment = message.getComment();
-		int version = message.getVersion();
+	public static AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, int urn, int version, String comment, Authentication authentication) {
 
 		AddReviewerCommentResult result = new AddReviewerCommentResult();
 		MethodCallStatus status = new MethodCallStatus();

@@ -19,9 +19,7 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class SetLibraryItemAsNotReleasedMethod {
 
-	public static SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(LibraryDbUtils dbUtils, SetLibraryItemAsNotReleasedMessage message) {
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
+	public static SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(LibraryDbUtils dbUtils, int urn, Authentication authentication) {
 
 		SetLibraryItemAsNotReleasedResult result = new SetLibraryItemAsNotReleasedResult();
 		MethodCallStatus status = new MethodCallStatus();

@@ -19,10 +19,8 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class GetCommentsMethod {
 
-	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, GetCommentsMessage message) {
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		int version = message.getVersion();
+	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, int urn, int version, Authentication authentication) {
+
 		
 		GetCommentsResult result = new GetCommentsResult();
 		MethodCallStatus status = new MethodCallStatus();
