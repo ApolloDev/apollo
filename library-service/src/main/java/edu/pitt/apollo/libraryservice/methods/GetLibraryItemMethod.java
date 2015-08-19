@@ -21,11 +21,7 @@ import java.io.IOException;
  */
 public class GetLibraryItemMethod {
 
-	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils, GetLibraryItemContainerMessage message) {
-
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		Integer version = message.getVersion();
+	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils,  int urn, Integer version, Authentication authentication) {
 
 		GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();

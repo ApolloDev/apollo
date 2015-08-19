@@ -20,12 +20,9 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class AddLibraryItemMethod {
 
-	public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils,
-			AddLibraryItemContainerMessage message) {
+	public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) {
 
-		Authentication authentication = message.getAuthentication();
-		String comment = message.getComment();
-		LibraryItemContainer item = message.getLibraryItemContainer();
+
 
 		AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
@@ -34,7 +31,7 @@ public class AddLibraryItemMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				result = dbUtils.addLibraryItem(item, authentication, comment);
+				result = dbUtils.addLibraryItem(libraryItemContainer, authentication, comment);
 				result.setStatus(status);
 
 				status.setStatus(MethodCallStatusEnum.COMPLETED);

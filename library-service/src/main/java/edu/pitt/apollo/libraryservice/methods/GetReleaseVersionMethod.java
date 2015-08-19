@@ -19,10 +19,7 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
  */
 public class GetReleaseVersionMethod {
 
-	public static GetReleaseVersionResult getReleaseVersion(LibraryDbUtils dbUtils, GetReleaseVersionMessage message) {
-
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
+	public static GetReleaseVersionResult getReleaseVersion(LibraryDbUtils dbUtils, int urn, Authentication authentication) {
 
 		GetReleaseVersionResult result = new GetReleaseVersionResult();
 		MethodCallStatus status = new MethodCallStatus();

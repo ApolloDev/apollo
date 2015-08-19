@@ -20,9 +20,8 @@ import java.util.List;
  */
 public class GetVersionsMethod {
 
-	public static GetVersionsResult getVersions(LibraryDbUtils dbUtils, GetVersionsMessage message) {
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
+	public static GetVersionsResult getVersions(LibraryDbUtils dbUtils, int urn, Authentication authentication) {
+
 
 		GetVersionsResult result = new GetVersionsResult();
 		MethodCallStatus status = new MethodCallStatus();
