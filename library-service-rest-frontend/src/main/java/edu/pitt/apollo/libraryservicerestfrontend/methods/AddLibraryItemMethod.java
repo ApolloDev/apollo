@@ -6,6 +6,7 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
 import edu.pitt.apollo.service.apolloservice.v3_0_2.AddLibraryItemContainer;
 import edu.pitt.apollo.service.apolloservice.v3_0_2.AddLibraryItemContainerResponse;
 import edu.pitt.apollo.services_common.v3_0_2.*;
@@ -27,9 +28,16 @@ public class AddLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
         super(username, password, serializationFormat, AddLibraryItemContainerResult.class);
     }
 
-    public String addLibraryItem(String messageBody) {
+    public String addLibraryItem(String messageBody, String comment) {
         try {
-            Object result = impl.addLibraryItemContainer((AddLibraryItemContainerMessage) ResponseDeserializer.deserialize(messageBody));
+            AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+            LibraryItemContainer container = (LibraryItemContainer) ResponseDeserializer.deserialize(messageBody);
+
+            message.setAuthentication(authentication);
+            message.setLibraryItemContainer(container);
+            message.setComment(comment);
+
+            Object result = impl.addLibraryItemContainer(message);
             return getResponseAsString(result);
         } catch (DeserializationException | UnsupportedSerializationFormatException e) {
             return "Error: " + e.getMessage();

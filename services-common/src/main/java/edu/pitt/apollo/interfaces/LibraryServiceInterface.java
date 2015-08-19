@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public interface LibraryServiceInterface {
 
-    public QueryResult query(QueryMessage queryMessage) throws LibraryServiceException;
+    public QueryResult query(String query, Authentication authentication) throws LibraryServiceException;
 
     public GetLibraryItemContainerResult getLibraryItemContainer(int urn, int version, Authentication authentication) throws LibraryServiceException;
 
@@ -35,7 +35,7 @@ public interface LibraryServiceInterface {
 
     public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException;
 
-    public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(int urn, Authentication authentication) throws LibraryServiceException;
+    public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException;
 
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException;
 

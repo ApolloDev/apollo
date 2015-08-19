@@ -3,10 +3,7 @@ package edu.pitt.apollo.libraryservicerestfrontend.methods;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.*;
 import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
@@ -22,9 +19,17 @@ public class UpdateLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
         super(username, password, serializationFormat, UpdateLibraryItemContainerResult.class);
     }
 
-    public String updateLibraryItem(String messageBody) {
+    public String updateLibraryItem(String messageBody, String comment, int urn) {
         try {
-            UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage = (UpdateLibraryItemContainerMessage) ResponseDeserializer.deserialize(messageBody);
+            UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage = new UpdateLibraryItemContainerMessage();
+
+            LibraryItemContainer container = (LibraryItemContainer) ResponseDeserializer.deserialize(messageBody);
+
+            updateLibraryItemContainerMessage.setAuthentication(authentication);
+            updateLibraryItemContainerMessage.setComment(comment);
+            updateLibraryItemContainerMessage.setLibraryItemContainer(container);
+            updateLibraryItemContainerMessage.setUrn(urn);
+
             Object result = impl.updateLibraryItemContainer(updateLibraryItemContainerMessage);
             return getResponseAsString(result);
         } catch (DeserializationException | UnsupportedSerializationFormatException e) {
