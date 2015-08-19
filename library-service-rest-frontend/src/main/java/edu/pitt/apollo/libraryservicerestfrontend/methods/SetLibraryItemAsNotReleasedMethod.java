@@ -13,7 +13,7 @@ public class SetLibraryItemAsNotReleasedMethod extends BaseLibraryServiceAccesso
         super(username, password, serializationFormat, SetLibraryItemAsNotReleasedResult.class);
     }
 
-    public String setLibraryItemAsNotReleased(int urn) {
+    public String hideLibraryItem(int urn) {
         SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage = new SetLibraryItemAsNotReleasedMessage();
         setLibraryItemAsNotReleasedMessage.setAuthentication(authentication);
         setLibraryItemAsNotReleasedMessage.setUrn(urn);

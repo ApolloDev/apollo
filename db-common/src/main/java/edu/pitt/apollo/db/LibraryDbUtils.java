@@ -1,5 +1,6 @@
 package edu.pitt.apollo.db;
 
+import edu.pitt.apollo.library_service_types.v3_0_2.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
@@ -9,13 +10,6 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.ChangeLogEntry;
-import edu.pitt.apollo.library_service_types.v3_0_2.CommentFromLibrary;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetCommentsResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.LibraryActionTypeEnum;
-import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v3_0_2.QueryResult;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
 import edu.pitt.apollo.types.v3_0_2.Epidemic;
@@ -788,7 +782,9 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public List<Integer> getVersions(int urn) throws ApolloDatabaseException {
+	public List<RevisionCommentList> getRevisionsAndComments(int urn) throws ApolloDatabaseException {
+
+        // TO DO: fix to return list of revisions and comment
 
 		try (Connection conn = getConnection(false)) {
 			String sql = "SELECT version FROM library_item_containers WHERE urn_id = " + urn;
@@ -802,7 +798,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 				versions.add(version);
 			}
 
-			return versions;
+			return null;
 		} catch (SQLException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
 		}
@@ -1034,7 +1030,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //		item.setLibraryItem(epidemic3);
 //		catalogId = dbUtils.addLibraryItem("scenario", item, authentication, "third item");
 //		System.out.println("Catalog ID: " + catalogId);
-//		int versionId = dbUtils.updateLibraryItem(catalogId, epidemic, authentication);
+//		int versionId = dbUtils.reviseLibraryItem(catalogId, epidemic, authentication);
 //		System.out.println("Version ID: " + versionId);
 //		dbUtils.addComment(catalogId, versionId, "this is a comment", authentication);
 //		dbUtils.setReleaseVersion(catalogId, 1);
@@ -1055,7 +1051,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 //				+ "	t.pathogen->>'ncbiTaxonId' = '12'";
 //		List<Epidemic> objects = dbUtils.queryObjects(sql, Epidemic.class);
 //		System.out.println("list size: " + objects.size());
-//		LibraryItemContainer container = dbUtils.getLibraryItemContainer("scenario_urn", 1);
+//		LibraryItemContainer container = dbUtils.getLibraryItem("scenario_urn", 1);
 //		Epidemic epidemicFromLibrary = (Epidemic) container.getLibraryItem();
 //		GetCommentsResult result = dbUtils.getComments("/scenario/influenza/H1N1/US/PA/42003/2009", 1);
 

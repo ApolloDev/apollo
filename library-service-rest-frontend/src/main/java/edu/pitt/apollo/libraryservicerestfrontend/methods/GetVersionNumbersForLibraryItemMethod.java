@@ -1,8 +1,8 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetRevisionsResult;
 import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsResult;
 import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 
 /**
@@ -12,7 +12,7 @@ public class GetVersionNumbersForLibraryItemMethod extends BaseLibraryServiceAcc
 
 
     public GetVersionNumbersForLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-        super(username, password, serializationFormat, GetVersionsResult.class);
+        super(username, password, serializationFormat, GetRevisionsResult.class);
     }
 
     public String getVersionNumbersForLibraryItem(int urn) {

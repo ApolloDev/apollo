@@ -15,22 +15,7 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v3_0_2.QueryMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.QueryResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.*;
 import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
 import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
@@ -345,7 +330,7 @@ public class WSClient {
 		return port.updateLibraryItemContainer(message);
 	}
 
-	private static GetVersionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
+	private static GetRevisionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
 
 		GetVersionsMessage message = new GetVersionsMessage();
 		message.setAuthentication(auth);

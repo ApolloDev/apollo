@@ -13,27 +13,25 @@ public interface LibraryServiceInterface {
 
     public QueryResult query(String query, Authentication authentication) throws LibraryServiceException;
 
-    public GetLibraryItemContainerResult getLibraryItemContainer(int urn, int version, Authentication authentication) throws LibraryServiceException;
+    public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException;
 
-    public UpdateLibraryItemContainerResult updateLibraryItemContainer(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException;
+    public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException;
 
-    public AddLibraryItemContainerResult addLibraryItemContainer(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException;
+    public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException;
 
-    public GetReleaseVersionResult getLibraryItemReleaseVersion(int urn, Authentication authentication) throws LibraryServiceException;
+    public GetCommentsResult getCommentsForLibraryItem(int urn, int revision, Authentication authentication) throws LibraryServiceException;
 
-    public GetCommentsResult getCommentsForLibraryItem(int urn, int version, Authentication authentication) throws LibraryServiceException;
-
-    public GetVersionsResult getVersionNumbersForLibraryItem(int urn, Authentication authentication) throws LibraryServiceException;
+    public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException;
 
     public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException;
 
     public GetLibraryItemURNsResult getLibraryItemURNs(String itemType, Authentication authentication) throws LibraryServiceException;
 
-    public SetReleaseVersionResult setReleaseVersionForLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException;
+    public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException;
 
     public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException;
 
-    public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException;
+    public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException;
 
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException;
 

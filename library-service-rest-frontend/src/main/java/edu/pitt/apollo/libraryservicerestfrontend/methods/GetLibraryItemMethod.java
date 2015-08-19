@@ -26,13 +26,14 @@ public class GetLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
     public String getLibraryItem(int urn, int version) {
 
-            GetLibraryItemContainerMessage getLibraryItemContainerMessage = new GetLibraryItemContainerMessage();
-            getLibraryItemContainerMessage.setAuthentication(authentication);
-            getLibraryItemContainerMessage.setUrn(urn);
-            getLibraryItemContainerMessage.setVersion(version);
-            Object result = impl.getLibraryItemContainer(getLibraryItemContainerMessage);
+        GetLibraryItemContainerMessage getLibraryItemContainerMessage = new GetLibraryItemContainerMessage();
+        getLibraryItemContainerMessage.setAuthentication(authentication);
+        getLibraryItemContainerMessage.setUrn(urn);
+        getLibraryItemContainerMessage.setVersion(version);
+        Object result = impl.getLibraryItemContainer(getLibraryItemContainerMessage);
 
-            return getResponseAsString(result);
+
+        return getResponseAsString(result);
 
 
     }

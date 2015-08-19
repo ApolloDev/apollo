@@ -31,9 +31,10 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public GetLibraryItemContainerResult getLibraryItemContainer(int urn, int version, Authentication authentication) throws LibraryServiceException {
+    public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
 
-        String uri = restServiceUri + "items/" + urn + "/revisions/" + version + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+        String revisionString = (revision == null ? "" : "revision=" + Integer.toString(revision) + "&");
+        String uri = restServiceUri + "items/" + urn + "?" + revisionString + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetLibraryItemContainerResult.class);
         } catch (RestServiceException ex) {
@@ -42,7 +43,7 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public UpdateLibraryItemContainerResult updateLibraryItemContainer(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+    public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
 
         String uri = restServiceUri + "items/" + urn + "?" + "comment=" + comment + "&"
                 + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
@@ -54,7 +55,7 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public AddLibraryItemContainerResult addLibraryItemContainer(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+    public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         String uri = restServiceUri + "items?" + "comment=" + comment + "&"
                 + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
@@ -65,18 +66,8 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public GetReleaseVersionResult getLibraryItemReleaseVersion(int urn, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "items/" + urn + "/revisions/public?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        try {
-            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetReleaseVersionResult.class);
-        } catch (RestServiceException ex) {
-            throw new LibraryServiceException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public GetCommentsResult getCommentsForLibraryItem(int urn, int version, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "items/" + urn + "/revisions/" + version + "/comments?"
+    public GetCommentsResult getCommentsForLibraryItem(int urn, int revision, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "items/" + urn + "/revisions/" + revision + "/comments?"
                 + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetCommentsResult.class);
@@ -86,10 +77,10 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public GetVersionsResult getVersionNumbersForLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
+    public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         String uri = restServiceUri + "items/" + urn + "/revisions?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
-            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetVersionsResult.class);
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetRevisionsResult.class);
         } catch (RestServiceException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
@@ -111,8 +102,8 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public SetReleaseVersionResult setReleaseVersionForLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/revisions/" + version + "/public?comment=" + comment + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+    public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "/items/" + urn + "/revisions/" + revision + "/approve?comment=" + comment + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, "", SetReleaseVersionResult.class);
         } catch (RestServiceException ex) {
@@ -126,8 +117,8 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
     }
 
     @Override
-    public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/revisions/" + version + "/comments?comment=" + comment + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+    public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "/items/" + urn + "/revisions/" + revision + "/comments?comment=" + comment + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, "", AddReviewerCommentResult.class);
         } catch (RestServiceException ex) {
@@ -137,11 +128,21 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 
     @Override
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/revisions/" + "/public?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+        String uri = restServiceUri + "/items/" + urn + "/hide?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+        try {
+            return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, "", SetLibraryItemAsNotReleasedResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
     }
 
     @Override
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException {
-        return null;
+        String uri = restServiceUri + "items/changelog?dateTime=" + dateTime.toString() + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+        try {
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, GetChangeLogForLibraryItemsModifiedSinceDateTimeResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
     }
 }

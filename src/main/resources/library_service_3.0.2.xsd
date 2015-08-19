@@ -44,6 +44,9 @@
 		<sequence>
 			<element name="status" type="pref:MethodCallStatus"></element>
 			<element name="libraryItemContainer" type="tns:LibraryItemContainer"></element>
+			<element name="revision" type="int"></element>
+			<element name="isLatestApprovedRevision" type="boolean"></element>
+			<element name="isApprovedRevision" type="boolean"></element>
 		</sequence>
 	</complexType>
 
@@ -238,11 +241,19 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="GetVersionsResult">
+	<complexType name="GetRevisionsResult">
 		<sequence>
 			<element name="status" type="pref:MethodCallStatus"></element>
-			<element name="versions" type="int" maxOccurs="unbounded"
-				minOccurs="0"></element>
+			<element name="revisionsAndComments" type="tns:RevisionCommentList" maxOccurs="unbounded"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RevisionCommentList">
+		<sequence>
+			<element name="revision" type="int"></element>
+			<element name="comments" type="token" maxOccurs="unbounded"
+				minOccurs="1"></element>
 		</sequence>
 	</complexType>
 

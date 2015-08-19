@@ -77,23 +77,18 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
     }
 
     @Override
-    public GetLibraryItemContainerResult getLibraryItemContainer(int urn, int version, Authentication authentication) throws LibraryServiceException {
+    public GetLibraryItemContainerResult getLibraryItem(int urn, Integer version, Authentication authentication) throws LibraryServiceException {
         return GetLibraryItemMethod.getLibraryItemMethod(libraryDbUtils, urn, version, authentication);
     }
 
     @Override
-    public UpdateLibraryItemContainerResult updateLibraryItemContainer(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+    public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         return UpdateLibraryItemMethod.updateLibraryItem(libraryDbUtils, urn, libraryItemContainer, comment, authentication);
     }
 
     @Override
-    public AddLibraryItemContainerResult addLibraryItemContainer(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+    public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         return AddLibraryItemMethod.addLibraryItem(libraryDbUtils, libraryItemContainer, comment, authentication);
-    }
-
-    @Override
-    public GetReleaseVersionResult getLibraryItemReleaseVersion(int urn, Authentication authentication) throws LibraryServiceException {
-        return GetReleaseVersionMethod.getReleaseVersion(libraryDbUtils, urn, authentication);
     }
 
     @Override
@@ -102,7 +97,7 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
     }
 
     @Override
-    public GetVersionsResult getVersionNumbersForLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
+    public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         return GetVersionsMethod.getVersions(libraryDbUtils, urn, authentication);
     }
 
@@ -117,7 +112,7 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
     }
 
     @Override
-    public SetReleaseVersionResult setReleaseVersionForLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
+    public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
         return SetReleaseVersionMethod.setReleaseVersion(libraryDbUtils, urn, version, comment, authentication);
     }
 
@@ -132,7 +127,7 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
     }
 
     @Override
-    public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(int urn, Authentication authentication) throws LibraryServiceException {
+    public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         return SetLibraryItemAsNotReleasedMethod.setLibraryItemAsNotReleased(libraryDbUtils, urn, authentication);
     }
 
@@ -153,7 +148,7 @@ public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInter
     }
 
     @Override
-    public GetVersionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+    public GetRevisionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
         return GetVersionsMethod.getVersions(libraryDbUtils, getVersionNumbersForLibraryItemMessage.getUrn(), getVersionNumbersForLibraryItemMessage.getAuthentication());
     }
 

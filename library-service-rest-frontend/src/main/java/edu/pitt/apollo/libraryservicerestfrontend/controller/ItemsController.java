@@ -38,7 +38,7 @@ public class ItemsController {
             @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
             @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
             @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
-            @ApiParam(value = "Revision", required = false) @RequestParam("revision") int revision) throws UnsupportedSerializationFormatException, SerializationException {
+            @ApiParam(value = "Revision", required = false) @RequestParam("revision") Integer revision) throws UnsupportedSerializationFormatException, SerializationException {
         return new GetLibraryItemMethod(username, password, SerializationFormat.XML).getLibraryItem(urn, revision);
     }
     
@@ -50,7 +50,7 @@ public class ItemsController {
     @RequestMapping(value = "/items/{urn}/revisions", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
     public
     @ResponseBody
-    String getLibraryItemReleaseVersion(
+    String getAllRevisionsOfLibraryItem(
             @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
             @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
             @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn) throws UnsupportedSerializationFormatException, SerializationException {
@@ -99,12 +99,12 @@ public class ItemsController {
 //    @RequestMapping(value = "/items/{urn}/revisions", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
 //    public
 //    @ResponseBody
-//    String getVersionNumbersForLibraryItem(
+//    String getAllRevisionsOfLibraryItem(
 //            @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 //            @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
 //            @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn
 //    ) throws UnsupportedSerializationFormatException, SerializationException {
-//        return new GetVersionNumbersForLibraryItemMethod(username, password, SerializationFormat.XML).getVersionNumbersForLibraryItem(urn);
+//        return new GetVersionNumbersForLibraryItemMethod(username, password, SerializationFormat.XML).getAllRevisionsOfLibraryItem(urn);
 //    }
 
     @GET
@@ -163,7 +163,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/public/", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/hide", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
     public
     @ResponseBody
     String hideLibraryItem(
@@ -197,7 +197,7 @@ public class ItemsController {
     @RequestMapping(value = "/items/{urn}", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String updateLibraryItem(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+    String reviseLibraryItem(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
                              @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
                              @ApiParam(value = "Comment", required = true) @RequestParam("comment") String comment,
                              @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,

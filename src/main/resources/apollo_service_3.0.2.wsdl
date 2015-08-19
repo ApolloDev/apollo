@@ -239,7 +239,7 @@
 					<xsd:sequence>
 
 						<xsd:element name="getVersionNumbersForLibraryItemResult"
-							type="lst:GetVersionsResult">
+							type="lst:GetRevisionsResult">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>

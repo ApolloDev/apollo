@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
+import edu.pitt.apollo.library_service_types.v3_0_2.GetRevisionsResult;
 import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsResult;
 
 /**
  *
@@ -13,7 +13,7 @@ import edu.pitt.apollo.library_service_types.v3_0_2.GetVersionsResult;
  */
 public class GetVersionNumbersForLibraryItemMethod extends LibraryMethod {
 
-	public static GetVersionsResult getVersions(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+	public static GetRevisionsResult getVersions(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
 		return getLibraryServicePort().getVersionNumbersForLibraryItem(getVersionNumbersForLibraryItemMessage);
 	}
 	
