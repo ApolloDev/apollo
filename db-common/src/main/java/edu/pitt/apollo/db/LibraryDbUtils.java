@@ -477,7 +477,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public int updateLibraryItem(int urn, Object item, Authentication authentication, String comment) throws ApolloDatabaseException {
+	public int updateLibraryItem(int urn, LibraryItemContainer item, Authentication authentication, String comment) throws ApolloDatabaseException {
 
 		try (Connection conn = getConnection(false)) {
 //			int catalogId = getCatalogIDFromURN(urn);
@@ -495,12 +495,16 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	private int updateLibraryItem(int catalogId, Object item, Authentication authentication, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
+	private int updateLibraryItem(int catalogId, LibraryItemContainer item, Authentication authentication, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseExplicitException, ApolloDatabaseRecordNotInsertedException {
 		Connection conn = null;
 		try {
 			conn = existingConnection != null ? existingConnection : getConnection(false);
 			int userKey = getUserId(authentication.getRequesterId(), authentication.getRequesterPassword(), conn);
+
+            // set the java class name for the library item
+            item.getCatalogEntry().setJavaClassName(item.getLibraryItem().getClass().getName());
+
 
 			String itemJson = getJSONStringForLibraryItem(item);
 			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
@@ -782,24 +786,55 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public List<RevisionCommentList> getRevisionsAndComments(int urn) throws ApolloDatabaseException {
-
-        // TO DO: fix to return list of revisions and comment
+	public List<RevisionAndComments> getRevisionsAndComments(int urn) throws ApolloDatabaseException {
 
 		try (Connection conn = getConnection(false)) {
-			String sql = "SELECT version FROM library_item_containers WHERE urn_id = " + urn;
-			List<Integer> versions = new ArrayList<>();
+			String sql = "SELECT lics.version, cmts.comment, cmts.date_created, users.user_name " +
+                    "FROM library_item_containers lics, comments cmts, users WHERE urn_id = " + urn +
+                    " AND cmts.item_id = lics.id AND users.id = cmts.user_id ";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
+            Map<Integer, List<CommentFromLibrary>> revisionsAndComments = new HashMap<>();
+
 			while (rs.next()) {
 				int version = rs.getInt(1);
-				versions.add(version);
+                String comment = rs.getString(2);
+
+                Timestamp date = rs.getTimestamp(3);
+
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTimeInMillis(date.getTime());
+                XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(
+                        calendar);
+
+                String username = rs.getString(4);
+
+                CommentFromLibrary commentFromLibrary = new CommentFromLibrary();
+                commentFromLibrary.setComment(comment);
+                commentFromLibrary.setCommenter(username);
+                commentFromLibrary.setTime(xmlCal);
+
+                if (revisionsAndComments.containsKey(version)) {
+                    revisionsAndComments.get(version).add(commentFromLibrary);
+                } else {
+                    List<CommentFromLibrary> list = new ArrayList<>();
+                    list.add(commentFromLibrary);
+                    revisionsAndComments.put(version, list);
+                }
 			}
 
-			return null;
-		} catch (SQLException ex) {
+            List<RevisionAndComments> listOfRevisionsAndComments = new ArrayList<>();
+            for (Integer revision : revisionsAndComments.keySet()) {
+                RevisionAndComments revisionAndComments = new RevisionAndComments();
+                revisionAndComments.setRevision(revision);
+                revisionAndComments.getComments().addAll(revisionsAndComments.get(revision));
+                listOfRevisionsAndComments.add(revisionAndComments);
+            }
+
+			return listOfRevisionsAndComments;
+		} catch (SQLException | DatatypeConfigurationException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_VERSIONS, ex);
 		}
 

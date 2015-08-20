@@ -43,7 +43,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.2-SNAPSHOT/services/libraryservice?wsdl";
 	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_2/", "LibraryService_v3.0.2");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
@@ -69,8 +69,10 @@ public class WSClient {
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
-		setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
+		//AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
+
+		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
 
 //		AddLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
 //		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
@@ -204,6 +206,26 @@ public class WSClient {
 
 		return port.addLibraryItemContainer(message);
 	}
+
+    private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
+            throws DatatypeConfigurationException, ParseException {
+
+        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(scenario);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
+        lic.setCatalogEntry(entry);
+
+        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+        message.setUrn(urn);
+
+        return port.updateLibraryItemContainer(message);
+    }
 
 	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 

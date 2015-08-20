@@ -231,7 +231,7 @@ public class ApolloClassList {
                 ModifyGroupOwnershipResult.class,
                 QueryMessage.class,
                 QueryResult.class,
-                RevisionCommentList.class,
+                RevisionAndComments.class,
                 SetLibraryItemAsNotReleasedMessage.class,
                 SetLibraryItemAsNotReleasedResult.class,
                 SetReleaseVersionMessage.class,

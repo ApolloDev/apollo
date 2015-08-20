@@ -244,15 +244,15 @@
 	<complexType name="GetRevisionsResult">
 		<sequence>
 			<element name="status" type="pref:MethodCallStatus"></element>
-			<element name="revisionsAndComments" type="tns:RevisionCommentList" maxOccurs="unbounded"
+			<element name="revisionsAndComments" type="tns:RevisionAndComments" maxOccurs="unbounded"
 				minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="RevisionCommentList">
+	<complexType name="RevisionAndComments">
 		<sequence>
 			<element name="revision" type="int"></element>
-			<element name="comments" type="token" maxOccurs="unbounded"
+			<element name="comments" type="tns:CommentFromLibrary" maxOccurs="unbounded"
 				minOccurs="1"></element>
 		</sequence>
 	</complexType>

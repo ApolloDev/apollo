@@ -4,7 +4,7 @@ import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v3_0_2.GetRevisionsResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.RevisionCommentList;
+import edu.pitt.apollo.library_service_types.v3_0_2.RevisionAndComments;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
@@ -30,7 +30,7 @@ public class GetVersionsMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				List<RevisionCommentList> versions = dbUtils.getRevisionsAndComments(urn);
+				List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn);
 				result.getRevisionsAndComments().addAll(versions);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {

@@ -24,7 +24,7 @@ public class GetLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
         super(username, password, serializationFormat, GetLibraryItemContainerResult.class);
     }
 
-    public String getLibraryItem(int urn, int version) {
+    public String getLibraryItem(int urn, Integer version) {
 
         GetLibraryItemContainerMessage getLibraryItemContainerMessage = new GetLibraryItemContainerMessage();
         getLibraryItemContainerMessage.setAuthentication(authentication);
