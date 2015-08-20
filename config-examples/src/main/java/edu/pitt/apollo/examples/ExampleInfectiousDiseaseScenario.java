@@ -1,4 +1,4 @@
-package edu.pitt.apollo.examples.runsimulationmessages;
+package edu.pitt.apollo.examples;
 
 import java.math.BigInteger;
 import java.util.Calendar;

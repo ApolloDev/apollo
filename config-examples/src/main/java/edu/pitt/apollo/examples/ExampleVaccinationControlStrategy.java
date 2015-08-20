@@ -1,4 +1,4 @@
-package edu.pitt.apollo.examples.runsimulationmessages;
+package edu.pitt.apollo.examples;
 
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import java.math.BigInteger;

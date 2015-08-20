@@ -1,6 +1,6 @@
 package edu.pitt.apollo.runmanagerserviceclient;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleInfectiousDiseaseScenario;
+import edu.pitt.apollo.examples.ExampleInfectiousDiseaseScenario;
 import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;

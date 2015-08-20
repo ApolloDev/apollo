@@ -15,7 +15,7 @@
 
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 
 import java.net.MalformedURLException;
