@@ -861,11 +861,52 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public LibraryItemContainer getLibraryItemContainer(int urn, int version) throws ApolloDatabaseException {
+    public boolean checkIfVersionIsApproved(int urn, int version) throws ApolloDatabaseException {
+
+        try (Connection conn = getConnection(false)) {
+            String sql = "SELECT was_previously_released FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + version;
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            } else {
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
+        }
+    }
+
+	public GetLibraryItemContainerResult getLibraryItemContainer(int urn, Integer version) throws ApolloDatabaseException {
 
 		try {
+
+            GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
+            if (version == null) {
+                version = getReleaseVersion(urn);
+                if (version == null) {
+                    return null;
+                }
+                result.setIsLatestApprovedRevision(true);
+                result.setIsApprovedRevision(true);
+            }
+
 			String itemJson = getLibraryItemContainerJSON(urn, version, null);
-			return getLibraryItemContainderFromJson(itemJson);
+			LibraryItemContainer container = getLibraryItemContainderFromJson(itemJson);
+
+            if (!result.isIsLatestApprovedRevision()) {
+                // check if it is an approved version
+                result.setIsApprovedRevision(checkIfVersionIsApproved(urn, version));
+            }
+
+            result.setLibraryItemContainer(container);
+            result.setRevision(version);
+
+            return result;
+
 		} catch (IOException | ApolloDatabaseExplicitException | ApolloDatabaseKeyNotFoundException ex) {
 			throw createApolloDatabaseExceptionAndLog(GETTING_LIBRARY_ITEM_CONTAINER, ex);
 		} catch (NoURNFoundException ex) {
@@ -876,15 +917,15 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public LibraryItemContainer getReleaseLibraryItemContainer(int urn) throws ApolloDatabaseException {
-
-		Integer publicVersion = getReleaseVersion(urn);
-		if (publicVersion == null) {
-			return null;
-		} else {
-			return getLibraryItemContainer(urn, publicVersion);
-		}
-	}
+//	public LibraryItemContainer getReleaseLibraryItemContainer(int urn) throws ApolloDatabaseException {
+//
+//		Integer publicVersion = getReleaseVersion(urn);
+//		if (publicVersion == null) {
+//			return null;
+//		} else {
+//			return getLibraryItemContainer(urn, publicVersion);
+//		}
+//	}
 
 	private String getLibraryItemContainerJSON(int urn, int version, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
 			ApolloDatabaseExplicitException, NoURNFoundException, NoLibraryItemException {
