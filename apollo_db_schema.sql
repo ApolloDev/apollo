@@ -76,7 +76,9 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (10,'UPitt','Data Service','1.0','data','http://localhost:8080/data-service-war-3.0.2-SNAPSHOT/services/dataservice?wsdl',1, NULL, NULL, NULL, NULL),
 											 (11,'UPitt', 'Broker Service','3.0.2','broker','http://localhost:8080/broker-service-war-3.0.2-SNAPSHOT/services/brokerservice?wsdl',1, NULL, NULL, NULL ,NULL),
                        (12,'any', 'any','any','endUserApplication','not_applicable',1, NULL, NULL, NULL ,NULL),
-(13,'UPitt', 'Run Manager','3.0.2','runManager','http://localhost:8080/run-manager-service-rest-frontend-3.0.2-SNAPSHOT/',1, NULL, NULL, NULL ,NULL);
+                       (13,'UPitt', 'Run Manager','3.0.2','runManager','http://localhost:8080/run-manager-service-rest-frontend-3.0.2-SNAPSHOT/',1, NULL, NULL, NULL ,NULL),
+                       (14,'PSC','OpenMalaria','1.0','simulator','',1, NULL, NULL, NULL, NULL);
+
 
 
 CREATE TABLE roles (
@@ -122,6 +124,10 @@ INSERT INTO roles VALUES (24, 'Can view cached Lancet Ebola results');
 INSERT INTO roles VALUES (25, 'Can run Data Service without privileged request');
 INSERT INTO roles VALUES (26, 'Can view cached Data Service results');
 
+INSERT INTO roles VALUES (27, 'Can run Open Malaria without privileged request');
+INSERT INTO roles VALUES (28, 'Can run Open Malaria with privileged request');
+INSERT INTO roles VALUES (29, 'Can view cached Open Malaria results');
+
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
   software_id INT REFERENCES software_identification(id),
@@ -164,6 +170,10 @@ INSERT INTO role_description VALUES(24, 9, 0, 0);
 
 INSERT INTO role_description VALUES(25, 10, 1, 0);
 INSERT INTO role_description VALUES(26, 10, 0, 0);
+
+INSERT INTO role_description VALUES(27, 14, 1, 0);
+INSERT INTO role_description VALUES(28, 14, 1, 1);
+INSERT INTO role_description VALUES(29, 14, 0, 0);
 
 CREATE TABLE user_roles (
   user_id INT NOT NULL REFERENCES users(id),
@@ -384,6 +394,7 @@ INSERT INTO run_data_description (label) values ('FRED ODS required output file 
 INSERT INTO run_data_description (label) values ('FluTE ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 79*/
 INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 80*/
 INSERT INTO run_data_description (label) values ('RunSimulationsMessage JSON, run_simulations_message.json '); /* 81*/
+INSERT INTO run_data_description (label) values ('Open Malaria configuration file, config.xml '); /* 82*/
 
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
@@ -872,7 +883,13 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
   (81, 2, 'run_simulations_message.json'),
   (81, 3, 'RUN_SIMULATIONS_MESSAGE'),
   (81, 4, '12'),
-  (81, 5, '1');
+  (81, 5, '1'),
+
+  (82, 1, 'TEXT'), 
+  (82, 2, 'config.xml'),
+  (82, 3, 'CONFIGURATION_FILE'),
+  (82, 4, '1'),
+  (82, 5, '14');
     
 CREATE VIEW run_data_description_view AS
 SELECT
