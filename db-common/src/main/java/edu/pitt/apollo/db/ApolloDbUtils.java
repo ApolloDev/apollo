@@ -40,6 +40,7 @@ import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABL
  */
 public class ApolloDbUtils extends BaseDbUtils {
 
+    private static final String APOLLO_DB_PROPERTIES_FILE = "database.properties";
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
 	private static final boolean APOLLO_DB_AUTO_COMMIT = true;
@@ -2669,7 +2670,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 
     @Override
     protected String getDatabasePropertiesFileName() {
-        return "database.properties";
+        return APOLLO_DB_PROPERTIES_FILE;
     }
 
 //    public enum DbContentDataFormatEnum {

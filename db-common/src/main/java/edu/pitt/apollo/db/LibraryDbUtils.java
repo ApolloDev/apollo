@@ -45,6 +45,7 @@ import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABL
 public class LibraryDbUtils extends BaseDbUtils {
 
 	private static final Logger libraryLogger = LoggerFactory.getLogger(LibraryDbUtils.class);
+    private static final String LIBRARY_DATABASE_PROPERTIES_FILE = "library_database.properties";
 	private static final String ADDING_USER = "adding the user";
 	private static final String ADDING_USER_ROLE = "adding the user role";
 	private static final String AUTHORIZING_USER = "authorizing the user";
@@ -96,14 +97,14 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     @Override
     protected String getDatabasePropertiesFileName() {
-        return "library_database.properties";
+        return LIBRARY_DATABASE_PROPERTIES_FILE;
     }
 
     @Override
 	protected void setupResource(String resourceName) {
 		try {
 			Properties properties = new Properties();
-			properties.load(new BufferedReader(new FileReader(APOLLO_DIR + "library_database.properties")));
+			properties.load(new BufferedReader(new FileReader(APOLLO_DIR + LIBRARY_DATABASE_PROPERTIES_FILE)));
 
 			org.postgresql.ds.PGSimpleDataSource ds = new PGSimpleDataSource();
 			//com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds
