@@ -1,10 +1,8 @@
 package edu.pitt.apollo.db;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,10 +33,12 @@ import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 
 import java.sql.Connection;
 
+import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
+
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 17, 2013 Time: 4:35:10 PM Class: DbUtils IDE: NetBeans 6.9.1
  */
-public class ApolloDbUtils extends BaseApolloDbUtils {
+public class ApolloDbUtils extends BaseDbUtils {
 
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
@@ -59,7 +59,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //		super(databasePropertiesInputStream, APOLLO_DB_AUTO_COMMIT);
 //	}
 	public ApolloDbUtils() throws ApolloDatabaseException {
-		super(APOLLO_DB_AUTO_COMMIT, APOLLO_DB_RESOURCE_IDENTIFIER);
+		super(APOLLO_DB_RESOURCE_IDENTIFIER);
 	}
 
 	public Connection getConnection() throws SQLException {
@@ -677,7 +677,6 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
 	// // user key doesn't exist
-	@Override
 	public int addUser(String userId, String userPassword, String userEmail)
 			throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
@@ -695,7 +694,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 
 		String query = "INSERT INTO users (requester_id,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
-		String salt = getSaltForPassword();
+		String salt = getSecureRandomString();
 		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword,
 				salt);
 		try (Connection conn = datasource.getConnection()) {
@@ -2644,6 +2643,34 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 		return contentId;
 	}
+
+    @Override
+    protected void setBaseDirectory() {
+        Map<String, String> env = System.getenv();
+        String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        if (apolloDir != null) {
+            if (!apolloDir.endsWith(File.separator)) {
+                apolloDir += File.separator;
+            }
+            APOLLO_DIR = apolloDir;
+            logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
+                    + APOLLO_DIR);
+        } else {
+            logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+                    + " environment variable not found!");
+            APOLLO_DIR = "";
+        }
+    }
+
+    @Override
+    protected String getSystemSaltFileDir() {
+        return APOLLO_DIR + SALT_FILE_NAME;
+    }
+
+    @Override
+    protected String getDatabasePropertiesFileName() {
+        return "database.properties";
+    }
 
 //    public enum DbContentDataFormatEnum {
 //

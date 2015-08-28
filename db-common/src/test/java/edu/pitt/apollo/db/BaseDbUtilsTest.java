@@ -18,9 +18,9 @@ import org.hsqldb.Server;
  Email: nick.millett@gmail.com
  Date: Aug 4, 2014
  Time: 12:10:33 PM
- Class: BaseApolloDbUtilsTest
+ Class: BaseDbUtilsTest
  */
-public class BaseApolloDbUtilsTest extends TestCase {
+public class BaseDbUtilsTest extends TestCase {
 
 	protected ApolloDbUtils apolloDbUtils;
 	private Properties databaseProperties;

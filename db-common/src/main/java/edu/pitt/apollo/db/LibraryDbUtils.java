@@ -27,17 +27,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.postgresql.ds.PGConnectionPoolDataSource;
-import org.postgresql.ds.PGPoolingDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +42,7 @@ import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABL
  *
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Oct 6, 2014 Time: 11:21:38 AM Class: LibraryDbUtils
  */
-public class LibraryDbUtils extends BaseApolloDbUtils {
+public class LibraryDbUtils extends BaseDbUtils {
 
 	private static final Logger libraryLogger = LoggerFactory.getLogger(LibraryDbUtils.class);
 	private static final String ADDING_USER = "adding the user";
@@ -72,11 +66,40 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	JsonUtils jsonUtils = new JsonUtils();
 
 	public LibraryDbUtils() throws ApolloDatabaseException {
-		super(LIBRARY_AUTO_COMMIT, LIBRARY_DB_RESOURCE_NAME);
+		super(LIBRARY_DB_RESOURCE_NAME);
 
 	}
 
-	@Override
+    @Override
+    protected void setBaseDirectory() {
+        Map<String, String> env = System.getenv();
+        String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        if (apolloDir != null) {
+            if (!apolloDir.endsWith(File.separator)) {
+                apolloDir += File.separator;
+            }
+            APOLLO_DIR = apolloDir;
+            logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
+                    + APOLLO_DIR);
+        } else {
+            logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+                    + " environment variable not found!");
+            APOLLO_DIR = "";
+        }
+    }
+
+    @Override
+    protected String getSystemSaltFileDir() {
+
+        return APOLLO_DIR + SALT_FILE_NAME;
+    }
+
+    @Override
+    protected String getDatabasePropertiesFileName() {
+        return "library_database.properties";
+    }
+
+    @Override
 	protected void setupResource(String resourceName) {
 		try {
 			Properties properties = new Properties();
@@ -99,7 +122,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 	}
 
 	protected LibraryDbUtils(String resourceName) throws ApolloDatabaseException {
-		super(LIBRARY_AUTO_COMMIT, resourceName);
+		super(resourceName);
 	}
 
 //	public LibraryDbUtils(File databasePropertiesFile) throws IOException {
@@ -130,7 +153,6 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	@Override
 	public int addUser(String userName, String userPassword, String userEmail) throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
 
@@ -150,7 +172,7 @@ public class LibraryDbUtils extends BaseApolloDbUtils {
 		}
 
 		String query = "INSERT INTO users (user_name,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
-		String salt = getSaltForPassword();
+		String salt = getSecureRandomString();
 		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword, salt);
 		try (Connection conn = getConnection(false)) {
 
