@@ -3867,5 +3867,7 @@
 				minOccurs="0"></element>
 		</sequence>
 	</complexType>
+	
+	<!--  comment for testing purposes -->
 </schema>
 
