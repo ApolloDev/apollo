@@ -1,6 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.serviceaccessors;
 
 import edu.pitt.apollo.DataServiceImpl;
+import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.DataServiceException;
@@ -42,7 +43,7 @@ public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegi
 				return this.getContentForContentId(fileId, authentication);
 			}
 		}
-		throw new DataServiceException("Couldn't find " + runMessageFilename + " in database for run " + runId);
+		throw new RunMessageFileNotFoundException("Couldn't find " + runMessageFilename + " in database for run " + runId);
 	}
 
 	public <T>T getRunMessageAssociatedWithRunIdAsTypeOrNull(BigInteger runId, Authentication authentication, String runMessageFilename, Class<T> clazz) throws DataServiceException, JsonUtilsException {

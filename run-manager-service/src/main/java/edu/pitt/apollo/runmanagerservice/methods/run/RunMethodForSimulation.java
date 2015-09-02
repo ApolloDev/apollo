@@ -2,6 +2,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
@@ -21,19 +22,25 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 		super(stagedRunId, authentication, "run_simulation_message.json");
 	}
 
-	@Override
+    @Override
+    protected String getRunMessageJson(String runMessageFilename) throws DataServiceException {
+        String json;
+        try {
+            // first try single simulation
+            json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_simulation_message.json");
+        } catch (RunMessageFileNotFoundException ex) {
+            // then try batch
+            json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_simulations_message.json");
+        }
+
+        return json;
+    }
+
+    @Override
 	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
 		JsonUtils jsonUtils = new JsonUtils();
 		return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunSimulationMessage.class);
 	}
-
-//	@Override
-//	protected Object getObjectToReturn(BigInteger runId) throws RunManagerServiceException {
-//		RunResult runResult = new RunResult();
-//		runResult.setRunId(runId);
-//		runResult.setMethodCallStatus(getDefaultSuccessfulMethodCallStatus());
-//		return runResult;
-//	}
 
 	@Override
 	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {

@@ -17,7 +17,7 @@ import java.math.BigInteger;
  */
 public class RunMethodForVisualization extends AbstractRunMethod {
 
-	public RunMethodForVisualization(BigInteger runId, BigInteger associatedSimulationGroupId, Object message, Authentication authentication) throws JsonUtilsException, DataServiceException {
+	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DataServiceException {
 		super(runId, authentication, "run_visualization_message.json");
 	}
 

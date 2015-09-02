@@ -1,10 +1,13 @@
 package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
+import edu.pitt.apollo.runmanagerservice.methods.run.AbstractRunMethod;
+import edu.pitt.apollo.runmanagerservice.methods.run.RunMethodFactory;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
@@ -80,13 +83,10 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
 		try {
-			SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
-			String urlOfSimulator = dataServiceAccessor.getURLForSoftwareIdentification(softwareIdentification, authentication);
-			SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator, softwareIdentification);
-			soapJobRunningServiceConnector.run(runId, authentication);
-		} catch (DataServiceException e) {
+            AbstractRunMethod runMethod = RunMethodFactory.getRunMethod(runId, authentication);
+            runMethod.run(runId);
+		} catch (DataServiceException | JsonUtilsException e) {
 			throw new JobRunningServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
 		}
 	}

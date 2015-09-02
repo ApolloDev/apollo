@@ -24,7 +24,13 @@ public abstract class AbstractRunMethod implements RunMethod {
     public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException, JsonUtilsException {
         this.runId = runId;
         this.authentication = authentication;
-        runMessage = convertRunMessageJson(dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename));
+        dataServiceDao = new DataServiceAccessor();
+        String json = getRunMessageJson(runMessageFilename);
+        runMessage = convertRunMessageJson(json);
+    }
+
+    protected String getRunMessageJson(String runMessageFilename) throws DataServiceException {
+        return dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename);
     }
 
     protected abstract RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException;

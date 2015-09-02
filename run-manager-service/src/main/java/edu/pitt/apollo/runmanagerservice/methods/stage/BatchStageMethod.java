@@ -198,6 +198,8 @@ public class BatchStageMethod {
                 }
 
                 logger.debug("Finished all threads!");
+                dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
+                        "All runs for this batch have been translated", authentication);
 
 
                 return false;

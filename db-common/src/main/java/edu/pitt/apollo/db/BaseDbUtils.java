@@ -102,7 +102,7 @@ public abstract class BaseDbUtils implements AutoCloseable {
         }
 
         if (systemSalt == null) {
-            getSystemSalt(getSystemSaltFileDir());
+            systemSalt = getSystemSalt(getSystemSaltFileDir());
         }
     }
 
