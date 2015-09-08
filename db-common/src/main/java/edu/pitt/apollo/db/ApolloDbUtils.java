@@ -152,7 +152,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 
 		String query = "SELECT"
 				+ "	sgd.run_id,"
-				+ "	rdc.text_content AS run_simulation_message,"
+				+ "	rdc.text_content AS run_message,"
 				+ "	rsd.status,"
 				+ "	rs.message "
 				+ " FROM"
@@ -168,7 +168,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 				+ "	rddv.run_data_description_id = rd.description_id AND"
 				+ "	rddv.source_software = ? AND"
 				+ "	rddv.destination_software = ? AND"
-				+ "	rddv.label = \"run_simulation_message.json\" AND"
+				+ "	rddv.label = \"run_message.json\" AND"
 				+ "	rd.run_id = sgd.run_id AND"
 				+ "	r.id = ? AND"
 				+ "	sgd.simulation_group_id = r.simulation_group_id AND"
@@ -197,7 +197,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(
 				runId, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID, 1);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_simulation_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -207,7 +207,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_simulation_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -217,7 +217,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(
 				runId, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID, visualizerKey);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_visualization_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -227,7 +227,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_simulation_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -252,7 +252,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 			BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_data_service_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -262,7 +262,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_data_service_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -1431,7 +1431,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
 					"data_retrieval_request_message.json",
-					ContentDataTypeEnum.DATA_RETRIEVAL_REQUEST_MESSAGE, 0,
+					ContentDataTypeEnum.RUN_MESSAGE, 0,
 					getSoftwareIdentificationKey(dataServiceSoftwareId));
             // int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
@@ -1449,7 +1449,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 		}
 	}
 
-	public BigInteger[] addSimulationRun(Object runMessage, String runMessageFileName, ContentDataTypeEnum contentDataTypeEnum,
+	public BigInteger[] addSimulationRun(Object runMessage,
 			int md5CollisionId,
 			SoftwareIdentification identificationOfSoftwareToRun,
 			int sourceSoftwareIdKey,
@@ -1524,8 +1524,8 @@ public class ApolloDbUtils extends BaseDbUtils {
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
-					runMessageFileName,
-					contentDataTypeEnum,
+					"run_message.json",
+					ContentDataTypeEnum.RUN_MESSAGE,
 					sourceSoftwareIdKey,
 					getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
             // int runDataId = the following line returns the runDataId, but
@@ -1965,8 +1965,8 @@ public class ApolloDbUtils extends BaseDbUtils {
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runVisualizationMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
-					"run_visualization_message.json",
-					ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE, 0,
+					"run_message.json",
+					ContentDataTypeEnum.RUN_MESSAGE, 0,
 					getSoftwareIdentificationKey(runVisualizationMessage
 							.getSoftwareIdentification()));
             // int runDataId = the following line returns the runDataId, but

@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
@@ -18,19 +19,21 @@ import java.math.BigInteger;
  */
 public class RunMethodForSimulation extends AbstractRunMethod {
 
+    private Class runMessageClass = null;
 	public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
 		super(stagedRunId, authentication, "run_simulation_message.json");
 	}
 
     @Override
     protected String getRunMessageJson(String runMessageFilename) throws DataServiceException {
-        String json;
-        try {
-            // first try single simulation
-            json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_simulation_message.json");
-        } catch (RunMessageFileNotFoundException ex) {
-            // then try batch
-            json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_simulations_message.json");
+        String json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_message.json");
+
+        if (json.contains("\"type\" : \"RunSimulationMessage\"")) {
+            runMessageClass = RunSimulationMessage.class;
+        } else if (json.contains("\"type\" : \"RunSimulationsMessage\"")) {
+            runMessageClass = RunSimulationsMessage.class;
+        } else {
+            throw new DataServiceException("Unsupported run message type when getting run message json");
         }
 
         return json;
@@ -39,7 +42,11 @@ public class RunMethodForSimulation extends AbstractRunMethod {
     @Override
 	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
 		JsonUtils jsonUtils = new JsonUtils();
-		return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunSimulationMessage.class);
+        if (runMessageClass.equals(RunSimulationMessage.class)) {
+            return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
+        } else {
+            return (RunSimulationsMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
+        }
 	}
 
 	@Override

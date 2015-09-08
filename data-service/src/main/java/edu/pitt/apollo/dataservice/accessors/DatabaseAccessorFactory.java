@@ -20,21 +20,7 @@ public class DatabaseAccessorFactory {
     public static DatabaseAccessor getDatabaseAccessor(RunMessage message) throws UnrecognizedMessageTypeException, ApolloDatabaseException {
         if (message instanceof RunSimulationMessage) {
             return new DatabaseAccessorForRunningJobs(
-                    message.getAuthentication(),
-                    "run_simulation_message.json",
-                    ContentDataTypeEnum.RUN_SIMULATION_MESSAGE, message.getSoftwareIdentification());
-        } else if (message instanceof RunSimulationsMessage) {
-            return new DatabaseAccessorForRunningJobs(
-                    message.getAuthentication(),
-                    "run_simulations_message.json",
-                    ContentDataTypeEnum.RUN_SIMULATIONS_MESSAGE,
-                    message.getSoftwareIdentification());
-        } else if (message instanceof RunVisualizationMessage) {
-            return new DatabaseAccessorForRunningJobs(
-                    message.getAuthentication(),
-                    "run_visualization_message.json",
-                    ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE,
-                    message.getSoftwareIdentification());
+                    message.getAuthentication(), message.getSoftwareIdentification());
         } else if (message instanceof DataRetrievalRequestMessage) {
             Authentication authentication = message.getAuthentication();
             return new DatabaseAccessorForRunningDataService((DataRetrievalRequestMessage) message, authentication);

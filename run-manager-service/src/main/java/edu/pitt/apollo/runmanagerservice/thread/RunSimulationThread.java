@@ -5,10 +5,12 @@ import java.math.BigInteger;
 import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
@@ -35,9 +37,11 @@ public class RunSimulationThread extends RunApolloServiceThread {
 		}
 
 		try {
-			JobRunningServiceConnector simulatorServiceAccessor = new SoapJobRunningServiceConnector(url, softwareId);
+            dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.CALLED_SIMULATOR,
+                    "Attempting to call simulator", authentication);
+			JobRunningServiceAccessor simulatorServiceAccessor = new JobRunningServiceAccessor(url, softwareId);
 			simulatorServiceAccessor.run(runId, authentication);
-		} catch (JobRunningServiceException ex) {
+		} catch (JobRunningServiceException | RunManagementException ex) {
 			ApolloServiceErrorHandler.reportError("Error calling simulator, error was:" + ex.getMessage(), runId);
 			return;
 		}

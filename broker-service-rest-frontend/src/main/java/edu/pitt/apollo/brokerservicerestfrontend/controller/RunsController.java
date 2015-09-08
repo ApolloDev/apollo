@@ -4,21 +4,10 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
+import edu.pitt.apollo.brokerservicerestfrontend.methods.*;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.exception.UnsupportedRunActionException;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.AddRunIdsToSimulationGroupForRun;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.DeleteRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.GetLastServiceToBeCalledForRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.GetRunIdsInSimulationGroupForRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.GetSoftwareIdentificationForRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.GetStatusOfRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.InsertAndStartRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.InsertRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.StartRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.SetStatusOfRunMethod;
-import edu.pitt.apollo.brokerservicerestfrontend.methods.TerminateRunMethod;
 import edu.pitt.apollo.services_common.v3_0_2.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -108,7 +97,7 @@ public class RunsController {
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 		
 		return new SetLastServiceToBeCalledForRunMethod(username, password, SerializationFormat.XML).setLastServiceToBeCalledForRunMethod(runId, softwareName,
-				softwareVersion, softwareDeveloper, softwareTypeEnum);
+                softwareVersion, softwareDeveloper, softwareTypeEnum);
 	}
 	
 	@GET
@@ -191,5 +180,34 @@ public class RunsController {
 		}
 		
 	}
+
+    @GET
+    @ApiOperation(value = "List files.", notes = "Returns the list of files associated with the given run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.GET, headers = "Accept=application/xml")
+    public @ResponseBody
+    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+
+        return new GetListOfFilesForRunMethod(username, password, SerializationFormat.XML).getListOfFilesForRun(runId);
+    }
+
+    @POST
+    @ApiOperation(value = "Associate file.", notes = "Associates a file with the given run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.POST, headers = "Accept=application/xml")
+    public @ResponseBody
+    String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+                                  @ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
+
+        return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, password);
+    }
 	
 }

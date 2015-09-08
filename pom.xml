@@ -85,7 +85,6 @@
 
         <module>job-running-service-soap-connector</module>
         <module>translator-service-soap-connector</module>
-        <module>visualizer-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>

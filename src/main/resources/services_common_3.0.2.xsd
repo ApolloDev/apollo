@@ -53,10 +53,7 @@
 			<enumeration value="CONFIGURATION_FILE" />
 			<enumeration value="IMAGE" />
 			<enumeration value="MOVIE" />
-			<enumeration value="RUN_SIMULATION_MESSAGE" />
-			<enumeration value="RUN_SIMULATIONS_MESSAGE" />
-			<enumeration value="RUN_VISUALIZATION_MESSAGE" />
-			<enumeration value="DATA_RETRIEVAL_REQUEST_MESSAGE" />
+			<enumeration value="RUN_MESSAGE" />
 		</restriction>
 	</simpleType>
 
