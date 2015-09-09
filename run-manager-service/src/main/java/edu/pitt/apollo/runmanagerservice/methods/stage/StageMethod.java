@@ -79,7 +79,7 @@ public class StageMethod {
 			
 			BigInteger runId = insertRunResult.getRunId();
 			if (parentRunId != null) {
-				dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[]{parentRunId}), authentication);
+				dataServiceDao.addRunIdsToSimulationGroupForRun(parentRunId, Arrays.asList(new BigInteger[]{runId}), authentication);
 			}
 
 			MethodCallStatus methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);

@@ -21,7 +21,7 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 
     private Class runMessageClass = null;
 	public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
-		super(stagedRunId, authentication, "run_simulation_message.json");
+		super(stagedRunId, authentication, "run_message.json");
 	}
 
     @Override
