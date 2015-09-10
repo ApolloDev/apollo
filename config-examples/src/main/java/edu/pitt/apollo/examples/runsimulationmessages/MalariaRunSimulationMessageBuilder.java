@@ -112,7 +112,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         Population population = new Population();
         population.setTaxonId("9606");
         population.setLocation(getLocation().getApolloLocationCode());
-        population.setCount(new BigInteger("25000000"));
+        population.setCount(new BigInteger("25000"));
 
         PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 
