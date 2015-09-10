@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
+import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -38,6 +39,11 @@ public class StageMethod {
 	private final Authentication authentication;
 	private final BigInteger parentRunId;
 	protected DataServiceAccessor dataServiceDao;
+    protected static ApolloServiceQueue apolloServiceQueue;
+
+    static {
+        apolloServiceQueue = new ApolloServiceQueue();
+    }
 
 	public StageMethod(RunMessage message, BigInteger parentRunId) throws RunManagementException {
 		this.message = message;
@@ -73,14 +79,15 @@ public class StageMethod {
 			dataServiceDao = new DataServiceAccessor();
 
 			InsertRunResult insertRunResult = dataServiceDao.insertRun(message);
-			if (insertRunResult.isRunCached()) {
-				return insertRunResult;
-			}
 			
 			BigInteger runId = insertRunResult.getRunId();
 			if (parentRunId != null) {
 				dataServiceDao.addRunIdsToSimulationGroupForRun(parentRunId, Arrays.asList(new BigInteger[]{runId}), authentication);
 			}
+
+            if (insertRunResult.isRunCached()) {
+                return insertRunResult;
+            }
 
 			MethodCallStatus methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
 			while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE) 
@@ -139,8 +146,8 @@ public class StageMethod {
 					dataServiceDao.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED, "Translation completed", authentication);
 				}
 			} else {
-				BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
-				batchStageMethod.stage();
+				BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication, apolloServiceQueue);
+                apolloServiceQueue.addThreadToQueueAndRun(batchStageMethod);
 			}
 
 			// run is now translated

@@ -1,6 +1,8 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
 import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
@@ -29,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jdl50 on 6/9/15.
  */
-public class BatchStageMethod {
+public class BatchStageMethod extends ApolloServiceThread {
 
     public static final Random rng = new Random(System.currentTimeMillis());
     private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
@@ -59,7 +61,9 @@ public class BatchStageMethod {
     private URL configFileUrl = null;
     private Authentication authentication;
     private List<BigInteger> failedRunIds = Collections.synchronizedList(new ArrayList<BigInteger>());
-    public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage, Authentication authentication) throws MalformedURLException {
+    public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage,
+                            Authentication authentication, ApolloServiceQueue queue) throws MalformedURLException {
+        super(batchRunId, queue);
         this.dataServiceAccessor = new DataServiceAccessor();
         this.batchRunId = batchRunId;
         this.authentication = authentication;
@@ -129,7 +133,8 @@ public class BatchStageMethod {
 
     }
 
-    public boolean stage() {
+    @Override
+    public void runApolloService() {
         String filename = null;
 
         XMLGregorianCalendar scenarioDate = (XMLGregorianCalendar) runSimulationsMessage.getBaseInfectiousDiseaseScenario().getScenarioDate().clone();
@@ -138,7 +143,6 @@ public class BatchStageMethod {
                 filename = downloadUrlToFile(configFileUrl);
             } catch (BatchException | IOException ex) {
                 ErrorUtils.reportError(batchRunId, "Error downloading batch configuration file, error was: " + ex.getMessage(), authentication);
-                return false;
             }
 
             File inputsFile = new File(filename);
@@ -197,7 +201,6 @@ public class BatchStageMethod {
                     ErrorUtils.reportError(batchRunId, "Error staging runs in database. The following run IDs have a status of FAILED after staging: "
                                     + listOfFailedRunIds + ". The batch runId is " + batchRunId,
                             authentication);
-                    return false;
                 }
 
                 addBatchInputsWithRunIdsFileToDatabase(stBuild);
@@ -207,7 +210,6 @@ public class BatchStageMethod {
                 if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                     ErrorUtils.reportError(batchRunId, "Error staging runs in database, error was " + status.getMessage() + " for runId",
                             authentication);
-                    return false;
                 }
 
                 logger.debug("Finished all threads!");
@@ -215,17 +217,14 @@ public class BatchStageMethod {
                         "All runs for this batch have been translated", authentication);
 
 
-                return false;
             } catch (DataServiceException e) {
                 ErrorUtils.reportError(batchRunId, "DB Error queuing and translating runs, error was " + e.getMessage(), authentication);
             } finally {
                 br.close();
             }
-            return false;
 
         } catch (IOException e) {
             logger.error("Error writing error file!: " + e.getMessage());
-            return false;
         }
 
     }
