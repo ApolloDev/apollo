@@ -34,14 +34,14 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 			jobRunningServiceAccessor.run(runId, authentication);
 
 		} catch (JobRunningServiceException | RunManagementException ex) {
-			ApolloServiceErrorHandler.reportError("Error running data service, error was:" + ex.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Error running data service, error was:" + ex.getMessage(), runId, authentication);
 			return;
 		}
 
 		try {
 			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
 		} catch (DataServiceException e) {
-			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId, authentication);
 		}
 	}
 

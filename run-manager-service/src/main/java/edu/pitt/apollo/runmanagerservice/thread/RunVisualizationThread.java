@@ -32,7 +32,7 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 		try {
 			url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);
 		} catch (DataServiceException e) {
-			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId, authentication);
 			return;
 		}
 
@@ -42,14 +42,14 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 			JobRunningServiceAccessor visualizerServiceAccessor = new JobRunningServiceAccessor(url, softwareId);
 			visualizerServiceAccessor.run(runId, authentication);
 		} catch (JobRunningServiceException | RunManagementException ex) {
-			ApolloServiceErrorHandler.reportError("Error running visualizer, error was:" + ex.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Error running visualizer, error was:" + ex.getMessage(), runId, authentication);
 			return;
 		}
 
 		try {
 			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
 		} catch (DataServiceException e) {
-			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId, authentication);
 		}
 
 	}

@@ -162,15 +162,15 @@ public class StageInDbWorkerThread implements Runnable {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
-                                    "Error staging job. There was an exception setting the scenario date.", batchRunId
-                            );
+                                    "Error staging job. There was an exception setting the scenario date.", batchRunId,
+                            authentication);
                     return;
                 } catch (JsonUtilsException ex) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
-                                    "Error staging job. There was an exception converting the baseInfectiousDiseaseScenario to JSON.", batchRunId
-                            );
+                                    "Error staging job. There was an exception converting the baseInfectiousDiseaseScenario to JSON.", batchRunId,
+                            authentication);
                     return;
                 }
                 StageMethod stageMethod = null;
@@ -202,7 +202,7 @@ public class StageInDbWorkerThread implements Runnable {
                                             + simulatorIdentification
                                             .getSoftwareDeveloper()
                                             + "  run id " + batchRunId + ".",
-                                    batchRunId);
+                                    batchRunId, authentication);
                     return;
                 }
                 errorRef.value = false;

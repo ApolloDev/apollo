@@ -32,7 +32,7 @@ public class RunSimulationThread extends RunApolloServiceThread {
 		try {
 			url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);
 		} catch (DataServiceException e) {
-			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId, authentication);
 			return;
 		}
 
@@ -42,14 +42,14 @@ public class RunSimulationThread extends RunApolloServiceThread {
 			JobRunningServiceAccessor simulatorServiceAccessor = new JobRunningServiceAccessor(url, softwareId);
 			simulatorServiceAccessor.run(runId, authentication);
 		} catch (JobRunningServiceException | RunManagementException ex) {
-			ApolloServiceErrorHandler.reportError("Error calling simulator, error was:" + ex.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Error calling simulator, error was:" + ex.getMessage(), runId, authentication);
 			return;
 		}
 
 		try {
 			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
 		} catch (DataServiceException e) {
-			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId);
+			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId, authentication);
 		}
 	}
 }
