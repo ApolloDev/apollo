@@ -215,8 +215,8 @@ public class BatchStageMethod extends ApolloServiceThread {
                 }
 
                 logger.debug("Finished all threads!");
-               // dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
-              //          "All runs for this batch have been translated", authentication);
+                dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
+                        "All runs for this batch have been translated", authentication);
 
 
             } catch (DataServiceException e) {
