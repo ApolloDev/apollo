@@ -38,15 +38,15 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private final BatchStageMethod.BooleanRef errorRef;
     private final BatchStageMethod.CounterRef counterRef;
-    private final Authentication authentication;
     private final List<BigInteger> failedRunIds;
+    private final Authentication authentication;
     private final String line;
     JsonUtils jsonUtils = new JsonUtils();
 
     public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
                                  XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,
                                  BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef,
-                                 Authentication authentication, List<BigInteger> failedRunIds) throws DataServiceException {
+                                 List<BigInteger> failedRunIds, Authentication authentication) throws DataServiceException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -55,8 +55,8 @@ public class StageInDbWorkerThread implements Runnable {
         this.simulatorIdentification = message.getSoftwareIdentification();
         this.errorRef = errorRef;
         this.counterRef = counterRef;
-        this.authentication =authentication;
         this.failedRunIds = failedRunIds;
+        this.authentication = authentication;
     }
 
     private PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
@@ -149,6 +149,7 @@ public class StageInDbWorkerThread implements Runnable {
             if (message instanceof RunSimulationsMessage) {
                 RunSimulationMessage currentRunSimulationMessage = null;
                 try {
+
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
                     currentRunSimulationMessage.getAuthentication().setRequesterId(authentication.getRequesterId());
@@ -205,7 +206,6 @@ public class StageInDbWorkerThread implements Runnable {
                                     batchRunId, authentication);
                     return;
                 }
-                errorRef.value = false;
             }
         }
         counterRef.count += 1;

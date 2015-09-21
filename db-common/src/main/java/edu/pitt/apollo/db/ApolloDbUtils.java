@@ -1449,15 +1449,19 @@ public class ApolloDbUtils extends BaseDbUtils {
 		}
 	}
 
-	public BigInteger[] addSimulationRun(Object runMessage,
+	public BigInteger[] addSimulationRun(RunMessage runMessage,
 			int md5CollisionId,
 			SoftwareIdentification identificationOfSoftwareToRun,
 			int sourceSoftwareIdKey,
 			SoftwareIdentification destinationSoftwareForRunSimulationMessage,
-			Authentication authentication) throws ApolloDatabaseException, Md5UtilsException {
+                                         Authentication authentication) throws ApolloDatabaseException, Md5UtilsException {
+
 
 		String userName = authentication.getRequesterId();
 		String password = authentication.getRequesterPassword();
+
+        runMessage.setAuthentication(new Authentication());
+
 
 		String[] userIdTokens = parseUserId(userName);
 		userName = userIdTokens[0];

@@ -169,7 +169,7 @@ public class BatchStageMethod extends ApolloServiceThread {
 
                 while ((line = br.readLine()) != null) {
 
-                    Runnable worker = new StageInDbWorkerThread(batchRunId, line, runSimulationsMessage, scenarioDate, stBuild, error, counter, authentication, failedRunIds);
+                    Runnable worker = new StageInDbWorkerThread(batchRunId, line, runSimulationsMessage, scenarioDate, stBuild, error, counter, failedRunIds, authentication);
                     executor.execute(worker);
                     if (error.value) {
                         break;
@@ -201,6 +201,7 @@ public class BatchStageMethod extends ApolloServiceThread {
                     ErrorUtils.reportError(batchRunId, "Error staging runs in database. The following run IDs have a status of FAILED after staging: "
                                     + listOfFailedRunIds + ". The batch runId is " + batchRunId,
                             authentication);
+                    return;
                 }
 
                 addBatchInputsWithRunIdsFileToDatabase(stBuild);
@@ -210,11 +211,12 @@ public class BatchStageMethod extends ApolloServiceThread {
                 if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                     ErrorUtils.reportError(batchRunId, "Error staging runs in database, error was " + status.getMessage() + " for runId",
                             authentication);
+                    return;
                 }
 
                 logger.debug("Finished all threads!");
-                dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
-                        "All runs for this batch have been translated", authentication);
+               // dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
+              //          "All runs for this batch have been translated", authentication);
 
 
             } catch (DataServiceException e) {

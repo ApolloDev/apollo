@@ -97,6 +97,8 @@
 			</element>
 			<element name="softwareLicenseIdentification" type="tns:SoftwareLicenseIdentification"
 				minOccurs="0"></element>
+			<element name="customIdentifier" type="token"
+				minOccurs="0"></element>
 		</sequence>
 	</complexType>
 

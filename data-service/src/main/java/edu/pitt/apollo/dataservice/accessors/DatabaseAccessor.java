@@ -135,8 +135,8 @@ public class DatabaseAccessor implements SoftwareRegistryInterface, RunManagemen
 		Authentication authentication = new Authentication();
 		authentication.setRequesterId(srcAuthentication.getRequesterId());
 		authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
-		srcAuthentication.setRequesterId("");
-		srcAuthentication.setRequesterPassword("");
+		srcAuthentication.setRequesterId("default_user");
+		srcAuthentication.setRequesterPassword("default_password");
 		return authentication;
 	}
 

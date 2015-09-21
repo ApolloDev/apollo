@@ -87,7 +87,13 @@ public class DatabaseAccessorForRunningJobs extends
 //	}
     @Override
     public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-        Authentication authentication = stripAuthentication(message);
+
+        if (message.getAuthentication().getRequesterId().equals("default_user")) {
+            throw new RunManagementException("Default user set in run message");
+        }
+
+        Authentication authentication = message.getAuthentication();
+        message.setAuthentication(new Authentication());
 
         InsertRunResult insertRunResult = new InsertRunResult();
         RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
