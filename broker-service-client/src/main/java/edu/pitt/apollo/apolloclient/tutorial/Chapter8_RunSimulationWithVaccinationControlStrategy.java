@@ -18,13 +18,13 @@ package edu.pitt.apollo.apolloclient.tutorial;
 import java.net.MalformedURLException;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.examples.ExampleVaccinationControlMeasure;
+import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 
 
-public class Chapter8_RunSimulationWithVaccinationControlMeasure extends AbstractRunAndVisualizeSimulationClass {
+public class Chapter8_RunSimulationWithVaccinationControlStrategy extends AbstractRunAndVisualizeSimulationClass {
 
-	public Chapter8_RunSimulationWithVaccinationControlMeasure() throws MalformedURLException {
+	public Chapter8_RunSimulationWithVaccinationControlStrategy() throws MalformedURLException {
 		super();
 	}
 
@@ -32,7 +32,7 @@ public class Chapter8_RunSimulationWithVaccinationControlMeasure extends Abstrac
 		RunSimulationMessage runSimulationMessageWithoutVaccination = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 
-		ExampleVaccinationControlMeasure vaccinationControlMeasure = new ExampleVaccinationControlMeasure();
+		ExampleVaccinationControlStrategy vaccinationControlMeasure = new ExampleVaccinationControlStrategy();
 		RunSimulationMessage runSimulationMessageWithVaccination = vaccinationControlMeasure
 				.addVaccinationControlMeasureToRunSimulationMessage(ApolloServiceTypeFactory
 						.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
@@ -43,7 +43,7 @@ public class Chapter8_RunSimulationWithVaccinationControlMeasure extends Abstrac
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
-		Chapter8_RunSimulationWithVaccinationControlMeasure tutorialChapter8 = new Chapter8_RunSimulationWithVaccinationControlMeasure();
+		Chapter8_RunSimulationWithVaccinationControlStrategy tutorialChapter8 = new Chapter8_RunSimulationWithVaccinationControlStrategy();
 		tutorialChapter8.runExample();
 
 	}

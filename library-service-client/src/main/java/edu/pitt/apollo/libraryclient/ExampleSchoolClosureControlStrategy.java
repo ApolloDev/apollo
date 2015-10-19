@@ -20,7 +20,7 @@ import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
  * Time: 11:18:07 AM
  * Class: ExampleSchoolClosureControlMeasure
  */
-public class ExampleSchoolClosureControlMeasure {
+public class ExampleSchoolClosureControlStrategy {
 
 	public static PlaceClosureControlMeasure getAllSchoolsControlMeasure() {
 

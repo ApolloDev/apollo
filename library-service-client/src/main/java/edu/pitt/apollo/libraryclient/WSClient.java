@@ -229,7 +229,7 @@ public class WSClient {
 
 	private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlMeasure.getStrategy(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -248,7 +248,7 @@ public class WSClient {
 
 	private static AddLibraryItemContainerResult addAntiviralControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlMeasure.getAntiviralControlMeasure(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlStrategy.getAntiviralControlMeasure(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -267,7 +267,7 @@ public class WSClient {
 
 	private static AddLibraryItemContainerResult addAllSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlMeasure.getAllSchoolsControlMeasure();
+		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlMeasure();
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -286,7 +286,7 @@ public class WSClient {
 
 	private static AddLibraryItemContainerResult addIndividualSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlMeasure.getIndividualSchoolsControlMeasure();
+		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlMeasure();
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -305,7 +305,7 @@ public class WSClient {
 
 	private static UpdateLibraryItemContainerResult updateVaccinationControlMeasureInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlMeasure.getStrategy(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 

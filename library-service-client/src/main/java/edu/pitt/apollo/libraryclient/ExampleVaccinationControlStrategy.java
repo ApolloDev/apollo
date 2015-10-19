@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  * Time: 5:17:04 PM
  * Class: ExampleVaccinationControlMeasure
  */
-public class ExampleVaccinationControlMeasure {
+public class ExampleVaccinationControlStrategy {
 
 	public static IndividualTreatmentControlMeasure getStrategy(XMLGregorianCalendar startDate) {
 		ApolloPathogenCode strain = new ApolloPathogenCode();

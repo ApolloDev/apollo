@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  * Time: 11:13:54 AM
  * Class: ExampleAntiviralControlMeasure
  */
-public class ExampleAntiviralControlMeasure {
+public class ExampleAntiviralControlStrategy {
 
 	public static IndividualTreatmentControlMeasure getAntiviralControlMeasure(XMLGregorianCalendar startDate) {
 
