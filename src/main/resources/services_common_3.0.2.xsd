@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services-common.apollo.pitt.edu/v3_0_2/"
 	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_2/"
+		xmlns:apollo="http://types.apollo.pitt.edu/v3_0_2/"
 	elementFormDefault="qualified">
+
+	<import schemaLocation="apollo_types_3.0.2.xsd" namespace="http://types.apollo.pitt.edu/v3_0_2/"></import>
 
 	<!-- need to add an element here for any class you want to be able to serialize with JAXB -->
 	<element name="MethodCallStatusElement" type="tns:MethodCallStatus"/>
-	<element name="SoftwareLicenseIdentificationElement" type="tns:SoftwareLicenseIdentification"/>
-	<element name="SoftwareIdentificationElement" type="tns:SoftwareIdentification"/>
+	<element name="SoftwareLicenseIdentificationElement" type="apollo:SoftwareLicenseIdentification"/>
+	<element name="SoftwareIdentificationElement" type="apollo:SoftwareIdentification"/>
 	<element name="RunResultElement" type="tns:RunResult"/>
 	<element name="RunStatusElement" type="tns:RunStatus"/>
 	<element name="RunIdentificationAndLabelElement" type="tns:RunIdentificationAndLabel"/>
@@ -16,7 +19,7 @@
 	<element name="ServiceRecordElement" type="tns:ServiceRecord"/>
 	<element name="TerminteRunResultElement" type="tns:TerminteRunResult"/>
 	<element name="RunIdentificationElement" type="tns:RunIdentification"/>
-	<element name="FileAndURLDescriptionElement" type="tns:SoftwareIdentification"/>
+	<element name="FileAndURLDescriptionElement" type="apollo:SoftwareIdentification"/>
 	<element name="ObjectSerializationInformationElement" type="tns:ObjectSerializationInformation"/>
 	<element name="RequestMetaElement" type="tns:RequestMeta"/>
 	<element name="ResponseMetaElement" type="tns:ResponseMeta"/>
@@ -33,19 +36,7 @@
 		</restriction>
 	</simpleType>
 	
-	<simpleType name="ApolloSoftwareTypeEnum">
-		<restriction base="string">
-			<enumeration value="simulator" />
-			<enumeration value="batchSimulator" />
-			<enumeration value="visualizer" />
-			<enumeration value="syntheticPopulationGenerator" />
-			<enumeration value="translator" />
-			<enumeration value="data" />
-			<enumeration value="broker" />
-            <enumeration value="endUserApplication" />
-            <enumeration value="runManager" />
-		</restriction>
-	</simpleType>
+
         
 	<simpleType name="ContentDataTypeEnum">
 		<restriction base="string">
@@ -68,39 +59,12 @@
 	<complexType name="RunMessage">
 		<sequence>
 			<element name="authentication" type="tns:Authentication"></element>
-			<element name="softwareIdentification" type="tns:SoftwareIdentification"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="SoftwareLicenseIdentification">
-		<sequence>
-			<element name="licenseLocation" type="anyURI"></element>
-			<element name="licenseVersion" type="token"></element>
-			<element name="licenseName" type="token"></element>
-			<element name="attributionNotice" type="string"></element>
-		</sequence>
-	</complexType>
 
-	<complexType name="SoftwareIdentification">
-		<sequence>
-			<element name="softwareDeveloper" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareName" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareVersion" type="token" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="softwareType" type="tns:ApolloSoftwareTypeEnum"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="softwareLicenseIdentification" type="tns:SoftwareLicenseIdentification"
-				minOccurs="0"></element>
-			<element name="customIdentifier" type="token"
-				minOccurs="0"></element>
-		</sequence>
-	</complexType>
+
 
 	<complexType name="RunResult">
 		<sequence>
@@ -176,7 +140,7 @@
 	</complexType>
 	<complexType name="Role">
 		<sequence>
-			<element name="softwareIdentification" type="tns:SoftwareIdentification">
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification">
 			</element>
 			<element name="can_run" type="boolean"></element>
 			<element name="can_view_cached_results" type="boolean"></element>
@@ -186,7 +150,7 @@
 	<complexType name="ServiceRecord">
 		<sequence>
 			<element name="url" type="anyURI" />
-			<element name="softwareIdentification" type="tns:SoftwareIdentification" />
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" />
 		</sequence>
 	</complexType>
 	<simpleType name="RunIdentification">
@@ -249,9 +213,9 @@
 
 	<complexType name="FileAndURLDescription">
 		<sequence>
-			<element name="sourceSoftwareIdentification" type="tns:SoftwareIdentification"
+			<element name="sourceSoftwareIdentification" type="apollo:SoftwareIdentification"
 					 maxOccurs="1" minOccurs="1" />
-			<element name="destinationSoftwareIdentification" type="tns:SoftwareIdentification"
+			<element name="destinationSoftwareIdentification" type="apollo:SoftwareIdentification"
 					 maxOccurs="1" minOccurs="1" />
 			<element name="name" type="string" maxOccurs="1"
 					 minOccurs="1" />
