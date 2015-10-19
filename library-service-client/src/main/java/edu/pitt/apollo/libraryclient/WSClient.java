@@ -15,29 +15,14 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v3_0_0.QueryMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.QueryResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
-import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_0_0.LibraryServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.types.v3_0_0.Census;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_0.PlaceClosureControlStrategy;
+import edu.pitt.apollo.library_service_types.v3_0_2.*;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV302;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.types.v3_0_2.Census;
+import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlStrategy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +32,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import java.text.ParseException;
@@ -57,8 +43,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.0-SNAPSHOT/services/libraryservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_0/", "LibraryService_v3.0.0");
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.2-SNAPSHOT/services/libraryservice?wsdl";
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_2/", "LibraryService_v3.0.2");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
 	public static final String APOLLO_DIR;
@@ -79,12 +65,14 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV300 ls = new LibraryServiceV300(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV302 ls = new LibraryServiceV302(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
-		setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
+		//AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
+
+		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
 
 //		AddLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
 //		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
@@ -219,9 +207,29 @@ public class WSClient {
 		return port.addLibraryItemContainer(message);
 	}
 
-	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+    private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
+            throws DatatypeConfigurationException, ParseException {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy();
+        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(scenario);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
+        lic.setCatalogEntry(entry);
+
+        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+        message.setUrn(urn);
+
+        return port.updateLibraryItemContainer(message);
+    }
+
+	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
+
+		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -238,9 +246,9 @@ public class WSClient {
 
 	}
 
-	private static AddLibraryItemContainerResult addAntiviralControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addAntiviralControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy();
+		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -295,9 +303,9 @@ public class WSClient {
 
 	}
 
-	private static UpdateLibraryItemContainerResult updateVaccinationControlStrategyInLibrary(Authentication auth, LibraryServiceEI port, int urn) {
+	private static UpdateLibraryItemContainerResult updateVaccinationControlStrategyInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy();
+		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
@@ -344,7 +352,7 @@ public class WSClient {
 		return port.updateLibraryItemContainer(message);
 	}
 
-	private static GetVersionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
+	private static GetRevisionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
 
 		GetVersionsMessage message = new GetVersionsMessage();
 		message.setAuthentication(auth);

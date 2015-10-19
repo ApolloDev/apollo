@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v3_0_0.Location;
-import edu.pitt.apollo.types.v3_0_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.types.v3_0_2.Location;
+import edu.pitt.apollo.types.v3_0_2.PopulationAndEnvironmentCensus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
@@ -57,7 +57,7 @@ public abstract class PopulationAndEnvironmentCensusMethod {
             Location l = new Location();
             l.setApolloLocationCode(cols[0]);
             c.setLocation(l);
-            c.setNameOfAdministativeUnit(cols[1]);
+//            c.setNameOfAdministativeUnit(cols[1]);
             c.setNumberOfPeople(new BigInteger(cols[2]));
             c.setNumberOfSchools(new BigInteger(cols[3]));
             c.setNumberOfWorkplaces(new BigInteger(cols[4]));

@@ -3,11 +3,11 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.SetReleaseVersionResult;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 
 /**
  *
@@ -19,12 +19,8 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
  */
 public class SetReleaseVersionMethod {
 
-	public static SetReleaseVersionResult setReleaseVersion(LibraryDbUtils dbUtils, SetReleaseVersionMessage message) {
+	public static SetReleaseVersionResult setReleaseVersion(LibraryDbUtils dbUtils, int urn, int version, String comment, Authentication authentication) {
 
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		String comment = message.getComment();
-		int version = message.getVersion();
 
 		SetReleaseVersionResult result = new SetReleaseVersionResult();
 		MethodCallStatus status = new MethodCallStatus();

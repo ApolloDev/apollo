@@ -1,13 +1,13 @@
 package edu.pitt.apollo.dataservice.methods;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
 import static edu.pitt.apollo.dataservice.methods.RunJobMethod.OUTPUT_DIRECTORY;
 
 import edu.pitt.apollo.dataservice.thread.DataServiceOutputFilesAsZipThread;
 import edu.pitt.apollo.dataservice.thread.DataServiceThread;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import java.io.File;
 import java.math.BigInteger;
 

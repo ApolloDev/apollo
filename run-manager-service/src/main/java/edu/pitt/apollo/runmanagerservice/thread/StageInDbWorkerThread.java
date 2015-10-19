@@ -1,19 +1,18 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_0_2.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +38,15 @@ public class StageInDbWorkerThread implements Runnable {
     private final SoftwareIdentification simulatorIdentification;
     private final BatchStageMethod.BooleanRef errorRef;
     private final BatchStageMethod.CounterRef counterRef;
+    private final List<BigInteger> failedRunIds;
     private final Authentication authentication;
     private final String line;
     JsonUtils jsonUtils = new JsonUtils();
 
-    public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message, XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder, BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef, Authentication authentication) throws DataServiceException {
+    public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
+                                 XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,
+                                 BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef,
+                                 List<BigInteger> failedRunIds, Authentication authentication) throws DataServiceException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -52,7 +55,8 @@ public class StageInDbWorkerThread implements Runnable {
         this.simulatorIdentification = message.getSoftwareIdentification();
         this.errorRef = errorRef;
         this.counterRef = counterRef;
-        this.authentication =authentication;
+        this.failedRunIds = failedRunIds;
+        this.authentication = authentication;
     }
 
     private PopulationInfectionAndImmunityCensusDataCell createPiiDataCell(
@@ -88,9 +92,9 @@ public class StageInDbWorkerThread implements Runnable {
         FixedDuration infectiousPeriod = new FixedDuration();
         infectiousPeriod.setValue(batchConfigRecord.infectiousPeriod);
         infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
-        InfectionAcquisitionFromInfectiousHost infection = runSimulationMessage
+        InfectionAcquisitionFromInfectedHost infection = runSimulationMessage
                 .getInfectiousDiseaseScenario().getInfections().get(0)
-                .getInfectionAcquisitionsFromInfectiousHosts().get(0);
+                .getInfectionAcquisitionsFromInfectedHosts().get(0);
 
         infection.setLatentPeriodDuration(latentPeriod);
         infection.setInfectiousPeriodDuration(infectiousPeriod);
@@ -98,7 +102,7 @@ public class StageInDbWorkerThread implements Runnable {
 
         List<PopulationInfectionAndImmunityCensusDataCell> censusDataCells = runSimulationMessage
                 .getInfectiousDiseaseScenario()
-                .getPopulationInfectionAndImmunityCensuses().get(0)
+                .getPopulations().get(0).getInfectionAndImmunityCensuses().get(0)
                 .getCensusData().getCensusDataCells();
 
         censusDataCells.clear();
@@ -145,6 +149,7 @@ public class StageInDbWorkerThread implements Runnable {
             if (message instanceof RunSimulationsMessage) {
                 RunSimulationMessage currentRunSimulationMessage = null;
                 try {
+
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
                     currentRunSimulationMessage.getAuthentication().setRequesterId(authentication.getRequesterId());
@@ -158,25 +163,32 @@ public class StageInDbWorkerThread implements Runnable {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
-                                    "Error staging job. There was an exception setting the scenario date.", batchRunId
-                            );
+                                    "Error staging job. There was an exception setting the scenario date.", batchRunId,
+                            authentication);
                     return;
                 } catch (JsonUtilsException ex) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
-                                    "Error staging job. There was an exception converting the baseInfectiousDiseaseScenario to JSON.", batchRunId
-                            );
+                                    "Error staging job. There was an exception converting the baseInfectiousDiseaseScenario to JSON.", batchRunId,
+                            authentication);
                     return;
                 }
                 StageMethod stageMethod = null;
                 try {
                     stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
-                    BigInteger runId = stageMethod.stage().getRunId();
+                    InsertRunResult result = stageMethod.stage();
+                    BigInteger runId = result.getRunId();
+
+                    DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+                    MethodCallStatus status = dataServiceAccessor.getRunStatus(runId, authentication);
+                    if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+                        failedRunIds.add(runId);
+                    }
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-                } catch (RunManagementException e) {
+                } catch (DataServiceException e) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(
@@ -191,10 +203,9 @@ public class StageInDbWorkerThread implements Runnable {
                                             + simulatorIdentification
                                             .getSoftwareDeveloper()
                                             + "  run id " + batchRunId + ".",
-                                    batchRunId);
+                                    batchRunId, authentication);
                     return;
                 }
-                errorRef.value = false;
             }
         }
         counterRef.count += 1;

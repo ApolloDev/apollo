@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemContainerResult;
 
 /**
  *

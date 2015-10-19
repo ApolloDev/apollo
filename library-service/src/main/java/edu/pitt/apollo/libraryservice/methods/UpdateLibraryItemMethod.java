@@ -3,15 +3,14 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.UpdateLibraryItemContainerResult;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 
 /**
- *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
  * Date: Nov 7, 2014
@@ -20,35 +19,31 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
  */
 public class UpdateLibraryItemMethod {
 
-	public static UpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
-			UpdateLibraryItemContainerMessage message) {
-		
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		String comment = message.getComment();
-		LibraryItemContainer item = message.getLibraryItemContainer();
+    public static UpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
+                                                                     int urn, LibraryItemContainer item, String comment, Authentication authentication) {
 
-		UpdateLibraryItemContainerResult result = new UpdateLibraryItemContainerResult();
-		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
 
-		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
-			if (userAuthorized) {
-				int version = dbUtils.updateLibraryItem(urn, item, authentication, comment);
-				result.setVersion(version);
-				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to update items in the library.");
-			}
+        UpdateLibraryItemContainerResult result = new UpdateLibraryItemContainerResult();
+        MethodCallStatus status = new MethodCallStatus();
+        result.setStatus(status);
 
-		} catch (ApolloDatabaseException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage(ex.getMessage());
-		}
+        try {
+            boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
+            if (userAuthorized) {
+                int version = dbUtils.updateLibraryItem(urn, item, authentication, comment);
+                result.setVersion(version);
+                status.setStatus(MethodCallStatusEnum.COMPLETED);
+            } else {
+                status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+                status.setMessage("You are not authorized to update items in the library.");
+            }
 
-		return result;
-	}
+        } catch (ApolloDatabaseException ex) {
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            status.setMessage(ex.getMessage());
+        }
+
+        return result;
+    }
 
 }

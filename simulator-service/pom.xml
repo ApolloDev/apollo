@@ -5,7 +5,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>simulator-service</artifactId>
     <packaging>jar</packaging>
@@ -156,9 +156,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/simulatorservice300.wsdl
+                                                ${basedir}/../src/main/resources/simulator_service_3.0.2.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:simulatorservice300.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:simulator_service_3.0.2.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

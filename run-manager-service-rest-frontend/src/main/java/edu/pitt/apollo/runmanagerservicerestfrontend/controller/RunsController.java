@@ -18,7 +18,7 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.methods.StartRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetStatusOfRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.TerminateRunMethod;
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,7 +88,7 @@ public class RunsController {
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
 		
-		return new SetStatusOfRunMethod(username, password, SerializationFormat.XML).setStatusOfRun(runId, statusToUpdateTo, username);
+		return new SetStatusOfRunMethod(username, password, SerializationFormat.XML).setStatusOfRun(runId, statusToUpdateTo, statusMessage);
 	}
 	
 	@POST

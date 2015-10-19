@@ -15,16 +15,16 @@ package edu.pitt.apollo.apolloclient;
  * the License.
  */
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_0.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v3_0_0.RunIdAndFiles;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetAllOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsResult;
+import edu.pitt.apollo.data_service_types.v3_0_2.RunIdAndFiles;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,7 +40,7 @@ import javax.xml.namespace.QName;
 public class DataServiceClient {
 
 	private static final String WSDL_LOC = "http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/apolloservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/apolloservice/v3_0_0/", "ApolloService_v3.0.0");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/apolloservice/v3_0_2/", "ApolloService_v3.0.2");
 	private static final String DATA_SERVICE_CONNECTION_PROPERTIES_FILE = "data_service_connection.properties";
 
 	public static final String APOLLO_DIR;
@@ -62,7 +62,7 @@ public class DataServiceClient {
 
 	public static void main(String[] args) throws MalformedURLException, IOException {
 
-		ApolloServiceV300 ls = new ApolloServiceV300(new URL(WSDL_LOC), SERVICE);
+		ApolloServiceV302 ls = new ApolloServiceV302(new URL(WSDL_LOC), SERVICE);
 		ApolloServiceEI port = ls.getApolloServiceEndpoint();
 
 //		testGettingOutputFilesURLAsZip(port);

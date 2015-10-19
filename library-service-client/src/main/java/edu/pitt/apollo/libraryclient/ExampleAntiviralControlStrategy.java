@@ -1,20 +1,13 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatment;
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatmentEfficacy;
-import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v3_0_0.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v3_0_2.*;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -26,7 +19,7 @@ import java.math.BigInteger;
  */
 public class ExampleAntiviralControlStrategy {
 
-	public static IndividualTreatmentControlStrategy getAntiviralControlStrategy() {
+	public static IndividualTreatmentControlStrategy getAntiviralControlStrategy(XMLGregorianCalendar startDate) {
 
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
@@ -90,19 +83,48 @@ public class ExampleAntiviralControlStrategy {
 		trigger.setTimeSinceTimeScaleZero(startTime);
 		atcm.getControlStrategyStartTime().add(trigger);
 
-		TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
-		logistics.setAdministrationCapacityUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		logistics.setSupplyScheduleUnits(UnitOfMeasureEnum.DAILY_DOSE);
+        LogisticalSystem logisticalSystem = new LogisticalSystem();
+        logisticalSystem.setProduct("Tamiflu");
+        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+        Schedule outputSchedule = new Schedule();
+        outputNode.setOutputSchedule(outputSchedule);
+        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-		for (int i = 0; i < 128; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("2000"));
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("2000"));
-		}
+        Calendar cal = startDate.toGregorianCalendar();
 
-		atcm.getTreatmentSystemLogistics().add(logistics);
+        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+        Schedule capacitySchedule = new Schedule();
+        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        capacityNode.setCapacitySchedule(capacitySchedule);
 
-		return atcm;
+        try {
+
+            for (int i = 0; i < 128; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(cal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("2000"));
+                outputSchedule.getScheduleElements().add(element);
+
+
+                ScheduleElement capacityElement = new ScheduleElement();
+                capacityElement.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                capacityElement.setQuantity(new BigInteger("2000"));
+                capacitySchedule.getScheduleElements().add(capacityElement);
+
+                cal.add(Calendar.DATE, 1);
+            }
+        } catch (DatatypeConfigurationException ex) {
+            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+        }
+
+        outputNode.getChildren().add(capacityNode);
+        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+        atcm.getLogisticalSystems().add(logisticalSystem);
+
+        return atcm;
 	}
 
 }

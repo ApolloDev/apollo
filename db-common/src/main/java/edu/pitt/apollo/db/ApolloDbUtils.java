@@ -1,10 +1,8 @@
 package edu.pitt.apollo.db;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,32 +16,35 @@ import java.util.Map;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v3_0_0.*;
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.services_common.v3_0_2.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 
 import java.sql.Connection;
+
+import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 17, 2013 Time: 4:35:10 PM Class: DbUtils IDE: NetBeans 6.9.1
  */
-public class ApolloDbUtils extends BaseApolloDbUtils {
+public class ApolloDbUtils extends BaseDbUtils {
 
+    private static final String APOLLO_DB_PROPERTIES_FILE = "database.properties";
 	private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
 	private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
 	private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-	private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB";
+	private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_302";
 	static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
 	static Map<String, Integer> populationAxisCache = new HashMap<>();
 	static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
@@ -59,7 +60,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 //		super(databasePropertiesInputStream, APOLLO_DB_AUTO_COMMIT);
 //	}
 	public ApolloDbUtils() throws ApolloDatabaseException {
-		super(APOLLO_DB_AUTO_COMMIT, APOLLO_DB_RESOURCE_IDENTIFIER);
+		super(APOLLO_DB_RESOURCE_IDENTIFIER);
 	}
 
 	public Connection getConnection() throws SQLException {
@@ -151,7 +152,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 
 		String query = "SELECT"
 				+ "	sgd.run_id,"
-				+ "	rdc.text_content AS run_simulation_message,"
+				+ "	rdc.text_content AS run_message,"
 				+ "	rsd.status,"
 				+ "	rs.message "
 				+ " FROM"
@@ -167,7 +168,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 				+ "	rddv.run_data_description_id = rd.description_id AND"
 				+ "	rddv.source_software = ? AND"
 				+ "	rddv.destination_software = ? AND"
-				+ "	rddv.label = \"run_simulation_message.json\" AND"
+				+ "	rddv.label = \"run_message.json\" AND"
 				+ "	rd.run_id = sgd.run_id AND"
 				+ "	r.id = ? AND"
 				+ "	sgd.simulation_group_id = r.simulation_group_id AND"
@@ -196,7 +197,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(
 				runId, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID, 1);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_simulation_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -206,7 +207,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_simulation_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -216,7 +217,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(
 				runId, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID, visualizerKey);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_visualization_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -226,7 +227,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_simulation_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -251,7 +252,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			BigInteger runId) throws ApolloDatabaseException, JsonUtilsException {
 		Map<String, ByteArrayOutputStream> contentForRun = getDataContentForSoftware(runId);
 		for (String name : contentForRun.keySet()) {
-			if (name.equals("run_data_service_message.json")) {
+			if (name.equals("run_message.json")) {
 				InputStream contentInputStream = new ByteArrayInputStream(
 						contentForRun.get(name).toByteArray());
 
@@ -261,7 +262,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 
 		throw new ApolloDatabaseException(
-				"Could not find run_data_service_message.json content associated with run ID"
+				"Could not find run_message.json content associated with run ID"
 				+ runId);
 	}
 
@@ -677,7 +678,6 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 	}
 
 	// // user key doesn't exist
-	@Override
 	public int addUser(String userId, String userPassword, String userEmail)
 			throws ApolloDatabaseRecordAlreadyExistsException,
 			ApolloDatabaseUserPasswordException, ApolloDatabaseException {
@@ -695,7 +695,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 
 		String query = "INSERT INTO users (requester_id,hash_of_user_password_and_salt,salt, user_email) VALUES (?,?,?,?)";
-		String salt = getSaltForPassword();
+		String salt = getSecureRandomString();
 		String saltedPasswordHash = getHashOfUserPasswordAndSalt(userPassword,
 				salt);
 		try (Connection conn = datasource.getConnection()) {
@@ -1431,7 +1431,7 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
 					"data_retrieval_request_message.json",
-					ContentDataTypeEnum.DATA_RETRIEVAL_REQUEST_MESSAGE, 0,
+					ContentDataTypeEnum.RUN_MESSAGE, 0,
 					getSoftwareIdentificationKey(dataServiceSoftwareId));
             // int runDataId = the following line returns the runDataId, but
 			// it's not used at this point.
@@ -1449,15 +1449,19 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 	}
 
-	public BigInteger[] addSimulationRun(Object runMessage, String runMessageFileName, ContentDataTypeEnum contentDataTypeEnum,
+	public BigInteger[] addSimulationRun(RunMessage runMessage,
 			int md5CollisionId,
 			SoftwareIdentification identificationOfSoftwareToRun,
 			int sourceSoftwareIdKey,
 			SoftwareIdentification destinationSoftwareForRunSimulationMessage,
-			Authentication authentication) throws ApolloDatabaseException, Md5UtilsException {
+                                         Authentication authentication) throws ApolloDatabaseException, Md5UtilsException {
+
 
 		String userName = authentication.getRequesterId();
 		String password = authentication.getRequesterPassword();
+
+        runMessage.setAuthentication(new Authentication());
+
 
 		String[] userIdTokens = parseUserId(userName);
 		userName = userIdTokens[0];
@@ -1524,8 +1528,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
-					runMessageFileName,
-					contentDataTypeEnum,
+					"run_message.json",
+					ContentDataTypeEnum.RUN_MESSAGE,
 					sourceSoftwareIdKey,
 					getSoftwareIdentificationKey(destinationSoftwareForRunSimulationMessage));
             // int runDataId = the following line returns the runDataId, but
@@ -1965,8 +1969,8 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 			int dataContentKey = addTextDataContent(jsonUtils.getJSONString(runVisualizationMessage));
 			int runDataDescriptionId = getRunDataDescriptionId(
 					ContentDataFormatEnum.TEXT,
-					"run_visualization_message.json",
-					ContentDataTypeEnum.RUN_VISUALIZATION_MESSAGE, 0,
+					"run_message.json",
+					ContentDataTypeEnum.RUN_MESSAGE, 0,
 					getSoftwareIdentificationKey(runVisualizationMessage
 							.getSoftwareIdentification()));
             // int runDataId = the following line returns the runDataId, but
@@ -2644,6 +2648,34 @@ public class ApolloDbUtils extends BaseApolloDbUtils {
 		}
 		return contentId;
 	}
+
+    @Override
+    protected void setBaseDirectory() {
+        Map<String, String> env = System.getenv();
+        String apolloDir = env.get(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        if (apolloDir != null) {
+            if (!apolloDir.endsWith(File.separator)) {
+                apolloDir += File.separator;
+            }
+            APOLLO_DIR = apolloDir;
+            logger.info(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:"
+                    + APOLLO_DIR);
+        } else {
+            logger.error(APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
+                    + " environment variable not found!");
+            APOLLO_DIR = "";
+        }
+    }
+
+    @Override
+    protected String getSystemSaltFileDir() {
+        return APOLLO_DIR + SALT_FILE_NAME;
+    }
+
+    @Override
+    protected String getDatabasePropertiesFileName() {
+        return APOLLO_DB_PROPERTIES_FILE;
+    }
 
 //    public enum DbContentDataFormatEnum {
 //

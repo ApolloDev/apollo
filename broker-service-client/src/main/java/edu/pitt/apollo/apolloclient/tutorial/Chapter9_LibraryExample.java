@@ -15,23 +15,10 @@
 
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import java.net.MalformedURLException;
-import java.util.ArrayList;
+import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 
-import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.examples.runsimulationmessages.ExampleVaccinationControlStrategy;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_0.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.Infection;
-import edu.pitt.apollo.types.v3_0_0.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_0.ReproductionNumber;
-import edu.pitt.apollo.types.v3_0_0.TriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.Vaccination;
+import java.net.MalformedURLException;
 
 public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationClass {
 

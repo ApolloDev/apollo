@@ -2,8 +2,8 @@ package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import java.math.BigInteger;
 
 /**

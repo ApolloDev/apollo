@@ -3,10 +3,10 @@ package edu.pitt.apollo.apolloclient.tutorial;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.VisualizerIdentificationEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 
 /**
  * This provides helper methods to send requests to, and process the results of
@@ -52,7 +52,7 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 			runIdentificationAndLabel.setRunLabel("test");
 			runIdentificationAndLabel.setRunIdentification(simulatorRunId);
 			runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.TIME_SERIES);
-			runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.GAIA);
+		//	runVisualizationAndDisplayResults(runIdentificationAndLabel, VisualizerIdentificationEnum.GAIA);
 		} else {
 			System.out.println("There was an error running the simulations.");
 		}
@@ -76,8 +76,8 @@ public abstract class AbstractRunAndVisualizeSimulationClass {
 				.getSoftwareIdentificationForVisualizer(visualizerIdentificationEnum);
 		runVisualizationMessage.setSoftwareIdentification(softwareIdentificationForTimeSeriesVisualizer);
 
-		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels)
-			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
+//		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels)
+//			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
 
 		BigInteger visualizationRunId = TutorialWebServiceClient.runVisualization(runVisualizationMessage);
 

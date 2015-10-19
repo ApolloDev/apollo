@@ -3,11 +3,11 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetVersionsResult;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetRevisionsResult;
+import edu.pitt.apollo.library_service_types.v3_0_2.RevisionAndComments;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import java.util.List;
 
 /**
@@ -20,19 +20,18 @@ import java.util.List;
  */
 public class GetVersionsMethod {
 
-	public static GetVersionsResult getVersions(LibraryDbUtils dbUtils, GetVersionsMessage message) {
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
+	public static GetRevisionsResult getVersions(LibraryDbUtils dbUtils, int urn, Authentication authentication) {
 
-		GetVersionsResult result = new GetVersionsResult();
+
+        GetRevisionsResult result = new GetRevisionsResult();
 		MethodCallStatus status = new MethodCallStatus();
 		result.setStatus(status);
 
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
 			if (userAuthorized) {
-				List<Integer> versions = dbUtils.getVersions(urn);
-				result.getVersions().addAll(versions);
+				List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn);
+				result.getRevisionsAndComments().addAll(versions);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);

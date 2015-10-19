@@ -1,7 +1,7 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import java.io.StringWriter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;

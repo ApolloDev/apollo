@@ -3,11 +3,11 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetCommentsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetCommentsResult;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetCommentsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetCommentsResult;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 
 /**
  *
@@ -19,10 +19,8 @@ import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
  */
 public class GetCommentsMethod {
 
-	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, GetCommentsMessage message) {
-		Authentication authentication = message.getAuthentication();
-		int urn = message.getUrn();
-		int version = message.getVersion();
+	public static GetCommentsResult getComments(LibraryDbUtils dbUtils, int urn, int version, Authentication authentication) {
+
 		
 		GetCommentsResult result = new GetCommentsResult();
 		MethodCallStatus status = new MethodCallStatus();

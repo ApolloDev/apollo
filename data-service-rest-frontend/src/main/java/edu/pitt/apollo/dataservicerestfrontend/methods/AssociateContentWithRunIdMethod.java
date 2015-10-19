@@ -5,19 +5,19 @@
  */
 package edu.pitt.apollo.dataservicerestfrontend.methods;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.AssociateContentWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v3_0_2.AssociateContentWithRunIdMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.dataservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_0_0.Request;
-import edu.pitt.apollo.services_common.v3_0_0.RequestMeta;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_0_2.Request;
+import edu.pitt.apollo.services_common.v3_0_2.RequestMeta;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;

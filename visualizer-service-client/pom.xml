@@ -5,7 +5,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>visualizer-service-client</artifactId>
     <name>Time-series Visualizer Service SOAP Client</name>

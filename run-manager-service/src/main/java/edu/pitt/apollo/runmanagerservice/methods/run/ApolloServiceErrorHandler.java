@@ -2,10 +2,17 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.utilities.ErrorUtils;
+
 import static edu.pitt.apollo.utilities.ErrorUtils.checkFileExists;
 import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
 import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +37,9 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
     private static final String ERROR_FILE_DIR = "errors";
 
 
-    public static void reportError(String message, BigInteger runId) {
+    public static void reportError(String message, BigInteger runId, Authentication authentication) {
         try {
-            writeErrorToDataService(message, runId);
+            writeErrorToDataService(message, runId, authentication);
         } catch (DataServiceException e) {
             logger.debug("Error writing error: {} to database for runId {}, error was: {}", message, runId, e.getMessage());
             logger.debug("Attempting to write error to disk.");
@@ -56,17 +63,10 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
                 + Long.valueOf(runId) + ".txt");
     }
 
-    //    public static String getErrorRunId() {
-//        return "-" + RUN_ERROR_PREFIX
-//                + Long.toString(System.currentTimeMillis());
-//    }
     public static long getErrorRunId() {
         return -System.currentTimeMillis();
     }
 
-    //    public static void writeErrorToErrorFile(String message, int runID) throws IOException {
-//        ErrorUtils.writeErrorToFile(message, getErrorFile(runID));
-//    }
     public static long writeErrorWithErrorId(String message) throws IOException {
         long id = getErrorRunId();
         ErrorUtils.writeErrorToFile(message, getErrorFile(id));
@@ -86,57 +86,21 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
         writeErrorToFile(message, getErrorFile(runId.longValue()));
     }
 
-    public static void writeErrorToDataService(String message, BigInteger runId) throws DataServiceException {
-//        try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-//            MethodCallStatus status = new MethodCallStatus();
-//            status.setStatus(MethodCallStatusEnum.FAILED);
-//            status.setMessage(message);
-//
-//            try {
-//                dbUtils.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, message);
-//            } catch (ApolloDatabaseException ex) {
-//                try {
-//                    writeErrorToErrorFile("ApolloDatabaseException writing status for run " + runId + ": " + ex.getMessage(), runId);
-//                } catch (IOException ex2) {
-//                    logger.error("Error writing error file!: " + ex2.getMessage());
-//                }
-//            }
-//        }
+    public static void writeErrorToDataService(String message, BigInteger runId, Authentication authentication) throws DataServiceException {
+        DataServiceAccessor dataServiceDao = new DataServiceAccessor();
 
+        MethodCallStatus status = new MethodCallStatus();
+        status.setStatus(MethodCallStatusEnum.FAILED);
+        status.setMessage(message);
+
+        try {
+            dataServiceDao.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, message, authentication);
+        } catch (RunManagementException ex) {
+            try {
+                writeErrorToErrorFile("RunManagementException writing status for run " + runId + ": " + ex.getMessage(), runId);
+            } catch (IOException ex2) {
+                logger.error("Error writing error file!: " + ex2.getMessage());
+            }
+        }
     }
-
-//    public synchronized static String getError(String runId) {
-//        File errorFile = new File(getErrorFilename());
-//        if (errorFile.exists()) {
-//            try {
-//                BufferedReader br = new BufferedReader(
-//                        new FileReader(errorFile));
-//                String line = "";
-//                while ((line = br.readLine()) != null) {
-//                    String err[] = line.split("\t");
-//                    if (runId.equals(err[0])) {
-//                        br.close();
-//                        return err[1];
-//                    }
-//                }
-//                br.close();
-//                return "Can't find error for given run id: " + runId;
-//            } catch (IOException e) {
-//                return "Error reading error file: " + e.getMessage();
-//            }
-//        } else {
-//            return "Error file doesn't exist!";
-//        }
-//    }
-//    public synchronized static void reportError(String runId, String error) {
-//        File errorFile = new File(getErrorFilename());
-//        FileWriter fw;
-//        try {
-//            fw = new FileWriter(errorFile, true);
-//            fw.write(runId + "\t" + error + "\n");
-//            fw.close();
-//        } catch (IOException e) {
-//            // eat the error for now
-//        }
-//    }
 }

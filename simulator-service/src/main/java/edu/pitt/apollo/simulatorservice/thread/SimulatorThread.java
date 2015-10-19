@@ -1,16 +1,16 @@
 package edu.pitt.apollo.simulatorservice.thread;
 
-import edu.pitt.apollo.*;
+import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.services_common.v3_0_0.*;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import edu.pitt.apollo.simulatorservice.exception.SimulatorServiceException;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
-import edu.pitt.apollo.types.v3_0_0.Location;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -88,14 +88,8 @@ public abstract class SimulatorThread extends ApolloServiceThread {
 	protected void storeOutput() throws IOException, SimulatorServiceException {
 		if (useDatabase) {
 			// get location
-			Location location = message.getInfectiousDiseaseScenario().getLocation();
-			String locationString;
-			if (location.getApolloLocationCode() != null) {
-				locationString = location.getApolloLocationCode();
-			} else {
-				// else use first location included
-				locationString = location.getLocationDefinition().getLocationsIncluded().get(0);
-			}
+			String locationString = message.getInfectiousDiseaseScenario().getScenarioLocation().getApolloLocationCode();
+
 			storeFileOutputToDatabase(locationString);
 			updateStatus(MethodCallStatusEnum.LOG_FILES_WRITTEN, "The simulator log files were written");
 

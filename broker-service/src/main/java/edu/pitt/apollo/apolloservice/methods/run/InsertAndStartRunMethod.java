@@ -3,12 +3,12 @@ package edu.pitt.apollo.apolloservice.methods.run;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.apolloservice.thread.WaitForTranslationAndStartRunThread;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
+import edu.pitt.apollo.services_common.v3_0_2.RunResult;
 
 /**
  *

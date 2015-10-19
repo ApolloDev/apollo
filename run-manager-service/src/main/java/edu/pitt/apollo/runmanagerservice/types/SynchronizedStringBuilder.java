@@ -15,4 +15,9 @@ public class SynchronizedStringBuilder {
         sb.append(str);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return sb.toString();
+    }
 }

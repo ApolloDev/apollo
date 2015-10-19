@@ -1,21 +1,13 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.InfectiousDiseaseControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v3_0_0.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v3_0_0.Vaccination;
-import edu.pitt.apollo.types.v3_0_0.VaccinationEfficacyForSimulatorConfiguration;
+import edu.pitt.apollo.types.v3_0_2.*;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -27,7 +19,7 @@ import java.math.BigInteger;
  */
 public class ExampleVaccinationControlStrategy {
 
-	public static IndividualTreatmentControlStrategy getStrategy() {
+	public static IndividualTreatmentControlStrategy getStrategy(XMLGregorianCalendar startDate) {
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
 
@@ -103,38 +95,75 @@ public class ExampleVaccinationControlStrategy {
 
 		vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 		vcm.setPathogen(strain);
-		
-		TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
-		logistics.setAdministrationCapacityUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		logistics.setSupplyScheduleUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		for (int i = 0; i < 28; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("0"));
-		}
 
-		for (int i = 28; i < 84; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("3500"));
-		}
+        LogisticalSystem logisticalSystem = new LogisticalSystem();
+        logisticalSystem.setProduct("Influenza A (H1N1) 2009 Monovalent Vaccine");
+        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+        Schedule outputSchedule = new Schedule();
+        outputNode.setOutputSchedule(outputSchedule);
+		outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-		for (int i = 84; i < 115; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("10000"));
-		}
+        Calendar outputCal = startDate.toGregorianCalendar();
+        outputCal.add(Calendar.DATE, 28);
 
-		for (int i = 115; i < 127; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("3500"));
-		}
+        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+        Schedule capacitySchedule = new Schedule();
+        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        capacityNode.setCapacitySchedule(capacitySchedule);
 
-		for (int i = 0; i < 28; i++) {
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("0"));
-		}
+        try {
+            for (int i = 28; i < 84; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("3500"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
 
-		for (int i = 28; i < 127; i++) {
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("5000"));
-		}
-		vcm.getTreatmentSystemLogistics().add(logistics);
+            for (int i = 84; i < 115; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("10000"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
 
-		return vcm;
+            for (int i = 115; i < 127; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("3500"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
+
+            Calendar capacityCal = startDate.toGregorianCalendar();
+            capacityCal.add(Calendar.DATE, 28);
+
+            for (int i = 28; i < 127; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("5000"));
+                capacityCal.add(Calendar.DATE, 1);
+                capacitySchedule.getScheduleElements().add(element);
+            }
+        } catch (DatatypeConfigurationException ex) {
+            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+        }
+
+        outputNode.getChildren().add(capacityNode);
+        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+        vcm.getLogisticalSystems().add(logisticalSystem);
+
+        return vcm;
 	}
 
 }

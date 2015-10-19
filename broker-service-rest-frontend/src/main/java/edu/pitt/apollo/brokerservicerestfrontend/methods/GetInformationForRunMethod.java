@@ -5,14 +5,14 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.data_service_types.v3_0_0.RunInformation;
+import edu.pitt.apollo.data_service_types.v3_0_2.RunInformation;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;

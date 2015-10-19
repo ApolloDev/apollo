@@ -29,7 +29,7 @@ import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 
 public class Chapter2_RunSimulationWithNoIntervention extends
 		AbstractRunAndVisualizeSimulationClass {
@@ -63,6 +63,11 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
+
+        runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
+                .getInfectionAcquisitionsFromInfectedHosts().get(0)
+                .getBasicReproductionNumbers().get(0).setExactValue(1.73);
+
 		String contentForRun = getJSONString(runSimulationMessage);
 		Map<String, Object> properties = new HashMap<String, Object>(2);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");

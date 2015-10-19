@@ -21,14 +21,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.KillRunResponse;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_0.SyntheticPopulationServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceResult;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_0.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunResponse;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.SyntheticPopulationServiceV302;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopulationRunStatusMessage;
 
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException {
@@ -86,7 +84,7 @@ public class WSClient {
 	 * @return the list of ServiceResults for running the synthetic population generation on the input parameters
 	 **/
 	public static BigInteger generateSyntheticPopulation(List<String> boundaryIDs, List<String> variableIDs, BigInteger year, BigInteger month, BigInteger day) throws MalformedURLException {
-		SyntheticPopulationServiceV300 syntheticPopulationService = new SyntheticPopulationServiceV300(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
+		SyntheticPopulationServiceV302 syntheticPopulationService = new SyntheticPopulationServiceV302(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
 		SyntheticPopulationServiceEI syntheticPopulationServiceEndpoint = syntheticPopulationService.getSyntheticPopulationServiceEndpoint();
 		RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage = new RunSyntheticPopulationGenerationMessage();
 		
@@ -101,14 +99,14 @@ public class WSClient {
 	}
 	
 	public static SyntheticPopulationRunStatusMessage getRunStatus(BigInteger runID) throws MalformedURLException {
-		SyntheticPopulationServiceV300 syntheticPopulationService = new SyntheticPopulationServiceV300(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
+		SyntheticPopulationServiceV302 syntheticPopulationService = new SyntheticPopulationServiceV302(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
 		SyntheticPopulationServiceEI syntheticPopulationServiceEndpoint = syntheticPopulationService.getSyntheticPopulationServiceEndpoint();
 		
 		return syntheticPopulationServiceEndpoint.getRunStatus(runID);
 	}
 	
 	public static KillRunResponse killRun(KillRunRequest parameters) throws MalformedURLException {
-		SyntheticPopulationServiceV300 syntheticPopulationService = new SyntheticPopulationServiceV300(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
+		SyntheticPopulationServiceV302 syntheticPopulationService = new SyntheticPopulationServiceV302(new URL("http://localhost:8080/syntheticpopulation-service-war-3.0.0-SNAPSHOT/services/syntheticpopulationservice?wsdl"));
 		SyntheticPopulationServiceEI syntheticPopulationServiceEndpoint = syntheticPopulationService.getSyntheticPopulationServiceEndpoint();
 		
 		return syntheticPopulationServiceEndpoint.killRun(parameters);

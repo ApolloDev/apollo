@@ -29,20 +29,20 @@ import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
+import edu.pitt.apollo.services_common.v3_0_2.RunResult;
+import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -284,7 +284,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	}
 
 	public RunResult runSimulations(
-			edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage runSimulationsMessage) {
+			edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage runSimulationsMessage) {
 		InsertAndStartSimulationMethod method = null;
 		try {
 			method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);

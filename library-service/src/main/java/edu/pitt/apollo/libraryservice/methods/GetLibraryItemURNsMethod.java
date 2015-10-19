@@ -3,19 +3,18 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsMessage;
-import edu.pitt.apollo.library_service_types.v3_0_0.GetLibraryItemURNsResult;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsMessage;
+import edu.pitt.apollo.library_service_types.v3_0_2.GetLibraryItemURNsResult;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 
 public class GetLibraryItemURNsMethod {
 
 	public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
-			GetLibraryItemURNsMessage getLibraryItemURIsMessage) {
+															  String itemType, Authentication authentication) {
 
-		Authentication authentication = getLibraryItemURIsMessage.getAuthentication();
-		String itemType = getLibraryItemURIsMessage.getItemType();
+
 
 		//execute query
 		GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();

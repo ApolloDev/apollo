@@ -14,40 +14,22 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.types.v3_0_2.*;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatment;
-import edu.pitt.apollo.types.v3_0_0.AntiviralTreatmentEfficacy;
-import edu.pitt.apollo.types.v3_0_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_0.ControlStrategyTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v3_0_0.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v3_0_0.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.FixedDuration;
-import edu.pitt.apollo.types.v3_0_0.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.Location;
-import edu.pitt.apollo.types.v3_0_0.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v3_0_0.OperatorEnum;
-import edu.pitt.apollo.types.v3_0_0.PlaceClosureControlStrategy;
-import edu.pitt.apollo.types.v3_0_0.PlaceEnum;
-import edu.pitt.apollo.types.v3_0_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_0.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_0.TimeScaleEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentPreventableOutcomeEnum;
-import edu.pitt.apollo.types.v3_0_0.TreatmentSystemLogistics;
-import edu.pitt.apollo.types.v3_0_0.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_0_0.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v3_0_0.Vaccination;
-import edu.pitt.apollo.types.v3_0_0.VaccinationEfficacyForSimulatorConfiguration;
 
 /**
  *
@@ -62,6 +44,8 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 	public static final String WSDL_LOC = "http://research.rods.pitt.edu/brokerservice-2.0.2a.7-SNAPSHOT/services/apolloservice?wsdl";
 //    public static final String WSDL_LOC = "http://localhost:8080/apolloservice2.0.2/services/apolloservice?wsdl";
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	private static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
@@ -146,35 +130,84 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 		vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 
-		TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
-		logistics.setAdministrationCapacityUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		logistics.setSupplyScheduleUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		for (int i = 0; i < 28; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("0"));
-		}
+        LogisticalSystem logisticalSystem = new LogisticalSystem();
+        logisticalSystem.setProduct("Influenza A (H1N1) 2009 Monovalent Vaccine");
+        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+        Schedule outputSchedule = new Schedule();
+        outputNode.setOutputSchedule(outputSchedule);
+        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-		for (int i = 28; i < 84; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("3500"));
-		}
 
-		for (int i = 84; i < 115; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("10000"));
-		}
+        Calendar outputCal = Calendar.getInstance();
+        try {
+            outputCal.setTime(sdf.parse("20090908"));
+        } catch (ParseException ex) {
+            throw new RuntimeException("ParseException: " + ex.getMessage());
+        }
 
-		for (int i = 115; i < 127; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("3500"));
-		}
+        outputCal.add(Calendar.DATE, 28);
 
-		for (int i = 0; i < 28; i++) {
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("0"));
-		}
+        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+        Schedule capacitySchedule = new Schedule();
+        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        capacityNode.setCapacitySchedule(capacitySchedule);
 
-		for (int i = 28; i < 127; i++) {
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("5000"));
-		}
-		vcm.getTreatmentSystemLogistics().add(logistics);
+        try {
+            for (int i = 28; i < 84; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("3500"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
+
+            for (int i = 84; i < 115; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("10000"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
+
+            for (int i = 115; i < 127; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("3500"));
+                outputCal.add(Calendar.DATE, 1);
+                outputSchedule.getScheduleElements().add(element);
+            }
+
+            Calendar capacityCal = Calendar.getInstance();
+            try {
+                capacityCal.setTime(sdf.parse("20090908"));
+            } catch (ParseException ex) {
+                throw new RuntimeException("ParseException: " + ex.getMessage());
+            }
+            capacityCal.add(Calendar.DATE, 28);
+
+            for (int i = 28; i < 127; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("5000"));
+                capacityCal.add(Calendar.DATE, 1);
+                capacitySchedule.getScheduleElements().add(element);
+            }
+        } catch (DatatypeConfigurationException ex) {
+            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+        }
+
+        outputNode.getChildren().add(capacityNode);
+        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+        vcm.getLogisticalSystems().add(logisticalSystem);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
 		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
@@ -261,17 +294,52 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		trigger.setTimeSinceTimeScaleZero(startTime);
 		atcm.getControlStrategyStartTime().add(trigger);
 
-		TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
-		logistics.setAdministrationCapacityUnits(UnitOfMeasureEnum.DAILY_DOSE);
-		logistics.setSupplyScheduleUnits(UnitOfMeasureEnum.DAILY_DOSE);
+        LogisticalSystem logisticalSystem = new LogisticalSystem();
+        logisticalSystem.setProduct("Tamiflu");
+        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+        Schedule outputSchedule = new Schedule();
+        outputNode.setOutputSchedule(outputSchedule);
+        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-		for (int i = 0; i < 128; i++) {
-			logistics.getSupplySchedulePerDay().add(new BigInteger("2000"));
-			logistics.getAdministrationCapacityPerDay().add(
-					new BigInteger("2000"));
-		}
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(sdf.parse("20090908"));
+        } catch (ParseException ex) {
+            throw new RuntimeException("ParseException: " + ex.getMessage());
+        }
 
-		atcm.getTreatmentSystemLogistics().add(logistics);
+        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+        Schedule capacitySchedule = new Schedule();
+        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        capacityNode.setCapacitySchedule(capacitySchedule);
+
+        try {
+
+            for (int i = 0; i < 128; i++) {
+                ScheduleElement element = new ScheduleElement();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                element.setQuantity(new BigInteger("2000"));
+                outputSchedule.getScheduleElements().add(element);
+
+
+                ScheduleElement capacityElement = new ScheduleElement();
+                capacityElement.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+                capacityElement.setQuantity(new BigInteger("2000"));
+                capacitySchedule.getScheduleElements().add(capacityElement);
+
+                calendar.add(Calendar.DATE, 1);
+            }
+        } catch (DatatypeConfigurationException ex) {
+            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+        }
+
+        outputNode.getChildren().add(capacityNode);
+        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+        atcm.getLogisticalSystems().add(logisticalSystem);
+
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
 		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
@@ -452,7 +520,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 	public static void main(String[] args) throws InterruptedException,
 			IOException, DatatypeConfigurationException {
 
-		ApolloServiceV300 service = new ApolloServiceV300(new URL(WSDL_LOC));
+		ApolloServiceV302 service = new ApolloServiceV302(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 		addAcVcm(port);

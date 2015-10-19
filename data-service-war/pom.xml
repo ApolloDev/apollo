@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>data-service-war</artifactId>
 	<name>Data Service WAR</name>
@@ -40,8 +40,8 @@
 							<directory>${basedir}/../src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>dataservice300.wsdl</include>
-								<include>data_service_3.0.0.xsd</include>
+								<include>data_service_3.0.2.wsdl</include>
+								<include>data_service_3.0.2.xsd</include>
 							</includes>
 						</resource>
 					</webResources>

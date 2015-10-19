@@ -8,8 +8,8 @@ import edu.pitt.apollo.brokerservicerestfrontend.methods.GetRegisteredSoftwareMe
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetURLOfSoftwareMethod;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class SoftwareController {
 	/*--Methods for the Software collection--*/
 
 	@GET
-	@ApiOperation(value = "List of all software in the collection.", notes = "Returns the list containing the software ID and name of all software in the collection.", response = String.class)
+	@ApiOperation(value = "Get list of all registered software", notes = "Returns a list containing the IDs and names of all software registered with Apollo.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})
@@ -39,7 +39,7 @@ public class SoftwareController {
 	}
 
 	@GET
-	@ApiOperation(value = "Get URL of software.", notes = "Returns the WSDL URL of the given software name and version.", response = String.class)
+	@ApiOperation(value = "Get URL of software", notes = "Returns the WSDL URL associated with the given software name and version.", response = String.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "")
 	})

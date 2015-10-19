@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -7,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -57,6 +58,7 @@
         <module>xsd-types</module>
         <module>db-common</module>
         <module>services-common</module>
+	<module>rest-services-frontend-common</module>
 
         <module>data-service-rest-connector</module>
         <module>run-manager-service-rest-connector</module>
@@ -67,9 +69,9 @@
         <module>library-service</module>
         <module>library-service-client</module>
         <module>library-service-war</module>
-        
+        <module>library-service-rest-frontend</module>        
+
         <module>data-service</module>
-        <module>data-service-client</module>
         <module>data-service-war</module>
         <module>data-service-rest-frontend</module>
 
@@ -83,7 +85,6 @@
 
         <module>job-running-service-soap-connector</module>
         <module>translator-service-soap-connector</module>
-        <module>visualizer-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>
@@ -96,20 +97,15 @@
         <module>broker-service</module>
         <module>broker-service-war</module>
         <module>broker-service-rest-frontend</module>
+	<module>broker-service-rest-connector</module>
 
         <module>config-examples</module>
         <module>run-manager-service-client</module>
         <module>broker-service-client</module>
        
         
-
-
-
-
-
-
-
-    </modules>
+        <module>library-service-rest-connector</module>
+  </modules>
 
     <dependencies>
         <dependency>

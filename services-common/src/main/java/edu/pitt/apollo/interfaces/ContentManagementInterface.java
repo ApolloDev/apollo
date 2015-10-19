@@ -2,11 +2,11 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_0_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
 import java.math.BigInteger;
 import java.util.Map;
 

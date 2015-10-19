@@ -2,9 +2,9 @@ package edu.pitt.apollo.apolloservice.methods.services;
 
 import edu.pitt.apollo.apolloservice.methods.content.BaseDataServiceAccessorMethod;
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRecord;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.ServiceRecord;
+import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

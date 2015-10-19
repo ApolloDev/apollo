@@ -5,27 +5,22 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v3_0_0.SimulatorServiceV300;
-import edu.pitt.apollo.service.visualizerservice.v3_0_0.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v3_0_0.VisualizerServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v3_0_0.TerminteRunResult;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.xml.ws.Service;
+import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceV302;
+import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceV302;
+import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
+import javax.xml.ws.Service;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  *
@@ -60,10 +55,10 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 		MethodCallStatus status = null;
 		try {
 			if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.SIMULATOR)) {
-				SimulatorServiceEI port = new SimulatorServiceV300(new URL(serviceUrl)).getSimulatorServiceEndpoint();
+				SimulatorServiceEI port = new SimulatorServiceV302(new URL(serviceUrl)).getSimulatorServiceEndpoint();
 				status = port.runSimulation(runId);
 			} else if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.VISUALIZER)) {
-				VisualizerServiceEI port = new VisualizerServiceV300(new URL(serviceUrl)).getVisualizerServiceEndpoint();
+				VisualizerServiceEI port = new VisualizerServiceV302(new URL(serviceUrl)).getVisualizerServiceEndpoint();
 
 				try {
 				    // SOAP visualizer requires RunVisualizationMessage as a parameter, not just runID, so we have to load it
@@ -98,7 +93,7 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 		TerminteRunResult response = null;
 		try {
 			if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.SIMULATOR)) {
-				SimulatorServiceEI port = new SimulatorServiceV300(new URL(serviceUrl)).getSimulatorServiceEndpoint();
+				SimulatorServiceEI port = new SimulatorServiceV302(new URL(serviceUrl)).getSimulatorServiceEndpoint();
 				response = port.terminateRun(request);
 			} else if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.VISUALIZER)) {
 				// not supported now, maybe in the future?

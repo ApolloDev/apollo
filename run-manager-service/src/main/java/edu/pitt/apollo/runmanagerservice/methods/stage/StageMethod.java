@@ -1,22 +1,23 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
+import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_0.Authentication;
-import edu.pitt.apollo.services_common.v3_0_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunMessage;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
-import edu.pitt.apollo.services_common.v3_0_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v3_0_2.Authentication;
+import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
+import edu.pitt.apollo.services_common.v3_0_2.RunResult;
+import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,11 @@ public class StageMethod {
 	private final Authentication authentication;
 	private final BigInteger parentRunId;
 	protected DataServiceAccessor dataServiceDao;
+    protected static ApolloServiceQueue apolloServiceQueue;
+
+    static {
+        apolloServiceQueue = new ApolloServiceQueue();
+    }
 
 	public StageMethod(RunMessage message, BigInteger parentRunId) throws RunManagementException {
 		this.message = message;
@@ -73,14 +79,15 @@ public class StageMethod {
 			dataServiceDao = new DataServiceAccessor();
 
 			InsertRunResult insertRunResult = dataServiceDao.insertRun(message);
-			if (insertRunResult.isRunCached()) {
-				return insertRunResult;
-			}
 			
 			BigInteger runId = insertRunResult.getRunId();
 			if (parentRunId != null) {
-				dataServiceDao.addRunIdsToSimulationGroupForRun(runId, Arrays.asList(new BigInteger[]{parentRunId}), authentication);
+				dataServiceDao.addRunIdsToSimulationGroupForRun(parentRunId, Arrays.asList(new BigInteger[]{runId}), authentication);
 			}
+
+            if (insertRunResult.isRunCached()) {
+                return insertRunResult;
+            }
 
 			MethodCallStatus methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
 			while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.LOADED_RUN_CONFIG_INTO_DATABASE) 
@@ -139,8 +146,8 @@ public class StageMethod {
 					dataServiceDao.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED, "Translation completed", authentication);
 				}
 			} else {
-				BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication);
-				batchStageMethod.stage();
+				BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication, apolloServiceQueue);
+                apolloServiceQueue.addThreadToQueueAndRun(batchStageMethod);
 			}
 
 			// run is now translated

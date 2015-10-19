@@ -22,31 +22,31 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_0.RunSimulationsMessage;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_0_0.ApolloServiceV300;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_0.RunResult;
-import edu.pitt.apollo.services_common.v3_0_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_0.UrlOutputResource;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v3_0_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_0.PopulationAndEnvironmentCensus;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.visualizer_service_types.v3_0_0.RunVisualizationMessage;
+import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v3_0_2.ApolloServiceV302;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_0_2.RunResult;
+import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_0_2.UrlOutputResource;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_0_2.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 
 public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://localhost:8080/broker-service-war-3.0.0-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-3.0.2-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(
-			"http://service.apollo.pitt.edu/apolloservice/v3_0_0/",
-			"ApolloService_v3.0.0");
+			"http://service.apollo.pitt.edu/apolloservice/v3_0_2/",
+			"ApolloService_v3.0.2");
 	public static final long TWO_SECONDS = 2000;
 	public static final boolean RUN_IS_NOT_COMPLETED_OR_FAILED = true;
 	public static final boolean RUN_WAS_SUCCESSFUL = true;
@@ -196,7 +196,7 @@ public class TutorialWebServiceClient {
 
 	static {
 		try {
-			ApolloServiceV300 ss = new ApolloServiceV300(new URL(WSDL_LOC),
+			ApolloServiceV302 ss = new ApolloServiceV302(new URL(WSDL_LOC),
 					SERVICE_NAME);
 			port = ss.getApolloServiceEndpoint();
 		} catch (MalformedURLException ex) {
@@ -210,11 +210,11 @@ public class TutorialWebServiceClient {
 	// }
 	//
 	// public static AddLibraryItemResult addLibraryItem(Authentication
-	// authentication, ApolloIndexableItem apolloIndexableItem, String
+	// authentication, RootApolloLibraryItem RootApolloLibraryItem, String
 	// itemDescription,
 	// String itemSource, String itemType, ArrayList<String> itemIndexingLabels)
 	// {
-	// return port.addLibraryItem(authentication, apolloIndexableItem,
+	// return port.addLibraryItem(authentication, RootApolloLibraryItem,
 	// itemDescription, itemSource, itemType, itemIndexingLabels);
 	// }
 
