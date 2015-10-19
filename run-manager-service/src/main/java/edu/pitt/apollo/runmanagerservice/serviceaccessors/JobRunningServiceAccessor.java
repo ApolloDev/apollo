@@ -4,7 +4,7 @@ import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
 import java.math.BigInteger;

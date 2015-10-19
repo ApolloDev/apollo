@@ -17,7 +17,7 @@ import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v3_0_2.Request;
 import edu.pitt.apollo.services_common.v3_0_2.RequestMeta;
 import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;

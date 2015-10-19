@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://data_service_types.apollo.pitt.edu/v3_0_2/"
 	xmlns:tns="http://data_service_types.apollo.pitt.edu/v3_0_2/"
 	elementFormDefault="qualified" xmlns:common="http://services-common.apollo.pitt.edu/v3_0_2/"
-	xmlns:Q1="http://types.apollo.pitt.edu/v3_0_2/">
+	xmlns:apollo="http://types.apollo.pitt.edu/v3_0_2/">
 
 	<import schemaLocation="apollo_types_3.0.2.xsd" namespace="http://types.apollo.pitt.edu/v3_0_2/"></import>
 	<import schemaLocation="services_common_3.0.2.xsd" namespace="http://services-common.apollo.pitt.edu/v3_0_2/"></import>
@@ -36,7 +36,7 @@
 	<complexType name="ListOutputFilesForSoftwareMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication"></element>
-			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 		</sequence>
 	</complexType>
 
@@ -94,13 +94,13 @@
 	<complexType name="GetSoftwareIdentificationForRunResult">
 		<sequence>
 			<element name="methodCallStatus" type="common:MethodCallStatus"></element>
-			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 		</sequence>
 	</complexType>
 
 	<complexType name="GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage">
 		<sequence>
-			<element name="softwareIdentification" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
 			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
@@ -176,8 +176,8 @@
 	<complexType name="AssociateContentWithRunIdMessage">
 	<sequence>
 		<element name="fileContentOrUrl" type="token" minOccurs="1" maxOccurs="1"></element>
-		<element name="sourceSoftware" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
-		<element name="destinationSoftware" type="common:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+		<element name="sourceSoftware" type="apollo:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
+		<element name="destinationSoftware" type="apollo:SoftwareIdentification" minOccurs="1" maxOccurs="1"></element>
 		<element name="contentLabel" type="token" minOccurs="1" maxOccurs="1"></element>
 		<element name="contentDataFormat" type="common:ContentDataFormatEnum" minOccurs="1" maxOccurs="1"></element>
 		<element name="contentDataType" type="common:ContentDataTypeEnum" minOccurs="1" maxOccurs="1"></element>
@@ -272,7 +272,7 @@
 	</complexType>-->
 	<complexType name="AddRoleMessage">
 		<sequence>
-			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>
 			<element name="roleDescription" type="token" minOccurs="1" maxOccurs="1"></element>
@@ -283,7 +283,7 @@
 		<sequence>
 			<element name="userName" type="token" minOccurs="1" maxOccurs="1"></element>
 			<element name="userPassword" type="token" minOccurs="1" maxOccurs="1"></element>
-			<element name="softwareIdentification" type="common:SoftwareIdentification"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 			<element name="canRun" type="boolean"></element>
 			<element name="canRequestPrivileged" type="boolean"></element>
 			<element name="authentication" type="common:Authentication" minOccurs="1" maxOccurs="1"></element>
@@ -419,7 +419,7 @@
 	<complexType name="RunInformation">
 		<sequence>
 			<element name="associatedGroupIds" type="positiveInteger" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="softwareIdentification" type="common:SoftwareIdentification" minOccurs="0" maxOccurs="1"></element>
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" minOccurs="0" maxOccurs="1"></element>
 		</sequence>
 	</complexType>
 
@@ -472,7 +472,7 @@
 		<complexType name="GetOutputFilesURLsMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" />
 			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
 
 		</sequence>
@@ -489,7 +489,7 @@
 	<complexType name="GetOutputFilesURLAsZipMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" />
 			<element name="runIdsAndFiles" type="tns:RunIdAndFiles" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
@@ -505,7 +505,7 @@
         <complexType name="GetAllOutputFilesURLAsZipMessage">
 		<sequence>
 			<element name="authentication" type="common:Authentication" />
-			<element name="softwareIdentification" type="common:SoftwareIdentification" />
+			<element name="softwareIdentification" type="apollo:SoftwareIdentification" />
 			<element name="runId" type="common:RunIdentification" minOccurs="1" maxOccurs="1"></element>
             <element name="fileNames" type="token" minOccurs="0"
 				maxOccurs="unbounded"/>

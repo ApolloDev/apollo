@@ -9,7 +9,7 @@ import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
 import java.math.BigInteger;

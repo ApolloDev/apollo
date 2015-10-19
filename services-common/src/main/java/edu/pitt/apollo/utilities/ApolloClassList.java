@@ -80,7 +80,7 @@ import edu.pitt.apollo.data_service_types.v3_0_2.UpdateLastServiceToBeCalledForR
 import edu.pitt.apollo.data_service_types.v3_0_2.UpdateStatusOfRunMessage;
 import edu.pitt.apollo.data_service_types.v3_0_2.UpdateStatusOfRunResult;
 import edu.pitt.apollo.library_service_types.v3_0_2.*;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
@@ -103,8 +103,7 @@ import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import edu.pitt.apollo.services_common.v3_0_2.ServiceRecord;
 import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v3_0_2.ServiceResult;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareLicenseIdentification;
+
 import edu.pitt.apollo.services_common.v3_0_2.SoftwareOutputStratificationGranularity;
 import edu.pitt.apollo.services_common.v3_0_2.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v3_0_2.TerminteRunResult;
@@ -297,7 +296,7 @@ public class ApolloClassList {
                 BehaviorEnum.class,
                 BioticEcosystem.class,
                 BioticEcosystemData.class,
-                BorderControlStrategy.class,
+                BorderControlMeasure.class,
                 CartesianCircleLocationDefinition.class,
                 CaseCount.class,
                 CaseCountArray.class,
@@ -305,7 +304,7 @@ public class ApolloClassList {
                 CaseDefinition.class,
                 CaseDefinitionEnum.class,
                 CaseList.class,
-                CaseQuarantineControlStrategy.class,
+                CaseQuarantineControlMeasure.class,
                 CaseRecord.class,
                 CaseRecordCategoricalVariable.class,
                 CaseRecordCategoricalVariables.class,
@@ -328,24 +327,24 @@ public class ApolloClassList {
                 ConditioningVariableEnum.class,
                 ContactDefinition.class,
                 ContactDefinitionEnum.class,
-                ContactIsolationControlStrategy.class,
+                ContactIsolationControlMeasure.class,
                 ContactModelForCommunity.class,
                 ContactModelForHousehold.class,
                 ContactModelForPlace.class,
                 ContactModelForSetting.class,
-                ContainerReductionControlStrategy.class,
+                ContainerReductionControlMeasure.class,
                 ContaminatedThingCensus.class,
                 ContaminatedThingCensusData.class,
                 Contamination.class,
                 ContaminationAcquisition.class,
                 ContinuousParametricProbabilityDistribution.class,
                 ContinuousUniformDistribution.class,
-                ControlStrategyTargetPopulationsAndPrioritization.class,
+                ControlMeasureTargetPopulationsAndPrioritization.class,
                 CountType.class,
                 DataTypeEnum.class,
                 DecisionAlternative.class,
-                DecisionAnalysis.class,
-                DecolonizationControlStrategy.class,
+
+                DecolonizationControlMeasure.class,
                 DevelopmentalStageEnum.class,
                 DisabilityStatusCategoryDefinition.class,
                 DisabilityStatusEnum.class,
@@ -400,9 +399,9 @@ public class ApolloClassList {
                 IndividualInfection.class,
                 IndividualMovement.class,
                 IndividualsAndHouseholds.class,
-                IndividualTreatmentControlStrategy.class,
+                IndividualTreatmentControlMeasure.class,
                 IndividualTreatmentEnum.class,
-                IndoorResidualSprayingVectorControlStrategy.class,
+                IndoorResidualSprayingVectorControlMeasure.class,
                 Infection.class,
                 InfectionAcquisitionFromColonizedHost.class,
                 InfectionAcquisitionFromContaminatedAbioticThing.class,
@@ -411,15 +410,15 @@ public class ApolloClassList {
                 InfectionOutcomeWithDate.class,
                 InfectionStateEnum.class,
                 InfectiousDisease.class,
-                InfectiousDiseaseControlStrategy.class,
-                InfectiousDiseaseDecisionModel.class,
+                InfectiousDiseaseControlMeasure.class,
+
                 InfectiousDiseaseScenario.class,
-                InsecticideTreatedNetControlStrategy.class,
+                InsecticideTreatedNetControlMeasure.class,
                 IntegerCount.class,
                 Interval.class,
                 IntervalBoundaryDefinitionEnum.class,
                 LabTestAndResult.class,
-                LarvicideControlStrategy.class,
+                LarvicideControlMeasure.class,
                 LibraryItem.class,
                 LifeCycle.class,
                 LifeStageWithDurationAndMortality.class,
@@ -449,7 +448,7 @@ public class ApolloClassList {
                 ParameterValue.class,
                 ParametricProbabilityDistribution.class,
                 PlaceCategoryDefinition.class,
-                PlaceClosureControlStrategy.class,
+                PlaceClosureControlMeasure.class,
                 PlaceEnum.class,
                 PlaceVisited.class,
                 PointerToData.class,
@@ -483,7 +482,7 @@ public class ApolloClassList {
                 ReproductionNumber.class,
                 RequesterIdentification.class,
                 RheaHealthcareFacilityEnum.class,
-                RingIndividualTreatmentControlStrategy.class,
+                RingIndividualTreatmentControlMeasure.class,
                 ApolloIndexableItem.class,
                 ApolloIndexableItemTypeEnum.class,
                 ScenarioCartesianOrigin.class,
@@ -513,7 +512,7 @@ public class ApolloClassList {
                 TimeSpanCategoryDefinition.class,
                 TransmissionProbability.class,
                 TransmissionTree.class,
-                TravelRestrictionControlStrategy.class,
+                TravelRestrictionControlMeasure.class,
                 Treatment.class,
                 TreatmentContraindication.class,
                 TreatmentEfficacy.class,
@@ -541,10 +540,10 @@ public class ApolloClassList {
                 Vaccine.class,
                 VaccineContraindications.class,
                 VariableCategoryDefinition.class,
-                VectorControlStrategy.class,
+                VectorControlMeasure.class,
                 WeibullDistribution.class,
                 WithinGroupTransmissionProbability.class,
-                WolbachiaControlStrategy.class,
+                WolbachiaControlMeasure.class,
                 WolbachiaReleaseSiteEnum.class,
                 GetVisualizerOutputResourcesResult.class,
                 RunVisualizationMessage.class,

@@ -23,7 +23,7 @@ import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
 import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;

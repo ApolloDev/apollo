@@ -9,7 +9,7 @@ import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;

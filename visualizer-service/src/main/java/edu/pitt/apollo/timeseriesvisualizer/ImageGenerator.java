@@ -16,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;

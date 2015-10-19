@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.VisualizerIdentificationEnum;
 import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 

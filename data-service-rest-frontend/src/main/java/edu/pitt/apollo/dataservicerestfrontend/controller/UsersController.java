@@ -9,7 +9,7 @@ import edu.pitt.apollo.dataservicerestfrontend.methods.AuthenticateUserMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.AuthorizeUserMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.DeleteUserMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.GetSoftwareIdentificationForRunMethod;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
 import java.math.BigInteger;
 import org.springframework.stereotype.Controller;

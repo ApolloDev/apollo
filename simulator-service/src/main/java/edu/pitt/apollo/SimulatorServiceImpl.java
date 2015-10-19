@@ -34,7 +34,7 @@ import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceEI;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
 import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.services_common.v3_0_2.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v3_0_2.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.GetPopulationAndEnvironmentCensusResult;
