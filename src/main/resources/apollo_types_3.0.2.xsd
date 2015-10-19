@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v3_1_0/"
-		xmlns:tns="http://types.apollo.pitt.edu/v3_1_0/" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://types.apollo.pitt.edu/v3_0_2/"
+		xmlns:tns="http://types.apollo.pitt.edu/v3_0_2/" elementFormDefault="qualified">
 
 	<simpleType name="Probability">
 		<restriction base="double">
@@ -8,6 +8,50 @@
 			<maxInclusive value="1" />
 		</restriction>
 	</simpleType>
+
+	<simpleType name="ApolloSoftwareTypeEnum">
+		<restriction base="string">
+			<enumeration value="simulator" />
+			<enumeration value="batchSimulator" />
+			<enumeration value="visualizer" />
+			<enumeration value="syntheticPopulationGenerator" />
+			<enumeration value="translator" />
+			<enumeration value="data" />
+			<enumeration value="broker" />
+			<enumeration value="endUserApplication" />
+			<enumeration value="runManager" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="SoftwareIdentification">
+		<sequence>
+			<element name="softwareDeveloper" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="softwareName" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="softwareVersion" type="token" maxOccurs="1"
+					 minOccurs="1">
+			</element>
+			<element name="softwareType" type="tns:ApolloSoftwareTypeEnum"
+					 maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="softwareLicenseIdentification" type="tns:SoftwareLicenseIdentification"
+					 minOccurs="0"></element>
+			<element name="customIdentifier" type="token"
+					 minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SoftwareLicenseIdentification">
+		<sequence>
+			<element name="licenseLocation" type="anyURI"></element>
+			<element name="licenseVersion" type="token"></element>
+			<element name="licenseName" type="token"></element>
+			<element name="attributionNotice" type="string"></element>
+		</sequence>
+	</complexType>
 
 
 	<simpleType name="Fraction">
@@ -1415,9 +1459,6 @@
 					 minOccurs="1" />
 		</sequence>
 	</complexType>
-
-
-	<complexType name="SoftwareIdentification" />
 
 	<complexType name="InfectiousDiseaseTransmissionExperimentSpecification">
 		<complexContent>
