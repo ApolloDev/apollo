@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
+import edu.pitt.apollo.DataServiceImpl;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -28,12 +29,15 @@ public class RunDataServiceThread extends RunApolloServiceThread {
 		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
 
 		try {
-            JobRunningServiceAccessor jobRunningServiceAccessor = new JobRunningServiceAccessor(DataServiceAccessor.DATA_SERVICE_URL, softwareId);
-            dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.CALLED_DATA_SERVICE,
-                    "Attempting to call data service", authentication);
-			jobRunningServiceAccessor.run(runId, authentication);
+//            JobRunningServiceAccessor jobRunningServiceAccessor = new JobRunningServiceAccessor(DataServiceAccessor.DATA_SERVICE_URL, softwareId);
+//            dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.CALLED_DATA_SERVICE,
+//                    "Attempting to call data service", authentication);
+//			jobRunningServiceAccessor.run(runId, authentication);
 
-		} catch (JobRunningServiceException | RunManagementException ex) {
+            DataServiceImpl dataService = new DataServiceImpl();
+            dataService.run(runId, authentication);
+
+		} catch (JobRunningServiceException ex) {
 			ApolloServiceErrorHandler.reportError("Error running data service, error was:" + ex.getMessage(), runId, authentication);
 			return;
 		}

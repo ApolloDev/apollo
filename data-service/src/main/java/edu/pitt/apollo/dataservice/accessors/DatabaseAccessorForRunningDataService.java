@@ -2,6 +2,7 @@ package edu.pitt.apollo.dataservice.accessors;
 
 import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID;
 
+import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
@@ -92,7 +93,7 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 						runId, END_USER_APPLICATION_SOURCE_ID,
 						dataServiceSoftwareKey);
 		for (String label : currentRunMessageAsJsonMap.keySet()) {
-			if (label.equals("run_data_service_message.json")) {
+			if (label.equals("data_retrieval_request_message.json")) {
 				return currentRunMessageAsJsonMap.get(label).toString();
 			}
 		}
@@ -113,7 +114,9 @@ public class DatabaseAccessorForRunningDataService extends DatabaseAccessor {
 					insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
 				} else {
 					insertRunResult.setRunCached(false);
-					BigInteger runId = dbUtils.addDataServiceRun(dataRetrievalRequestMessage, runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1, authentication, DATA_SERVICE_SOFTWARE_ID);
+					BigInteger runId = dbUtils.addDataServiceRun(dataRetrievalRequestMessage,
+                            runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1, authentication,
+                            DATA_SERVICE_SOFTWARE_ID, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
 					insertRunResult.setRunId(runId);
 				}
 

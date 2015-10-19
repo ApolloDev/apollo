@@ -21,6 +21,7 @@ public class RunJobToGetOutputFilesURLAsZipMethod extends RunJobMethod {
 
 	public RunJobToGetOutputFilesURLAsZipMethod(DataRetrievalRequestMessage message, BigInteger runId) {
 		super(runId);
+        this.message = message;
 	}
 
 	@Override
