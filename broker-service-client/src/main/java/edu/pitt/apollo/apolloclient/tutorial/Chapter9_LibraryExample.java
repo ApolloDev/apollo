@@ -15,7 +15,7 @@
 
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.examples.ExampleVaccinationControlMeasure;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 
 import java.net.MalformedURLException;
@@ -24,12 +24,12 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 
 	public String infectionUuid = "";
 	public String infectiousDiseaseScenarioUuid = "";
-	public String vaccinationControlStrategyUuid = "";
-	public ExampleVaccinationControlStrategy vaccinationControlStrategy;
+	public String vaccinationControlMeasureUuid = "";
+	public ExampleVaccinationControlMeasure vaccinationControlMeasure;
 
 	public Chapter9_LibraryExample() throws MalformedURLException {
 		super();
-		vaccinationControlStrategy = new ExampleVaccinationControlStrategy();
+		vaccinationControlMeasure = new ExampleVaccinationControlMeasure();
 	}
 
 	protected Authentication getAuthentication() {
@@ -41,8 +41,8 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 
 //	public void savePredefinedItemsToApolloLibrary() {
 //
-//		RunSimulationMessage runSimulationMessage = vaccinationControlStrategy
-//				.addVaccinationControlStrategyToRunSimulationMessage(ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
+//		RunSimulationMessage runSimulationMessage = vaccinationControlMeasure
+//				.addVaccinationControlMeasureToRunSimulationMessage(ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
 //
 //		InfectiousDiseaseScenario infectiousDiseaseScenario = runSimulationMessage.getInfectiousDiseaseScenario();
 //		ArrayList<String> labels = new ArrayList<String>();
@@ -55,16 +55,16 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 //		infectionUuid = result.getUuid();
 //		System.out.println("Uuid returned for newly saved Infection instance: " + result.getUuid());
 //
-//		InfectiousDiseaseControlStrategy vaccinationControlStrategy = infectiousDiseaseScenario
+//		InfectiousDiseaseControlMeasure vaccinationControlMeasure = infectiousDiseaseScenario
 //				.getInfectiousDiseaseControlStrategies().get(0);
 //
 //		result = TutorialWebServiceClient
-//				.addLibraryItem(getAuthentication(), vaccinationControlStrategy,
+//				.addLibraryItem(getAuthentication(), vaccinationControlMeasure,
 //						"The Vaccination Control Strategy used in the tutorial", "Tutorial",
-//						"InfectiousDiseaseControlStrategy", labels);
+//						"InfectiousDiseaseControlMeasure", labels);
 //
-//		vaccinationControlStrategyUuid = result.getUuid();
-//		System.out.println("Uuid returned for newly saved VaccinationControlStrategy instance: " + result.getUuid());
+//		vaccinationControlMeasureUuid = result.getUuid();
+//		System.out.println("Uuid returned for newly saved VaccinationControlMeasure instance: " + result.getUuid());
 //
 //		result = TutorialWebServiceClient.addLibraryItem(getAuthentication(), infectiousDiseaseScenario,
 //				"The Infectious Disease Scenario used in the tutorial", "Tutorial", "InfectiousDiseaseScenario", labels);
@@ -100,29 +100,29 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 //		System.out.println();
 //	}
 //
-//	public void printVaccinationControlStrategyToConsole() {
-//		GetLibraryItemResult vaccinationControlStrategyItem = TutorialWebServiceClient
-//				.getLibraryItem(vaccinationControlStrategyUuid);
-//		IndividualTreatmentControlStrategy vaccinationControlStrategy = (IndividualTreatmentControlStrategy) vaccinationControlStrategyItem
+//	public void printVaccinationControlMeasureToConsole() {
+//		GetLibraryItemResult vaccinationControlMeasureItem = TutorialWebServiceClient
+//				.getLibraryItem(vaccinationControlMeasureUuid);
+//		IndividualTreatmentControlMeasure vaccinationControlMeasure = (IndividualTreatmentControlMeasure) vaccinationControlMeasureItem
 //				.getCuratedLibraryItemContainer().getApolloIndexableItem();
-//		System.out.println("VaccinationControlStrategy instance retrieved from the library:");
-//		System.out.println("\tDescription: " + vaccinationControlStrategy.getDescription());
-//		System.out.println("\tCompliance: " + vaccinationControlStrategy.getCompliance().getProbability());
-//		if (vaccinationControlStrategy.getControlStrategyResponseDelay() instanceof FixedDuration) {
+//		System.out.println("VaccinationControlMeasure instance retrieved from the library:");
+//		System.out.println("\tDescription: " + vaccinationControlMeasure.getDescription());
+//		System.out.println("\tCompliance: " + vaccinationControlMeasure.getCompliance().getProbability());
+//		if (vaccinationControlMeasure.getControlMeasureResponseDelay() instanceof FixedDuration) {
 //			System.out.println("\tResponse Delay: "
-//					+ ((FixedDuration) vaccinationControlStrategy.getControlStrategyResponseDelay()).getValue());
+//					+ ((FixedDuration) vaccinationControlMeasure.getControlMeasureResponseDelay()).getValue());
 //		}
-//		for (TriggerDefinition trigger : vaccinationControlStrategy.getControlStrategyStartTime()) {
+//		for (TriggerDefinition trigger : vaccinationControlMeasure.getControlMeasureStartTime()) {
 //			DiseaseSurveillanceTriggerDefinition triggerDefinition = (DiseaseSurveillanceTriggerDefinition) trigger;
 //			System.out.println("\tControl Strategy Starts when : "
-//					+ triggerDefinition.getReactiveControlStrategyOperator().toString() + " "
-//					+ triggerDefinition.getReactiveControlStrategyThreshold() + " "
-//					+ triggerDefinition.getReactiveControlStrategyTest() + " "
+//					+ triggerDefinition.getReactiveControlMeasureOperator().toString() + " "
+//					+ triggerDefinition.getReactiveControlMeasureThreshold() + " "
+//					+ triggerDefinition.getReactiveControlMeasureTest() + " "
 //					+ triggerDefinition.getUnitOfMeasureForThreshold().toString());
 //
 //		}
 //
-//		Vaccination vaccination = (Vaccination) vaccinationControlStrategy.getIndividualTreatment();
+//		Vaccination vaccination = (Vaccination) vaccinationControlMeasure.getIndividualTreatment();
 //		System.out.println("\tNum Doses in Treatment Course:" + vaccination.getNumDosesInTreatmentCourse());
 //		System.out.println("\t...\n");
 //	}
@@ -166,7 +166,7 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 //
 //		savePredefinedItemsToApolloLibrary();
 //		printInfectionToConsole();
-//		printVaccinationControlStrategyToConsole();
+//		printVaccinationControlMeasureToConsole();
 //
 //		InfectiousDiseaseScenario infectiousDiseaseScenario = loadInfectiousDiseaseScenario();
 //		InfectiousDiseaseScenario infectiousDiseaseScenarioWithIncreasedR0 = setR0(loadInfectiousDiseaseScenario(),

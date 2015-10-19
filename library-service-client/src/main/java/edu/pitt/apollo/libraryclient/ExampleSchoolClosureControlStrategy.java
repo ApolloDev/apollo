@@ -7,7 +7,7 @@ import edu.pitt.apollo.types.v3_0_2.DiseaseSurveillanceTriggerDefinition;
 import edu.pitt.apollo.types.v3_0_2.FixedDuration;
 import edu.pitt.apollo.types.v3_0_2.Location;
 import edu.pitt.apollo.types.v3_0_2.OperatorEnum;
-import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlStrategy;
+import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlMeasure;
 import edu.pitt.apollo.types.v3_0_2.PlaceEnum;
 import edu.pitt.apollo.types.v3_0_2.UnitOfMeasureEnum;
 import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
@@ -18,13 +18,13 @@ import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
  * Email: nick.millett@gmail.com
  * Date: Feb 19, 2015
  * Time: 11:18:07 AM
- * Class: ExampleSchoolClosureControlStrategy
+ * Class: ExampleSchoolClosureControlMeasure
  */
-public class ExampleSchoolClosureControlStrategy {
+public class ExampleSchoolClosureControlMeasure {
 
-	public static PlaceClosureControlStrategy getAllSchoolsControlStrategy() {
+	public static PlaceClosureControlMeasure getAllSchoolsControlMeasure() {
 
-		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
+		PlaceClosureControlMeasure scm = new PlaceClosureControlMeasure();
 
 		Location location = new Location();
 		location.setApolloLocationCode("1169");
@@ -47,25 +47,25 @@ public class ExampleSchoolClosureControlStrategy {
 		caseDetectionTimeDelay.setValue(2d);
 		capability.setTimeDelayOfCaseDetection(caseDetectionTimeDelay);
 
-		rt.setReactiveControlStrategyTest("Symptomatic Students");
-		rt.setReactiveControlStrategyThreshold(1);
-		rt.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		rt.setReactiveControlMeasureTest("Symptomatic Students");
+		rt.setReactiveControlMeasureThreshold(1);
+		rt.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		rt.setDiseaseSurveillanceCapability(capability);
 		rt.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT);
 		rt.setDiseaseSurveillanceCapability(capability);
-		scm.getControlStrategyStartTime().add(rt);
+		scm.getControlMeasureStartTime().add(rt);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(2d);
 
-		scm.setControlStrategyResponseDelay(responseDelay);
+		scm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(2d);
 
-		scm.setControlStrategyStandDownDelay(standDownDelay);
+		scm.setControlMeasureStandDownDelay(standDownDelay);
 
 		scm.setDescription("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
 
@@ -79,8 +79,8 @@ public class ExampleSchoolClosureControlStrategy {
 		return scm;
 	}
 
-	public static PlaceClosureControlStrategy getIndividualSchoolsControlStrategy() {
-		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
+	public static PlaceClosureControlMeasure getIndividualSchoolsControlMeasure() {
+		PlaceClosureControlMeasure scm = new PlaceClosureControlMeasure();
 
 		Location location = new Location();
 		location.setApolloLocationCode("1169");
@@ -103,13 +103,13 @@ public class ExampleSchoolClosureControlStrategy {
 		caseDetectionTimeDelay.setValue(2d);
 		capability.setTimeDelayOfCaseDetection(caseDetectionTimeDelay);
 
-		rt.setReactiveControlStrategyTest("Symptomatic Students");
-		rt.setReactiveControlStrategyThreshold(1);
-		rt.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		rt.setReactiveControlMeasureTest("Symptomatic Students");
+		rt.setReactiveControlMeasureThreshold(1);
+		rt.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		rt.setDiseaseSurveillanceCapability(capability);
 		rt.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT);
 		rt.setDiseaseSurveillanceCapability(capability);
-		scm.getControlStrategyStartTime().add(rt);
+		scm.getControlMeasureStartTime().add(rt);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setValue(2d);
@@ -119,9 +119,9 @@ public class ExampleSchoolClosureControlStrategy {
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(2d);
 
-		scm.setControlStrategyStandDownDelay(standDownDelay);
+		scm.setControlMeasureStandDownDelay(standDownDelay);
 
-		scm.setControlStrategyResponseDelay(responseDelay);
+		scm.setControlMeasureResponseDelay(responseDelay);
 		scm.setDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
 		FixedDuration closurePeriod = new FixedDuration();
 		closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);

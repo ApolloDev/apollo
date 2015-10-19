@@ -87,14 +87,14 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 		vacc.getVaccinationEfficacies().add(vesc);
 
-		IndividualTreatmentControlStrategy vcm = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure vcm = new IndividualTreatmentControlMeasure();
 		vcm.setIndividualTreatment(vacc);
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.5);
 		vcm.setCompliance(compliance);
 
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
+		ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
 
 		vcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
 
@@ -105,19 +105,19 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(stopTime);
-		vcm.getControlStrategyStopTime().add(stopTrigger);
+		vcm.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(0d);
 
-		vcm.setControlStrategyResponseDelay(responseDelay);
+		vcm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(0d);
 
-		vcm.setControlStrategyStandDownDelay(standDownDelay);
+		vcm.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -126,7 +126,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		vcm.getControlStrategyStartTime().add(trigger);
+		vcm.getControlMeasureStartTime().add(trigger);
 
 		vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 
@@ -210,7 +210,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
         vcm.getLogisticalSystems().add(logisticalSystem);
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
+		itemIndexingLabels.add("IndividualTreatmentControlMeasure");
 		itemIndexingLabels.add("Vaccination");
 		itemIndexingLabels.add("Vaccine");
 		itemIndexingLabels.add("Allegheny County");
@@ -223,10 +223,10 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		itemIndexingLabels.add("non-hypothetical");
 
 //		AddLibraryItemResult result = port.addLibraryItem(getAuthentication(), vcm, vcm.getDescription(),
-//				"Discussion with ACHD staff.", "InfectiousDiseaseControlStrategy",
+//				"Discussion with ACHD staff.", "InfectiousDiseaseControlMeasure",
 //				itemIndexingLabels);
 
-//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with Vaccination: " + result.getUuid());
+//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlMeasure instance with Vaccination: " + result.getUuid());
 		System.out.println();
 	}
 
@@ -255,15 +255,15 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 		avt.getAntiviralTreatmentEfficacy().add(avefsc);
 
-		IndividualTreatmentControlStrategy atcm = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure atcm = new IndividualTreatmentControlMeasure();
 		atcm.setIndividualTreatment(avt);
 		atcm.setDescription("A control strategy in which all sick humans are treated with a course of Tamiflu.");
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.9);
 		atcm.setCompliance(compliance);
 
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.TREAT_SICK_ONLY);
+		ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.TREAT_SICK_ONLY);
 		atcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
 
 		FixedDuration stopTime = new FixedDuration();
@@ -273,17 +273,17 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(stopTime);
-		atcm.getControlStrategyStopTime().add(stopTrigger);
+		atcm.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(4d);
-		atcm.setControlStrategyResponseDelay(responseDelay);
+		atcm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(4d);
-		atcm.setControlStrategyStandDownDelay(standDownDelay);
+		atcm.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -292,7 +292,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		atcm.getControlStrategyStartTime().add(trigger);
+		atcm.getControlMeasureStartTime().add(trigger);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("Tamiflu");
@@ -342,7 +342,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 
 		ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-		itemIndexingLabels.add("IndividualTreatmentControlStrategy");
+		itemIndexingLabels.add("IndividualTreatmentControlMeasure");
 		itemIndexingLabels.add("Antiviral");
 		itemIndexingLabels.add("AntiviralTreatment");
 		itemIndexingLabels.add("Allegheny County");
@@ -359,15 +359,15 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 //				atcm,
 //				"A hypothetical control strategy in which all sick humans are treated with a course of Tamiflu.",
 //				"Expert opinion regarding a realistic (yet hypothetical) Antiviral Treatment Control Measure.",
-//				"InfectiousDiseaseControlStrategy", itemIndexingLabels);
+//				"InfectiousDiseaseControlMeasure", itemIndexingLabels);
 //
-//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlStrategy instance with AntiviralTreatment: " + result.getUuid());
+//		System.out.println("Uuid returned for newly saved InfectiousDiseaseControlMeasure instance with AntiviralTreatment: " + result.getUuid());
 		System.out.println();
 
 	}
 
 	private static void addAllSccm(ApolloServiceEI port) {
-		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
+		PlaceClosureControlMeasure scm = new PlaceClosureControlMeasure();
 
 		Location location = new Location();
 		location.setApolloLocationCode("42003");
@@ -390,25 +390,25 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		caseDetectionTimeDelay.setValue(2d);
 		capability.setTimeDelayOfCaseDetection(caseDetectionTimeDelay);
 
-		rt.setReactiveControlStrategyTest("Symptomatic Students");
-		rt.setReactiveControlStrategyThreshold(1);
-		rt.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		rt.setReactiveControlMeasureTest("Symptomatic Students");
+		rt.setReactiveControlMeasureThreshold(1);
+		rt.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		rt.setDiseaseSurveillanceCapability(capability);
 		rt.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT);
 		rt.setDiseaseSurveillanceCapability(capability);
-		scm.getControlStrategyStartTime().add(rt);
+		scm.getControlMeasureStartTime().add(rt);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(2d);
 
-		scm.setControlStrategyResponseDelay(responseDelay);
+		scm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(2d);
 
-		scm.setControlStrategyStandDownDelay(standDownDelay);
+		scm.setControlMeasureStandDownDelay(standDownDelay);
 
 		scm.setDescription("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
 
@@ -420,7 +420,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		scm.setPlaceClass(PlaceEnum.ALL_SCHOOLS);
 		List<String> indexingValues = new ArrayList<String>();
 		indexingValues.add("BARDA");
-		indexingValues.add("SchoolClosureControlStrategy");
+		indexingValues.add("SchoolClosureControlMeasure");
 		indexingValues.add("SchoolClosure");
 		indexingValues.add("Reactive Start Time");
 		indexingValues.add("Allegheny County");
@@ -436,14 +436,14 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 //				scm,
 //				scm.getDescription(),
 //				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//				"InfectiousDiseaseControlStrategy", indexingValues);
+//				"InfectiousDiseaseControlMeasure", indexingValues);
 //
-//		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance : " + result.getUuid());
+//		System.out.println("Uuid returned for newly saved SchoolClosureControlMeasure instance : " + result.getUuid());
 		System.out.println();
 	}
 
 	private static void addIndividualSccm(ApolloServiceEI port) {
-		PlaceClosureControlStrategy scm = new PlaceClosureControlStrategy();
+		PlaceClosureControlMeasure scm = new PlaceClosureControlMeasure();
 
 		Location location = new Location();
 		location.setApolloLocationCode("42003");
@@ -466,13 +466,13 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		caseDetectionTimeDelay.setValue(2d);
 		capability.setTimeDelayOfCaseDetection(caseDetectionTimeDelay);
 
-		rt.setReactiveControlStrategyTest("Symptomatic Students");
-		rt.setReactiveControlStrategyThreshold(1);
-		rt.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		rt.setReactiveControlMeasureTest("Symptomatic Students");
+		rt.setReactiveControlMeasureThreshold(1);
+		rt.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		rt.setDiseaseSurveillanceCapability(capability);
 		rt.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT);
 		rt.setDiseaseSurveillanceCapability(capability);
-		scm.getControlStrategyStartTime().add(rt);
+		scm.getControlMeasureStartTime().add(rt);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setValue(2d);
@@ -482,9 +482,9 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(2d);
 
-		scm.setControlStrategyStandDownDelay(standDownDelay);
+		scm.setControlMeasureStandDownDelay(standDownDelay);
 
-		scm.setControlStrategyResponseDelay(responseDelay);
+		scm.setControlMeasureResponseDelay(responseDelay);
 		scm.setDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
 		FixedDuration closurePeriod = new FixedDuration();
 		closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -495,7 +495,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 		scm.setPlaceClass(PlaceEnum.ALL_SCHOOLS);
 		List<String> indexingValues = new ArrayList<String>();
 		indexingValues.add("BARDA");
-		indexingValues.add("SchoolClosureControlStrategy");
+		indexingValues.add("SchoolClosureControlMeasure");
 		indexingValues.add("SchoolClosure");
 		indexingValues.add("Reactive Start Time");
 		indexingValues.add("Allegheny County");
@@ -511,9 +511,9 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 //				scm,
 //				scm.getDescription(),
 //				"A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//				"InfectiousDiseaseControlStrategy", indexingValues);
+//				"InfectiousDiseaseControlMeasure", indexingValues);
 //
-//		System.out.println("Uuid returned for newly saved SchoolClosureControlStrategy instance: " + result.getUuid());
+//		System.out.println("Uuid returned for newly saved SchoolClosureControlMeasure instance: " + result.getUuid());
 		System.out.println();
 	}
 

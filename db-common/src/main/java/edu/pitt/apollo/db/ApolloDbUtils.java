@@ -14,10 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_0_2.SoftwareLicenseIdentification;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v3_0_2.*;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 

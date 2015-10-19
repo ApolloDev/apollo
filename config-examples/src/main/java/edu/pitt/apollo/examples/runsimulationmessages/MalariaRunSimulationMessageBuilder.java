@@ -192,12 +192,12 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         return populations;
     }
 
-    private IndoorResidualSprayingVectorControlStrategy getIRSControlStrategy(XMLGregorianCalendar startDate) {
+    private IndoorResidualSprayingVectorControlMeasure getIRSControlMeasure(XMLGregorianCalendar startDate) {
 
-        IndoorResidualSprayingVectorControlStrategy strategy = new IndoorResidualSprayingVectorControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        IndoorResidualSprayingVectorControlMeasure strategy = new IndoorResidualSprayingVectorControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
         strategy.setFractionOfVectorIndividualsAffected(0.8);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
@@ -230,12 +230,12 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         return strategy;
     }
 
-    private InsecticideTreatedNetControlStrategy getITNControlStrategy(XMLGregorianCalendar startDate) {
+    private InsecticideTreatedNetControlMeasure getITNControlMeasure(XMLGregorianCalendar startDate) {
 
-        InsecticideTreatedNetControlStrategy strategy = new InsecticideTreatedNetControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        InsecticideTreatedNetControlMeasure strategy = new InsecticideTreatedNetControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("Insecticide Treated Net");
@@ -308,10 +308,10 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         InfectiousDiseaseScenario scenario = simulatorConfiguration.getInfectiousDiseaseScenario();
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INDOOR_RESIDUAL_SPRAYING)) {
             scenario
-                    .getInfectiousDiseaseControlStrategies().add(getIRSControlStrategy(scenario.getScenarioDate()));
+                    .getInfectiousDiseaseControlStrategies().add(getIRSControlMeasure(scenario.getScenarioDate()));
         }
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INSECTICIDE_TREATED_NET)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getITNControlStrategy(scenario.getScenarioDate()));
+            scenario.getInfectiousDiseaseControlStrategies().add(getITNControlMeasure(scenario.getScenarioDate()));
         }
 
         return simulatorConfiguration;

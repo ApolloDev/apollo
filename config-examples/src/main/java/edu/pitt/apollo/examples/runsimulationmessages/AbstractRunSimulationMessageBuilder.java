@@ -85,17 +85,17 @@ public abstract class AbstractRunSimulationMessageBuilder {
 		return date;
 	}
 
-	protected void setBaseInfectiousDiseaseControlStrategy(InfectiousDiseaseControlStrategy strategy) {
+	protected void setBaseInfectiousDiseaseControlMeasure(InfectiousDiseaseControlMeasure strategy) {
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setValue(1d);
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
-		strategy.setControlStrategyResponseDelay(responseDelay);
+		strategy.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setValue(10d);
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
-		strategy.setControlStrategyStandDownDelay(standDownDelay);
+		strategy.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration startDuration = new FixedDuration();
 		startDuration.setValue(0d);
@@ -104,7 +104,7 @@ public abstract class AbstractRunSimulationMessageBuilder {
 		TemporalTriggerDefinition time = new TemporalTriggerDefinition();
 		time.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		time.setTimeSinceTimeScaleZero(startDuration);
-		strategy.getControlStrategyStartTime().add(time);
+		strategy.getControlMeasureStartTime().add(time);
 
 		strategy.setDescription("base infectious disease control strategy");
 

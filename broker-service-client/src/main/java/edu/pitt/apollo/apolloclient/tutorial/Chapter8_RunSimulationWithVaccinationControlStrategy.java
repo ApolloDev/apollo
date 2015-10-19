@@ -18,13 +18,13 @@ package edu.pitt.apollo.apolloclient.tutorial;
 import java.net.MalformedURLException;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.examples.ExampleVaccinationControlMeasure;
 import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
 
 
-public class Chapter8_RunSimulationWithVaccinationControlStrategy extends AbstractRunAndVisualizeSimulationClass {
+public class Chapter8_RunSimulationWithVaccinationControlMeasure extends AbstractRunAndVisualizeSimulationClass {
 
-	public Chapter8_RunSimulationWithVaccinationControlStrategy() throws MalformedURLException {
+	public Chapter8_RunSimulationWithVaccinationControlMeasure() throws MalformedURLException {
 		super();
 	}
 
@@ -32,9 +32,9 @@ public class Chapter8_RunSimulationWithVaccinationControlStrategy extends Abstra
 		RunSimulationMessage runSimulationMessageWithoutVaccination = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 
-		ExampleVaccinationControlStrategy vaccinationControlStrategy = new ExampleVaccinationControlStrategy();
-		RunSimulationMessage runSimulationMessageWithVaccination = vaccinationControlStrategy
-				.addVaccinationControlStrategyToRunSimulationMessage(ApolloServiceTypeFactory
+		ExampleVaccinationControlMeasure vaccinationControlMeasure = new ExampleVaccinationControlMeasure();
+		RunSimulationMessage runSimulationMessageWithVaccination = vaccinationControlMeasure
+				.addVaccinationControlMeasureToRunSimulationMessage(ApolloServiceTypeFactory
 						.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
 
 		runScenariosAndDisplayResults("No Vaccination", runSimulationMessageWithoutVaccination, "Vaccination",
@@ -43,7 +43,7 @@ public class Chapter8_RunSimulationWithVaccinationControlStrategy extends Abstra
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
-		Chapter8_RunSimulationWithVaccinationControlStrategy tutorialChapter8 = new Chapter8_RunSimulationWithVaccinationControlStrategy();
+		Chapter8_RunSimulationWithVaccinationControlMeasure tutorialChapter8 = new Chapter8_RunSimulationWithVaccinationControlMeasure();
 		tutorialChapter8.runExample();
 
 	}

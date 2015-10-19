@@ -168,60 +168,60 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		Location location = getLocation();
         XMLGregorianCalendar date = getDate();
 
-		List<InfectiousDiseaseControlStrategy> strategies = new ArrayList<InfectiousDiseaseControlStrategy>();
+		List<InfectiousDiseaseControlMeasure> strategies = new ArrayList<InfectiousDiseaseControlMeasure>();
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.VACC_CM)) {
 			strategies.add(
-					getVacciationControlStrategy("ACIP",
+					getVacciationControlMeasure("ACIP",
 							"The vaccination description", 150, date,
 							supplyConstrainedVaccinationCapacityTable, location));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.AV_CM)) {
 			strategies.add(
-					getAntiviralTreatmentControlStrategy("mass", "", date,
+					getAntiviralTreatmentControlMeasure("mass", "", date,
 							supplyConstrainedVaccinationCapacityTable, location));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.ALL_SC_CM_FIXED)) {
 			strategies.add(
-					getSchoolClosureControlStrategy(
+					getSchoolClosureControlMeasure(
 							PlaceEnum.ALL_SCHOOLS,
 							"school closure", location, true, false));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.ALL_SC_CM_REACTIVE)) {
 			strategies.add(
-					getSchoolClosureControlStrategy(
+					getSchoolClosureControlMeasure(
 							PlaceEnum.ALL_SCHOOLS,
 							"school closure", location, false, false));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_FIXED)) {
 			strategies.add(
-					getSchoolClosureControlStrategy(
+					getSchoolClosureControlMeasure(
 							PlaceEnum.ALL_SCHOOLS,
 							"school closure", location, true, true));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_REACTIVE)) {
 			strategies.add(
-					getSchoolClosureControlStrategy(
+					getSchoolClosureControlMeasure(
 							PlaceEnum.ALL_SCHOOLS,
 							"school closure", location, false, true));
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.VI_CM)) {
-			strategies.add(getVoluntaryIsolationControlStrategy());
+			strategies.add(getVoluntaryIsolationControlMeasure());
 		}
 
 		InfectiousDiseaseScenario scenario = simulatorConfiguration.getInfectiousDiseaseScenario();
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.VQ_CM)) {
-			scenario.getNonApolloParameters().add(getVoluntaryQuarantineControlStrategy());
+			scenario.getNonApolloParameters().add(getVoluntaryQuarantineControlMeasure());
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.LSL_CM)) {
-			scenario.getNonApolloParameters().add(getLiberalSickLeaveControlStrategy());
+			scenario.getNonApolloParameters().add(getLiberalSickLeaveControlMeasure());
 		}
 
 		scenario.getInfectiousDiseaseControlStrategies().addAll(strategies);
@@ -230,9 +230,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 	}
 
-	public CaseQuarantineControlStrategy getVoluntaryIsolationControlStrategy() {
+	public CaseQuarantineControlMeasure getVoluntaryIsolationControlMeasure() {
 
-		CaseQuarantineControlStrategy strategy = new CaseQuarantineControlStrategy();
+		CaseQuarantineControlMeasure strategy = new CaseQuarantineControlMeasure();
 		strategy.setDescription("voluntary_isolation_control_measure");
 
 		ProbabilisticParameter value = new ProbabilisticParameter();
@@ -244,12 +244,12 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		quarantinePeriod.setValue(7d);
 		strategy.setQuarantinePeriod(quarantinePeriod);
 
-		setBaseInfectiousDiseaseControlStrategy(strategy);
+		setBaseInfectiousDiseaseControlMeasure(strategy);
 
 		return strategy;
 	}
 
-	public static NonApolloParameter getVoluntaryQuarantineControlStrategy() {
+	public static NonApolloParameter getVoluntaryQuarantineControlMeasure() {
 
 		NonApolloParameter parameter = new NonApolloParameter();
 		parameter.setDescription("voluntary_quarantine_control_measure");
@@ -259,7 +259,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		return parameter;
 	}
 
-	public static NonApolloParameter getLiberalSickLeaveControlStrategy() {
+	public static NonApolloParameter getLiberalSickLeaveControlMeasure() {
 
 		NonApolloParameter parameter = new NonApolloParameter();
 		parameter.setDescription("liberal_sick_leave_control_measure");
@@ -269,7 +269,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		return parameter;
 	}
 
-	public static InfectiousDiseaseControlStrategy getAntiviralTreatmentControlStrategy(
+	public static InfectiousDiseaseControlMeasure getAntiviralTreatmentControlMeasure(
 			String scheme, String description, XMLGregorianCalendar startDate,
 			Double[] supplyConstrainedAntiviralCapacityTable, Location location) {
 
@@ -308,21 +308,21 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		duration.setValue(1d);
 		antiviralTreatment.setDurationOfTreatmentCourse(duration);
 
-		IndividualTreatmentControlStrategy antiviralTreatmentControlStrategy = new IndividualTreatmentControlStrategy();
-		antiviralTreatmentControlStrategy.setDescription("antiviral");
-		antiviralTreatmentControlStrategy.setPathogen(code);
+		IndividualTreatmentControlMeasure antiviralTreatmentControlMeasure = new IndividualTreatmentControlMeasure();
+		antiviralTreatmentControlMeasure.setDescription("antiviral");
+		antiviralTreatmentControlMeasure.setPathogen(code);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(2.0);
 
-		antiviralTreatmentControlStrategy.setControlStrategyResponseDelay(responseDelay);
+		antiviralTreatmentControlMeasure.setControlMeasureResponseDelay(responseDelay);
 
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.2);
 
-		antiviralTreatmentControlStrategy.setCompliance(compliance);
-		antiviralTreatmentControlStrategy.setIndividualTreatment(antiviralTreatment);
+		antiviralTreatmentControlMeasure.setCompliance(compliance);
+		antiviralTreatmentControlMeasure.setIndividualTreatment(antiviralTreatment);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -331,7 +331,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		antiviralTreatmentControlStrategy.getControlStrategyStartTime().add(trigger);
+		antiviralTreatmentControlMeasure.getControlMeasureStartTime().add(trigger);
 
 		FixedDuration stopTmie = new FixedDuration();
 		stopTmie.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -340,15 +340,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(startTime);
-		antiviralTreatmentControlStrategy.getControlStrategyStopTime().add(trigger);
+		antiviralTreatmentControlMeasure.getControlMeasureStopTime().add(trigger);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(150d);
-		antiviralTreatmentControlStrategy.setControlStrategyStandDownDelay(standDownDelay);
+		antiviralTreatmentControlMeasure.setControlMeasureStandDownDelay(standDownDelay);
 
-		// antiviralTreatmentControlStrategy.setControlStrategyReactiveEndPointFraction(1d);
-		// antiviralTreatmentControlStrategy.setControlStrategyNamedPrioritizationScheme("Sick only");
+		// antiviralTreatmentControlMeasure.setControlMeasureReactiveEndPointFraction(1d);
+		// antiviralTreatmentControlMeasure.setControlMeasureNamedPrioritizationScheme("Sick only");
 		TargetPriorityPopulation targetPriorityPopulation = new TargetPriorityPopulation();
 		targetPriorityPopulation.setFractionOfTargetPopulationToPrioritize(1.0);
 		targetPriorityPopulation.setDescription("symptomatic individuals");
@@ -358,10 +358,10 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		targetPriorityPopulation.setTargetPopulationDefinition(targetPopulationDefinition);
 
-		ControlStrategyTargetPopulationsAndPrioritization prioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(targetPriorityPopulation);
-		antiviralTreatmentControlStrategy.setTargetPopulationsAndPrioritizations(prioritization);
-//        antiviralTreatmentControlStrategy
+		ControlMeasureTargetPopulationsAndPrioritization prioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(targetPriorityPopulation);
+		antiviralTreatmentControlMeasure.setTargetPopulationsAndPrioritizations(prioritization);
+//        antiviralTreatmentControlMeasure
 //                .getTargetPopulationsAndPrioritizations().add(
 //                targetPriorityPopulation);
 
@@ -410,12 +410,12 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
         outputNode.getChildren().add(capacityNode);
         logisticalSystem.getLogisticalSystemNodes().add(outputNode);
 
-        antiviralTreatmentControlStrategy.getLogisticalSystems().add(logisticalSystem);
+        antiviralTreatmentControlMeasure.getLogisticalSystems().add(logisticalSystem);
 
-		return antiviralTreatmentControlStrategy;
+		return antiviralTreatmentControlMeasure;
 	}
 
-	public static InfectiousDiseaseControlStrategy getVacciationControlStrategy(String scheme,
+	public static InfectiousDiseaseControlMeasure getVacciationControlMeasure(String scheme,
 			String description, int runLength, XMLGregorianCalendar startDate,
 			Double[] supplyConstrainedVaccinationCapacityTable, Location location) {
 
@@ -591,9 +591,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		// TargetPriorityPopulation tpp = new TargetPriorityPopulation();
 		// tpp.setPriority(new BigInteger("3"));
-		IndividualTreatmentControlStrategy vaccinationControlStrategy = new IndividualTreatmentControlStrategy();
-		vaccinationControlStrategy.setDescription(description);
-		vaccinationControlStrategy.setPathogen(code);
+		IndividualTreatmentControlMeasure vaccinationControlMeasure = new IndividualTreatmentControlMeasure();
+		vaccinationControlMeasure.setDescription(description);
+		vaccinationControlMeasure.setPathogen(code);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -602,7 +602,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		vaccinationControlStrategy.getControlStrategyStartTime().add(trigger);
+		vaccinationControlMeasure.getControlMeasureStartTime().add(trigger);
 
 		FixedDuration treatmentDetectionDelay = new FixedDuration();
 		treatmentDetectionDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -611,7 +611,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //        TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 //        stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 //        stopTrigger.setTimeSinceTimeScaleZero(startTime);
-//        vaccinationControlStrategy.getControlStrategyStopTime().add(stopTrigger);
+//        vaccinationControlMeasure.getControlMeasureStopTime().add(stopTrigger);
 
 //        ReactiveStartTime st = new ReactiveStartTime();
 //        ReactiveTriggerDefinition rt = new ReactiveTriggerDefinition();
@@ -619,10 +619,10 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //        capacility.setCaseDefinition(DiseaseOutcomeEnum.ASYMPTOMATIC);
 //        rt.setAscertainmentDelay(new BigInteger("3"));
 //        rt.setAscertainmentFraction(0.5);
-//        rt.setReactiveControlStrategyTest(description);
-//        rt.setReactiveControlStrategyThreshold(0.01);
+//        rt.setReactiveControlMeasureTest(description);
+//        rt.setReactiveControlMeasureThreshold(0.01);
 //        st.setTrigger(rt);
-//        vaccinationControlStrategy.setControlStrategyStartTime(fst);
+//        vaccinationControlMeasure.setControlMeasureStartTime(fst);
 		TreatmentSurveillanceTriggerDefinition stopTrigger = new TreatmentSurveillanceTriggerDefinition();
 		TreatmentSurveillanceCapability capability = new TreatmentSurveillanceCapability();
 		capability.setLocation(location);
@@ -635,32 +635,32 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //        ReactiveStopTime stopTime = new ReactiveStopTime();
 //        ReactiveTriggerDefinition stopTrigger = new ReactiveTriggerDefinition();
 		stopTrigger.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT_OF_POPULATION_VACCINATED);
-		stopTrigger.setReactiveControlStrategyThreshold(70);
-		stopTrigger.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		stopTrigger.setReactiveControlMeasureThreshold(70);
+		stopTrigger.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		stopTrigger.setTreatmentSurveillanceCapability(capability);
-		vaccinationControlStrategy.getControlStrategyStopTime().add(stopTrigger);
+		vaccinationControlMeasure.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(150d);
-		vaccinationControlStrategy.setControlStrategyStandDownDelay(standDownDelay);
+		vaccinationControlMeasure.setControlMeasureStandDownDelay(standDownDelay);
 
-		// vaccinationControlStrategy.getControlStrategyTargetPopulationsAndPrioritization().add(tpp);
+		// vaccinationControlMeasure.getControlMeasureTargetPopulationsAndPrioritization().add(tpp);
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(0.0);
-		vaccinationControlStrategy.setControlStrategyResponseDelay(responseDelay);
+		vaccinationControlMeasure.setControlMeasureResponseDelay(responseDelay);
 
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.9);
-		vaccinationControlStrategy.setCompliance(compliance);
-		// vaccinationControlStrategy.setControlStrategyNamedPrioritizationScheme(scheme);
-		vaccinationControlStrategy.setIndividualTreatment(vaccination);
+		vaccinationControlMeasure.setCompliance(compliance);
+		// vaccinationControlMeasure.setControlMeasureNamedPrioritizationScheme(scheme);
+		vaccinationControlMeasure.setIndividualTreatment(vaccination);
 
 		TargetPopulationDefinition psd;
 //        AgeRange ageRange;
 
-		ControlStrategyTargetPopulationsAndPrioritization prioritization = new ControlStrategyTargetPopulationsAndPrioritization();
+		ControlMeasureTargetPopulationsAndPrioritization prioritization = new ControlMeasureTargetPopulationsAndPrioritization();
 
 		TargetPriorityPopulation pop1 = new TargetPriorityPopulation();
 		pop1.setDescription("healthcare and emergency services personnel defined as a fraction of working age individuals");
@@ -677,7 +677,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.ESSENTIAL_WORKFORCE);
 
 		pop1.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop1);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop1);
 
 		TargetPriorityPopulation pop2 = new TargetPriorityPopulation();
 		pop2.setDescription("pregnant women defined as a fraction of reproductive age women");
@@ -694,7 +694,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //        psd.setGender(GenderEnum.F);
 //        psd.setOtherStratification(PopulationStratificationEnum.PREGNANT);
 		pop2.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop2);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop2);
 
 		TargetPriorityPopulation pop3 = new TargetPriorityPopulation();
 		pop3.setDescription("household members and caregivers of infants < 6 months defined within the simulator procedurally");
@@ -702,7 +702,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		pop3.setPriority(new BigInteger("1"));
 		pop3.setTargetPopulationEnum(TargetPopulationEnum.HOUSEHOLD_MEMBER_OF_INFANT);
 
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop3);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop3);
 
 		TargetPriorityPopulation pop4 = new TargetPriorityPopulation();
 		pop4.setDescription("high risk preschoolers defined as a fraction of preschoolers");
@@ -719,7 +719,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.HIGH_RISK);
 
 		pop4.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop4);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop4);
 
 		TargetPriorityPopulation pop5 = new TargetPriorityPopulation();
 		pop5.setDescription("High risk school-age children defined as a fraction of school-age children");
@@ -736,7 +736,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.HIGH_RISK);
 
 		pop5.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop5);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop5);
 
 		TargetPriorityPopulation pop6 = new TargetPriorityPopulation();
 		pop6.setDescription("high risk young adult defined as a fraction of young adults");
@@ -753,7 +753,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.HIGH_RISK);
 
 		pop6.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop6);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop6);
 
 		TargetPriorityPopulation pop6Pregnant = new TargetPriorityPopulation();
 		pop6Pregnant.setDescription("pregnant women");
@@ -770,7 +770,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.PREGNANT);
 
 		pop6Pregnant.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop6Pregnant);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop6Pregnant);
 
 		TargetPriorityPopulation pop7 = new TargetPriorityPopulation();
 		pop7.setDescription("high risk older adults defined as a fraction of older adults");
@@ -787,7 +787,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.HIGH_RISK);
 
 		pop7.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop7);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop7);
 
 		TargetPriorityPopulation pop7Pregnant = new TargetPriorityPopulation();
 		pop7Pregnant.setDescription("pregnant women");
@@ -804,7 +804,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.PREGNANT);
 
 		pop7Pregnant.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop7Pregnant);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop7Pregnant);
 
 		TargetPriorityPopulation pop8 = new TargetPriorityPopulation();
 		pop8.setDescription("high risk elderly defined as a fraction of elderly");
@@ -821,7 +821,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setOtherStratification(PopulationStratificationEnum.HIGH_RISK);
 
 		pop8.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop8);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop8);
 
 		TargetPriorityPopulation pop9 = new TargetPriorityPopulation();
 		pop9.setDescription("preschoolers defined as children under 5");
@@ -837,7 +837,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setAgeRange(ageRange);
 
 		pop9.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(pop9);
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop9);
 
 		TargetPriorityPopulation pop10 = new TargetPriorityPopulation();
 		pop10.setDescription("school-age children defined as children age 5-18");
@@ -853,7 +853,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setAgeRange(ageRange);
 
 		pop10.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(
 				pop10);
 
 		TargetPriorityPopulation pop11 = new TargetPriorityPopulation();
@@ -870,7 +870,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setAgeRange(ageRange);
 
 		pop11.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(
 				pop11);
 
 		TargetPriorityPopulation pop12 = new TargetPriorityPopulation();
@@ -887,7 +887,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setAgeRange(ageRange);
 
 		pop12.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(
 				pop12);
 
 		TargetPriorityPopulation pop13 = new TargetPriorityPopulation();
@@ -904,10 +904,10 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd.setAgeRange(ageRange);
 
 		pop13.setTargetPopulationDefinition(psd);
-		prioritization.getControlStrategyTargetPopulationsAndPrioritization().add(
+		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(
 				pop13);
 
-		vaccinationControlStrategy.setTargetPopulationsAndPrioritizations(prioritization);
+		vaccinationControlMeasure.setTargetPopulationsAndPrioritizations(prioritization);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("H1N1 vaccine");
@@ -954,22 +954,22 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
         outputNode.getChildren().add(capacityNode);
         logisticalSystem.getLogisticalSystemNodes().add(outputNode);
 
-        vaccinationControlStrategy.getLogisticalSystems().add(logisticalSystem);
+        vaccinationControlMeasure.getLogisticalSystems().add(logisticalSystem);
 
-		return vaccinationControlStrategy;
+		return vaccinationControlMeasure;
 
 	}
 
-	public static InfectiousDiseaseControlStrategy getSchoolClosureControlStrategy(
+	public static InfectiousDiseaseControlMeasure getSchoolClosureControlMeasure(
 			PlaceEnum placeEnum, String description, Location location,
 			boolean fixedStartTime, boolean individualSchools) {
 
-		PlaceClosureControlStrategy schoolClosureControlStrategy = new PlaceClosureControlStrategy();
-		schoolClosureControlStrategy.setPlaceClass(placeEnum);
-		schoolClosureControlStrategy.setHouseholdTransmissionMultiplier(1.0);
-		schoolClosureControlStrategy.setCommunityTransmissionMultiplier(1.0);
+		PlaceClosureControlMeasure schoolClosureControlMeasure = new PlaceClosureControlMeasure();
+		schoolClosureControlMeasure.setPlaceClass(placeEnum);
+		schoolClosureControlMeasure.setHouseholdTransmissionMultiplier(1.0);
+		schoolClosureControlMeasure.setCommunityTransmissionMultiplier(1.0);
 
-		schoolClosureControlStrategy.setCloseIndividualPlacesIndependently(individualSchools);
+		schoolClosureControlMeasure.setCloseIndividualPlacesIndependently(individualSchools);
 
 		if (fixedStartTime) {
 			FixedDuration fst = new FixedDuration();
@@ -980,7 +980,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 			trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 			trigger.setTimeSinceTimeScaleZero(fst);
 
-			schoolClosureControlStrategy.getControlStrategyStartTime().add(trigger);
+			schoolClosureControlMeasure.getControlMeasureStartTime().add(trigger);
 		} else {
 //            ReactiveStartTime st = new ReactiveStartTime();
 			DiseaseSurveillanceTriggerDefinition rt = new DiseaseSurveillanceTriggerDefinition();
@@ -1003,21 +1003,21 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 			capability.setTimeDelayOfCaseDetection(caseDetectionTimeDelay);
 
 //            ReactiveTriggerDefinition rt = new ReactiveTriggerDefinition();
-			rt.setReactiveControlStrategyTest(description);
-			rt.setReactiveControlStrategyThreshold(1);
-			rt.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+			rt.setReactiveControlMeasureTest(description);
+			rt.setReactiveControlMeasureThreshold(1);
+			rt.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 			rt.setDiseaseSurveillanceCapability(capability);
 			rt.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.PERCENT);
 			rt.setDiseaseSurveillanceCapability(capability);
-			schoolClosureControlStrategy.getControlStrategyStartTime().add(rt);
+			schoolClosureControlMeasure.getControlMeasureStartTime().add(rt);
 		}
 
-//        ControlStrategyTargetPopulationsAndPrioritization prioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-//        prioritization.setControlStrategyNamedPrioritizationScheme("None");
+//        ControlMeasureTargetPopulationsAndPrioritization prioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+//        prioritization.setControlMeasureNamedPrioritizationScheme("None");
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setValue(2.0);
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
-		schoolClosureControlStrategy.setControlStrategyResponseDelay(responseDelay);
+		schoolClosureControlMeasure.setControlMeasureResponseDelay(responseDelay);
 
 //        FixedStopTime stopTime = new FixedStopTime();
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
@@ -1026,20 +1026,20 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		stopTimeDuration.setValue(150d);
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(stopTimeDuration);
-		schoolClosureControlStrategy.getControlStrategyStopTime().add(stopTrigger);
+		schoolClosureControlMeasure.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(150d);
-		schoolClosureControlStrategy.setControlStrategyStandDownDelay(standDownDelay);
+		schoolClosureControlMeasure.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration closureDuration = new FixedDuration();
 		closureDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
 		closureDuration.setValue(56d);
 
-		schoolClosureControlStrategy.setDescription(description);
-		schoolClosureControlStrategy.setClosurePeriod(closureDuration);
-		return schoolClosureControlStrategy;
+		schoolClosureControlMeasure.setDescription(description);
+		schoolClosureControlMeasure.setClosurePeriod(closureDuration);
+		return schoolClosureControlMeasure;
 	}
 
 	@Override

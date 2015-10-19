@@ -21,13 +21,13 @@ public class ExampleVaccinationControlStrategy {
 		super();
 	}
 
-	private ProbabilisticParameter getControlStrategyCompilance() {
+	private ProbabilisticParameter getControlMeasureCompilance() {
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.5);
 		return compliance;
 	}
 
-	private Duration getControlStrategyStandDownDelay() {
+	private Duration getControlMeasureStandDownDelay() {
 		FixedDuration duration = new FixedDuration();
 		duration.setUnitOfTime(UnitOfTimeEnum.DAY);
 		duration.setValue(0d);
@@ -55,9 +55,9 @@ public class ExampleVaccinationControlStrategy {
 
 	private DiseaseSurveillanceTriggerDefinition getDiseaseSurveillanceTriggerDefinition() {
 		DiseaseSurveillanceTriggerDefinition diseaseSurveillanceTriggerDefinition = new DiseaseSurveillanceTriggerDefinition();
-		diseaseSurveillanceTriggerDefinition.setReactiveControlStrategyTest("symptomatic people in the population");
-		diseaseSurveillanceTriggerDefinition.setReactiveControlStrategyThreshold(50);
-		diseaseSurveillanceTriggerDefinition.setReactiveControlStrategyOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
+		diseaseSurveillanceTriggerDefinition.setReactiveControlMeasureTest("symptomatic people in the population");
+		diseaseSurveillanceTriggerDefinition.setReactiveControlMeasureThreshold(50);
+		diseaseSurveillanceTriggerDefinition.setReactiveControlMeasureOperator(OperatorEnum.GREATER_THAN_OR_EQUAL);
 		diseaseSurveillanceTriggerDefinition.setUnitOfMeasureForThreshold(UnitOfMeasureEnum.CASES);
 		diseaseSurveillanceTriggerDefinition.setDiseaseSurveillanceCapability(getDiseaseSurveillanceCapability());
 		return diseaseSurveillanceTriggerDefinition;
@@ -83,25 +83,25 @@ public class ExampleVaccinationControlStrategy {
 	}
 
 	
-	public  RunSimulationMessage addVaccinationControlStrategyToRunSimulationMessage(RunSimulationMessage message) {
+	public  RunSimulationMessage addVaccinationControlMeasureToRunSimulationMessage(RunSimulationMessage message) {
 		message.getInfectiousDiseaseScenario().getInfectiousDiseaseControlStrategies()
-                .add(getVaccinationControlStrategy(message.getInfectiousDiseaseScenario().getScenarioDate()));
+                .add(getVaccinationControlMeasure(message.getInfectiousDiseaseScenario().getScenarioDate()));
 		return message;
 	}
 
-	private ControlStrategyTargetPopulationsAndPrioritization getTargetPopulationsAndPrioritizations() {
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
+	private ControlMeasureTargetPopulationsAndPrioritization getTargetPopulationsAndPrioritizations() {
+		ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
 		return targetPopulationsAndPrioritization;
 	}
 
-	private TemporalTriggerDefinition getTemporalTriggerDefinitionForControlStrategyStopTime() {
+	private TemporalTriggerDefinition getTemporalTriggerDefinitionForControlMeasureStopTime() {
 		FixedDuration fixedDuration = new FixedDuration();
 		fixedDuration.setUnitOfTime(UnitOfTimeEnum.MONTH);
 		fixedDuration.setValue(2.0);
 
 		TemporalTriggerDefinition temporalTriggerDefinition = new TemporalTriggerDefinition();
-		temporalTriggerDefinition.setTimeScale(TimeScaleEnum.CONTROL_STRATEGY_TIME_SCALE);
+		temporalTriggerDefinition.setTimeScale(TimeScaleEnum.CONTROL_MEASURE_TIME_SCALE);
 		temporalTriggerDefinition.setTimeSinceTimeScaleZero(fixedDuration);
 
 		return temporalTriggerDefinition;
@@ -167,27 +167,27 @@ public class ExampleVaccinationControlStrategy {
 		return vaccination;
 	}
 
-	private  IndividualTreatmentControlStrategy getVaccinationControlStrategy(XMLGregorianCalendar startDate) {
-		IndividualTreatmentControlStrategy vaccinationControlStrategy = new IndividualTreatmentControlStrategy();
+	private  IndividualTreatmentControlMeasure getVaccinationControlMeasure(XMLGregorianCalendar startDate) {
+		IndividualTreatmentControlMeasure vaccinationControlMeasure = new IndividualTreatmentControlMeasure();
 
-		/* inherited from InfectiousDiseaseControlStrategy */
-		vaccinationControlStrategy.setDescription("An example vaccination control strategy.");
-		vaccinationControlStrategy.setLocation(getLocation());
-		vaccinationControlStrategy.getControlStrategyStartTime().add(getDiseaseSurveillanceTriggerDefinition());
-		vaccinationControlStrategy.getControlStrategyStopTime().add(getTemporalTriggerDefinitionForControlStrategyStopTime());
-		vaccinationControlStrategy.setControlStrategyResponseDelay(getResponseDelay());
-		vaccinationControlStrategy.setControlStrategyStandDownDelay(getControlStrategyStandDownDelay());
-        vaccinationControlStrategy.getLogisticalSystems().add(getLogisticalSystem(startDate));
+		/* inherited from InfectiousDiseaseControlMeasure */
+		vaccinationControlMeasure.setDescription("An example vaccination control strategy.");
+		vaccinationControlMeasure.setLocation(getLocation());
+		vaccinationControlMeasure.getControlMeasureStartTime().add(getDiseaseSurveillanceTriggerDefinition());
+		vaccinationControlMeasure.getControlMeasureStopTime().add(getTemporalTriggerDefinitionForControlMeasureStopTime());
+		vaccinationControlMeasure.setControlMeasureResponseDelay(getResponseDelay());
+		vaccinationControlMeasure.setControlMeasureStandDownDelay(getControlMeasureStandDownDelay());
+        vaccinationControlMeasure.getLogisticalSystems().add(getLogisticalSystem(startDate));
 
-		/* from IndividualTreatmentControlStrategy */
-		vaccinationControlStrategy.setPathogen(getPathogen());
-		vaccinationControlStrategy.setIndividualTreatment(getVaccination());
+		/* from IndividualTreatmentControlMeasure */
+		vaccinationControlMeasure.setPathogen(getPathogen());
+		vaccinationControlMeasure.setIndividualTreatment(getVaccination());
 		// populationTreatmentCensus not set as it is not required
-		vaccinationControlStrategy.setCompliance(getControlStrategyCompilance());
+		vaccinationControlMeasure.setCompliance(getControlMeasureCompilance());
 		// delayFromSymptomsToTreatment not set as it is not required
-		vaccinationControlStrategy.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
+		vaccinationControlMeasure.setTargetPopulationsAndPrioritizations(getTargetPopulationsAndPrioritizations());
 
-		return vaccinationControlStrategy;
+		return vaccinationControlMeasure;
 	}
 
 	private VaccinationEfficacyForSimulatorConfiguration getVaccinationEfficacyForSimulatorConfiguration() {

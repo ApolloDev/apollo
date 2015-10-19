@@ -13,7 +13,7 @@ import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
 import edu.pitt.apollo.types.v3_0_2.Epidemic;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
+import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlMeasure;
 import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
 import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
@@ -1096,7 +1096,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 //		System.out.println(role);
 		LibraryItemContainer item = new LibraryItemContainer();
 //		Epidemic epidemic = getEpidemic();
-		IndividualTreatmentControlStrategy strategy = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure strategy = new IndividualTreatmentControlMeasure();
 		strategy.setDescription("test strategy");
 		ProbabilisticParameter prob = new ProbabilisticParameter();
 		prob.setProbability(0.5);
@@ -1104,7 +1104,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.DECSISION_TIME_SCALE);
-		strategy.getControlStrategyStartTime().add(trigger);
+		strategy.getControlMeasureStartTime().add(trigger);
 
 //		epidemic.getInfectiousDiseaseControlStrategies().add(strategy);
 //////
