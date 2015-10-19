@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DataServiceAccessor extends ServiceAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface {
 	
-	public static final String DATA_SERVICE_URL = "";
+	public static final String DATA_SERVICE_URL = "http://localhost:8080/";
 	
 	protected RunManagementInterface runManagementInterface;
 	protected ContentManagementInterface contentManagementInterface;

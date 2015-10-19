@@ -65,7 +65,7 @@ public class RunMethodForDataService extends AbstractRunMethod {
 	private List<URLForFileAndRunId> urlsForFilesAndRunIds;
 
 	public RunMethodForDataService(BigInteger runId, Authentication authentication) throws JsonUtilsException, DataServiceException {
-		super(runId, authentication, "run_dataservice_message.json");
+		super(runId, authentication, "data_retrieval_request_message.json");
 	}
 
 //	private void getOutputFileURLs(GetOutputFilesURLsMessage message, BigInteger runId) throws DataServiceException {
