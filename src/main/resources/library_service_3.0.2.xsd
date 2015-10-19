@@ -12,7 +12,7 @@
 
 	<complexType name="LibraryCollection">
 		<complexContent>
-			<extension base="Q1:RootApolloLibraryItem">
+			<extension base="Q1:ApolloIndexableItem">
 				<sequence>
 					<element name="name" type="token" minOccurs="1" maxOccurs="1"></element>
 					<element name="description" type="string" minOccurs="0" maxOccurs="1"></element>
@@ -26,7 +26,7 @@
 		<sequence>
 			<element name="catalogEntry" type="tns:CatalogEntry"
 				maxOccurs="1" minOccurs="1" />
-			<element name="libraryItem" type="Q1:RootApolloLibraryItem"
+			<element name="libraryItem" type="Q1:ApolloIndexableItem"
 				maxOccurs="1" minOccurs="1" />
 		</sequence>
 	</complexType>
@@ -52,7 +52,7 @@
 
 	<complexType name="TextContainer">
 		<complexContent>
-			<extension base="Q1:RootApolloLibraryItem">
+			<extension base="Q1:ApolloIndexableItem">
 				<sequence>
 					<element name="text" type="string"/>
 				</sequence>
