@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class RunJobMethodFactory {
 
-	private static final String RUN_DATA_SEVICE_MESSAGE_FILENAME = "run_data_service_message.json";
+	private static final String RUN_DATA_SEVICE_MESSAGE_FILENAME = "data_retrieval_request_message.json";
 
 	private static String getMessageContent(BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException, ApolloDatabaseException, DataServiceException {
 		DatabaseAccessor databaseAccessor = DatabaseAccessorFactory.getDatabaseAccessor(authentication);

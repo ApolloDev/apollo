@@ -392,6 +392,9 @@ INSERT INTO run_data_description (label) values ('FluTE ODS required output file
 INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 77*/
 INSERT INTO run_data_description (label) values ('RunSimulationsMessage JSON, run_simulations_message.json '); /* 78*/
 INSERT INTO run_data_description (label) values ('Open Malaria configuration file, config.xml '); /* 79*/
+INSERT INTO run_data_description (label) values ('Data Service Request Message, data_retrieval_request_message.json '); /* 80 */
+INSERT INTO run_data_description (label) values ('Open Malaria Output File, om_native_output_json.json '); /* 81 */
+
 
 
 INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_description_axis_id, value) values
@@ -886,7 +889,19 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
   (79, 2, 'config.xml'),
   (79, 3, 'CONFIGURATION_FILE'),
   (79, 4, '1'),
-  (79, 5, '14');
+  (79, 5, '14'),
+
+  (80, 1, 'TEXT'), 
+  (80, 2, 'data_retrieval_request_message.json'),
+  (80, 3, 'RUN_MESSAGE'),
+  (80, 4, '12'),
+  (80, 5, '10'),
+
+  (80, 1, 'TEXT'), 
+  (80, 2, 'om_native_output.json'),
+  (80, 3, 'TEXT'),
+  (80, 4, '12'),
+  (80, 5, '14');
     
 CREATE VIEW run_data_description_view AS
 SELECT

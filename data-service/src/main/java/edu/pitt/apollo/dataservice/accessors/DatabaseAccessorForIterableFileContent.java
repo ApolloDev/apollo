@@ -38,7 +38,7 @@ public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor imp
 			throw new ApolloDatabaseException(ex.getMessage());
 		}
 
-		PreparedStatement pstmt = dbUtils.getDataContentForBatchSimulations(runId, optionalFileNamesToMatch);
+		PreparedStatement pstmt = dbUtils.getDataContentForBatchSimulations(runId, optionalFileNamesToMatch, conn);
 		try {
 			resultSet = pstmt.executeQuery();
 		} catch (SQLException ex) {
@@ -60,7 +60,7 @@ public class DatabaseAccessorForIterableFileContent extends DatabaseAccessor imp
 
 				fileContent.setRunId(resultSet.getInt(RUN_ID_COLUMN_NAME));
 				fileContent.setFileName(resultSet.getString(FILE_NAME_ID));
-				fileContent.setFileName(resultSet.getString(FILE_CONTENT_COLUMN_NAME));
+				fileContent.setFileContent(resultSet.getString(FILE_CONTENT_COLUMN_NAME));
 
 				return fileContent;
 			} else {
