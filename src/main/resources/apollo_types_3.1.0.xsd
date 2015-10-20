@@ -3431,6 +3431,7 @@
 					<element name="speciesOfCases" type="tns:NcbiTaxonId"
 							 maxOccurs="1" minOccurs="1">
 					</element>
+					<element name="caseSeriesDescription" type="token" maxOccurs="1" minOccurs="0"></element>
 					<element name="caseRecords" type="tns:CaseRecord"
 							 maxOccurs="unbounded" minOccurs="1">
 					</element>
