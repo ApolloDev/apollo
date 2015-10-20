@@ -15,7 +15,7 @@
 
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.examples.ExampleVaccinationControlMeasure;
+import edu.pitt.apollo.libraryclient.ExampleVaccinationControlStrategy;
 import edu.pitt.apollo.services_common.v3_0_2.Authentication;
 
 import java.net.MalformedURLException;
@@ -25,11 +25,11 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 	public String infectionUuid = "";
 	public String infectiousDiseaseScenarioUuid = "";
 	public String vaccinationControlMeasureUuid = "";
-	public ExampleVaccinationControlMeasure vaccinationControlMeasure;
+	public ExampleVaccinationControlStrategy vaccinationControlMeasure;
 
 	public Chapter9_LibraryExample() throws MalformedURLException {
 		super();
-		vaccinationControlMeasure = new ExampleVaccinationControlMeasure();
+		vaccinationControlMeasure = new ExampleVaccinationControlStrategy();
 	}
 
 	protected Authentication getAuthentication() {

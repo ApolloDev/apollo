@@ -10,6 +10,8 @@ import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceV302;
 import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceEI;
 import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceV302;
 import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;

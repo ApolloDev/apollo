@@ -538,7 +538,7 @@
 
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="simulatorIdentification" type="services:SoftwareIdentification"></xsd:element>
+						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification"></xsd:element>
 						<xsd:element name="location" type="apollo:ApolloLocationCode"></xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -556,7 +556,7 @@
 
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="simulatorIdentification" type="services:SoftwareIdentification">
+						<xsd:element name="simulatorIdentification" type="apollo:SoftwareIdentification">
 						</xsd:element>
 					</xsd:sequence>
 				</xsd:complexType>
@@ -800,18 +800,7 @@
 		<wsdl:part name="parameters"
 			element="tns:getConfigurationFileForSimulationResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="queryForDiseaseConfigurationRequest">
-		<wsdl:part name="parameters" element="tns:queryForDiseaseConfiguration"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="queryForDiseaseConfigurationResponse">
-		<wsdl:part name="parameters" element="tns:queryForDiseaseConfigurationResponse"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getItemsReadyToBeIndexedRequest">
-		<wsdl:part name="parameters" element="tns:getItemsReadyToBeIndexed"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getItemsReadyToBeIndexedResponse">
-		<wsdl:part name="parameters" element="tns:getItemsReadyToBeIndexedResponse"></wsdl:part>
-	</wsdl:message>
+
 	<wsdl:message name="getPopulationAndEnvironmentCensusRequest">
 		<wsdl:part name="parameters" element="tns:getPopulationAndEnvironmentCensus"></wsdl:part>
 	</wsdl:message>

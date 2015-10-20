@@ -123,12 +123,6 @@
 	<wsdl:message name="runSimulationResponse">
 		<wsdl:part element="tns:runSimulationResponse" name="parameters" />
 	</wsdl:message>
-	<wsdl:message name="getRunStatusRequest">
-		<wsdl:part name="parameters" element="tns:getRunStatus"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getRunStatusResponse">
-		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
-	</wsdl:message>
 	<wsdl:message name="getScenarioLocationCodesSupportedBySimulatorRequest">
 		<wsdl:part name="parameters"
 			element="tns:getScenarioLocationCodesSupportedBySimulator"></wsdl:part>

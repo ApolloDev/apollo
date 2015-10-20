@@ -9,6 +9,8 @@ import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;

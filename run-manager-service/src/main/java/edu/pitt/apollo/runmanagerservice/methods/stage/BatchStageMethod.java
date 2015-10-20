@@ -12,6 +12,8 @@ import edu.pitt.apollo.runmanagerservice.thread.StatusUpdaterThread;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import org.slf4j.Logger;
 
 import javax.xml.datatype.XMLGregorianCalendar;

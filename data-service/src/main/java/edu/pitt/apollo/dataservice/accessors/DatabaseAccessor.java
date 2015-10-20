@@ -1,6 +1,8 @@
 package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.exception.Md5UtilsException;
+import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.*;
