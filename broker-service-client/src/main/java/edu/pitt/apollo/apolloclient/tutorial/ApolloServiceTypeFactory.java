@@ -3,15 +3,15 @@ package edu.pitt.apollo.apolloclient.tutorial;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.examples.ExampleInfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_2.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_1_0.SimulatorTimeSpecification;
 
-import edu.pitt.apollo.types.v3_0_2.UnitOfTimeEnum;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.types.v3_1_0.UnitOfTimeEnum;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
 public class ApolloServiceTypeFactory {
 

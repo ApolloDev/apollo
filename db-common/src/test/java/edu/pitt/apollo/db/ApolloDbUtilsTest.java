@@ -7,8 +7,8 @@ import java.util.Map;
 import junit.framework.TestCase;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 
 
 public class ApolloDbUtilsTest extends TestCase {

@@ -29,7 +29,7 @@ import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 
 public class Chapter2_RunSimulationWithNoIntervention extends
 		AbstractRunAndVisualizeSimulationClass {

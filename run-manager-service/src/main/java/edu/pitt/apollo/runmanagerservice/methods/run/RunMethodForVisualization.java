@@ -2,12 +2,12 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
 import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
 

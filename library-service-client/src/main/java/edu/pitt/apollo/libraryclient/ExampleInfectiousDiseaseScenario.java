@@ -1,7 +1,7 @@
 package edu.pitt.apollo.libraryclient;
 
 
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

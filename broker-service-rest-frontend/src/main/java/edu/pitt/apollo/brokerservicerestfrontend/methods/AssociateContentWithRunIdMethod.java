@@ -7,13 +7,13 @@ package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.apolloservice.methods.content.BaseDataServiceAccessorMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateContentWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateContentWithRunIdMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_0_2.*;
-import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;

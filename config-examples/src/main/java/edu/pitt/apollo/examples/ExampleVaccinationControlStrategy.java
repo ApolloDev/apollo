@@ -1,11 +1,11 @@
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

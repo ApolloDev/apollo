@@ -3,12 +3,12 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.LibraryItemContainer;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v3_1_0.AddLibraryItemContainerMessage;
+import edu.pitt.apollo.library_service_types.v3_1_0.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v3_1_0.LibraryItemContainer;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
 
 /**
  *

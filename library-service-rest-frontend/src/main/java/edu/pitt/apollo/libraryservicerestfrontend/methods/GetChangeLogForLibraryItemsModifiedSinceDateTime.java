@@ -2,9 +2,9 @@ package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import org.springframework.http.HttpStatus;
 
 import javax.xml.datatype.DatatypeConfigurationException;

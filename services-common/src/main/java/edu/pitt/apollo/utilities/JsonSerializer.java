@@ -16,7 +16,7 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 
 /**
  *

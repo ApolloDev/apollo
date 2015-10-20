@@ -8,8 +8,8 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.utilities.ErrorUtils;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

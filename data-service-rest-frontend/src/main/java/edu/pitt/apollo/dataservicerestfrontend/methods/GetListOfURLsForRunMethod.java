@@ -5,14 +5,14 @@
  */
 package edu.pitt.apollo.dataservicerestfrontend.methods;
 
-import edu.pitt.apollo.data_service_types.v3_0_2.ContentIdAndDescription;
+import edu.pitt.apollo.data_service_types.v3_1_0.ContentIdAndDescription;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.dataservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_1_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import java.util.ArrayList;

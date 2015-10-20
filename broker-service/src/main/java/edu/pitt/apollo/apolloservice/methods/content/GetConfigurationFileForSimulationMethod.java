@@ -1,11 +1,11 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.GetConfigurationFileForSimulationResult;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.GetConfigurationFileForSimulationResult;
 
 import java.math.BigInteger;
 import java.util.Map;

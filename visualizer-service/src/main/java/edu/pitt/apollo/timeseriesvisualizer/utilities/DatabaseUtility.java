@@ -18,8 +18,8 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_1_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_1_0.ContentDataTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;

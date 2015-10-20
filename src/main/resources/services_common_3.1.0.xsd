@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services-common.apollo.pitt.edu/v3_0_2/"
-	xmlns:tns="http://services-common.apollo.pitt.edu/v3_0_2/"
-		xmlns:apollo="http://types.apollo.pitt.edu/v3_0_2/"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services-common.apollo.pitt.edu/v3_1_0/"
+	xmlns:tns="http://services-common.apollo.pitt.edu/v3_1_0/"
+		xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/"
 	elementFormDefault="qualified">
 
-	<import schemaLocation="apollo_types_3.0.2.xsd" namespace="http://types.apollo.pitt.edu/v3_0_2/"></import>
+	<import schemaLocation="apollo_types_3.1.0.xsd" namespace="http://types.apollo.pitt.edu/v3_1_0/"></import>
 
 	<!-- need to add an element here for any class you want to be able to serialize with JAXB -->
 	<element name="MethodCallStatusElement" type="tns:MethodCallStatus"/>

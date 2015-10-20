@@ -1,13 +1,13 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
-import edu.pitt.apollo.types.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
 

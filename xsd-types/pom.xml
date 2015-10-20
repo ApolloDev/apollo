@@ -151,14 +151,14 @@
                                 <resource>
                                     <directory>${basedir}/../src/main/resources</directory>
                                     <includes>
-                                        <include>apollo_types_3.0.2.xsd</include>
-                                        <include>library_service_3.0.2.xsd</include>
-                                        <include>simulator_service_3.0.2.xsd</include>
-                                        <include>services_common_3.0.2.xsd</include>
-                                        <include>visualizer_service_3.0.2.xsd</include>
-                                        <include>apollo_service_3.0.2.xsd</include>
-                                        <include>data_service_3.0.2.xsd</include>
-                                        <include>synthetic_population_service_3.0.2.xsd</include>
+                                        <include>apollo_types_3.1.0.xsd</include>
+                                        <include>library_service_3.1.0.xsd</include>
+                                        <include>simulator_service_3.1.0.xsd</include>
+                                        <include>services_common_3.1.0.xsd</include>
+                                        <include>visualizer_service_3.1.0.xsd</include>
+                                        <include>apollo_service_3.1.0.xsd</include>
+                                        <include>data_service_3.1.0.xsd</include>
+                                        <include>synthetic_population_service_3.1.0.xsd</include>
                                     </includes>
                                     <filtering>true</filtering>
 
@@ -219,15 +219,15 @@
                     <bindingDirectory>src/main/xjb</bindingDirectory>
                     <schemaDirectory>src/main/xsd</schemaDirectory>
                     <schemaIncludes>
-                        <include>apollo_types_3.0.2.xsd</include>
-                        <include>library_service_3.0.2.xsd</include>
-                        <include>simulator_service_3.0.2.xsd</include>
-                        <include>services_common_3.0.2.xsd</include>
-                        <include>synthetic_population_service_3.0.2.xsd</include>
-                        <include>visualizer_service_3.0.2.xsd</include>
-                        <include>apollo_service_3.0.2.xsd</include>
-                        <include>data_service_3.0.2.xsd</include>
-                        <include>synthetic_population_service_3.0.2.xsd</include>
+                        <include>apollo_types_3.1.0.xsd</include>
+                        <include>library_service_3.1.0.xsd</include>
+                        <include>simulator_service_3.1.0.xsd</include>
+                        <include>services_common_3.1.0.xsd</include>
+                        <include>synthetic_population_service_3.1.0.xsd</include>
+                        <include>visualizer_service_3.1.0.xsd</include>
+                        <include>apollo_service_3.1.0.xsd</include>
+                        <include>data_service_3.1.0.xsd</include>
+                        <include>synthetic_population_service_3.1.0.xsd</include>
                     </schemaIncludes>
                     <extension>true</extension>
 
@@ -255,5 +255,5 @@
     </build>
     <name>Apollo XSD types</name>
     <groupId>edu.pitt.apollo</groupId>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
 </project>

@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v3_0_2.KillRunResponse;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_1_0.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v3_1_0.KillRunResponse;
+import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.SyntheticPopulationRunStatusMessage;
 
 import edu.pitt.apollo.syntheticpopulationserviceclient.WSClient;
 

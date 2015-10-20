@@ -21,8 +21,8 @@ import edu.pitt.apollo.dataservicerestfrontend.methods.InsertRunMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.RunDataServiceJobMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.dataservicerestfrontend.methods.SetStatusOfRunMethod;
-import edu.pitt.apollo.services_common.v3_0_2.*;
-import edu.pitt.apollo.types.v3_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.library_service_types.v3_0_2.*;
+import edu.pitt.apollo.library_service_types.v3_1_0.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
@@ -10,13 +10,13 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.Epidemic;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlMeasure;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.ApolloPathogenCode;
+import edu.pitt.apollo.types.v3_1_0.Epidemic;
+import edu.pitt.apollo.types.v3_1_0.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v3_1_0.ProbabilisticParameter;
+import edu.pitt.apollo.types.v3_1_0.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v3_1_0.TimeScaleEnum;
 
 import java.io.*;
 import java.sql.Connection;

@@ -5,18 +5,18 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_0_2.*;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.XMLDeserializer;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 import org.springframework.http.HttpStatus;
 
 /**

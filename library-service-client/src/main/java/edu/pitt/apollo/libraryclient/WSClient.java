@@ -15,14 +15,14 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v3_0_2.*;
-import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV302;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.types.v3_0_2.Census;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlMeasure;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlMeasure;
+import edu.pitt.apollo.library_service_types.v3_1_0.*;
+import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceV310;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.Census;
+import edu.pitt.apollo.types.v3_1_0.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v3_1_0.PlaceClosureControlMeasure;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,8 +43,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.2-SNAPSHOT/services/libraryservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_2/", "LibraryService_v3.0.2");
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_1_0/", "LibraryService_v3.1.0");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
 	public static final String APOLLO_DIR;
@@ -65,7 +65,7 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV302 ls = new LibraryServiceV302(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV310 ls = new LibraryServiceV310(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();

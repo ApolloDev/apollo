@@ -1,11 +1,11 @@
 <jaxb:bindings version="2.1" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
 	xmlns:annox="http://annox.dev.java.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<jaxb:bindings schemaLocation="../xsd/apollo_types_3.0.2.xsd"
+	<jaxb:bindings schemaLocation="../xsd/apollo_types_3.1.0.xsd"
 		node="/xs:schema">
 		<jaxb:globalBindings generateElementProperty="false" />
 
 	</jaxb:bindings>
-	<jaxb:bindings schemaLocation="../xsd/apollo_types_3.0.2.xsd"
+	<jaxb:bindings schemaLocation="../xsd/apollo_types_3.1.0.xsd"
 		node="xs:complexType[*]" multiple="true">
 
 		<annox:annotate>

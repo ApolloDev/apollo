@@ -5,13 +5,13 @@ import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
 
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
-import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.services_common.v3_1_0.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceException;
