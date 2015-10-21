@@ -277,7 +277,7 @@
     <complexType name="TargetPopulationDefinition">
         <sequence>
             <element name="ageRange" type="tns:AgeRangeCategoryDefinition" maxOccurs="1" minOccurs="0"/>
-            <element name="gender" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
+            <element name="sex" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
             <element name="diseaseOutcome" type="tns:DiseaseOutcomeEnum" maxOccurs="1" minOccurs="0"/>
             <element name="otherStratification" type="tns:PopulationStratificationEnum" maxOccurs="1" minOccurs="0"/>
         </sequence>
@@ -285,7 +285,7 @@
     <complexType name="PopulationInfectionAndImmunityCensusDataCell">
         <sequence>
             <element name="ageRange" type="tns:AgeRangeCategoryDefinition" maxOccurs="1" minOccurs="0"/>
-            <element name="gender" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
+            <element name="sex" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
             <choice>
                 <element name="infectionState" type="tns:InfectionStateEnum" maxOccurs="1" minOccurs="1"/>
                 <element name="diseaseState" type="tns:DiseaseOutcomeEnum" maxOccurs="1" minOccurs="1"/>
@@ -296,7 +296,7 @@
     <complexType name="PopulationTreatmentCensusDataCell">
         <sequence>
             <element name="ageRange" type="tns:AgeRangeCategoryDefinition" maxOccurs="1" minOccurs="0"/>
-            <element name="gender" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
+            <element name="sex" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
             <element name="treatmentState" type="tns:TreatmentStateEnum" maxOccurs="1" minOccurs="1"/>
             <element name="fractionInTreatmentState" type="tns:Fraction" maxOccurs="1" minOccurs="1" />
         </sequence>
@@ -499,7 +499,7 @@
         <complexContent>
             <extension base="tns:CategoryDefinition">
                 <sequence>
-                    <element name="gender" type="tns:GenderEnum" maxOccurs="1" minOccurs="1" />
+                    <element name="sex" type="tns:GenderEnum" maxOccurs="1" minOccurs="1" />
                 </sequence>
             </extension>
         </complexContent>
@@ -1536,7 +1536,7 @@
     <simpleType name="ConditioningVariableEnum">
         <restriction base="string">
             <enumeration value="biologicalSex" />
-            <enumeration value="gender" />
+            <enumeration value="sex" />
             <enumeration value="ageRange" />
             <enumeration value="timeSpan" />
             <enumeration value="diseaseOutcome" />
@@ -2180,7 +2180,7 @@
         <sequence>
             <element name="caseId" type="token" maxOccurs="1" minOccurs="1"/>
             <element name="ageInYears" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"/>
-            <element name="gender" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
+            <element name="sex" type="tns:GenderEnum" maxOccurs="1" minOccurs="0"/>
             <element name="race" type="string" maxOccurs="unbounded" minOccurs="0"/>
             <element name="occupations" type="tns:OccupationEnum" maxOccurs="unbounded" minOccurs="0"/>
             <element name="placesVisitedWhileSusceptibleOrInfectious" type="tns:PlaceVisited" maxOccurs="unbounded" minOccurs="0"/>
