@@ -1,5 +1,8 @@
+
+<img align="left" src="https://github.com/ApolloDev/apollo/blob/wiki/img/apollo_logo.png"/>
 #About
 The goal of this project is to increase programmatic access to epidemic simulators, which are a class of simulation software specialized for modeling epidemics and control strategies (mitigation strategies).
+<br><br><br><br><br><br>
 
 #Apollo Projects
 
@@ -35,5 +38,16 @@ The development version of the ontology is always available at: http://purl.obol
 For instructions on viewing Apollo-SV, click [https://github.com/ApolloDev/apollo/wiki/Apollo-SV-BasicsOfViewing here].
 
 ##Acknowledgements
-The Apollo Software Development Team would like to thank PremiumSoft™ CyberTech Ltd. for supporting this open source project by providing the project with a free license for Navicat.<br>
-<a href="http://www.navicat.com"><img src="https://github.com/ApolloDev/apollo/blob/wiki/img/navicat.png" align="left" height="100" ></a>
+
+<table border=0>
+<tr>
+  <td>
+     The Apollo Software Development Team would like to thank PremiumSoft™ CyberTech Ltd. for supporting this open source project by providing the project with a free license for Navicat.
+ </td>
+  <td width="375"><a href="http://www.navicat.com"><img src="https://github.com/ApolloDev/apollo/blob/wiki/img/navicat.png" align="left" height="100" ></a>
+  </td><tr></tr>
+<tr style="background-color:white">
+  <td>The Apollo Software Development Team would also like to thank JetBrains s.r.o for providing this open source project with free licenses for the amazing IntelliJ IDE.</td>
+  <td width="375"><a href="http://www.jetbrains.com/idea/"><img src="https://github.com/ApolloDev/apollo/blob/wiki/img/logo_intellij_idea.png" align="left" width="312" ></a></td>
+<tr>
+</table>
