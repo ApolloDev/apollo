@@ -59,7 +59,7 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodIsThreeDays);
 
 		ConditioningVariable gender = new ConditioningVariable();
-		gender.setName(ConditioningVariableEnum.GENDER);
+		gender.setName(ConditioningVariableEnum.SEX);
 		Category male = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
 		Category female = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
 		gender.getCategories().add(male);
@@ -94,7 +94,7 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodForFemalesIsThreeDays);
 
 		ConditioningVariable gender = new ConditioningVariable();
-		gender.setName(ConditioningVariableEnum.GENDER);
+		gender.setName(ConditioningVariableEnum.SEX);
 		Category maleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M,
 				latentPeriodDurationForMales);
 		Category femaleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F,
@@ -116,7 +116,7 @@ public class ExampleConditionalProbabilityDistribution {
 			DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution) {
 		Category GenderCategoryDefinition = new Category();
 		GenderCategoryDefinition GenderCategoryDefinitionDefinition = new GenderCategoryDefinition();
-		GenderCategoryDefinitionDefinition.setGender(gender);
+		GenderCategoryDefinitionDefinition.setSex(gender);
 		GenderCategoryDefinition.setCategoryDefinition(GenderCategoryDefinitionDefinition);
 		GenderCategoryDefinition.setUnconditionalProbabilityDistribution(discreteNonparametricProbabilityDistribution);
 		return GenderCategoryDefinition;
