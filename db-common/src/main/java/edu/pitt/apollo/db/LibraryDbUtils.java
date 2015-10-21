@@ -46,6 +46,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
 	private static final Logger libraryLogger = LoggerFactory.getLogger(LibraryDbUtils.class);
     private static final String LIBRARY_DATABASE_PROPERTIES_FILE = "library_database.properties";
+	private static final String LIBRARY_SALT_FILE = "library_salt.txt";
 	private static final String ADDING_USER = "adding the user";
 	private static final String ADDING_USER_ROLE = "adding the user role";
 	private static final String AUTHORIZING_USER = "authorizing the user";
@@ -92,7 +93,7 @@ public class LibraryDbUtils extends BaseDbUtils {
     @Override
     protected String getSystemSaltFileDir() {
 
-        return APOLLO_DIR + SALT_FILE_NAME;
+        return APOLLO_DIR + LIBRARY_SALT_FILE;
     }
 
     @Override
