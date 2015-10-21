@@ -1,5 +1,8 @@
+
+<img align="left" src="https://github.com/ApolloDev/apollo/blob/wiki/img/apollo_logo.png"/>
 #About
 The goal of this project is to increase programmatic access to epidemic simulators, which are a class of simulation software specialized for modeling epidemics and control strategies (mitigation strategies).
+<br><br><br><br><br><br>
 
 #Apollo Projects
 
