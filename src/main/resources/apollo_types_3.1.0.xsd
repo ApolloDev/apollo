@@ -1085,25 +1085,27 @@
             </extension>
         </complexContent>
     </complexType>
-    <complexType name="InfectiousDiseaseScenario">
-        <complexContent>
-            <extension base="tns:ApolloIndexableItem">
-                <sequence>
-                    <element name="scenarioDate" type="dateTime" maxOccurs="1" minOccurs="1" />
-                    <element name="scenarioLocation" type="tns:Location" maxOccurs="1" minOccurs="1"/>
-                    <element name="populations" type="tns:Population" maxOccurs="unbounded" minOccurs="1" />
-                    <element name="infections" type="tns:Infection" maxOccurs="unbounded" minOccurs="1" />
-                    <element name="colonizations" type="tns:Colonization" maxOccurs="unbounded" minOccurs="0"/>
-                    <element name="contaminations" type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
-                    <element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus" maxOccurs="unbounded" minOccurs="0"/>
-                    <element name="abioticThingCensuses" type="tns:AbioticThingCensus" maxOccurs="unbounded" minOccurs="0"/>
-                    <element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0" />
-                    <element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin" maxOccurs="1" minOccurs="0"/>
-                    <element name="nonApolloParameters" type="tns:NonApolloParameter" maxOccurs="unbounded" minOccurs="0"/>
-                </sequence>
-            </extension>
-        </complexContent>
-    </complexType>
+    <element name="InfectiousDiseaseScenario">
+        <complexType name="InfectiousDiseaseScenario">
+            <complexContent>
+                <extension base="tns:ApolloIndexableItem">
+                    <sequence>
+                        <element name="scenarioDate" type="dateTime" maxOccurs="1" minOccurs="1" />
+                        <element name="scenarioLocation" type="tns:Location" maxOccurs="1" minOccurs="1"/>
+                        <element name="populations" type="tns:Population" maxOccurs="unbounded" minOccurs="1" />
+                        <element name="infections" type="tns:Infection" maxOccurs="unbounded" minOccurs="1" />
+                        <element name="colonizations" type="tns:Colonization" maxOccurs="unbounded" minOccurs="0"/>
+                        <element name="contaminations" type="tns:Contamination" maxOccurs="unbounded" minOccurs="0" />
+                        <element name="contaminatedThingCensuses" type="tns:ContaminatedThingCensus" maxOccurs="unbounded" minOccurs="0"/>
+                        <element name="abioticThingCensuses" type="tns:AbioticThingCensus" maxOccurs="unbounded" minOccurs="0"/>
+                        <element name="infectiousDiseaseControlStrategies" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0" />
+                        <element name="scenarioCartesianOrigin" type="tns:ScenarioCartesianOrigin" maxOccurs="1" minOccurs="0"/>
+                        <element name="nonApolloParameters" type="tns:NonApolloParameter" maxOccurs="unbounded" minOccurs="0"/>
+                    </sequence>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
     <complexType name="Epidemic">
         <complexContent>
             <extension base="tns:ApolloIndexableItem">
