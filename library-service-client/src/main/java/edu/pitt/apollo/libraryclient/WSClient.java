@@ -69,8 +69,8 @@ public class WSClient {
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-		//AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
-        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
+		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+//        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
 
 		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
 
