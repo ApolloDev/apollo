@@ -33,8 +33,10 @@
 
 	<complexType name="CatalogEntry">
 		<sequence>
-			<element name="itemDescription" type="string" maxOccurs="1"
+			<element name="displayName" type="string" maxOccurs="1"
 				minOccurs="1" />
+			<element name="textualIdentifier" type="string" maxOccurs="1"
+					 minOccurs="1" />
 			<element name="javaClassName" type="string" maxOccurs="1"
 				minOccurs="1" />
 		</sequence>
