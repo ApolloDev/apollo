@@ -130,9 +130,11 @@
          </ns5:timeSinceTimeScaleZero>
       </ns5:controlMeasureStartTime>
       <ns5:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
          <ns5:value>0.0</ns5:value>
       </ns5:controlMeasureResponseDelay>
       <ns5:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
          <ns5:value>0.0</ns5:value>
       </ns5:controlMeasureStandDownDelay>
       <ns5:logisticalSystems>
@@ -167,9 +169,11 @@
          </ns5:timeSinceTimeScaleZero>
       </ns5:controlMeasureStartTime>
       <ns5:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
          <ns5:value>0.0</ns5:value>
       </ns5:controlMeasureResponseDelay>
       <ns5:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
          <ns5:value>0.0</ns5:value>
       </ns5:controlMeasureStandDownDelay>
       <ns5:logisticalSystems>
