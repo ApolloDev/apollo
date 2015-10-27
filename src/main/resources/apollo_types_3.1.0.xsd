@@ -1321,7 +1321,7 @@
     </complexType>
     <simpleType name="NcbiTaxonId">
         <restriction base="token">
-            <pattern value="[0-9]"/>
+            <pattern value="[0-9]+"/>
         </restriction>
     </simpleType>
     <simpleType name="SnomedId">
