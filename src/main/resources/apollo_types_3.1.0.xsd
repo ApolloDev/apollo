@@ -2198,7 +2198,6 @@
             <element name="references" type="tns:Reference" maxOccurs="unbounded" minOccurs="0"/>
             <!-- New elements added for Rabies case records -->
             <element name="caseDefinition" type="tns:CaseDefinition" maxOccurs="1" minOccurs="0"/>
-            <element name="location" type="tns:ApolloLocationCode" maxOccurs="unbounded" minOccurs="0"/>
             <element name="causalPathogen" type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="0"/>
             <element name="treatment" type="tns:Treatment" maxOccurs="unbounded" minOccurs="0"/>
             <element name="infectionSource" type="tns:InfectionSource" maxOccurs="unbounded" minOccurs="0"/>
