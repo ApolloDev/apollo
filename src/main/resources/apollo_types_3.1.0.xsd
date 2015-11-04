@@ -2220,6 +2220,7 @@
         <sequence>
             <element name="countTitle" type="string" maxOccurs="1" minOccurs="1"/>
             <element name="caseDefinitionsIncluded" type="tns:CaseDefinitionEnum" maxOccurs="unbounded" minOccurs="1"/>
+            <element name="caseOutcomesIncluded" type="tns:DiseaseOutcomeEnum" maxOccurs="unbounded" minOccurs="0"/>
             <choice>
                 <element name="totalCount" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"/>
                 <element name="caseCountArray" type="tns:CaseCountArray" maxOccurs="1" minOccurs="1"/>
