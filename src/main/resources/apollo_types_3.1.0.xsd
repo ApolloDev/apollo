@@ -835,7 +835,7 @@
         <complexContent>
             <extension base="tns:Households">
                 <sequence>
-                    <element name="url" type="token" maxOccurs="unbounded" minOccurs="0"/>
+                    <element name="url" type="anyURI" maxOccurs="unbounded" minOccurs="0"/>
                 </sequence>
             </extension>
         </complexContent>
@@ -1326,7 +1326,7 @@
     </simpleType>
     <simpleType name="SnomedId">
         <restriction base="token">
-            <pattern value="[0-9]"/>
+            <pattern value="[0-9]+"/>
         </restriction>
     </simpleType>
     <simpleType name="vaccineOntologyId">
@@ -1336,7 +1336,7 @@
     </simpleType>
     <simpleType name="RxNormId">
         <restriction base="token">
-            <pattern value="[0-9]"/>
+            <pattern value="[0-9]+"/>
         </restriction>
     </simpleType>
     <complexType name="ProbabilityValuePair">
@@ -2198,7 +2198,6 @@
             <element name="references" type="tns:Reference" maxOccurs="unbounded" minOccurs="0"/>
             <!-- New elements added for Rabies case records -->
             <element name="caseDefinition" type="tns:CaseDefinition" maxOccurs="1" minOccurs="0"/>
-            <element name="location" type="tns:ApolloLocationCode" maxOccurs="unbounded" minOccurs="0"/>
             <element name="causalPathogen" type="tns:ApolloPathogenCode" maxOccurs="1" minOccurs="0"/>
             <element name="treatment" type="tns:Treatment" maxOccurs="unbounded" minOccurs="0"/>
             <element name="infectionSource" type="tns:InfectionSource" maxOccurs="unbounded" minOccurs="0"/>
@@ -2221,6 +2220,7 @@
         <sequence>
             <element name="countTitle" type="string" maxOccurs="1" minOccurs="1"/>
             <element name="caseDefinitionsIncluded" type="tns:CaseDefinitionEnum" maxOccurs="unbounded" minOccurs="1"/>
+            <element name="caseOutcomesIncluded" type="tns:DiseaseOutcomeEnum" maxOccurs="unbounded" minOccurs="0"/>
             <choice>
                 <element name="totalCount" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"/>
                 <element name="caseCountArray" type="tns:CaseCountArray" maxOccurs="1" minOccurs="1"/>
@@ -2313,7 +2313,7 @@
             <element name="title" type="string" maxOccurs="1" minOccurs="1"/>
             <element name="authors" type="string" maxOccurs="1" minOccurs="0"/>
             <element name="publication" type="string" maxOccurs="1" minOccurs="0"/>
-            <element name="url" type="string" maxOccurs="1" minOccurs="1"/>
+            <element name="url" type="anyURI" maxOccurs="1" minOccurs="1"/>
             <element name="pubMedId" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"/>
             <element name="orcId" type="string" maxOccurs="1" minOccurs="0"/>
             <element name="obcIdeId" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"/>
@@ -2394,8 +2394,9 @@
             <element name="diseaseOutcome" type="tns:DiseaseOutcomeEnum" maxOccurs="1" minOccurs="1"/>
             <element name="dateTime" type="dateTime" maxOccurs="1" minOccurs="0"/>
             <choice>
-                <element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="0"/>
-                <element name="locationCode" type="tns:ApolloLocationCode" maxOccurs="1" minOccurs="0"/>
+                <element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="1"/>
+                <element name="locationCode" type="tns:ApolloLocationCode" maxOccurs="1" minOccurs="1"/>
+                <element name="latLongPair" type="tns:LatLongPair" minOccurs="1" maxOccurs="1"></element>
             </choice>
         </sequence>
     </complexType>
@@ -2630,13 +2631,22 @@
     <complexType name="DecisionModel"/>
     <complexType name="InfectiousDiseaseControlStrategy">
         <sequence>
-            <element name="controlMeasures" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0"/>
+            <choice>
+                <element name="controlMeasures" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0"/>
+                <element name="openMalariaControlMeasureURLs" type="anyURI" maxOccurs="unbounded" minOccurs="0"></element>
+            </choice>
         </sequence>
     </complexType>
     <complexType name="ModelIdAndProbability">
         <sequence>
             <element name="modelId" type="string" maxOccurs="1" minOccurs="1"/>
             <element name="probability" type="tns:Probability" maxOccurs="1" minOccurs="1"/>
+        </sequence>
+    </complexType>
+    <complexType name="LatLongPair">
+        <sequence>
+            <element name="latitutde" type="tns:Latitude" minOccurs="1" maxOccurs="1"></element>
+            <element name="longitude" type="tns:Longitude" minOccurs="1" maxOccurs="1"></element>
         </sequence>
     </complexType>
 </schema>

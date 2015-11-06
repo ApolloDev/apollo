@@ -253,7 +253,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		NonApolloParameter parameter = new NonApolloParameter();
 		parameter.setDescription("voluntary_quarantine_control_measure");
-		parameter.setParameterValue(0.75);
+		parameter.setParameterFloatValue(0.75);
 		parameter.setParameterName("quarantine");
 
 		return parameter;
@@ -264,7 +264,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		NonApolloParameter parameter = new NonApolloParameter();
 		parameter.setDescription("liberal_sick_leave_control_measure");
 		parameter.setParameterName("liberalleave");
-		parameter.setParameterValue(0.85);
+		parameter.setParameterFloatValue(0.85);
 
 		return parameter;
 	}

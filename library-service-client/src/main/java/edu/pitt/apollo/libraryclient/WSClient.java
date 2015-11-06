@@ -73,7 +73,6 @@ public class WSClient {
 //        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
 
 		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
-
 //		AddLibraryItemContainerResult vaccResult = addVaccinationControlMeasureToLibrary(a, port);
 //		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
 ////
@@ -85,7 +84,6 @@ public class WSClient {
 ////
 //		AddLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlMeasureToLibrary(a, port);
 //		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion(), individualSchoolsResult.getUrn());
-
 //		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlMeasureInLibrary(a, port);
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 		System.out.println("finished");
@@ -196,7 +194,8 @@ public class WSClient {
 		lic.setLibraryItem(scenario);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -207,25 +206,26 @@ public class WSClient {
 		return port.addLibraryItemContainer(message);
 	}
 
-    private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
-            throws DatatypeConfigurationException, ParseException {
+	private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
+			throws DatatypeConfigurationException, ParseException {
 
-        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
-        LibraryItemContainer lic = new LibraryItemContainer();
-        lic.setLibraryItem(scenario);
+		InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(scenario);
 
-        CatalogEntry entry = new CatalogEntry();
-        entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
-        lic.setCatalogEntry(entry);
+		CatalogEntry entry = new CatalogEntry();
+		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
+		lic.setCatalogEntry(entry);
 
-        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
-        message.setLibraryItemContainer(lic);
-        message.setAuthentication(auth);
-        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
-        message.setUrn(urn);
+		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+		message.setUrn(urn);
 
-        return port.updateLibraryItemContainer(message);
-    }
+		return port.updateLibraryItemContainer(message);
+	}
 
 	private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
@@ -234,7 +234,9 @@ public class WSClient {
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -253,7 +255,9 @@ public class WSClient {
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 Antiviral Control Strategy (Tamiflu)");
+		entry.setDisplayName("2009 Antiviral Control Strategy (Tamiflu)");
+		entry.setTextualIdentifier("2009 Antiviral Control Strategy (Tamiflu)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -272,7 +276,9 @@ public class WSClient {
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 School Closure (All Schools)");
+		entry.setDisplayName("2009 School Closure (All Schools)");
+		entry.setTextualIdentifier("2009 School Closure (All Schools)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -291,7 +297,9 @@ public class WSClient {
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 School Closure (Individual Schools)");
+		entry.setDisplayName("2009 School Closure (Individual Schools)");
+		entry.setTextualIdentifier("2009 School Closure (Individual Schools)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -310,7 +318,9 @@ public class WSClient {
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
 		lic.setCatalogEntry(entry);
 
 		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
@@ -340,7 +350,9 @@ public class WSClient {
 //		test.setUri("http://test");
 //		lic.setLibraryItem(test);
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("test item update");
+		entry.setDisplayName("test item update");
+		entry.setTextualIdentifier("test item update");
+
 		lic.setCatalogEntry(entry);
 
 		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();

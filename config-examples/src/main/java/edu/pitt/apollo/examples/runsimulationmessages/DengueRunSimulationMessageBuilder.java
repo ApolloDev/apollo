@@ -512,22 +512,22 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         NonApolloParameter parameter = new NonApolloParameter();
         parameter.setParameterName("backfillEggsDay");
-        parameter.setParameterValue(5);
+        parameter.setParameterIntValue(5);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("initialMosquitoToHumanRatio");
-        parameter.setParameterValue(6.0);
+        parameter.setParameterFloatValue(6.0);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("maleMosquitoRatio");
-        parameter.setParameterValue(0.5);
+        parameter.setParameterFloatValue(0.5);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("peakDay");
-        parameter.setParameterValue(126);
+        parameter.setParameterIntValue(126);
         list.add(parameter);
 
         return list;
