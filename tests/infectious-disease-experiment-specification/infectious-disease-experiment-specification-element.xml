@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/" xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/" xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ http://types.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ ">
+    <apollo:infectiousDiseaseControlStrategies>
+    	<apollo:openMalariaControlMeasureURLs>
+    		http://tempuri.org
+    	</apollo:openMalariaControlMeasureURLs>
+
+    </apollo:infectiousDiseaseControlStrategies>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper></apollo:softwareDeveloper>
+        <apollo:softwareName></apollo:softwareName>
+        <apollo:softwareVersion>token</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseScenarioWithoutIntervention>
+        <apollo:scenarioDate>2013-06-01T00:00:00Z</apollo:scenarioDate>
+        <apollo:scenarioLocation>
+            <apollo:apolloLocationCode>4953</apollo:apolloLocationCode>
+        </apollo:scenarioLocation>
+        <apollo:populations>
+            <apollo:location>4953</apollo:location>
+            <apollo:taxonId>9606</apollo:taxonId>
+            <apollo:count>25000000</apollo:count>
+            <apollo:infectionAndImmunityCensuses>
+                <apollo:description>Mozambique</apollo:description>
+                <apollo:location>
+                    <apollo:apolloLocationCode>4953</apollo:apolloLocationCode>
+                </apollo:location>
+                <apollo:simulatorTime>0</apollo:simulatorTime>
+                <apollo:pathogen>
+                    <apollo:ncbiTaxonId>5833</apollo:ncbiTaxonId>
+                </apollo:pathogen>
+                <apollo:censusData>
+                    <apollo:location>
+                        <apollo:apolloLocationCode>4953</apollo:apolloLocationCode>
+                    </apollo:location>
+                    <apollo:censusDataCells>
+                        <apollo:ageRange>
+                            <apollo:unitOfTimeForLowerBound>year</apollo:unitOfTimeForLowerBound>
+                            <apollo:lowerBound>0</apollo:lowerBound>
+                            <apollo:unitOfTimeForUpperBound>year</apollo:unitOfTimeForUpperBound>
+                            <apollo:upperBound>5</apollo:upperBound>
+                        </apollo:ageRange>
+                        <apollo:infectionState>susceptible</apollo:infectionState>
+                        <apollo:fractionInState>0.02</apollo:fractionInState>
+                    </apollo:censusDataCells>
+                    <apollo:censusDataCells>
+                        <apollo:ageRange>
+                            <apollo:unitOfTimeForLowerBound>year</apollo:unitOfTimeForLowerBound>
+                            <apollo:lowerBound>5</apollo:lowerBound>
+                            <apollo:unitOfTimeForUpperBound>year</apollo:unitOfTimeForUpperBound>
+                            <apollo:upperBound>20</apollo:upperBound>
+                        </apollo:ageRange>
+                        <apollo:infectionState>susceptible</apollo:infectionState>
+                        <apollo:fractionInState>0.2</apollo:fractionInState>
+                    </apollo:censusDataCells>
+                    <apollo:censusDataCells>
+                        <apollo:ageRange>
+                            <apollo:unitOfTimeForLowerBound>year</apollo:unitOfTimeForLowerBound>
+                            <apollo:lowerBound>20</apollo:lowerBound>
+                            <apollo:unitOfTimeForUpperBound>year</apollo:unitOfTimeForUpperBound>
+                            <apollo:upperBound>50</apollo:upperBound>
+                        </apollo:ageRange>
+                        <apollo:infectionState>susceptible</apollo:infectionState>
+                        <apollo:fractionInState>0.5</apollo:fractionInState>
+                    </apollo:censusDataCells>
+                    <apollo:censusDataCells>
+                        <apollo:ageRange>
+                            <apollo:unitOfTimeForLowerBound>year</apollo:unitOfTimeForLowerBound>
+                            <apollo:lowerBound>50</apollo:lowerBound>
+                            <apollo:unitOfTimeForUpperBound>year</apollo:unitOfTimeForUpperBound>
+                            <apollo:upperBound>99</apollo:upperBound>
+                        </apollo:ageRange>
+                        <apollo:infectionState>susceptible</apollo:infectionState>
+                        <apollo:fractionInState>0.28</apollo:fractionInState>
+                    </apollo:censusDataCells>
+                </apollo:censusData>
+            </apollo:infectionAndImmunityCensuses>
+        </apollo:populations>
+        <apollo:infections>
+            <apollo:pathogen>
+                <apollo:ncbiTaxonId>5833</apollo:ncbiTaxonId>
+            </apollo:pathogen>
+            <apollo:host>9606</apollo:host>
+            <apollo:infectionAcquisitionsFromInfectedHosts>
+                <apollo:infectedHost>7165</apollo:infectedHost>
+                <apollo:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:latentPeriodDuration>
+                <apollo:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:infectiousPeriodDuration>
+                <apollo:innoculationRate>
+                    <apollo:numeratorUnitOfMeasure>innoculations</apollo:numeratorUnitOfMeasure>
+                    <apollo:denominatorUnitOfMeasure>perIndividualPerYear</apollo:denominatorUnitOfMeasure>
+                    <apollo:value>25.0</apollo:value>
+                </apollo:innoculationRate>
+            </apollo:infectionAcquisitionsFromInfectedHosts>
+            <apollo:infectionAcquisitionsFromInfectedHosts>
+                <apollo:infectedHost>7173</apollo:infectedHost>
+                <apollo:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:latentPeriodDuration>
+                <apollo:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:infectiousPeriodDuration>
+                <apollo:innoculationRate>
+                    <apollo:numeratorUnitOfMeasure>innoculations</apollo:numeratorUnitOfMeasure>
+                    <apollo:denominatorUnitOfMeasure>perIndividualPerYear</apollo:denominatorUnitOfMeasure>
+                    <apollo:value>50.0</apollo:value>
+                </apollo:innoculationRate>
+            </apollo:infectionAcquisitionsFromInfectedHosts>
+            <apollo:infectionAcquisitionsFromInfectedHosts>
+                <apollo:infectedHost>62324</apollo:infectedHost>
+                <apollo:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:latentPeriodDuration>
+                <apollo:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>7.0</apollo:value>
+                </apollo:infectiousPeriodDuration>
+                <apollo:innoculationRate>
+                    <apollo:numeratorUnitOfMeasure>innoculations</apollo:numeratorUnitOfMeasure>
+                    <apollo:denominatorUnitOfMeasure>perIndividualPerYear</apollo:denominatorUnitOfMeasure>
+                    <apollo:value>30.0</apollo:value>
+                </apollo:innoculationRate>
+            </apollo:infectionAcquisitionsFromInfectedHosts>
+        </apollo:infections>
+        <apollo:infectiousDiseaseControlStrategies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:IndoorResidualSprayingVectorControlMeasure">
+            <apollo:description>An indoor residual spraying vector control strategy which targets 60-80% of households and is 70% effective against the vector species.</apollo:description>
+            <apollo:controlMeasureStartTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:TemporalTriggerDefinition">
+                <apollo:timeScale>simulatorTimeScale</apollo:timeScale>
+                <apollo:timeSinceTimeScaleZero>
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>0.0</apollo:value>
+                </apollo:timeSinceTimeScaleZero>
+            </apollo:controlMeasureStartTime>
+            <apollo:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureResponseDelay>
+            <apollo:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureStandDownDelay>
+            <apollo:logisticalSystems>
+                <apollo:product>Insecticide</apollo:product>
+                <apollo:logisticalSystemNodes>
+                    <apollo:outputSchedule>
+                        <apollo:unitOfMeasure>house</apollo:unitOfMeasure>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>100</apollo:quantity>
+                            <apollo:dateTime>2013-06-01T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>200</apollo:quantity>
+                            <apollo:dateTime>2013-06-02T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>300</apollo:quantity>
+                            <apollo:dateTime>2013-06-03T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                    </apollo:outputSchedule>
+                </apollo:logisticalSystemNodes>
+            </apollo:logisticalSystems>
+            <apollo:fractionOfVectorIndividualsAffected>0.7</apollo:fractionOfVectorIndividualsAffected>
+        </apollo:infectiousDiseaseControlStrategies>
+        <apollo:infectiousDiseaseControlStrategies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:InsecticideTreatedNetControlMeasure">
+            <apollo:description>An insecticide treated net control strategy.</apollo:description>
+            <apollo:controlMeasureStartTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:TemporalTriggerDefinition">
+                <apollo:timeScale>simulatorTimeScale</apollo:timeScale>
+                <apollo:timeSinceTimeScaleZero>
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>0.0</apollo:value>
+                </apollo:timeSinceTimeScaleZero>
+            </apollo:controlMeasureStartTime>
+            <apollo:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureResponseDelay>
+            <apollo:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureStandDownDelay>
+            <apollo:logisticalSystems>
+                <apollo:product>Insecticide Treated Nets</apollo:product>
+                <apollo:logisticalSystemNodes>
+                    <apollo:outputSchedule>
+                        <apollo:unitOfMeasure>insecticideTreatedNets</apollo:unitOfMeasure>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>50</apollo:quantity>
+                            <apollo:dateTime>2013-06-01T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>60</apollo:quantity>
+                            <apollo:dateTime>2013-06-02T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>70</apollo:quantity>
+                            <apollo:dateTime>2013-06-03T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                    </apollo:outputSchedule>
+                </apollo:logisticalSystemNodes>
+            <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
+            </apollo:logisticalSystems>
+            <apollo:netHolingRate>
+                <apollo:numeratorUnitOfMeasure>netHoles</apollo:numeratorUnitOfMeasure>
+                <apollo:denominatorUnitOfMeasure>days</apollo:denominatorUnitOfMeasure>
+                <apollo:probabilityDistribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:LogNormalDistribution">
+                    <apollo:mean>0.5</apollo:mean>
+                    <apollo:standardDeviation>0.2</apollo:standardDeviation>
+                </apollo:probabilityDistribution>
+            </apollo:netHolingRate>
+            <apollo:nightlyProbabilityOfUse>0.8</apollo:nightlyProbabilityOfUse>
+            <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
+            <apollo:insecticideEfficacyDecayRate>
+            	<apollo:numeratorUnitOfMeasure>dollars</apollo:numeratorUnitOfMeasure>
+            	<apollo:denominatorUnitOfMeasure>dollars</apollo:denominatorUnitOfMeasure>
+            	<apollo:value>0.0</apollo:value>
+            </apollo:insecticideEfficacyDecayRate>
+        </apollo:infectiousDiseaseControlStrategies>
+    </apollo:infectiousDiseaseScenarioWithoutIntervention>
+</xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement>

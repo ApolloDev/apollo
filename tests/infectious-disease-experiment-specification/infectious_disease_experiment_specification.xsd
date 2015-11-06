@@ -10,7 +10,7 @@
     <element name="InfectiousDiseaseScenarioElement" 
         type="apollo:InfectiousDiseaseScenario"/>
     
-    <element name="InfectiousDiseaseTransmissionExperimentSpecification" 
+    <element name="InfectiousDiseaseTransmissionExperimentSpecificationElement" 
         type="apollo:InfectiousDiseaseTransmissionExperimentSpecification"/>
 
 
