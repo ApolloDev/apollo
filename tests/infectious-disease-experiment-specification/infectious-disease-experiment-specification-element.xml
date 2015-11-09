@@ -3,9 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/" xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/" xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ http://types.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ ">
     <apollo:infectiousDiseaseControlStrategies>
-    	<apollo:openMalariaControlMeasureURLs>
-    		http://tempuri.org
-    	</apollo:openMalariaControlMeasureURLs>
+      <apollo:openMalariaControlMeasureURLs>
+        http://tempuri.org
+      </apollo:openMalariaControlMeasureURLs>
 
     </apollo:infectiousDiseaseControlStrategies>
     <apollo:infectiousDiseaseTransmissionModelIds>
@@ -222,10 +222,15 @@
             <apollo:nightlyProbabilityOfUse>0.8</apollo:nightlyProbabilityOfUse>
             <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
             <apollo:insecticideEfficacyDecayRate>
-            	<apollo:numeratorUnitOfMeasure>dollars</apollo:numeratorUnitOfMeasure>
-            	<apollo:denominatorUnitOfMeasure>dollars</apollo:denominatorUnitOfMeasure>
-            	<apollo:value>0.0</apollo:value>
+              <apollo:numeratorUnitOfMeasure>dollars</apollo:numeratorUnitOfMeasure>
+              <apollo:denominatorUnitOfMeasure>dollars</apollo:denominatorUnitOfMeasure>
+              <apollo:value>0.0</apollo:value>
             </apollo:insecticideEfficacyDecayRate>
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
+    <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable" >
+      <apollo:uniqueApolloLabelOfParameter>Annual EIR</apollo:uniqueApolloLabelOfParameter>
+      <apollo:minimumValue>200</apollo:minimumValue>
+      <apollo:maximumValue>300</apollo:maximumValue>
+      <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations></apollo:sensitivityAnalyses>
 </xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement>
