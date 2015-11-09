@@ -215,7 +215,7 @@
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
     <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable" >
-      <apollo:uniqueApolloLabelOfParameter>Annual EIR</apollo:uniqueApolloLabelOfParameter>
+      <apollo:uniqueApolloLabelOfParameter>apollo:inoculationRate</apollo:uniqueApolloLabelOfParameter>
       <apollo:minimumValue>200</apollo:minimumValue>
       <apollo:maximumValue>300</apollo:maximumValue>
       <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations></apollo:sensitivityAnalyses>
