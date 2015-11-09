@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/" xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/" xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ http://types.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ ">
     <apollo:infectiousDiseaseControlStrategies>
-      <apollo:openMalariaControlMeasureURLs>
-        http://tempuri.org
-      </apollo:openMalariaControlMeasureURLs>
+      <apollo:openMalariaControlMeasureURLs>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml</apollo:openMalariaControlMeasureURLs>
 
     </apollo:infectiousDiseaseControlStrategies>
+    <apollo:infectiousDiseaseControlStrategies>
+      <apollo:openMalariaControlMeasureURLs>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml</apollo:openMalariaControlMeasureURLs></apollo:infectiousDiseaseControlStrategies>
     <apollo:infectiousDiseaseTransmissionModelIds>
         <apollo:softwareDeveloper></apollo:softwareDeveloper>
         <apollo:softwareName></apollo:softwareName>
@@ -211,21 +211,7 @@
                 </apollo:logisticalSystemNodes>
             <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
             </apollo:logisticalSystems>
-            <apollo:netHolingRate>
-                <apollo:numeratorUnitOfMeasure>netHoles</apollo:numeratorUnitOfMeasure>
-                <apollo:denominatorUnitOfMeasure>days</apollo:denominatorUnitOfMeasure>
-                <apollo:probabilityDistribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:LogNormalDistribution">
-                    <apollo:mean>0.5</apollo:mean>
-                    <apollo:standardDeviation>0.2</apollo:standardDeviation>
-                </apollo:probabilityDistribution>
-            </apollo:netHolingRate>
             <apollo:nightlyProbabilityOfUse>0.8</apollo:nightlyProbabilityOfUse>
-            <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
-            <apollo:insecticideEfficacyDecayRate>
-              <apollo:numeratorUnitOfMeasure>dollars</apollo:numeratorUnitOfMeasure>
-              <apollo:denominatorUnitOfMeasure>dollars</apollo:denominatorUnitOfMeasure>
-              <apollo:value>0.0</apollo:value>
-            </apollo:insecticideEfficacyDecayRate>
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
     <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable" >
