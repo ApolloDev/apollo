@@ -17,6 +17,8 @@
 					<element name="name" type="token" minOccurs="1" maxOccurs="1"></element>
 					<element name="description" type="string" minOccurs="0" maxOccurs="1"></element>
 					<element name="membersOfCollection" type="int" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="javaClassNameOfMembers" type="token" minOccurs="1" maxOccurs="1"></element>
+
 				</sequence>
 			</extension>
 		</complexContent>

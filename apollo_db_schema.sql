@@ -77,7 +77,27 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
 											 (11,'UPitt', 'Broker Service','3.1.0','broker','http://localhost:8080/broker-service-war-3.1.0-SNAPSHOT/services/apolloservice?wsdl',1, NULL, NULL, NULL ,NULL),
                        (12,'any', 'any','any','endUserApplication','not_applicable',1, NULL, NULL, NULL ,NULL),
                        (13,'UPitt', 'Run Manager','3.1.0','runManager','http://localhost:8080/run-manager-service-rest-frontend-3.1.0-SNAPSHOT/',1, NULL, NULL, NULL ,NULL),
-                       (14,'PSC','OpenMalaria','R0063','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL);
+                       (14,'Swiss TPH','OpenMalaria','R0063','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (15,'Swiss TPH','OpenMalaria','R0065','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (16,'Swiss TPH','OpenMalaria','R0068','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (17,'Swiss TPH','OpenMalaria','R0111','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (18,'Swiss TPH','OpenMalaria','R0115','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (19,'Swiss TPH','OpenMalaria','R0121','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (20,'Swiss TPH','OpenMalaria','R0125','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (21,'Swiss TPH','OpenMalaria','R0131','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (22,'Swiss TPH','OpenMalaria','R0132','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (23,'Swiss TPH','OpenMalaria','R0133','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (24,'Swiss TPH','OpenMalaria','R0670','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (25,'Swiss TPH','OpenMalaria','R0674','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (26,'Swiss TPH','OpenMalaria','R0678','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (27,'Swiss TPH','OpenMalaria','base','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL);
+
+
+
+
+
+
+
 
 
 
@@ -124,9 +144,61 @@ INSERT INTO roles VALUES (24, 'Can view cached Lancet Ebola results');
 INSERT INTO roles VALUES (25, 'Can run Data Service without privileged request');
 INSERT INTO roles VALUES (26, 'Can view cached Data Service results');
 
-INSERT INTO roles VALUES (27, 'Can run Open Malaria without privileged request');
-INSERT INTO roles VALUES (28, 'Can run Open Malaria with privileged request');
-INSERT INTO roles VALUES (29, 'Can view cached Open Malaria results');
+INSERT INTO roles VALUES (27, 'Can run Open Malaria R0063 without privileged request');
+INSERT INTO roles VALUES (28, 'Can run Open Malaria R0063 with privileged request');
+INSERT INTO roles VALUES (29, 'Can view cached Open Malaria R0063 results');
+
+INSERT INTO roles VALUES (30, 'Can run Open Malaria R0065 without privileged request');
+INSERT INTO roles VALUES (31, 'Can run Open Malaria R0065 with privileged request');
+INSERT INTO roles VALUES (32, 'Can view cached Open Malaria R0065 results');
+
+INSERT INTO roles VALUES (33, 'Can run Open Malaria R0068 without privileged request');
+INSERT INTO roles VALUES (34, 'Can run Open Malaria R0068 with privileged request');
+INSERT INTO roles VALUES (35, 'Can view cached Open Malaria R0068 results');
+
+INSERT INTO roles VALUES (36, 'Can run Open Malaria R0111 without privileged request');
+INSERT INTO roles VALUES (37, 'Can run Open Malaria R0111 with privileged request');
+INSERT INTO roles VALUES (38, 'Can view cached Open Malaria R0111 results');
+
+INSERT INTO roles VALUES (39, 'Can run Open Malaria R0115 without privileged request');
+INSERT INTO roles VALUES (40, 'Can run Open Malaria R0115 with privileged request');
+INSERT INTO roles VALUES (41, 'Can view cached Open Malaria R0115 results');
+
+INSERT INTO roles VALUES (42, 'Can run Open Malaria R0121 without privileged request');
+INSERT INTO roles VALUES (43, 'Can run Open Malaria R0121 with privileged request');
+INSERT INTO roles VALUES (44, 'Can view cached Open Malaria R0121 results');
+
+INSERT INTO roles VALUES (45, 'Can run Open Malaria R0125 without privileged request');
+INSERT INTO roles VALUES (46, 'Can run Open Malaria R0125 with privileged request');
+INSERT INTO roles VALUES (47, 'Can view cached Open Malaria R0125 results');
+
+INSERT INTO roles VALUES (48, 'Can run Open Malaria R0131 without privileged request');
+INSERT INTO roles VALUES (49, 'Can run Open Malaria R0131 with privileged request');
+INSERT INTO roles VALUES (50, 'Can view cached Open Malaria R0131 results');
+
+INSERT INTO roles VALUES (51, 'Can run Open Malaria R0132 without privileged request');
+INSERT INTO roles VALUES (52, 'Can run Open Malaria R0132 with privileged request');
+INSERT INTO roles VALUES (53, 'Can view cached Open Malaria R0132 results');
+
+INSERT INTO roles VALUES (54, 'Can run Open Malaria R0133 without privileged request');
+INSERT INTO roles VALUES (55, 'Can run Open Malaria R0133 with privileged request');
+INSERT INTO roles VALUES (56, 'Can view cached Open Malaria R0133 results');
+
+INSERT INTO roles VALUES (57, 'Can run Open Malaria R0670 without privileged request');
+INSERT INTO roles VALUES (58, 'Can run Open Malaria R0670 with privileged request');
+INSERT INTO roles VALUES (59, 'Can view cached Open Malaria R0670 results');
+
+INSERT INTO roles VALUES (60, 'Can run Open Malaria R0674 without privileged request');
+INSERT INTO roles VALUES (61, 'Can run Open Malaria R0674 with privileged request');
+INSERT INTO roles VALUES (62, 'Can view cached Open Malaria R0674 results');
+
+INSERT INTO roles VALUES (63, 'Can run Open Malaria R0678 without privileged request');
+INSERT INTO roles VALUES (64, 'Can run Open Malaria R0678 with privileged request');
+INSERT INTO roles VALUES (65, 'Can view cached Open Malaria R0678 results');
+
+INSERT INTO roles VALUES (66, 'Can run Open Malaria base without privileged request');
+INSERT INTO roles VALUES (67, 'Can run Open Malaria base with privileged request');
+INSERT INTO roles VALUES (68, 'Can view cached Open Malaria base results');
 
 CREATE TABLE role_description (
   role_id INT REFERENCES roles(id),
@@ -174,6 +246,58 @@ INSERT INTO role_description VALUES(26, 10, 0, 0);
 INSERT INTO role_description VALUES(27, 14, 1, 0);
 INSERT INTO role_description VALUES(28, 14, 1, 1);
 INSERT INTO role_description VALUES(29, 14, 0, 0);
+
+INSERT INTO role_description VALUES(30, 15, 1, 0);
+INSERT INTO role_description VALUES(31, 15, 1, 1);
+INSERT INTO role_description VALUES(32, 15, 0, 0);
+
+INSERT INTO role_description VALUES(33, 16, 1, 0);
+INSERT INTO role_description VALUES(34, 16, 1, 1);
+INSERT INTO role_description VALUES(35, 16, 0, 0);
+
+INSERT INTO role_description VALUES(36, 17, 1, 0);
+INSERT INTO role_description VALUES(37, 17, 1, 1);
+INSERT INTO role_description VALUES(38, 17, 0, 0);
+
+INSERT INTO role_description VALUES(39, 18, 1, 0);
+INSERT INTO role_description VALUES(40, 18, 1, 1);
+INSERT INTO role_description VALUES(41, 18, 0, 0);
+
+INSERT INTO role_description VALUES(42, 19, 1, 0);
+INSERT INTO role_description VALUES(43, 19, 1, 1);
+INSERT INTO role_description VALUES(44, 19, 0, 0);
+
+INSERT INTO role_description VALUES(45, 20, 1, 0);
+INSERT INTO role_description VALUES(46, 20, 1, 1);
+INSERT INTO role_description VALUES(47, 20, 0, 0);
+
+INSERT INTO role_description VALUES(48, 21, 1, 0);
+INSERT INTO role_description VALUES(49, 21, 1, 1);
+INSERT INTO role_description VALUES(50, 21, 0, 0);
+
+INSERT INTO role_description VALUES(51, 22, 1, 0);
+INSERT INTO role_description VALUES(52, 22, 1, 1);
+INSERT INTO role_description VALUES(53, 22, 0, 0);
+
+INSERT INTO role_description VALUES(54, 23, 1, 0);
+INSERT INTO role_description VALUES(55, 23, 1, 1);
+INSERT INTO role_description VALUES(56, 23, 0, 0);
+
+INSERT INTO role_description VALUES(57, 24, 1, 0);
+INSERT INTO role_description VALUES(58, 24, 1, 1);
+INSERT INTO role_description VALUES(59, 24, 0, 0);
+
+INSERT INTO role_description VALUES(60, 25, 1, 0);
+INSERT INTO role_description VALUES(61, 25, 1, 1);
+INSERT INTO role_description VALUES(62, 25, 0, 0);
+
+INSERT INTO role_description VALUES(63, 26, 1, 0);
+INSERT INTO role_description VALUES(64, 26, 1, 1);
+INSERT INTO role_description VALUES(65, 26, 0, 0);
+
+INSERT INTO role_description VALUES(66, 27, 1, 0);
+INSERT INTO role_description VALUES(67, 27, 1, 1);
+INSERT INTO role_description VALUES(68, 27, 0, 0);
 
 CREATE TABLE user_roles (
   user_id INT NOT NULL REFERENCES users(id),
@@ -391,9 +515,39 @@ INSERT INTO run_data_description (label) values ('FRED ODS required output file 
 INSERT INTO run_data_description (label) values ('FluTE ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 76*/
 INSERT INTO run_data_description (label) values ('SEIR ODS required output file for model validation, ods_required_output_for_model_validation.csv'); /* 77*/
 INSERT INTO run_data_description (label) values ('RunSimulationsMessage JSON, run_simulations_message.json '); /* 78*/
-INSERT INTO run_data_description (label) values ('Open Malaria configuration file, config.xml '); /* 79*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0063 configuration file, config.xml '); /* 79*/
 INSERT INTO run_data_description (label) values ('Data Service Request Message, data_retrieval_request_message.json '); /* 80 */
-INSERT INTO run_data_description (label) values ('Open Malaria Output File, om_native_output_json.json '); /* 81 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0063 Output File, om_native_output_json.json '); /* 81 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0065 configuration file, config.xml '); /* 82*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0068 configuration file, config.xml '); /* 83*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0111 configuration file, config.xml '); /* 84*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0115 configuration file, config.xml '); /* 85*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0121 configuration file, config.xml '); /* 86*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0125 configuration file, config.xml '); /* 87*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0131 configuration file, config.xml '); /* 88*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0132 configuration file, config.xml '); /* 89*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0133 configuration file, config.xml '); /* 90*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0670 configuration file, config.xml '); /* 91*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0674 configuration file, config.xml '); /* 92*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0678 configuration file, config.xml '); /* 93*/
+INSERT INTO run_data_description (label) values ('Open Malaria R0065 Output File, om_native_output_json.json '); /* 94 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0068 Output File, om_native_output_json.json '); /* 95 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0111 Output File, om_native_output_json.json '); /* 96 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0115 Output File, om_native_output_json.json '); /* 97 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0121 Output File, om_native_output_json.json '); /* 98 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0125 Output File, om_native_output_json.json '); /* 99 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0131 Output File, om_native_output_json.json '); /* 100 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0132 Output File, om_native_output_json.json '); /* 101 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0133 Output File, om_native_output_json.json '); /* 102 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0670 Output File, om_native_output_json.json '); /* 103 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0674 Output File, om_native_output_json.json '); /* 104 */
+INSERT INTO run_data_description (label) values ('Open Malaria R0678 Output File, om_native_output_json.json '); /* 105 */
+INSERT INTO run_data_description (label) values ('Open Malaria base configuration file, config.xml '); /* 106*/
+INSERT INTO run_data_description (label) values ('Open Malaria base Output File, om_native_output_json.json '); /* 107 */
+
+
+
+
 
 
 
@@ -897,11 +1051,168 @@ INSERT INTO run_data_description_axis_value (run_data_description_id, run_data_d
   (80, 4, '12'),
   (80, 5, '10'),
 
-  (80, 1, 'TEXT'), 
-  (80, 2, 'om_native_output.json'),
-  (80, 3, 'TEXT'),
-  (80, 4, '12'),
-  (80, 5, '14');
+  (81, 1, 'TEXT'), 
+  (81, 2, 'om_native_output.json'),
+  (81, 3, 'TEXT'),
+  (81, 4, '12'),
+  (81, 5, '14'),
+
+  (82, 1, 'TEXT'), 
+  (82, 2, 'config.xml'),
+  (82, 3, 'CONFIGURATION_FILE'),
+  (82, 4, '1'),
+  (82, 5, '15'),
+
+  (83, 1, 'TEXT'), 
+  (83, 2, 'config.xml'),
+  (83, 3, 'CONFIGURATION_FILE'),
+  (83, 4, '1'),
+  (83, 5, '16'),
+
+  (84, 1, 'TEXT'), 
+  (84, 2, 'config.xml'),
+  (84, 3, 'CONFIGURATION_FILE'),
+  (84, 4, '1'),
+  (84, 5, '17'),
+
+  (85, 1, 'TEXT'), 
+  (85, 2, 'config.xml'),
+  (85, 3, 'CONFIGURATION_FILE'),
+  (85, 4, '1'),
+  (85, 5, '18'),
+
+  (86, 1, 'TEXT'), 
+  (86, 2, 'config.xml'),
+  (86, 3, 'CONFIGURATION_FILE'),
+  (86, 4, '1'),
+  (86, 5, '19'),
+
+  (87, 1, 'TEXT'), 
+  (87, 2, 'config.xml'),
+  (87, 3, 'CONFIGURATION_FILE'),
+  (87, 4, '1'),
+  (87, 5, '20'),
+
+  (88, 1, 'TEXT'), 
+  (88, 2, 'config.xml'),
+  (88, 3, 'CONFIGURATION_FILE'),
+  (88, 4, '1'),
+  (88, 5, '21'),
+
+  (89, 1, 'TEXT'), 
+  (89, 2, 'config.xml'),
+  (89, 3, 'CONFIGURATION_FILE'),
+  (89, 4, '1'),
+  (89, 5, '22'),
+
+  (90, 1, 'TEXT'), 
+  (90, 2, 'config.xml'),
+  (90, 3, 'CONFIGURATION_FILE'),
+  (90, 4, '1'),
+  (90, 5, '23'),
+
+  (91, 1, 'TEXT'), 
+  (91, 2, 'config.xml'),
+  (91, 3, 'CONFIGURATION_FILE'),
+  (91, 4, '1'),
+  (91, 5, '24'),
+
+  (92, 1, 'TEXT'), 
+  (92, 2, 'config.xml'),
+  (92, 3, 'CONFIGURATION_FILE'),
+  (92, 4, '1'),
+  (92, 5, '25'),
+
+  (93, 1, 'TEXT'), 
+  (93, 2, 'config.xml'),
+  (93, 3, 'CONFIGURATION_FILE'),
+  (93, 4, '1'),
+  (93, 5, '26'),
+
+  (94, 1, 'TEXT'), 
+  (94, 2, 'om_native_output.json'),
+  (94, 3, 'TEXT'),
+  (94, 4, '12'),
+  (94, 5, '15'),
+
+  (95, 1, 'TEXT'), 
+  (95, 2, 'om_native_output.json'),
+  (95, 3, 'TEXT'),
+  (95, 4, '12'),
+  (95, 5, '16'),
+
+  (96, 1, 'TEXT'), 
+  (96, 2, 'om_native_output.json'),
+  (96, 3, 'TEXT'),
+  (96, 4, '12'),
+  (96, 5, '17'),
+
+  (97, 1, 'TEXT'), 
+  (97, 2, 'om_native_output.json'),
+  (97, 3, 'TEXT'),
+  (97, 4, '12'),
+  (97, 5, '18'),
+
+  (98, 1, 'TEXT'), 
+  (98, 2, 'om_native_output.json'),
+  (98, 3, 'TEXT'),
+  (98, 4, '12'),
+  (98, 5, '19'),
+
+  (99, 1, 'TEXT'), 
+  (99, 2, 'om_native_output.json'),
+  (99, 3, 'TEXT'),
+  (99, 4, '12'),
+  (99, 5, '20'),
+
+  (100, 1, 'TEXT'), 
+  (100, 2, 'om_native_output.json'),
+  (100, 3, 'TEXT'),
+  (100, 4, '12'),
+  (100, 5, '21'),
+
+  (101, 1, 'TEXT'), 
+  (101, 2, 'om_native_output.json'),
+  (101, 3, 'TEXT'),
+  (101, 4, '12'),
+  (101, 5, '22'),
+
+  (102, 1, 'TEXT'), 
+  (102, 2, 'om_native_output.json'),
+  (102, 3, 'TEXT'),
+  (102, 4, '12'),
+  (102, 5, '23'),
+
+  (103, 1, 'TEXT'), 
+  (103, 2, 'om_native_output.json'),
+  (103, 3, 'TEXT'),
+  (103, 4, '12'),
+  (103, 5, '24'),
+
+  (104, 1, 'TEXT'), 
+  (104, 2, 'om_native_output.json'),
+  (104, 3, 'TEXT'),
+  (104, 4, '12'),
+  (104, 5, '25'),
+
+  (105, 1, 'TEXT'), 
+  (105, 2, 'om_native_output.json'),
+  (105, 3, 'TEXT'),
+  (105, 4, '12'),
+  (105, 5, '26'),
+
+  (106, 1, 'TEXT'), 
+  (106, 2, 'config.xml'),
+  (106, 3, 'CONFIGURATION_FILE'),
+  (106, 4, '1'),
+  (106, 5, '27'),
+
+  (107, 1, 'TEXT'), 
+  (107, 2, 'om_native_output.json'),
+  (107, 3, 'TEXT'),
+  (107, 4, '12'),
+  (107, 5, '27');
+
     
 CREATE VIEW run_data_description_view AS
 SELECT
