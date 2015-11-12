@@ -534,7 +534,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
-			pstmt.setString(2, itemJson);
+			pstmt.setBytes(2, itemJson.getBytes());
 			pstmt.setInt(3, userKey);
 			pstmt.executeUpdate();
 
