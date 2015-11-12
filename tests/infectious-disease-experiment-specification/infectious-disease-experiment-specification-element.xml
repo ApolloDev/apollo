@@ -9,9 +9,100 @@
     <apollo:infectiousDiseaseControlStrategies>
       <apollo:openMalariaControlMeasureURLs>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml</apollo:openMalariaControlMeasureURLs></apollo:infectiousDiseaseControlStrategies>
     <apollo:infectiousDiseaseTransmissionModelIds>
-        <apollo:softwareDeveloper></apollo:softwareDeveloper>
-        <apollo:softwareName></apollo:softwareName>
-        <apollo:softwareVersion>token</apollo:softwareVersion>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0063</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0065</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0068</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0111</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0115</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0121</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0125</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0131</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0132</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0133</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0670</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0674</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>R0678</apollo:softwareVersion>
+        <apollo:softwareType>simulator</apollo:softwareType>
+        <apollo:customIdentifier>token</apollo:customIdentifier>
+    </apollo:infectiousDiseaseTransmissionModelIds>
+    <apollo:infectiousDiseaseTransmissionModelIds>
+        <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+        <apollo:softwareName>OpenMalaria</apollo:softwareName>
+        <apollo:softwareVersion>base</apollo:softwareVersion>
         <apollo:softwareType>simulator</apollo:softwareType>
         <apollo:customIdentifier>token</apollo:customIdentifier>
     </apollo:infectiousDiseaseTransmissionModelIds>
@@ -215,7 +306,7 @@
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
     <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable" >
-      <apollo:uniqueApolloLabelOfParameter>apollo:inoculationRate</apollo:uniqueApolloLabelOfParameter>
+      <apollo:uniqueApolloLabelOfParameter>infectiousDiseaseScenarioWithoutIntervention/infections/infectionAcquisitionFromInfectedHosts[infectedHost=7165]/inoculationRate/value</apollo:uniqueApolloLabelOfParameter>
       <apollo:minimumValue>200</apollo:minimumValue>
       <apollo:maximumValue>300</apollo:maximumValue>
       <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations></apollo:sensitivityAnalyses>
