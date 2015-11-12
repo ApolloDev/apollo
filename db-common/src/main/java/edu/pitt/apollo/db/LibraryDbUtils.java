@@ -531,10 +531,10 @@ public class LibraryDbUtils extends BaseDbUtils {
 
 
 			String itemJson = getJSONStringForLibraryItem(item);
-			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
+			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?::jsonb,?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
-			pstmt.setBytes(2, itemJson.getBytes());
+			pstmt.setString(2, itemJson);
 			pstmt.setInt(3, userKey);
 			pstmt.executeUpdate();
 
