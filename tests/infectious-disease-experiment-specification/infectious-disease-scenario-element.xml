@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xspc:InfectiousDiseaseScenarioElement
+    xmlns:ns5="http://types.apollo.pitt.edu/v3_1_0/" 
+    xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/">
+   <ns5:scenarioDate>2013-06-01T00:00:00Z</ns5:scenarioDate>
+   <ns5:scenarioLocation>
+      <ns5:apolloLocationCode>4953</ns5:apolloLocationCode>
+   </ns5:scenarioLocation>
+   <ns5:populations>
+      <ns5:location>4953</ns5:location>
+      <ns5:taxonId>9606</ns5:taxonId>
+      <ns5:count>25000000</ns5:count>
+      <ns5:infectionAndImmunityCensuses>
+         <ns5:description>Mozambique</ns5:description>
+         <ns5:location>
+            <ns5:apolloLocationCode>4953</ns5:apolloLocationCode>
+         </ns5:location>
+         <ns5:simulatorTime>0</ns5:simulatorTime>
+         <ns5:pathogen>
+            <ns5:ncbiTaxonId>5833</ns5:ncbiTaxonId>
+         </ns5:pathogen>
+         <ns5:censusData>
+            <ns5:location>
+               <ns5:apolloLocationCode>4953</ns5:apolloLocationCode>
+            </ns5:location>
+            <ns5:censusDataCells>
+               <ns5:ageRange>
+                  <ns5:unitOfTimeForLowerBound>year</ns5:unitOfTimeForLowerBound>
+                  <ns5:lowerBound>0</ns5:lowerBound>
+                  <ns5:unitOfTimeForUpperBound>year</ns5:unitOfTimeForUpperBound>
+                  <ns5:upperBound>5</ns5:upperBound>
+               </ns5:ageRange>
+               <ns5:infectionState>susceptible</ns5:infectionState>
+               <ns5:fractionInState>0.02</ns5:fractionInState>
+            </ns5:censusDataCells>
+            <ns5:censusDataCells>
+               <ns5:ageRange>
+                  <ns5:unitOfTimeForLowerBound>year</ns5:unitOfTimeForLowerBound>
+                  <ns5:lowerBound>5</ns5:lowerBound>
+                  <ns5:unitOfTimeForUpperBound>year</ns5:unitOfTimeForUpperBound>
+                  <ns5:upperBound>20</ns5:upperBound>
+               </ns5:ageRange>
+               <ns5:infectionState>susceptible</ns5:infectionState>
+               <ns5:fractionInState>0.2</ns5:fractionInState>
+            </ns5:censusDataCells>
+            <ns5:censusDataCells>
+               <ns5:ageRange>
+                  <ns5:unitOfTimeForLowerBound>year</ns5:unitOfTimeForLowerBound>
+                  <ns5:lowerBound>20</ns5:lowerBound>
+                  <ns5:unitOfTimeForUpperBound>year</ns5:unitOfTimeForUpperBound>
+                  <ns5:upperBound>50</ns5:upperBound>
+               </ns5:ageRange>
+               <ns5:infectionState>susceptible</ns5:infectionState>
+               <ns5:fractionInState>0.5</ns5:fractionInState>
+            </ns5:censusDataCells>
+            <ns5:censusDataCells>
+               <ns5:ageRange>
+                  <ns5:unitOfTimeForLowerBound>year</ns5:unitOfTimeForLowerBound>
+                  <ns5:lowerBound>50</ns5:lowerBound>
+                  <ns5:unitOfTimeForUpperBound>year</ns5:unitOfTimeForUpperBound>
+                  <ns5:upperBound>99</ns5:upperBound>
+               </ns5:ageRange>
+               <ns5:infectionState>susceptible</ns5:infectionState>
+               <ns5:fractionInState>0.28</ns5:fractionInState>
+            </ns5:censusDataCells>
+         </ns5:censusData>
+      </ns5:infectionAndImmunityCensuses>
+   </ns5:populations>
+   <ns5:infections>
+      <ns5:pathogen>
+         <ns5:ncbiTaxonId>5833</ns5:ncbiTaxonId>
+      </ns5:pathogen>
+      <ns5:host>9606</ns5:host>
+      <ns5:infectionAcquisitionsFromInfectedHosts>
+         <ns5:infectedHost>7165</ns5:infectedHost>
+         <ns5:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:latentPeriodDuration>
+         <ns5:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:infectiousPeriodDuration>
+         <ns5:innoculationRate>
+            <ns5:numeratorUnitOfMeasure>innoculations</ns5:numeratorUnitOfMeasure>
+            <ns5:denominatorUnitOfMeasure>perIndividualPerYear</ns5:denominatorUnitOfMeasure>
+            <ns5:value>25.0</ns5:value>
+         </ns5:innoculationRate>
+      </ns5:infectionAcquisitionsFromInfectedHosts>
+      <ns5:infectionAcquisitionsFromInfectedHosts>
+         <ns5:infectedHost>7173</ns5:infectedHost>
+         <ns5:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:latentPeriodDuration>
+         <ns5:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:infectiousPeriodDuration>
+         <ns5:innoculationRate>
+            <ns5:numeratorUnitOfMeasure>innoculations</ns5:numeratorUnitOfMeasure>
+            <ns5:denominatorUnitOfMeasure>perIndividualPerYear</ns5:denominatorUnitOfMeasure>
+            <ns5:value>50.0</ns5:value>
+         </ns5:innoculationRate>
+      </ns5:infectionAcquisitionsFromInfectedHosts>
+      <ns5:infectionAcquisitionsFromInfectedHosts>
+         <ns5:infectedHost>62324</ns5:infectedHost>
+         <ns5:latentPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:latentPeriodDuration>
+         <ns5:infectiousPeriodDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>7.0</ns5:value>
+         </ns5:infectiousPeriodDuration>
+         <ns5:innoculationRate>
+            <ns5:numeratorUnitOfMeasure>innoculations</ns5:numeratorUnitOfMeasure>
+            <ns5:denominatorUnitOfMeasure>perIndividualPerYear</ns5:denominatorUnitOfMeasure>
+            <ns5:value>30.0</ns5:value>
+         </ns5:innoculationRate>
+      </ns5:infectionAcquisitionsFromInfectedHosts>
+   </ns5:infections>
+   <ns5:infectiousDiseaseControlStrategies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:IndoorResidualSprayingVectorControlMeasure">
+      <ns5:description>An indoor residual spraying vector control strategy which targets 60-80% of households and is 70% effective against the vector species.</ns5:description>
+      <ns5:controlMeasureStartTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:TemporalTriggerDefinition">
+         <ns5:timeScale>simulatorTimeScale</ns5:timeScale>
+         <ns5:timeSinceTimeScaleZero>
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>0.0</ns5:value>
+         </ns5:timeSinceTimeScaleZero>
+      </ns5:controlMeasureStartTime>
+      <ns5:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
+         <ns5:value>0.0</ns5:value>
+      </ns5:controlMeasureResponseDelay>
+      <ns5:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
+         <ns5:value>0.0</ns5:value>
+      </ns5:controlMeasureStandDownDelay>
+      <ns5:logisticalSystems>
+         <ns5:product>Insecticide</ns5:product>
+         <ns5:logisticalSystemNodes>
+            <ns5:outputSchedule>
+               <ns5:unitOfMeasure>house</ns5:unitOfMeasure>
+               <ns5:scheduleElements>
+                  <ns5:quantity>100</ns5:quantity>
+                  <ns5:dateTime>2013-06-01T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+               <ns5:scheduleElements>
+                  <ns5:quantity>200</ns5:quantity>
+                  <ns5:dateTime>2013-06-02T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+               <ns5:scheduleElements>
+                  <ns5:quantity>300</ns5:quantity>
+                  <ns5:dateTime>2013-06-03T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+            </ns5:outputSchedule>
+         </ns5:logisticalSystemNodes>
+      </ns5:logisticalSystems>
+      <ns5:fractionOfVectorIndividualsAffected>0.7</ns5:fractionOfVectorIndividualsAffected>
+   </ns5:infectiousDiseaseControlStrategies>
+   <ns5:infectiousDiseaseControlStrategies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:InsecticideTreatedNetControlMeasure">
+      <ns5:description>An insecticide treated net control strategy.</ns5:description>
+      <ns5:controlMeasureStartTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:TemporalTriggerDefinition">
+         <ns5:timeScale>simulatorTimeScale</ns5:timeScale>
+         <ns5:timeSinceTimeScaleZero>
+            <ns5:unitOfTime>day</ns5:unitOfTime>
+            <ns5:value>0.0</ns5:value>
+         </ns5:timeSinceTimeScaleZero>
+      </ns5:controlMeasureStartTime>
+      <ns5:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
+         <ns5:value>0.0</ns5:value>
+      </ns5:controlMeasureResponseDelay>
+      <ns5:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FixedDuration">
+         <ns5:unitOfTime>day</ns5:unitOfTime>
+         <ns5:value>0.0</ns5:value>
+      </ns5:controlMeasureStandDownDelay>
+      <ns5:logisticalSystems>
+         <ns5:product>Insecticide Treated Nets</ns5:product>
+         <ns5:logisticalSystemNodes>
+            <ns5:outputSchedule>
+               <ns5:unitOfMeasure>insecticideTreatedNets</ns5:unitOfMeasure>
+               <ns5:scheduleElements>
+                  <ns5:quantity>50</ns5:quantity>
+                  <ns5:dateTime>2013-06-01T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+               <ns5:scheduleElements>
+                  <ns5:quantity>60</ns5:quantity>
+                  <ns5:dateTime>2013-06-02T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+               <ns5:scheduleElements>
+                  <ns5:quantity>70</ns5:quantity>
+                  <ns5:dateTime>2013-06-03T00:00:00Z</ns5:dateTime>
+               </ns5:scheduleElements>
+            </ns5:outputSchedule>
+         </ns5:logisticalSystemNodes>
+      </ns5:logisticalSystems>
+      <ns5:netHolingRate>
+         <ns5:numeratorUnitOfMeasure>netHoles</ns5:numeratorUnitOfMeasure>
+         <ns5:denominatorUnitOfMeasure>days</ns5:denominatorUnitOfMeasure>
+         <ns5:probabilityDistribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:LogNormalDistribution">
+            <ns5:mean>0.5</ns5:mean>
+            <ns5:standardDeviation>0.2</ns5:standardDeviation>
+         </ns5:probabilityDistribution>
+      </ns5:netHolingRate>
+      <ns5:nightlyProbabilityOfUse>0.8</ns5:nightlyProbabilityOfUse>
+   </ns5:infectiousDiseaseControlStrategies>
+</xspc:InfectiousDiseaseScenarioElement>
