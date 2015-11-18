@@ -1816,9 +1816,9 @@
         <complexContent>
             <extension base="tns:VectorControlMeasure">
                 <sequence>
-                    <element name="netHolingRate" type="tns:Rate" maxOccurs="1" minOccurs="1"/>
+                    <element name="netHolingRate" type="tns:Rate" maxOccurs="1" minOccurs="0"/>
                     <element name="nightlyProbabilityOfUse" type="tns:Probability" maxOccurs="1" minOccurs="1"/>
-                    <element name="insecticideEfficacyDecayRate" type="tns:Rate" maxOccurs="1" minOccurs="1"/>
+                    <element name="insecticideEfficacyDecayRate" type="tns:Rate" maxOccurs="1" minOccurs="0"/>
                 </sequence>
             </extension>
         </complexContent>
