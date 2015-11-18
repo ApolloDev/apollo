@@ -563,6 +563,25 @@
             </extension>
         </complexContent>
     </complexType>
+
+    <complexType name="TemplatedInfectiousDiseaseControlMeasureUrlForSoftware">
+        <sequence>
+            <element name="softwareIdentificaiton" type="tns:SoftwareIdentification" minOccurs="1" maxOccurs="unbounded"></element>
+            <element name="controlMeasureTemplateURL" type="anyURI" maxOccurs="1" minOccurs="1"></element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="TemplatedInfectiousDiseaseControlMeasure">
+        <complexContent>
+            <extension base="tns:InfectiousDiseaseControlMeasure">
+                <sequence>
+                    <element name="TemplatedInfectiousDiseaseControlMeasureUrlForSoftware" type="tns:TemplatedInfectiousDiseaseControlMeasureUrlForSoftware" maxOccurs="unbounded" minOccurs="1"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
     <complexType name="DiseaseSurveillanceTriggerDefinition">
         <complexContent>
             <extension base="tns:TriggerDefinition">
@@ -2228,6 +2247,7 @@
             <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"/>
         </sequence>
     </complexType>
+   
     <complexType name="CaseCountArray">
         <sequence>
             <element name="nDimensions" type="positiveInteger" maxOccurs="1" minOccurs="0"/>
@@ -2631,10 +2651,7 @@
     <complexType name="DecisionModel"/>
     <complexType name="InfectiousDiseaseControlStrategy">
         <sequence>
-            <choice>
-                <element name="controlMeasures" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0"/>
-                <element name="openMalariaControlMeasureURLs" type="anyURI" maxOccurs="unbounded" minOccurs="0"></element>
-            </choice>
+            <element name="controlMeasures" type="tns:InfectiousDiseaseControlMeasure" maxOccurs="unbounded" minOccurs="0"/>
         </sequence>
     </complexType>
     <complexType name="ModelIdAndProbability">
