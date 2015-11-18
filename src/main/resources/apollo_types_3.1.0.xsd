@@ -558,30 +558,18 @@
                     <element name="controlMeasureResponseDelay" type="tns:Duration" maxOccurs="1" minOccurs="1"/>
                     <element name="controlMeasureStandDownDelay" type="tns:Duration" maxOccurs="1" minOccurs="1"/>
                     <element name="logisticalSystems" type="tns:LogisticalSystem" maxOccurs="unbounded" minOccurs="0"/>
+                    <element name="templatedInfectiousDiseaseControlMeasureUrlsForSoftware" type="tns:TemplatedInfectiousDiseaseControlMeasureUrlForSoftware" minOccurs="0" maxOccurs="unbounded"/>
                     <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="0"/>
                 </sequence>
             </extension>
         </complexContent>
     </complexType>
-
     <complexType name="TemplatedInfectiousDiseaseControlMeasureUrlForSoftware">
         <sequence>
-            <element name="softwareIdentificaiton" type="tns:SoftwareIdentification" minOccurs="1" maxOccurs="unbounded"></element>
-            <element name="controlMeasureTemplateURL" type="anyURI" maxOccurs="1" minOccurs="1"></element>
+            <element name="softwareIdentificaiton" type="tns:SoftwareIdentification" minOccurs="1" maxOccurs="unbounded"/>
+            <element name="controlMeasureTemplateURL" type="anyURI" maxOccurs="1" minOccurs="1"/>
         </sequence>
     </complexType>
-
-
-    <complexType name="TemplatedInfectiousDiseaseControlMeasure">
-        <complexContent>
-            <extension base="tns:InfectiousDiseaseControlMeasure">
-                <sequence>
-                    <element name="TemplatedInfectiousDiseaseControlMeasureUrlForSoftware" type="tns:TemplatedInfectiousDiseaseControlMeasureUrlForSoftware" maxOccurs="unbounded" minOccurs="1"></element>
-                </sequence>
-            </extension>
-        </complexContent>
-    </complexType>
-
     <complexType name="DiseaseSurveillanceTriggerDefinition">
         <complexContent>
             <extension base="tns:TriggerDefinition">
@@ -639,9 +627,21 @@
             <enumeration value="high_risk"/>
         </restriction>
     </simpleType>
-    <!-- <complexType name="GetVisualizerOutputResourcesResult"> --><!-- <sequence> --><!-- <element name="methodCallStatus" type="tns:MethodCallStatus"> --><!-- </element> --><!-- <element name="urlOutputResources" type="tns:UrlOutputResource" -->
-    <!-- maxOccurs="unbounded" minOccurs="0" /> --><!-- </sequence> --><!-- </complexType> --><!-- <complexType name="SyntheticPopulationGenerationResult"> --><!-- <sequence> --><!-- <element name="runId" type="tns:RunIdentification" /> --><!-- <element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource" -->
-    <!-- maxOccurs="unbounded" minOccurs="1" /> --><!-- </sequence> --><!-- </complexType> -->
+    <!-- <complexType name="GetVisualizerOutputResourcesResult"> -->
+    <!-- <sequence> -->
+    <!-- <element name="methodCallStatus" type="tns:MethodCallStatus"> -->
+    <!-- </element> -->
+    <!-- <element name="urlOutputResources" type="tns:UrlOutputResource" -->
+    <!-- maxOccurs="unbounded" minOccurs="0" /> -->
+    <!-- </sequence> -->
+    <!-- </complexType> -->
+    <!-- <complexType name="SyntheticPopulationGenerationResult"> -->
+    <!-- <sequence> -->
+    <!-- <element name="runId" type="tns:RunIdentification" /> -->
+    <!-- <element name="syntheticPopulationOutputResource" type="tns:UrlOutputResource" -->
+    <!-- maxOccurs="unbounded" minOccurs="1" /> -->
+    <!-- </sequence> -->
+    <!-- </complexType> -->
     <complexType name="DiscreteNonparametricProbabilityDistribution">
         <complexContent>
             <extension base="tns:NonparametricProbabilityDistribution">
@@ -1642,12 +1642,29 @@
             <element name="cutoff" type="double" maxOccurs="1" minOccurs="1"/>
         </sequence>
     </complexType>
-    <!-- <complexType name="GetPopulationAndEnvironmentCensusResult"> --><!-- <sequence> --><!-- <element name="methodCallStatus" type="tns:MethodCallStatus" -->
-    <!-- maxOccurs="1" minOccurs="1"> --><!-- </element> --><!-- <element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" -->
-    <!-- maxOccurs="1" minOccurs="1"> --><!-- </element> --><!-- </sequence> --><!-- </complexType> --><!-- <complexType name="GetConfigurationFileForSimulationResult"> --><!-- <sequence> --><!-- <element name="methodCallStatus" type="tns:MethodCallStatus" -->
-    <!-- maxOccurs="1" minOccurs="1"> --><!-- </element> --><!-- <element name="configurationFile" type="string" maxOccurs="1" -->
-    <!-- minOccurs="0"> --><!-- </element> --><!-- <element name="configurationFileInHtmlFormat" type="string" -->
-    <!-- maxOccurs="1" minOccurs="0"> --><!-- </element> --><!-- </sequence> --><!-- </complexType> -->
+    <!-- <complexType name="GetPopulationAndEnvironmentCensusResult"> -->
+    <!-- <sequence> -->
+    <!-- <element name="methodCallStatus" type="tns:MethodCallStatus" -->
+    <!-- maxOccurs="1" minOccurs="1"> -->
+    <!-- </element> -->
+    <!-- <element name="populationAndEnvironmentCensus" type="tns:PopulationAndEnvironmentCensus" -->
+    <!-- maxOccurs="1" minOccurs="1"> -->
+    <!-- </element> -->
+    <!-- </sequence> -->
+    <!-- </complexType> -->
+    <!-- <complexType name="GetConfigurationFileForSimulationResult"> -->
+    <!-- <sequence> -->
+    <!-- <element name="methodCallStatus" type="tns:MethodCallStatus" -->
+    <!-- maxOccurs="1" minOccurs="1"> -->
+    <!-- </element> -->
+    <!-- <element name="configurationFile" type="string" maxOccurs="1" -->
+    <!-- minOccurs="0"> -->
+    <!-- </element> -->
+    <!-- <element name="configurationFileInHtmlFormat" type="string" -->
+    <!-- maxOccurs="1" minOccurs="0"> -->
+    <!-- </element> -->
+    <!-- </sequence> -->
+    <!-- </complexType> -->
     <complexType name="Location">
         <sequence>
             <choice>
@@ -2247,7 +2264,6 @@
             <element name="referenceId" type="nonNegativeInteger" maxOccurs="1" minOccurs="1"/>
         </sequence>
     </complexType>
-   
     <complexType name="CaseCountArray">
         <sequence>
             <element name="nDimensions" type="positiveInteger" maxOccurs="1" minOccurs="0"/>
@@ -2416,7 +2432,7 @@
             <choice>
                 <element name="place" type="tns:PlaceEnum" maxOccurs="1" minOccurs="1"/>
                 <element name="locationCode" type="tns:ApolloLocationCode" maxOccurs="1" minOccurs="1"/>
-                <element name="latLongPair" type="tns:LatLongPair" minOccurs="1" maxOccurs="1"></element>
+                <element name="latLongPair" type="tns:LatLongPair" minOccurs="1" maxOccurs="1"/>
             </choice>
         </sequence>
     </complexType>
@@ -2662,8 +2678,8 @@
     </complexType>
     <complexType name="LatLongPair">
         <sequence>
-            <element name="latitutde" type="tns:Latitude" minOccurs="1" maxOccurs="1"></element>
-            <element name="longitude" type="tns:Longitude" minOccurs="1" maxOccurs="1"></element>
+            <element name="latitutde" type="tns:Latitude" minOccurs="1" maxOccurs="1"/>
+            <element name="longitude" type="tns:Longitude" minOccurs="1" maxOccurs="1"/>
         </sequence>
     </complexType>
 </schema>

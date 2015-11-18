@@ -1,13 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/" xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/" xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ http://types.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ ">
+<xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/"
+    xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/"
+    xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ apollo_types_3.1.0.xsd http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ infectious_disease_experiment_specification.xsd ">
     <apollo:infectiousDiseaseControlStrategies>
-      <apollo:openMalariaControlMeasureURLs>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml</apollo:openMalariaControlMeasureURLs>
-
+        <apollo:controlMeasures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:InsecticideTreatedNetControlMeasure">
+            <apollo:description>An insecticide treated net control strategy.</apollo:description>
+            <apollo:controlMeasureStartTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:TemporalTriggerDefinition">
+                <apollo:timeScale>simulatorTimeScale</apollo:timeScale>
+                <apollo:timeSinceTimeScaleZero>
+                    <apollo:unitOfTime>day</apollo:unitOfTime>
+                    <apollo:value>0.0</apollo:value>
+                </apollo:timeSinceTimeScaleZero>
+            </apollo:controlMeasureStartTime>
+            <apollo:controlMeasureResponseDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureResponseDelay>
+            <apollo:controlMeasureStandDownDelay xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:FixedDuration">
+                <apollo:unitOfTime>day</apollo:unitOfTime>
+                <apollo:value>0.0</apollo:value>
+            </apollo:controlMeasureStandDownDelay>
+            <apollo:logisticalSystems>
+                <apollo:product>Insecticide Treated Nets</apollo:product>
+                <apollo:logisticalSystemNodes>
+                    <apollo:outputSchedule>
+                        <apollo:unitOfMeasure>insecticideTreatedNets</apollo:unitOfMeasure>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>50</apollo:quantity>
+                            <apollo:dateTime>2013-06-01T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>60</apollo:quantity>
+                            <apollo:dateTime>2013-06-02T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                        <apollo:scheduleElements>
+                            <apollo:quantity>70</apollo:quantity>
+                            <apollo:dateTime>2013-06-03T00:00:00Z</apollo:dateTime>
+                        </apollo:scheduleElements>
+                    </apollo:outputSchedule>
+                </apollo:logisticalSystemNodes>
+            </apollo:logisticalSystems>
+            <apollo:templatedInfectiousDiseaseControlMeasureUrlsForSoftware>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalria</apollo:softwareName>
+                    <apollo:softwareVersion>R0063</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0065</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0068</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0111</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0115</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0121</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0125</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0131</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0132</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0133</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0670</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0674</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:softwareIdentificaiton>
+                    <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
+                    <apollo:softwareName>OpenMalaria</apollo:softwareName>
+                    <apollo:softwareVersion>R0678</apollo:softwareVersion>
+                    <apollo:softwareType>simulator</apollo:softwareType>
+                </apollo:softwareIdentificaiton>
+                <apollo:controlMeasureTemplateURL>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml</apollo:controlMeasureTemplateURL>
+            </apollo:templatedInfectiousDiseaseControlMeasureUrlsForSoftware>
+            <apollo:netHolingRate>
+                <apollo:numeratorUnitOfMeasure>netHoles</apollo:numeratorUnitOfMeasure>
+                <apollo:denominatorUnitOfMeasure>days</apollo:denominatorUnitOfMeasure>
+                <apollo:probabilityDistribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:LogNormalDistribution">
+                    <apollo:mean>0.5</apollo:mean>
+                    <apollo:standardDeviation>0.2</apollo:standardDeviation>
+                </apollo:probabilityDistribution>
+            </apollo:netHolingRate>
+            <apollo:nightlyProbabilityOfUse>0.8</apollo:nightlyProbabilityOfUse>
+        </apollo:controlMeasures>
     </apollo:infectiousDiseaseControlStrategies>
-    <apollo:infectiousDiseaseControlStrategies>
-      <apollo:openMalariaControlMeasureURLs>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml</apollo:openMalariaControlMeasureURLs></apollo:infectiousDiseaseControlStrategies>
     <apollo:infectiousDiseaseTransmissionModelIds>
         <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
         <apollo:softwareName>OpenMalaria</apollo:softwareName>
@@ -300,14 +424,15 @@
                         </apollo:scheduleElements>
                     </apollo:outputSchedule>
                 </apollo:logisticalSystemNodes>
-            <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
+                <!-- NOTE THAT THIS IS A NONSENSE PLACEHOLDER ELEMENT -->
             </apollo:logisticalSystems>
             <apollo:nightlyProbabilityOfUse>0.8</apollo:nightlyProbabilityOfUse>
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
-    <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable" >
-      <apollo:uniqueApolloLabelOfParameter>infectiousDiseaseScenarioWithoutIntervention/infections/infectionAcquisitionFromInfectedHosts[infectedHost=7165]/inoculationRate/value</apollo:uniqueApolloLabelOfParameter>
-      <apollo:minimumValue>200</apollo:minimumValue>
-      <apollo:maximumValue>300</apollo:maximumValue>
-      <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations></apollo:sensitivityAnalyses>
+    <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable">
+        <apollo:uniqueApolloLabelOfParameter>infectiousDiseaseScenarioWithoutIntervention/infections/infectionAcquisitionFromInfectedHosts[infectedHost=7165]/inoculationRate/value</apollo:uniqueApolloLabelOfParameter>
+        <apollo:minimumValue>200</apollo:minimumValue>
+        <apollo:maximumValue>300</apollo:maximumValue>
+        <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations>
+    </apollo:sensitivityAnalyses>
 </xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement>
