@@ -46,7 +46,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -75,7 +74,8 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		this.authentication = message.getAuthentication();
 	}
 
-	public void test() {
+	@Override
+	public void runApolloService() {
 
 		XMLSerializer serializer = new XMLSerializer();
 		XMLDeserializer deserializer = new XMLDeserializer();
@@ -105,11 +105,10 @@ public class StageExperimentMethod extends ApolloServiceThread {
 						double max = owsaocv.getMaximumValue();
 						double increment = (max - min) / owsaocv.getNumberOfDiscretizations().intValueExact();
 
+						String scenarioXML = serializer.serializeObject(baseScenarioCopy);
+
 						double val = min;
 						while (val <= max) {
-							String scenarioXML = serializer.serializeObject(baseScenarioCopy);
-
-							System.out.println(scenarioXML);
 
 							Document jdomDocument;
 							SAXBuilder jdomBuilder = new SAXBuilder();
@@ -120,9 +119,16 @@ public class StageExperimentMethod extends ApolloServiceThread {
 								return;
 							}
 
-							List<Namespace> namespaces = new ArrayList<>();
-							Namespace namespaceObj = Namespace.getNamespace("ns5", "http://types.apollo.pitt.edu/v3_1_0/");
-							namespaces.add(namespaceObj);
+							Element e = jdomDocument.getRootElement();
+							List<Namespace> namespaces = e.getNamespacesInScope();
+
+							for (Namespace namespace : namespaces) {
+								if (namespace.getURI().contains("http://types.apollo.pitt.edu")) {
+									param = param.replaceAll("/", "/" + namespace.getPrefix() + ":");
+									param = param.replaceAll("\\[", "\\[" + namespace.getPrefix() + ":");
+									break;
+								}
+							}
 
 							XPathFactory xpf = XPathFactory.instance();
 							XPathExpression<Element> expr;
@@ -147,14 +153,14 @@ public class StageExperimentMethod extends ApolloServiceThread {
 							runSimulationMessage.setSoftwareIdentification(modelId);
 							runSimulationMessage.setInfectiousDiseaseScenario(newScenario);
 
-//							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
-//							InsertRunResult result = stageMethod.stage();
+							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
+							InsertRunResult result = stageMethod.stage();
 							val += increment;
 						}
 					}
 				}
 			}
-		} catch (DeserializationException | IOException | SerializationException ex) {
+		} catch (DeserializationException | IOException | SerializationException | RunManagementException ex) {
 			ErrorUtils.reportError(runId, "Error inserting experiment run. Error was " + ex.getMessage(), authentication);
 			return;
 		}
@@ -175,11 +181,5 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		runMessage.setSimulatorTimeSpecification(null);
 
 		StageExperimentMethod method = new StageExperimentMethod(BigInteger.ZERO, null, runMessage);
-		method.test();
-	}
-
-	@Override
-	public void runApolloService() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

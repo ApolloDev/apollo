@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/"
-    xmlns:xspc="http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/"
-    xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ apollo_types_3.1.0.xsd http://infectious_disease_experiment_specification.apollo.pitt.edu/v3_1_0/ infectious_disease_experiment_specification.xsd">
+<apollo:InfectiousDiseaseTransmissionExperimentSpecificationElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/"
+    xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ apollo_types_3.1.0.xsd">
     <apollo:infectiousDiseaseControlStrategies>
         <apollo:controlMeasures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:InsecticideTreatedNetControlMeasure">
             <apollo:description>An insecticide treated net control strategy.</apollo:description>
@@ -436,9 +435,9 @@
         </apollo:infectiousDiseaseControlStrategies>
     </apollo:infectiousDiseaseScenarioWithoutIntervention>
     <apollo:sensitivityAnalyses xsi:type="apollo:OneWaySensitivityAnalysisOfContinousVariable">
-        <apollo:uniqueApolloLabelOfParameter>infectiousDiseaseScenarioWithoutIntervention/infections/infectionAcquisitionFromInfectedHosts[infectedHost=7165]/inoculationRate/value</apollo:uniqueApolloLabelOfParameter>
+        <apollo:uniqueApolloLabelOfParameter>/InfectiousDiseaseScenario/infections/infectionAcquisitionsFromInfectedHosts[infectedHost=7165]/innoculationRate/value</apollo:uniqueApolloLabelOfParameter>
         <apollo:minimumValue>200</apollo:minimumValue>
         <apollo:maximumValue>300</apollo:maximumValue>
         <apollo:numberOfDiscretizations>5</apollo:numberOfDiscretizations>
     </apollo:sensitivityAnalyses>
-</xspc:InfectiousDiseaseTransmissionExperimentSpecificationElement>
+</apollo:InfectiousDiseaseTransmissionExperimentSpecificationElement>
