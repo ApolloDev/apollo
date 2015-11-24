@@ -21,9 +21,11 @@ import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmiss
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_1_0.Authentication;
 import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseControlMeasure;
 import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseControlStrategy;
@@ -32,17 +34,24 @@ import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseTransmissionExperimentSpeci
 import edu.pitt.apollo.types.v3_1_0.OneWaySensitivityAnalysisOfContinousVariable;
 import edu.pitt.apollo.types.v3_1_0.SensitivityAnalysis;
 import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.utilities.Deserializer;
+import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;
 import edu.pitt.apollo.utilities.XMLSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
@@ -66,8 +75,7 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		this.authentication = message.getAuthentication();
 	}
 
-	@Override
-	public void runApolloService() {
+	public void test() {
 
 		XMLSerializer serializer = new XMLSerializer();
 		XMLDeserializer deserializer = new XMLDeserializer();
@@ -90,7 +98,7 @@ public class StageExperimentMethod extends ApolloServiceThread {
 
 				List<SensitivityAnalysis> sensitivityAnalyses = idtes.getSensitivityAnalyses();
 				for (SensitivityAnalysis sensitivityAnalysis : sensitivityAnalyses) {
-					if (sensitivityAnalyses instanceof OneWaySensitivityAnalysisOfContinousVariable) {
+					if (sensitivityAnalysis instanceof OneWaySensitivityAnalysisOfContinousVariable) {
 						OneWaySensitivityAnalysisOfContinousVariable owsaocv = (OneWaySensitivityAnalysisOfContinousVariable) sensitivityAnalysis;
 						String param = owsaocv.getUniqueApolloLabelOfParameter();
 						double min = owsaocv.getMinimumValue();
@@ -101,6 +109,8 @@ public class StageExperimentMethod extends ApolloServiceThread {
 						while (val <= max) {
 							String scenarioXML = serializer.serializeObject(baseScenarioCopy);
 
+							System.out.println(scenarioXML);
+
 							Document jdomDocument;
 							SAXBuilder jdomBuilder = new SAXBuilder();
 							try {
@@ -110,9 +120,13 @@ public class StageExperimentMethod extends ApolloServiceThread {
 								return;
 							}
 
+							List<Namespace> namespaces = new ArrayList<>();
+							Namespace namespaceObj = Namespace.getNamespace("ns5", "http://types.apollo.pitt.edu/v3_1_0/");
+							namespaces.add(namespaceObj);
+
 							XPathFactory xpf = XPathFactory.instance();
 							XPathExpression<Element> expr;
-							expr = xpf.compile(param, Filters.element());
+							expr = xpf.compile(param, Filters.element(), null, namespaces);
 							List<Element> elements = expr.evaluate(jdomDocument);
 
 							for (Element element : elements) {
@@ -133,23 +147,39 @@ public class StageExperimentMethod extends ApolloServiceThread {
 							runSimulationMessage.setSoftwareIdentification(modelId);
 							runSimulationMessage.setInfectiousDiseaseScenario(newScenario);
 
-							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
-							InsertRunResult result = stageMethod.stage();
-
+//							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
+//							InsertRunResult result = stageMethod.stage();
 							val += increment;
 						}
 					}
 				}
 			}
-		} catch (DeserializationException | IOException | SerializationException | RunManagementException ex) {
+		} catch (DeserializationException | IOException | SerializationException ex) {
 			ErrorUtils.reportError(runId, "Error inserting experiment run. Error was " + ex.getMessage(), authentication);
 			return;
 		}
 	}
 
-	public static void main(String[] args) {
-		
-		
-		
+	public static void main(String[] args) throws IOException, UnsupportedSerializationFormatException, DeserializationException {
+
+		byte[] encoded = Files.readAllBytes(Paths.get("../tests/infectious-disease-experiment-specification/infectious-disease-experiment-specification-element.xml"));
+		String xml = new String(encoded, Charset.defaultCharset());
+
+		Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+		InfectiousDiseaseTransmissionExperimentSpecification test = deserializer.getObjectFromMessage(xml,
+				InfectiousDiseaseTransmissionExperimentSpecification.class);
+
+		RunInfectiousDiseaseTransmissionExperimentMessage runMessage = new RunInfectiousDiseaseTransmissionExperimentMessage();
+		runMessage.setAuthentication(null);
+		runMessage.setInfectiousDiseaseTransmissionExperimentSpecification(test);
+		runMessage.setSimulatorTimeSpecification(null);
+
+		StageExperimentMethod method = new StageExperimentMethod(BigInteger.ZERO, null, runMessage);
+		method.test();
+	}
+
+	@Override
+	public void runApolloService() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }
