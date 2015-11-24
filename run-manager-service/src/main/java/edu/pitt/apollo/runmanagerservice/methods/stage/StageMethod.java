@@ -101,16 +101,17 @@ public class StageMethod {
 
             if (!(message instanceof RunSimulationsMessage)) {
                 if (!(message instanceof RunVisualizationMessage) && !(message instanceof DataRetrievalRequestMessage)) {
-                    String url = getTranslatorServiceUrl(dataServiceDao, authentication);
+                    
+					// message is RunSimulationMessage
+					
+					String url = getTranslatorServiceUrl(dataServiceDao, authentication);
                     if (url == null) {
                         throw new RunManagementException("There was no translator URL available!");
                     }
                     // run is loaded, now call translator
-                    System.out.println("FIX THIS ASAP");
-                    System.exit(-1);
 
-                    //TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
-                    //translatorDao.translateRun(runId);
+                    TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
+                    translatorDao.translateRun(runId);
 
                     methodCallStatus = dataServiceDao.getRunStatus(runId, authentication);
                     while (!methodCallStatus.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)
@@ -151,8 +152,8 @@ public class StageMethod {
             throw new RunManagementException("Malformed URL exception staging run : " + ex.getMessage());
         } catch (DataServiceException ex) {
             throw new RunManagementException("Database exception staging run: " + ex.getMessage());
-      /*  } catch (TranslatorServiceException ex) {
-            throw new RunManagementException("Translator service exception staging run: " + ex.getMessage());*/
+        } catch (TranslatorServiceException ex) {
+            throw new RunManagementException("Translator service exception staging run: " + ex.getMessage());
         }
     }
 

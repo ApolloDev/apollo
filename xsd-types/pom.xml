@@ -5,7 +5,7 @@
     <packaging>jar</packaging>
 
     <distributionManagement>
-       <repository>
+        <repository>
             <id>rods-nexus-deployment</id>
             <name>RODS Nexus</name>
             <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>

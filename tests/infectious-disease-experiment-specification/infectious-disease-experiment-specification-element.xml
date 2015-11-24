@@ -41,90 +41,90 @@
                 </apollo:logisticalSystemNodes>
             </apollo:logisticalSystems>
             <apollo:templatedInfectiousDiseaseControlMeasureUrlsForSoftware>
-                <apollo:softwareIdentificaiton>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalria</apollo:softwareName>
                     <apollo:softwareVersion>base</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalria</apollo:softwareName>
                     <apollo:softwareVersion>R0063</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0065</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0068</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0111</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0115</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0121</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0125</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0131</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0132</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0133</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0670</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0674</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
-                <apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
+                <apollo:softwareIdentification>
                     <apollo:softwareDeveloper>Swiss TPH</apollo:softwareDeveloper>
                     <apollo:softwareName>OpenMalaria</apollo:softwareName>
                     <apollo:softwareVersion>R0678</apollo:softwareVersion>
                     <apollo:softwareType>simulator</apollo:softwareType>
-                </apollo:softwareIdentificaiton>
+                </apollo:softwareIdentification>
                 <apollo:controlMeasureTemplateURL>https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/blob/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml</apollo:controlMeasureTemplateURL>
             </apollo:templatedInfectiousDiseaseControlMeasureUrlsForSoftware>
             <apollo:netHolingRate>

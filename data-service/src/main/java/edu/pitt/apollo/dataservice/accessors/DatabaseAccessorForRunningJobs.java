@@ -108,7 +108,7 @@ public class DatabaseAccessorForRunningJobs extends
 
             SoftwareIdentification destSoftwareId;
             if (message instanceof RunVisualizationMessage) {
-                destSoftwareId = message.getSoftwareIdentification();
+                destSoftwareId = ((RunVisualizationMessage) message).getSoftwareIdentification();
             } else {
                 destSoftwareId = ApolloSoftwareIdentificationResolver.getTranslatorSoftwareIdentification();
             }

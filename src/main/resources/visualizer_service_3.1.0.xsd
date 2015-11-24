@@ -15,6 +15,7 @@
 		<complexContent>
 		<extension base="common:RunMessage">
 		<sequence>
+                    	<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 			<element name="simulationRunIds" type="common:RunIdentificationAndLabel"
 				maxOccurs="unbounded" minOccurs="1">
 			</element>

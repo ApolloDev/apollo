@@ -59,7 +59,6 @@
 	<complexType name="RunMessage">
 		<sequence>
 			<element name="authentication" type="tns:Authentication"></element>
-			<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 		</sequence>
 	</complexType>
 

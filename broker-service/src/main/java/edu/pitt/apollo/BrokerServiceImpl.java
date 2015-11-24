@@ -16,6 +16,7 @@
 package edu.pitt.apollo;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.connector.DataServiceConnector;
@@ -293,5 +294,11 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
+	}
+	
+	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage
+			runInfectiousDiseaseTransmissionExperimentMessage) {
+		
+		return null;
 	}
 }

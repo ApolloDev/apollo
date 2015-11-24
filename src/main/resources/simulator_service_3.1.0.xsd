@@ -58,6 +58,7 @@
 		<complexContent>
 		<extension base="common:RunMessage">
 		<sequence>
+                    	<element name="softwareIdentification" type="apollo:SoftwareIdentification"></element>
 			<element name="simulatorTimeSpecification" type="apollo:SimulatorTimeSpecification"
 				maxOccurs="1" minOccurs="1">
 			</element>

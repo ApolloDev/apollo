@@ -20,15 +20,17 @@ public class RunApolloServiceThreadFactory {
 	public static RunApolloServiceThread getRunApolloServiceThread(RunMessage message, BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException {
 
 		SoftwareIdentification softwareId;
-		if ((message instanceof RunSimulationMessage) || (message instanceof RunSimulationsMessage)) {
-			return new RunSimulationThread(runId, message.getSoftwareIdentification(), authentication);
+		if (message instanceof RunSimulationMessage) {
+			return new RunSimulationThread(runId, ((RunSimulationMessage) message).getSoftwareIdentification(), authentication);
+		} else if (message instanceof RunSimulationsMessage) {
+			return new RunSimulationThread(runId, ((RunSimulationsMessage) message).getSoftwareIdentification(), authentication);
 		} else if (message instanceof RunVisualizationMessage) {
-			return new RunVisualizationThread(runId, message.getSoftwareIdentification(), authentication);
+			return new RunVisualizationThread(runId, ((RunVisualizationMessage) message).getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetOutputFilesURLsMessage) {
 //			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
 //			return new RunDataServiceThread(runId, softwareId, authentication);
 		} else if (message instanceof DataRetrievalRequestMessage) {
-			return new RunDataServiceThread(runId, message.getSoftwareIdentification(), authentication);
+			return new RunDataServiceThread(runId, ((DataRetrievalRequestMessage) message).getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
 //			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
 //			return new RunDataServiceThread(runId, softwareId, authentication);
