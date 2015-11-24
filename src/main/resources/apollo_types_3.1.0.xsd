@@ -1039,7 +1039,7 @@
                 <element name="beta" type="tns:Rate" maxOccurs="1" minOccurs="1"/>
                 <element name="transmissionProbabilities" type="tns:TransmissionProbability" maxOccurs="unbounded" minOccurs="1"/>
                 <!-- <element name="forGlobalEpidemicSimulator" type="tns:GesParametersForContactAndTransmission"	maxOccurs="1" minOccurs="1" /> -->
-                <element name="innoculationRate" type="tns:Rate" maxOccurs="1" minOccurs="0"/>
+                <element name="inoculationRate" type="tns:Rate" maxOccurs="1" minOccurs="0"/>
             </choice>
         </sequence>
     </complexType>
@@ -1602,7 +1602,7 @@
             <enumeration value="daily_dose"/>
             <enumeration value="percent_of_population_vaccinated"/>
             <enumeration value="visits"/>
-            <enumeration value="innoculations"/>
+            <enumeration value="inoculations"/>
             <enumeration value="perIndividualPerYear"/>
             <enumeration value="house"/>
             <enumeration value="insecticideTreatedNets"/>
