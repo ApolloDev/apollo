@@ -147,4 +147,9 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		}
 	}
 
+	public static void main(String[] args) {
+		
+		
+		
+	}
 }

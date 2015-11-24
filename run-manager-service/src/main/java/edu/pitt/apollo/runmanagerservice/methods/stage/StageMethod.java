@@ -1,6 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
 import edu.pitt.apollo.ApolloServiceQueue;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.DataServiceException;
@@ -141,10 +142,12 @@ public class StageMethod {
                     // so that the WaitForTranslationAndStartRunThread will work
                     dataServiceDao.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED, "Translation completed", authentication);
                 }
-            } else {
+            } else if (message instanceof RunSimulationsMessage) {
                 BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication, apolloServiceQueue);
                 apolloServiceQueue.addThreadToQueueAndRun(batchStageMethod);
-            }
+            } else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
+				
+			}
 
             // run is now translated
             return insertRunResult;
