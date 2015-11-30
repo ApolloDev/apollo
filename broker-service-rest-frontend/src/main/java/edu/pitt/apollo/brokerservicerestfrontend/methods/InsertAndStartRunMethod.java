@@ -5,6 +5,7 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.exception.DeserializationException;
@@ -51,9 +52,12 @@ public class InsertAndStartRunMethod extends BaseBrokerServiceAccessorMethod {
 				runResult = impl.runSimulations((RunSimulationsMessage) object);
 			} else if (object instanceof RunVisualizationMessage) {
 				runResult = impl.runVisualization((RunVisualizationMessage) object);
-			} else {
+			} else if (object instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
+				runResult = impl.runInfectiousDiseaseTransmissionExperiment((RunInfectiousDiseaseTransmissionExperimentMessage) object);
+			} 
+			else {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage");
+						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage");
 				return serializer.serializeObject(responseBuilder.getResponse());
 			}
 

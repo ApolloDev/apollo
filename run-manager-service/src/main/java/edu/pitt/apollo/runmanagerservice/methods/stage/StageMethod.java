@@ -100,7 +100,7 @@ public class StageMethod {
                 }
             }
 
-            if (!(message instanceof RunSimulationsMessage)) {
+            if (!(message instanceof RunSimulationsMessage) && !(message instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
                 if (!(message instanceof RunVisualizationMessage) && !(message instanceof DataRetrievalRequestMessage)) {
                     
 					// message is RunSimulationMessage
@@ -146,7 +146,9 @@ public class StageMethod {
                 BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication, apolloServiceQueue);
                 apolloServiceQueue.addThreadToQueueAndRun(batchStageMethod);
             } else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
-				
+				StageExperimentMethod method = new StageExperimentMethod(runId, apolloServiceQueue,
+                        (RunInfectiousDiseaseTransmissionExperimentMessage) message, authentication);
+				apolloServiceQueue.addThreadToQueueAndRun(method);
 			}
 
             // run is now translated

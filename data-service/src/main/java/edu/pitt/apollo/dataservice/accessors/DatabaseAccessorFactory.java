@@ -1,5 +1,6 @@
 package edu.pitt.apollo.dataservice.accessors;
 
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
@@ -28,7 +29,12 @@ public class DatabaseAccessorFactory {
 		} else if (message instanceof DataRetrievalRequestMessage) {
 			Authentication authentication = message.getAuthentication();
 			return new DatabaseAccessorForRunningDataService((DataRetrievalRequestMessage) message, authentication);
-		} else {
+		} else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
+            return new DatabaseAccessorForRunningJobs(
+                    message.getAuthentication(), null
+            );
+        }
+        else {
 			throw new UnrecognizedMessageTypeException(
 					"Unrecognized message type in DatabaseAccessorFactory");
 		}

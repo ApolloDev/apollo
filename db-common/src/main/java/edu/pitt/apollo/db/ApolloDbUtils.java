@@ -4,10 +4,7 @@ import edu.pitt.apollo.ApolloServiceConstants;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +32,6 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
-import java.sql.Connection;
-
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 
 /**
@@ -48,7 +43,7 @@ public class ApolloDbUtils extends BaseDbUtils {
     private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
     private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
     private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_302";
+    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_310";
     static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
     static Map<String, Integer> populationAxisCache = new HashMap<>();
     static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
@@ -1472,7 +1467,10 @@ public class ApolloDbUtils extends BaseDbUtils {
         String[] userIdTokens = parseUserId(userName);
         userName = userIdTokens[0];
 
-        int softwareKey = getSoftwareIdentificationKey(identificationOfSoftwareToRun);
+        Integer softwareKey = null;
+        if (identificationOfSoftwareToRun != null) {
+            softwareKey = getSoftwareIdentificationKey(identificationOfSoftwareToRun);
+        }
         int userKey = getUserKey(userName, password);
 
         BigInteger simulationGroupId = null;
@@ -1495,7 +1493,11 @@ public class ApolloDbUtils extends BaseDbUtils {
             PreparedStatement pstmt = conn.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, md5);
-            pstmt.setInt(2, softwareKey);
+            if (softwareKey != null) {
+                pstmt.setInt(2, softwareKey);
+            } else {
+                pstmt.setNull(2, Types.INTEGER);
+            }
             pstmt.setInt(3, userKey);
             pstmt.setInt(4, 1);
             pstmt.setInt(5, md5CollisionId);

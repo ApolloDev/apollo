@@ -22,9 +22,12 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v3_1_0.Authentication;
 import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseControlMeasure;
@@ -67,11 +70,12 @@ public class StageExperimentMethod extends ApolloServiceThread {
 	private final InfectiousDiseaseTransmissionExperimentSpecification idtes;
 	private final Authentication authentication;
 
-	public StageExperimentMethod(BigInteger experimentId, ApolloServiceQueue queue, RunInfectiousDiseaseTransmissionExperimentMessage message) {
+	public StageExperimentMethod(BigInteger experimentId, ApolloServiceQueue queue,
+                                 RunInfectiousDiseaseTransmissionExperimentMessage message, Authentication authentication) {
 		super(experimentId, queue);
 		this.message = message;
 		this.idtes = message.getInfectiousDiseaseTransmissionExperimentSpecification();
-		this.authentication = message.getAuthentication();
+		this.authentication = authentication;
 	}
 
 	@Override
@@ -81,9 +85,13 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		XMLDeserializer deserializer = new XMLDeserializer();
 
 		InfectiousDiseaseScenario baseScenario = idtes.getInfectiousDiseaseScenarioWithoutIntervention();
+        // clear all set control strategies in base
+        baseScenario.getInfectiousDiseaseControlStrategies().clear();
 
 		List<SoftwareIdentification> modelIds = idtes.getInfectiousDiseaseTransmissionModelIds();
 		try {
+			DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+			
 			for (SoftwareIdentification modelId : modelIds) {
 
 				// create a base scenario copy
@@ -100,7 +108,6 @@ public class StageExperimentMethod extends ApolloServiceThread {
 				for (SensitivityAnalysis sensitivityAnalysis : sensitivityAnalyses) {
 					if (sensitivityAnalysis instanceof OneWaySensitivityAnalysisOfContinousVariable) {
 						OneWaySensitivityAnalysisOfContinousVariable owsaocv = (OneWaySensitivityAnalysisOfContinousVariable) sensitivityAnalysis;
-						String param = owsaocv.getUniqueApolloLabelOfParameter();
 						double min = owsaocv.getMinimumValue();
 						double max = owsaocv.getMaximumValue();
 						double increment = (max - min) / owsaocv.getNumberOfDiscretizations().intValueExact();
@@ -110,7 +117,9 @@ public class StageExperimentMethod extends ApolloServiceThread {
 						double val = min;
 						while (val <= max) {
 
-							Document jdomDocument;
+                            String param = owsaocv.getUniqueApolloLabelOfParameter();
+
+                            Document jdomDocument;
 							SAXBuilder jdomBuilder = new SAXBuilder();
 							try {
 								jdomDocument = jdomBuilder.build(new ByteArrayInputStream(scenarioXML.getBytes(StandardCharsets.UTF_8)));
@@ -155,11 +164,23 @@ public class StageExperimentMethod extends ApolloServiceThread {
 
 							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
 							InsertRunResult result = stageMethod.stage();
+							BigInteger newRunId = result.getRunId();
+
+							MethodCallStatus status = dataServiceAccessor.getRunStatus(newRunId, authentication);
+							if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
+								ErrorUtils.reportError(runId, "Error inserting run in experiment with run ID " + runId + ""
+										+ ". Error was for inserting ID " + newRunId + " with message " + status.getMessage(), authentication);
+								return;
+							}
+
 							val += increment;
 						}
 					}
 				}
 			}
+
+			dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
+					"All runs for this experiment have been translated", authentication);
 		} catch (DeserializationException | IOException | SerializationException | RunManagementException ex) {
 			ErrorUtils.reportError(runId, "Error inserting experiment run. Error was " + ex.getMessage(), authentication);
 			return;
@@ -180,6 +201,6 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		runMessage.setInfectiousDiseaseTransmissionExperimentSpecification(test);
 		runMessage.setSimulatorTimeSpecification(null);
 
-		StageExperimentMethod method = new StageExperimentMethod(BigInteger.ZERO, null, runMessage);
+		StageExperimentMethod method = new StageExperimentMethod(BigInteger.ZERO, null, runMessage, null);
 	}
 }

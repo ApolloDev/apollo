@@ -30,7 +30,8 @@ import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
+;
 import edu.pitt.apollo.services_common.v3_1_0.Authentication;
 import edu.pitt.apollo.services_common.v3_1_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v3_1_0.ContentDataTypeEnum;
@@ -60,6 +61,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author nem41
  */
+
+
 public class BrokerServiceImpl implements ContentManagementInterface, RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface {
 
 	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
@@ -295,10 +298,15 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 			return null;
 		}
 	}
-	
-	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage
-			runInfectiousDiseaseTransmissionExperimentMessage) {
-		
-		return null;
+
+	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage runInfectiousDiseaseTransmissionExperimentMessage) {
+		InsertAndStartSimulationMethod method = null;
+		try {
+			method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+			return method.insertAndStartRun(runInfectiousDiseaseTransmissionExperimentMessage, BrokerServiceImpl.getDataServiceAuthentication());
+		} catch (IOException e) {
+			logger.error(e.getClass().getName() + ": " + e.getMessage());
+			return null;
+		}
 	}
 }

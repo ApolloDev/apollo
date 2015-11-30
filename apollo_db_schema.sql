@@ -330,7 +330,7 @@ CREATE TABLE run (
   created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   md5_hash_of_run_message CHAR(32) NOT NULL,
   md5_collision_id INT NOT NULL DEFAULT 1,
-  software_id INT NOT NULL,
+  software_id INT,
   requester_id INT NOT NULL,
   simulation_group_id INT,
   last_service_to_be_called int,

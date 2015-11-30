@@ -5,6 +5,7 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.DataServiceException;
@@ -52,9 +53,10 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 			RunMessage object = (RunMessage) deserializer.getObjectFromMessage(requestMessageObject.getRequestBody(), className, classNamespace);
 
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
-					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)) {
+					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)
+					&& !(object instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage");
+						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage");
 			} else {
 
 				try {
