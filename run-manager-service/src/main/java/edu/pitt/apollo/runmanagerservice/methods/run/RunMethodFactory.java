@@ -19,7 +19,13 @@ public class RunMethodFactory {
 
         DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
         SoftwareIdentification runSoftwareId = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
-        ApolloSoftwareTypeEnum type = runSoftwareId.getSoftwareType();
+        ApolloSoftwareTypeEnum type;
+        if (runSoftwareId != null) {
+           type = runSoftwareId.getSoftwareType();
+        } else {
+            type = ApolloSoftwareTypeEnum.SIMULATOR; // assume simulator type for transmission experiment, which don't list a single
+            // software ID for the experiment
+        }
 
         AbstractRunMethod runMethod;
         switch (type) {

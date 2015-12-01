@@ -1247,12 +1247,16 @@ public class ApolloDbUtils extends BaseDbUtils {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, runId.intValue());
             ResultSet rs = pstmt.executeQuery();
-            int softwareId;
+            int softwareId = 0;
             if (rs.next()) {
                 softwareId = rs.getInt("software_id");
             } else {
                 throw new ApolloDatabaseKeyNotFoundException(
                         "No entry found in run where id = " + runId);
+            }
+
+            if (softwareId == 0) {
+                return null;
             }
 
             return getSoftwareIdentification(softwareId);

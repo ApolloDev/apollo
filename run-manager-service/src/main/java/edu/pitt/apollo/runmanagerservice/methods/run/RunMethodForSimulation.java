@@ -1,5 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
@@ -14,15 +15,15 @@ import edu.pitt.apollo.utilities.JsonUtils;
 import java.math.BigInteger;
 
 /**
- *
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Jan 22, 2015 Time: 12:17:43 PM Class: RunMethodForSimulationAndVisualization
  */
 public class RunMethodForSimulation extends AbstractRunMethod {
 
     private Class runMessageClass = null;
-	public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
-		super(stagedRunId, authentication, "run_message.json");
-	}
+
+    public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DataServiceException {
+        super(stagedRunId, authentication, "run_message.json");
+    }
 
     @Override
     protected String getRunMessageJson(String runMessageFilename) throws DataServiceException {
@@ -32,6 +33,8 @@ public class RunMethodForSimulation extends AbstractRunMethod {
             runMessageClass = RunSimulationMessage.class;
         } else if (json.contains("\"type\" : \"RunSimulationsMessage\"")) {
             runMessageClass = RunSimulationsMessage.class;
+        } else if (json.contains("\"type\" : \"RunInfectiousDiseaseTransmissionExperimentMessage\"")) {
+            runMessageClass = RunInfectiousDiseaseTransmissionExperimentMessage.class;
         } else {
             throw new DataServiceException("Unsupported run message type when getting run message json");
         }
@@ -40,20 +43,22 @@ public class RunMethodForSimulation extends AbstractRunMethod {
     }
 
     @Override
-	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
-		JsonUtils jsonUtils = new JsonUtils();
+    protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
+        JsonUtils jsonUtils = new JsonUtils();
         if (runMessageClass.equals(RunSimulationMessage.class)) {
             return (RunSimulationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
-        } else {
+        } else if (runMessageClass.equals(RunSimulationsMessage.class)) {
             return (RunSimulationsMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
+        } else {
+            return (RunInfectiousDiseaseTransmissionExperimentMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
         }
-	}
+    }
 
-	@Override
-	protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {
-		MethodCallStatus status = new MethodCallStatus();
-		status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
-		status.setMessage("The run request has been sent to the simulator");
-		return status;
-	}
+    @Override
+    protected MethodCallStatus getDefaultSuccessfulMethodCallStatus() {
+        MethodCallStatus status = new MethodCallStatus();
+        status.setStatus(MethodCallStatusEnum.CALLED_SIMULATOR);
+        status.setMessage("The run request has been sent to the simulator");
+        return status;
+    }
 }
