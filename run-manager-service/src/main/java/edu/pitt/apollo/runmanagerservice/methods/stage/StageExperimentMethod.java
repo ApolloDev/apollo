@@ -35,7 +35,9 @@ import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseControlStrategy;
 import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseTransmissionExperimentSpecification;
 import edu.pitt.apollo.types.v3_1_0.OneWaySensitivityAnalysisOfContinousVariable;
+import edu.pitt.apollo.types.v3_1_0.OneWaySensitivityAnalysisOfContinousVariableSpecification;
 import edu.pitt.apollo.types.v3_1_0.SensitivityAnalysis;
+import edu.pitt.apollo.types.v3_1_0.SensitivityAnalysisSpecification;
 import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
@@ -104,10 +106,10 @@ public class StageExperimentMethod extends ApolloServiceThread {
 					}
 				}
 
-				List<SensitivityAnalysis> sensitivityAnalyses = idtes.getSensitivityAnalyses();
-				for (SensitivityAnalysis sensitivityAnalysis : sensitivityAnalyses) {
-					if (sensitivityAnalysis instanceof OneWaySensitivityAnalysisOfContinousVariable) {
-						OneWaySensitivityAnalysisOfContinousVariable owsaocv = (OneWaySensitivityAnalysisOfContinousVariable) sensitivityAnalysis;
+				List<SensitivityAnalysisSpecification> sensitivityAnalyses = idtes.getSensitivityAnalyses();
+				for (SensitivityAnalysisSpecification sensitivityAnalysis : sensitivityAnalyses) {
+					if (sensitivityAnalysis instanceof OneWaySensitivityAnalysisOfContinousVariableSpecification) {
+						OneWaySensitivityAnalysisOfContinousVariableSpecification owsaocv = (OneWaySensitivityAnalysisOfContinousVariableSpecification) sensitivityAnalysis;
 						double min = owsaocv.getMinimumValue();
 						double max = owsaocv.getMaximumValue();
 						double increment = (max - min) / owsaocv.getNumberOfDiscretizations().intValueExact();

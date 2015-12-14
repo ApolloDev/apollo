@@ -1104,7 +1104,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 		strategy.setCompliance(prob);
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
-		trigger.setTimeScale(TimeScaleEnum.DECSISION_TIME_SCALE);
+		trigger.setTimeScale(TimeScaleEnum.DECISION_TIME_SCALE);
 		strategy.getControlMeasureStartTime().add(trigger);
 
 //		epidemic.getInfectiousDiseaseControlStrategies().add(strategy);

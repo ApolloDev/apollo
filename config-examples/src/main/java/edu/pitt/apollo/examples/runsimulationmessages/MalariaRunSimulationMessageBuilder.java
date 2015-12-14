@@ -63,9 +63,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         Rate eir = new Rate();
         eir.setValue(50d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
@@ -77,9 +77,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         eir = new Rate();
         eir.setValue(75d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
@@ -91,9 +91,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         eir = new Rate();
         eir.setValue(100d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
