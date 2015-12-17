@@ -231,7 +231,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 		TemplatedInfectiousDiseaseControlMeasureUrlForSoftware templatedInfectiousDiseaseControlMeasureUrlForSoftware
 				= new TemplatedInfectiousDiseaseControlMeasureUrlForSoftware();
 		templatedInfectiousDiseaseControlMeasureUrlForSoftware.getSoftwareIdentification().add(getSoftwareIdentification());
-		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateURL("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml");
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateUrl("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml");
 		strategy.getTemplatedInfectiousDiseaseControlMeasureUrlsForSoftware().add(templatedInfectiousDiseaseControlMeasureUrlForSoftware);
 
         return strategy;
@@ -293,7 +293,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 		TemplatedInfectiousDiseaseControlMeasureUrlForSoftware templatedInfectiousDiseaseControlMeasureUrlForSoftware
 				= new TemplatedInfectiousDiseaseControlMeasureUrlForSoftware();
 		templatedInfectiousDiseaseControlMeasureUrlForSoftware.getSoftwareIdentification().add(getSoftwareIdentification());
-		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateURL("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml");
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateUrl("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml");
 		strategy.getTemplatedInfectiousDiseaseControlMeasureUrlsForSoftware().add(templatedInfectiousDiseaseControlMeasureUrlForSoftware);
 
 		
