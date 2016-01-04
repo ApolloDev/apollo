@@ -1,16 +1,16 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_1_0.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v3_1_0.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v3_1_0.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v3_1_0.FixedDuration;
-import edu.pitt.apollo.types.v3_1_0.Location;
-import edu.pitt.apollo.types.v3_1_0.OperatorEnum;
-import edu.pitt.apollo.types.v3_1_0.PlaceClosureControlMeasure;
-import edu.pitt.apollo.types.v3_1_0.PlaceEnum;
-import edu.pitt.apollo.types.v3_1_0.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v3_1_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0.ApolloPathogenCode;
+import edu.pitt.apollo.types.v4_0.DiseaseOutcomeEnum;
+import edu.pitt.apollo.types.v4_0.DiseaseSurveillanceCapability;
+import edu.pitt.apollo.types.v4_0.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v4_0.FixedDuration;
+import edu.pitt.apollo.types.v4_0.Location;
+import edu.pitt.apollo.types.v4_0.OperatorEnum;
+import edu.pitt.apollo.types.v4_0.PlaceClosureControlMeasure;
+import edu.pitt.apollo.types.v4_0.PlaceEnum;
+import edu.pitt.apollo.types.v4_0.UnitOfMeasureEnum;
+import edu.pitt.apollo.types.v4_0.UnitOfTimeEnum;
 
 /**
  *

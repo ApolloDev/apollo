@@ -1,10 +1,10 @@
 package edu.pitt.apollo.apolloservice.methods.library;
 
-import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v4_0.LibraryServiceEI;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceV310;
+import edu.pitt.apollo.service.libraryservice.v4_0.LibraryServiceV40;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public abstract class LibraryMethod {
 		try {
 			libraryServiceURL = new URL(LIBRARY_SERVICE_URL);
 
-			return new LibraryServiceV310(libraryServiceURL).getLibraryServiceEndpoint();
+			return new LibraryServiceV40(libraryServiceURL).getLibraryServiceEndpoint();
 
 		} catch (MalformedURLException ex) {
 			logger.error("MalformedURLException attempting to get Library port: " + ex.getMessage());

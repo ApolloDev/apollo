@@ -3,10 +3,10 @@ package edu.pitt.apollo.restlibraryserviceconnector;
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.interfaces.LibraryServiceInterface;
-import edu.pitt.apollo.library_service_types.v3_1_0.*;
+import edu.pitt.apollo.library_service_types.v4_0.*;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;

@@ -1,15 +1,15 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 

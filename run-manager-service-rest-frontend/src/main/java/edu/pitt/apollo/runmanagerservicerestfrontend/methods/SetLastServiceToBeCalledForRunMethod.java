@@ -9,9 +9,9 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 

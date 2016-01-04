@@ -11,12 +11,12 @@ import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

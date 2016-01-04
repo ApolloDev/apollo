@@ -5,14 +5,14 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.service.simulatorservice.v3_1_0.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v3_1_0.SimulatorServiceV310;
-import edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceEI;
-import edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceV310;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.service.simulatorservice.v4_0.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice.v4_0.SimulatorServiceV40;
+import edu.pitt.apollo.service.visualizerservice.v4_0.VisualizerServiceEI;
+import edu.pitt.apollo.service.visualizerservice.v4_0.VisualizerServiceV40;
+import edu.pitt.apollo.services_common.v4_0.*;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -57,10 +57,10 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 		MethodCallStatus status = null;
 		try {
 			if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.SIMULATOR)) {
-				SimulatorServiceEI port = new SimulatorServiceV310(new URL(serviceUrl)).getSimulatorServiceEndpoint();
+				SimulatorServiceEI port = new SimulatorServiceV40(new URL(serviceUrl)).getSimulatorServiceEndpoint();
 				status = port.runSimulation(runId);
 			} else if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.VISUALIZER)) {
-				VisualizerServiceEI port = new VisualizerServiceV310(new URL(serviceUrl)).getVisualizerServiceEndpoint();
+				VisualizerServiceEI port = new VisualizerServiceV40(new URL(serviceUrl)).getVisualizerServiceEndpoint();
 
 				try {
 				    // SOAP visualizer requires RunVisualizationMessage as a parameter, not just runID, so we have to load it
@@ -95,7 +95,7 @@ public class SoapJobRunningServiceConnector extends JobRunningServiceConnector {
 		TerminteRunResult response = null;
 		try {
 			if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.SIMULATOR)) {
-				SimulatorServiceEI port = new SimulatorServiceV310(new URL(serviceUrl)).getSimulatorServiceEndpoint();
+				SimulatorServiceEI port = new SimulatorServiceV40(new URL(serviceUrl)).getSimulatorServiceEndpoint();
 				response = port.terminateRun(request);
 			} else if (softwareIdentification.getSoftwareType().equals(ApolloSoftwareTypeEnum.VISUALIZER)) {
 				// not supported now, maybe in the future?

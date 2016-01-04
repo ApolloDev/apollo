@@ -30,15 +30,15 @@ import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.service.simulatorservice.v3_1_0.SimulatorServiceEI;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_1_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v3_1_0.TerminteRunResult;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.service.simulatorservice.v4_0.SimulatorServiceEI;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v4_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v4_0.GetScenarioLocationCodesSupportedBySimulatorResult;
 import edu.pitt.apollo.simulatorservice.thread.SimulatorThread;
 import edu.pitt.apollo.simulatorservice.util.RunUtils;
 
@@ -54,9 +54,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 	protected static final ApolloServiceQueue serviceQueue = new ApolloServiceQueue();
 
 	@Override
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.RunSimulation")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.RunSimulationResponse")
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.RunSimulation")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v4_0/runSimulation")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.RunSimulationResponse")
 	public MethodCallStatus runSimulation(@WebParam(name = "simulationRunId", targetNamespace = "") BigInteger simulationRunId) {
 		System.out.println("running simulation");
 		int runId = simulationRunId.intValue();
@@ -90,9 +90,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "getPopulationAndEnvironmentCensusResult", targetNamespace = "")
-	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.GetPopulationAndEnvironmentCensus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/getPopulationAndEnvironmentCensus")
-	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.GetPopulationAndEnvironmentCensusResponse")
+	@RequestWrapper(localName = "getPopulationAndEnvironmentCensus", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.GetPopulationAndEnvironmentCensus")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v4_0/getPopulationAndEnvironmentCensus")
+	@ResponseWrapper(localName = "getPopulationAndEnvironmentCensusResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.GetPopulationAndEnvironmentCensusResponse")
 	public GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensus(
 			@WebParam(name = "location", targetNamespace = "") String location) {
 		// TODO Auto-generated method stub
@@ -107,9 +107,9 @@ public abstract class SimulatorServiceImpl implements SimulatorServiceEI {
 
 	@Override
 	@WebResult(name = "getLocationsSupportedBySimulatorResult", targetNamespace = "")
-	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.GetScenarioLocationCodesSupportedBySimulator")
-	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/getScenarioLocationCodesSupportedBySimulator")
-	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", className = "edu.pitt.apollo.service.simulatorservice.v3_1_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
+	@RequestWrapper(localName = "getScenarioLocationCodesSupportedBySimulator", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.GetScenarioLocationCodesSupportedBySimulator")
+	@WebMethod(action = "http://service.apollo.pitt.edu/simulatorservice/v4_0/getScenarioLocationCodesSupportedBySimulator")
+	@ResponseWrapper(localName = "getScenarioLocationCodesSupportedBySimulatorResponse", targetNamespace = "http://service.apollo.pitt.edu/simulatorservice/v4_0/", className = "edu.pitt.apollo.service.simulatorservice.v4_0.GetScenarioLocationCodesSupportedBySimulatorResponse")
 	public GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator() {
 		// TODO Auto-generated method stub
 		return null;

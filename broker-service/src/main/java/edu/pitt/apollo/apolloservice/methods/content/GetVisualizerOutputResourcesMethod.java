@@ -1,12 +1,12 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.UrlOutputResource;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.UrlOutputResource;
+import edu.pitt.apollo.visualizer_service_types.v4_0.GetVisualizerOutputResourcesResult;
 
 import java.math.BigInteger;
 import java.util.Map;

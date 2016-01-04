@@ -2,7 +2,7 @@ package edu.pitt.apollo.simulatorservice.util;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import java.math.BigInteger;
 import org.apache.commons.codec.digest.DigestUtils;
 

@@ -22,31 +22,31 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.service.apolloservice.v3_1_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_1_0.ApolloServiceV310;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunResult;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_1_0.UrlOutputResource;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.PopulationAndEnvironmentCensus;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceV40;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0.UrlOutputResource;
+import edu.pitt.apollo.simulator_service_types.v4_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v4_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.visualizer_service_types.v4_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 
 public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-3.1.0-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-4.0-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(
-			"http://service.apollo.pitt.edu/apolloservice/v3_1_0/",
-			"ApolloService_v3.1.0");
+			"http://service.apollo.pitt.edu/apolloservice/v4_0/",
+			"ApolloService_v4.0");
 	public static final long TWO_SECONDS = 2000;
 	public static final boolean RUN_IS_NOT_COMPLETED_OR_FAILED = true;
 	public static final boolean RUN_WAS_SUCCESSFUL = true;
@@ -196,7 +196,7 @@ public class TutorialWebServiceClient {
 
 	static {
 		try {
-			ApolloServiceV310 ss = new ApolloServiceV310(new URL(WSDL_LOC),
+			ApolloServiceV40 ss = new ApolloServiceV40(new URL(WSDL_LOC),
 					SERVICE_NAME);
 			port = ss.getApolloServiceEndpoint();
 		} catch (MalformedURLException ex) {

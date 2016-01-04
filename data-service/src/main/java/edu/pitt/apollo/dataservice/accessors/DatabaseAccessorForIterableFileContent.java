@@ -2,7 +2,7 @@ package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.dataservice.types.FileContentForRun;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import java.io.Closeable;
 import java.io.IOException;
 import java.math.BigInteger;

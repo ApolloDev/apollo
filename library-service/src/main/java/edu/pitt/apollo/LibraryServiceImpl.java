@@ -19,7 +19,7 @@ import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.interfaces.LibraryServiceInterface;
-import edu.pitt.apollo.library_service_types.v3_1_0.*;
+import edu.pitt.apollo.library_service_types.v4_0.*;
 
 import java.io.File;
 import java.util.Map;
@@ -27,8 +27,8 @@ import java.util.Map;
 import javax.jws.WebService;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.service.libraryservice.v3_1_0.SetLibraryItemAsNotReleased;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.service.libraryservice.v4_0.SetLibraryItemAsNotReleased;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,10 +44,10 @@ import edu.pitt.apollo.libraryservice.methods.QueryLibraryMethod;
 import edu.pitt.apollo.libraryservice.methods.SetLibraryItemAsNotReleasedMethod;
 import edu.pitt.apollo.libraryservice.methods.SetReleaseVersionMethod;
 import edu.pitt.apollo.libraryservice.methods.UpdateLibraryItemMethod;
-import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v4_0.LibraryServiceEI;
 
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v3_1_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v3.1.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v4_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v4.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v4_0.LibraryServiceEI")
 public class LibraryServiceImpl implements LibraryServiceEI, LibraryServiceInterface {
 
     public static final String APOLLO_DIR;
