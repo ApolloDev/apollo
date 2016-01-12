@@ -1,6 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -10,7 +9,6 @@ import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAcces
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
 import java.math.BigInteger;
 

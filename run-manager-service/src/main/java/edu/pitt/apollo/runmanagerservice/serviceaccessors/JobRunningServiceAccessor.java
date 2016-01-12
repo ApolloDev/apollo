@@ -4,8 +4,8 @@ import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.soapjobrunningserviceconnector.RestJobRunningServiceConnector;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
 
 import java.math.BigInteger;
 
@@ -14,11 +14,11 @@ import java.math.BigInteger;
  */
 public class JobRunningServiceAccessor extends ServiceAccessor implements JobRunningServiceInterface {
 
-	private JobRunningServiceConnector connector;
+	private final JobRunningServiceConnector connector;
 	
 	public JobRunningServiceAccessor(String url, SoftwareIdentification softwareIdentification) throws JobRunningServiceException {
 		super(url);
-        connector = new SoapJobRunningServiceConnector(url, softwareIdentification);
+        connector = new RestJobRunningServiceConnector(url);
 	}
 
 	@Override

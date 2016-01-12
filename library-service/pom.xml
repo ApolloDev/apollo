@@ -175,53 +175,5 @@
         <!--<finalName>library-service</finalName>-->
     </build>
 
-    <profiles>
-        <profile>
-            <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.cxf</groupId>
-                        <artifactId>cxf-codegen-plugin</artifactId>
-                        <version>${cxf.version}</version>
-                        <executions>
-                            <execution>
-                                <configuration>
-                                    <sourceRoot>
-                                        ${basedir}/target/generated-sources
-                                    </sourceRoot>
-                                    <wsdlOptions>
-                                        <wsdlOption>
-                                            <wsdl>
-                                                ${basedir}/../src/main/resources/library_service_4.0.wsdl
-                                            </wsdl>
-                                            <wsdlLocation>classpath:library_service_4.0.wsdl</wsdlLocation>
-                                        </wsdlOption>
-                                    </wsdlOptions>
-                                </configuration>
-                                <goals>
-                                    <goal>wsdl2java</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <configuration>
-                            <instructions>
-                                <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                                <Require-Bundle>org.apache.cxf.bundle,org.springframework.beans</Require-Bundle>
-                                <Export-Package>edu.pitt.apollo.service</Export-Package>
-                            </instructions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+   
 </project>
