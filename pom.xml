@@ -74,6 +74,8 @@
         <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
 
+        <module>simulator-service-rest-skeleton</module>
+
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>
         <module>synthetic-population-service-war</module>
