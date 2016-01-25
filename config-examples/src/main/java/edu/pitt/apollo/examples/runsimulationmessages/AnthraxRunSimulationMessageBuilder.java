@@ -243,7 +243,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         categoryDistribution.getProbabilityValuePairs().add(probability);
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         distribution.setFirstConditioningVariable(firstVariable);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);
@@ -268,7 +268,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
         distribution.setFirstConditioningVariable(firstVariable);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);
         dte.setStrainIdentifier(strain);
@@ -291,7 +291,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         categoryDistribution.getProbabilityValuePairs().add(probability);
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         distribution.setFirstConditioningVariable(firstVariable);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);

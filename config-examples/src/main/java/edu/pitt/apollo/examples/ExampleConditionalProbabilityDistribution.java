@@ -7,7 +7,7 @@ import edu.pitt.apollo.types.v4_0.AgeRangeCategoryDefinition;
 import edu.pitt.apollo.types.v4_0.Category;
 import edu.pitt.apollo.types.v4_0.ConditionalProbabilityDistribution;
 import edu.pitt.apollo.types.v4_0.ConditioningVariable;
-import edu.pitt.apollo.types.v4_0.ConditioningVariableEnum;
+import edu.pitt.apollo.types.v4_0.CategoricalVariableEnum;
 import edu.pitt.apollo.types.v4_0.DiscreteNonparametricProbabilityDistribution;
 import edu.pitt.apollo.types.v4_0.GenderCategoryDefinition;
 import edu.pitt.apollo.types.v4_0.GenderEnum;
@@ -59,7 +59,7 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodIsThreeDays);
 
 		ConditioningVariable gender = new ConditioningVariable();
-		gender.setName(ConditioningVariableEnum.SEX);
+		gender.setName(CategoricalVariableEnum.SEX);
 		Category male = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
 		Category female = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
 		gender.getCategories().add(male);
@@ -94,7 +94,7 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodForFemalesIsThreeDays);
 
 		ConditioningVariable gender = new ConditioningVariable();
-		gender.setName(ConditioningVariableEnum.SEX);
+		gender.setName(CategoricalVariableEnum.SEX);
 		Category maleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M,
 				latentPeriodDurationForMales);
 		Category femaleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F,
@@ -165,7 +165,7 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodForAdultFemalesIsThreeDays);
 
 		ConditioningVariable ageGroups = new ConditioningVariable();
-		ageGroups.setName(ConditioningVariableEnum.AGE_RANGE);
+		ageGroups.setName(CategoricalVariableEnum.AGE_RANGE);
 		ageGroups.getCategories().add(childAgeGroup);
 		ageGroups.getCategories().add(youngPersonAgeGroup);
 		ageGroups.getCategories().add(adultAgeRange);
