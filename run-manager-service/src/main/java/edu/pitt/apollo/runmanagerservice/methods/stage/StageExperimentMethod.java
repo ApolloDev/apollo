@@ -117,7 +117,7 @@ public class StageExperimentMethod extends ApolloServiceThread {
 						double val = min;
 						while (val <= max) {
 
-                            String param = owsaocv.getUniqueApolloLabelOfParameter();
+                            String param = owsaocv.getXPathToVariable();
 
                             Document jdomDocument;
 							SAXBuilder jdomBuilder = new SAXBuilder();
