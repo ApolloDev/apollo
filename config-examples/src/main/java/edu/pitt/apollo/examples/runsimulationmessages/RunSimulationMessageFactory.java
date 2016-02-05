@@ -1,7 +1,7 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
 import edu.pitt.apollo.examples.exception.ConfigurationExampleException;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
 
 import java.util.Set;
 

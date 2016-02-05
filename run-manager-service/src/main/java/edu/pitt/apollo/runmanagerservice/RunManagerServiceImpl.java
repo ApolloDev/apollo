@@ -10,13 +10,13 @@ import edu.pitt.apollo.runmanagerservice.methods.run.AbstractRunMethod;
 import edu.pitt.apollo.runmanagerservice.methods.run.RunMethodFactory;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.soapjobrunningserviceconnector.SoapJobRunningServiceConnector;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.soapjobrunningserviceconnector.RestJobRunningServiceConnector;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -97,8 +97,8 @@ public class RunManagerServiceImpl implements RunManagementInterface, JobRunning
 		try {
 			SoftwareIdentification softwareIdentification = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
 			String urlOfSimulator = dataServiceAccessor.getURLForSoftwareIdentification(softwareIdentification, authentication);
-			SoapJobRunningServiceConnector soapJobRunningServiceConnector = new SoapJobRunningServiceConnector(urlOfSimulator, softwareIdentification);
-			soapJobRunningServiceConnector.terminate(runId, authentication);
+			RestJobRunningServiceConnector restJobRunningServiceConnector = new RestJobRunningServiceConnector(urlOfSimulator);
+			restJobRunningServiceConnector.terminate(runId, authentication);
 		} catch (DataServiceException e) {
 			throw new JobRunningServiceException("Error terminating job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
 		}

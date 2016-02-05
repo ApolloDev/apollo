@@ -5,7 +5,7 @@
 
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>library-service-rest-frontend</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>Library Service Rest Front-end</name>
@@ -138,13 +138,19 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>broker-service</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>library-service</artifactId>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>rest-services-frontend-common</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
 
         <!--Jersey imports-->

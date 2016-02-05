@@ -1,11 +1,11 @@
 package edu.pitt.apollo.runmanagerservice;
 
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.services_common.v4_0.*;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0.SyntheticPopulationGenerationResult;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 
 import java.math.BigInteger;
 

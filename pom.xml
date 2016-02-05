@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -66,25 +66,15 @@
         <module>translator-service-skeleton</module>
 
         <module>library-service</module>
-        <module>library-service-client</module>
-        <module>library-service-war</module>
         <module>library-service-rest-frontend</module>
 
         <module>data-service</module>
-        <module>data-service-war</module>
         <module>data-service-rest-frontend</module>
 
-        <module>simulator-service</module>
-        <module>simulator-service-client</module>
-        <module>simulator-service-war</module>
-
-        <module>visualizer-service</module>
-        <module>visualizer-service-client</module>
-        <module>visualizer-service-war</module>
-
-        <module>job-running-service-soap-connector</module>
-         <module>job-running-service-rest-connector</module>
+        <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
+
+        <module>simulator-service-rest-skeleton</module>
 
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>
@@ -95,14 +85,11 @@
         <module>run-manager-service-rest-frontend</module>
 
         <module>broker-service</module>
-        <module>broker-service-war</module>
         <module>broker-service-rest-frontend</module>
         <module>broker-service-rest-connector</module>
 
         <module>config-examples</module>
         <module>run-manager-service-client</module>
-        <module>broker-service-client</module>
-
 
         <module>library-service-rest-connector</module>
     </modules>
@@ -112,7 +99,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:tns="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	
+	<wsdl:types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/"
+			xmlns:spst="http://synthetic-population-service-types.apollo.pitt.edu/v4_0/"
+			xmlns:services="http://services-common.apollo.pitt.edu/v4_0/">
+
+			<!-- <xsd:import schemaLocation="http://research.rods.pitt.edu/apollo-types2.xsd" namespace="http://types.apollo.pitt.edu/"></xsd:import> -->
+			<xsd:import schemaLocation="synthetic_population_service_4.0.xsd" namespace="http://synthetic-population-service-types.apollo.pitt.edu/v4_0/"></xsd:import>
+			<xsd:import schemaLocation="services_common_4.0.xsd" namespace="http://services-common.apollo.pitt.edu/v4_0/"></xsd:import>
+			
+			<xsd:element name="runSyntheticPopulationGeneration">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runSyntheticPopulationGenerationMessage" type="spst:RunSyntheticPopulationGenerationMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="runSyntheticPopulationGenerationResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="serviceResult" type="services:RunIdentification" maxOccurs="1" minOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="getRunStatus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="services:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="getRunStatusResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runStatus" type="spst:SyntheticPopulationRunStatusMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="killRunRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runId" type="services:RunIdentification"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="killRunResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="runStatus" type="spst:SyntheticPopulationRunStatusMessage"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			
+		</xsd:schema>
+	</wsdl:types>
+
+
+	<wsdl:message name="runSyntheticPopulationGenerationRequest">
+		<wsdl:part name="parameters" element="tns:runSyntheticPopulationGeneration"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="runSyntheticPopulationGenerationResponse">
+		<wsdl:part name="parameters" element="tns:runSyntheticPopulationGenerationResponse"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="getRunStatusRequest">
+		<wsdl:part name="parameters" element="tns:getRunStatus"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="getRunStatusResponse">
+		<wsdl:part name="parameters" element="tns:getRunStatusResponse"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="killRunRequest">
+		<wsdl:part name="parameters" element="tns:killRunRequest"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="killRunResponse">
+		<wsdl:part name="parameters" element="tns:killRunResponse"></wsdl:part>
+	</wsdl:message>
+	
+	
+	<wsdl:portType name="SyntheticPopulationServiceEI">
+		<wsdl:operation name="runSyntheticPopulationGeneration">
+			<wsdl:input message="tns:runSyntheticPopulationGenerationRequest"></wsdl:input>
+			<wsdl:output message="tns:runSyntheticPopulationGenerationResponse"></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getRunStatus">
+			<wsdl:input message="tns:getRunStatusRequest"></wsdl:input>
+			<wsdl:output message="tns:getRunStatusResponse"></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="killRun">
+			<wsdl:input message="tns:killRunRequest"></wsdl:input>
+			<wsdl:output message="tns:killRunResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="SyntheticPopulationServiceBinding"
+		type="tns:SyntheticPopulationServiceEI">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="runSyntheticPopulationGeneration">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/runSyntheticPopulationGeneration" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getRunStatus">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/getRunStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="killRun">
+			<soap:operation
+				soapAction="http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/killRun" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="SyntheticPopulationService_v4.0">
+		<wsdl:port name="SyntheticPopulationServiceEndpoint" binding="tns:SyntheticPopulationServiceBinding">
+			<!-- <soap:address location="http://synthiastage.rti.org/Account/synthia-WS.asmx" /> -->
+			<!--<soap:address location="http://localhost:8080/syntheticpopulationservice20/services/syntheticpopulationservice" />-->
+			<!-- I have no idea how to dynamically generate the absolute host address properly (use definitions...?) -->
+			<soap:address location="http://localhost:8080/syntheticpopulation-service-war-4.0-SNAPSHOT/services/syntheticpopulationservice" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

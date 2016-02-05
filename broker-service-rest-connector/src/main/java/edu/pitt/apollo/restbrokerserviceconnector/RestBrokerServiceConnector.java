@@ -1,15 +1,15 @@
 package edu.pitt.apollo.restbrokerserviceconnector;
 
 import edu.pitt.apollo.connector.BrokerServiceConnector;
-import edu.pitt.apollo.data_service_types.v3_1_0.AssociateContentWithRunIdMessage;
-import edu.pitt.apollo.data_service_types.v3_1_0.ContentIdAndDescription;
+import edu.pitt.apollo.data_service_types.v4_0.AssociateContentWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v4_0.ContentIdAndDescription;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0.*;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.HashMap;

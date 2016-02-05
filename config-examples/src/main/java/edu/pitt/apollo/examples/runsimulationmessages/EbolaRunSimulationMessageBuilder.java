@@ -1,10 +1,10 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

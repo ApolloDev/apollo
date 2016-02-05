@@ -2,7 +2,7 @@ package edu.pitt.apollo.utils;
 
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;

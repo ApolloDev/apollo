@@ -18,10 +18,10 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.methods.StartRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetStatusOfRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.TerminateRunMethod;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunActionEnum;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunActionEnum;
+import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

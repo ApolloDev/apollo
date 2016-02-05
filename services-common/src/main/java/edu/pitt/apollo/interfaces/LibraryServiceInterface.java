@@ -1,8 +1,8 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.library_service_types.v3_1_0.*;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.library_service_types.v4_0.*;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -32,7 +32,7 @@ public interface LibraryServiceInterface {
     public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException;
 
     public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException;
-
+	
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException;
 
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException;

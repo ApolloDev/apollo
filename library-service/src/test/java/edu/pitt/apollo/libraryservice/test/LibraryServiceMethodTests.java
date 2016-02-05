@@ -1,7 +1,7 @@
 package edu.pitt.apollo.libraryservice.test;
 
 
-import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0.InfectiousDiseaseScenario;
 import edu.pitt.apollo.utilities.JsonUtils;
 import junit.framework.TestCase;
 

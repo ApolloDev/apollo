@@ -4,7 +4,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
     </parent>
     <artifactId>broker-service</artifactId>
     <name>Broker Service</name>
@@ -42,22 +42,7 @@
             <artifactId>xstream</artifactId>
             <version>1.4.4</version>
         </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>simulator-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>library-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>visualizer-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>synthetic-population-service-client</artifactId>
@@ -208,53 +193,4 @@
         <!--<finalName>apollo-service202</finalName> -->
     </build>
 
-    <profiles>
-        <profile>
-            <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.cxf</groupId>
-                        <artifactId>cxf-codegen-plugin</artifactId>
-                        <version>${cxf.version}</version>
-                        <executions>
-                            <execution>
-                                <configuration>
-                                    <sourceRoot>
-                                        ${basedir}/target/generated-sources
-                                    </sourceRoot>
-                                    <wsdlOptions>
-                                        <wsdlOption>
-                                            <wsdl>
-                                                ${basedir}/../src/main/resources/apollo_service_3.1.0.wsdl
-                                            </wsdl>
-                                            <wsdlLocation>classpath:apollo_service_3.1.0.wsdl</wsdlLocation>
-                                        </wsdlOption>
-                                    </wsdlOptions>
-                                </configuration>
-                                <goals>
-                                    <goal>wsdl2java</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <configuration>
-                            <instructions>
-                                <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                                <Require-Bundle>org.apache.cxf.bundle,org.springframework.beans</Require-Bundle>
-                                <Export-Package>edu.pitt.apollo.service</Export-Package>
-                            </instructions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

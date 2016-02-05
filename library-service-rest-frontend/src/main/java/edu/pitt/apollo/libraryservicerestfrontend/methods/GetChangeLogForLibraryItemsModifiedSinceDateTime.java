@@ -1,10 +1,11 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
+import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.library_service_types.v4_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
+import edu.pitt.apollo.library_service_types.v4_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import org.springframework.http.HttpStatus;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -31,11 +32,9 @@ public class GetChangeLogForLibraryItemsModifiedSinceDateTime extends BaseLibrar
             GregorianCalendar gc = new GregorianCalendar();
             gc.setTime(date);
             XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-            GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage = new GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage();
-            getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.setAuthentication(authentication);
-            getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.setDateTime(xmlGregorianCalendar);
-            return getResponseAsString(impl.getChangeLogForLibraryItemsModifiedSinceDateTime(getChangeLogForLibraryItemsModifiedSinceDateTimeMessage));
-        } catch (ParseException | DatatypeConfigurationException e) {
+
+            return getResponseAsString(impl.getChangeLogForLibraryItemsModifiedSinceDateTime(xmlGregorianCalendar, authentication));
+        } catch (ParseException | DatatypeConfigurationException | LibraryServiceException e) {
             responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getClass().getName() + ": " + e.getMessage());
         }
         try {

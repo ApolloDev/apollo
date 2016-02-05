@@ -10,7 +10,7 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.RestDataServiceUtils;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import java.util.List;
 import org.springframework.http.HttpStatus;

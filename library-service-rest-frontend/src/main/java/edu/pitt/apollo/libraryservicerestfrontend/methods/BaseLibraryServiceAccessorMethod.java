@@ -1,14 +1,11 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
-import edu.pitt.apollo.BrokerServiceImpl;
 import edu.pitt.apollo.LibraryServiceImpl;
-import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_1_0.Request;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import edu.pitt.apollo.utils.ResponseMessageBuilder;
