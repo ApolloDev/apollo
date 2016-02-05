@@ -34,8 +34,7 @@ public class RestJobRunningServiceConnector extends JobRunningServiceConnector {
 
 	public RestJobRunningServiceConnector(String url) throws JobRunningServiceException {
 		super(url);
-		restServiceUri = serviceUrl + "/ws/";
-
+		restServiceUri = serviceUrl + "/";
 	}
 
 	@Override
@@ -51,13 +50,15 @@ public class RestJobRunningServiceConnector extends JobRunningServiceConnector {
 
 	@Override
 	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		String uri = restServiceUri + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-		uri += "&action=" + RunActionEnum.TERMINATE;
-		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
-		} catch (RestServiceException ex) {
-			throw new JobRunningServiceException(ex.getMessage());
-		}
+//		String uri = restServiceUri + "runsimulation/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+//		uri += "&action=" + RunActionEnum.TERMINATE;
+//		try {
+//			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+//		} catch (RestServiceException ex) {
+//			throw new JobRunningServiceException(ex.getMessage());
+//		}
+
+		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 }
