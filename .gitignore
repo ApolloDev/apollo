@@ -14,3 +14,4 @@ catalog-*.xml
 nb-configuration.xml
 classlist.txt
 .*.swp
+*/nbactions.xml

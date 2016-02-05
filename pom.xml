@@ -83,6 +83,7 @@
         <module>visualizer-service-war</module>
 
         <module>job-running-service-soap-connector</module>
+         <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
