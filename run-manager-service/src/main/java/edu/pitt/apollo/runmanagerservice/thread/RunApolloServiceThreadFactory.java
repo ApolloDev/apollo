@@ -31,12 +31,12 @@ public class RunApolloServiceThreadFactory {
             return new RunVisualizationThread(runId, ((RunVisualizationMessage) message).getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetOutputFilesURLsMessage) {
 //			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
-//			return new RunDataServiceThread(runId, softwareId, authentication);
+//			return new RunDatabaseJobThread(runId, softwareId, authentication);
         } else if (message instanceof DataRetrievalRequestMessage) {
-            return new RunDataServiceThread(runId, ((DataRetrievalRequestMessage) message).getSoftwareIdentification(), authentication);
+            return new RunDatabaseJobThread(runId, ((DataRetrievalRequestMessage) message).getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
 //			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
-//			return new RunDataServiceThread(runId, softwareId, authentication);
+//			return new RunDatabaseJobThread(runId, softwareId, authentication);
         } else {
             throw new UnrecognizedMessageTypeException("Unrecognized message type in RunApolloServiceThreadFactory");
         }

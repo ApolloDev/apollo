@@ -59,7 +59,6 @@
         <module>services-common</module>
         <module>rest-services-frontend-common</module>
 
-        <module>data-service-rest-connector</module>
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
 
@@ -67,9 +66,6 @@
 
         <module>library-service</module>
         <module>library-service-rest-frontend</module>
-
-        <module>data-service</module>
-        <module>data-service-rest-frontend</module>
 
         <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>

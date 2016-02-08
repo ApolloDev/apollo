@@ -3,7 +3,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -19,6 +19,36 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
+import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 
 /**
  * Author: Nick Millett
@@ -87,7 +117,7 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
     }
 
     public static void writeErrorToDataService(String message, BigInteger runId, Authentication authentication) throws DataServiceException {
-        DataServiceAccessor dataServiceDao = new DataServiceAccessor();
+        DatastoreAccessImpl dataServiceDao = new DatastoreAccessImpl();
 
         MethodCallStatus status = new MethodCallStatus();
         status.setStatus(MethodCallStatusEnum.FAILED);

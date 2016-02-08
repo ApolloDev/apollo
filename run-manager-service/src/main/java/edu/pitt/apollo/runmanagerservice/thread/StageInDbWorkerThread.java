@@ -1,6 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
@@ -11,6 +10,7 @@ import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
@@ -183,7 +183,7 @@ public class StageInDbWorkerThread implements Runnable {
                     InsertRunResult result = stageMethod.stage();
                     BigInteger runId = result.getRunId();
 
-                    DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+                    DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
                     MethodCallStatus status = dataServiceAccessor.getRunStatus(runId, authentication);
                     if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                         failedRunIds.add(runId);

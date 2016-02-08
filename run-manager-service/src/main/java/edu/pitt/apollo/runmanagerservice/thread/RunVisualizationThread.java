@@ -3,8 +3,8 @@ package edu.pitt.apollo.runmanagerservice.thread;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -25,7 +25,7 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 	@Override
 	public void run() {
 
-		DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+		DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
 		String url;
 		try {
 			url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);

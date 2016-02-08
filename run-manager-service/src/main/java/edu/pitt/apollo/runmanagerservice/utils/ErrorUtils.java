@@ -1,7 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.utils;
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import javafx.scene.chart.XYChart;
@@ -17,7 +17,7 @@ import java.math.BigInteger;
 public class ErrorUtils {
     static Logger logger = LoggerFactory.getLogger(ErrorUtils.class);
     public static synchronized void reportError(BigInteger runId,  String message, Authentication authentication) {
-        DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+        DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
         try {
             dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, message, authentication);
         } catch (RunManagementException e) {

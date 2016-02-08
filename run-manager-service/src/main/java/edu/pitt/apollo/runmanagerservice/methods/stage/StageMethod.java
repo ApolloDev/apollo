@@ -7,11 +7,251 @@ import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.TranslatorServiceException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -40,7 +280,7 @@ public class StageMethod {
 
     private final Authentication authentication;
     private final BigInteger parentRunId;
-    protected DataServiceAccessor dataServiceDao;
+    protected DatastoreAccessImpl dataServiceDao;
     protected static ApolloServiceQueue apolloServiceQueue;
 
     static {
@@ -69,7 +309,7 @@ public class StageMethod {
     public InsertRunResult stage() throws RunManagementException {
 
         try {
-            dataServiceDao = new DataServiceAccessor();
+            dataServiceDao = new DatastoreAccessImpl();
 
             InsertRunResult insertRunResult = dataServiceDao.insertRun(message);
 
@@ -162,7 +402,7 @@ public class StageMethod {
         }
     }
 
-    private String getTranslatorServiceUrl(DataServiceAccessor dataServiceDao, Authentication authentication) throws DataServiceException {
+    private String getTranslatorServiceUrl(DatastoreAccessImpl dataServiceDao, Authentication authentication) throws DataServiceException {
 
         List<ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
         for (ServiceRegistrationRecord record : software) {

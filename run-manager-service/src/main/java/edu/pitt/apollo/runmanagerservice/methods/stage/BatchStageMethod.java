@@ -5,8 +5,8 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.thread.StageInDbWorkerThread;
 import edu.pitt.apollo.runmanagerservice.thread.StatusUpdaterThread;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
@@ -44,7 +44,7 @@ public class BatchStageMethod extends ApolloServiceThread {
     private static void loadSoftwareIdentifications(Authentication authentication) throws DataServiceException {
 
         if (brokerServiceSoftwareIdentification == null) {
-            DataServiceAccessor accessor = new DataServiceAccessor();
+            DatastoreAccessImpl accessor = new DatastoreAccessImpl();
             List<ServiceRegistrationRecord> records = accessor.getListOfRegisteredSoftwareRecords(authentication);
             for (ServiceRegistrationRecord registrationRecord : records) {
                 if (registrationRecord.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.BROKER)) {
@@ -58,7 +58,7 @@ public class BatchStageMethod extends ApolloServiceThread {
     }
 
     BigInteger batchRunId = null;
-    DataServiceAccessor dataServiceAccessor = null;
+    DatastoreAccessImpl dataServiceAccessor = null;
     private RunSimulationsMessage runSimulationsMessage;
     private URL configFileUrl = null;
     private Authentication authentication;
@@ -66,7 +66,7 @@ public class BatchStageMethod extends ApolloServiceThread {
     public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage,
                             Authentication authentication, ApolloServiceQueue queue) throws MalformedURLException {
         super(batchRunId, queue);
-        this.dataServiceAccessor = new DataServiceAccessor();
+        this.dataServiceAccessor = new DatastoreAccessImpl();
         this.batchRunId = batchRunId;
         this.authentication = authentication;
         this.runSimulationsMessage = runSimulationsMessage;

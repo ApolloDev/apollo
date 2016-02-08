@@ -2,9 +2,9 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
 
@@ -17,14 +17,14 @@ public abstract class AbstractRunMethod implements RunMethod {
     private static final long STATUS_CHECK_INTERVAL_TIME_IN_MILLIS = 5000;
     protected final BigInteger runId;
     protected RunMessage runMessage;
-    protected DataServiceAccessor dataServiceDao;
+    protected DatastoreAccessImpl dataServiceDao;
     protected Authentication authentication;
 
 
     public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException, JsonUtilsException {
         this.runId = runId;
         this.authentication = authentication;
-        dataServiceDao = new DataServiceAccessor();
+        dataServiceDao = new DatastoreAccessImpl();
         String json = getRunMessageJson(runMessageFilename);
         runMessage = convertRunMessageJson(json);
     }

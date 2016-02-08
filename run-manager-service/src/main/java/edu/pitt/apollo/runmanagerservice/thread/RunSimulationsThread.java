@@ -1,7 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.ApolloServiceConstants;
@@ -52,7 +51,7 @@ public class RunSimulationsThread
     }
 
     private final RunSimulationsMessage message;
-    DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+    DataAccessor dataServiceAccessor = new DataAccessor();
     Exception error = null;
     BigInteger simulationGroupId;
     private URL configFileUrl;
