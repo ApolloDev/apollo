@@ -184,7 +184,7 @@
 
         </plugins>
     </build>
-    <name>Common Service Module</name>
+    <name>services-common</name>
     <groupId>edu.pitt.apollo</groupId>
     <version>4.0-SNAPSHOT</version>
 </project>
