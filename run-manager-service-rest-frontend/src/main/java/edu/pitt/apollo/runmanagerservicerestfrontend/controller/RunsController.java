@@ -8,12 +8,17 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.exception.UnsupportedRunActionException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.AddRunIdsToSimulationGroupForRun;
+import edu.pitt.apollo.runmanagerservicerestfrontend.methods.AssociateContentWithRunIdMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.DeleteRunMethod;
+import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetInformationForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetLastServiceToBeCalledForRunMethod;
+import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetListOfFilesForRunMethod;
+import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetListOfURLsForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetRunIdsInSimulationGroupForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetSoftwareIdentificationForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.GetStatusOfRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.InsertRunMethod;
+import edu.pitt.apollo.runmanagerservicerestfrontend.methods.RunDataServiceJobMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.StartRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetLastServiceToBeCalledForRunMethod;
 import edu.pitt.apollo.runmanagerservicerestfrontend.methods.SetStatusOfRunMethod;
@@ -192,6 +197,98 @@ public class RunsController {
 				throw new UnsupportedRunActionException("The specified run action value \"" + action + "\" is not recognized");
 		}
 		
+	}
+	
+		/*--Methods for files collection of a run--*/
+	@GET
+	@ApiOperation(value = "List files.", notes = "Returns the list of files associated with the given run ID.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}/files", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new GetListOfFilesForRunMethod(username, password, SerializationFormat.XML).getListOfFilesForRun(runId);
+	}
+
+	@POST
+	@ApiOperation(value = "Associate file.", notes = "Associates a file with the given run ID.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}/files", method = RequestMethod.POST, headers = "Accept=application/xml")
+	public @ResponseBody
+	String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, password);
+	}
+
+	//We cannot create a new collection at the files level (PUT), and we cannot DELETE the files collection (DELETE).
+
+	/*--Methods for URLs collection of a run--*/
+	@GET
+	@ApiOperation(value = "List URLs", notes = "Returns the list of URLs associated with the given run ID.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}/urls", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String getListOfURLsForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new GetListOfURLsForRunMethod(username, password, SerializationFormat.XML).getListOfURLsForRunMethod(runId);
+	}
+
+	@POST
+	@ApiOperation(value = "Associate URL.", notes = "Associates URL with the given run ID.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}/urls", method = RequestMethod.POST, headers = "Accept=application/xml")
+	public @ResponseBody
+	String associateURLWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+			@ApiParam(value = "File text content, source/destination name and version, file label, and file type.", required = true) @RequestBody String associationData) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, associationData);
+	}
+	//We cannot create a new collection at the URL level (PUT), and we cannot DELETE the URLs collection (DELETE).
+
+	@POST
+	@ApiOperation(value = "Get all output files url as zip.", notes = "Starts process to get all output files as zipped given a run ID.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}/allOutputFilesURLAsZip/", method = RequestMethod.POST, headers = "Accept=application/xml")
+	public @ResponseBody
+	String getAllOutputFilesURLAsZip(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+
+		return new RunDataServiceJobMethod(username, password, SerializationFormat.XML).runDataServiceJob(runId);
+	}
+
+	/*--Method to get run information such as groups, types, etc--*/
+	@GET
+	@ApiOperation(value = "Get information for run.", notes = "Returns the service type and all simulation group IDs associated with the run.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/run/{runId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
+			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
+			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws SerializationException, UnsupportedSerializationFormatException {
+
+		return new GetInformationForRunMethod(username, password, SerializationFormat.XML).getInformationForRun(runId);
 	}
 	
 }
