@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apolloservice.methods.content;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
@@ -38,7 +38,7 @@ public class GetVisualizerOutputResourcesMethod extends BaseDataServiceAccessorM
 				resource.setDescription(description.getName());
 				result.getUrlOutputResources().add(resource);
 			}
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			status = getFailedMethodCallStatus("Exception getting urls from data service: " + ex.getMessage());
 			result.setMethodCallStatus(status);
 			return result;

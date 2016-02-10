@@ -8,7 +8,7 @@ package edu.pitt.apollo.brokerservicerestfrontend.methods;
 import edu.pitt.apollo.apolloservice.methods.content.BaseDataServiceAccessorMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.data_service_types.v4_0.AssociateContentWithRunIdMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
@@ -62,7 +62,7 @@ public class AssociateContentWithRunIdMethod extends BaseBrokerServiceAccessorMe
 							contentLabel, contentFormat, contentType, authentication);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-				} catch (DataServiceException ex) {
+				} catch (DatastoreException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 				}
 			}

@@ -5,7 +5,8 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -46,7 +47,7 @@ public class GetRunIdsInSimulationGroupForRunMethod_1 extends BaseRunManagerServ
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedObjects).setIsBodySerialized(true);
 
-		} catch (DataServiceException | SerializationException ex) {
+		} catch (RunManagementException | SerializationException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

@@ -5,10 +5,11 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class DeleteRunMethod extends BaseBrokerServiceAccessorMethod {
 		try {
 			impl.removeRunData(runId, authentication);
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

@@ -5,7 +5,7 @@ import static edu.pitt.apollo.runmanagerservice.datastore.methods.RunJobMethod.O
 
 import edu.pitt.apollo.runmanagerservice.thread.DatastoreGetOutputFilesAsZipThread;
 import edu.pitt.apollo.runmanagerservice.thread.DatastoreAccessThread;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import java.io.File;
@@ -25,7 +25,7 @@ public class RunJobToGetOutputFilesURLAsZipMethod extends RunJobMethod {
 	}
 
 	@Override
-	public void runDataService() throws DataServiceException {
+	public void runDataService() throws DatastoreException {
 		
 
 		String outputDirectory = OUTPUT_DIRECTORY + runId + File.separator;
@@ -34,7 +34,7 @@ public class RunJobToGetOutputFilesURLAsZipMethod extends RunJobMethod {
 
 		MethodCallStatus queueStatus = serviceQueue.addThreadToQueueAndRun(thread);
 		if (queueStatus.getStatus().equals(MethodCallStatusEnum.FAILED)) {
-			throw new DataServiceException("Queueing failed for run ID " + runId + ": " + queueStatus.getMessage());
+			throw new DatastoreException("Queueing failed for run ID " + runId + ": " + queueStatus.getMessage());
 		}
 	}
 }

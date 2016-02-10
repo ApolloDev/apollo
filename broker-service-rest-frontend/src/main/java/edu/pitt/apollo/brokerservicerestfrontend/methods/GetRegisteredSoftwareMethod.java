@@ -6,7 +6,7 @@
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
@@ -47,7 +47,7 @@ public class GetRegisteredSoftwareMethod extends BaseBrokerServiceAccessorMethod
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedServiceRecords).setIsBodySerialized(true);
 
-		} catch (DataServiceException | SerializationException ex) {
+		} catch (DatastoreException | SerializationException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

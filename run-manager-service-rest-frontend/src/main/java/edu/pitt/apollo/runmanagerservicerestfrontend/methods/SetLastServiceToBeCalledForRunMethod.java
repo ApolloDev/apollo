@@ -5,12 +5,16 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import java.math.BigInteger;
+import org.springframework.http.HttpStatus;import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
@@ -39,7 +43,7 @@ public class SetLastServiceToBeCalledForRunMethod extends BaseRunManagerServiceA
 			impl.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

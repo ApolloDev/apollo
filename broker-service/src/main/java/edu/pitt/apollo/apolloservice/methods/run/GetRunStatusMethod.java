@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import java.math.BigInteger;
@@ -25,7 +25,7 @@ public class GetRunStatusMethod extends BaseRunManagementServiceAccessorMethod {
 		MethodCallStatus status;
 		try {
 			status = connector.getRunStatus(runId, authentication);
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			status = getFailedMethodCallStatus("Exception getting run status for run: " + ex.getMessage());
 		}
 		

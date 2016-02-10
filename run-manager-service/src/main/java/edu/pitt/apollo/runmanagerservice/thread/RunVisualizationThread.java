@@ -1,9 +1,9 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
@@ -25,18 +25,26 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 	@Override
 	public void run() {
 
-		DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
+		DatastoreAccessor dataServiceAccessor;
+
+		try {
+			dataServiceAccessor = new DatastoreAccessor();
+		} catch (DatastoreException ex) {
+			ApolloServiceErrorHandler.reportError("Error creating data store accessor, error was:" + ex.getMessage(), runId, authentication);
+			return;
+		}
+		
 		String url;
 		try {
 			url = dataServiceAccessor.getURLForSoftwareIdentification(softwareId, authentication);
-		} catch (DataServiceException e) {
+		} catch (DatastoreException e) {
 			ApolloServiceErrorHandler.reportError("Error getting URL for software identification, error was:" + e.getMessage(), runId, authentication);
 			return;
 		}
 
 		try {
-            dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.CALLED_VISUALIZER,
-                    "Attempting to call visualizer", authentication);
+			dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.CALLED_VISUALIZER,
+					"Attempting to call visualizer", authentication);
 			JobRunningServiceAccessor visualizerServiceAccessor = new JobRunningServiceAccessor(url, softwareId);
 			visualizerServiceAccessor.run(runId, authentication);
 		} catch (JobRunningServiceException | RunManagementException ex) {
@@ -46,7 +54,7 @@ public class RunVisualizationThread extends RunApolloServiceThread {
 
 		try {
 			dataServiceAccessor.updateLastServiceToBeCalledForRun(runId, softwareId, authentication);
-		} catch (DataServiceException e) {
+		} catch (RunManagementException e) {
 			ApolloServiceErrorHandler.reportError("Unable to update last service to be called for run, error was:" + e.getMessage(), runId, authentication);
 		}
 

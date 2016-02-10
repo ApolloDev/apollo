@@ -5,7 +5,8 @@ import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -60,9 +61,9 @@ public abstract class DatastoreAccessThread extends ApolloServiceThread {
 
 	protected final void updateStatus(MethodCallStatusEnum statusEnum, String message) {
 		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor(authentication);
+			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
 			dba.updateStatusOfRun(runId, statusEnum, message, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException | DataServiceException ex) {
+		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException | RunManagementException ex) {
 			logger.error("Could not update the run status for run ID " + runId + ": " + ex.getMessage());
 		}
 	}

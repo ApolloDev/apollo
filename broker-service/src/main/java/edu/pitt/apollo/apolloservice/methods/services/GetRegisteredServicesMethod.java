@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.services;
 
 import edu.pitt.apollo.apolloservice.methods.content.BaseDataServiceAccessorMethod;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
@@ -36,7 +36,7 @@ public class GetRegisteredServicesMethod extends BaseDataServiceAccessorMethod {
 				serviceRecord.setUrl(record.getUrl());
 				serviceRecords.add(serviceRecord);
 			}
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			logger.error("Exception attempting to get registered services: "
 					+ ex.getMessage());
 		}

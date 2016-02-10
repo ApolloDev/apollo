@@ -15,7 +15,7 @@
  */
 package edu.pitt.apollo.restrunmanagerserviceconnector;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import java.math.BigInteger;
 import java.util.List;
@@ -37,7 +37,7 @@ public class TestClient {
 			List<BigInteger> list = connector.getRunIdsAssociatedWithSimulationGroupForRun(new BigInteger("100"), authentication);
 			System.out.println(list.get(0));
 
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			System.out.println("Exception: " + ex.getMessage());
 		}
 

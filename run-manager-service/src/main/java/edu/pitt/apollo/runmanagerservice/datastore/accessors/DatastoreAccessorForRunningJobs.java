@@ -10,6 +10,7 @@ import java.util.Map;
 import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
@@ -31,9 +32,8 @@ public class DatastoreAccessorForRunningJobs extends
     private SoftwareIdentification softwareIdentification;
     //private Class runMessageClass;
 
-    public DatastoreAccessorForRunningJobs(Authentication authentication,
-                                          SoftwareIdentification softwareIdentification) throws ApolloDatabaseException {
-        super(authentication);
+    public DatastoreAccessorForRunningJobs(SoftwareIdentification softwareIdentification) throws ApolloDatabaseException, DatastoreException {
+        super();
         //this.runMessageClass = clazz;
         this.softwareIdentification = softwareIdentification;
     }

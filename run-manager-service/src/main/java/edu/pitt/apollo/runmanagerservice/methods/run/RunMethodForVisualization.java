@@ -1,6 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
@@ -17,7 +18,7 @@ import java.math.BigInteger;
  */
 public class RunMethodForVisualization extends AbstractRunMethod {
 
-	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DataServiceException {
+	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DatastoreException {
 		super(runId, authentication, "run_visualization_message.json");
 	}
 

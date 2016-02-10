@@ -8,8 +8,9 @@ package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -70,7 +71,7 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 					String serializedObject = serializer.serializeObject(insertRunResult);
 					responseBuilder.setResponseBodySerializationInformation(objectSerializationInformation).addContentToBody(serializedObject).setIsBodySerialized(true);
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-				} catch (DataServiceException ex) {
+				} catch (RunManagementException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 				}
 			}

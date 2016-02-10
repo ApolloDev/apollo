@@ -5,8 +5,9 @@ import com.googlecode.sardine.SardineFactory;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
@@ -54,7 +55,7 @@ public class TestClient {
 		return auth;
 	}
 
-	private static RunSimulationMessage getRunSimulationMessage() throws IOException, DataServiceException {
+	private static RunSimulationMessage getRunSimulationMessage() throws IOException, DatastoreException {
 		RunSimulationMessage runSimulationMessage
 				= ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
@@ -67,7 +68,7 @@ public class TestClient {
 		return runSimulationMessage;
 	}
 
-	private static void run(RunMessage message) throws IOException, JobRunningServiceException, DataServiceException {
+	private static void run(RunMessage message) throws IOException, JobRunningServiceException, RunManagementException {
 		RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
 		InsertRunResult runResult = runManagementInterface.insertRun(message);
 		if (!runResult.isRunCached()) {
@@ -163,7 +164,7 @@ public class TestClient {
 		return message;
 	}
 
-	public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
+	public static void main(String[] args) throws IOException, RunManagementException, JobRunningServiceException {
 		RunSimulationMessage runSimulationMessage = TestClient.getRunSimulationMessage();
 		//RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(20);
 		run(runSimulationMessage);

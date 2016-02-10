@@ -5,7 +5,7 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -25,10 +25,10 @@ public class DeleteUserMethod extends BaseRunManagerServiceAccessorMethod {
 	public String deleteUser(String usernameToDelete) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			datastoreAccessImpl.deleteUser(usernameToDelete, authentication);
+			impl.deleteUser(usernameToDelete, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 
