@@ -18,11 +18,12 @@ package edu.pitt.apollo.runmanagerservice.methods.stage;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
@@ -90,7 +91,7 @@ public class StageExperimentMethod extends ApolloServiceThread {
 
 		List<SoftwareIdentification> modelIds = idtes.getInfectiousDiseaseTransmissionModelIds();
 		try {
-			DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
+			DatastoreAccessor dataServiceAccessor = new DatastoreAccessor();
 			
 			for (SoftwareIdentification modelId : modelIds) {
 

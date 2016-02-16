@@ -6,7 +6,7 @@
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
 import edu.pitt.apollo.data_service_types.v4_0.AddRoleMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
@@ -57,10 +57,10 @@ public class AddRoleMethod extends BaseRunManagerServiceAccessorMethod {
 				String roleDescription = message.getRoleDescription();
 
 				try {
-					datastoreAccessImpl.addRole(softwareId, canRunSoftware, canRequestPrivileged, roleDescription, authentication);
+					impl.addRole(softwareId, canRunSoftware, canRequestPrivileged, roleDescription, authentication);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-				} catch (DataServiceException ex) {
+				} catch (DatastoreException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 				}
 			}

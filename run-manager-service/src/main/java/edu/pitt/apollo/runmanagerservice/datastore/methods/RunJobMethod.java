@@ -2,9 +2,18 @@ package edu.pitt.apollo.runmanagerservice.datastore.methods;
 
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,6 +108,6 @@ public abstract class RunJobMethod {
 		this.runId = runId;
 	}
 
-	public abstract void runDataService() throws DataServiceException;
+	public abstract void runDataService() throws DatastoreException;
 
 }

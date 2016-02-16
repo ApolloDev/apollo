@@ -8,9 +8,9 @@ import edu.pitt.apollo.types.v4_0.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
@@ -49,7 +49,7 @@ public class StageInDbWorkerThread implements Runnable {
     public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
                                  XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,
                                  BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef,
-                                 List<BigInteger> failedRunIds, Authentication authentication) throws DataServiceException {
+                                 List<BigInteger> failedRunIds, Authentication authentication) throws DatastoreException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -183,7 +183,7 @@ public class StageInDbWorkerThread implements Runnable {
                     InsertRunResult result = stageMethod.stage();
                     BigInteger runId = result.getRunId();
 
-                    DatastoreAccessImpl dataServiceAccessor = new DatastoreAccessImpl();
+                    DatastoreAccessor dataServiceAccessor = new DatastoreAccessor();
                     MethodCallStatus status = dataServiceAccessor.getRunStatus(runId, authentication);
                     if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                         failedRunIds.add(runId);
@@ -191,7 +191,7 @@ public class StageInDbWorkerThread implements Runnable {
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-                } catch (DataServiceException e) {
+                } catch (RunManagementException e) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(

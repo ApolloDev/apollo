@@ -3,7 +3,7 @@ package edu.pitt.apollo.restbrokerserviceconnector;
 import edu.pitt.apollo.connector.BrokerServiceConnector;
 import edu.pitt.apollo.data_service_types.v4_0.AssociateContentWithRunIdMessage;
 import edu.pitt.apollo.data_service_types.v4_0.ContentIdAndDescription;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
@@ -148,7 +148,7 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	}
 
     @Override
-    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
+    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
 
         String uri = restServiceUri + "run/" + runId;
         if (contentDataFormat.equals(ContentDataFormatEnum.URL)) {
@@ -170,12 +170,12 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
         try {
             restServiceUtils.makePostRequestAndCheckResponse(uri, message);
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 
     @Override
-    public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+    public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
         String uri = restServiceUri + "run/" + runId + "/files?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             List<ContentIdAndDescription> contentIdsAndDescriptions = restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ContentIdAndDescription.class);
@@ -185,12 +185,12 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
             }
             return map;
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 
     @Override
-    public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+    public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
         String uri = restServiceUri + "run/" + runId + "/urls?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             List<ContentIdAndDescription> contentIdsAndDescriptions = restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ContentIdAndDescription.class);
@@ -200,44 +200,44 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
             }
             return map;
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 
     @Override
-    public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
+    public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getContentForContentId(BigInteger contentId, Authentication authentication) throws DataServiceException {
+    public String getContentForContentId(BigInteger contentId, Authentication authentication) throws DatastoreException {
         String uri = restServiceUri + "content/" + contentId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 
     @Override
-    public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DataServiceException {
+    public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DatastoreException {
         String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
                 + "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
         try {
             return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 
     @Override
-    public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+    public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
         String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
         try {
             return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRegistrationRecord.class);
         } catch (RestServiceException ex) {
-            throw new DataServiceException(ex.getMessage());
+            throw new DatastoreException(ex.getMessage());
         }
     }
 

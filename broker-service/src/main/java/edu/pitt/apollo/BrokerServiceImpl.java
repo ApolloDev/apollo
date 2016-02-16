@@ -21,7 +21,7 @@ import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.connector.DataServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
@@ -93,14 +93,14 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 		}
 	}
 
-	private static DataServiceConnector getDataServiceConnector() throws DataServiceException {
+	private static DataServiceConnector getDataServiceConnector() throws DatastoreException {
 		try {
 			if (dataServiceConnector == null) {
 				dataServiceConnector = new RestDataServiceConnector(getDataServiceUrl());
 			}
 			return dataServiceConnector;
 		} catch (IOException ex) {
-			throw new DataServiceException("IOException loading data service connector: " + ex.getMessage());
+			throw new DatastoreException("IOException loading data service connector: " + ex.getMessage());
 		}
 	}
 
@@ -170,32 +170,32 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	}
 
 	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException {
+	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
 		getDataServiceConnector().associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
 	}
 
 	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
 		return getDataServiceConnector().getListOfFilesForRunId(runId, authentication);
 	}
 
 	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException {
+	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
 		return getDataServiceConnector().getListOfURLsForRunId(runId, authentication);
 	}
 
 	@Override
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException {
+	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
 		getDataServiceConnector().removeFileAssociationWithRun(runId, fileId, authentication);
 	}
 
 	@Override
-	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DataServiceException {
+	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DatastoreException {
 		return getDataServiceConnector().getContentForContentId(urlId, authentication);
 	}
 
 	@Override
-	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException {
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
 		return getDataServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
 	}
 
@@ -263,7 +263,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	}
 
 	@Override
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DataServiceException {
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		return getDataServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
 	}
 

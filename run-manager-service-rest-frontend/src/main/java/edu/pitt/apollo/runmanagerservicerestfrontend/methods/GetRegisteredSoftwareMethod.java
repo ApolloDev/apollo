@@ -5,7 +5,7 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -30,7 +30,7 @@ public class GetRegisteredSoftwareMethod extends BaseRunManagerServiceAccessorMe
 	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			List<ServiceRegistrationRecord> listOfRecords = datastoreAccessImpl.getListOfRegisteredSoftwareRecords(authentication);
+			List<ServiceRegistrationRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
 
 			List<String> serializedServiceRecords = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class GetRegisteredSoftwareMethod extends BaseRunManagerServiceAccessorMe
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedServiceRecords).setIsBodySerialized(true);
 
-		} catch (DataServiceException | SerializationException ex) {
+		} catch (DatastoreException | SerializationException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

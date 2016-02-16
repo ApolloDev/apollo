@@ -7,6 +7,7 @@ import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
@@ -27,6 +28,7 @@ public class DatastoreAccessorForRunningDataRetrievalJob extends DatastoreAccess
 	private static final SoftwareIdentification DATA_SERVICE_SOFTWARE_ID;
 
 	private static int dataServiceSoftwareKey;
+	private Authentication authentication;
 
 	static {
 		DATA_SERVICE_SOFTWARE_ID = new SoftwareIdentification();
@@ -41,8 +43,8 @@ public class DatastoreAccessorForRunningDataRetrievalJob extends DatastoreAccess
 //		this.getOutputFilesURLsMessage = message;
 //		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 //	}
-	public DatastoreAccessorForRunningDataRetrievalJob(DataRetrievalRequestMessage message, Authentication authentication) throws ApolloDatabaseException {
-		super(authentication);
+	public DatastoreAccessorForRunningDataRetrievalJob(DataRetrievalRequestMessage message, Authentication authentication) throws ApolloDatabaseException, DatastoreException {
+		this.authentication = authentication;
 		this.dataRetrievalRequestMessage = message;
 		dataServiceSoftwareKey = getDataServiceSoftwareKey();
 	}
@@ -117,8 +119,8 @@ public class DatastoreAccessorForRunningDataRetrievalJob extends DatastoreAccess
 				} else {
 					insertRunResult.setRunCached(false);
 					BigInteger runId = dbUtils.addDataServiceRun(dataRetrievalRequestMessage,
-                            runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1, authentication,
-                            DATA_SERVICE_SOFTWARE_ID, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
+							runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1, authentication,
+							DATA_SERVICE_SOFTWARE_ID, ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID);
 					insertRunResult.setRunId(runId);
 				}
 

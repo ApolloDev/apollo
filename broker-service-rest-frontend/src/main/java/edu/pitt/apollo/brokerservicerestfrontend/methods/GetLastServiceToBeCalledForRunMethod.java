@@ -5,10 +5,11 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
@@ -42,7 +43,7 @@ public class GetLastServiceToBeCalledForRunMethod extends BaseBrokerServiceAcces
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedObject).setIsBodySerialized(true);
 
-		} catch (DataServiceException | SerializationException ex) {
+		} catch (RunManagementException | SerializationException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

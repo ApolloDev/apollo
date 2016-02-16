@@ -6,7 +6,7 @@
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
@@ -39,7 +39,7 @@ public class GetURLOfSoftwareMethod extends BaseBrokerServiceAccessorMethod {
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.addContentToBody(url).setIsBodySerialized(false);
 
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

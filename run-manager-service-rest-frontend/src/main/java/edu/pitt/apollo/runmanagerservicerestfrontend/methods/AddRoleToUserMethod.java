@@ -6,7 +6,7 @@
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
 import edu.pitt.apollo.data_service_types.v4_0.AddRoleToUserMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
@@ -58,10 +58,10 @@ public class AddRoleToUserMethod extends BaseRunManagerServiceAccessorMethod {
 				boolean canRequestPrivileged = message.isCanRequestPrivileged();
 
 				try {
-					datastoreAccessImpl.addUserRole(usernameForRole, userPasswordForRole, softwareId, canRunSoftware, canRequestPrivileged, authentication);
+					impl.addUserRole(usernameForRole, userPasswordForRole, softwareId, canRunSoftware, canRequestPrivileged, authentication);
 
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-				} catch (DataServiceException ex) {
+				} catch (DatastoreException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 				}
 			}

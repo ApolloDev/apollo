@@ -6,7 +6,7 @@
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
 import edu.pitt.apollo.data_service_types.v4_0.ContentIdAndDescription;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -33,7 +33,7 @@ public class GetListOfFilesForRunMethod extends BaseRunManagerServiceAccessorMet
 	public String getListOfFilesForRun(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			Map<BigInteger, FileAndURLDescription> files = datastoreAccessImpl.getListOfFilesForRunId(runId, authentication);
+			Map<BigInteger, FileAndURLDescription> files = impl.getListOfFilesForRunId(runId, authentication);
 
 			List<String> serializedContents = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class GetListOfFilesForRunMethod extends BaseRunManagerServiceAccessorMet
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(objectSerializationInformation).addContentToBody(serializedContents).setIsBodySerialized(true);
 
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

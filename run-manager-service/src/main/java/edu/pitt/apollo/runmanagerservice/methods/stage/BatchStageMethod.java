@@ -4,8 +4,9 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
 import edu.pitt.apollo.runmanagerservice.thread.StageInDbWorkerThread;
 import edu.pitt.apollo.runmanagerservice.thread.StatusUpdaterThread;
@@ -41,10 +42,10 @@ public class BatchStageMethod extends ApolloServiceThread {
     private static SoftwareIdentification endUserSoftwareIdentifcation;
     static Logger logger = org.slf4j.LoggerFactory.getLogger(BatchStageMethod.class);
 
-    private static void loadSoftwareIdentifications(Authentication authentication) throws DataServiceException {
+    private static void loadSoftwareIdentifications(Authentication authentication) throws DatastoreException {
 
         if (brokerServiceSoftwareIdentification == null) {
-            DatastoreAccessImpl accessor = new DatastoreAccessImpl();
+            DatastoreAccessor accessor = new DatastoreAccessor();
             List<ServiceRegistrationRecord> records = accessor.getListOfRegisteredSoftwareRecords(authentication);
             for (ServiceRegistrationRecord registrationRecord : records) {
                 if (registrationRecord.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.BROKER)) {
@@ -58,15 +59,15 @@ public class BatchStageMethod extends ApolloServiceThread {
     }
 
     BigInteger batchRunId = null;
-    DatastoreAccessImpl dataServiceAccessor = null;
+    DatastoreAccessor dataServiceAccessor = null;
     private RunSimulationsMessage runSimulationsMessage;
     private URL configFileUrl = null;
     private Authentication authentication;
     private List<BigInteger> failedRunIds = Collections.synchronizedList(new ArrayList<BigInteger>());
     public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage,
-                            Authentication authentication, ApolloServiceQueue queue) throws MalformedURLException {
+                            Authentication authentication, ApolloServiceQueue queue) throws MalformedURLException, DatastoreException {
         super(batchRunId, queue);
-        this.dataServiceAccessor = new DatastoreAccessImpl();
+        this.dataServiceAccessor = new DatastoreAccessor();
         this.batchRunId = batchRunId;
         this.authentication = authentication;
         this.runSimulationsMessage = runSimulationsMessage;
@@ -126,7 +127,7 @@ public class BatchStageMethod extends ApolloServiceThread {
         }
     }
 
-    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) throws DataServiceException {
+    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) throws DatastoreException {
 
         loadSoftwareIdentifications(authentication);
 
@@ -221,7 +222,7 @@ public class BatchStageMethod extends ApolloServiceThread {
                         "All runs for this batch have been translated", authentication);
 
 
-            } catch (DataServiceException e) {
+            } catch (RunManagementException e) {
                 ErrorUtils.reportError(batchRunId, "DB Error queuing and translating runs, error was " + e.getMessage(), authentication);
             } finally {
                 br.close();

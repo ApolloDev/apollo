@@ -5,7 +5,7 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -26,11 +26,11 @@ public class GetContentByIdMethod extends BaseRunManagerServiceAccessorMethod {
 	public String getContent(BigInteger contentId) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			String content = datastoreAccessImpl.getContentForContentId(contentId, authentication);
+			String content = impl.getContentForContentId(contentId, authentication);
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.addContentToBody(content).setIsBodySerialized(false);
 
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

@@ -2,6 +2,7 @@ package edu.pitt.apollo.runmanagerservice.datastore.accessors;
 
 import edu.pitt.apollo.runmanagerservice.types.FileContentForRun;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,8 +26,8 @@ public class DatastoreAccessorForIterableFileContent extends DatastoreAccessor i
 	private Connection conn;
 	private ResultSet resultSet;
 
-	public DatastoreAccessorForIterableFileContent(Authentication authentication) throws ApolloDatabaseException {
-		super(authentication);
+	public DatastoreAccessorForIterableFileContent() throws ApolloDatabaseException, DatastoreException {
+		super();
 	}
 
 	public void retrieveAllFilesForRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, List<String> optionalFileNamesToMatch) throws ApolloDatabaseException {

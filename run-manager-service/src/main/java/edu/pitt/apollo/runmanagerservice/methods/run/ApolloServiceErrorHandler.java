@@ -1,17 +1,15 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessImpl;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.utilities.ErrorUtils;
 
 import static edu.pitt.apollo.utilities.ErrorUtils.checkFileExists;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,32 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
 import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
@@ -70,7 +42,7 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
     public static void reportError(String message, BigInteger runId, Authentication authentication) {
         try {
             writeErrorToDataService(message, runId, authentication);
-        } catch (DataServiceException e) {
+        } catch (DatastoreException e) {
             logger.debug("Error writing error: {} to database for runId {}, error was: {}", message, runId, e.getMessage());
             logger.debug("Attempting to write error to disk.");
             try {
@@ -116,8 +88,8 @@ public class ApolloServiceErrorHandler extends ErrorUtils {
         writeErrorToFile(message, getErrorFile(runId.longValue()));
     }
 
-    public static void writeErrorToDataService(String message, BigInteger runId, Authentication authentication) throws DataServiceException {
-        DatastoreAccessImpl dataServiceDao = new DatastoreAccessImpl();
+    public static void writeErrorToDataService(String message, BigInteger runId, Authentication authentication) throws DatastoreException {
+        DatastoreAccessor dataServiceDao = new DatastoreAccessor();
 
         MethodCallStatus status = new MethodCallStatus();
         status.setStatus(MethodCallStatusEnum.FAILED);

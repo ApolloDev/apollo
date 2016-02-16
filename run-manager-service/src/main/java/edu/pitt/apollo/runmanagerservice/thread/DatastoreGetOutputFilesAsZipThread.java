@@ -4,7 +4,7 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorForIterableFileContent;
 import edu.pitt.apollo.runmanagerservice.types.FileContentForRun;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -46,7 +46,7 @@ public class DatastoreGetOutputFilesAsZipThread extends DatastoreAccessThread {
 			String zipFileName = String.format(outputDirectory + File.separator + outputFileName, runId);
 			initializeZipFile(zipFileName);
 
-			try (DatastoreAccessorForIterableFileContent dba = new DatastoreAccessorForIterableFileContent(authentication)) {
+			try (DatastoreAccessorForIterableFileContent dba = new DatastoreAccessorForIterableFileContent()) {
 
 				dba.retrieveAllFilesForRunIdsAssociatedWithSimulationGroupForRun(runIdFromMessage, fileNamesToMatch);
 				FileContentForRun fileContentForRun;
@@ -87,7 +87,7 @@ public class DatastoreGetOutputFilesAsZipThread extends DatastoreAccessThread {
 			finalizeZipFile();
 
 			updateStatus(MethodCallStatusEnum.COMPLETED, "The data service run has completed");
-		} catch (ApolloDatabaseException | IOException | DataServiceException ex) {
+		} catch (ApolloDatabaseException | IOException | DatastoreException ex) {
 			logger.error(ex.getMessage());
 			updateStatus(MethodCallStatusEnum.FAILED, "There was an error creating the output file for the run.");
 		}
