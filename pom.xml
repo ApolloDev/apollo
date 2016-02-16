@@ -88,6 +88,9 @@
         <module>run-manager-service-client</module>
 
         <module>library-service-rest-connector</module>
+
+        <module>filestore-service</module>
+        <!-- <module>filestore-service-rest-frontend</module> -->
     </modules>
 
     <dependencies>

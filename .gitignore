@@ -15,3 +15,5 @@ nb-configuration.xml
 classlist.txt
 .*.swp
 */nbactions.xml
+assembly/
+
