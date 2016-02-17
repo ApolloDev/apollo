@@ -5,10 +5,7 @@ import edu.pitt.apollo.db.LibraryDbUtils;
 import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
-import edu.pitt.apollo.filestoreservice.methods.GetStatusOfFileUploadMethod;
-import edu.pitt.apollo.filestoreservice.methods.GetUrlOfFileMethod;
-import edu.pitt.apollo.filestoreservice.methods.ListFilesForRunMethod;
-import edu.pitt.apollo.filestoreservice.methods.UploadFileMethod;
+import edu.pitt.apollo.filestoreservice.methods.*;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
 import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
@@ -108,5 +105,11 @@ public class FileStoreService implements FilestoreServiceInterface {
             fileIdentificationList.add(entry.getFileIdentification());
         }
         return fileIdentificationList;
+    }
+
+    public void deleteFilesForRun(BigInteger runId) {
+        DeleteFilesForRun deleteFilesForRun = new DeleteFilesForRun(rootDirectory, webRoot, runId, salt);
+        deleteFilesForRun.delete();
+
     }
 }
