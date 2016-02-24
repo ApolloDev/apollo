@@ -29,24 +29,8 @@ import java.util.ArrayList;
  */
 
 @Controller
+@RequestMapping("/ws")
 public class OutputTranslatorController {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String showMainIndexXml(HttpServletRequest request) {
-
-        StringBuffer requestingUrl = request.getRequestURL();
-        CollectionResponse collectionResponse = new CollectionResponse();
-        Meta meta = new Meta();
-        collectionResponse.setMeta(meta);
-        collectionResponse.getMeta().setStatusMessage("Testing");
-        collectionResponse.getMeta().setNumberOfReturnedResults(0);
-        collectionResponse.setcollectionItems(new ArrayList<CollectionResource>());
-
-        XStream xstream = new XStream();
-        String collectionXML = xstream.toXML(collectionResponse);
-        return collectionXML;
-    }
 
     @RequestMapping(value = "/output/{runID}", method = RequestMethod.POST)
     public
