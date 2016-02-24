@@ -2,6 +2,7 @@ package edu.pitt.apollo.filestoreservice.methods;
 
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
+import edu.pitt.apollo.filestoreservice.threads.FileDownloadThread;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
 import org.apache.commons.io.FileUtils;
@@ -23,7 +24,7 @@ public class UploadFileMethod extends FileStoreCoreMethod {
     static final Logger logger = LoggerFactory.getLogger(UploadFileMethod.class);
 
     public UploadFileMethod(String rootDirectory, String webRoot, BigInteger runId, String salt) {
-        super(rootDirectory,  webRoot, runId, salt);
+        super(rootDirectory, webRoot, runId, salt);
     }
 
     private DirectoryContentFileEntry addFileToDirectoryContentFile(FileIdentification fileIdentification) throws Exception {
@@ -55,13 +56,12 @@ public class UploadFileMethod extends FileStoreCoreMethod {
     }
 
     private URL downloadFile(DirectoryContentFileEntry directoryContentFileEntry, URL urlToFile) throws IOException {
-        File fileDownloadLocation = getLocalFileTemporaryName(directoryContentFileEntry);
-        File fileDownloadLocationParent = new File(fileDownloadLocation.getParent());
-        new File(fileDownloadLocationParent.getParent()).mkdirs();
-        fileDownloadLocationParent.mkdirs();
-        FileUtils.copyURLToFile(urlToFile, fileDownloadLocation);
-        FileUtils.copyFile(fileDownloadLocation, getLocalFile(directoryContentFileEntry));
-        FileUtils.forceDelete(fileDownloadLocation);
+        File temporaryFileDownloadLocation = getLocalFileTemporaryName(directoryContentFileEntry);
+        File finalDownloadFileLocation = getLocalFile(directoryContentFileEntry);
+        File fileDownloadLocationDirectory = new File(temporaryFileDownloadLocation.getParent());
+        fileDownloadLocationDirectory.mkdirs();
+        FileDownloadThread fileDownloadThread = new FileDownloadThread(urlToFile, temporaryFileDownloadLocation, finalDownloadFileLocation);
+        fileDownloadThread.start();
         return getWebserverUrl(directoryContentFileEntry);
     }
 
