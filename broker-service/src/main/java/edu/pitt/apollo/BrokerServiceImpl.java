@@ -28,7 +28,6 @@ import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
-import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
 ;
@@ -73,7 +72,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 	private static String dataServiceUrl;
 	private static Authentication dataServiceAuthentication;
 	private static RunManagerServiceConnector runManagerServiceConnector;
-	private static DataServiceConnector dataServiceConnector;
+	private static RunManagerServiceConnector dataServiceConnector;
 	protected static final ApolloServiceQueue apolloServiceQueue;
 	Logger logger = LoggerFactory.getLogger(BrokerServiceImpl.class);
 
@@ -81,7 +80,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 		apolloServiceQueue = new ApolloServiceQueue();
 	}
 
-	private static RunManagerServiceConnector getRunManagerServiceConnector() throws RunManagementException {
+	private static RunManagerServiceConnector getRunManagerServiceConnector() throws DatastoreException {
 		try {
 			if (runManagerServiceConnector == null) {
 				runManagerServiceConnector = new RestRunManagerServiceConnector(getRunManagerServiceUrl());
@@ -89,18 +88,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 
 			return runManagerServiceConnector;
 		} catch (IOException ex) {
-			throw new RunManagementException("IOException loading run manager service connector: " + ex.getMessage());
-		}
-	}
-
-	private static DataServiceConnector getDataServiceConnector() throws DatastoreException {
-		try {
-			if (dataServiceConnector == null) {
-				dataServiceConnector = new RestDataServiceConnector(getDataServiceUrl());
-			}
-			return dataServiceConnector;
-		} catch (IOException ex) {
-			throw new DatastoreException("IOException loading data service connector: " + ex.getMessage());
+			throw new DatastoreException("IOException loading run manager service connector: " + ex.getMessage());
 		}
 	}
 
@@ -147,7 +135,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 			String initRunManagerServiceUrl = null;
 			Authentication authentication = getDataServiceAuthentication();
 			try {
-				DataServiceConnector dataServiceConnector = getDataServiceConnector();
+				RunManagerServiceConnector dataServiceConnector = getRunManagerServiceConnector();
 				List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
 
 				for (ServiceRegistrationRecord record : softwareRecords) {
@@ -171,32 +159,32 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 
 	@Override
 	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
-		getDataServiceConnector().associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
+		getRunManagerServiceConnector().associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
 	}
 
 	@Override
 	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		return getDataServiceConnector().getListOfFilesForRunId(runId, authentication);
+		return getRunManagerServiceConnector().getListOfFilesForRunId(runId, authentication);
 	}
 
 	@Override
 	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		return getDataServiceConnector().getListOfURLsForRunId(runId, authentication);
+		return getRunManagerServiceConnector().getListOfURLsForRunId(runId, authentication);
 	}
 
 	@Override
 	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
-		getDataServiceConnector().removeFileAssociationWithRun(runId, fileId, authentication);
+		getRunManagerServiceConnector().removeFileAssociationWithRun(runId, fileId, authentication);
 	}
 
 	@Override
 	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DatastoreException {
-		return getDataServiceConnector().getContentForContentId(urlId, authentication);
+		return getRunManagerServiceConnector().getContentForContentId(urlId, authentication);
 	}
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
-		return getDataServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
+		return getRunManagerServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
 	}
 
 	@Override
@@ -264,7 +252,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 
 	@Override
 	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
-		return getDataServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
+		return getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
 	}
 
 	public RunResult runSimulation(RunSimulationMessage runSimulationMessage) {

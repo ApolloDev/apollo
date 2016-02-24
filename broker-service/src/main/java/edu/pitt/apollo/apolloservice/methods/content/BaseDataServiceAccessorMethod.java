@@ -3,7 +3,8 @@ package edu.pitt.apollo.apolloservice.methods.content;
 
 import edu.pitt.apollo.apolloservice.methods.BaseMethod;
 import edu.pitt.apollo.connector.DataServiceConnector;
-import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
+import edu.pitt.apollo.connector.RunManagerServiceConnector;
+import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 
 /**
  *
@@ -11,11 +12,11 @@ import edu.pitt.apollo.restdataserviceconnector.RestDataServiceConnector;
  */
 public abstract class BaseDataServiceAccessorMethod extends BaseMethod {
 	
-	protected DataServiceConnector connector;
+	protected RunManagerServiceConnector connector;
 	
 	public BaseDataServiceAccessorMethod(String dataServiceUrl) {
 		super(dataServiceUrl);
-		 connector = new RestDataServiceConnector(dataServiceUrl);
+		 connector = new RestRunManagerServiceConnector(dataServiceUrl);
 	}
 	
 }
