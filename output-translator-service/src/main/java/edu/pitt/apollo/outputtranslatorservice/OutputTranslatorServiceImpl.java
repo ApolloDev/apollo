@@ -24,7 +24,8 @@ public class OutputTranslatorServiceImpl implements OutputTranslatorServiceInter
 
 	@Override
 	public void translateOutputForRun(BigInteger runId, String baseOutputURL, Authentication authentication) throws OutputTranslatorServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		TranslateOutput.translateOutput(runId, baseOutputURL, authentication);
 	}
 
 
