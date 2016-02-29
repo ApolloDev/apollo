@@ -32,13 +32,12 @@ public class TranslateOutput {
 	private static final String pythonScriptFilePath;
 	private static final String tempDirectory;
 	private static final String pythonRunCommand;
-	
-	
+
 	static {
 		String apolloWorkDir = ApolloServiceConstants.APOLLO_DIR;
 		Properties outputTranslatorProperties = new Properties();
 		try {
-		outputTranslatorProperties.load(new FileInputStream(apolloWorkDir + OUTPUT_TRANSLATOR_PROPERTIES_FILE_NAME));
+			outputTranslatorProperties.load(new FileInputStream(apolloWorkDir + OUTPUT_TRANSLATOR_PROPERTIES_FILE_NAME));
 		} catch (IOException ex) {
 			logger.error("IOException loading output translator properties: " + ex.getMessage());
 			throw new ExceptionInInitializerError(ex);
@@ -47,7 +46,7 @@ public class TranslateOutput {
 		tempDirectory = outputTranslatorProperties.getProperty(TEMP_DIRECTORY_PROP);
 		pythonRunCommand = outputTranslatorProperties.getProperty(PYTHON_RUN_COMMAND_PROP);
 	}
-	
+
 	public static void main(String[] args) {
 		translateOutput(BigInteger.ONE, "http://localhost/fred_out.hdf5", new Authentication());
 	}
@@ -81,47 +80,50 @@ public class TranslateOutput {
 
 				// create temp file name
 				String tempFileName = runId + "_" + new Md5Utils().getMd5FromString(runId + baseOutputURL);
-				String inputFile = tempDirectory + File.separator + tempFileName + ".hdf5";
-				String outputFile = tempDirectory + File.separator + tempFileName + "_output.hdf5";
-				
+				String inputFile = tempDirectory + File.separator + tempFileName + ".h5";
+				String outputFile = tempDirectory + File.separator + tempFileName + "_output.h5";
+				String csvTemp = tempDirectory + File.separator + tempFileName + "_temp.csv";
+
 				ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 				FileOutputStream fos = new FileOutputStream(inputFile);
 				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 				fos.close();
-				
-				// 3) run python script
-				String[] callAndArgs = {pythonRunCommand, pythonScriptFilePath, "-i", inputFile};
 
-				Process p = Runtime.getRuntime().exec(callAndArgs, null);
-//				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				// 3) run python script
+				System.out.println(pythonRunCommand);
+				String[] callAndArgs = {pythonRunCommand, pythonScriptFilePath, "-i", inputFile, "-o", outputFile, "-t", csvTemp};
+				String[] env = {"LC_ALL=en_US.UTF-8", "LANG=en_US.UTF-8"}; // needed for pandas on some installations
+				
+				Process p = Runtime.getRuntime().exec(callAndArgs, env);
+				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
 				// read the output from the command
-//				System.out.println("Here is the standard output of the command:\n");
-//				while ((s = stdInput.readLine()) != null) {
-//					System.out.println(s);
-//				}
-
+				System.out.println("Here is the standard output of the command:\n");
+				while ((s = stdInput.readLine()) != null) {
+					System.out.println(s);
+				}
 				// read any errors from the attempted command
 //				System.out.println("Here is the standard error of the command (if any):\n");
 				String errors = "";
-                while ((s = stdError.readLine()) != null) {
+				while ((s = stdError.readLine()) != null) {
 					errors += s + "\n";
 				}
-				
+
 				if (!errors.equals("")) {
+					System.out.println("Errors:");
+					System.out.println(errors);
 					updateStatus(MethodCallStatusEnum.FAILED, "The python script failed during output translation: " + errors, runId, authentication);
 					return;
 				}
-				
-				// 4) upload translated output to file service
-				
 
+				// 4) upload translated output to file service
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} catch (OutputTranslatorException ex) {
 			logger.error(ex.getMessage());
 		}
+
 	}
 }

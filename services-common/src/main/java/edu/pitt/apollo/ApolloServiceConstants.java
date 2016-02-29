@@ -38,4 +38,8 @@ public class ApolloServiceConstants {
             APOLLO_DIR = "";
         }
     }
+	
+	public static void main(String[] args) {
+		
+	}
 }
