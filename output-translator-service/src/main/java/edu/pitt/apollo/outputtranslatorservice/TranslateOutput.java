@@ -25,14 +25,14 @@ public class TranslateOutput {
 
         try {
             //download file
-            URL url = new URL(baseOutputURL);
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream("output.hdf5");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+//            URL url = new URL(baseOutputURL);
+//            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+//            FileOutputStream fos = new FileOutputStream("output.hdf5");
+//            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
             File dir = new File(path);
             String pythonScriptPath = path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/FRED_output_translator.py";
-            String[]callAndArgs={"python3", pythonScriptPath, "-i", path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/output.allegheny.county_age.race.gender.location.hdf5"};
+            String[]callAndArgs={"python3", pythonScriptPath, "-i", path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/output.allegheny.county_age.race.gender.location.hdf5", "-o", path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/"};
 
             Process p = Runtime.getRuntime().exec(callAndArgs, null, dir);
 
