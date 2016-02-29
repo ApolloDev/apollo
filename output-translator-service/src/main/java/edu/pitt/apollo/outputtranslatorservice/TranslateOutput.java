@@ -1,61 +1,127 @@
 package edu.pitt.apollo.outputtranslatorservice;
 
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.connector.RunManagerServiceConnector;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.outputtranslatorservice.exception.OutputTranslatorException;
+import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.utilities.Md5Utils;
 
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.*;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by mas400 on 2/24/16.
  */
 public class TranslateOutput {
-    public static void main(String [] args) {
-        translateOutput(BigInteger.ONE, "test", new Authentication());
-    }
-    public static void translateOutput(BigInteger runId, String baseOutputURL, Authentication authentication) {
-        /*1) set status of RUN to TRANSLATING_OUTPUT
+
+	private static Logger logger = LoggerFactory.getLogger(TranslateOutput.class);
+	private static RunManagerServiceConnector connector = new RestRunManagerServiceConnector("");
+	private static final String OUTPUT_TRANSLATOR_PROPERTIES_FILE_NAME = "output_translator.properties";
+	private static final String PYTHON_SCRIPT_FILE_PROP = "python_script_file_path";
+	private static final String TEMP_DIRECTORY_PROP = "temp_dir";
+	private static final String PYTHON_RUN_COMMAND_PROP = "python_run_cmd";
+	private static final String pythonScriptFilePath;
+	private static final String tempDirectory;
+	private static final String pythonRunCommand;
+	
+	
+	static {
+		String apolloWorkDir = ApolloServiceConstants.APOLLO_DIR;
+		Properties outputTranslatorProperties = new Properties();
+		try {
+		outputTranslatorProperties.load(new FileInputStream(apolloWorkDir + OUTPUT_TRANSLATOR_PROPERTIES_FILE_NAME));
+		} catch (IOException ex) {
+			logger.error("IOException loading output translator properties: " + ex.getMessage());
+			throw new ExceptionInInitializerError(ex);
+		}
+		pythonScriptFilePath = outputTranslatorProperties.getProperty(PYTHON_SCRIPT_FILE_PROP);
+		tempDirectory = outputTranslatorProperties.getProperty(TEMP_DIRECTORY_PROP);
+		pythonRunCommand = outputTranslatorProperties.getProperty(PYTHON_RUN_COMMAND_PROP);
+	}
+	
+	public static void main(String[] args) {
+		translateOutput(BigInteger.ONE, "http://localhost/fred_out.hdf5", new Authentication());
+	}
+
+	private static void updateStatus(MethodCallStatusEnum statusEnum, String status, BigInteger runId, Authentication authentication) throws OutputTranslatorException {
+		try {
+			connector.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATING_OUTPUT, "The output is being translated", authentication);
+		} catch (RunManagementException ex) {
+			try {
+				connector.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED,
+						"Could not update status for run " + runId, authentication);
+			} catch (RunManagementException ex1) {
+				throw new OutputTranslatorException(ex1.getMessage());
+			}
+		}
+	}
+
+	public static void translateOutput(BigInteger runId, String baseOutputURL, Authentication authentication) {
+		/*1) set status of RUN to TRANSLATING_OUTPUT
           2) download file from url
           3) run python program to translate*/
-        String s = null;
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString();
 
-        try {
-            //download file
-            URL url = new URL(baseOutputURL);
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream("output.hdf5");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		try {
+			// 1) update status
+//			updateStatus(MethodCallStatusEnum.TRANSLATING_OUTPUT, "The run output is being translated", runId, authentication);
 
-            File dir = new File(path);
-            String pythonScriptPath = path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/FRED_output_translator.py";
-            String[]callAndArgs={"python3", pythonScriptPath, "-i", path+"/output-translator-service/src/main/java/edu/pitt/apollo/outputtranslatorservice/output.allegheny.county_age.race.gender.location.hdf5"};
+			try {
+				// 2) download file
+				String s = null;
+				URL url = new URL(baseOutputURL);
 
-            Process p = Runtime.getRuntime().exec(callAndArgs, null, dir);
+				// create temp file name
+				String tempFileName = runId + "_" + new Md5Utils().getMd5FromString(runId + baseOutputURL);
+				String inputFile = tempDirectory + File.separator + tempFileName + ".hdf5";
+				String outputFile = tempDirectory + File.separator + tempFileName + "_output.hdf5";
+				
+				ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+				FileOutputStream fos = new FileOutputStream(inputFile);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+				fos.close();
+				
+				// 3) run python script
+				String[] callAndArgs = {pythonRunCommand, pythonScriptFilePath, "-i", inputFile};
 
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
+				Process p = Runtime.getRuntime().exec(callAndArgs, null);
+//				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(p.getErrorStream()));
+				// read the output from the command
+//				System.out.println("Here is the standard output of the command:\n");
+//				while ((s = stdInput.readLine()) != null) {
+//					System.out.println(s);
+//				}
 
-            // read the output from the command
-            System.out.println("Here is the standard output of the command:\n");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-            }
+				// read any errors from the attempted command
+//				System.out.println("Here is the standard error of the command (if any):\n");
+				String errors = "";
+                while ((s = stdError.readLine()) != null) {
+					errors += s + "\n";
+				}
+				
+				if (!errors.equals("")) {
+					updateStatus(MethodCallStatusEnum.FAILED, "The python script failed during output translation: " + errors, runId, authentication);
+					return;
+				}
+				
+				// 4) upload translated output to file service
+				
 
-            // read any errors from the attempted command
-            System.out.println("Here is the standard error of the command (if any):\n");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (OutputTranslatorException ex) {
+			logger.error(ex.getMessage());
+		}
+	}
 }
