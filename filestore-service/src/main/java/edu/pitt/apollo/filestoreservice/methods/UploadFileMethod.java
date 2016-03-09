@@ -2,6 +2,7 @@ package edu.pitt.apollo.filestoreservice.methods;
 
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
+import edu.pitt.apollo.filestoreservice.threads.FileDownloadMonitor;
 import edu.pitt.apollo.filestoreservice.threads.FileDownloadThread;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
@@ -62,6 +63,8 @@ public class UploadFileMethod extends FileStoreCoreMethod {
         fileDownloadLocationDirectory.mkdirs();
         FileDownloadThread fileDownloadThread = new FileDownloadThread(urlToFile, temporaryFileDownloadLocation, finalDownloadFileLocation);
         fileDownloadThread.start();
+        FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
+        fileDownloadMonitor.start();
         return getWebserverUrl(directoryContentFileEntry);
     }
 
