@@ -48,7 +48,7 @@ public class TranslateOutput {
 	}
 
 	public static void main(String[] args) {
-		translateOutput(BigInteger.ONE, "http://localhost/fred_out.hdf5", new Authentication());
+		translateOutput(BigInteger.ONE, "http://localhost:8080/fred_out.hdf5", new Authentication());
 	}
 
 	private static void updateStatus(MethodCallStatusEnum statusEnum, String status, BigInteger runId, Authentication authentication) throws OutputTranslatorException {
@@ -69,61 +69,62 @@ public class TranslateOutput {
           2) download file from url
           3) run python program to translate*/
 
-		try {
-			// 1) update status
+//		try {
+		// 1) update status
 //			updateStatus(MethodCallStatusEnum.TRANSLATING_OUTPUT, "The run output is being translated", runId, authentication);
+		try {
+			// 2) download file
+			String s = null;
+			URL url = new URL(baseOutputURL);
 
-			try {
-				// 2) download file
-				String s = null;
-				URL url = new URL(baseOutputURL);
+			// create temp file name
+			String tempFileName = runId + "_" + new Md5Utils().getMd5FromString(runId + baseOutputURL);
+			String inputFile = tempDirectory + File.separator + tempFileName + ".h5";
+			String outputFile = tempDirectory + File.separator + tempFileName + "_output.h5";
+			String csvTemp = tempDirectory + File.separator + tempFileName + "_temp.csv";
 
-				// create temp file name
-				String tempFileName = runId + "_" + new Md5Utils().getMd5FromString(runId + baseOutputURL);
-				String inputFile = tempDirectory + File.separator + tempFileName + ".h5";
-				String outputFile = tempDirectory + File.separator + tempFileName + "_output.h5";
-				String csvTemp = tempDirectory + File.separator + tempFileName + "_temp.csv";
+			ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+			FileOutputStream fos = new FileOutputStream(inputFile);
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			fos.close();
 
-				ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-				FileOutputStream fos = new FileOutputStream(inputFile);
-				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-				fos.close();
+			// 3) run python script
+//				System.out.println(pythonRunCommand);
+			String[] callAndArgs = {"./script.sh", inputFile, outputFile, csvTemp};
+//				String[] env = {"LC_ALL=en_US.UTF-8", "LANG=en_US.UTF-8"}; // needed for pandas on some installations
 
-				// 3) run python script
-				System.out.println(pythonRunCommand);
-				String[] callAndArgs = {pythonRunCommand, pythonScriptFilePath, "-i", inputFile, "-o", outputFile, "-t", csvTemp};
-				String[] env = {"LC_ALL=en_US.UTF-8", "LANG=en_US.UTF-8"}; // needed for pandas on some installations
-				
-				Process p = Runtime.getRuntime().exec(callAndArgs, env);
-				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			Process p = Runtime.getRuntime().exec(callAndArgs);
 
-				// read the output from the command
-				System.out.println("Here is the standard output of the command:\n");
-				while ((s = stdInput.readLine()) != null) {
-					System.out.println(s);
-				}
-				// read any errors from the attempted command
-//				System.out.println("Here is the standard error of the command (if any):\n");
-				String errors = "";
-				while ((s = stdError.readLine()) != null) {
-					errors += s + "\n";
-				}
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-				if (!errors.equals("")) {
-					System.out.println("Errors:");
-					System.out.println(errors);
-					updateStatus(MethodCallStatusEnum.FAILED, "The python script failed during output translation: " + errors, runId, authentication);
-					return;
-				}
-
-				// 4) upload translated output to file service
-			} catch (IOException e) {
-				e.printStackTrace();
+			// read the output from the command
+			System.out.println("Here is the standard output of the command:\n");
+			while ((s = stdInput.readLine()) != null) {
+				System.out.println(s);
 			}
-		} catch (OutputTranslatorException ex) {
-			logger.error(ex.getMessage());
+			// read any errors from the attempted command
+//				System.out.println("Here is the standard error of the command (if any):\n");
+			String errors = "";
+			while ((s = stdError.readLine()) != null) {
+				System.out.println(s);
+
+				errors += s + "\n";
+			}
+
+//				if (!errors.equals("")) {
+//					System.out.println("Errors:");
+//					System.out.println(errors);
+//					updateStatus(MethodCallStatusEnum.FAILED, "The python script failed during output translation: " + errors, runId, authentication);
+//					return;
+//				}
+			// 4) upload translated output to file service
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+//		} catch (OutputTranslatorException ex) {
+//			logger.error(ex.getMessage());
+//		}
 
 	}
 }
