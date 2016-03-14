@@ -28,6 +28,7 @@ import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnect
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.utilities.FileStoreServiceUtility;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -476,23 +477,10 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	}
 
 	public static void uploadTextFileContent(String content, BigInteger runId, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		String fileName = fileIdentification.getLabel();
-		ContentDataTypeEnum contentType = fileIdentification.getType();
-		ContentDataFormatEnum contentFormat = fileIdentification.getFormat();
-
-		try {
-			String tempFileName = new Md5Utils().getMd5FromString(fileName + contentFormat + contentType + runId) + ".txt";
-			File file = new File(LOCAL_FILE_STORAGE_DIR + File.separator + tempFileName);
-			file.createNewFile();
-			PrintStream ps = new PrintStream(file);
-			ps.print(content);
-			ps.close();
-
-			String url = LOCAL_FILE_BASE_URL + "/" + tempFileName;
-			getFilestoreServiceConnector().uploadFile(runId, url, fileIdentification, authentication);
-		} catch (IOException ex) {
-			throw new FilestoreException("IOException: " + ex.getMessage());
-		}
+		
+		FileStoreServiceUtility.uploadTextFileContent(content, runId, fileIdentification, 
+				authentication, LOCAL_FILE_STORAGE_DIR, LOCAL_FILE_BASE_URL, getFilestoreServiceConnector());
+		
 	}
 
 }
