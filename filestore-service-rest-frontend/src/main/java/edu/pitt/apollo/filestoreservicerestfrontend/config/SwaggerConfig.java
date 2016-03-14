@@ -60,8 +60,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
     protected ApiInfo apiInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Simulator Service API",
-                "The Simulator Service API provides methods for running simulators supported by the service. Using the RESTful model, each access is associated with a URL.",
+                "Filestore Service API",
+                "The Filestore Service enables files to be uploaded and associated with Apollo service runs. Using the RESTful model, each access is associated with a URL.",
                 null,
                 "jdl50@pitt.edu",
                 null,
