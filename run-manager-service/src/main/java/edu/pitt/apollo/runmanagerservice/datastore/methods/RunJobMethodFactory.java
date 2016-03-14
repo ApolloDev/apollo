@@ -7,10 +7,13 @@ import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,19 +24,19 @@ public class RunJobMethodFactory {
 
 	private static final String RUN_DATA_SEVICE_MESSAGE_FILENAME = "data_retrieval_request_message.json";
 
-	private static String getMessageContent(BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException, ApolloDatabaseException, DatastoreException {
+	private static String getMessageContent(BigInteger runId, Authentication authentication) throws UnrecognizedMessageTypeException, ApolloDatabaseException, DatastoreException, FilestoreException {
 		DatastoreAccessor databaseAccessor = DatastoreAccessorFactory.getDatabaseAccessor();
-		Map<BigInteger, FileAndURLDescription> contentMap = databaseAccessor.getListOfFilesForRunId(runId, RUN_DATA_SEVICE_MESSAGE_FILENAME, authentication);
+		List<FileIdentification> files = databaseAccessor.getListOfFilesForRunId(runId, RUN_DATA_SEVICE_MESSAGE_FILENAME, authentication);
 
-		if (contentMap.size() != 1) {
-			throw new DatastoreException("Expected 1 message to run data service job but there were " + contentMap.size());
+		if (files.size() != 1) {
+			throw new DatastoreException("Expected 1 message to run data service job but there were " + files.size());
 		}
 
-		String messageContent = databaseAccessor.getContentForContentId(contentMap.keySet().iterator().next(), authentication);
+		String messageContent = databaseAccessor.getFileContent(runId, files.get(0), authentication);
 		return messageContent;
 	}
 	
-	public static RunJobMethod getDataServiceMethod(BigInteger runId, Authentication authentication) throws DatastoreException, UnrecognizedMessageTypeException, ApolloDatabaseException {
+	public static RunJobMethod getDataServiceMethod(BigInteger runId, Authentication authentication) throws DatastoreException, UnrecognizedMessageTypeException, ApolloDatabaseException, FilestoreException {
 
 		String messageContent = getMessageContent(runId, authentication);
 		

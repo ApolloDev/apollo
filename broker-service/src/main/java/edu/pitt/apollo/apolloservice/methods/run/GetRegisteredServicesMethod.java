@@ -1,6 +1,6 @@
-package edu.pitt.apollo.apolloservice.methods.services;
+package edu.pitt.apollo.apolloservice.methods.run;
 
-import edu.pitt.apollo.apolloservice.methods.content.BaseDataServiceAccessorMethod;
+import edu.pitt.apollo.apolloservice.methods.run.BaseRunManagementServiceAccessorMethod;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 9, 2014 Time: 1:54:22 PM Class: GetRegisteredServicesMethod IDE: NetBeans 6.9.1
  */
-public class GetRegisteredServicesMethod extends BaseDataServiceAccessorMethod {
+public class GetRegisteredServicesMethod extends BaseRunManagementServiceAccessorMethod {
 
 	static Logger logger = LoggerFactory.getLogger(GetRegisteredServicesMethod.class);
 

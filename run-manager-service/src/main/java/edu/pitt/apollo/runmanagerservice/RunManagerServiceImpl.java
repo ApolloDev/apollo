@@ -2,6 +2,7 @@ package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
@@ -130,7 +131,7 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 		try {
 			AbstractRunMethod runMethod = RunMethodFactory.getRunMethod(runId, authentication);
 			runMethod.run(runId);
-		} catch (RunManagementException | JsonUtilsException e) {
+		} catch (RunManagementException | JsonUtilsException | FilestoreException e) {
 			throw new JobRunningServiceException("Error running job, error was: (" + e.getClass().getName() + ") " + e.getMessage());
 		}
 	}
@@ -167,59 +168,6 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DatastoreException(ex.getMessage());
 		}
-	}
-
-	@Override
-	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			return dba.getContentForContentId(urlId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.removeFileAssociationWithRun(runId, fileId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			return dba.getListOfURLsForRunId(runId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			return dba.getListOfFilesForRunId(runId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware,
-			String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
-
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-
 	}
 
 	@Override

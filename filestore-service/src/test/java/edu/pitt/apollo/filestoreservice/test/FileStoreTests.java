@@ -26,15 +26,15 @@ public class FileStoreTests extends TestCase {
             //fileStoreService.uploadFile(new BigInteger("0"), "http://data.olympus.psc.edu/apollo/current.version/output.allegheny.county_age.race.gender.location.hdf5", fileIdentification);
             fileStoreService.deleteFilesForRun(new BigInteger("0"));
             //fileStoreService.uploadFile(new BigInteger("0"), "http://download.thinkbroadband.com/100MB.zip" , fileIdentification);
-            fileStoreService.uploadFile(new BigInteger("0"), "http://distro.ibiblio.org/tinycorelinux/7.x/x86/release/CorePlus-current.iso", fileIdentification);
-            System.out.println(fileStoreService.getUrlOfFile(new BigInteger("0"), fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType()));
-            List<FileIdentification> list = fileStoreService.listFilesForRun(new BigInteger("0"));
+            fileStoreService.uploadFile(new BigInteger("0"), "http://distro.ibiblio.org/tinycorelinux/7.x/x86/release/CorePlus-current.iso", fileIdentification, null);
+            System.out.println(fileStoreService.getUrlOfFile(new BigInteger("0"), fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), null));
+            List<FileIdentification> list = fileStoreService.listFilesForRun(new BigInteger("0"), null);
             for (FileIdentification fileIdentification1 : list) {
                 System.out.println(fileIdentification1.getLabel());
             }
             String status = "";
             while (!status.equals("Stored.")) {
-                status = fileStoreService.getStatusOfFileUpload(new BigInteger("0"), fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType());
+                status = fileStoreService.getStatusOfFileUpload(new BigInteger("0"), fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), null).getMessage();
                 System.out.println(status);
                 Thread.sleep(250);
             }

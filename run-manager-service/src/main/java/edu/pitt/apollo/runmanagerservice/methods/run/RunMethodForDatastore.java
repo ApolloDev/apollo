@@ -4,6 +4,7 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.data_service_types.v4_0.*;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
@@ -65,7 +66,7 @@ public class RunMethodForDatastore extends AbstractRunMethod {
 
 	private List<URLForFileAndRunId> urlsForFilesAndRunIds;
 
-	public RunMethodForDatastore(BigInteger runId, Authentication authentication) throws JsonUtilsException, DatastoreException {
+	public RunMethodForDatastore(BigInteger runId, Authentication authentication) throws JsonUtilsException, DatastoreException, FilestoreException {
 		super(runId, authentication, "data_retrieval_request_message.json");
 	}
 

@@ -66,21 +66,21 @@ public class DatastoreGetOutputFilesAsZipThread extends DatastoreAccessThread {
 					addToZip(filePath, textContent.getBytes());
 				}
 
-				Map<BigInteger, FileAndURLDescription> dataContentForBatchRun = dba.getListOfFilesForRunId(runIdFromMessage, authentication);
-				for (BigInteger fileId : dataContentForBatchRun.keySet()) {
-
-					FileAndURLDescription description = dataContentForBatchRun.get(fileId);
-					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
-						if (!fileNamesToMatch.contains(description.getName())) {
-							continue;
-						}
-					}
-
-					String fileContent = dba.getContentForContentId(fileId, authentication);
-					
-					String filePath = runIdFromMessage + "/" + description.getName();
-					addToZip(filePath, fileContent.getBytes());
-				}
+//				Map<BigInteger, FileAndURLDescription> dataContentForBatchRun = dba.getListOfFilesForRunId(runIdFromMessage, authentication);
+//				for (BigInteger fileId : dataContentForBatchRun.keySet()) {
+//
+//					FileAndURLDescription description = dataContentForBatchRun.get(fileId);
+//					if (fileNamesToMatch != null && fileNamesToMatch.size() > 0) {
+//						if (!fileNamesToMatch.contains(description.getName())) {
+//							continue;
+//						}
+//					}
+//
+//					String fileContent = dba.getContentForContentId(fileId, authentication);
+//					
+//					String filePath = runIdFromMessage + "/" + description.getName();
+//					addToZip(filePath, fileContent.getBytes());
+//				}
 
 			}
 

@@ -5,7 +5,9 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
 import edu.pitt.apollo.runmanagerservice.thread.StageInDbWorkerThread;
@@ -127,12 +129,16 @@ public class BatchStageMethod extends ApolloServiceThread {
         }
     }
 
-    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) throws DatastoreException {
+    private void addBatchInputsWithRunIdsFileToDatabase(SynchronizedStringBuilder sb) throws DatastoreException, FilestoreException {
 
         loadSoftwareIdentifications(authentication);
 
-        dataServiceAccessor.associateContentWithRunId(batchRunId, sb.toString(), brokerServiceSoftwareIdentification,
-                endUserSoftwareIdentifcation, FILE_NAME_FOR_INPUTS_WITH_RUN_IDS, ContentDataFormatEnum.TEXT, ContentDataTypeEnum.CONFIGURATION_FILE, authentication);
+		FileIdentification fileIdentification = new FileIdentification();
+		fileIdentification.setLabel(FILE_NAME_FOR_INPUTS_WITH_RUN_IDS);
+		fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
+		fileIdentification.setType(ContentDataTypeEnum.CONFIGURATION_FILE);
+		
+        dataServiceAccessor.uploadTextFileContent(sb.toString(), runId, fileIdentification, authentication);
 
     }
 
@@ -222,7 +228,7 @@ public class BatchStageMethod extends ApolloServiceThread {
                         "All runs for this batch have been translated", authentication);
 
 
-            } catch (RunManagementException e) {
+            } catch (RunManagementException | FilestoreException e) {
                 ErrorUtils.reportError(batchRunId, "DB Error queuing and translating runs, error was " + e.getMessage(), authentication);
             } finally {
                 br.close();

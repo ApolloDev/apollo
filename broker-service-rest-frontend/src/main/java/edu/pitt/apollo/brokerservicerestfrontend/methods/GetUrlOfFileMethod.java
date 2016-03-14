@@ -6,9 +6,12 @@
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
+;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
@@ -17,25 +20,28 @@ import org.springframework.http.HttpStatus;
  *
  * @author nem41
  */
-public class GetContentByIdMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetContentByIdMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
+
+public class GetUrlOfFileMethod extends BaseBrokerServiceAccessorMethod {
+
+	public GetUrlOfFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
 		super(username, password, serializationFormat);
 	}
 
-	public String getContent(BigInteger contentId) throws UnsupportedSerializationFormatException, SerializationException {
+	public String getUrlOfFile(BigInteger runID, ContentDataFormatEnum contentDataFormatEnum,
+			ContentDataTypeEnum contentDataTypeEnum, String fileName) throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			String content = impl.getContentForContentId(contentId, authentication);
-			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
-					.addContentToBody(content).setIsBodySerialized(false);
+			String url = impl.getUrlOfFile(runID, fileName, contentDataFormatEnum, contentDataTypeEnum, authentication);
 
-		} catch (DatastoreException ex) {
+			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
+					.addContentToBody(url).setIsBodySerialized(false);
+
+		} catch (FilestoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 
 		return serializer.serializeObject(responseBuilder.getResponse());
-
 	}
 
 }

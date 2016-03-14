@@ -1,6 +1,8 @@
 package edu.pitt.apollo.filestoreservicerestfrontend.controller;
 
 import com.wordnik.swagger.annotations.ApiParam;
+import edu.pitt.apollo.exception.DeserializationException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
@@ -32,18 +34,18 @@ public class FileStoreController {
 	@RequestMapping(value = "/{runId}", method = RequestMethod.POST, headers = "Accept=text/html")
 	public @ResponseBody
 	void uploadFile(@PathVariable("runId") BigInteger runId, @RequestParam("urlToFile") String urlToFile,
-			@ApiParam(value = "File Identification", required = true) @RequestBody String messageBody) throws Exception {
+			@ApiParam(value = "File Identification", required = true) @RequestBody String messageBody) throws FilestoreException, DeserializationException {
 
 		FileIdentification fileIdentification = new XMLDeserializer().getObjectFromMessage(messageBody, FileIdentification.class);
 
 		FilestoreServiceInterface filestoreService = new FileStoreService();
-		filestoreService.uploadFile(runId, urlToFile, fileIdentification);
+		filestoreService.uploadFile(runId, urlToFile, fileIdentification, null);
 	}
 
 	@RequestMapping(value = "/{runId}/url", method = RequestMethod.GET, headers = "Accept=text/html")
 	public String getUrlOfFile(@PathVariable("runId") BigInteger runId, 
 			@RequestParam("filename") String filename, @RequestParam(required = false) ContentDataFormatEnum fileFormat,
-			@RequestParam("fileType") ContentDataTypeEnum fileType) throws Exception {
+			@RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException {
 
 		FilestoreServiceInterface filestoreService = new FileStoreService();
 
@@ -54,14 +56,14 @@ public class FileStoreController {
 //        fileIdentification.setLabel("output.allegheny.county.age.race.gender.location");
 //        String urlOfFile = filestoreService.getUrlOfFile(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType());
 //        logger.info("File URL: " + urlOfFile);
-		String urlOfFile = filestoreService.getUrlOfFile(runId, filename, fileFormat, fileType);
+		String urlOfFile = filestoreService.getUrlOfFile(runId, filename, fileFormat, fileType, null);
 		return urlOfFile;
 	}
 
 	@RequestMapping(value = "/{runId}/status", method = RequestMethod.GET, headers = "Accept=text/html")
 	public String getStatusOfFileUpload(@PathVariable("runId") BigInteger runId, 
 			@RequestParam(required = false) String filename, @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
-			@RequestParam("fileType") ContentDataTypeEnum fileType) throws IOException {
+			@RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException {
 		FilestoreServiceInterface filestoreService = new FileStoreService();
 
 //        //used for testing
@@ -71,15 +73,16 @@ public class FileStoreController {
 //        fileIdentification.setLabel("output.allegheny.county.age.race.gender.location");
 //        String status = filestoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType());
 //        logger.info("File status: "+ status);
-		String status = filestoreService.getStatusOfFileUpload(runId, filename, fileFormat, fileType);
+		String status = "";
+//		= filestoreService.getStatusOfFileUpload(runId, filename, fileFormat, fileType, null);
 
 		return status;
 	}
 
 	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=text/html")
-	public List<FileIdentification> listFilesForRun(@PathVariable("runId") BigInteger runId) throws IOException {
+	public List<FileIdentification> listFilesForRun(@PathVariable("runId") BigInteger runId) throws FilestoreException {
 		FilestoreServiceInterface filestoreService = new FileStoreService();
-		List<FileIdentification> files = filestoreService.listFilesForRun(runId);
+		List<FileIdentification> files = filestoreService.listFilesForRun(runId, null);
 
 		//used for testing
 //        for(FileIdentification file : files) {

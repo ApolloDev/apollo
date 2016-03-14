@@ -4,6 +4,7 @@ import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissio
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
@@ -22,12 +23,12 @@ public class RunMethodForSimulation extends AbstractRunMethod {
 
     private Class runMessageClass = null;
 
-    public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DatastoreException {
+    public RunMethodForSimulation(BigInteger stagedRunId, Authentication authentication) throws JsonUtilsException, DatastoreException, FilestoreException {
         super(stagedRunId, authentication, "run_message.json");
     }
 
     @Override
-    protected String getRunMessageJson(String runMessageFilename) throws DatastoreException {
+    protected String getRunMessageJson(String runMessageFilename) throws DatastoreException, FilestoreException {
         String json = dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_message.json");
 
         if (json.contains("\"type\" : \"RunSimulationMessage\"")) {

@@ -2,6 +2,7 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
@@ -23,7 +24,7 @@ public abstract class AbstractRunMethod implements RunMethod {
     protected Authentication authentication;
 
 
-    public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DatastoreException, JsonUtilsException {
+    public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DatastoreException, JsonUtilsException, FilestoreException {
         this.runId = runId;
         this.authentication = authentication;
         dataServiceDao = new DatastoreAccessor();
@@ -31,7 +32,7 @@ public abstract class AbstractRunMethod implements RunMethod {
         runMessage = convertRunMessageJson(json);
     }
 
-    protected String getRunMessageJson(String runMessageFilename) throws DatastoreException {
+    protected String getRunMessageJson(String runMessageFilename) throws DatastoreException, FilestoreException {
         return dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename);
     }
 

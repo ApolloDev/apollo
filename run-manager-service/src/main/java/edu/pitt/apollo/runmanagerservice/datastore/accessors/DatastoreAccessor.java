@@ -7,20 +7,24 @@ import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.*;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.UserManagementInterface;
+import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
@@ -32,8 +36,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.*;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 2:26:02 PM Class: DatastoreAccessor IDE: NetBeans 6.9.1
@@ -46,11 +54,18 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	protected static final int DATA_SERVICE_SOFTWARE_KEY;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
+	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
+	private static final String LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY = "local_file_storage_dir";
+	private static final String LOCAL_FILE_BASE_URL_PROPERTY = "local_file_base_url_property";
+	private static final String LOCAL_FILE_BASE_URL;
+	private static final String LOCAL_FILE_STORAGE_DIR;
 	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";
 	private static final String OUTPUT_FILE_NAME_KEY = "output_file_name";
 	private static final String APOLLO_DIR;
 	private static final String ZIP_FILE_NAME_KEY = "zip_file_name";
 	private static final String FILE_PREFIX = "run_%d_";
+	private static FilestoreServiceConnector filestoreServiceConnector;
+	private static String filestoreServiceUrl;
 	static Logger logger = LoggerFactory.getLogger(DatastoreAccessor.class);
 
 	static {
@@ -101,6 +116,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 			}
 			OUTPUT_DIRECTORY = outputDir;
 			OUTPUT_FILE_NAME = properties.getProperty(OUTPUT_FILE_NAME_KEY);
+			LOCAL_FILE_STORAGE_DIR = properties.getProperty(LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY);
+			LOCAL_FILE_BASE_URL = properties.getProperty(LOCAL_FILE_BASE_URL_PROPERTY);
 
 			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
 
@@ -123,6 +140,34 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		} else {
 			throw new ExceptionInInitializerError("No Apollo Work Dir evironment variable found when initializing data service!");
 		}
+	}
+
+	private static FilestoreServiceConnector getFilestoreServiceConnector() throws FilestoreException {
+		try {
+			if (filestoreServiceConnector == null) {
+				filestoreServiceConnector = new RestFilestoreServiceConnector(getFilestoreServiceUrl());
+			}
+
+			return filestoreServiceConnector;
+		} catch (IOException ex) {
+			throw new FilestoreException("IOException loading run manager service connector: " + ex.getMessage());
+		}
+	}
+
+	protected static String getFilestoreServiceUrl() throws IOException {
+		if (filestoreServiceUrl == null) {
+			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
+
+			File configurationFile = new File(apolloDir + File.separator + DATA_SERVICE_PROPERTIES_NAME);
+			Properties brokerServiceProperties = new Properties();
+
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+				filestoreServiceUrl = brokerServiceProperties.getProperty(FILESTORE_SERVICE_URL_PROPERTY);
+			}
+		}
+		return filestoreServiceUrl;
 	}
 
 	protected final ApolloDbUtils dbUtils;
@@ -167,20 +212,6 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		return null;
 	}
 
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, String fileNameToMatch, Authentication authentication) throws DatastoreException {
-		Map<BigInteger, FileAndURLDescription> contentMap = getListOfFilesForRunId(runId, authentication);
-
-		for (Iterator<BigInteger> itr = contentMap.keySet().iterator(); itr.hasNext();) {
-			BigInteger contentId = itr.next();
-			FileAndURLDescription desc = contentMap.get(contentId);
-			if (!desc.getName().equals(fileNameToMatch)) {
-				itr.remove();
-			}
-		}
-
-		return contentMap;
-	}
-
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
@@ -190,22 +221,6 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 			return listOfRunIds;
 		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
-		}
-
-	}
-
-	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel,
-			ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
-		authenticateUser(authentication);
-		try {
-			int contentId = dbUtils.addTextDataContent(content);
-			int sourceSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(sourceSoftware);
-			int destinationSoftwareIdKey = dbUtils.getSoftwareIdentificationKey(destinationSoftware);
-			int runDataDescriptionId = dbUtils.getRunDataDescriptionId(contentDataFormat, contentLabel, contentDataType, sourceSoftwareIdKey, destinationSoftwareIdKey);
-			dbUtils.associateContentWithRunId(runId, contentId, runDataDescriptionId);
-		} catch (ApolloDatabaseException | Md5UtilsException e) {
-			throw new DatastoreException(e.getMessage());
 		}
 
 	}
@@ -286,46 +301,6 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
-	}
-
-	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		try {
-			authenticateUser(authentication);
-			Map<BigInteger, FileAndURLDescription> fileIdsToFileDescriptionMap = dbUtils.getListOfFilesForRunId(runId);
-			return fileIdsToFileDescriptionMap;
-		} catch (ApolloDatabaseException e) {
-			throw new DatastoreException(e.getMessage());
-		}
-	}
-
-	@Override
-	public HashMap<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		try {
-			authenticateUser(authentication);
-			HashMap<BigInteger, FileAndURLDescription> urlIdsToUrlDescriptionMap = dbUtils.getListOfURLsForRunId(runId);
-			return urlIdsToUrlDescriptionMap;
-		} catch (ApolloDatabaseException e) {
-			throw new DatastoreException(e.getMessage());
-		}
-	}
-
-	@Override
-	public String getContentForContentId(BigInteger fileId, Authentication authentication) throws DatastoreException {
-		try {
-			authenticateUser(authentication);
-			String fileContent = dbUtils.getFileContentForFileId(fileId);
-			return fileContent;
-		} catch (ApolloDatabaseException e) {
-			throw new DatastoreException(e.getMessage());
-		}
-
-	}
-
-	@Override
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
-		// DON'T HAVE A NEED FOR THIS METHOD YET, BUT THE METHOD IS DECLARED FOR FUTURE USE
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
@@ -440,22 +415,84 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId, Authentication authentication, String runMessageFilename) throws DatastoreException {
-		Map<BigInteger, FileAndURLDescription> files = this.getListOfFilesForRunId(runId, authentication);
+	public String getRunMessageAssociatedWithRunIdAsJsonOrNull(BigInteger runId, Authentication authentication, String runMessageFilename) throws DatastoreException, FilestoreException {
+
+		List<FileIdentification> fileIds = getFilestoreServiceConnector().listFilesForRun(runId, authentication);
 		// this is inadequate!! need to filter by source and dest software id too!
-		for (BigInteger fileId : files.keySet()) {
-			String filename = files.get(fileId).getName();
+		for (FileIdentification fileIdentification : fileIds) {
+			String filename = fileIdentification.getLabel();
 			if (filename.equals(runMessageFilename)) {
-				return this.getContentForContentId(fileId, authentication);
+				String url = getFilestoreServiceConnector().getUrlOfFile(runId, filename,
+						fileIdentification.getFormat(), fileIdentification.getType(), authentication);
+				try {
+					return getContent(url);
+				} catch (IOException ex) {
+					throw new FilestoreException("IOException: " + ex.getMessage());
+				}
 			}
 		}
 		throw new RunMessageFileNotFoundException("Couldn't find " + runMessageFilename + " in database for run " + runId);
 	}
 
-	public <T> T getRunMessageAssociatedWithRunIdAsTypeOrNull(BigInteger runId, Authentication authentication, String runMessageFilename, Class<T> clazz) throws DatastoreException, JsonUtilsException {
+	public List<FileIdentification> getListOfFilesForRunId(BigInteger runId, String fileNameToMatch, Authentication authentication) throws DatastoreException, FilestoreException {
+		List<FileIdentification> fileIds = getFilestoreServiceConnector().listFilesForRun(runId, authentication);
+
+		for (Iterator<FileIdentification> itr = fileIds.iterator(); itr.hasNext();) {
+			FileIdentification contentId = itr.next();
+			if (!contentId.getLabel().equals(fileNameToMatch)) {
+				itr.remove();
+			}
+		}
+
+		return fileIds;
+	}
+
+	public String getFileContent(BigInteger runId, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+
+		String url = getFilestoreServiceConnector().getUrlOfFile(runId, fileIdentification.getLabel(),
+				fileIdentification.getFormat(), fileIdentification.getType(), authentication);
+
+		try {
+			return getContent(url);
+		} catch (IOException ex) {
+			throw new FilestoreException("IOException: " + ex.getMessage());
+		}
+	}
+
+	public <T> T getRunMessageAssociatedWithRunIdAsTypeOrNull(BigInteger runId, Authentication authentication, String runMessageFilename, Class<T> clazz) throws DatastoreException, JsonUtilsException, FilestoreException {
 		String json = getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename);
 		JsonUtils jsonUtils = new JsonUtils();
 		return (T) jsonUtils.getObjectFromJson(json, clazz);
+	}
+
+	private static String getContent(String url) throws IOException {
+		InputStream in = new URL(url).openStream();
+
+		try {
+			return IOUtils.toString(in);
+		} finally {
+			IOUtils.closeQuietly(in);
+		}
+	}
+
+	public static void uploadTextFileContent(String content, BigInteger runId, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+		String fileName = fileIdentification.getLabel();
+		ContentDataTypeEnum contentType = fileIdentification.getType();
+		ContentDataFormatEnum contentFormat = fileIdentification.getFormat();
+
+		try {
+			String tempFileName = new Md5Utils().getMd5FromString(fileName + contentFormat + contentType + runId) + ".txt";
+			File file = new File(LOCAL_FILE_STORAGE_DIR + File.separator + tempFileName);
+			file.createNewFile();
+			PrintStream ps = new PrintStream(file);
+			ps.print(content);
+			ps.close();
+
+			String url = LOCAL_FILE_BASE_URL + "/" + tempFileName;
+			getFilestoreServiceConnector().uploadFile(runId, url, fileIdentification, authentication);
+		} catch (IOException ex) {
+			throw new FilestoreException("IOException: " + ex.getMessage());
+		}
 	}
 
 }

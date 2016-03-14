@@ -98,6 +98,12 @@
             <version>${project.version}</version>
         </dependency>
        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>filestore-service-rest-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+       
     </dependencies>
 
     <build>

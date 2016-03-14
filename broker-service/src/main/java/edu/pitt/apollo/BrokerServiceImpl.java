@@ -15,26 +15,26 @@
  */
 package edu.pitt.apollo;
 
-import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
-import edu.pitt.apollo.connector.DataServiceConnector;
+import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
+import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
+import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
-;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -50,9 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import javax.jws.WebParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,17 +60,18 @@ import org.slf4j.LoggerFactory;
  */
 
 
-public class BrokerServiceImpl implements ContentManagementInterface, RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface {
+public class BrokerServiceImpl implements ContentManagementInterface, FilestoreServiceInterface, RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface {
 
 	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
-	private static final String DATA_SERVICE_URL_PROPERTY_TOKEN = "dataServiceUrl";
-	private static final String AUTHENTICATION_USER = "authenticationUser";
-	private static final String AUTHENTICATION_PASSWORD = "authenticationPassword";
+	private static final String RUN_MANAGER_SERVICE_URL_PROPERTY = "run_manager_service_url";
+	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
+	private static final String AUTHENTICATION_USER = "authentication_user";
+	private static final String AUTHENTICATION_PASSWORD = "authentication_password";
 	private static String runManagerServiceUrl;
-	private static String dataServiceUrl;
+	private static String filestoreServiceUrl;
 	private static Authentication dataServiceAuthentication;
 	private static RunManagerServiceConnector runManagerServiceConnector;
-	private static RunManagerServiceConnector dataServiceConnector;
+	private static FilestoreServiceConnector filestoreServiceConnector;
 	protected static final ApolloServiceQueue apolloServiceQueue;
 	Logger logger = LoggerFactory.getLogger(BrokerServiceImpl.class);
 
@@ -92,8 +91,20 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 		}
 	}
 
-	protected static String getDataServiceUrl() throws IOException {
-		if (dataServiceUrl == null) {
+	private static FilestoreServiceConnector getFilestoreServiceConnector() throws FilestoreException {
+		try {
+			if (filestoreServiceConnector == null) {
+				filestoreServiceConnector = new RestFilestoreServiceConnector(getFilestoreServiceUrl());
+			}
+
+			return filestoreServiceConnector;
+		} catch (IOException ex) {
+			throw new FilestoreException("IOException loading run manager service connector: " + ex.getMessage());
+		}
+	}
+
+	protected static String getFilestoreServiceUrl() throws IOException {
+		if (filestoreServiceUrl == null) {
 			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
 
 			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
@@ -102,10 +113,10 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 			try (InputStream input = new FileInputStream(configurationFile)) {
 				// load a properties file
 				brokerServiceProperties.load(input);
-				dataServiceUrl = brokerServiceProperties.getProperty(DATA_SERVICE_URL_PROPERTY_TOKEN);
+				filestoreServiceUrl = brokerServiceProperties.getProperty(FILESTORE_SERVICE_URL_PROPERTY);
 			}
 		}
-		return dataServiceUrl;
+		return filestoreServiceUrl;
 	}
 
 	protected static Authentication getDataServiceAuthentication() throws IOException {
@@ -132,54 +143,18 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 
 	protected static String getRunManagerServiceUrl() throws IOException {
 		if (runManagerServiceUrl == null) {
-			String initRunManagerServiceUrl = null;
-			Authentication authentication = getDataServiceAuthentication();
-			try {
-				RunManagerServiceConnector dataServiceConnector = getRunManagerServiceConnector();
-				List<ServiceRegistrationRecord> softwareRecords = dataServiceConnector.getListOfRegisteredSoftwareRecords(authentication);
+			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
 
-				for (ServiceRegistrationRecord record : softwareRecords) {
-					SoftwareIdentification softwareId = record.getSoftwareIdentification();
-					if (softwareId.getSoftwareType().equals(ApolloSoftwareTypeEnum.RUN_MANAGER)) {
-						initRunManagerServiceUrl = dataServiceConnector.getURLForSoftwareIdentification(softwareId, authentication);
-					}
-				}
+			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
+			Properties brokerServiceProperties = new Properties();
 
-				if (initRunManagerServiceUrl == null) {
-					throw new RuntimeException("No registered software with type RUN_MANAGER was found");
-				} else {
-					runManagerServiceUrl = initRunManagerServiceUrl;
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+				runManagerServiceUrl = brokerServiceProperties.getProperty(RUN_MANAGER_SERVICE_URL_PROPERTY);
 			}
 		}
 		return runManagerServiceUrl;
-	}
-
-	@Override
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
-		getRunManagerServiceConnector().associateContentWithRunId(runId, content, sourceSoftware, destinationSoftware, contentLabel, contentDataFormat, contentDataType, authentication);
-	}
-
-	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		return getRunManagerServiceConnector().getListOfFilesForRunId(runId, authentication);
-	}
-
-	@Override
-	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-		return getRunManagerServiceConnector().getListOfURLsForRunId(runId, authentication);
-	}
-
-	@Override
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
-		getRunManagerServiceConnector().removeFileAssociationWithRun(runId, fileId, authentication);
-	}
-
-	@Override
-	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DatastoreException {
-		return getRunManagerServiceConnector().getContentForContentId(urlId, authentication);
 	}
 
 	@Override
@@ -296,5 +271,25 @@ public class BrokerServiceImpl implements ContentManagementInterface, RunManagem
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
+	}
+
+	@Override
+	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+		getFilestoreServiceConnector().uploadFile(runId, urlToFile, fileIdentification, authentication);
+	}
+
+	@Override
+	public String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		return getFilestoreServiceConnector().getUrlOfFile(runId, filename, fileFormat, fileType, authentication);
+	}
+
+	@Override
+	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		return getFilestoreServiceConnector().getStatusOfFileUpload(runId, filename, fileFormat, fileType, authentication);
+	}
+
+	@Override
+	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
+		return getFilestoreServiceConnector().listFilesForRun(runId, authentication);
 	}
 }
