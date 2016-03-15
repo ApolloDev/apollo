@@ -1,4 +1,4 @@
-package edu.pitt.apollo.runmanagerservice.datastore.methods;
+package edu.pitt.apollo.runmanagerservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;

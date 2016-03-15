@@ -6,7 +6,7 @@ import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
-import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
+import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
