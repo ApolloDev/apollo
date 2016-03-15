@@ -8,14 +8,17 @@ import edu.pitt.apollo.types.v4_0.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
+import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
-import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import java.io.FileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +42,8 @@ public class StageInDbWorkerThread implements Runnable {
     private final XMLGregorianCalendar scenarioDate;
     private final BigInteger batchRunId;
     private final SoftwareIdentification simulatorIdentification;
-    private final BatchStageMethod.BooleanRef errorRef;
-    private final BatchStageMethod.CounterRef counterRef;
+    private final BatchStageThread.BooleanRef errorRef;
+    private final BatchStageThread.CounterRef counterRef;
     private final List<BigInteger> failedRunIds;
     private final Authentication authentication;
     private final String line;
@@ -48,7 +51,7 @@ public class StageInDbWorkerThread implements Runnable {
 
     public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
                                  XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,
-                                 BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef,
+                                 BatchStageThread.BooleanRef errorRef, BatchStageThread.CounterRef counterRef,
                                  List<BigInteger> failedRunIds, Authentication authentication) throws DatastoreException {
         this.line = line;
         this.message = message;
@@ -183,6 +186,8 @@ public class StageInDbWorkerThread implements Runnable {
                     InsertRunResult result = stageMethod.stage();
                     BigInteger runId = result.getRunId();
 
+					DatastoreAccessor.addRunSimulationMessageFileToBatchDirectory(batchRunId, runId, currentRunSimulationMessage);
+					
                     DatastoreAccessor dataServiceAccessor = new DatastoreAccessor();
                     MethodCallStatus status = dataServiceAccessor.getRunStatus(runId, authentication);
                     if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
@@ -191,7 +196,8 @@ public class StageInDbWorkerThread implements Runnable {
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-                } catch (RunManagementException e) {
+                } catch (RunManagementException | FileNotFoundException | Md5UtilsException | UnrecognizedMessageTypeException
+						| ApolloDatabaseException e) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(

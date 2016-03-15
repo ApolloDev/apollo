@@ -123,7 +123,7 @@ public class DatastoreAccessorForRunningJobs extends
 				fileIdentification.setType(ContentDataTypeEnum.CONFIGURATION_FILE);
 				fileIdentification.setLabel("run_message.json");
 				
-				FileStoreServiceUtility.uploadTextFileContent(content, runIdSimulationGroupId[0], fileIdentification, 
+				FileStoreServiceUtility.uploadTextFileContentSynchronous(content, runIdSimulationGroupId[0], fileIdentification, 
 						authentication, LOCAL_FILE_STORAGE_DIR, LOCAL_FILE_BASE_URL, getFilestoreServiceConnector());
 						
             } else {

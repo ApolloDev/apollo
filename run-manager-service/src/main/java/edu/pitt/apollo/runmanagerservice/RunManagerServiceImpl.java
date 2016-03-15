@@ -18,9 +18,6 @@ import edu.pitt.apollo.runmanagerservice.methods.run.AbstractRunMethod;
 import edu.pitt.apollo.runmanagerservice.methods.run.RunMethodFactory;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.FileAndURLDescription;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
@@ -30,9 +27,7 @@ import edu.pitt.apollo.soapjobrunningserviceconnector.RestJobRunningServiceConne
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jdl50 on 6/3/15.
@@ -62,8 +57,12 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 	@Override
 	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
 		final BigInteger NULL_PARENT_RUN_ID = null;
-		StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID);
-		return stageMethod.stage();
+		try {
+			StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID);
+			return stageMethod.stage();
+		} catch (ApolloDatabaseException | UnrecognizedMessageTypeException ex) {
+			throw new RunManagementException("Exception inserting run: " + ex.getMessage());
+		}
 	}
 
 	@Override

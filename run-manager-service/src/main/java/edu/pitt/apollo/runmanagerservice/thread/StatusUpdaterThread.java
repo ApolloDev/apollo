@@ -4,7 +4,6 @@ package edu.pitt.apollo.runmanagerservice.thread;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
-import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 
@@ -16,13 +15,13 @@ import java.util.TimerTask;
  */
 public class StatusUpdaterThread extends TimerTask {
 
-    private final BatchStageMethod.CounterRef counter;
-    private final BatchStageMethod.BooleanRef error;
+    private final BatchStageThread.CounterRef counter;
+    private final BatchStageThread.BooleanRef error;
     private final BigInteger runId;
     private final Authentication authentication;
     DatastoreAccessor dataServiceAccessor;
 
-    public StatusUpdaterThread(DatastoreAccessor dataServiceAccessor, BigInteger runId, BatchStageMethod.CounterRef counter, BatchStageMethod.BooleanRef error, Authentication authentication) {
+    public StatusUpdaterThread(DatastoreAccessor dataServiceAccessor, BigInteger runId, BatchStageThread.CounterRef counter, BatchStageThread.BooleanRef error, Authentication authentication) {
         this.counter = counter;
         this.error = error;
         this.runId = runId;

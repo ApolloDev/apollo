@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.pitt.apollo.runmanagerservice.methods.stage;
+package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DeserializationException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
+import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
+import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
+import edu.pitt.apollo.runmanagerservice.methods.stage.BaseStageMethod;
+import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
@@ -65,13 +71,13 @@ import org.jdom2.xpath.XPathFactory;
  *
  * @author nem41
  */
-public class StageExperimentMethod extends ApolloServiceThread {
+public class StageExperimentThread extends ApolloServiceThread {
 
 	private final RunInfectiousDiseaseTransmissionExperimentMessage message;
 	private final InfectiousDiseaseTransmissionExperimentSpecification idtes;
 	private final Authentication authentication;
 
-	public StageExperimentMethod(BigInteger experimentId, ApolloServiceQueue queue,
+	public StageExperimentThread(BigInteger experimentId, ApolloServiceQueue queue,
                                  RunInfectiousDiseaseTransmissionExperimentMessage message, Authentication authentication) {
 		super(experimentId, queue);
 		this.message = message;
@@ -166,6 +172,8 @@ public class StageExperimentMethod extends ApolloServiceThread {
 							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
 							InsertRunResult result = stageMethod.stage();
 							BigInteger newRunId = result.getRunId();
+							
+							DatastoreAccessor.addRunSimulationMessageFileToBatchDirectory(runId, newRunId, runSimulationMessage);
 
 							MethodCallStatus status = dataServiceAccessor.getRunStatus(newRunId, authentication);
 							if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
@@ -179,10 +187,17 @@ public class StageExperimentMethod extends ApolloServiceThread {
 					}
 				}
 			}
+			
+			DatastoreAccessor.zipAndUploadBatchRunDir(runId);
+			
+			// now translate all the runs
+			BaseStageMethod.translateRun(runId, dataServiceAccessor, authentication);
 
 			dataServiceAccessor.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
 					"All runs for this experiment have been translated", authentication);
-		} catch (DeserializationException | IOException | SerializationException | RunManagementException ex) {
+		} catch (DeserializationException | IOException | SerializationException | RunManagementException
+				| ApolloDatabaseException | UnrecognizedMessageTypeException | TranslatorServiceException
+				| Md5UtilsException | FilestoreException ex) {
 			ErrorUtils.reportError(runId, "Error inserting experiment run. Error was " + ex.getMessage(), authentication);
 			return;
 		}
@@ -202,6 +217,6 @@ public class StageExperimentMethod extends ApolloServiceThread {
 		runMessage.setInfectiousDiseaseTransmissionExperimentSpecification(test);
 		runMessage.setSimulatorTimeSpecification(null);
 
-		StageExperimentMethod method = new StageExperimentMethod(BigInteger.ZERO, null, runMessage, null);
+		StageExperimentThread method = new StageExperimentThread(BigInteger.ZERO, null, runMessage, null);
 	}
 }

@@ -21,6 +21,7 @@ import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.utilities.Md5Utils;
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +33,8 @@ import java.math.BigInteger;
  * @author nem41
  */
 public class FileStoreServiceUtility {
-	
-	public static void uploadTextFileContent(String content, BigInteger runId, 
+
+	public static void uploadTextFileContentSynchronous(String content, BigInteger runId,
 			FileIdentification fileIdentification, Authentication authentication,
 			String localDirectory, String localBaseUrl, FilestoreServiceConnector filestoreServiceConnector) throws FilestoreException {
 		String fileName = fileIdentification.getLabel();
@@ -50,8 +51,47 @@ public class FileStoreServiceUtility {
 
 			String url = localBaseUrl + "/" + tempFileName;
 			filestoreServiceConnector.uploadFile(runId, url, fileIdentification, authentication);
+
+			waitForUploadToComplete(filestoreServiceConnector, runId, contentFormat, contentType, fileName, authentication);
+
 		} catch (IOException ex) {
 			throw new FilestoreException("IOException: " + ex.getMessage());
+		}
+	}
+
+	public static void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification,
+			Authentication authentication, FilestoreServiceConnector filestoreServiceConnector) throws FilestoreException {
+
+		filestoreServiceConnector.uploadFile(runId, urlToFile, fileIdentification, authentication);
+
+		waitForUploadToComplete(filestoreServiceConnector, runId, fileIdentification.getFormat(), 
+				fileIdentification.getType(), urlToFile, authentication);
+
+	}
+
+	private static void waitForUploadToComplete(FilestoreServiceConnector filestoreServiceConnector, BigInteger runId,
+			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataTypeEnum, String fileName,
+			Authentication authentication) throws FilestoreException {
+		MethodCallStatus status = filestoreServiceConnector.getStatusOfFileUpload(runId, fileName,
+				contentDataFormatEnum, contentDataTypeEnum, authentication);
+
+		while (true) {
+			switch (status.getStatus()) {
+				case COMPLETED:
+					break;
+				case FAILED:
+					throw new FilestoreException("There was an error uploading the file: " + status.getMessage());
+				default:
+			}
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException ex) {
+
+			}
+
+			status = filestoreServiceConnector.getStatusOfFileUpload(runId, fileName, contentDataFormatEnum,
+					contentDataTypeEnum, authentication);
 		}
 	}
 

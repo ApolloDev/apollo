@@ -1,4 +1,4 @@
-package edu.pitt.apollo.runmanagerservice.methods.stage;
+package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.ApolloServiceQueue;
@@ -7,9 +7,11 @@ import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.BatchException;
+import edu.pitt.apollo.runmanagerservice.methods.stage.BaseStageMethod;
 import edu.pitt.apollo.runmanagerservice.thread.StageInDbWorkerThread;
 import edu.pitt.apollo.runmanagerservice.thread.StatusUpdaterThread;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
@@ -36,13 +38,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jdl50 on 6/9/15.
  */
-public class BatchStageMethod extends ApolloServiceThread {
+public class BatchStageThread extends ApolloServiceThread {
 
     public static final Random rng = new Random(System.currentTimeMillis());
     private static final String FILE_NAME_FOR_INPUTS_WITH_RUN_IDS = "batch_inputs_with_run_ids.txt";
     private static SoftwareIdentification brokerServiceSoftwareIdentification;
     private static SoftwareIdentification endUserSoftwareIdentifcation;
-    static Logger logger = org.slf4j.LoggerFactory.getLogger(BatchStageMethod.class);
+    static Logger logger = org.slf4j.LoggerFactory.getLogger(BatchStageThread.class);
 
     private static void loadSoftwareIdentifications(Authentication authentication) throws DatastoreException {
 
@@ -66,7 +68,7 @@ public class BatchStageMethod extends ApolloServiceThread {
     private URL configFileUrl = null;
     private Authentication authentication;
     private List<BigInteger> failedRunIds = Collections.synchronizedList(new ArrayList<BigInteger>());
-    public BatchStageMethod(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage,
+    public BatchStageThread(BigInteger batchRunId, RunSimulationsMessage runSimulationsMessage,
                             Authentication authentication, ApolloServiceQueue queue) throws MalformedURLException, DatastoreException {
         super(batchRunId, queue);
         this.dataServiceAccessor = new DatastoreAccessor();
@@ -224,11 +226,17 @@ public class BatchStageMethod extends ApolloServiceThread {
                 }
 
                 logger.debug("Finished all threads!");
+				
+				DatastoreAccessor.zipAndUploadBatchRunDir(batchRunId);
+				
+				// now the translator needs to be called
+				BaseStageMethod.translateRun(runId, dataServiceAccessor, authentication);
+				
                 dataServiceAccessor.updateStatusOfRun(batchRunId, MethodCallStatusEnum.TRANSLATION_COMPLETED,
                         "All runs for this batch have been translated", authentication);
 
 
-            } catch (RunManagementException | FilestoreException e) {
+            } catch (RunManagementException | FilestoreException | TranslatorServiceException e) {
                 ErrorUtils.reportError(batchRunId, "DB Error queuing and translating runs, error was " + e.getMessage(), authentication);
             } finally {
                 br.close();

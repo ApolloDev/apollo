@@ -43,6 +43,7 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
 import org.apache.commons.io.IOUtils;
+import org.zeroturnaround.zip.ZipUtil;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 2:26:02 PM Class: DatastoreAccessor IDE: NetBeans 6.9.1
@@ -54,6 +55,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	protected static final String ZIP_FILE_NAME;
 	protected static final int DATA_SERVICE_SOFTWARE_KEY;
 	protected static final SoftwareIdentification dataServiceSoftwareId;
+	private static final String BATCH_REMOTE_FILE_NAME = "run_messages.zip";
+	private static final String BATCH_ZIP_FILE_NAME = "batch_run_messages_%d.zip";
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY = "local_file_storage_dir";
@@ -477,10 +480,39 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	}
 
 	public static void uploadTextFileContent(String content, BigInteger runId, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		
-		FileStoreServiceUtility.uploadTextFileContent(content, runId, fileIdentification, 
+
+		FileStoreServiceUtility.uploadTextFileContentSynchronous(content, runId, fileIdentification,
 				authentication, LOCAL_FILE_STORAGE_DIR, LOCAL_FILE_BASE_URL, getFilestoreServiceConnector());
+	}
+
+	public static void addRunSimulationMessageFileToBatchDirectory(BigInteger batchRunId, BigInteger messageRunId,
+			RunMessage runMessage) throws Md5UtilsException, FileNotFoundException {
+
+		String content = new Md5Utils().getMd5(runMessage);
+		String directory = LOCAL_FILE_STORAGE_DIR + File.separator + batchRunId + File.separator;
+		String filePath = directory + messageRunId + ".json";
+		File file = new File(filePath);
+		if (!file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
+		PrintStream ps = new PrintStream(file);
+		ps.print(content);
+		ps.close();
+	}
+
+	public static void zipAndUploadBatchRunDir(BigInteger batchRunId) throws FilestoreException {
+
+		String directory = LOCAL_FILE_STORAGE_DIR + File.separator + batchRunId + File.separator;
+		String zipFile = LOCAL_FILE_STORAGE_DIR + File.separator + String.format(BATCH_ZIP_FILE_NAME, batchRunId);
+
+		ZipUtil.pack(new File(directory), new File(zipFile));
 		
+		FileIdentification fileIdentification = new FileIdentification();
+		fileIdentification.setFormat(ContentDataFormatEnum.ZIP);
+		fileIdentification.setType(ContentDataTypeEnum.RUN_MESSAGE);
+		fileIdentification.setLabel(BATCH_REMOTE_FILE_NAME);
+		
+		FileStoreServiceUtility.uploadFile(batchRunId, zipFile, fileIdentification, null, filestoreServiceConnector);
 	}
 
 }
