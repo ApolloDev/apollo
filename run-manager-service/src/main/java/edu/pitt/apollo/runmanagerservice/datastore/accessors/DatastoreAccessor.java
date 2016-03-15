@@ -58,8 +58,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY = "local_file_storage_dir";
 	private static final String LOCAL_FILE_BASE_URL_PROPERTY = "local_file_base_url_property";
-	private static final String LOCAL_FILE_BASE_URL;
-	private static final String LOCAL_FILE_STORAGE_DIR;
+	protected static final String LOCAL_FILE_BASE_URL;
+	protected static final String LOCAL_FILE_STORAGE_DIR;
 	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";
 	private static final String OUTPUT_FILE_NAME_KEY = "output_file_name";
 	private static final String APOLLO_DIR;
@@ -143,7 +143,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		}
 	}
 
-	private static FilestoreServiceConnector getFilestoreServiceConnector() throws FilestoreException {
+	protected static FilestoreServiceConnector getFilestoreServiceConnector() throws FilestoreException {
 		try {
 			if (filestoreServiceConnector == null) {
 				filestoreServiceConnector = new RestFilestoreServiceConnector(getFilestoreServiceUrl());

@@ -40,9 +40,9 @@ public class RunMethodFactory {
             case VISUALIZER:
                 runMethod = new RunMethodForVisualization(runId ,authentication);
                 break;
-            case DATA:
-                runMethod = new RunMethodForDatastore(runId, authentication);
-                break;
+//            case DATA:
+//                runMethod = new RunMethodForDatastore(runId, authentication);
+//                break;
             default:
                 throw new RunManagementException("The requested software to run is of an unsupported type");
         }

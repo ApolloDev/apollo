@@ -2,7 +2,6 @@ package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
@@ -32,8 +31,8 @@ public class RunApolloServiceThreadFactory {
 //		} else if (message instanceof GetOutputFilesURLsMessage) {
 //			softwareId = ((GetOutputFilesURLsMessage) message).getSoftwareIdentification();
 //			return new RunDatabaseJobThread(runId, softwareId, authentication);
-        } else if (message instanceof DataRetrievalRequestMessage) {
-            return new RunDatabaseJobThread(runId, ((DataRetrievalRequestMessage) message).getSoftwareIdentification(), authentication);
+//        } else if (message instanceof DataRetrievalRequestMessage) {
+//            return new RunDatabaseJobThread(runId, ((DataRetrievalRequestMessage) message).getSoftwareIdentification(), authentication);
 //		} else if (message instanceof GetAllOutputFilesURLAsZipMessage) {
 //			softwareId = ((GetAllOutputFilesURLAsZipMessage) message).getSoftwareIdentification();
 //			return new RunDatabaseJobThread(runId, softwareId, authentication);

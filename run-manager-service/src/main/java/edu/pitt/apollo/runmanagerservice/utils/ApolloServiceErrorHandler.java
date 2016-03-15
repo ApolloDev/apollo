@@ -1,4 +1,4 @@
-package edu.pitt.apollo.runmanagerservice.methods.run;
+package edu.pitt.apollo.runmanagerservice.utils;
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.DatastoreException;

@@ -24,9 +24,9 @@ public class DatastoreAccessorFactory {
 			return new DatastoreAccessorForRunningJobs(((RunSimulationsMessage) message).getSoftwareIdentification());
 		} else if (message instanceof RunVisualizationMessage) {
 			return new DatastoreAccessorForRunningJobs(((RunVisualizationMessage) message).getSoftwareIdentification());
-		} else if (message instanceof DataRetrievalRequestMessage) {
-			Authentication authentication = message.getAuthentication();
-			return new DatastoreAccessorForRunningDataRetrievalJob((DataRetrievalRequestMessage) message, authentication);
+//		} else if (message instanceof DataRetrievalRequestMessage) {
+//			Authentication authentication = message.getAuthentication();
+//			return new DatastoreAccessorForRunningDataRetrievalJob((DataRetrievalRequestMessage) message, authentication);
 		} else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
             return new DatastoreAccessorForRunningJobs(null);
         }

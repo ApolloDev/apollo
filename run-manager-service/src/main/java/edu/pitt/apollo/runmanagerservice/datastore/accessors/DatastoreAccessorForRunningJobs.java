@@ -11,13 +11,18 @@ import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.utilities.FileStoreServiceUtility;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,24 +43,13 @@ public class DatastoreAccessorForRunningJobs extends
         this.softwareIdentification = softwareIdentification;
     }
 
-    @Override
-    protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
-            BigInteger runId) throws ApolloDatabaseException {
-        Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap = null;
-//		Map<String, ByteArrayOutputStream> currentRunSimulationMessageAsJsonMap = dbUtils
-//				.getDataContentForSoftware(
-//						runId,
-//						ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-//						dbUtils.getSoftwareIdentificationKey(TranslatorServiceRecordContainer
-//								.getTranslatorSoftwareIdentification()));
-        for (String label : currentRunSimulationMessageAsJsonMap.keySet()) {
-            if (label.equals("run_message.json")) {
-                return currentRunSimulationMessageAsJsonMap.get(label)
-                        .toString();
-            }
-        }
-        return null;
-    }
+//    @Override
+//    protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
+//            BigInteger runId) throws ApolloDatabaseException {
+//
+//		return getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, "run_message.json");
+//		
+//    }
 
     //not used for the time being...
 //	@Override
@@ -121,6 +115,17 @@ public class DatastoreAccessorForRunningJobs extends
                         softwareIdentification,
                         ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
                         destSoftwareId, authentication);
+				
+				// upload run file
+				String content = jsonUtils.getJSONString(runMessage);
+				FileIdentification fileIdentification = new FileIdentification();
+				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
+				fileIdentification.setType(ContentDataTypeEnum.CONFIGURATION_FILE);
+				fileIdentification.setLabel("run_message.json");
+				
+				FileStoreServiceUtility.uploadTextFileContent(content, runIdSimulationGroupId[0], fileIdentification, 
+						authentication, LOCAL_FILE_STORAGE_DIR, LOCAL_FILE_BASE_URL, getFilestoreServiceConnector());
+						
             } else {
                 insertRunResult.setRunCached(true);
                 insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
@@ -128,7 +133,7 @@ public class DatastoreAccessorForRunningJobs extends
             }
             insertRunResult.setRunId(runIdSimulationGroupId[0]);
             return insertRunResult;
-        } catch (ApolloDatabaseException | Md5UtilsException e) {
+        } catch (ApolloDatabaseException | Md5UtilsException | FilestoreException e) {
             throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
         }
     }
