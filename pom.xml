@@ -62,6 +62,9 @@
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
 
+        <module>filestore-service-rest-connector</module>
+        <module>filestore-service-rest-frontend</module>
+
         <module>translator-service-skeleton</module>
 
         <module>library-service</module>

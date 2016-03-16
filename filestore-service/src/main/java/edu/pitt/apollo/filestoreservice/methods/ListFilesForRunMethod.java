@@ -2,6 +2,7 @@ package edu.pitt.apollo.filestoreservice.methods;
 
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -14,8 +15,8 @@ import java.util.List;
  */
 public class ListFilesForRunMethod extends FileStoreCoreMethod {
 
-    public ListFilesForRunMethod(String rootDirectory, String webRoot, BigInteger runId, String salt) {
-        super(rootDirectory, webRoot, runId, salt);
+    public ListFilesForRunMethod(String rootDirectory, String webRoot, BigInteger runId, String salt, Authentication authentication) {
+        super(rootDirectory, webRoot, runId, salt, authentication);
     }
 
     public List<DirectoryContentFileEntry> listFilesForRun() throws IOException {

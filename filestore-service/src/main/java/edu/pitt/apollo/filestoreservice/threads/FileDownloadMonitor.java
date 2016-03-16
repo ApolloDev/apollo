@@ -29,7 +29,7 @@ public class FileDownloadMonitor extends Thread {
                     double bytes = file.length();
                     double kilobytes = (bytes / 1024);
                     double megabytes = (kilobytes / 1024);
-                    logger.debug("Downloaded " + df.format(megabytes) + " megabytes so far.");
+                    logger.debug("Downloaded " + df.format(megabytes) + " megabytes of file " + file.getAbsolutePath() + " so far.");
 
                 } else {
                     logger.debug("File " + file.getAbsolutePath() + " does not exist!");

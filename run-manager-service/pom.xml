@@ -74,9 +74,22 @@
         </dependency>
         
         <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>filestore-service-rest-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
             <version>2.0.5</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
         </dependency>
 
     </dependencies>

@@ -4,7 +4,10 @@ import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.methods.FileStoreCoreMethod;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,14 +21,20 @@ import java.net.URL;
 public class UploadFileThread extends FileStoreCoreMethod implements Runnable {
     URL urlToFile;
     File temporaryFileDownloadLocation;
-    File finalFileDownloadLocation;
+    File finalFileDownloadFileLocation;
     DirectoryContentFileEntry directoryContentFileEntry;
+    Authentication authentication;
 
 
-    public UploadFileThread(String rootDirectory, String webRoot, BigInteger runId, String salt, URL urlToFile, FileIdentification fileIdentification) throws Exception {
-        super(rootDirectory, webRoot, runId, salt);
+    Logger logger = LoggerFactory.getLogger(UploadFileThread.class);
+
+    public UploadFileThread(String rootDirectory, String webRoot, BigInteger runId, String salt, URL urlToFile, FileIdentification fileIdentification, Authentication authentication) throws Exception {
+        super(rootDirectory, webRoot, runId, salt, authentication);
         this.urlToFile = urlToFile;
+        this.authentication = authentication;
         directoryContentFileEntry = addFileToDirectoryContentFile(fileIdentification);
+        temporaryFileDownloadLocation = getLocalFileTemporaryName(directoryContentFileEntry);
+        finalFileDownloadFileLocation = getLocalFile(directoryContentFileEntry);
     }
 
     public URL getPublicUrlOfFile() throws MalformedURLException {
@@ -83,28 +92,17 @@ public class UploadFileThread extends FileStoreCoreMethod implements Runnable {
 
     }
 
-    private URL downloadFile(DirectoryContentFileEntry directoryContentFileEntry, URL urlToFile) throws IOException {
-
-        File finalDownloadFileLocation = getLocalFile(directoryContentFileEntry);
-        File fileDownloadLocationDirectory = new File(temporaryFileDownloadLocation.getParent());
-        fileDownloadLocationDirectory.mkdirs();
-        FileDownloadThread fileDownloadThread = new FileDownloadThread(urlToFile, temporaryFileDownloadLocation, finalDownloadFileLocation);
-        fileDownloadThread.start();
-        FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
-        fileDownloadMonitor.start();
-        return getWebserverUrl(directoryContentFileEntry);
-    }
-
 
     public void run() {
         try {
             FileUtils.touch(temporaryFileDownloadLocation);
+            FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
+            fileDownloadMonitor.start();
             FileUtils.copyURLToFile(urlToFile, temporaryFileDownloadLocation);
-            FileUtils.copyFile(temporaryFileDownloadLocation, finalFileDownloadLocation);
+            FileUtils.copyFile(temporaryFileDownloadLocation, finalFileDownloadFileLocation);
             FileUtils.forceDelete(temporaryFileDownloadLocation);
         } catch (IOException e) {
             e.printStackTrace();
-            throw e;
         }
     }
 }

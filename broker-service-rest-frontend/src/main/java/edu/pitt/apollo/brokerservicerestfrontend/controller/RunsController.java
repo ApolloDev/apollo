@@ -183,34 +183,4 @@ public class RunsController {
 		}
 		
 	}
-
-    @GET
-    @ApiOperation(value = "List files.", notes = "Returns the list of files associated with the given run ID.", response = String.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "")
-    })
-    @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.GET, headers = "Accept=application/xml")
-    public @ResponseBody
-    String getListOfFilesForRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
-
-        return new GetListOfFilesForRunMethod(username, password, SerializationFormat.XML).getListOfFilesForRun(runId);
-    }
-
-    @POST
-    @ApiOperation(value = "Associate file.", notes = "Associates a file with the given run ID.", response = String.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "")
-    })
-    @RequestMapping(value = "/run/{runId}/files", method = RequestMethod.POST, headers = "Accept=application/xml")
-    public @ResponseBody
-    String associateFileWithRunId(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                  @ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-                                  @ApiParam(value = "Password", required = true) @RequestParam("password") String password,
-                                  @ApiParam(value = "Request object", required = true) @RequestBody String requestBody) throws UnsupportedSerializationFormatException, SerializationException {
-
-        return new AssociateContentWithRunIdMethod(username, password, SerializationFormat.XML).associateContentWithRunId(runId, password);
-    }
-	
 }

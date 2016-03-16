@@ -4,8 +4,10 @@ import edu.pitt.apollo.connector.BrokerServiceConnector;
 import edu.pitt.apollo.data_service_types.v4_0.AssociateContentWithRunIdMessage;
 import edu.pitt.apollo.data_service_types.v4_0.ContentIdAndDescription;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
 import edu.pitt.apollo.services_common.v4_0.*;
@@ -30,7 +32,7 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 		restServiceUri = serviceUrl + "/ws/";
 	}
 
-    @Override
+	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		String uri = restServiceUri + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
@@ -53,13 +55,13 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-        String uri = restServiceUri + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
-        try {
-            return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, InsertRunResult.class);
-        } catch (RestServiceException ex) {
-            throw new RunManagementException(ex.getMessage());
-        }
-    }
+		String uri = restServiceUri + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
+		try {
+			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, InsertRunResult.class);
+		} catch (RestServiceException ex) {
+			throw new RunManagementException(ex.getMessage());
+		}
+	}
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
@@ -147,99 +149,66 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 		}
 	}
 
-    @Override
-    public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware, SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DatastoreException {
+	@Override
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DatastoreException {
+		String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
+				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+		} catch (RestServiceException ex) {
+			throw new DatastoreException(ex.getMessage());
+		}
+	}
 
-        String uri = restServiceUri + "run/" + runId;
-        if (contentDataFormat.equals(ContentDataFormatEnum.URL)) {
-            uri += "/files";
-        } else {
-            uri += "/urls";
-        }
-        uri += "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+	@Override
+	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
+		String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRegistrationRecord.class);
+		} catch (RestServiceException ex) {
+			throw new DatastoreException(ex.getMessage());
+		}
+	}
 
-        AssociateContentWithRunIdMessage message = new AssociateContentWithRunIdMessage();
-        message.setAuthentication(authentication);
-        message.setContentDataFormat(contentDataFormat);
-        message.setContentDataType(contentDataType);
-        message.setContentLabel(contentLabel);
-        message.setDestinationSoftware(destinationSoftware);
-        message.setSourceSoftware(sourceSoftware);
-        message.setFileContentOrUrl(content);
+	@Override
+	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+		String uri = "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
+	}
 
-        try {
-            restServiceUtils.makePostRequestAndCheckResponse(uri, message);
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
+	@Override
+	public String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		String uri = restServiceUri + "files/" + runId + "/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
+	}
 
-    @Override
-    public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-        String uri = restServiceUri + "run/" + runId + "/files?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        try {
-            List<ContentIdAndDescription> contentIdsAndDescriptions = restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ContentIdAndDescription.class);
-            Map<BigInteger, FileAndURLDescription> map = new HashMap<>();
-            for (ContentIdAndDescription contentIdAndDescription : contentIdsAndDescriptions) {
-                map.put(contentIdAndDescription.getContentId(), contentIdAndDescription.getContentDescription());
-            }
-            return map;
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
+	@Override
+	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		String uri = restServiceUri + "files/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
+	}
 
-    @Override
-    public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DatastoreException {
-        String uri = restServiceUri + "run/" + runId + "/urls?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        try {
-            List<ContentIdAndDescription> contentIdsAndDescriptions = restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ContentIdAndDescription.class);
-            Map<BigInteger, FileAndURLDescription> map = new HashMap<>();
-            for (ContentIdAndDescription contentIdAndDescription : contentIdsAndDescriptions) {
-                map.put(contentIdAndDescription.getContentId(), contentIdAndDescription.getContentDescription());
-            }
-            return map;
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DatastoreException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getContentForContentId(BigInteger contentId, Authentication authentication) throws DatastoreException {
-        String uri = restServiceUri + "content/" + contentId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        try {
-            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DatastoreException {
-        String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
-                + "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
-        try {
-            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
-        String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
-        try {
-            return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRegistrationRecord.class);
-        } catch (RestServiceException ex) {
-            throw new DatastoreException(ex.getMessage());
-        }
-    }
-
+	@Override
+	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
+		String uri = restServiceUri + "files/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, FileIdentification.class);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
+	}
 
 }
