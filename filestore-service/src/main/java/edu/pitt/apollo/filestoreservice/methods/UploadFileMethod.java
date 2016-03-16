@@ -4,6 +4,7 @@ import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
 import edu.pitt.apollo.filestoreservice.threads.FileDownloadMonitor;
 import edu.pitt.apollo.filestoreservice.threads.FileDownloadThread;
+import edu.pitt.apollo.filestoreservice.threads.UploadFileThread;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
 import org.apache.commons.io.FileUtils;
@@ -28,50 +29,20 @@ public class UploadFileMethod extends FileStoreCoreMethod {
         super(rootDirectory, webRoot, runId, salt);
     }
 
-    private DirectoryContentFileEntry addFileToDirectoryContentFile(FileIdentification fileIdentification) throws Exception {
-        Integer fileExistResult = checkIfFileExists(fileIdentification);
-        if (fileExistResult == DIRECTORY_CONTENT_FILE_DOES_NOT_EXIST) {
-            writeDirectoryContentFile(new DirectoryContentFile());
-        }
 
-        fileExistResult = checkIfFileExists(fileIdentification);
-        if (fileExistResult == FILE_DOES_NOT_EXIST) {
 
-            DirectoryContentFile directoryContentFile = readDirectoryContentFile();
-            int maxFileNumber = 0;
-            if (directoryContentFile.getFiles() != null) {
-                for (DirectoryContentFileEntry entry : directoryContentFile.getFiles()) {
-                    int fileNumber = entry.getUniqueFileNumber();
-                    maxFileNumber = Math.max(maxFileNumber, fileNumber);
-                }
-            }
-            int newUniqueFileNumber = maxFileNumber + 1;
-            DirectoryContentFileEntry newEntry = new DirectoryContentFileEntry(newUniqueFileNumber, fileIdentification);
-            directoryContentFile.getFiles().add(newEntry);
-            writeDirectoryContentFile(directoryContentFile);
-            return newEntry;
-        } else {
-            throw new Exception("File already exists!");
-        }
 
-    }
-
-    private URL downloadFile(DirectoryContentFileEntry directoryContentFileEntry, URL urlToFile) throws IOException {
-        File temporaryFileDownloadLocation = getLocalFileTemporaryName(directoryContentFileEntry);
-        File finalDownloadFileLocation = getLocalFile(directoryContentFileEntry);
-        File fileDownloadLocationDirectory = new File(temporaryFileDownloadLocation.getParent());
-        fileDownloadLocationDirectory.mkdirs();
-        FileDownloadThread fileDownloadThread = new FileDownloadThread(urlToFile, temporaryFileDownloadLocation, finalDownloadFileLocation);
-        fileDownloadThread.start();
-        FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
-        fileDownloadMonitor.start();
-        return getWebserverUrl(directoryContentFileEntry);
-    }
 
     public URL uploadFile(URL urlToFile, FileIdentification fileIdentification) throws Exception {
-        DirectoryContentFileEntry directoryContentFileEntry = addFileToDirectoryContentFile(fileIdentification);
+
+
+
+        UploadFileThread uploadFileThread = new UploadFileThread(rootDirectory, webRoot, runId, salt, urlToFile, fileIdentification);
+        uploadFileThread.
+        URL url = downloadFile(directoryContentFileEntry, urlToFile);
         //TODO: have to launch a new thread
-        return downloadFile(directoryContentFileEntry, urlToFile);
+        System.out.println(url);
+        return url;
     }
 
 }

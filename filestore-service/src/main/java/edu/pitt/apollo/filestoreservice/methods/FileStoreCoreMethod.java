@@ -47,11 +47,12 @@ public abstract class FileStoreCoreMethod {
         DirectoryContentFile directoryContentFile = readDirectoryContentFile();
         if (directoryContentFile != null) {
             if (directoryContentFile.getFiles() != null) {
-                for (DirectoryContentFileEntry entry : directoryContentFile.getFiles()) {
+                for (int i = 0; i < directoryContentFile.getFiles().size(); i++) {
+                    DirectoryContentFileEntry entry = directoryContentFile.getFiles().get(i);
                     if (entry.getFileIdentification().getFormat() == fileIdentification.getFormat() &&
                             entry.getFileIdentification().getType() == fileIdentification.getType() &&
                             entry.getFileIdentification().getLabel().equals(fileIdentification.getLabel())) {
-                        return entry.getUniqueFileNumber();
+                        return i;
                     }
                 }
             }

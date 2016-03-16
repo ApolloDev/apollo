@@ -11,24 +11,5 @@ import java.net.URL;
  */
 public class FileDownloadThread extends Thread {
 
-    URL urlToFile;
-    File temporaryFileDownloadLocation;
-    File finalFileDownloadLocation;
 
-    public FileDownloadThread(URL urlToFile, File temporaryFileDownloadLocation, File finalFileDownloadLocation) {
-        this.urlToFile = urlToFile;
-        this.temporaryFileDownloadLocation = temporaryFileDownloadLocation;
-        this.finalFileDownloadLocation = finalFileDownloadLocation;
-    }
-
-    public void run() {
-        try {
-            FileUtils.touch(temporaryFileDownloadLocation);
-            FileUtils.copyURLToFile(urlToFile, temporaryFileDownloadLocation);
-            FileUtils.copyFile(temporaryFileDownloadLocation, finalFileDownloadLocation);
-            FileUtils.forceDelete(temporaryFileDownloadLocation);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
