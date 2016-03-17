@@ -67,8 +67,6 @@
 
         <module>translator-service-skeleton</module>
 
-        <module>library-service</module>
-        <module>library-service-rest-frontend</module>
 
         <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
@@ -93,8 +91,6 @@
 
         <module>config-examples</module>
         <module>run-manager-service-client</module>
-
-        <module>library-service-rest-connector</module>
 
         <module>filestore-service</module>
         <!-- <module>filestore-service-rest-frontend</module> -->
