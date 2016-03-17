@@ -2,10 +2,7 @@ package edu.pitt.apollo.filestoreservice.methods;
 
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +13,8 @@ import java.math.BigInteger;
  */
 public class GetStatusOfFileUploadMethod extends FileStoreCoreMethod {
 
-	public GetStatusOfFileUploadMethod(String rootDirectory, String webRoot, BigInteger runId, String salt) {
-		super(rootDirectory, webRoot, runId, salt);
+	public GetStatusOfFileUploadMethod(String rootDirectory, String webRoot, BigInteger runId, String salt, Authentication authentication) {
+		super(rootDirectory, webRoot, runId, salt, authentication);
 	}
 
 	public MethodCallStatus getStatus(String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType) throws IOException {

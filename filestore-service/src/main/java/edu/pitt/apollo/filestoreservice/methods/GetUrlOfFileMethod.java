@@ -2,6 +2,7 @@ package edu.pitt.apollo.filestoreservice.methods;
 
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 
@@ -14,8 +15,8 @@ import java.net.URL;
  */
 public class GetUrlOfFileMethod extends FileStoreCoreMethod {
 
-    public GetUrlOfFileMethod(String rootDirectory, String webRoot, BigInteger runId, String salt) {
-        super(rootDirectory, webRoot, runId, salt);
+    public GetUrlOfFileMethod(String rootDirectory, String webRoot, BigInteger runId, String salt, Authentication authentication) {
+        super(rootDirectory, webRoot, runId, salt, authentication);
 
     }
 

@@ -5,6 +5,7 @@ import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -24,13 +25,15 @@ public abstract class FileStoreCoreMethod {
     String webRoot;
     String salt = "";
     BigInteger runId;
+    Authentication authentication;
     private Gson gson = new Gson();
 
-    public FileStoreCoreMethod(String rootDirectory, String webRoot, BigInteger runId, String salt) {
+    public FileStoreCoreMethod(String rootDirectory, String webRoot, BigInteger runId, String salt, Authentication authentication) {
         this.salt = salt;
         this.runId = runId;
         this.rootDirectory = rootDirectory;
         this.webRoot = webRoot;
+        this.authentication = authentication;
     }
 
     private String getRunHash() {
@@ -47,11 +50,12 @@ public abstract class FileStoreCoreMethod {
         DirectoryContentFile directoryContentFile = readDirectoryContentFile();
         if (directoryContentFile != null) {
             if (directoryContentFile.getFiles() != null) {
-                for (DirectoryContentFileEntry entry : directoryContentFile.getFiles()) {
+                for (int i = 0; i < directoryContentFile.getFiles().size(); i++) {
+                    DirectoryContentFileEntry entry = directoryContentFile.getFiles().get(i);
                     if (entry.getFileIdentification().getFormat() == fileIdentification.getFormat() &&
                             entry.getFileIdentification().getType() == fileIdentification.getType() &&
                             entry.getFileIdentification().getLabel().equals(fileIdentification.getLabel())) {
-                        return entry.getUniqueFileNumber();
+                        return i;
                     }
                 }
             }

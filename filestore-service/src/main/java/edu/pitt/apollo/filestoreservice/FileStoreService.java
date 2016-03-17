@@ -35,6 +35,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 	public static String DIRECTORY_CONTENT_FILENAME = "directory_content.json";
 	private static Properties properties = new Properties();
 	private static String FILE_STORE_ROOT_DIRECTORY = null;
+	private static final String DEFAULT_FILESTORE_PROPERTIES_FILENAME = "filestore.properties";
 	String rootDirectory, webRoot, salt;
 
 	static {
@@ -46,7 +47,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 			}
 			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + apolloDir);
 		} else {
-			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
+			logger.warn(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " environment variable not found!");
 		}
 
 		String propertiesFileName = apolloDir + FILE_STORE_PROPERTIES_FILE;
@@ -64,8 +65,8 @@ public class FileStoreService implements FilestoreServiceInterface {
 			}
 		} else {
 			try {
-				properties.load(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("filestore.properties")));
-				logger.info("Successfully loaded default Filestore properties file \"" + propertiesFileName + "\".");
+				properties.load(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_FILESTORE_PROPERTIES_FILENAME)));
+				logger.info("Successfully loaded default Filestore properties file \"" + DEFAULT_FILESTORE_PROPERTIES_FILENAME + "\".");
 			} catch (IOException ex) {
 				logger.error("Unable to load default properties file: " + propertiesFileName + ". Error was: (" + ex.getClass() + ") " + ex.getMessage());
 			}
@@ -81,7 +82,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 
 	@Override
 	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		UploadFileMethod uploadFileMethod = new UploadFileMethod(rootDirectory, webRoot, runId, salt);
+		UploadFileMethod uploadFileMethod = new UploadFileMethod(rootDirectory, webRoot, runId, salt, authentication);
 		try {
 			URL url = new URL(urlToFile);
 			uploadFileMethod.uploadFile(url, fileIdentification);
@@ -93,7 +94,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 	@Override
 	public String getUrlOfFile(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		GetUrlOfFileMethod getUrlOfFileMethod = new GetUrlOfFileMethod(rootDirectory, webRoot, runId, salt);
+		GetUrlOfFileMethod getUrlOfFileMethod = new GetUrlOfFileMethod(rootDirectory, webRoot, runId, salt, authentication);
 		try {
 			return getUrlOfFileMethod.getUrlOfFile(filename, fileFormat, fileType).toExternalForm();
 		} catch (IOException ex) {
@@ -104,7 +105,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 	@Override
 	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		GetStatusOfFileUploadMethod getStatusOfFileUploadMethod = new GetStatusOfFileUploadMethod(rootDirectory, webRoot, runId, salt);
+		GetStatusOfFileUploadMethod getStatusOfFileUploadMethod = new GetStatusOfFileUploadMethod(rootDirectory, webRoot, runId, salt, authentication);
 		try {
 			return getStatusOfFileUploadMethod.getStatus(filename, fileFormat, fileType);
 		} catch (IOException ex) {
@@ -114,7 +115,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 
 	@Override
 	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
-		ListFilesForRunMethod listFilesForRunMethod = new ListFilesForRunMethod(rootDirectory, webRoot, runId, salt);
+		ListFilesForRunMethod listFilesForRunMethod = new ListFilesForRunMethod(rootDirectory, webRoot, runId, salt, authentication);
 		List<FileIdentification> fileIdentificationList = new ArrayList<FileIdentification>();
 		try {
 			List<DirectoryContentFileEntry> filesForRun = listFilesForRunMethod.listFilesForRun();
@@ -128,7 +129,7 @@ public class FileStoreService implements FilestoreServiceInterface {
 	}
 
 	public void deleteFilesForRun(BigInteger runId) {
-		DeleteFilesForRun deleteFilesForRun = new DeleteFilesForRun(rootDirectory, webRoot, runId, salt);
+		DeleteFilesForRun deleteFilesForRun = new DeleteFilesForRun(rootDirectory, webRoot, runId, salt, null);
 		deleteFilesForRun.delete();
 
 	}
