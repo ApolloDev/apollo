@@ -28,7 +28,7 @@ import javax.ws.rs.POST;
  * Created by mas400 on 3/9/16.
  */
 @Controller
-@RequestMapping("/files")
+@RequestMapping("/ws/files")
 public class FileStoreController {
 
 	protected final ResponseMessageBuilder responseBuilder = new ResponseMessageBuilder();

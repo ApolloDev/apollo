@@ -21,7 +21,7 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 
 	public RestFilestoreServiceConnector(String url) {
 		super(url);
-		restServiceUri = serviceUrl + "/files/";
+		restServiceUri = serviceUrl + "/ws/files/";
 	}
 
 	@Override
