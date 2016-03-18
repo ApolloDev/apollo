@@ -19,18 +19,36 @@ import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissio
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
+import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
+import edu.pitt.apollo.interfaces.LibraryServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
+import edu.pitt.apollo.library_service_types.v4_0.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0.AddReviewerCommentResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetCommentsResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetLibraryItemURNsResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v4_0.GetRevisionsResult;
+import edu.pitt.apollo.library_service_types.v4_0.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v4_0.ModifyGroupOwnershipResult;
+import edu.pitt.apollo.library_service_types.v4_0.QueryResult;
+import edu.pitt.apollo.library_service_types.v4_0.SetLibraryItemAsNotReleasedResult;
+import edu.pitt.apollo.library_service_types.v4_0.SetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v4_0.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
+import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
@@ -40,6 +58,7 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
 import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
@@ -51,6 +70,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,20 +78,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author nem41
  */
-
-
-public class BrokerServiceImpl implements ContentManagementInterface, FilestoreServiceInterface, RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface {
+public class BrokerServiceImpl implements ContentManagementInterface, FilestoreServiceInterface,
+		RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface, LibraryServiceInterface {
 
 	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
 	private static final String RUN_MANAGER_SERVICE_URL_PROPERTY = "run_manager_service_url";
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
+	private static final String LIBRARY_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String AUTHENTICATION_USER = "authentication_user";
 	private static final String AUTHENTICATION_PASSWORD = "authentication_password";
 	private static String runManagerServiceUrl;
 	private static String filestoreServiceUrl;
+	private static String libraryServiceUrl;
 	private static Authentication dataServiceAuthentication;
 	private static RunManagerServiceConnector runManagerServiceConnector;
 	private static FilestoreServiceConnector filestoreServiceConnector;
+	private static LibraryServiceConnector libraryServiceConnector;
 	protected static final ApolloServiceQueue apolloServiceQueue;
 	Logger logger = LoggerFactory.getLogger(BrokerServiceImpl.class);
 
@@ -99,7 +121,19 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
 			return filestoreServiceConnector;
 		} catch (IOException ex) {
-			throw new FilestoreException("IOException loading run manager service connector: " + ex.getMessage());
+			throw new FilestoreException("IOException loading file store service connector: " + ex.getMessage());
+		}
+	}
+
+	private static LibraryServiceConnector getLibraryServiceConnector() throws LibraryServiceException {
+		try {
+			if (libraryServiceConnector == null) {
+				libraryServiceConnector = new RestLibraryServiceConnector(getLibraryServiceUrl());
+			}
+
+			return libraryServiceConnector;
+		} catch (IOException ex) {
+			throw new LibraryServiceException("IOException loading library service connector: " + ex.getMessage());
 		}
 	}
 
@@ -117,6 +151,22 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 			}
 		}
 		return filestoreServiceUrl;
+	}
+
+	protected static String getLibraryServiceUrl() throws IOException {
+		if (libraryServiceUrl == null) {
+			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
+
+			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
+			Properties brokerServiceProperties = new Properties();
+
+			try (InputStream input = new FileInputStream(configurationFile)) {
+				// load a properties file
+				brokerServiceProperties.load(input);
+				libraryServiceUrl = brokerServiceProperties.getProperty(LIBRARY_SERVICE_URL_PROPERTY);
+			}
+		}
+		return libraryServiceUrl;
 	}
 
 	protected static Authentication getDataServiceAuthentication() throws IOException {
@@ -226,7 +276,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	}
 
 	@Override
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
+	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		return getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
 	}
 
@@ -291,5 +341,75 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	@Override
 	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
 		return getFilestoreServiceConnector().listFilesForRun(runId, authentication);
+	}
+
+	@Override
+	public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().query(query, authentication);
+	}
+
+	@Override
+	public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().getLibraryItem(urn, revision, authentication);
+	}
+
+	@Override
+	public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().reviseLibraryItem(urn, libraryItemContainer, comment, authentication);
+	}
+
+	@Override
+	public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().addLibraryItem(libraryItemContainer, comment, authentication);
+	}
+
+	@Override
+	public GetCommentsResult getCommentsForLibraryItem(int urn, int revision, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().getCommentsForLibraryItem(urn, revision, authentication);
+	}
+
+	@Override
+	public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().getAllRevisionsOfLibraryItem(urn, authentication);
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().removeGroupAccessToLibraryItem(urn, group, authentication);
+	}
+
+	@Override
+	public GetLibraryItemURNsResult getLibraryItemURNs(String itemType, Authentication authentication) throws LibraryServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().approveRevisionOfLibraryItem(urn, revision, comment, authentication);
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().grantGroupAccessToLibraryItem(urn, group, authentication);
+	}
+
+	@Override
+	public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().addReviewerCommentToLibraryItem(urn, revision, comment, authentication);
+	}
+
+	@Override
+	public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().hideLibraryItem(urn, authentication);
+	}
+
+	@Override
+	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, authentication);
+	}
+
+	@Override
+	public GetReleaseVersionResult getApprovedRevisionOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
+		return getLibraryServiceConnector().getApprovedRevisionOfLibraryItem(urn, authentication);
 	}
 }

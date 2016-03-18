@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface SoftwareRegistryInterface {
 
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException;
+	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException;
 
 }

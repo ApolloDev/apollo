@@ -50,8 +50,8 @@ public class BatchStageThread extends ApolloServiceThread {
 
         if (brokerServiceSoftwareIdentification == null) {
             DatastoreAccessor accessor = new DatastoreAccessor();
-            List<ServiceRegistrationRecord> records = accessor.getListOfRegisteredSoftwareRecords(authentication);
-            for (ServiceRegistrationRecord registrationRecord : records) {
+            List<ServiceRecord> records = accessor.getListOfRegisteredSoftwareRecords(authentication);
+            for (ServiceRecord registrationRecord : records) {
                 if (registrationRecord.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.BROKER)) {
                     brokerServiceSoftwareIdentification = registrationRecord.getSoftwareIdentification();
                 } else if (registrationRecord.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.END_USER_APPLICATION)) {

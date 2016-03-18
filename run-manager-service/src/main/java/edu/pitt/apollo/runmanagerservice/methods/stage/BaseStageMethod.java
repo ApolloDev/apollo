@@ -29,6 +29,7 @@ import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
 import java.math.BigInteger;
@@ -105,8 +106,8 @@ public abstract class BaseStageMethod {
 
 	protected static String getTranslatorServiceUrl(DatastoreAccessor dataServiceDao, Authentication authentication) throws DatastoreException {
 
-		List<ServiceRegistrationRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
-		for (ServiceRegistrationRecord record : software) {
+		List<ServiceRecord> software = dataServiceDao.getListOfRegisteredSoftwareRecords(authentication);
+		for (ServiceRecord record : software) {
 			if (record.getSoftwareIdentification().getSoftwareType().equals(ApolloSoftwareTypeEnum.TRANSLATOR)) {
 				return record.getUrl();
 			}

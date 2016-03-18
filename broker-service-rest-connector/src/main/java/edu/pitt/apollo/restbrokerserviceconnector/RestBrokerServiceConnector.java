@@ -1,8 +1,6 @@
 package edu.pitt.apollo.restbrokerserviceconnector;
 
 import edu.pitt.apollo.connector.BrokerServiceConnector;
-import edu.pitt.apollo.data_service_types.v4_0.AssociateContentWithRunIdMessage;
-import edu.pitt.apollo.data_service_types.v4_0.ContentIdAndDescription;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
@@ -14,9 +12,7 @@ import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -162,10 +158,10 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	}
 
 	@Override
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
+	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRegistrationRecord.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRecord.class);
 		} catch (RestServiceException ex) {
 			throw new DatastoreException(ex.getMessage());
 		}

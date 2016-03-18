@@ -337,7 +337,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 //
 //	}
 	@Override
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
+	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		try {
 			authenticateUser(authentication);
 			return new ArrayList(dbUtils.getRegisteredSoftware().values());

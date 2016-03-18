@@ -22,6 +22,7 @@ import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.soapjobrunningserviceconnector.RestJobRunningServiceConnector;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
@@ -150,7 +151,7 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 	}
 
 	@Override
-	public List<ServiceRegistrationRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
+	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		try {
 			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
 			return dba.getListOfRegisteredSoftwareRecords(authentication);

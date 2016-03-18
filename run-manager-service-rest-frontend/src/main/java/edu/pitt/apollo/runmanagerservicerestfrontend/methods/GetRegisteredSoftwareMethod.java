@@ -11,6 +11,7 @@ import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ public class GetRegisteredSoftwareMethod extends BaseRunManagerServiceAccessorMe
 	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			List<ServiceRegistrationRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
+			List<ServiceRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
 
 			List<String> serializedServiceRecords = new ArrayList<>();
 
-			for (ServiceRegistrationRecord record : listOfRecords) {
+			for (ServiceRecord record : listOfRecords) {
 				String serializedRecord = serializer.serializeObject(record);
 				serializedServiceRecords.add(serializedRecord);
 			}
