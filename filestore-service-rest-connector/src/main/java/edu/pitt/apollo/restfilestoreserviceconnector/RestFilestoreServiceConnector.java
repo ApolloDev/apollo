@@ -25,26 +25,44 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 	}
 
 	@Override
-	public void uploadFile(BigInteger runId, String urlToFile, 
+	public void uploadFile(BigInteger runId, String urlToFile,
 			FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + runId + "?" + "urlToFile=" + urlToFile + "&"
+                + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			restServiceUtils.makePostRequestAndCheckResponse(uri, fileIdentification);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
 	}
 
 	@Override
-	public String getUrlOfFile(BigInteger runId, String filename, 
+	public String getUrlOfFile(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + runId + "/url?fileName=" + filename + "&fileFormat=" + fileFormat
+				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
 	}
 
 	@Override
-	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename, 
+	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + runId + "/status?fileName=" + filename + "&fileFormat=" + fileFormat
+				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+		} catch (RestServiceException ex) {
+			throw new FilestoreException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
-		String uri = restServiceUri + runId + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, FileIdentification.class);
 		} catch (RestServiceException ex) {

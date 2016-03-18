@@ -78,7 +78,9 @@ public class FileStoreServiceUtility {
 		while (true) {
 			switch (status.getStatus()) {
 				case COMPLETED:
-					break;
+					return;
+                case NOT_FOUND:
+                    throw new FilestoreException("There was an error uploading the file: " + status.getMessage());
 				case FAILED:
 					throw new FilestoreException("There was an error uploading the file: " + status.getMessage());
 				default:

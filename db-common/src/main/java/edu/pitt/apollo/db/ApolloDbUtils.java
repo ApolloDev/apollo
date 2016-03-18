@@ -43,7 +43,7 @@ public class ApolloDbUtils extends BaseDbUtils {
     private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
     private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
     private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_310";
+    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_400";
     static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
     static Map<String, Integer> populationAxisCache = new HashMap<>();
     static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
@@ -68,15 +68,18 @@ public class ApolloDbUtils extends BaseDbUtils {
 
     public boolean isRunBatch(BigInteger runId) throws ApolloDatabaseException {
 
-        String query = "SELECT simulation_group_id from run WHERE id = "
-                + runId;
+        String query = "select count(*) as count from simulation_group_definition sgd, run r"
+                + " where sgd.simulation_group_id = r.simulation_group_id"
+                + " and r.id = " + runId;
 
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                String simulationGroupId = rs.getString("simulation_group_id");
-                if (simulationGroupId == null) {
+                Integer count = rs.getInt("count");
+                if (count == null || count == 0) {
+                    throw new ApolloDatabaseException("No simulation group for run ID " + runId);
+                } else if (count == 1){
                     return false;
                 } else {
                     return true;

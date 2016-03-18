@@ -154,7 +154,8 @@ public class RestServiceUtils {
 	}
 
 	public void makePostRequestAndCheckResponse(String uri, Object object) throws RestServiceException {
-		HttpEntity<Request> entity = new HttpEntity<>(headers);
+        Request request = getRequestObjectWithSerializedBody(object);
+        HttpEntity<Request> entity = new HttpEntity<>(request, headers);
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 		checkResponse(responseEntity.getBody());
 	}

@@ -46,9 +46,9 @@ public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 		try {
 			//        //used for testing
 			FileIdentification fileIdentification = new FileIdentification();
-			fileIdentification.setFormat(ContentDataFormatEnum.ZIP);
-			fileIdentification.setType(ContentDataTypeEnum.SIMULATOR_LOG_FILE);
-			fileIdentification.setLabel("output.allegheny.county.age.race.gender.location");
+			fileIdentification.setFormat(fileFormat);
+			fileIdentification.setType(fileType);
+			fileIdentification.setLabel(filename);
 			MethodCallStatus status = fileStoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), null);
 
 			ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();

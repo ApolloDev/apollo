@@ -20,6 +20,7 @@ import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.slf4j.Logger;
@@ -83,7 +84,7 @@ public class StageMethod extends BaseStageMethod {
 				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
 				fileIdentification.setType(ContentDataTypeEnum.RUN_MESSAGE);
 				fileIdentification.setLabel("run_message.json");
-				String content = new Md5Utils().getMd5(message);
+				String content = new JsonUtils().getJSONString(message);
 				DatastoreAccessor.uploadTextFileContent(content, runId, fileIdentification, authentication);
 			}
 
@@ -120,8 +121,6 @@ public class StageMethod extends BaseStageMethod {
 			throw new RunManagementException("Translator service exception staging run: " + ex.getMessage());
 		} catch (FilestoreException ex) {
 			throw new RunManagementException("Filestore exception staging run: " + ex.getMessage());
-		} catch (Md5UtilsException ex) {
-			throw new RunManagementException("Md5 exception staging run: " + ex.getMessage());
 		}
 	}
 }

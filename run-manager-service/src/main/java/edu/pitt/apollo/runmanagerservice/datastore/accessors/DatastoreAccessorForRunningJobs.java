@@ -33,7 +33,6 @@ public class DatastoreAccessorForRunningJobs extends
         DatastoreAccessor {
 
     static Logger logger = LoggerFactory.getLogger(DatastoreAccessorForRunningJobs.class);
-    protected Object runMessage;
     private SoftwareIdentification softwareIdentification;
     //private Class runMessageClass;
 
@@ -115,17 +114,6 @@ public class DatastoreAccessorForRunningJobs extends
                         softwareIdentification,
                         ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
                         destSoftwareId, authentication);
-				
-				// upload run file
-				String content = jsonUtils.getJSONString(runMessage);
-				FileIdentification fileIdentification = new FileIdentification();
-				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
-				fileIdentification.setType(ContentDataTypeEnum.CONFIGURATION_FILE);
-				fileIdentification.setLabel("run_message.json");
-				
-				FileStoreServiceUtility.uploadTextFileContentSynchronous(content, runIdSimulationGroupId[0], fileIdentification, 
-						authentication, LOCAL_FILE_STORAGE_DIR, LOCAL_FILE_BASE_URL, getFilestoreServiceConnector());
-						
             } else {
                 insertRunResult.setRunCached(true);
                 insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
@@ -133,7 +121,7 @@ public class DatastoreAccessorForRunningJobs extends
             }
             insertRunResult.setRunId(runIdSimulationGroupId[0]);
             return insertRunResult;
-        } catch (ApolloDatabaseException | Md5UtilsException | FilestoreException e) {
+        } catch (ApolloDatabaseException | Md5UtilsException e) {
             throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
         }
     }

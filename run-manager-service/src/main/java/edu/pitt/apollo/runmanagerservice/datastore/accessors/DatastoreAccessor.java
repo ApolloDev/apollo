@@ -60,7 +60,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY = "local_file_storage_dir";
-	private static final String LOCAL_FILE_BASE_URL_PROPERTY = "local_file_base_url_property";
+	private static final String LOCAL_FILE_BASE_URL_PROPERTY = "local_file_base_url";
 	protected static final String LOCAL_FILE_BASE_URL;
 	protected static final String LOCAL_FILE_STORAGE_DIR;
 	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";

@@ -21,8 +21,9 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0.*;
+import edu.pitt.apollo.utilities.Deserializer;
+import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.XMLDeserializer;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
@@ -37,10 +38,19 @@ public class UploadFileMethod extends BaseFileStoreMethod {
 		super(username, password, serializationFormat);
 	}
 
-	public String uploadFile(BigInteger runId, String urlToFile, String messageBody, Authentication authentication) throws SerializationException, DeserializationException {
+	public String uploadFile(BigInteger runId, String urlToFile, String messageBody, Authentication authentication) throws SerializationException, DeserializationException, UnsupportedSerializationFormatException {
 		try {
+            Request requestMessageObject = new XMLDeserializer().getObjectFromMessage(messageBody, Request.class);
+            RequestMeta meta = requestMessageObject.getRequestMeta();
+            ObjectSerializationInformation config = meta.getRequestBodySerializationInformation();
 
-			FileIdentification fileIdentification = new XMLDeserializer().getObjectFromMessage(messageBody, FileIdentification.class);
+            SerializationFormat format = config.getFormat();
+            Deserializer deserializer = DeserializerFactory.getDeserializer(format);
+
+            String className = config.getClassName();
+            String classNamespace = config.getClassNameSpace();
+
+			FileIdentification fileIdentification = (FileIdentification) deserializer.getObjectFromMessage(requestMessageObject.getRequestBody(), className, classNamespace);
 
 			fileStoreService.uploadFile(runId, urlToFile, fileIdentification, authentication);
 

@@ -1,5 +1,8 @@
 package edu.pitt.apollo.filestoreservicerestfrontend.controller;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
 import com.wordnik.swagger.annotations.ApiParam;
 import edu.pitt.apollo.exception.*;
@@ -18,6 +21,9 @@ import java.math.BigInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+
 /**
  * Created by mas400 on 3/9/16.
  */
@@ -29,30 +35,54 @@ public class FileStoreController {
 
 	static Logger logger = LoggerFactory.getLogger(FileStoreController.class);
 
-	@RequestMapping(value = "/{runId}", method = RequestMethod.POST, headers = "Accept=text/html")
-	public String uploadFile(@PathVariable("runId") BigInteger runId, @RequestParam("urlToFile") String urlToFile,
+    @POST
+    @ApiOperation(value = "Upload file.", notes = "Uploads a file for the given run ID.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+	@RequestMapping(value = "/{runId}", method = RequestMethod.POST, headers = "Accept=application/xml")
+	public @ResponseBody
+    String uploadFile(@PathVariable("runId") BigInteger runId, @RequestParam("urlToFile") String urlToFile,
 			@ApiParam(value = "File Identification", required = true) @RequestBody String messageBody) throws FilestoreException, DeserializationException, UnsupportedSerializationFormatException, SerializationException {
 
 		return new UploadFileMethod(null, null, SerializationFormat.XML).uploadFile(runId, urlToFile, messageBody, null);
 	}
 
-	@RequestMapping(value = "/{runId}/url", method = RequestMethod.GET, headers = "Accept=text/html")
-	public String getUrlOfFile(@PathVariable("runId") BigInteger runId,
-			@RequestParam("filename") String filename, @RequestParam(required = false) ContentDataFormatEnum fileFormat,
+    @GET
+    @ApiOperation(value = "Get the URL for a file.", notes = "Returns the URL for a file.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+	@RequestMapping(value = "/{runId}/url", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+    String getUrlOfFile(@PathVariable("runId") BigInteger runId,
+			@RequestParam("fileName") String filename, @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
 			@RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
 
 		return new GetUrlOfFileMethod(null, null, SerializationFormat.XML).getUrlOfFile(runId, filename, fileFormat, fileType, null);
 	}
 
-	@RequestMapping(value = "/{runId}/status", method = RequestMethod.GET, headers = "Accept=text/html")
-	public String getStatusOfFileUpload(@PathVariable("runId") BigInteger runId,
-			@RequestParam(required = false) String filename, @RequestParam(required = false) ContentDataFormatEnum fileFormat,
-			@RequestParam(required = false) ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+    @GET
+    @ApiOperation(value = "Get the status of a file upload.", notes = "Returns the status of a file upload.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+	@RequestMapping(value = "/{runId}/status", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+    String getStatusOfFileUpload(@PathVariable("runId") BigInteger runId,
+			@RequestParam("fileName") String filename, @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
+			@RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
 		return new GetStatusOfFileUploadMethod(null, null, SerializationFormat.XML).getStatusOfFileUpload(runId, filename, fileFormat, fileType, null);
 	}
 
-	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=text/html")
-	public String listFilesForRun(@PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+    @GET
+    @ApiOperation(value = "Get the list of files for a run.", notes = "Returns a list of the files for a run.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+    String listFilesForRun(@PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
 		return new ListFilesForRunMethod(null, null, SerializationFormat.XML).listFilesForRun(runId);
 	}
 
