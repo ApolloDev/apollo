@@ -158,7 +158,7 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/synthetic_population_service_4.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/synthetic_population_service_4.0.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:synthetic_population_service_4.0.wsdl</wsdlLocation>
                                         </wsdlOption>

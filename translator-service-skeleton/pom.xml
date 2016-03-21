@@ -203,7 +203,7 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/translator_service_4.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/translator_service_4.0.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:translator_service_4.0.wsdl</wsdlLocation>
                                         </wsdlOption>
