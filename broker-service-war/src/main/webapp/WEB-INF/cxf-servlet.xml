@@ -14,8 +14,8 @@
 
     <jaxws:endpoint 
         id="apolloservice"
-        implementor="edu.pitt.apollo.ApolloServiceImpl"
-        wsdlLocation="WEB-INF/wsdl/apolloservice210.wsdl"
+        implementor="edu.pitt.apollo.brokersoapservice.ApolloServiceImpl"
+        wsdlLocation="WEB-INF/wsdl/apolloservice40.wsdl"
         address="/apolloservice">
     </jaxws:endpoint>
 </beans>
