@@ -4,6 +4,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.simulatorservicerestskeleton.exception.UnsupportedRunActionException;
@@ -32,5 +34,6 @@ public abstract class SimulatorServiceController {
 			@ApiParam(value = "Action", required = true) @RequestParam("action") RunActionEnum action,
 			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
 			@ApiParam(value = "Password", required = true) @RequestParam("password") String password)
-			throws UnsupportedSerializationFormatException, SerializationException, UnsupportedRunActionException;
+			throws UnsupportedSerializationFormatException, SerializationException, 
+			UnsupportedRunActionException, FilestoreException, RunManagementException;
 }
