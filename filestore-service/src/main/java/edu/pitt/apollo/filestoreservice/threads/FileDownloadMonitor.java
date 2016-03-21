@@ -33,6 +33,7 @@ public class FileDownloadMonitor extends Thread {
 
                 } else {
                     logger.debug("File " + file.getAbsolutePath() + " does not exist!");
+                    return;
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

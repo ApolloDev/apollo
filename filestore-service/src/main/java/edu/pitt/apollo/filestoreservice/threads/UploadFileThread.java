@@ -96,8 +96,8 @@ public class UploadFileThread extends FileStoreCoreMethod implements Runnable {
     public void run() {
         try {
             FileUtils.touch(temporaryFileDownloadLocation);
-            FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
-            fileDownloadMonitor.start();
+//            FileDownloadMonitor fileDownloadMonitor = new FileDownloadMonitor(temporaryFileDownloadLocation);
+//            fileDownloadMonitor.start();
             FileUtils.copyURLToFile(urlToFile, temporaryFileDownloadLocation);
             FileUtils.copyFile(temporaryFileDownloadLocation, finalFileDownloadFileLocation);
             FileUtils.forceDelete(temporaryFileDownloadLocation);

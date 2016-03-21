@@ -219,7 +219,7 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/apollo_service_4.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/apollo_service_4.0.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:apollo_service_4.0.wsdl</wsdlLocation>
                                         </wsdlOption>
