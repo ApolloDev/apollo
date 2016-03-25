@@ -168,8 +168,10 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	}
 
 	@Override
-	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		String uri = "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+	public void uploadFile(BigInteger runId, String urlToFile, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		String uri = "run/" + runId + "?" + "urlToFile=" + urlToFile + "&"
+				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType + "&"
+				+ RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
 		} catch (RestServiceException ex) {

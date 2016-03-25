@@ -16,15 +16,15 @@ import edu.pitt.apollo.simulator_service_types.v4_0.GetScenarioLocationCodesSupp
  */
 public class GetScenarioLocationCodesSupportedBySimulatorMethod extends PopulationAndEnvironmentCensusMethod {
 
-    public static GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
-            SoftwareIdentification simulatorIdentification) {
-        GetScenarioLocationCodesSupportedBySimulatorResult res = getScenarioLocationCodesSupportedBySimulator();
-        MethodCallStatus status = new MethodCallStatus();
-        status.setStatus(MethodCallStatusEnum.COMPLETED);
-        status.setMessage("Returned " + res.getLocationCodes().size()
-                + " items.");
-        res.setMethodCallStatus(status);
-        return res;
-
-    }
+//    public static GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
+//            SoftwareIdentification simulatorIdentification) {
+//        GetScenarioLocationCodesSupportedBySimulatorResult res = getScenarioLocationCodesSupportedBySimulator();
+//        MethodCallStatus status = new MethodCallStatus();
+//        status.setStatus(MethodCallStatusEnum.COMPLETED);
+//        status.setMessage("Returned " + res.getLocationCodes().size()
+//                + " items.");
+//        res.setMethodCallStatus(status);
+//        return res;
+//
+//    }
 }

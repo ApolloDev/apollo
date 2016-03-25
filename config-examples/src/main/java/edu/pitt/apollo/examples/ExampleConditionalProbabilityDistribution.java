@@ -4,10 +4,11 @@ import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.types.v4_0.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.Category;
 import edu.pitt.apollo.types.v4_0.ConditionalProbabilityDistribution;
 import edu.pitt.apollo.types.v4_0.ConditioningVariable;
 import edu.pitt.apollo.types.v4_0.CategoricalVariableEnum;
+import edu.pitt.apollo.types.v4_0.CategoricalVariableNode;
+import edu.pitt.apollo.types.v4_0.CategoryValueNode;
 import edu.pitt.apollo.types.v4_0.DiscreteNonparametricProbabilityDistribution;
 import edu.pitt.apollo.types.v4_0.GenderCategoryDefinition;
 import edu.pitt.apollo.types.v4_0.GenderEnum;
@@ -49,7 +50,7 @@ public class ExampleConditionalProbabilityDistribution {
 		distribution.getProbabilityValuePairs().add(valueAndAssociatedProbability);
 	}
 
-	private Category createAgeGroupConditionedOnGender(Integer ageRangeLowerBound,
+	private CategoryValueNode createAgeGroupConditionedOnGender(Integer ageRangeLowerBound,
 			Integer ageRangeUpperBound, double probabilityThatDurationOfLatentPeriodIsOneDay,
 			double probabilityThatDurationOfLatentPeriodIsTwoDays,
 			double probabilityThatDurationOfLatentPeriodIsThreeDays) {
@@ -58,24 +59,24 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodIsOneDay, probabilityThatDurationOfLatentPeriodIsTwoDays,
 				probabilityThatDurationOfLatentPeriodIsThreeDays);
 
-		ConditioningVariable gender = new ConditioningVariable();
+		CategoricalVariableNode gender = new CategoricalVariableNode();
 		gender.setName(CategoricalVariableEnum.SEX);
-		Category male = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
-		Category female = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
+		CategoryValueNode male = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M, latentPeriodDuration);
+		CategoryValueNode female = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F, latentPeriodDuration);
 		gender.getCategories().add(male);
 		gender.getCategories().add(female);
 
 		AgeRangeCategoryDefinition ageGroupRange = new AgeRangeCategoryDefinition();
 		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
 		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
-
-		Category ageGroup = new Category();
+		
+		CategoryValueNode ageGroup = new CategoryValueNode();
 		ageGroup.setCategoryDefinition(ageGroupRange);
-		ageGroup.setConditioningVariable(gender);
+		ageGroup.setNextCategoricalVariable(gender);
 		return ageGroup;
 	}
 
-	private Category createAgeGroupConditionedOnGender(Integer ageRangeLowerBound,
+	private CategoryValueNode createAgeGroupConditionedOnGender(Integer ageRangeLowerBound,
 			Integer ageRangeUpperBound, double probabilityThatDurationOfLatentPeriodForMalesIsOneDay,
 			double probabilityThatDurationOfLatentPeriodForMalesIsTwoDays,
 			double probabilityThatDurationOfLatentPeriodForMalesIsThreeDays,
@@ -93,11 +94,11 @@ public class ExampleConditionalProbabilityDistribution {
 				probabilityThatDurationOfLatentPeriodForFemalesIsTwoDays,
 				probabilityThatDurationOfLatentPeriodForFemalesIsThreeDays);
 
-		ConditioningVariable gender = new ConditioningVariable();
+		CategoricalVariableNode gender = new CategoricalVariableNode();
 		gender.setName(CategoricalVariableEnum.SEX);
-		Category maleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M,
+		CategoryValueNode maleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.M,
 				latentPeriodDurationForMales);
-		Category femaleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F,
+		CategoryValueNode femaleGenderCategoryDefinition = createGenderCategoryDefinitionAndAssignDistribution(GenderEnum.F,
 				latentPeriodDurationForFemales);
 		gender.getCategories().add(maleGenderCategoryDefinition);
 		gender.getCategories().add(femaleGenderCategoryDefinition);
@@ -106,19 +107,19 @@ public class ExampleConditionalProbabilityDistribution {
 		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
 		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
 
-		Category ageGroup = new Category();
+		CategoryValueNode ageGroup = new CategoryValueNode();
 		ageGroup.setCategoryDefinition(ageGroupRange);
-		ageGroup.setConditioningVariable(gender);
+		ageGroup.setNextCategoricalVariable(gender);
 		return ageGroup;
 	}
 
-	private Category createGenderCategoryDefinitionAndAssignDistribution(GenderEnum gender,
+	private CategoryValueNode createGenderCategoryDefinitionAndAssignDistribution(GenderEnum gender,
 			DiscreteNonparametricProbabilityDistribution discreteNonparametricProbabilityDistribution) {
-		Category GenderCategoryDefinition = new Category();
+		CategoryValueNode GenderCategoryDefinition = new CategoryValueNode();
 		GenderCategoryDefinition GenderCategoryDefinitionDefinition = new GenderCategoryDefinition();
 		GenderCategoryDefinitionDefinition.setSex(gender);
 		GenderCategoryDefinition.setCategoryDefinition(GenderCategoryDefinitionDefinition);
-		GenderCategoryDefinition.setUnconditionalProbabilityDistribution(discreteNonparametricProbabilityDistribution);
+//		GenderCategoryDefinition.setUnconditionalProbabilityDistribution(discreteNonparametricProbabilityDistribution);
 		return GenderCategoryDefinition;
 
 	}
@@ -146,17 +147,17 @@ public class ExampleConditionalProbabilityDistribution {
 		double probabilityThatDurationOfLatentPeriodForAdultFemalesIsTwoDays = 0.3;
 		double probabilityThatDurationOfLatentPeriodForAdultFemalesIsThreeDays = 0.5;
 
-		Category childAgeGroup = createAgeGroupConditionedOnGender(childAgeRangeLowerBound,
+		CategoryValueNode childAgeGroup = createAgeGroupConditionedOnGender(childAgeRangeLowerBound,
 				childAgeRangeUpperBound, probabilityThatDurationOfLatentPeriodForChildrenIsOneDay,
 				probabilityThatDurationOfLatentPeriodForChildrenIsTwoDays,
 				probabilityThatDurationOfLatentPeriodForChildrenIsThreeDays);
 
-		Category youngPersonAgeGroup = createAgeGroupConditionedOnGender(youngPersonAgeRangeLowerBound,
+		CategoryValueNode youngPersonAgeGroup = createAgeGroupConditionedOnGender(youngPersonAgeRangeLowerBound,
 				youngPersonAgeRangeUpperBound, probabilityThatDurationOfLatentPeriodForYoungPersonsIsOneDay,
 				probabilityThatDurationOfLatentPeriodForYoungPersonsIsTwoDays,
 				probabilityThatDurationOfLatentPeriodForYoungPersonsIsThreeDays);
 
-		Category adultAgeRange = createAgeGroupConditionedOnGender(adultAgeRangeLowerBound,
+		CategoryValueNode adultAgeRange = createAgeGroupConditionedOnGender(adultAgeRangeLowerBound,
 				adultAgeRangeUpperBound, probabilityThatDurationOfLatentPeriodForAdultMalesIsOneDay,
 				probabilityThatDurationOfLatentPeriodForAdultMalesIsTwoDays,
 				probabilityThatDurationOfLatentPeriodForAdultMalesIsThreeDays,

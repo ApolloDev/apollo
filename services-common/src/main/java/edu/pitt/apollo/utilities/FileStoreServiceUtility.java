@@ -50,7 +50,8 @@ public class FileStoreServiceUtility {
 			ps.close();
 
 			String url = localBaseUrl + "/" + tempFileName;
-			filestoreServiceConnector.uploadFile(runId, url, fileIdentification, authentication);
+			filestoreServiceConnector.uploadFile(runId, url, fileIdentification.getLabel(), 
+					fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
 			waitForUploadToComplete(filestoreServiceConnector, runId, contentFormat, contentType, fileName, authentication);
 
@@ -62,7 +63,8 @@ public class FileStoreServiceUtility {
 	public static void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification,
 			Authentication authentication, FilestoreServiceConnector filestoreServiceConnector) throws FilestoreException {
 
-		filestoreServiceConnector.uploadFile(runId, urlToFile, fileIdentification, authentication);
+		filestoreServiceConnector.uploadFile(runId, urlToFile, fileIdentification.getLabel(),
+				fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
 		waitForUploadToComplete(filestoreServiceConnector, runId, fileIdentification.getFormat(), 
 				fileIdentification.getType(), urlToFile, authentication);

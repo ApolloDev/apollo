@@ -81,11 +81,12 @@ public class FileStoreService implements FilestoreServiceInterface {
 	}
 
 	@Override
-	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+	public void uploadFile(BigInteger runId, String urlToFile, String filename,
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		UploadFileMethod uploadFileMethod = new UploadFileMethod(rootDirectory, webRoot, runId, salt, authentication);
 		try {
 			URL url = new URL(urlToFile);
-			uploadFileMethod.uploadFile(url, fileIdentification);
+			uploadFileMethod.uploadFile(url, filename, fileFormat, fileType);
 		} catch (MalformedURLException ex) {
 			throw new FilestoreException("MalformedUrlException: " + ex.getMessage());
 		}

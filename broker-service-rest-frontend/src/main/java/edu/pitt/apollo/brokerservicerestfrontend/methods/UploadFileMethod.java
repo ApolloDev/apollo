@@ -10,9 +10,9 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.utilities.XMLDeserializer;
 import java.math.BigInteger;
 import org.springframework.http.HttpStatus;
 
@@ -28,12 +28,12 @@ public class UploadFileMethod extends BaseBrokerServiceAccessorMethod {
 		super(username, password, serializationFormat);
 	}
 
-	public String uploadFile(BigInteger runId, String urlOfFile, String messageBody) throws UnsupportedSerializationFormatException, DeserializationException, SerializationException {
+	public String uploadFile(BigInteger runId, String urlOfFile, String filename, ContentDataFormatEnum contentDataFormatEnum,
+			ContentDataTypeEnum contentDataTypeEnum) throws UnsupportedSerializationFormatException, DeserializationException, SerializationException {
 
 		try {
-			FileIdentification fileIdentification = new XMLDeserializer().getObjectFromMessage(messageBody, FileIdentification.class);
-
-			impl.uploadFile(runId, urlOfFile, fileIdentification, authentication);
+			
+			impl.uploadFile(runId, urlOfFile, filename, contentDataFormatEnum, contentDataTypeEnum, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE).setIsBodySerialized(false);
 

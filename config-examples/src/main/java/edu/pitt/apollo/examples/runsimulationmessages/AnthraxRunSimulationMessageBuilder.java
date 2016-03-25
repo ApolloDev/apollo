@@ -232,7 +232,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         DrugTreatmentEfficacyForSimulatorConfiguration dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         ConditionalProbabilityDistribution distribution = new ConditionalProbabilityDistribution();
         ConditioningVariable firstVariable = new ConditioningVariable();
-        Category diseaseOutcomeCategory = new Category();
+        CategoryValueNode diseaseOutcomeCategory = new CategoryValueNode();
         DiseaseOutcomeCategoryDefinition categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.ASYMPTOMATIC);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);
@@ -256,7 +256,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         distribution = new ConditionalProbabilityDistribution();
         firstVariable = new ConditioningVariable();
-        diseaseOutcomeCategory = new Category();
+        diseaseOutcomeCategory = new CategoryValueNode();
         categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.SYMPTOMATIC);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);
@@ -280,7 +280,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         distribution = new ConditionalProbabilityDistribution();
         firstVariable = new ConditioningVariable();
-        diseaseOutcomeCategory = new Category();
+        diseaseOutcomeCategory = new CategoryValueNode();
         categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.FULMINANT);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);

@@ -25,12 +25,13 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 	}
 
 	@Override
-	public void uploadFile(BigInteger runId, String urlToFile,
-			FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
+	public void uploadFile(BigInteger runId, String urlToFile, String filename,
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + runId + "?" + "urlToFile=" + urlToFile + "&"
-                + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType + "&"
+				+ RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, fileIdentification);
+			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}

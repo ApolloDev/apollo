@@ -324,8 +324,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	}
 
 	@Override
-	public void uploadFile(BigInteger runId, String urlToFile, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
-		getFilestoreServiceConnector().uploadFile(runId, urlToFile, fileIdentification, authentication);
+	public void uploadFile(BigInteger runId, String urlToFile, String filename, 
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
+		getFilestoreServiceConnector().uploadFile(runId, urlToFile, filename, fileFormat, fileType, authentication);
 	}
 
 	@Override

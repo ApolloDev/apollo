@@ -29,7 +29,8 @@ public class FileStoreTests extends TestCase {
             fileStoreService.deleteFilesForRun(new BigInteger("0"));
 
             //fileStoreService.uploadFile(new BigInteger("0"), "http://download.thinkbroadband.com/100MB.zip" , fileIdentification);
-            fileStoreService.uploadFile(new BigInteger("0"), "http://distro.ibiblio.org/tinycorelinux/7.x/x86/release/CorePlus-current.iso", fileIdentification, authentication);
+            fileStoreService.uploadFile(new BigInteger("0"), "http://distro.ibiblio.org/tinycorelinux/7.x/x86/release/CorePlus-current.iso", 
+					fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), authentication);
             String publicUrl = fileStoreService.getUrlOfFile(new BigInteger("0"), fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
             System.out.println("File will be downloaded to " + publicUrl);

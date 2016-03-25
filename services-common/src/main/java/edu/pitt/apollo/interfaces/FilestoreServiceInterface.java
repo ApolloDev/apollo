@@ -15,8 +15,8 @@ import java.util.List;
  */
 public interface FilestoreServiceInterface {
 
-    public void uploadFile(BigInteger runId, String urlToFile,
-                        FileIdentification fileIdentification, Authentication authentication) throws FilestoreException;
+    public void uploadFile(BigInteger runId, String urlToFile, String filename,
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException;
 
     public String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, 
 			ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException;
