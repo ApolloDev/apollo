@@ -94,21 +94,21 @@ public abstract class AbstractRunMethod implements RunMethod {
 //            return returnObj;
 //        }
 
-        try {
-            status = dataServiceDao.getRunStatus(runId, authentication);
-
-            if (!status.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
-                status.setStatus(MethodCallStatusEnum.FAILED);
-                status.setMessage("The run has not been translated. The run must be translated before being sent to the simulator.");
-                returnObj.setStatus(status);
-                return returnObj;
-            }
-        } catch (RunManagementException e) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage("Error getting run status for runId " + runId + ", error was:" + e.getMessage());
-            returnObj.setStatus(status);
-            return returnObj;
-        }
+//        try {
+//            status = dataServiceDao.getRunStatus(runId, authentication);
+//
+//            if (!status.getStatus().equals(MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
+//                status.setStatus(MethodCallStatusEnum.FAILED);
+//                status.setMessage("The run has not been translated. The run must be translated before being sent to the simulator.");
+//                returnObj.setStatus(status);
+//                return returnObj;
+//            }
+//        } catch (RunManagementException e) {
+//            status.setStatus(MethodCallStatusEnum.FAILED);
+//            status.setMessage("Error getting run status for runId " + runId + ", error was:" + e.getMessage());
+//            returnObj.setStatus(status);
+//            return returnObj;
+//        }
 
         try {
             RunApolloServiceThread runApolloServiceThread = RunApolloServiceThreadFactory
