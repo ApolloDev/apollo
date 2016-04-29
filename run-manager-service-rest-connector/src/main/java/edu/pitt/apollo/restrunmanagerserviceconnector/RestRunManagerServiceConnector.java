@@ -11,7 +11,6 @@ import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -153,12 +152,24 @@ public class RestRunManagerServiceConnector extends RunManagerServiceConnector {
 
 	@Override
 	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRecord.class);
+		} catch (RestServiceException ex) {
+			throw new DatastoreException(ex.getMessage());
+		}
 	}
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		uri += "&softwareName=" + softwareId.getSoftwareName() + "&softwareVersion=" + softwareId.getSoftwareVersion()
+				+ "&softwareDeveloper=" + softwareId.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareId.getSoftwareType();
+		try {
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+		} catch (RestServiceException ex) {
+			throw new DatastoreException(ex.getMessage());
+		}
 	}
 
 	@Override
