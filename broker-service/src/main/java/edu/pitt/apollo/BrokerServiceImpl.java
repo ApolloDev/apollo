@@ -16,6 +16,7 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartQueryMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
@@ -47,6 +48,7 @@ import edu.pitt.apollo.library_service_types.v4_0.QueryResult;
 import edu.pitt.apollo.library_service_types.v4_0.SetLibraryItemAsNotReleasedResult;
 import edu.pitt.apollo.library_service_types.v4_0.SetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v4_0.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
@@ -311,6 +313,17 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 			return null;
 		}
 	}
+
+    public RunResult runSimulatorOutputQuery(RunSimulatorOutputQueryMessage message) {
+        InsertAndStartQueryMethod method = null;
+        try {
+            method = new InsertAndStartQueryMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
+            return method.insertAndStartRun(message, BrokerServiceImpl.getDataServiceAuthentication());
+        } catch (IOException e) {
+            logger.error(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
 
 	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage runInfectiousDiseaseTransmissionExperimentMessage) {
 		InsertAndStartSimulationMethod method = null;

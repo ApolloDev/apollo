@@ -5,13 +5,26 @@ import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 
 public class DatastoreAccessorFactory {
+
+    public static final SoftwareIdentification queryServiceSoftwareId;
+
+    static {
+        queryServiceSoftwareId = new SoftwareIdentification();
+        queryServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.QUERY_SERVICE);
+        queryServiceSoftwareId.setSoftwareName("Query Service");
+        queryServiceSoftwareId.setSoftwareVersion("4.0");
+        queryServiceSoftwareId.setSoftwareDeveloper("UPitt");
+    }
 
 	public static DatastoreAccessor getDatabaseAccessor() throws UnrecognizedMessageTypeException, ApolloDatabaseException, DatastoreException {
 		return new DatastoreAccessor();
@@ -29,6 +42,8 @@ public class DatastoreAccessorFactory {
 //			return new DatastoreAccessorForRunningDataRetrievalJob((DataRetrievalRequestMessage) message, authentication);
 		} else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
             return new DatastoreAccessorForRunningJobs(null);
+        } else if (message instanceof RunSimulatorOutputQueryMessage) {
+            return new DatastoreAccessorForRunningJobs(queryServiceSoftwareId);
         }
         else {
 			throw new UnrecognizedMessageTypeException(

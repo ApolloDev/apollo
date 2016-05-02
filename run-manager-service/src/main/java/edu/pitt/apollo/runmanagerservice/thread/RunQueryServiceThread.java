@@ -4,6 +4,7 @@ import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
@@ -18,19 +19,9 @@ import java.math.BigInteger;
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Apr 4, 2014 Time: 10:23:41 AM Class: RunVisualizationThread IDE: NetBeans 6.9.1
  */
 public class RunQueryServiceThread extends RunApolloServiceThread {
-
-	private static final SoftwareIdentification queryServiceSoftwareId;
-	
-	static {
-		queryServiceSoftwareId = new SoftwareIdentification();
-		queryServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.QUERY_SERVICE);
-		queryServiceSoftwareId.setSoftwareName("Query Service");
-		queryServiceSoftwareId.setSoftwareVersion("4.0");
-		queryServiceSoftwareId.setSoftwareDeveloper("UPitt");
-	}
 	
 	public RunQueryServiceThread(BigInteger runId, Authentication authentication) {
-		super(runId, queryServiceSoftwareId, authentication);
+		super(runId, DatastoreAccessorFactory.queryServiceSoftwareId, authentication);
 	}
 
 	@Override

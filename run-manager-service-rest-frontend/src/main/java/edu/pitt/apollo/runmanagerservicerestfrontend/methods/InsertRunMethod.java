@@ -13,6 +13,7 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
@@ -55,9 +56,10 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
 					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)
-					&& !(object instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
+					&& !(object instanceof RunInfectiousDiseaseTransmissionExperimentMessage) && !(object instanceof RunSimulatorOutputQueryMessage)) {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage");
+						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage," +
+                        "RunSimulatorOutputQueryMessage");
 			} else {
 
 				try {

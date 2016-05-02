@@ -84,7 +84,9 @@ INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','tran
                        (24,'Swiss TPH','OpenMalaria','R0670','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
                        (25,'Swiss TPH','OpenMalaria','R0674','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
                        (26,'Swiss TPH','OpenMalaria','R0678','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
-                       (27,'Swiss TPH','OpenMalaria','base','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL);
+                       (27,'Swiss TPH','OpenMalaria','base','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
+                       (28,'UPitt', 'Query Service','4.0','queryService','http://localhost:5000/',1, NULL, NULL, NULL ,NULL);
+
 
 
 
@@ -356,6 +358,7 @@ INSERT INTO run_status_description (status) VALUES ('unauthorized');
 INSERT INTO run_status_description (status) VALUES ('unknown_runid');
 INSERT INTO run_status_description (status) VALUES ('run_terminated');
 INSERT INTO run_status_description (status) VALUES ('authentication_failure');
+INSERT INTO run_status_description (status) VALUES ('called_query_service');
 
 CREATE TABLE run_status (
   id INT NOT NULL AUTO_INCREMENT,

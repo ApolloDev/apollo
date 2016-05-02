@@ -42,6 +42,7 @@ public class RunMethodFactory {
                 break;
 			case QUERY_SERVICE:
 				runMethod = new RunMethodForQueryService(runId, authentication);
+                break;
             default:
                 throw new RunManagementException("The requested software to run is of an unsupported type");
         }

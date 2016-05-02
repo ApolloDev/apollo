@@ -82,6 +82,7 @@ import edu.pitt.apollo.data_service_types.v4_0.UpdateStatusOfRunMessage;
 import edu.pitt.apollo.data_service_types.v4_0.UpdateStatusOfRunResult;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.library_service_types.v4_0.*;
+import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
@@ -573,6 +574,7 @@ public class ApolloClassList {
 			GetVisualizerOutputResourcesResult.class,
 			RunVisualizationMessage.class,
 			RunVisualizationResult.class,
+			RunSimulatorOutputQueryMessage.class,
 			
 			org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory.class
 		};

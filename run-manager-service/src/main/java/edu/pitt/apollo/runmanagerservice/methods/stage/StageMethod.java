@@ -1,16 +1,13 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
+import edu.pitt.apollo.exception.*;
+import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservice.thread.StageExperimentThread;
 import edu.pitt.apollo.runmanagerservice.thread.BatchStageThread;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
@@ -22,6 +19,7 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.apollo.utilities.XMLSerializer;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,10 +84,21 @@ public class StageMethod extends BaseStageMethod {
 				fileIdentification.setLabel("run_message.json");
 				String content = new JsonUtils().getJSONString(message);
 				DatastoreAccessor.uploadTextFileContent(content, runId, fileIdentification, authentication);
-			}
+
+                if (message instanceof RunSimulatorOutputQueryMessage) {
+                    // also store XML message
+                    fileIdentification = new FileIdentification();
+                    fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
+                    fileIdentification.setType(ContentDataTypeEnum.RUN_MESSAGE);
+                    fileIdentification.setLabel("run_message.xml");
+                    content = new XMLSerializer().serializeObject(message);
+                    DatastoreAccessor.uploadTextFileContent(content, runId, fileIdentification, authentication);
+                }
+            }
 
 			if (!(message instanceof RunSimulationsMessage) && !(message instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
-				if (!(message instanceof RunVisualizationMessage) && !(message instanceof DataRetrievalRequestMessage)) {
+				if (!(message instanceof RunVisualizationMessage) && !(message instanceof DataRetrievalRequestMessage)
+                        && !(message instanceof RunSimulatorOutputQueryMessage)) {
 
 					// if parentRunId is set, this run is part of a batch and will be translated later
 					if (parentRunId == null) {
@@ -121,6 +130,8 @@ public class StageMethod extends BaseStageMethod {
 			throw new RunManagementException("Translator service exception staging run: " + ex.getMessage());
 		} catch (FilestoreException ex) {
 			throw new RunManagementException("Filestore exception staging run: " + ex.getMessage());
-		}
+		} catch (SerializationException ex) {
+            throw new RunManagementException("Serialization exception staging run: " + ex.getMessage());
+        }
 	}
 }
