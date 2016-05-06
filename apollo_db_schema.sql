@@ -61,7 +61,7 @@ CREATE TABLE software_identification (
 INSERT INTO `software_identification` VALUES (1,'UPitt','Translator','1.0','translator','http://localhost:8080/translator-service-war-4.0-SNAPSHOT/services/translatorservice?wsdl',1, NULL, NULL, NULL, NULL),
 											 (2,'UPitt','SEIR','3.0','simulator','http://localhost:8080/pitt-simulator-service-war-4.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, NULL, NULL, NULL, NULL),
 											 (3,'UPitt,PSC,CMU','FRED','2.0.1_i','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
-											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-war-4.0-SNAPSHOT/services/visualizerservice?wsdl',1, NULL, NULL, NULL ,NULL),
+											 (4,'UPitt','Time Series Visualizer','1.0','visualizer','http://localhost:8080/visualizer-service-rest-frontend-4.0-SNAPSHOT/',1, NULL, NULL, NULL ,NULL),
 											 (5,'PSC','GAIA','1.0','visualizer','http://gaia.pha.psc.edu:13501/gaia?wsdl',1, NULL, NULL, NULL, NULL),
 											 (6,'Chao-FredHutchinsonCancerCenter','FluTE','1.15','simulator','http://gaia.pha.psc.edu:8099/pscsimu?wsdl',1, NULL, NULL, NULL, NULL),
 											 (7,'UPitt','Anthrax','1.0','simulator','http://localhost:8080/pitt-simulator-service-war-4.0-SNAPSHOT/services/pittsimulatorservice?wsdl',1, NULL, NULL, NULL, NULL),
