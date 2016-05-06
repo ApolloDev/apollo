@@ -63,7 +63,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 	private static final String GETTING_CHANGE_LOG = "getting the change log for library items modeified since the specified date and time";
 	private static final String SETTING_ITEM_AS_NOT_RELEASED = "setting the library item as not released";
 	private static final boolean LIBRARY_AUTO_COMMIT = false;
-	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB_310_2";
+	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB_400";
 
 	JsonUtils jsonUtils = new JsonUtils();
 

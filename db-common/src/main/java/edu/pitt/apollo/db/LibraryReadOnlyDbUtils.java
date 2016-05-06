@@ -12,7 +12,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
  */
 public class LibraryReadOnlyDbUtils extends LibraryDbUtils {
 
-	private static final String LIBRARY_READ_ONLY_DB_RESOURCE_NAME = "ApolloLibraryDBReadOnly_310_2";
+	private static final String LIBRARY_READ_ONLY_DB_RESOURCE_NAME = "ApolloLibraryDBReadOnly_400";
 
 	public LibraryReadOnlyDbUtils() throws ApolloDatabaseException {
 		super(LIBRARY_READ_ONLY_DB_RESOURCE_NAME);

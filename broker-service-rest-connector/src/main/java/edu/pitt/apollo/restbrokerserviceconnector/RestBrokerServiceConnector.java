@@ -181,7 +181,8 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		String uri = restServiceUri + "files/" + runId + "/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "files/" + runId + "/url?fileName=" + filename + "&fileFormat=" + fileFormat
+				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
 		} catch (RestServiceException ex) {
@@ -191,7 +192,8 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
-		String uri = restServiceUri + "files/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "files/" + runId + "/status?fileName=" + filename + "&fileFormat=" + fileFormat
+				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
 		} catch (RestServiceException ex) {

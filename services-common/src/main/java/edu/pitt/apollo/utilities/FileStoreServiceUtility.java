@@ -67,7 +67,7 @@ public class FileStoreServiceUtility {
 				fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
 		waitForUploadToComplete(filestoreServiceConnector, runId, fileIdentification.getFormat(), 
-				fileIdentification.getType(), urlToFile, authentication);
+				fileIdentification.getType(), fileIdentification.getLabel(), authentication);
 
 	}
 
