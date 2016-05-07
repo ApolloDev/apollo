@@ -41,6 +41,8 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunResult;
 import edu.pitt.apollo.services_common.v4_0.RunStatusRequest;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import java.util.List;
@@ -414,6 +416,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			return result;
 		}
 
+	}
+
+	@Override
+	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }
