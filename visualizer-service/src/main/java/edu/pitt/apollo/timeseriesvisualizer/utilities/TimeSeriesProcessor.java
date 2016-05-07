@@ -138,18 +138,18 @@ public class TimeSeriesProcessor {
 
 			// create simulator count output specifications
 			message.getOutputFormats().add(FileTypeEnum.CSV);
-			SimulatorCountOutputSpecification prevalenceSpecification = new SimulatorCountOutputSpecification();
+			SimulatorCountOutputSpecification outputSpecification = new SimulatorCountOutputSpecification();
 			// for now hard code to SEIR
-			prevalenceSpecification.getInfectionStates().add(InfectionStateEnum.INFECTIOUS);
-			prevalenceSpecification.getInfectionStates().add(InfectionStateEnum.SUSCEPTIBLE);
-			prevalenceSpecification.getInfectionStates().add(InfectionStateEnum.LATENT);
-			prevalenceSpecification.getInfectionStates().add(InfectionStateEnum.RECOVERED);
-			prevalenceSpecification.getInfectionStates().add(InfectionStateEnum.NEWLY_SICK);
-			prevalenceSpecification.setSimulatorCountOutputSpecificationId(new BigInteger("1"));
-			prevalenceSpecification.setSpeciesToCount("9606");
-			prevalenceSpecification.setTemporalGranularity(TemporalGranularityEnum.EACH_SIMULATION_TIMESTEP);
+			outputSpecification.getInfectionStates().add(InfectionStateEnum.INFECTIOUS);
+			outputSpecification.getInfectionStates().add(InfectionStateEnum.SUSCEPTIBLE);
+			outputSpecification.getInfectionStates().add(InfectionStateEnum.LATENT);
+			outputSpecification.getInfectionStates().add(InfectionStateEnum.RECOVERED);
+			outputSpecification.getInfectionStates().add(InfectionStateEnum.NEWLY_SICK);
+			outputSpecification.setSimulatorCountOutputSpecificationId(new BigInteger("1"));
+			outputSpecification.setSpeciesToCount("9606");
+			outputSpecification.setTemporalGranularity(TemporalGranularityEnum.EACH_SIMULATION_TIMESTEP);
 //			prevalenceSpecification.setSpatialGranularity(SpatialGranularityEnum.ADMIN_4);
-			message.getSimulatorCountOutputSpecifications().add(prevalenceSpecification);
+			message.getSimulatorCountOutputSpecifications().add(outputSpecification);
 
 			try {
 				RunUtils.runQueryService(message, visualizerRunId);

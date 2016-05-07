@@ -100,7 +100,7 @@ public class RunUtils {
 		return LOCAL_FILE_BASE_URL;
 	}
 
-	public static void uploadImage(String url, BigInteger runId, FileIdentification fileIdentification) throws FilestoreException {
+	public static void uploadFile(String url, BigInteger runId, FileIdentification fileIdentification) throws FilestoreException {
 
 		FileStoreServiceUtility.uploadFile(runId, url, fileIdentification,
 				authentication, filestoreServiceConnector);
@@ -176,7 +176,7 @@ public class RunUtils {
 
 			System.out.println("Status: " + status.getStatus() + " - " + status.getMessage());
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(25000);
 			} catch (InterruptedException ex) {
 			}
 		}
@@ -185,10 +185,19 @@ public class RunUtils {
 		// get the output files
 		try {
 			for (SimulatorCountOutputSpecification specification : message.getSimulatorCountOutputSpecifications()) {
-				String url = brokerServiceConnector.getUrlOfFile(runId, specification.getSimulatorCountOutputSpecificationId() + ".csv",
+				String label = specification.getSimulatorCountOutputSpecificationId() + ".csv";
+				String url = brokerServiceConnector.getUrlOfFile(runId, label,
 						ContentDataFormatEnum.TEXT, ContentDataTypeEnum.QUERY_RESULT, authentication);
 				String filePath = LOCAL_FILE_STORAGE_DIR + File.separator + visualizerRunId + File.separator + specification.getSimulatorCountOutputSpecificationId() + ".csv";
 				downloadContentToFile(url, filePath);
+				
+				// upload the content file to the visualizer service run so it is available
+				FileIdentification fileIdentification = new FileIdentification();
+				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
+				fileIdentification.setLabel(label);
+				fileIdentification.setType(ContentDataTypeEnum.QUERY_RESULT);
+				uploadFile(url, visualizerRunId, fileIdentification);
+				
 			}
 		} catch (FilestoreException | IOException ex) {
 			throw new TimeSeriesVisualizerException("Exception getting output files: " + ex.getMessage());
@@ -207,7 +216,7 @@ public class RunUtils {
 				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
 				fileIdentification.setLabel(imageName);
 				fileIdentification.setType(ContentDataTypeEnum.IMAGE);
-				uploadImage(url, visualizerRunId, fileIdentification);
+				uploadFile(url, visualizerRunId, fileIdentification);
 			}
 		} catch (FilestoreException ex) {
 			throw new TimeSeriesVisualizerException("Filestore exception uploading image: " + ex.getMessage());
