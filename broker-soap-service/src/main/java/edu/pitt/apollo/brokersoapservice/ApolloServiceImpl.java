@@ -24,8 +24,14 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.data_service_types.v4_0.*;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlResult;
+import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunResult;
 import edu.pitt.apollo.library_service_types.v4_0.*;
 import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
@@ -35,13 +41,11 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunResult;
 import edu.pitt.apollo.services_common.v4_0.RunStatusRequest;
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
@@ -249,7 +253,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			result.setStatus(createStatus("Error running getLibraryItemContainer: " + ex.getMessage(),
 					MethodCallStatusEnum.FAILED));
 		}
-		
+
 		return result;
 	}
 
@@ -277,12 +281,12 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		throw new UnsupportedOperationException("Not implemented yet.");
 	}
 
-	@Override
-	public TerminteRunResult terminateRun(
-			TerminateRunRequest terminateRunRequest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public TerminteRunResult terminateRun(
+//			TerminateRunRequest terminateRunRequest) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public AddReviewerCommentResult addReviewerCommentToLibraryItem(
@@ -354,6 +358,62 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		status.setMessage(message);
 		status.setStatus(enumVal);
 		return status;
+	}
+
+	@Override
+	@WebResult(name = "getFileUrlResult", targetNamespace = "")
+	@RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrl")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
+	@ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrlResponse")
+	
+	public GetFileUrlResult getFileUrl(GetFileUrlRequest getFileUrlRequest) {
+		GetFileUrlResult result = new GetFileUrlResult();
+		MethodCallStatus status = new MethodCallStatus();
+		try {
+			String url = brokerService.getUrlOfFile(getFileUrlRequest.getRunId(),
+					getFileUrlRequest.getFileIdentification().getLabel(),
+					getFileUrlRequest.getFileIdentification().getFormat(),
+					getFileUrlRequest.getFileIdentification().getType(),
+					getFileUrlRequest.getAuthentication());
+			result.setUrl(url);
+			status.setMessage("Completed");
+			status.setStatus(MethodCallStatusEnum.COMPLETED);
+			result.setStatus(status);
+			return result;
+		} catch (FilestoreException ex) {
+			status.setMessage("The file URL could not be retrieved: " + ex.getMessage());
+			status.setStatus(MethodCallStatusEnum.FAILED);
+			result.setStatus(status);
+			return result;
+		}
+	}
+
+	@Override
+	@WebResult(name = "listFilesForRunResult", targetNamespace = "")
+	@RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRun")
+	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
+	@ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRunResponse")
+	
+	public ListFilesForRunResult listFilesForRun(@WebParam(name = "listFilesForRunRequest", targetNamespace = "")ListFilesForRunRequest listFilesForRunRequest) {
+
+		ListFilesForRunResult result = new ListFilesForRunResult();
+		MethodCallStatus status = new MethodCallStatus();
+
+		try {
+			List<FileIdentification> files = brokerService.listFilesForRun(listFilesForRunRequest.getRunId(),
+					listFilesForRunRequest.getAuthentication());
+			result.getFiles().addAll(files);
+			status.setMessage("Completed");
+			status.setStatus(MethodCallStatusEnum.COMPLETED);
+			result.setStatus(status);
+			return result;
+		} catch (FilestoreException ex) {
+			status.setMessage("The list of files could not be retrieved: " + ex.getMessage());
+			status.setStatus(MethodCallStatusEnum.FAILED);
+			result.setStatus(status);
+			return result;
+		}
+
 	}
 
 }

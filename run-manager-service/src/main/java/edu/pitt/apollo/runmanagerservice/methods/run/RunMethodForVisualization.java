@@ -20,7 +20,7 @@ import java.math.BigInteger;
 public class RunMethodForVisualization extends AbstractRunMethod {
 
 	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DatastoreException, FilestoreException {
-		super(runId, authentication, "run_visualization_message.json");
+		super(runId, authentication, "run_message.json");
 	}
 
 	@Override

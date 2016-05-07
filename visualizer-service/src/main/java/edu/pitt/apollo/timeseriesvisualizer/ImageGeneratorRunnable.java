@@ -32,18 +32,17 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 	private static Logger logger = LoggerFactory.getLogger(ImageGeneratorRunnable.class);
 
 	private ImageGenerator ig = null;
-	private BigInteger visualizerRunId;
 	private List<RunIdentificationAndLabel> runIdentificationsAndLabels;
 	private SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
 
 	public ImageGeneratorRunnable(BigInteger virualizerRunId, ApolloServiceQueue queue) {
 		super(virualizerRunId, queue);
-//		this.visualizerRunId = virualizerRunId;
+//		this.runId = virualizerRunId;
 	}
 
 	private void loadRunMessage() throws FilestoreException {
 
-		String url = RunUtils.getUrlOfFile(visualizerRunId, "run_message.json",
+		String url = RunUtils.getUrlOfFile(runId, "run_message.json",
 				ContentDataFormatEnum.TEXT, ContentDataTypeEnum.RUN_MESSAGE);
 		try {
 			String json = RunUtils.getContent(url);
@@ -60,24 +59,24 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 
 		try {
 			loadRunMessage();
-			RunUtils.updateStatus(visualizerRunId, MethodCallStatusEnum.RUNNING,
+			RunUtils.updateStatus(runId, MethodCallStatusEnum.RUNNING,
 					"Started at " + sdf.format(new Date(System.currentTimeMillis())));
 		} catch (RunManagementException | FilestoreException e) {
 			logger.error("Error setting the status of {} run {} to RUNNING.  Error message was {}.", ImageGenerator.SOFTWARE_NAME,
-					visualizerRunId, e.getMessage());
+					runId, e.getMessage());
 			logger.debug("Stack trace:" + e.getStackTrace().toString());
 			return;
 		}
 
 		try {
-			ig = new ImageGenerator(runIdentificationsAndLabels, visualizerRunId);
+			ig = new ImageGenerator(runIdentificationsAndLabels, runId);
 		} catch (TimeSeriesVisualizerException e) {
 			try {
-				RunUtils.updateStatus(visualizerRunId, MethodCallStatusEnum.FAILED,
+				RunUtils.updateStatus(runId, MethodCallStatusEnum.FAILED,
 						"TimeSeriesVisualizerException creating ImageGenerator: " + e.getMessage());
 			} catch (RunManagementException e1) {
 				logger.error("Error setting the status of {} run {} to FAILED.  The error message was {}.",
-						ImageGenerator.SOFTWARE_NAME, visualizerRunId, e1.getMessage());
+						ImageGenerator.SOFTWARE_NAME, runId, e1.getMessage());
 				logger.debug("Stack trace:" + e1.getStackTrace().toString());
 			}
 			return;
@@ -87,22 +86,22 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 			ig.createTimeSeriesImages();
 		} catch (Exception ex) {
 			try {
-				RunUtils.updateStatus(visualizerRunId, MethodCallStatusEnum.FAILED,
+				RunUtils.updateStatus(runId, MethodCallStatusEnum.FAILED,
 						"Exception running Time-series visualizer: " + ex.getMessage());
 			} catch (RunManagementException e) {
 				logger.error("Error setting the status of {} run {} to FAILED. Error message was {}.",
-						ImageGenerator.SOFTWARE_NAME, visualizerRunId, e.getMessage());
+						ImageGenerator.SOFTWARE_NAME, runId, e.getMessage());
 				logger.debug("Stack trace:" + e.getStackTrace().toString());
 			}
 			return;
 		}
 
 		try {
-			RunUtils.updateStatus(visualizerRunId, MethodCallStatusEnum.COMPLETED,
+			RunUtils.updateStatus(runId, MethodCallStatusEnum.COMPLETED,
 					"Completed at " + sdf.format(new Date(System.currentTimeMillis())));
 		} catch (RunManagementException e) {
 			logger.error("Error setting the status of {} run {} to COMPLETED.  Error message was {}.", ImageGenerator.SOFTWARE_NAME,
-					visualizerRunId, e.getMessage());
+					runId, e.getMessage());
 			logger.debug("Stack trace:" + e.getStackTrace().toString());
 		}
 
