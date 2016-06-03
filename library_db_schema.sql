@@ -48,7 +48,7 @@ CREATE TABLE library_item_containers (
     is_latest_release_version BOOLEAN NOT NULL DEFAULT false,
     was_previously_released BOOLEAN NOT NULL DEFAULT false,
     date_created TIMESTAMP WITH TIME ZONE NOT NULL,
-    json_representation JSON NOT NULL,
+    json_representation JSONB NOT NULL,
     committer_id INT REFERENCES users (id) NOT NULL,
     CONSTRAINT unique_library_item_container UNIQUE (urn_id, version)
 );

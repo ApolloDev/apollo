@@ -1,8 +1,9 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+
 
 /**
  *
@@ -10,7 +11,7 @@ import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
  */
 public interface UserManagementInterface {
 
-	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest, 
+	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest,
 			String roleDescription, Authentication authentication) throws DataServiceException;
 
 	public void deleteUser(String username, Authentication authentication) throws DataServiceException;

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.runmanagerserviceclient;
 
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

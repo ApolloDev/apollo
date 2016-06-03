@@ -15,118 +15,118 @@
  */
 package edu.pitt.apollo.utilities;
 
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddRoleMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddRoleResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddRoleToUserMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddTextDataContentMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddTextDataContentResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddUserMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AddUserResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateContentWithRunIdMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateContentWithRunIdResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateFileWithRunIdMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateFileWithRunIdResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateURLWithRunIdMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.AssociateURLWithRunIdResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.ContentIdAndDescription;
-import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.DbContentDataFormatEnum;
-import edu.pitt.apollo.data_service_types.v3_0_2.DbContentDataType;
-import edu.pitt.apollo.data_service_types.v3_0_2.DeleteUserMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.DeleteUserResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetDataContentForSoftwareMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetDataContentForSoftwareResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetFileContentMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetFileContentResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetListOfRegisteredSoftwareMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetListOfRegisteredSoftwareResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetRunDataDescriptionIdMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetRunDataDescriptionIdResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetRunIdsAssociatedWithSimulationGroupMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetRunIdsAssociatedWithSimulationGroupResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetRunInformationMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationForRunMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationForRunResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationKeyForRunMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationKeyForRunResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetSoftwareIdentificationKeyFromSoftwareIdentificationResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetStatusOfRunMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetStatusOfRunResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetURLContentMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetURLContentResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetURLForSoftwareIdentificationMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.GetURLForSoftwareIdentificationResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListFilesMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListFilesResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListOutputFilesForSoftwareMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListOutputFilesForSoftwareResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListURLsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.ListURLsResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.RemoveRunDataMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.RemoveRunDataResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.RunIdAndFiles;
-import edu.pitt.apollo.data_service_types.v3_0_2.RunInformation;
-import edu.pitt.apollo.data_service_types.v3_0_2.URLForFileAndRunId;
-import edu.pitt.apollo.data_service_types.v3_0_2.UpdateLastServiceToBeCalledForRunMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.UpdateLastServiceToBeCalledForRunResult;
-import edu.pitt.apollo.data_service_types.v3_0_2.UpdateStatusOfRunMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.UpdateStatusOfRunResult;
-import edu.pitt.apollo.library_service_types.v3_0_2.*;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_0_2.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.FileAndURLDescription;
-import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_2.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_0_2.Request;
-import edu.pitt.apollo.services_common.v3_0_2.RequestMeta;
-import edu.pitt.apollo.services_common.v3_0_2.Response;
-import edu.pitt.apollo.services_common.v3_0_2.ResponseMeta;
-import edu.pitt.apollo.services_common.v3_0_2.Role;
-import edu.pitt.apollo.services_common.v3_0_2.RunActionEnum;
-import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
-import edu.pitt.apollo.services_common.v3_0_2.RunResult;
-import edu.pitt.apollo.services_common.v3_0_2.RunStatus;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
-import edu.pitt.apollo.services_common.v3_0_2.ServiceRecord;
-import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v3_0_2.ServiceResult;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareLicenseIdentification;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareOutputStratificationGranularity;
-import edu.pitt.apollo.services_common.v3_0_2.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v3_0_2.TerminteRunResult;
-import edu.pitt.apollo.services_common.v3_0_2.UrlOutputResource;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.GetPopulationAndEnvironmentCensusResult;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.GetConfigurationFileForSimulationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v3_0_2.SyntheticPopulationRunStatusMessage;
-import edu.pitt.apollo.types.v3_0_2.*;
-//import edu.pitt.apollo.types.v3_0_2.IndividualHumanBehavior;
-//import edu.pitt.apollo.types.v3_0_2.IndividualLifeCycle;
-//import edu.pitt.apollo.types.v3_0_2.IndividualMosquitoBehavior;
-//import edu.pitt.apollo.types.v3_0_2.IndividualMosquitoReproduction;
-//import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromContaminatedThing;
-//import edu.pitt.apollo.types.v3_0_2.InfectionAcquisitionFromInfectiousHost;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationResult;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddRoleMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddRoleResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddRoleToUserMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddTextDataContentMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddTextDataContentResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddUserMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AddUserResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateContentWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateContentWithRunIdResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateFileWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateFileWithRunIdResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateURLWithRunIdMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.AssociateURLWithRunIdResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.ContentIdAndDescription;
+import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DbContentDataFormatEnum;
+import edu.pitt.apollo.data_service_types.v3_1_0.DbContentDataType;
+import edu.pitt.apollo.data_service_types.v3_1_0.DeleteUserMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DeleteUserResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetAllOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetDataContentForSoftwareMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetDataContentForSoftwareResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetFileContentMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetFileContentResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetListOfRegisteredSoftwareMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetListOfRegisteredSoftwareResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetOutputFilesURLsResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetRunDataDescriptionIdMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetRunDataDescriptionIdResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetRunIdsAssociatedWithSimulationGroupMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetRunIdsAssociatedWithSimulationGroupResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetRunInformationMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationForRunMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationForRunResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationKeyForRunMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationKeyForRunResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationKeyFromSoftwareIdentificationMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetSoftwareIdentificationKeyFromSoftwareIdentificationResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetStatusOfRunMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetStatusOfRunResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetURLContentMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetURLContentResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetURLForSoftwareIdentificationMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.GetURLForSoftwareIdentificationResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListFilesMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListFilesResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListOutputFilesForSoftwareMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListOutputFilesForSoftwareResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListURLsMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.ListURLsResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.RemoveRunDataMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.RemoveRunDataResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.RunIdAndFiles;
+import edu.pitt.apollo.data_service_types.v3_1_0.RunInformation;
+import edu.pitt.apollo.data_service_types.v3_1_0.URLForFileAndRunId;
+import edu.pitt.apollo.data_service_types.v3_1_0.UpdateLastServiceToBeCalledForRunMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.UpdateLastServiceToBeCalledForRunResult;
+import edu.pitt.apollo.data_service_types.v3_1_0.UpdateStatusOfRunMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.UpdateStatusOfRunResult;
+import edu.pitt.apollo.library_service_types.v3_1_0.*;
+
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v3_1_0.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v3_1_0.FileAndURLDescription;
+import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v3_1_0.Request;
+import edu.pitt.apollo.services_common.v3_1_0.RequestMeta;
+import edu.pitt.apollo.services_common.v3_1_0.Response;
+import edu.pitt.apollo.services_common.v3_1_0.ResponseMeta;
+import edu.pitt.apollo.services_common.v3_1_0.Role;
+import edu.pitt.apollo.services_common.v3_1_0.RunActionEnum;
+import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
+import edu.pitt.apollo.services_common.v3_1_0.RunResult;
+import edu.pitt.apollo.services_common.v3_1_0.RunStatus;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_1_0.ServiceRecord;
+import edu.pitt.apollo.services_common.v3_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v3_1_0.ServiceResult;
+
+import edu.pitt.apollo.services_common.v3_1_0.SoftwareOutputStratificationGranularity;
+import edu.pitt.apollo.services_common.v3_1_0.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v3_1_0.TerminteRunResult;
+import edu.pitt.apollo.services_common.v3_1_0.UrlOutputResource;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.GetPopulationAndEnvironmentCensusResult;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.GetConfigurationFileForSimulationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.SyntheticPopulationGenerationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v3_1_0.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.types.v3_1_0.*;
+//import edu.pitt.apollo.types.v3_1_0.IndividualHumanBehavior;
+//import edu.pitt.apollo.types.v3_1_0.IndividualLifeCycle;
+//import edu.pitt.apollo.types.v3_1_0.IndividualMosquitoBehavior;
+//import edu.pitt.apollo.types.v3_1_0.IndividualMosquitoReproduction;
+//import edu.pitt.apollo.types.v3_1_0.InfectionAcquisitionFromContaminatedThing;
+//import edu.pitt.apollo.types.v3_1_0.InfectionAcquisitionFromInfectiousHost;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationResult;
 
 /**
  *
@@ -138,6 +138,7 @@ public class ApolloClassList {
 
 	static {
 		classList = new Class[]{
+                RunInfectiousDiseaseTransmissionExperimentMessage.class,
                 RunSimulationsMessage.class,
                 AddRoleMessage.class,
                 AddRoleResult.class,
@@ -239,7 +240,6 @@ public class ApolloClassList {
                 TextContainer.class,
                 UpdateLibraryItemContainerMessage.class,
                 UpdateLibraryItemContainerResult.class,
-                ApolloSoftwareTypeEnum.class,
                 Authentication.class,
                 ContentDataFormatEnum.class,
                 ContentDataTypeEnum.class,
@@ -262,8 +262,6 @@ public class ApolloClassList {
                 ServiceRecord.class,
                 ServiceRegistrationRecord.class,
                 ServiceResult.class,
-                SoftwareIdentification.class,
-                SoftwareLicenseIdentification.class,
                 SoftwareOutputStratificationGranularity.class,
                 TerminateRunRequest.class,
                 TerminteRunResult.class,
@@ -287,7 +285,10 @@ public class ApolloClassList {
                 AgeRangeCategoryDefinition.class,
                 AntiviralTreatment.class,
                 AntiviralTreatmentEfficacy.class,
+                ApolloIndexableItem.class,
+                ApolloIndexableItemTypeEnum.class,
                 ApolloPathogenCode.class,
+                ApolloSoftwareTypeEnum.class,
                 ArrayAxis.class,
                 ArrayDimensionsDefinition.class,
                 BaseCaseResult.class,
@@ -297,7 +298,7 @@ public class ApolloClassList {
                 BehaviorEnum.class,
                 BioticEcosystem.class,
                 BioticEcosystemData.class,
-                BorderControlStrategy.class,
+                BorderControlMeasure.class,
                 CartesianCircleLocationDefinition.class,
                 CaseCount.class,
                 CaseCountArray.class,
@@ -305,10 +306,12 @@ public class ApolloClassList {
                 CaseDefinition.class,
                 CaseDefinitionEnum.class,
                 CaseList.class,
-                CaseQuarantineControlStrategy.class,
+                CaseQuarantineControlMeasure.class,
                 CaseRecord.class,
                 CaseRecordCategoricalVariable.class,
                 CaseRecordCategoricalVariables.class,
+                CaseSeries.class,
+                CasesInAPopulation.class,
                 CaseVariableAndValue.class,
                 Category.class,
                 CategoryDefinition.class,
@@ -328,24 +331,24 @@ public class ApolloClassList {
                 ConditioningVariableEnum.class,
                 ContactDefinition.class,
                 ContactDefinitionEnum.class,
-                ContactIsolationControlStrategy.class,
+                ContactIsolationControlMeasure.class,
                 ContactModelForCommunity.class,
                 ContactModelForHousehold.class,
                 ContactModelForPlace.class,
                 ContactModelForSetting.class,
-                ContainerReductionControlStrategy.class,
+                ContainerReductionControlMeasure.class,
                 ContaminatedThingCensus.class,
                 ContaminatedThingCensusData.class,
                 Contamination.class,
                 ContaminationAcquisition.class,
                 ContinuousParametricProbabilityDistribution.class,
                 ContinuousUniformDistribution.class,
-                ControlStrategyTargetPopulationsAndPrioritization.class,
+                ControlMeasureTargetPopulationsAndPrioritization.class,
                 CountType.class,
                 DataTypeEnum.class,
                 DecisionAlternative.class,
-                DecisionAnalysis.class,
-                DecolonizationControlStrategy.class,
+                DecisionModel.class,
+                DecolonizationControlMeasure.class,
                 DevelopmentalStageEnum.class,
                 DisabilityStatusCategoryDefinition.class,
                 DisabilityStatusEnum.class,
@@ -400,26 +403,32 @@ public class ApolloClassList {
                 IndividualInfection.class,
                 IndividualMovement.class,
                 IndividualsAndHouseholds.class,
-                IndividualTreatmentControlStrategy.class,
+                IndividualTreatmentControlMeasure.class,
                 IndividualTreatmentEnum.class,
-                IndoorResidualSprayingVectorControlStrategy.class,
+                IndoorResidualSprayingVectorControlMeasure.class,
                 Infection.class,
                 InfectionAcquisitionFromColonizedHost.class,
                 InfectionAcquisitionFromContaminatedAbioticThing.class,
                 InfectionAcquisitionFromInfectedHost.class,
                 InfectionOutcomeEnum.class,
                 InfectionOutcomeWithDate.class,
+                InfectionSource.class,
                 InfectionStateEnum.class,
                 InfectiousDisease.class,
+                InfectiousDisease2.class,
+                InfectiousDiseaseControlDecisionModel.class,
+                InfectiousDiseaseControlMeasure.class,
                 InfectiousDiseaseControlStrategy.class,
-                InfectiousDiseaseDecisionModel.class,
+                InfectiousDiseaseDecisionAnalysisSpecificationAndResults.class,
                 InfectiousDiseaseScenario.class,
-                InsecticideTreatedNetControlStrategy.class,
+                InfectiousDiseaseTransmissionExperimentSpecification.class,
+                InsecticideTreatedNetControlMeasure.class,
                 IntegerCount.class,
                 Interval.class,
                 IntervalBoundaryDefinitionEnum.class,
                 LabTestAndResult.class,
-                LarvicideControlStrategy.class,
+                LarvicideControlMeasure.class,
+                LatLongPair.class,
                 LibraryItem.class,
                 LifeCycle.class,
                 LifeStageWithDurationAndMortality.class,
@@ -434,6 +443,7 @@ public class ApolloClassList {
                 MeanMedianMinimumMaximum.class,
                 MeanWithConfidenceInterval.class,
                 MeanWithStandardDeviation.class,
+                ModelIdAndProbability.class,
                 MortalityFunction.class,
                 MosquitoBehavior.class,
                 MosquitoReproduction.class,
@@ -444,12 +454,13 @@ public class ApolloClassList {
                 NonparametricProbabilityDistribution.class,
                 NormalDistribution.class,
                 OccupationEnum.class,
+                OneWaySensitivityAnalysisOfContinousVariableSpecification.class,
                 OperatorEnum.class,
                 OvipositionSiteCensus.class,
                 ParameterValue.class,
                 ParametricProbabilityDistribution.class,
                 PlaceCategoryDefinition.class,
-                PlaceClosureControlStrategy.class,
+                PlaceClosureControlMeasure.class,
                 PlaceEnum.class,
                 PlaceVisited.class,
                 PointerToData.class,
@@ -483,9 +494,7 @@ public class ApolloClassList {
                 ReproductionNumber.class,
                 RequesterIdentification.class,
                 RheaHealthcareFacilityEnum.class,
-                RingIndividualTreatmentControlStrategy.class,
-                ApolloIndexableItem.class,
-                ApolloIndexableItemTypeEnum.class,
+                RingIndividualTreatmentControlMeasure.class,
                 ScenarioCartesianOrigin.class,
                 Schedule.class,
                 ScheduleElement.class,
@@ -493,11 +502,14 @@ public class ApolloClassList {
                 SchoolingStatusCategoryDefinition.class,
                 SchoolingStatusEnum.class,
                 SeasonalityFunctionParameters.class,
-                SensitivityAnalysis.class,
+                SeedInfectionsIntoVectorPopulationControlMeasure.class,
+                SensitivityAnalysisSpecification.class,
                 SensitivityAnalysisResult.class,
                 SimulatorTimeRange.class,
                 SimulatorTimeSpecification.class,
                 SimulatorTypeEnum.class,
+                SoftwareIdentification.class,
+                SoftwareLicenseIdentification.class,
                 SourceOfInfectionCategoryDefinition.class,
                 SourceOfInfectionEnum.class,
                 SpatialKernelFunctionParameters.class,
@@ -505,6 +517,7 @@ public class ApolloClassList {
                 TargetPopulationDefinition.class,
                 TargetPopulationEnum.class,
                 TargetPriorityPopulation.class,
+                TemplatedInfectiousDiseaseControlMeasureUrlForSoftware.class,
                 TemporalArrayDimensionsDefinition.class,
                 TemporalTriggerDefinition.class,
                 TimeAxisCategoryLabels.class,
@@ -513,7 +526,7 @@ public class ApolloClassList {
                 TimeSpanCategoryDefinition.class,
                 TransmissionProbability.class,
                 TransmissionTree.class,
-                TravelRestrictionControlStrategy.class,
+                TravelRestrictionControlMeasure.class,
                 Treatment.class,
                 TreatmentContraindication.class,
                 TreatmentEfficacy.class,
@@ -523,6 +536,7 @@ public class ApolloClassList {
                 TreatmentSurveillanceTriggerDefinition.class,
                 TreatmentSystemOutput.class,
                 TriggerDefinition.class,
+                TwoWaySensitivityAnalysisOfContinousVariables.class,
                 UncertainDuration.class,
                 UncertainValue.class,
                 UnconditionalProbabilityDistribution.class,
@@ -541,10 +555,10 @@ public class ApolloClassList {
                 Vaccine.class,
                 VaccineContraindications.class,
                 VariableCategoryDefinition.class,
-                VectorControlStrategy.class,
+                VectorControlMeasure.class,
                 WeibullDistribution.class,
                 WithinGroupTransmissionProbability.class,
-                WolbachiaControlStrategy.class,
+                WolbachiaControlMeasure.class,
                 WolbachiaReleaseSiteEnum.class,
                 GetVisualizerOutputResourcesResult.class,
                 RunVisualizationMessage.class,

@@ -51,5 +51,3 @@ For instructions on viewing Apollo-SV, click [https://github.com/ApolloDev/apoll
   <td width="375"><a href="http://www.jetbrains.com/idea/"><img src="https://github.com/ApolloDev/apollo/blob/wiki/img/logo_intellij_idea.png" align="left" width="312" ></a></td>
 <tr>
 </table>
-
-(Image used in the Apollo Logo © Marie-Lan Nguyen / Wikimedia Commons)

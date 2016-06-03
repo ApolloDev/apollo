@@ -15,14 +15,14 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v3_0_2.*;
-import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_0_2.LibraryServiceV302;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.types.v3_0_2.Census;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_2.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_0_2.PlaceClosureControlStrategy;
+import edu.pitt.apollo.library_service_types.v3_1_0.*;
+import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceV310;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.Census;
+import edu.pitt.apollo.types.v3_1_0.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v3_1_0.PlaceClosureControlMeasure;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,8 +43,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.0.2-SNAPSHOT/services/libraryservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_0_2/", "LibraryService_v3.0.2");
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.1.0-SNAPSHOT/services/libraryservice?wsdl";
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_1_0/", "LibraryService_v3.1.0");
 	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
 	public static final String APOLLO_DIR;
@@ -65,28 +65,26 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV302 ls = new LibraryServiceV302(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV310 ls = new LibraryServiceV310(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
-		//AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
-        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
+		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+//        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
 
 		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
-
-//		AddLibraryItemContainerResult vaccResult = addVaccinationControlStrategyToLibrary(a, port);
+//		AddLibraryItemContainerResult vaccResult = addVaccinationControlMeasureToLibrary(a, port);
 //		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
 ////
-//		AddLibraryItemContainerResult antiviralResult = addAntiviralControlStrategyToLibrary(a, port);
+//		AddLibraryItemContainerResult antiviralResult = addAntiviralControlMeasureToLibrary(a, port);
 //		setReleaseVersionForAntiviralControlStratgy(a, port, antiviralResult.getVersion(), antiviralResult.getUrn());
 ////
-//		AddLibraryItemContainerResult allSchoolsResult = addAllSchoolClosureControlStrategyToLibrary(a, port);
+//		AddLibraryItemContainerResult allSchoolsResult = addAllSchoolClosureControlMeasureToLibrary(a, port);
 //		setReleaseVersionForAllSchoolsControlStratgy(a, port, allSchoolsResult.getVersion(), allSchoolsResult.getUrn());
 ////
-//		AddLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlStrategyToLibrary(a, port);
+//		AddLibraryItemContainerResult individualSchoolsResult = addIndividualSchoolClosureControlMeasureToLibrary(a, port);
 //		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion(), individualSchoolsResult.getUrn());
-
-//		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlStrategyInLibrary(a, port);
+//		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlMeasureInLibrary(a, port);
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
 		System.out.println("finished");
 	}
@@ -196,7 +194,8 @@ public class WSClient {
 		lic.setLibraryItem(scenario);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -207,34 +206,37 @@ public class WSClient {
 		return port.addLibraryItemContainer(message);
 	}
 
-    private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
-            throws DatatypeConfigurationException, ParseException {
+	private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
+			throws DatatypeConfigurationException, ParseException {
 
-        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
-        LibraryItemContainer lic = new LibraryItemContainer();
-        lic.setLibraryItem(scenario);
+		InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+		LibraryItemContainer lic = new LibraryItemContainer();
+		lic.setLibraryItem(scenario);
 
-        CatalogEntry entry = new CatalogEntry();
-        entry.setItemDescription("2009 H1N1 Allegheny County R0 = 1.3");
-        lic.setCatalogEntry(entry);
+		CatalogEntry entry = new CatalogEntry();
+		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
+		lic.setCatalogEntry(entry);
 
-        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
-        message.setLibraryItemContainer(lic);
-        message.setAuthentication(auth);
-        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
-        message.setUrn(urn);
+		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+		message.setLibraryItemContainer(lic);
+		message.setAuthentication(auth);
+		message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+		message.setUrn(urn);
 
-        return port.updateLibraryItemContainer(message);
-    }
+		return port.updateLibraryItemContainer(message);
+	}
 
-	private static AddLibraryItemContainerResult addVaccinationControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -246,14 +248,16 @@ public class WSClient {
 
 	}
 
-	private static AddLibraryItemContainerResult addAntiviralControlStrategyToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addAntiviralControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleAntiviralControlStrategy.getAntiviralControlStrategy(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlStrategy.getAntiviralControlMeasure(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 Antiviral Control Strategy (Tamiflu)");
+		entry.setDisplayName("2009 Antiviral Control Strategy (Tamiflu)");
+		entry.setTextualIdentifier("2009 Antiviral Control Strategy (Tamiflu)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -265,14 +269,16 @@ public class WSClient {
 
 	}
 
-	private static AddLibraryItemContainerResult addAllSchoolClosureControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addAllSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlStrategy strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlStrategy();
+		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlMeasure();
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 School Closure (All Schools)");
+		entry.setDisplayName("2009 School Closure (All Schools)");
+		entry.setTextualIdentifier("2009 School Closure (All Schools)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -284,14 +290,16 @@ public class WSClient {
 
 	}
 
-	private static AddLibraryItemContainerResult addIndividualSchoolClosureControlStrategyToLibrary(Authentication auth, LibraryServiceEI port) {
+	private static AddLibraryItemContainerResult addIndividualSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlStrategy strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlStrategy();
+		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlMeasure();
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("2009 School Closure (Individual Schools)");
+		entry.setDisplayName("2009 School Closure (Individual Schools)");
+		entry.setTextualIdentifier("2009 School Closure (Individual Schools)");
+
 		lic.setCatalogEntry(entry);
 
 		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
@@ -303,14 +311,16 @@ public class WSClient {
 
 	}
 
-	private static UpdateLibraryItemContainerResult updateVaccinationControlStrategyInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
+	private static UpdateLibraryItemContainerResult updateVaccinationControlMeasureInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
 
-		IndividualTreatmentControlStrategy strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
+		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
 		LibraryItemContainer lic = new LibraryItemContainer();
 		lic.setLibraryItem(strategy);
 
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
 		lic.setCatalogEntry(entry);
 
 		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
@@ -340,7 +350,9 @@ public class WSClient {
 //		test.setUri("http://test");
 //		lic.setLibraryItem(test);
 		CatalogEntry entry = new CatalogEntry();
-		entry.setItemDescription("test item update");
+		entry.setDisplayName("test item update");
+		entry.setTextualIdentifier("test item update");
+
 		lic.setCatalogEntry(entry);
 
 		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
@@ -392,27 +404,27 @@ public class WSClient {
 ////        avt.getTreatmentContraindications();
 //
 //        // avt.s
-//        IndividualTreatmentControlStrategy atcm = new IndividualTreatmentControlStrategy();
+//        IndividualTreatmentControlMeasure atcm = new IndividualTreatmentControlMeasure();
 //        atcm.setIndividualTreatment(avt);
 //        atcm.setDescription("A control strategy in which all sick humans are treated with a course of Tamiflu.");
 //        ProbabilisticParameterValue compliance = new ProbabilisticParameterValue();
 //        compliance.setValue(0.9);
-//        atcm.setControlStrategyCompliance(compliance);
+//        atcm.setControlMeasureCompliance(compliance);
 //
-//        ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-//        targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme("Treat Sick Only");
+//        ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+//        targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme("Treat Sick Only");
 //
 ////        atcm.setControlMeasureNamedPrioritizationScheme("Treat Sick Only");
 //        atcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
-//        atcm.setControlStrategyReactiveEndPointFraction(1d);
+//        atcm.setControlMeasureReactiveEndPointFraction(1d);
 //        NumericParameterValue responseDelay = new NumericParameterValue();
 //        responseDelay.setUnitOfMeasure(UnitOfMeasure.DAYS);
 //        responseDelay.setValue(4d);
-//        atcm.setControlStrategyResponseDelay(responseDelay);
+//        atcm.setControlMeasureResponseDelay(responseDelay);
 //        FixedStartTime atcmFst = new FixedStartTime();
 //        atcmFst.setStartTimeRelativeToScenarioDate(new BigInteger("0"));
 //        atcmFst.setStopTimeRelativeToScenarioDate(new BigInteger("127"));
-//        atcm.setControlStrategyStartTime(atcmFst);
+//        atcm.setControlMeasureStartTime(atcmFst);
 //        for (int i = 0; i < 128; i++) {
 //            atcm.getSupplySchedule().add(new BigInteger("2000"));
 //            atcm.getAdministrationCapacity().add(
@@ -420,7 +432,7 @@ public class WSClient {
 //        }
 //
 //        ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//        itemIndexingLabels.add("IndividualTreatmentControlStrategy");
+//        itemIndexingLabels.add("IndividualTreatmentControlMeasure");
 //        itemIndexingLabels.add("Antiviral");
 //        itemIndexingLabels.add("AntiviralTreatment");
 //        itemIndexingLabels.add("Allegheny County");
@@ -438,7 +450,7 @@ public class WSClient {
 //                atcm,
 //                "A hypothetical control strategy in which all sick humans are treated with a course of Tamiflu.",
 //                "Expert opinion regarding a realistic (yet hypothetical) Antiviral Treatment Control Measure.",
-//                "IndividualTreatmentControlStrategy", itemIndexingLabels);
+//                "IndividualTreatmentControlMeasure", itemIndexingLabels);
 //
 //    }
 //
@@ -469,27 +481,27 @@ public class WSClient {
 //
 //        vacc.getVaccinationEfficacies().add(vesc);
 //
-//        IndividualTreatmentControlStrategy vcm = new IndividualTreatmentControlStrategy();
+//        IndividualTreatmentControlMeasure vcm = new IndividualTreatmentControlMeasure();
 //        vcm.setIndividualTreatment(vacc);
 //        ProbabilisticParameterValue compliance = new ProbabilisticParameterValue();
 //        compliance.setValue(0.5);
-//        vcm.setControlStrategyCompliance(compliance);
+//        vcm.setControlMeasureCompliance(compliance);
 //
-//        ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-//        targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme("ACIP");
+//        ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+//        targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme("ACIP");
 //
 //        vcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
-//        vcm.setControlStrategyReactiveEndPointFraction(1d);
+//        vcm.setControlMeasureReactiveEndPointFraction(1d);
 //
 //        NumericParameterValue responseDelay = new NumericParameterValue();
 //        responseDelay.setUnitOfMeasure(UnitOfMeasure.DAYS);
 //        responseDelay.setValue(0d);
 //
-//        vcm.setControlStrategyResponseDelay(responseDelay);
+//        vcm.setControlMeasureResponseDelay(responseDelay);
 //        FixedStartTime vaccCmFst = new FixedStartTime();
 //        vaccCmFst.setStartTimeRelativeToScenarioDate(new BigInteger("0"));
 //        vaccCmFst.setStopTimeRelativeToScenarioDate(new BigInteger("127"));
-//        vcm.setControlStrategyStartTime(vaccCmFst);
+//        vcm.setControlMeasureStartTime(vaccCmFst);
 //        vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 //
 //        for (int i = 0; i < 56; i++) {
@@ -510,7 +522,7 @@ public class WSClient {
 //        }
 //
 //        ArrayList<String> itemIndexingLabels = new ArrayList<String>();
-//        itemIndexingLabels.add("IndividualTreatmentControlStrategy");
+//        itemIndexingLabels.add("IndividualTreatmentControlMeasure");
 //        itemIndexingLabels.add("Vaccination");
 //        itemIndexingLabels.add("Vaccine");
 //        itemIndexingLabels.add("Allegheny County");
@@ -523,37 +535,37 @@ public class WSClient {
 //        itemIndexingLabels.add("non-hypothetical");
 //
 //        return port.addLibraryItem(getAuthentication(), vcm, vcm.getDescription(),
-//                "", "IndividualTreatmentControlStrategy",
+//                "", "IndividualTreatmentControlMeasure",
 //                itemIndexingLabels);
 //    }
 //
 //    public static AddLibraryItemResult addAllSccm(LibraryServiceEI port) {
-//        SchoolClosureControlStrategy scm = new SchoolClosureControlStrategy();
+//        SchoolClosureControlMeasure scm = new SchoolClosureControlMeasure();
 //        ReactiveStartTime rst = new ReactiveStartTime();
 //        ReactiveTriggersDefinition rtd = new ReactiveTriggersDefinition();
-//        rtd.setReactiveControlStrategyThreshold(0.01);
-//        rtd.setReactiveControlStrategyTest("Symptomatic Students");
+//        rtd.setReactiveControlMeasureThreshold(0.01);
+//        rtd.setReactiveControlMeasureTest("Symptomatic Students");
 //        rtd.setAscertainmentDelay(new BigInteger("2"));
 //        rtd.setAscertainmentFraction(0.5);
 //        rst.setTrigger(rtd);
-//        scm.setControlStrategyStartTime(rst);
+//        scm.setControlMeasureStartTime(rst);
 //
 //        ProbabilisticParameterValue compliance = new ProbabilisticParameterValue();
 //        compliance.setValue(1d);
-//        scm.setControlStrategyCompliance(compliance);
+//        scm.setControlMeasureCompliance(compliance);
 //
-//        scm.setControlStrategyReactiveEndPointFraction(1d);
+//        scm.setControlMeasureReactiveEndPointFraction(1d);
 //
 //        NumericParameterValue responseDelay = new NumericParameterValue();
 //        responseDelay.setValue(2d);
 //
-//        scm.setControlStrategyResponseDelay(responseDelay);
+//        scm.setControlMeasureResponseDelay(responseDelay);
 //        scm.setDescription("A school closure control strategy where all schools in the jURNsdiction are closed to mitigate the spread of an infectious disease.");
 //        scm.setSchoolClosureDuration(new BigInteger("56"));
 //        scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.ALL);
 //        List<String> indexingValues = new ArrayList<String>();
 //        indexingValues.add("BARDA");
-//        indexingValues.add("SchoolClosureControlStrategy");
+//        indexingValues.add("SchoolClosureControlMeasure");
 //        indexingValues.add("SchoolClosure");
 //        indexingValues.add("Reactive Start Time");
 //        indexingValues.add("Allegheny County");
@@ -569,37 +581,37 @@ public class WSClient {
 //                scm,
 //                scm.getDescription(),
 //                "A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//                "SchoolClosureControlStrategy", indexingValues);
+//                "SchoolClosureControlMeasure", indexingValues);
 //    }
 //
 //    public static AddLibraryItemResult addIndividualSccm(LibraryServiceEI port) {
-//        SchoolClosureControlStrategy scm = new SchoolClosureControlStrategy();
+//        SchoolClosureControlMeasure scm = new SchoolClosureControlMeasure();
 //
 //        ReactiveStartTime rst = new ReactiveStartTime();
 //        ReactiveTriggersDefinition rtd = new ReactiveTriggersDefinition();
-//        rtd.setReactiveControlStrategyThreshold(0.01);
-//        rtd.setReactiveControlStrategyTest("Symptomatic Students");
+//        rtd.setReactiveControlMeasureThreshold(0.01);
+//        rtd.setReactiveControlMeasureTest("Symptomatic Students");
 //        rtd.setAscertainmentDelay(new BigInteger("2"));
 //        rtd.setAscertainmentFraction(0.5);
 //        rst.setTrigger(rtd);
-//        scm.setControlStrategyStartTime(rst);
+//        scm.setControlMeasureStartTime(rst);
 //        
 //        ProbabilisticParameterValue compliance = new ProbabilisticParameterValue();
 //        compliance.setValue(1d);
 //        
-//        scm.setControlStrategyCompliance(compliance);
-//        scm.setControlStrategyReactiveEndPointFraction(1d);
+//        scm.setControlMeasureCompliance(compliance);
+//        scm.setControlMeasureReactiveEndPointFraction(1d);
 //        
 //        NumericParameterValue responseDelay = new NumericParameterValue();
 //        responseDelay.setValue(2d);
 //        
-//        scm.setControlStrategyResponseDelay(responseDelay);
+//        scm.setControlMeasureResponseDelay(responseDelay);
 //        scm.setDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
 //        scm.setSchoolClosureDuration(new BigInteger("56"));
 //        scm.setSchoolClosureTargetFacilities(SchoolClosureTargetFacilities.INDIVIDUAL);
 //        List<String> indexingValues = new ArrayList<String>();
 //        indexingValues.add("BARDA");
-//        indexingValues.add("SchoolClosureControlStrategy");
+//        indexingValues.add("SchoolClosureControlMeasure");
 //        indexingValues.add("SchoolClosure");
 //        indexingValues.add("Reactive Start Time");
 //        indexingValues.add("Allegheny County");
@@ -615,7 +627,7 @@ public class WSClient {
 //                scm,
 //                scm.getDescription(),
 //                "A hypothetical school closure control strategy specified by BARDA in 2009 to Dr. Shawn Brown when running simulations of the FRED simulator to determine the effect of this control measure on the spread of disease.",
-//                "SchoolClosureControlStrategy", indexingValues);
+//                "SchoolClosureControlMeasure", indexingValues);
 //    }
 ////    
 ////
@@ -645,7 +657,7 @@ public class WSClient {
 ////                MethodCallStatus status = port.removeLibraryItem(authentication, "dbmi-dt-036_1440836e6d307b1fc45 45603463114096640");
 ////                System.out.println(status.getMessage());
 //
-////        GetLibraryItemUuidsResult result = port.getUuidsForLibraryItemsGivenType("SchoolClosureControlStrategy");
+////        GetLibraryItemUuidsResult result = port.getUuidsForLibraryItemsGivenType("SchoolClosureControlMeasure");
 ////        System.out.println(result.getUuids().get(0));
 //
 //        GregorianCalendar c = new GregorianCalendar();

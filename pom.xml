@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -23,7 +23,7 @@
             <url>file:${user.home}/.m2/repository</url>
         </repository>
     </distributionManagement>
-	
+
     <repositories>
         <repository>
             <id>research.rods.pitt.edu</id>
@@ -55,21 +55,20 @@
     </prerequisites>
 
     <modules>
-        <module>xsd-types</module>
         <module>db-common</module>
         <module>services-common</module>
-	<module>rest-services-frontend-common</module>
+        <module>rest-services-frontend-common</module>
 
         <module>data-service-rest-connector</module>
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
-                
+
         <module>translator-service-skeleton</module>
 
         <module>library-service</module>
         <module>library-service-client</module>
         <module>library-service-war</module>
-        <module>library-service-rest-frontend</module>        
+        <module>library-service-rest-frontend</module>
 
         <module>data-service</module>
         <module>data-service-war</module>
@@ -84,6 +83,7 @@
         <module>visualizer-service-war</module>
 
         <module>job-running-service-soap-connector</module>
+         <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
@@ -97,17 +97,24 @@
         <module>broker-service</module>
         <module>broker-service-war</module>
         <module>broker-service-rest-frontend</module>
-	<module>broker-service-rest-connector</module>
+        <module>broker-service-rest-connector</module>
 
         <module>config-examples</module>
         <module>run-manager-service-client</module>
         <module>broker-service-client</module>
-       
-        
+
+
         <module>library-service-rest-connector</module>
-  </modules>
+    </modules>
 
     <dependencies>
+
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>xsd-types</artifactId>
+            <version>3.1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -178,6 +185,33 @@
         <defaultGoal>install</defaultGoal>
         <pluginManagement>
             <plugins>
+               <!-- <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-xsd-files</id>
+
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+
+                                        <groupId>edu.pitt.apollo</groupId>
+                                        <artifactId>xsd-types</artifactId>
+                                        <version>${version}</version>
+                                        <type>jar</type>
+                                    </artifactItem>
+                                </artifactItems>
+                                <includes>**/*.xsd</includes>
+                                <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin> -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
@@ -236,5 +270,5 @@
             </plugins>
         </pluginManagement>
     </build>
-    <name>Apollo Web Services </name>
+    <name>Apollo Web Services</name>
 </project>

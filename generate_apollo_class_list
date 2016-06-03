@@ -1,8 +1,0 @@
-#!/bin/bash
-
-mvn clean install -f xsd-types/pom.xml
-
-find xsd-types/target -type f -name "*.class" ! -name '*\$*.class' ! -name 'package-info.class' ! -name 'ObjectFactory.class' -exec basename {} \; > classlist.txt
-
-perl -pi.bak -e 's/\n/,\n/' classlist.txt
-rm classlist.txt.bak

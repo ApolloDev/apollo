@@ -1,6 +1,6 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -15,11 +15,11 @@ import java.util.GregorianCalendar;
  * Email: nick.millett@gmail.com
  * Date: Feb 19, 2015
  * Time: 11:13:54 AM
- * Class: ExampleAntiviralControlStrategy
+ * Class: ExampleAntiviralControlMeasure
  */
 public class ExampleAntiviralControlStrategy {
 
-	public static IndividualTreatmentControlStrategy getAntiviralControlStrategy(XMLGregorianCalendar startDate) {
+	public static IndividualTreatmentControlMeasure getAntiviralControlMeasure(XMLGregorianCalendar startDate) {
 
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
@@ -44,15 +44,15 @@ public class ExampleAntiviralControlStrategy {
 
 		avt.getAntiviralTreatmentEfficacy().add(avefsc);
 
-		IndividualTreatmentControlStrategy atcm = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure atcm = new IndividualTreatmentControlMeasure();
 		atcm.setIndividualTreatment(avt);
 		atcm.setDescription("A control strategy in which all sick humans are treated with a course of Tamiflu.");
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.9);
 		atcm.setCompliance(compliance);
 
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.TREAT_SICK_ONLY);
+		ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.TREAT_SICK_ONLY);
 		atcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
 
 		FixedDuration stopTime = new FixedDuration();
@@ -62,17 +62,17 @@ public class ExampleAntiviralControlStrategy {
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(stopTime);
-		atcm.getControlStrategyStopTime().add(stopTrigger);
+		atcm.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(4d);
-		atcm.setControlStrategyResponseDelay(responseDelay);
+		atcm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(4d);
-		atcm.setControlStrategyStandDownDelay(standDownDelay);
+		atcm.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -81,7 +81,7 @@ public class ExampleAntiviralControlStrategy {
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		atcm.getControlStrategyStartTime().add(trigger);
+		atcm.getControlMeasureStartTime().add(trigger);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("Tamiflu");

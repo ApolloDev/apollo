@@ -7,7 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetContentByIdMethod;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

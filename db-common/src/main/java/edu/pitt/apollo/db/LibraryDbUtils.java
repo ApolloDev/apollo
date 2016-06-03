@@ -1,6 +1,6 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.library_service_types.v3_0_2.*;
+import edu.pitt.apollo.library_service_types.v3_1_0.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
@@ -10,13 +10,13 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.types.v3_0_2.ApolloPathogenCode;
-import edu.pitt.apollo.types.v3_0_2.Epidemic;
-import edu.pitt.apollo.types.v3_0_2.IndividualTreatmentControlStrategy;
-import edu.pitt.apollo.types.v3_0_2.ProbabilisticParameter;
-import edu.pitt.apollo.types.v3_0_2.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v3_0_2.TimeScaleEnum;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.ApolloPathogenCode;
+import edu.pitt.apollo.types.v3_1_0.Epidemic;
+import edu.pitt.apollo.types.v3_1_0.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v3_1_0.ProbabilisticParameter;
+import edu.pitt.apollo.types.v3_1_0.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v3_1_0.TimeScaleEnum;
 
 import java.io.*;
 import java.sql.Connection;
@@ -46,6 +46,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
 	private static final Logger libraryLogger = LoggerFactory.getLogger(LibraryDbUtils.class);
     private static final String LIBRARY_DATABASE_PROPERTIES_FILE = "library_database.properties";
+	private static final String LIBRARY_SALT_FILE = "library_salt.txt";
 	private static final String ADDING_USER = "adding the user";
 	private static final String ADDING_USER_ROLE = "adding the user role";
 	private static final String AUTHORIZING_USER = "authorizing the user";
@@ -62,7 +63,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 	private static final String GETTING_CHANGE_LOG = "getting the change log for library items modeified since the specified date and time";
 	private static final String SETTING_ITEM_AS_NOT_RELEASED = "setting the library item as not released";
 	private static final boolean LIBRARY_AUTO_COMMIT = false;
-	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB";
+	private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB_310_2";
 
 	JsonUtils jsonUtils = new JsonUtils();
 
@@ -92,7 +93,7 @@ public class LibraryDbUtils extends BaseDbUtils {
     @Override
     protected String getSystemSaltFileDir() {
 
-        return APOLLO_DIR + SALT_FILE_NAME;
+        return APOLLO_DIR + LIBRARY_SALT_FILE;
     }
 
     @Override
@@ -530,7 +531,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
 
 			String itemJson = getJSONStringForLibraryItem(item);
-			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?,?)";
+			String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?::jsonb,?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, catalogId);
 			pstmt.setString(2, itemJson);
@@ -1096,15 +1097,15 @@ public class LibraryDbUtils extends BaseDbUtils {
 //		System.out.println(role);
 		LibraryItemContainer item = new LibraryItemContainer();
 //		Epidemic epidemic = getEpidemic();
-		IndividualTreatmentControlStrategy strategy = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure strategy = new IndividualTreatmentControlMeasure();
 		strategy.setDescription("test strategy");
 		ProbabilisticParameter prob = new ProbabilisticParameter();
 		prob.setProbability(0.5);
 		strategy.setCompliance(prob);
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
-		trigger.setTimeScale(TimeScaleEnum.DECSISION_TIME_SCALE);
-		strategy.getControlStrategyStartTime().add(trigger);
+		trigger.setTimeScale(TimeScaleEnum.DECISION_TIME_SCALE);
+		strategy.getControlMeasureStartTime().add(trigger);
 
 //		epidemic.getInfectiousDiseaseControlStrategies().add(strategy);
 //////

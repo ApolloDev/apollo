@@ -4,8 +4,8 @@ package edu.pitt.apollo.runmanagerservice.thread;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
 
 import java.math.BigInteger;
 import java.util.TimerTask;

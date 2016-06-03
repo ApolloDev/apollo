@@ -1,6 +1,6 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -15,11 +15,11 @@ import java.util.GregorianCalendar;
  * Email: nick.millett@gmail.com
  * Date: Dec 9, 2014
  * Time: 5:17:04 PM
- * Class: ExampleVaccinationControlStrategy
+ * Class: ExampleVaccinationControlMeasure
  */
 public class ExampleVaccinationControlStrategy {
 
-	public static IndividualTreatmentControlStrategy getStrategy(XMLGregorianCalendar startDate) {
+	public static IndividualTreatmentControlMeasure getStrategy(XMLGregorianCalendar startDate) {
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
 
@@ -52,14 +52,14 @@ public class ExampleVaccinationControlStrategy {
 
 		vacc.getVaccinationEfficacies().add(vesc);
 
-		IndividualTreatmentControlStrategy vcm = new IndividualTreatmentControlStrategy();
+		IndividualTreatmentControlMeasure vcm = new IndividualTreatmentControlMeasure();
 		vcm.setIndividualTreatment(vacc);
 		ProbabilisticParameter compliance = new ProbabilisticParameter();
 		compliance.setProbability(0.5);
 		vcm.setCompliance(compliance);
 
-		ControlStrategyTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-		targetPopulationsAndPrioritization.setControlStrategyNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
+		ControlMeasureTargetPopulationsAndPrioritization targetPopulationsAndPrioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+		targetPopulationsAndPrioritization.setControlMeasureNamedPrioritizationScheme(NamedPrioritizationSchemeEnum.ACIP);
 
 		vcm.setTargetPopulationsAndPrioritizations(targetPopulationsAndPrioritization);
 
@@ -70,19 +70,19 @@ public class ExampleVaccinationControlStrategy {
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		stopTrigger.setTimeSinceTimeScaleZero(stopTime);
-		vcm.getControlStrategyStopTime().add(stopTrigger);
+		vcm.getControlMeasureStopTime().add(stopTrigger);
 
 		FixedDuration responseDelay = new FixedDuration();
 		responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		responseDelay.setValue(0d);
 
-		vcm.setControlStrategyResponseDelay(responseDelay);
+		vcm.setControlMeasureResponseDelay(responseDelay);
 
 		FixedDuration standDownDelay = new FixedDuration();
 		standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
 		standDownDelay.setValue(0d);
 
-		vcm.setControlStrategyStandDownDelay(standDownDelay);
+		vcm.setControlMeasureStandDownDelay(standDownDelay);
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -91,7 +91,7 @@ public class ExampleVaccinationControlStrategy {
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
 		trigger.setTimeSinceTimeScaleZero(startTime);
-		vcm.getControlStrategyStartTime().add(trigger);
+		vcm.getControlMeasureStartTime().add(trigger);
 
 		vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 		vcm.setPathogen(strain);

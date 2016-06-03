@@ -1,10 +1,12 @@
 package edu.pitt.apollo.dataservice.accessors;
 
 import edu.pitt.apollo.exception.Md5UtilsException;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.*;
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
@@ -18,9 +20,9 @@ import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.UserManagementInterface;
-import edu.pitt.apollo.services_common.v3_0_2.*;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

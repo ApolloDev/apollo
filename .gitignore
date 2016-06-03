@@ -1,3 +1,4 @@
+*.bak
 .DS_Store
 .classpath
 .project
@@ -12,3 +13,5 @@ xsd-types/src/main/xsd/
 catalog-*.xml
 nb-configuration.xml
 classlist.txt
+.*.swp
+*/nbactions.xml

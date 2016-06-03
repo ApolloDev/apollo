@@ -4,11 +4,13 @@ import static edu.pitt.apollo.ApolloServiceConstants.END_USER_APPLICATION_SOURCE
 
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;

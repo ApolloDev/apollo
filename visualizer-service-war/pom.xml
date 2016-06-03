@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>visualizer-service-war</artifactId>
 	<name>Time-series Visualizer Service WAR</name>
@@ -40,11 +40,11 @@
 							<directory>${basedir}/../src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>visualizer_service_3.0.2.wsdl</include>
-								<include>apollo_types_3.0.2.xsd</include>
-                                <include>services_common_3.0.2.xsd</include>
-                                <include>simulator_service_3.0.2.xsd</include>
-                                <include>visualizer_service_3.0.2.xsd</include>
+								<include>visualizer_service_3.1.0.wsdl</include>
+								<include>apollo_types_3.1.0.xsd</include>
+                                <include>services_common_3.1.0.xsd</include>
+                                <include>simulator_service_3.1.0.xsd</include>
+                                <include>visualizer_service_3.1.0.xsd</include>
 							</includes>
 						</resource>
 					</webResources>

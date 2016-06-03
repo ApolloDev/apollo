@@ -1,24 +1,25 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
 import edu.pitt.apollo.ApolloServiceQueue;
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.TranslatorServiceException;
 import edu.pitt.apollo.runmanagerservice.types.RunResultAndSimulationGroupId;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_0_2.RunMessage;
-import edu.pitt.apollo.services_common.v3_0_2.RunResult;
-import edu.pitt.apollo.services_common.v3_0_2.ServiceRegistrationRecord;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
+import edu.pitt.apollo.services_common.v3_1_0.RunResult;
+import edu.pitt.apollo.services_common.v3_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,13 +100,17 @@ public class StageMethod {
                 }
             }
 
-            if (!(message instanceof RunSimulationsMessage)) {
+            if (!(message instanceof RunSimulationsMessage) && !(message instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
                 if (!(message instanceof RunVisualizationMessage) && !(message instanceof DataRetrievalRequestMessage)) {
-                    String url = getTranslatorServiceUrl(dataServiceDao, authentication);
+                    
+					// message is RunSimulationMessage
+					
+					String url = getTranslatorServiceUrl(dataServiceDao, authentication);
                     if (url == null) {
                         throw new RunManagementException("There was no translator URL available!");
                     }
                     // run is loaded, now call translator
+
                     TranslatorServiceAccessor translatorDao = new TranslatorServiceAccessor(url);
                     translatorDao.translateRun(runId);
 
@@ -137,10 +142,14 @@ public class StageMethod {
                     // so that the WaitForTranslationAndStartRunThread will work
                     dataServiceDao.updateStatusOfRun(runId, MethodCallStatusEnum.TRANSLATION_COMPLETED, "Translation completed", authentication);
                 }
-            } else {
+            } else if (message instanceof RunSimulationsMessage) {
                 BatchStageMethod batchStageMethod = new BatchStageMethod(runId, (RunSimulationsMessage) message, authentication, apolloServiceQueue);
                 apolloServiceQueue.addThreadToQueueAndRun(batchStageMethod);
-            }
+            } else if (message instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
+				StageExperimentMethod method = new StageExperimentMethod(runId, apolloServiceQueue,
+                        (RunInfectiousDiseaseTransmissionExperimentMessage) message, authentication);
+				apolloServiceQueue.addThreadToQueueAndRun(method);
+			}
 
             // run is now translated
             return insertRunResult;

@@ -14,8 +14,8 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceEI;
-import edu.pitt.apollo.services_common.v3_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceEI;
+import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -26,17 +26,17 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
 import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_0_2/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v3.0.2", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v3_0_2.VisualizerServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v3.1.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceEI")
 class VisualizerServiceImpl implements VisualizerServiceEI {
 
    
 
     @Override
-    @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_0_2/", className = "edu.pitt.apollo.service.visualizerservice.v3_0_2.RunVisualization")
-    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v3_0_2/runVisualization")
-    @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_0_2/", className = "edu.pitt.apollo.service.visualizerservice.v3_0_2.RunVisualizationResponse")
+    @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", className = "edu.pitt.apollo.service.visualizerservice.v3_1_0.RunVisualization")
+    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/runVisualization")
+    @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", className = "edu.pitt.apollo.service.visualizerservice.v3_1_0.RunVisualizationResponse")
     public void runVisualization(@WebParam(name = "visualizationRunId", targetNamespace = "") BigInteger visualizationRunId,
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
 

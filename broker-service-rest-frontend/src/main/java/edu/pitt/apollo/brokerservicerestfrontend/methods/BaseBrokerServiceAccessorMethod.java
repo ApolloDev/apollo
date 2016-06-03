@@ -8,8 +8,8 @@ package edu.pitt.apollo.brokerservicerestfrontend.methods;
 import edu.pitt.apollo.BrokerServiceImpl;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 

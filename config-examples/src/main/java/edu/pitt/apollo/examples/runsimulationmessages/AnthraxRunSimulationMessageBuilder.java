@@ -1,10 +1,10 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -197,12 +197,12 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         Location location = getLocation();
         XMLGregorianCalendar date = getDate();
 
-        List<InfectiousDiseaseControlStrategy> strategies = new ArrayList<InfectiousDiseaseControlStrategy>();
+        List<InfectiousDiseaseControlMeasure> strategies = new ArrayList<InfectiousDiseaseControlMeasure>();
 
         InfectiousDiseaseScenario scenario = simulatorConfiguration.getInfectiousDiseaseScenario();
 
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.DRUG_CM)) {
-            strategies.add(getDrugTreatmentControlStrategy("antibacterial treatment",
+            strategies.add(getDrugTreatmentControlMeasure("antibacterial treatment",
                     date, capacityArray, location));
         }
 
@@ -212,7 +212,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
     }
 
-    public static InfectiousDiseaseControlStrategy getDrugTreatmentControlStrategy(String description,
+    public static InfectiousDiseaseControlMeasure getDrugTreatmentControlMeasure(String description,
                                                                                    XMLGregorianCalendar startDate, Double[] supplyConstrainedCapacityTable, Location location) {
 
         double asympEfficacy = 0.9;
@@ -311,21 +311,21 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         duration.setValue(1d);
         drugTreatment.setDurationOfTreatmentCourse(duration);
 
-        IndividualTreatmentControlStrategy drugTreatmentControlStrategy = new IndividualTreatmentControlStrategy();
-        drugTreatmentControlStrategy.setDescription("drug treatment");
-        drugTreatmentControlStrategy.setPathogen(code);
+        IndividualTreatmentControlMeasure drugTreatmentControlMeasure = new IndividualTreatmentControlMeasure();
+        drugTreatmentControlMeasure.setDescription("drug treatment");
+        drugTreatmentControlMeasure.setPathogen(code);
 
         FixedDuration responseDelay = new FixedDuration();
         responseDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
         responseDelay.setValue(2.0);
 
-        drugTreatmentControlStrategy.setControlStrategyResponseDelay(responseDelay);
+        drugTreatmentControlMeasure.setControlMeasureResponseDelay(responseDelay);
 
         ProbabilisticParameter compliance = new ProbabilisticParameter();
         compliance.setProbability(0.2);
 
-        drugTreatmentControlStrategy.setCompliance(compliance);
-        drugTreatmentControlStrategy.setIndividualTreatment(drugTreatment);
+        drugTreatmentControlMeasure.setCompliance(compliance);
+        drugTreatmentControlMeasure.setIndividualTreatment(drugTreatment);
 
         FixedDuration startTime = new FixedDuration();
         startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -334,7 +334,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
         trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
         trigger.setTimeSinceTimeScaleZero(startTime);
-        drugTreatmentControlStrategy.getControlStrategyStartTime().add(trigger);
+        drugTreatmentControlMeasure.getControlMeasureStartTime().add(trigger);
 
         FixedDuration stopTmie = new FixedDuration();
         stopTmie.setUnitOfTime(UnitOfTimeEnum.DAY);
@@ -343,15 +343,15 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
         stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
         stopTrigger.setTimeSinceTimeScaleZero(startTime);
-        drugTreatmentControlStrategy.getControlStrategyStopTime().add(trigger);
+        drugTreatmentControlMeasure.getControlMeasureStopTime().add(trigger);
 
         FixedDuration standDownDelay = new FixedDuration();
         standDownDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
         standDownDelay.setValue(150d);
-        drugTreatmentControlStrategy.setControlStrategyStandDownDelay(standDownDelay);
+        drugTreatmentControlMeasure.setControlMeasureStandDownDelay(standDownDelay);
 
-        ControlStrategyTargetPopulationsAndPrioritization prioritization = new ControlStrategyTargetPopulationsAndPrioritization();
-        drugTreatmentControlStrategy.setTargetPopulationsAndPrioritizations(prioritization);
+        ControlMeasureTargetPopulationsAndPrioritization prioritization = new ControlMeasureTargetPopulationsAndPrioritization();
+        drugTreatmentControlMeasure.setTargetPopulationsAndPrioritizations(prioritization);
 
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
@@ -405,9 +405,9 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         outputNode.getChildren().add(capacityNode);
         logisticalSystem.getLogisticalSystemNodes().add(outputNode);
 
-        drugTreatmentControlStrategy.getLogisticalSystems().add(logisticalSystem);
+        drugTreatmentControlMeasure.getLogisticalSystems().add(logisticalSystem);
 
-        return drugTreatmentControlStrategy;
+        return drugTreatmentControlMeasure;
     }
 
     @Override

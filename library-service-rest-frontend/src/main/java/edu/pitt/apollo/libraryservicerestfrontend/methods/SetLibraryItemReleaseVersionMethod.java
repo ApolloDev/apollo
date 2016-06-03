@@ -1,9 +1,9 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionMessage;
-import edu.pitt.apollo.library_service_types.v3_0_2.SetReleaseVersionResult;
-import edu.pitt.apollo.services_common.v3_0_2.SerializationFormat;
+import edu.pitt.apollo.library_service_types.v3_1_0.SetReleaseVersionMessage;
+import edu.pitt.apollo.library_service_types.v3_1_0.SetReleaseVersionResult;
+import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
 
 /**
  * Created by jdl50 on 8/12/15.

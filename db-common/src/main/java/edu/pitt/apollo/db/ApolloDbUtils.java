@@ -4,34 +4,33 @@ import edu.pitt.apollo.ApolloServiceConstants;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_1_0.SoftwareLicenseIdentification;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.apollo_service_types.v3_0_2.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v3_0_2.*;
+import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import edu.pitt.apollo.data_service_types.v3_0_2.DataRetrievalRequestMessage;
+import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v3_0_2.RunVisualizationMessage;
-
-import java.sql.Connection;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 
@@ -44,7 +43,7 @@ public class ApolloDbUtils extends BaseDbUtils {
     private static final String PRIVILEGED_REQUEST_TOKEN = "priv";
     private static final String USER_ID_TOKEN_SEPERATOR = "\\+";
     private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_302";
+    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_310";
     static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
     static Map<String, Integer> populationAxisCache = new HashMap<>();
     static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();
@@ -1248,12 +1247,16 @@ public class ApolloDbUtils extends BaseDbUtils {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, runId.intValue());
             ResultSet rs = pstmt.executeQuery();
-            int softwareId;
+            int softwareId = 0;
             if (rs.next()) {
                 softwareId = rs.getInt("software_id");
             } else {
                 throw new ApolloDatabaseKeyNotFoundException(
                         "No entry found in run where id = " + runId);
+            }
+
+            if (softwareId == 0) {
+                return null;
             }
 
             return getSoftwareIdentification(softwareId);
@@ -1468,7 +1471,10 @@ public class ApolloDbUtils extends BaseDbUtils {
         String[] userIdTokens = parseUserId(userName);
         userName = userIdTokens[0];
 
-        int softwareKey = getSoftwareIdentificationKey(identificationOfSoftwareToRun);
+        Integer softwareKey = null;
+        if (identificationOfSoftwareToRun != null) {
+            softwareKey = getSoftwareIdentificationKey(identificationOfSoftwareToRun);
+        }
         int userKey = getUserKey(userName, password);
 
         BigInteger simulationGroupId = null;
@@ -1491,7 +1497,11 @@ public class ApolloDbUtils extends BaseDbUtils {
             PreparedStatement pstmt = conn.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, md5);
-            pstmt.setInt(2, softwareKey);
+            if (softwareKey != null) {
+                pstmt.setInt(2, softwareKey);
+            } else {
+                pstmt.setNull(2, Types.INTEGER);
+            }
             pstmt.setInt(3, userKey);
             pstmt.setInt(4, 1);
             pstmt.setInt(5, md5CollisionId);

@@ -1,10 +1,10 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -153,10 +153,10 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         return cycle;
     }
 
-    private WolbachiaControlStrategy getWolbachiaControlStrategy() {
+    private WolbachiaControlMeasure getWolbachiaControlMeasure() {
 
-        WolbachiaControlStrategy strategy = new WolbachiaControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        WolbachiaControlMeasure strategy = new WolbachiaControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
         FixedDuration endDuration = new FixedDuration();
         endDuration.setValue(0d);
@@ -165,7 +165,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         TemporalTriggerDefinition time = new TemporalTriggerDefinition();
         time.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
         time.setTimeSinceTimeScaleZero(endDuration);
-        strategy.getControlStrategyStopTime().add(time);
+        strategy.getControlMeasureStopTime().add(time);
 
         strategy.setWolbachiaSitesEveryNth(new BigInteger("4"));
         strategy.setWolbachiaSeedAdultsPerHouse(new BigInteger("14"));
@@ -190,12 +190,12 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         return strategy;
     }
 
-    private IndoorResidualSprayingVectorControlStrategy getIRSControlStrategy() {
+    private IndoorResidualSprayingVectorControlMeasure getIRSControlMeasure() {
 
-        IndoorResidualSprayingVectorControlStrategy strategy = new IndoorResidualSprayingVectorControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        IndoorResidualSprayingVectorControlMeasure strategy = new IndoorResidualSprayingVectorControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
         strategy.setFractionOfVectorIndividualsAffected(0.8);
 
         Distance coverRadius = new Distance();
@@ -206,12 +206,12 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         return strategy;
     }
 
-    private LarvicideControlStrategy getLarvicideControlStrategy() {
+    private LarvicideControlMeasure getLarvicideControlMeasure() {
 
-        LarvicideControlStrategy strategy = new LarvicideControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        LarvicideControlMeasure strategy = new LarvicideControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
@@ -221,12 +221,12 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         return strategy;
     }
 
-    private ContainerReductionControlStrategy getContainerReductionControlStrategy() {
+    private ContainerReductionControlMeasure getContainerReductionControlMeasure() {
 
-        ContainerReductionControlStrategy strategy = new ContainerReductionControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        ContainerReductionControlMeasure strategy = new ContainerReductionControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
@@ -512,22 +512,22 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         NonApolloParameter parameter = new NonApolloParameter();
         parameter.setParameterName("backfillEggsDay");
-        parameter.setParameterValue(5);
+        parameter.setParameterIntValue(5);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("initialMosquitoToHumanRatio");
-        parameter.setParameterValue(6.0);
+        parameter.setParameterFloatValue(6.0);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("maleMosquitoRatio");
-        parameter.setParameterValue(0.5);
+        parameter.setParameterFloatValue(0.5);
         list.add(parameter);
 
         parameter = new NonApolloParameter();
         parameter.setParameterName("peakDay");
-        parameter.setParameterValue(126);
+        parameter.setParameterIntValue(126);
         list.add(parameter);
 
         return list;
@@ -620,16 +620,16 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         scenario.getNonApolloParameters().addAll(getNonApolloParameters());
 
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.WOLBACHIA)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getWolbachiaControlStrategy());
+            scenario.getInfectiousDiseaseControlStrategies().add(getWolbachiaControlMeasure());
         }
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INDOOR_RESIDUAL_SPRAYING)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getIRSControlStrategy());
+            scenario.getInfectiousDiseaseControlStrategies().add(getIRSControlMeasure());
         }
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.LARVICIDE)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getLarvicideControlStrategy());
+            scenario.getInfectiousDiseaseControlStrategies().add(getLarvicideControlMeasure());
         }
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.CONTAINER_REDUCTION)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getContainerReductionControlStrategy());
+            scenario.getInfectiousDiseaseControlStrategies().add(getContainerReductionControlMeasure());
         }
 
         return simulatorConfiguration;

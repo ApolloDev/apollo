@@ -1,9 +1,9 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_0_2.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_0_2.*;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v3_1_0.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -63,9 +63,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         Rate eir = new Rate();
         eir.setValue(50d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
@@ -77,9 +77,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         eir = new Rate();
         eir.setValue(75d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
@@ -91,9 +91,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         eir = new Rate();
         eir.setValue(100d);
-        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INNOCULATIONS);
+        eir.setNumeratorUnitOfMeasure(UnitOfMeasureEnum.INOCULATIONS);
         eir.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.PER_INDIVIDUAL_PER_YEAR);
-        iafih.setInnoculationRate(eir);
+        iafih.setInoculationRate(eir);
 
         iafih.setInfectiousPeriodDuration(infectiousPeriod);
         iafih.setLatentPeriodDuration(latentPeriod);
@@ -192,12 +192,12 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         return populations;
     }
 
-    private IndoorResidualSprayingVectorControlStrategy getIRSControlStrategy(XMLGregorianCalendar startDate) {
+    private IndoorResidualSprayingVectorControlMeasure getIRSControlMeasure(XMLGregorianCalendar startDate) {
 
-        IndoorResidualSprayingVectorControlStrategy strategy = new IndoorResidualSprayingVectorControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        IndoorResidualSprayingVectorControlMeasure strategy = new IndoorResidualSprayingVectorControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
         strategy.setFractionOfVectorIndividualsAffected(0.8);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
@@ -226,16 +226,23 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         logisticalSystem.getLogisticalSystemNodes().add(outputNode);
         strategy.getLogisticalSystems().add(logisticalSystem);
+		
+		
+		TemplatedInfectiousDiseaseControlMeasureUrlForSoftware templatedInfectiousDiseaseControlMeasureUrlForSoftware
+				= new TemplatedInfectiousDiseaseControlMeasureUrlForSoftware();
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.getSoftwareIdentification().add(getSoftwareIdentification());
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateUrl("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/irs-1.xml");
+		strategy.getTemplatedInfectiousDiseaseControlMeasureUrlsForSoftware().add(templatedInfectiousDiseaseControlMeasureUrlForSoftware);
 
         return strategy;
     }
 
-    private InsecticideTreatedNetControlStrategy getITNControlStrategy(XMLGregorianCalendar startDate) {
+    private InsecticideTreatedNetControlMeasure getITNControlMeasure(XMLGregorianCalendar startDate) {
 
-        InsecticideTreatedNetControlStrategy strategy = new InsecticideTreatedNetControlStrategy();
-        setBaseInfectiousDiseaseControlStrategy(strategy);
+        InsecticideTreatedNetControlMeasure strategy = new InsecticideTreatedNetControlMeasure();
+        setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlStrategyStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("Insecticide Treated Net");
@@ -283,6 +290,13 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         decayRate.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.DAYS);
         strategy.setInsecticideEfficacyDecayRate(decayRate);
 
+		TemplatedInfectiousDiseaseControlMeasureUrlForSoftware templatedInfectiousDiseaseControlMeasureUrlForSoftware
+				= new TemplatedInfectiousDiseaseControlMeasureUrlForSoftware();
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.getSoftwareIdentification().add(getSoftwareIdentification());
+		templatedInfectiousDiseaseControlMeasureUrlForSoftware.setControlMeasureTemplateUrl("https://git.isg.pitt.edu/simulatorservices/simulatorinputtemplates/raw/master/openmalaria/by-location-name/mozambique/v32/itn-1.xml");
+		strategy.getTemplatedInfectiousDiseaseControlMeasureUrlsForSoftware().add(templatedInfectiousDiseaseControlMeasureUrlForSoftware);
+
+		
         return strategy;
     }
 
@@ -308,10 +322,10 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         InfectiousDiseaseScenario scenario = simulatorConfiguration.getInfectiousDiseaseScenario();
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INDOOR_RESIDUAL_SPRAYING)) {
             scenario
-                    .getInfectiousDiseaseControlStrategies().add(getIRSControlStrategy(scenario.getScenarioDate()));
+                    .getInfectiousDiseaseControlStrategies().add(getIRSControlMeasure(scenario.getScenarioDate()));
         }
         if (controlMeasureTypes.contains(ControlMeasureTypeEnum.INSECTICIDE_TREATED_NET)) {
-            scenario.getInfectiousDiseaseControlStrategies().add(getITNControlStrategy(scenario.getScenarioDate()));
+            scenario.getInfectiousDiseaseControlStrategies().add(getITNControlMeasure(scenario.getScenarioDate()));
         }
 
         return simulatorConfiguration;

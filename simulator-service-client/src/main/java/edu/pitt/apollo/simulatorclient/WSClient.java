@@ -14,9 +14,9 @@
  */
 package edu.pitt.apollo.simulatorclient;
 
-import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceEI;
-import edu.pitt.apollo.service.simulatorservice.v3_0_2.SimulatorServiceV302;
-import edu.pitt.apollo.services_common.v3_0_2.MethodCallStatus;
+import edu.pitt.apollo.service.simulatorservice.v3_1_0.SimulatorServiceEI;
+import edu.pitt.apollo.service.simulatorservice.v3_1_0.SimulatorServiceV310;
+import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,11 +25,11 @@ import javax.xml.namespace.QName;
 public class WSClient {
 
 	public static final String WSDL_LOC = "http://gaia.pha.psc.edu:13500/pscsimu?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/simulatorservice/v3_0_2/", "SimulatorService_v3.0.2");
+	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/simulatorservice/v3_1_0/", "SimulatorService_v3.1.0");
 
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
 
-		SimulatorServiceV302 simulatorService = new SimulatorServiceV302(new URL(WSDL_LOC), SERVICE);
+		SimulatorServiceV310 simulatorService = new SimulatorServiceV310(new URL(WSDL_LOC), SERVICE);
 		SimulatorServiceEI port = simulatorService.getSimulatorServiceEndpoint();
 
 		MethodCallStatus result = port.runSimulation(BigInteger.ONE);

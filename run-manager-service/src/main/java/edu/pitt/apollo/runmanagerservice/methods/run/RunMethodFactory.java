@@ -4,9 +4,9 @@ import edu.pitt.apollo.exception.DataServiceException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.services_common.v3_0_2.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.services_common.v3_0_2.Authentication;
-import edu.pitt.apollo.services_common.v3_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
 
 import java.math.BigInteger;
 
@@ -19,7 +19,13 @@ public class RunMethodFactory {
 
         DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
         SoftwareIdentification runSoftwareId = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
-        ApolloSoftwareTypeEnum type = runSoftwareId.getSoftwareType();
+        ApolloSoftwareTypeEnum type;
+        if (runSoftwareId != null) {
+           type = runSoftwareId.getSoftwareType();
+        } else {
+            type = ApolloSoftwareTypeEnum.SIMULATOR; // assume simulator type for transmission experiment, which don't list a single
+            // software ID for the experiment
+        }
 
         AbstractRunMethod runMethod;
         switch (type) {
