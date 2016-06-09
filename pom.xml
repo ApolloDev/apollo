@@ -4,16 +4,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
- <distributionManagement>
+    <distributionManagement>
         <repository>
             <id>nexus</id>
             <name>Releases</name>
-            <url>http://localhost:8081/nexus/content/repositories/apollo-releases/</url>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus</id>
             <name>Snapshots</name>
-            <url>http://localhost:8081/nexus/content/repositories/apollo-snapshots/</url>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -65,7 +65,7 @@
         <module>visualizer-service-war</module>
 
         <module>job-running-service-soap-connector</module>
-         <module>job-running-service-rest-connector</module>
+        <module>job-running-service-rest-connector</module>
         <module>translator-service-soap-connector</module>
 
         <module>synthetic-population-service</module>
@@ -156,33 +156,33 @@
         <defaultGoal>install</defaultGoal>
         <pluginManagement>
             <plugins>
-               <!-- <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>unpack-xsd-files</id>
+                <!-- <plugin>
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-dependency-plugin</artifactId>
+                     <executions>
+                         <execution>
+                             <id>unpack-xsd-files</id>
 
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>unpack</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
+                             <phase>initialize</phase>
+                             <goals>
+                                 <goal>unpack</goal>
+                             </goals>
+                             <configuration>
+                                 <artifactItems>
+                                     <artifactItem>
 
-                                        <groupId>edu.pitt.apollo</groupId>
-                                        <artifactId>xsd-types</artifactId>
-                                        <version>${version}</version>
-                                        <type>jar</type>
-                                    </artifactItem>
-                                </artifactItems>
-                                <includes>**/*.xsd</includes>
-                                <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin> -->
+                                         <groupId>edu.pitt.apollo</groupId>
+                                         <artifactId>xsd-types</artifactId>
+                                         <version>${version}</version>
+                                         <type>jar</type>
+                                     </artifactItem>
+                                 </artifactItems>
+                                 <includes>**/*.xsd</includes>
+                                 <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+                             </configuration>
+                         </execution>
+                     </executions>
+                 </plugin> -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
