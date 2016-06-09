@@ -84,10 +84,10 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+      <!--  <dependency>
             <groupId>com.googlecode.sardine</groupId>
             <artifactId>sardine</artifactId>
             <version>314</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>

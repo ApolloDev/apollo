@@ -21,18 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <distributionManagement>
-       <repository>
-            <id>rods-nexus-deployment</id>
-            <name>RODS Nexus</name>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rods-nexus-deployment</id>
-            <name>RODS Nexus</name>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
 
@@ -128,19 +116,6 @@
                 </dependency>
             </dependencies>
         </profile>
-
-        <profile>
-            <!-- See http://metro.java.net/guide/Using_Mavenized_Metro_Binaries.html 
-            for more Metro/Maven config info -->
-            <id>Metro</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.glassfish.metro</groupId>
-                    <artifactId>webservices-rt</artifactId>
-                    <version>2.2.1-1</version>
-                </dependency>
-            </dependencies>
-        </profile>
     </profiles>
 
     <build>
@@ -187,4 +162,9 @@
     <name>Common Service Module</name>
     <groupId>edu.pitt.apollo</groupId>
     <version>3.1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>edu.pitt.apollo</groupId>
+        <artifactId>apollo-ws</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+    </parent>
 </project>
