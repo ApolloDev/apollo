@@ -780,6 +780,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 			conn = existingConnection != null ? existingConnection : getConnection(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
+			conn.commit();
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException setting public version for urn_id " + catalogId + ": " + ex.getMessage());
 		} finally {
@@ -911,9 +912,6 @@ public class LibraryDbUtils extends BaseDbUtils {
             GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
             if (version == null) {
                 version = getReleaseVersion(urn);
-                if (version == null) {
-                    return null;
-                }
                 result.setIsLatestApprovedRevision(true);
                 result.setIsApprovedRevision(true);
             }
