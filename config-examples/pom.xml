@@ -36,6 +36,11 @@
             <version>2.2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>services-common</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>commons-codec</groupId>

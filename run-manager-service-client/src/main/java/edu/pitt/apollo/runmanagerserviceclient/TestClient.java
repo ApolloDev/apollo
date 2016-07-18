@@ -1,7 +1,8 @@
 package edu.pitt.apollo.runmanagerserviceclient;
 
-import com.googlecode.sardine.Sardine;
-import com.googlecode.sardine.SardineFactory;
+
+import com.github.sardine.Sardine;
+import com.github.sardine.SardineFactory;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;

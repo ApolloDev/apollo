@@ -22,6 +22,10 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>services-common</artifactId>
+        </dependency>
       
     </dependencies>
 

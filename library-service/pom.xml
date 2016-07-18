@@ -187,6 +187,10 @@
                                                 ${basedir}/../src/main/resources/library_service_3.1.0.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:library_service_3.1.0.wsdl</wsdlLocation>
+                                           <!-- <extraargs>
+                                                <extraarg>-nexclude</extraarg>
+                                                <extraarg>http://service.apollo.pitt.edu/libraryservice/v3_1_0/=edu.pitt.apollo.library_service_types.v3_1_0</extraarg>
+                                            </extraargs>-->
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

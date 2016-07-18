@@ -29,7 +29,15 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>xsd-types</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>services-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
