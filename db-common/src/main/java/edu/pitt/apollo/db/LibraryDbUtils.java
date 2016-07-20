@@ -780,6 +780,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 			conn = existingConnection != null ? existingConnection : getConnection(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
+            conn.commit();
 		} catch (SQLException ex) {
 			throw new ApolloDatabaseExplicitException("SQLException setting public version for urn_id " + catalogId + ": " + ex.getMessage());
 		} finally {
