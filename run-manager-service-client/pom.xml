@@ -32,7 +32,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            
+
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
