@@ -72,9 +72,9 @@
         <module>data-service-war</module>
         <module>data-service-rest-frontend</module>
 
-        <!--<module>simulator-service</module>-->
-        <!--<module>simulator-service-client</module>-->
-        <!--<module>simulator-service-war</module>-->
+        <module>simulator-service</module>
+        <module>simulator-service-client</module>
+        <module>simulator-service-war</module>
 
         <module>visualizer-service</module>
         <module>visualizer-service-client</module>
