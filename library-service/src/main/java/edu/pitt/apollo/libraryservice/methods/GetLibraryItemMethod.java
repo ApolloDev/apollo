@@ -23,7 +23,7 @@ public class GetLibraryItemMethod {
 
 	public static GetLibraryItemContainerResult getLibraryItemMethod(LibraryDbUtils dbUtils,  int urn, Integer version, Authentication authentication) {
 
-		GetLibraryItemContainerResult result = null;
+		GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
 		MethodCallStatus status = new MethodCallStatus();
 
 		try {
@@ -32,7 +32,6 @@ public class GetLibraryItemMethod {
                 result = dbUtils.getLibraryItemContainer(urn, version);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
-                result = new GetLibraryItemContainerResult();
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
 				status.setMessage("You are not authorized to retrieve items from the library.");
 			}
