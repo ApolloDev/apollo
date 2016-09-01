@@ -39,7 +39,7 @@ public class ListFilesForRunMethod extends BaseBrokerServiceAccessorMethod {
 			ObjectSerializationInformation serializationInformation = new ObjectSerializationInformation();
 			serializationInformation.setClassNameSpace(Serializer.APOLLO_NAMESPACE);
 			serializationInformation.setClassName(fileIds.getClass().getSimpleName());
-			serializationInformation.setFormat(SerializationFormat.XML);
+			serializationInformation.setFormat(serializationFormat);
 
 			List<String> serializedObjects = new ArrayList<>();
 			for (FileIdentification id : fileIds) {

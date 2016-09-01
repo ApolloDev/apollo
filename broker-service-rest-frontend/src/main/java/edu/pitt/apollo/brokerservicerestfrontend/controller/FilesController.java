@@ -54,13 +54,28 @@ public class FilesController {
 	})
 	@RequestMapping(value = "/{runId}/url", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getUrlOfFile(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
+	String getUrlOfFileXML(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
 			@ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
 			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
 
 		return new GetUrlOfFileMethod(null, null, SerializationFormat.XML).getUrlOfFile(runId, fileFormat, fileType, filename);
 	}
+
+    @GET
+    @ApiOperation(value = "Get the URL for a file.", notes = "Returns the URL for a file.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/{runId}/url", method = RequestMethod.GET, headers = "Accept=application/json")
+    public @ResponseBody
+    String getUrlOfFileJSON(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
+                        @ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
+                        @ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
+                        @ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+
+        return new GetUrlOfFileMethod(null, null, SerializationFormat.JSON).getUrlOfFile(runId, fileFormat, fileType, filename);
+    }
 
 	@GET
 	@ApiOperation(value = "Get the status of a file upload.", notes = "Returns the status of a file upload.", response = String.class)
@@ -83,7 +98,18 @@ public class FilesController {
 	})
 	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String listFilesForRun(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+	String listFilesForRunXML(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
 		return new ListFilesForRunMethod(null, null, SerializationFormat.XML).listFilesForRun(runId);
+	}
+
+	@GET
+	@ApiOperation(value = "Get the list of files for a run.", notes = "Returns a list of the files for a run.", response = String.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "")
+	})
+	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	String listFilesForRunJSON(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+		return new ListFilesForRunMethod(null, null, SerializationFormat.JSON).listFilesForRun(runId);
 	}
 }

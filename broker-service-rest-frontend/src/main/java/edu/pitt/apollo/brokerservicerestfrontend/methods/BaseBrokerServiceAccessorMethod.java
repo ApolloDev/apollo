@@ -21,6 +21,7 @@ public abstract class BaseBrokerServiceAccessorMethod {
 
 	protected final Authentication authentication;
 	protected final Serializer serializer;
+	protected final SerializationFormat serializationFormat;
 	protected final BrokerServiceImpl impl;
 	protected final ResponseMessageBuilder responseBuilder;
 
@@ -31,7 +32,7 @@ public abstract class BaseBrokerServiceAccessorMethod {
 		authentication.setRequesterPassword(password);
 
 		responseBuilder = new ResponseMessageBuilder();
-		
+		this.serializationFormat = serializationFormat;
 		serializer = SerializerFactory.getSerializer(serializationFormat);
 
 		impl = new BrokerServiceImpl();
