@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.FileTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
@@ -18,6 +21,7 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.types.v4_0.InfectionStateEnum;
 import edu.pitt.apollo.types.v4_0.SimulatorCountOutputSpecification;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.types.v4_0.TemporalGranularityEnum;
 import java.io.FileNotFoundException;
 import java.util.Collection;
@@ -128,6 +132,7 @@ public class TimeSeriesProcessor {
 	}
 
 	public TimeSeriesContainerList retrieveTimeSeriesFromSimulatorOutput(List<BigInteger> runIds,
+			Map<BigInteger, SoftwareIdentification> runIdSoftwareMap,
 			List<TimeSeriesCurveTypeEnum> infectionSatesToRetrieve) throws TimeSeriesVisualizerException {
 
 		TimeSeriesContainerList container = new TimeSeriesContainerList();
@@ -150,7 +155,22 @@ public class TimeSeriesProcessor {
 			outputSpecification.setTemporalGranularity(TemporalGranularityEnum.EACH_SIMULATION_TIMESTEP);
 //			prevalenceSpecification.setSpatialGranularity(SpatialGranularityEnum.ADMIN_4);
 			message.getSimulatorCountOutputSpecifications().add(outputSpecification);
+			
+			FileIdentification fileIdentification = new FileIdentification();
+			String simulatorName = runIdSoftwareMap.get(runId).getSoftwareName();
+			if (simulatorName.equalsIgnoreCase("fred")) {
+				fileIdentification.setFormat(ContentDataFormatEnum.HDF);
+				fileIdentification.setType(ContentDataTypeEnum.SIMULATOR_LOG_FILE);
+				fileIdentification.setLabel(runId + ".apollo.h5");
+			} else if (simulatorName.equalsIgnoreCase("seir")) {
+				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
+                fileIdentification.setType(ContentDataTypeEnum.SIMULATOR_LOG_FILE);
+                fileIdentification.setLabel(runId + ".apollo.csv");
+			} else {
+                throw new TimeSeriesVisualizerException("Unsupported simulator for query message");
+            }
 
+			message.setOutputFileIdentification(fileIdentification);
 			try {
 				RunUtils.runQueryService(message, visualizerRunId);
 

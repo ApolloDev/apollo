@@ -1,5 +1,6 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
+import edu.pitt.apollo.exception.RunManagementException;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +22,7 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
 /**
  *
@@ -46,6 +48,7 @@ public class ImageGenerator {
 
 	private List<BigInteger> runIds;
 	private Map<BigInteger, String> runIdLabelMap;
+	private Map<BigInteger, SoftwareIdentification> runIdSimulatorMap;
 	private String combinedIncidenceImagePath;
 	private final boolean multipleRunsSpecified;
 	private final BigInteger visualizerRunId;
@@ -59,7 +62,7 @@ public class ImageGenerator {
 
 	public ImageGenerator(List<RunIdentificationAndLabel> initialRunIds,
 			BigInteger visualizerRunId)
-			throws TimeSeriesVisualizerException {
+			throws TimeSeriesVisualizerException, RunManagementException {
 
 //		dbUtil = new DatabaseUtility(visualizerSoftwareId);
 		runDirectory = RunUtils.createRunDirectory(visualizerRunId);
@@ -96,13 +99,16 @@ public class ImageGenerator {
 	}
 
 	private void setRunIdsAndLabels(List<RunIdentificationAndLabel> initialRunIdsAndLabels)
-			throws TimeSeriesVisualizerException {
+			throws TimeSeriesVisualizerException, RunManagementException {
 		runIds = new ArrayList<BigInteger>();
 		runIdLabelMap = new HashMap<BigInteger, String>();
+		runIdSimulatorMap = new HashMap<>();
 		for (RunIdentificationAndLabel runIdAndLabel : initialRunIdsAndLabels) {
 			BigInteger runId = runIdAndLabel.getRunIdentification();
 			runIds.add(runId);
 			runIdLabelMap.put(runId, runIdAndLabel.getRunLabel());
+			SoftwareIdentification softwareIdentification = RunUtils.getSoftwareIdentificationForRun(runId);
+			runIdSimulatorMap.put(runId, softwareIdentification);
 		}
 	}
 
@@ -283,6 +289,7 @@ public class ImageGenerator {
 			TimeSeriesCurveTypeList timeSeriesCurveTypeListForSpecies = timeSeriesCurveTypeListBySpecies.get(species);
 
 			TimeSeriesContainerList timeSeriesContainerList = outputFileUtility.retrieveTimeSeriesFromSimulatorOutput(runIds,
+					runIdSimulatorMap,
 					timeSeriesCurveTypeListForSpecies);
 
 			// adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
@@ -316,7 +323,7 @@ public class ImageGenerator {
 		RunUtils.uploadFiles(resourceMap, visualizerRunId);
 	}
 
-	public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException {
+	public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException, RunManagementException {
 
 		List<RunIdentificationAndLabel> runIdsAndLabels = new ArrayList<RunIdentificationAndLabel>();
 

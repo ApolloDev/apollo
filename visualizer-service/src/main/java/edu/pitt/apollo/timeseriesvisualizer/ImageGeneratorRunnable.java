@@ -70,7 +70,7 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 
 		try {
 			ig = new ImageGenerator(runIdentificationsAndLabels, runId);
-		} catch (TimeSeriesVisualizerException e) {
+		} catch (TimeSeriesVisualizerException | RunManagementException e) {
 			try {
 				RunUtils.updateStatus(runId, MethodCallStatusEnum.FAILED,
 						"TimeSeriesVisualizerException creating ImageGenerator: " + e.getMessage());
