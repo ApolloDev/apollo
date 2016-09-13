@@ -50,7 +50,7 @@ import edu.pitt.apollo.library_service_types.v4_0.SetReleaseVersionResult;
 import edu.pitt.apollo.library_service_types.v4_0.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
-import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
+//import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
@@ -81,7 +81,7 @@ import org.slf4j.LoggerFactory;
  * @author nem41
  */
 public class BrokerServiceImpl implements ContentManagementInterface, FilestoreServiceInterface,
-		RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface, LibraryServiceInterface {
+		RunManagementInterface, JobRunningServiceInterface, SoftwareRegistryInterface /*, LibraryServiceInterface */ {
 
 	private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
 	private static final String RUN_MANAGER_SERVICE_URL_PROPERTY = "run_manager_service_url";
@@ -127,7 +127,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 		}
 	}
 
-	private static LibraryServiceConnector getLibraryServiceConnector() throws LibraryServiceException {
+	/*private static LibraryServiceConnector getLibraryServiceConnector() throws LibraryServiceException {
 		try {
 			if (libraryServiceConnector == null) {
 				libraryServiceConnector = new RestLibraryServiceConnector(getLibraryServiceUrl());
@@ -137,7 +137,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 		} catch (IOException ex) {
 			throw new LibraryServiceException("IOException loading library service connector: " + ex.getMessage());
 		}
-	}
+	}*/
 
 	protected static String getFilestoreServiceUrl() throws IOException {
 		if (filestoreServiceUrl == null) {
@@ -357,7 +357,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 		return getFilestoreServiceConnector().listFilesForRun(runId, authentication);
 	}
 
-	@Override
+	/*@Override
 	public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
 		return getLibraryServiceConnector().query(query, authentication);
 	}
@@ -425,5 +425,5 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	@Override
 	public GetReleaseVersionResult getApprovedRevisionOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
 		return getLibraryServiceConnector().getApprovedRevisionOfLibraryItem(urn, authentication);
-	}
+	}*/
 }

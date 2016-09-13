@@ -97,12 +97,12 @@
             <artifactId>run-manager-service-rest-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+<!--
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>library-service-rest-connector</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency>-->
        
         <dependency>
             <groupId>edu.pitt.apollo</groupId>

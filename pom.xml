@@ -58,45 +58,31 @@
         <module>db-common</module>
         <module>services-common</module>
         <module>rest-services-frontend-common</module>
-
+        <module>apollotranslator</module>
+        <module>apollotranslatorservice</module>
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
-
         <module>filestore-service-rest-connector</module>
         <module>filestore-service-rest-frontend</module>
-
-        <module>translator-service-skeleton</module>
-
-
         <module>job-running-service-rest-connector</module>
-        <module>translator-service-soap-connector</module>
-
         <module>simulator-service-rest-skeleton</module>
-
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>
         <module>synthetic-population-service-war</module>
         <module>synthetic-population-service-soap-connector</module>
-
         <module>output-translator-service-rest-frontend</module>
-
         <module>run-manager-service</module>
         <module>run-manager-service-rest-frontend</module>
-
         <module>output-translator-service</module>
-
         <module>broker-service</module>
         <module>broker-service-rest-frontend</module>
         <module>broker-service-rest-connector</module>
         <module>broker-soap-service</module>
         <module>broker-service-client</module>
         <module>broker-service-war</module>
-
         <module>config-examples</module>
         <module>run-manager-service-client</module>
-
         <module>filestore-service</module>
-        
         <module>visualizer-service</module>
         <module>visualizer-service-rest-frontend</module>
         <!-- <module>filestore-service-rest-frontend</module> -->

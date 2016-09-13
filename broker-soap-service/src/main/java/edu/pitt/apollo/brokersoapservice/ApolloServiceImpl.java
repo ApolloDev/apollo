@@ -55,153 +55,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
 	private static final BrokerServiceImpl brokerService = new BrokerServiceImpl();
 
-	@Override
-	public GetRevisionsResult getVersionNumbersForLibraryItem(
-			GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
-		try {
-			return brokerService.getAllRevisionsOfLibraryItem(getVersionNumbersForLibraryItemMessage.getUrn(),
-					getVersionNumbersForLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetRevisionsResult result = new GetRevisionsResult();
-			result.setStatus(createStatus("Error running getVersionNumbersForLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
 
-	@Override
-	public GetLibraryItemContainerResult getLibraryItemContainer(
-			GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
-		try {
-			return brokerService.getLibraryItem(getLibraryItemContainerMessage.getUrn(),
-					getLibraryItemContainerMessage.getVersion(),
-					getLibraryItemContainerMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
-			result.setStatus(createStatus("Error running getLibraryItemContainer: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public QueryResult query(QueryMessage queryMessage) {
-		try {
-			return brokerService.query(queryMessage.getQuery(),
-					queryMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			QueryResult result = new QueryResult();
-			result.setStatus(createStatus("Error running query: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public AddLibraryItemContainerResult addLibraryItemContainer(
-			AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
-		try {
-			return brokerService.addLibraryItem(addLibraryItemContainerMessage.getLibraryItemContainer(),
-					addLibraryItemContainerMessage.getComment(),
-					addLibraryItemContainerMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
-			result.setStatus(createStatus("Error running addLibraryItemContainer: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(
-			ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
-		try {
-			return brokerService.removeGroupAccessToLibraryItem(removeGroupAccessToLibraryItemMessage.getUrn(),
-					removeGroupAccessToLibraryItemMessage.getGroup(),
-					removeGroupAccessToLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			ModifyGroupOwnershipResult result = new ModifyGroupOwnershipResult();
-			result.setStatus(createStatus("Error running removeGroupAccessToLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(
-			GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
-		try {
-			return brokerService.getChangeLogForLibraryItemsModifiedSinceDateTime(
-					getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getDateTime(),
-					getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetChangeLogForLibraryItemsModifiedSinceDateTimeResult result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
-			result.setStatus(createStatus("Error running getChangeLogForLibraryItemsModifiedSinceDateTime: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(
-			SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
-		try {
-			return brokerService.hideLibraryItem(setLibraryItemAsNotReleasedMessage.getUrn(),
-					setLibraryItemAsNotReleasedMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			SetLibraryItemAsNotReleasedResult result = new SetLibraryItemAsNotReleasedResult();
-			result.setStatus(createStatus("Error running setLibraryItemAsNotReleased: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	// LIBRARY METHODS
-	@Override
-	public GetCommentsResult getCommentsForLibraryItem(
-			GetCommentsMessage getCommentsForLibraryItemMessage) {
-		try {
-			return brokerService.getCommentsForLibraryItem(getCommentsForLibraryItemMessage.getUrn(),
-					getCommentsForLibraryItemMessage.getVersion(),
-					getCommentsForLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetCommentsResult result = new GetCommentsResult();
-			result.setStatus(createStatus("Error running getCommentsForLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(
-			ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
-		try {
-			return brokerService.grantGroupAccessToLibraryItem(grantGroupAccessToLibraryItemMessage.getUrn(),
-					grantGroupAccessToLibraryItemMessage.getGroup(),
-					grantGroupAccessToLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			ModifyGroupOwnershipResult result = new ModifyGroupOwnershipResult();
-			result.setStatus(createStatus("Error running getCommentsForLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
-
-	@Override
-	public SetReleaseVersionResult setReleaseVersionForLibraryItem(
-			SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
-		try {
-			return brokerService.approveRevisionOfLibraryItem(setReleaseVersionForLibraryItemMessage.getUrn(),
-					setReleaseVersionForLibraryItemMessage.getVersion(),
-					setReleaseVersionForLibraryItemMessage.getComment(),
-					setReleaseVersionForLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			SetReleaseVersionResult result = new SetReleaseVersionResult();
-			result.setStatus(createStatus("Error running setReleaseVersionForLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
@@ -218,21 +72,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return null;
 	}
 
-	@Override
-	public UpdateLibraryItemContainerResult updateLibraryItemContainer(
-			UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
-		try {
-			return brokerService.reviseLibraryItem(updateLibraryItemContainerMessage.getUrn(),
-					updateLibraryItemContainerMessage.getLibraryItemContainer(),
-					updateLibraryItemContainerMessage.getComment(),
-					updateLibraryItemContainerMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			UpdateLibraryItemContainerResult result = new UpdateLibraryItemContainerResult();
-			result.setStatus(createStatus("Error running updateLibraryItemContainer: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
 
 	@Override
 	public RunResult runSimulations(
@@ -259,19 +98,6 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return result;
 	}
 
-	@Override
-	public GetReleaseVersionResult getLibraryItemReleaseVersion(
-			GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
-		try {
-			return brokerService.getApprovedRevisionOfLibraryItem(getLibraryItemReleaseVersionMessage.getUrn(),
-					getLibraryItemReleaseVersionMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetReleaseVersionResult result = new GetReleaseVersionResult();
-			result.setStatus(createStatus("Error running getLibraryItemReleaseVersion: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
@@ -290,21 +116,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 //		return null;
 //	}
 
-	@Override
-	public AddReviewerCommentResult addReviewerCommentToLibraryItem(
-			AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
-		try {
-			return brokerService.addReviewerCommentToLibraryItem(addReviewerCommentToLibraryItemMessage.getUrn(),
-					addReviewerCommentToLibraryItemMessage.getVersion(),
-					addReviewerCommentToLibraryItemMessage.getComment(),
-					addReviewerCommentToLibraryItemMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			AddReviewerCommentResult result = new AddReviewerCommentResult();
-			result.setStatus(createStatus("Error running addReviewerCommentToLibraryItem: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
+
 
 	@Override
 	@WebResult(name = "simulationRunId", targetNamespace = "")
@@ -316,19 +128,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		return brokerService.runSimulation(runSimulationMessage);
 	}
 
-	@Override
-	public GetLibraryItemURNsResult getLibraryItemURNs(
-			GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
-		try {
-			return brokerService.getLibraryItemURNs(getLibraryItemURNsMessage.getItemType(),
-					getLibraryItemURNsMessage.getAuthentication());
-		} catch (LibraryServiceException ex) {
-			GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();
-			result.setStatus(createStatus("Error running getLibraryItemURNs: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-			return result;
-		}
-	}
+
 
 	@Override
 	@WebResult(name = "visualizationResult", targetNamespace = "")
