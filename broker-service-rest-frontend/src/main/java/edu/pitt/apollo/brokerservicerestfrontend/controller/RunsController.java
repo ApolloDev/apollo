@@ -155,10 +155,9 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}/status", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getStatusOfRun(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
-			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+			@RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
 		
-		return new GetStatusOfRunMethod(username, password, SerializationFormat.XML).getStatusForRun(runId);
+		return new GetStatusOfRunMethod("", "", SerializationFormat.XML).getStatusForRun(runId);
 	}
 	
 	@POST

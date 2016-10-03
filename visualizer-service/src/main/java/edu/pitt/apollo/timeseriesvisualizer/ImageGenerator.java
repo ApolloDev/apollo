@@ -179,10 +179,10 @@ public class ImageGenerator {
 
 		} else {
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.RECOVERED);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
 
 			String infectionStatesTitle = "Infection states over time";
 			String incidenceTitle = "Incidence of newly latent over time";
@@ -195,9 +195,9 @@ public class ImageGenerator {
 					getChartTypeProperties(ChartTypeEnum.INFECTION_STATES, infectionStatesTitle,
 							getImageFileName(INFECTION_STATES_IMAGE_NAME), getURLForImage(INFECTION_STATES_IMAGE_NAME)));
 
-			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
-					getChartTypeProperties(ChartTypeEnum.INCIDENCE, incidenceTitle,
-							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
+//			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+//					getChartTypeProperties(ChartTypeEnum.INCIDENCE, incidenceTitle,
+//							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
 		}
 
 		return timeSeriesCurveTypesToUseForHuman;
