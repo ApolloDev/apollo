@@ -30,8 +30,8 @@ public class TestClient {
 		RestRunManagerServiceConnector connector = new RestRunManagerServiceConnector("http://localhost:8080/run-manager-service-rest-frontend/");
 
 		Authentication authentication = new Authentication();
-		authentication.setRequesterId("apollo_demo");
-		authentication.setRequesterPassword("apollo_demo");
+//		authentication.setRequesterId("apollo_demo");
+//		authentication.setRequesterPassword("apollo_demo");
 
 		try {
 			List<BigInteger> list = connector.getRunIdsAssociatedWithSimulationGroupForRun(new BigInteger("100"), authentication);

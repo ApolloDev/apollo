@@ -24,8 +24,8 @@ import org.springframework.http.HttpStatus;
 
 public class UploadFileMethod extends BaseBrokerServiceAccessorMethod {
 
-	public UploadFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public UploadFileMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String uploadFile(BigInteger runId, String urlOfFile, String filename, ContentDataFormatEnum contentDataFormatEnum,

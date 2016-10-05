@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
@@ -68,6 +69,8 @@ public class Chapter2_RunSimulationWithNoIntervention extends
                 .getInfectionAcquisitionsFromInfectedHosts().get(0)
                 .getBasicReproductionNumbers().get(0).setExactValue(1.73);
 
+        Authentication authentication = new Authentication();
+
 		String contentForRun = getJSONString(runSimulationMessage);
 		Map<String, Object> properties = new HashMap<String, Object>(2);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
@@ -91,7 +94,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 		}
 
 		
-		runScenarioAndDisplayResults(runSimulationMessage);
+		runScenarioAndDisplayResults(runSimulationMessage, authentication);
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {

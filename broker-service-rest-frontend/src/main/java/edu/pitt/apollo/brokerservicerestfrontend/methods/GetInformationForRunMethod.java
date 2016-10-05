@@ -24,8 +24,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetInformationForRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetInformationForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetInformationForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getInformationForRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {

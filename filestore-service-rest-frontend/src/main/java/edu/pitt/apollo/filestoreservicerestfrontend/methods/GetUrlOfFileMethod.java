@@ -32,12 +32,12 @@ import org.springframework.http.HttpStatus;
  */
 public class GetUrlOfFileMethod extends BaseFileStoreMethod {
 
-	public GetUrlOfFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetUrlOfFileMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorization);
 	}
 
 	public String getUrlOfFile(BigInteger runId, String filename,
-			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws SerializationException {
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType) throws SerializationException {
 		try {
 			String url = fileStoreService.getUrlOfFile(runId, filename, fileFormat, fileType, authentication);
 

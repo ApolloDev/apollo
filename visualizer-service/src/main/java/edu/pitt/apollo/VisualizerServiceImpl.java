@@ -28,7 +28,7 @@ public class VisualizerServiceImpl implements JobRunningServiceInterface {
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 
-		ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(runId, serviceQueue);
+		ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(runId, serviceQueue, authentication);
 		serviceQueue.addThreadToQueueAndRun(runnable);
 	}
 

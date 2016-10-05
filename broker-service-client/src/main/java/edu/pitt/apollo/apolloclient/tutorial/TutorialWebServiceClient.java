@@ -101,7 +101,7 @@ public class TutorialWebServiceClient {
 //		return results.getUrlOutputResources();
 //	}
 	public static BigInteger runSimulation(
-			RunSimulationMessage runSimulationMessage) {
+			RunSimulationMessage runSimulationMessage, Authentication authentication) {
 		RunResult simulationRunResult = port
 				.runSimulation(runSimulationMessage);
 		System.out.println("The broker service returned the following status: "
@@ -111,7 +111,7 @@ public class TutorialWebServiceClient {
 				simulationRunResult.getRunId());
 		
 		boolean runWasSuccessful = waitForRunToCompleteOrFail(simulationRunResult
-				.getRunId(), runSimulationMessage.getAuthentication());
+				.getRunId(), authentication);
 		
 		if (runWasSuccessful) {
 			return simulationRunResult.getRunId();
@@ -121,14 +121,14 @@ public class TutorialWebServiceClient {
 	}
 	
 	public static BigInteger runSimulations(
-			RunSimulationsMessage runSimulationsMessage) {
+			RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
 		RunResult simulationRunResult = port
 				.runSimulations(runSimulationsMessage);
 		System.out.printf("The simulator returned a runId of %s\n",
 				simulationRunResult.getRunId());
 		
 		boolean runWasSuccessful = waitForRunToCompleteOrFail(simulationRunResult
-				.getRunId(), runSimulationsMessage.getAuthentication());
+				.getRunId(), authentication);
 		
 		if (runWasSuccessful) {
 			return simulationRunResult.getRunId();

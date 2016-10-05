@@ -20,8 +20,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetURLOfSoftwareMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetURLOfSoftwareMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetURLOfSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getURLOfSoftwareMethod(String softwareName, String softwareVersion,

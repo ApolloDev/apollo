@@ -20,8 +20,8 @@ import org.springframework.http.HttpStatus;
  */
 public class DeleteRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public DeleteRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public DeleteRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String deleteRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {

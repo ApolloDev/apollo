@@ -237,7 +237,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@Override
 	public RunResult runSimulations(
 			edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage) {
-		return brokerService.runSimulations(runSimulationsMessage);
+		return brokerService.runSimulations(runSimulationsMessage, null);
 	}
 
 	@Override
@@ -313,7 +313,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunSimulationResponse")
 	public RunResult runSimulation(
 			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-		return brokerService.runSimulation(runSimulationMessage);
+		return brokerService.runSimulation(runSimulationMessage, null);
 	}
 
 	@Override
@@ -337,7 +337,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunVisualizationResponse")
 	public RunResult runVisualization(
 			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-		return brokerService.runVisualization(runVisualizationMessage);
+		return brokerService.runVisualization(runVisualizationMessage, null);
 	}
 
 	@Override

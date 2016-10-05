@@ -27,8 +27,8 @@ import org.springframework.http.HttpStatus;
 
 public class GetStatusOfFileUploadMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetStatusOfFileUploadMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetStatusOfFileUploadMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getStatus(BigInteger runID, ContentDataFormatEnum contentDataFormatEnum,

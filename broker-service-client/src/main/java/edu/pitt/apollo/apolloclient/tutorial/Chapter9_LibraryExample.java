@@ -34,8 +34,6 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("TutorialUser");
-		auth.setRequesterPassword("TutorialPassword");
 		return auth;
 	}
 

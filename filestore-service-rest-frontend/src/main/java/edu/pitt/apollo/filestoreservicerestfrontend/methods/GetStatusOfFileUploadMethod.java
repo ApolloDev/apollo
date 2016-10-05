@@ -36,12 +36,12 @@ import org.springframework.http.HttpStatus;
  */
 public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 
-	public GetStatusOfFileUploadMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetStatusOfFileUploadMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorization);
 	}
 
 	public String getStatusOfFileUpload(BigInteger runId, String filename,
-			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws SerializationException {
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType) throws SerializationException {
 
 		try {
 			//        //used for testing
@@ -49,7 +49,7 @@ public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 			fileIdentification.setFormat(fileFormat);
 			fileIdentification.setType(fileType);
 			fileIdentification.setLabel(filename);
-			MethodCallStatus status = fileStoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), null);
+			MethodCallStatus status = fileStoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
 			ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
 			objectSerializationInformation.setClassNameSpace(Serializer.APOLLO_NAMESPACE);

@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatus;
  */
 public class TerminateRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public TerminateRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public TerminateRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String terminateRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {

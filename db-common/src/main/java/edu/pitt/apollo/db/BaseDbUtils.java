@@ -31,7 +31,7 @@ public abstract class BaseDbUtils implements AutoCloseable {
     protected static final String SALT_FILE_NAME = "salt.txt";
     protected static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
     protected static String APOLLO_DIR;
-    static Logger logger = LoggerFactory.getLogger(BaseDbUtils.class);
+    protected static Logger logger = LoggerFactory.getLogger(BaseDbUtils.class);
     protected final DataSource datasource;
     JsonUtils jsonUtils = new JsonUtils();
     Md5Utils md5Utils = new Md5Utils();

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,16 +60,17 @@ public class ImageGenerator {
 	private String runDirectory;
 	private String imageFileType;
 	private String localFileBaseUrl;
+    private Authentication authentication;
 
 	public ImageGenerator(List<RunIdentificationAndLabel> initialRunIds,
-			BigInteger visualizerRunId)
+                          BigInteger visualizerRunId, Authentication authentication)
 			throws TimeSeriesVisualizerException, RunManagementException {
 
 //		dbUtil = new DatabaseUtility(visualizerSoftwareId);
 		runDirectory = RunUtils.createRunDirectory(visualizerRunId);
 		imageFileType = RunUtils.getImageFileType();
 		localFileBaseUrl = RunUtils.getLocalFileBaseUrl();
-		outputFileUtility = new TimeSeriesProcessor(visualizerRunId);
+		outputFileUtility = new TimeSeriesProcessor(visualizerRunId, authentication);
 		setRunIdsAndLabels(initialRunIds); // need to do this first
 
 		this.visualizerRunId = visualizerRunId;
@@ -107,7 +109,7 @@ public class ImageGenerator {
 			BigInteger runId = runIdAndLabel.getRunIdentification();
 			runIds.add(runId);
 			runIdLabelMap.put(runId, runIdAndLabel.getRunLabel());
-			SoftwareIdentification softwareIdentification = RunUtils.getSoftwareIdentificationForRun(runId);
+			SoftwareIdentification softwareIdentification = RunUtils.getSoftwareIdentificationForRun(runId, authentication);
 			runIdSimulatorMap.put(runId, softwareIdentification);
 		}
 	}
@@ -320,7 +322,7 @@ public class ImageGenerator {
 			}
 		}
 
-		RunUtils.uploadFiles(resourceMap, visualizerRunId);
+		RunUtils.uploadFiles(resourceMap, visualizerRunId, authentication);
 	}
 
 	public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException, RunManagementException {
@@ -342,7 +344,7 @@ public class ImageGenerator {
 //		runIdsAndLabels.add(runIdAndLabel);
 
 		ImageGenerator generator = new ImageGenerator(runIdsAndLabels, new BigInteger(
-				"601"));
+				"601"), new Authentication());
 		try {
 			generator.createTimeSeriesImages();
 		} catch (Exception ex) {

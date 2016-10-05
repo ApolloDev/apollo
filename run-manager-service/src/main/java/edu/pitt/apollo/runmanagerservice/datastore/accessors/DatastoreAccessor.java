@@ -1,54 +1,38 @@
 package edu.pitt.apollo.runmanagerservice.datastore.accessors;
 
-import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.utilities.Md5Utils;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.*;
-import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.JobRunningServiceException;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.exception.UserNotAuthenticatedException;
-import edu.pitt.apollo.exception.UserNotAuthorizedException;
+import edu.pitt.apollo.exception.*;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
-import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
-import edu.pitt.apollo.interfaces.UserManagementInterface;
+import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
 import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.FileStoreServiceUtility;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.utilities.Md5Utils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zeroturnaround.zip.ZipUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
-import org.apache.commons.io.IOUtils;
-import org.zeroturnaround.zip.ZipUtil;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 2:26:02 PM Class: DatastoreAccessor IDE: NetBeans 6.9.1
  */
-public class DatastoreAccessor implements SoftwareRegistryInterface, RunManagementInterface, UserManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
+public class DatastoreAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
 
 	protected static final String OUTPUT_DIRECTORY;
 	protected static final String OUTPUT_FILE_NAME;
@@ -188,29 +172,6 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		}
 	}
 
-	private Authentication cloneAndStripAuthentication(Authentication srcAuthentication) {
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(srcAuthentication.getRequesterId());
-		authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
-		srcAuthentication.setRequesterId("default_user");
-		srcAuthentication.setRequesterPassword("default_password");
-		return authentication;
-	}
-
-	protected Authentication stripAuthentication(Object message) throws RunManagementException {
-		Authentication authentication;
-		if (message instanceof RunSimulationMessage) {
-			authentication = ((RunSimulationMessage) message).getAuthentication();
-		} else if (message instanceof RunSimulationsMessage) {
-			authentication = ((RunSimulationsMessage) message).getAuthentication();
-		} else if (message instanceof RunVisualizationMessage) {
-			authentication = ((RunVisualizationMessage) message).getAuthentication();
-		} else {
-			throw new RunManagementException("Unsupported message type of " + message.getClass().getName() + " passed to the DatabaseAccessor");
-		}
-		return cloneAndStripAuthentication(authentication);
-	}
-
 	protected String getRunMessageAssociatedWithRunIdAsJsonOrNull(
 			BigInteger runId) throws ApolloDatabaseException {
 		return null;
@@ -219,11 +180,9 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			List<BigInteger> listOfRunIds = dbUtils.getRunIdsForBatch(runId);
-
 			return listOfRunIds;
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+		} catch (ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 
@@ -232,24 +191,22 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			return dbUtils.getSoftwareIdentificationForRun(runId);
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+		} catch (ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}
 
 	@Override
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
 		throw new RunManagementException("insertRun() is not supported in the base DatabaseAccessor.");
 	}
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			dbUtils.updateStatusOfRun(runId, statusEnumToSet, messageToSet);
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+		} catch (ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}
@@ -257,9 +214,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			dbUtils.updateLastServiceToBeCalledForRun(runId, softwareIdentification);
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+		} catch (ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}
@@ -267,10 +223,9 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			SoftwareIdentification si = dbUtils.getLastServiceToBeCalledForRun(runId);
 			return si;
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException ade) {
+		} catch (ApolloDatabaseException ade) {
 			throw new RunManagementException(ade.getMessage());
 		}
 	}
@@ -278,10 +233,9 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			BigInteger simulationGroupId = dbUtils.getSimulationGroupIdForRun(runId);
 			dbUtils.addRunIdsToSimulationGroup(simulationGroupId, runIds);
-		} catch (UserNotAuthenticatedException | Md5UtilsException | ApolloDatabaseException ex) {
+		} catch (Md5UtilsException | ApolloDatabaseException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
 	}
@@ -289,9 +243,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			dbUtils.removeRunData(runId);
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException ade) {
+		} catch (ApolloDatabaseException ade) {
 			throw new RunManagementException(ade.getMessage());
 		}
 
@@ -300,9 +253,8 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
 		try {
-			authenticateUser(authentication);
 			return dbUtils.getStatusOfLastServiceToBeCalledForRun(runId);
-		} catch (UserNotAuthenticatedException | ApolloDatabaseException e) {
+		} catch (ApolloDatabaseException e) {
 			throw new RunManagementException(e.getMessage());
 		}
 	}
@@ -310,7 +262,6 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
 		try {
-			authenticateUser(authentication);
 			String wsdlURL = dbUtils.getUrlForSoftwareIdentification(softwareId);
 			return wsdlURL;
 		} catch (ApolloDatabaseException e) {
@@ -339,74 +290,10 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 	@Override
 	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
 		try {
-			authenticateUser(authentication);
 			return new ArrayList(dbUtils.getRegisteredSoftware().values());
 		} catch (ApolloDatabaseException ade) {
 			throw new DatastoreException(ade.getMessage());
 		}
-	}
-
-	@Override
-	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest,
-			String roleDescription, Authentication authentication) throws DatastoreException {
-		authenticateUser(authentication);
-		try {
-			dbUtils.addRole(softwareIdentification, canRunSoftware, allowPrivilegedRequest, roleDescription);
-		} catch (ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void deleteUser(String username, Authentication authentication) throws DatastoreException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DatastoreException {
-		authenticateUser(authentication);
-		try {
-			dbUtils.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged);
-		} catch (ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void addUser(String userId, String userPassword, String userEmail, Authentication authentication) throws DatastoreException {
-		try {
-			dbUtils.addUser(userId, userPassword, userEmail);
-		} catch (ApolloDatabaseUserPasswordException ex) {
-			throw new DatastoreException(ex.getMessage());
-		} catch (ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void authenticateUser(Authentication authentication) throws DatastoreException, UserNotAuthenticatedException {
-		try {
-			boolean userAuthenticated = dbUtils.authenticateUser(authentication);
-			if (!userAuthenticated) {
-				throw new UserNotAuthenticatedException("The user could not be authenticated (incorrect username or password)");
-			}
-		} catch (ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware) throws DatastoreException {
-
-		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, softwareIdentification, requestToRunSoftware);
-			if (!userAuthorized) {
-				throw new UserNotAuthorizedException("The specified user is not authorized for the request");
-			}
-		} catch (ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-
 	}
 
 	@Override

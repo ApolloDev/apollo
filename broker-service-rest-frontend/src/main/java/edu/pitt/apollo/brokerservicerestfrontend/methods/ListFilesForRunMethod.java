@@ -27,8 +27,8 @@ import org.springframework.http.HttpStatus;
 
 public class ListFilesForRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public ListFilesForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String listFilesForRun(BigInteger runID) throws UnsupportedSerializationFormatException, SerializationException {

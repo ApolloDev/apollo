@@ -19,13 +19,7 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v4_0.Request;
-import edu.pitt.apollo.services_common.v4_0.RequestMeta;
-import edu.pitt.apollo.services_common.v4_0.Response;
-import edu.pitt.apollo.services_common.v4_0.ResponseMeta;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
@@ -50,7 +44,6 @@ import org.springframework.web.client.RestTemplate;
 public class RestServiceUtils {
 
 	RestTemplate template = new RestTemplate();
-	HttpHeaders headers = new HttpHeaders();
 
 	public RestServiceUtils() {
 		// add the neccesary converts to the template
@@ -58,15 +51,16 @@ public class RestServiceUtils {
 		converters.add(new RequestHttpMessageConverter());
 		converters.add(new ResponseHttpMessageConverter());
 		template.setMessageConverters(converters);
-
-		// set the headers
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
-		headers.setContentType(MediaType.APPLICATION_XML);
 	}
 
-	public static String getUsernameAndPasswordQueryParams(Authentication authentication) {
-		return "username=" + authentication.getRequesterId() + "&password=" + authentication.getRequesterPassword();
-	}
+	private HttpHeaders getHeaders(Authentication authentication) {
+        HttpHeaders headers = new HttpHeaders();
+        // set the headers
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+        headers.setContentType(MediaType.APPLICATION_XML);
+        headers.set("Authorization", authentication.getPayload());
+        return headers;
+    }
 
 	public void checkResponseCode(Response response) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
@@ -147,52 +141,52 @@ public class RestServiceUtils {
 		checkResponseCode(response);
 	}
 
-	public void makeGetRequestAndCheckResponse(String uri) throws RestServiceException {
-		HttpEntity<Request> entity = new HttpEntity<>(headers);
+	public void makeGetRequestAndCheckResponse(String uri, Authentication authentication) throws RestServiceException {
+		HttpEntity<Request> entity = new HttpEntity<>(getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
 		checkResponse(responseEntity.getBody());
 	}
 
-	public void makePostRequestAndCheckResponse(String uri, Object object) throws RestServiceException {
+	public void makePostRequestAndCheckResponse(String uri, Authentication authentication, Object object) throws RestServiceException {
         Request request = getRequestObjectWithSerializedBody(object);
-        HttpEntity<Request> entity = new HttpEntity<>(request, headers);
+        HttpEntity<Request> entity = new HttpEntity<>(request, getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 		checkResponse(responseEntity.getBody());
 	}
 
-	public <T> T makeGetRequestCheckResponseAndGetObject(String uri, Class<T> clazz) throws RestServiceException {
-		HttpEntity<Request> entity = new HttpEntity<>(headers);
+	public <T> T makeGetRequestCheckResponseAndGetObject(String uri, Authentication authentication, Class<T> clazz) throws RestServiceException {
+		HttpEntity<Request> entity = new HttpEntity<>(getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
 
 		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
 	}
 
-	public <T> List<T> makeGetRequestCheckResponseAndGetObjects(String uri, Class<T> clazz) throws RestServiceException {
-		HttpEntity<Request> entity = new HttpEntity<>(headers);
+	public <T> List<T> makeGetRequestCheckResponseAndGetObjects(String uri, Authentication authentication, Class<T> clazz) throws RestServiceException {
+		HttpEntity<Request> entity = new HttpEntity<>(getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Response.class);
 
 		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
-	public <T> T makePostRequestCheckResponseAndGetObject(String uri, Object object, Class<T> clazz) throws RestServiceException {
+	public <T> T makePostRequestCheckResponseAndGetObject(String uri, Authentication authentication, Object object, Class<T> clazz) throws RestServiceException {
 
 		Request request = getRequestObjectWithSerializedBody(object);
-		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
+		HttpEntity<Request> entity = new HttpEntity<>(request, getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 
 		return checkResponseAndGetObject(responseEntity.getBody(), clazz);
 	}
 
-	public <T> List<T> makePostRequestCheckResponseAndGetObjects(String uri, Object object, Class<T> clazz) throws RestServiceException {
+	public <T> List<T> makePostRequestCheckResponseAndGetObjects(String uri, Authentication authentication, Object object, Class<T> clazz) throws RestServiceException {
 		Request request = getRequestObjectWithSerializedBody(object);
-		HttpEntity<Request> entity = new HttpEntity<>(request, headers);
+		HttpEntity<Request> entity = new HttpEntity<>(request, getHeaders(authentication));
 		ResponseEntity<Response> responseEntity = template.exchange(uri, HttpMethod.POST, entity, Response.class);
 		return checkResponseAndGetObjects(responseEntity.getBody(), clazz);
 	}
 
-	public void makeDeleteRequestAndCheckResponse(String uri) throws RestServiceException {
-
-		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, HttpEntity.EMPTY, Response.class);
+	public void makeDeleteRequestAndCheckResponse(String uri, Authentication authentication) throws RestServiceException {
+        HttpEntity<Request> entity = new HttpEntity<>(getHeaders(authentication));
+		ResponseEntity<Response> responseEntity = template.exchange(null, HttpMethod.DELETE, entity, Response.class);
 		Response response = responseEntity.getBody();
 		checkResponseCode(response);
 	}

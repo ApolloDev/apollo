@@ -36,11 +36,7 @@ public class WSClient {
 	
 		ListFilesForRunRequest message = new ListFilesForRunRequest();
 		message.setRunId(new BigInteger("210"));
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId("apollo_demo");
-		authentication.setRequesterPassword("apollo_demo");
-		message.setAuthentication(authentication);
-		
+
 		ListFilesForRunResult result = port.listFilesForRun(message);
 		System.out.println(result.getFiles().size());
 	}

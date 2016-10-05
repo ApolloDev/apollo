@@ -23,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetLastServiceToBeCalledForRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetLastServiceToBeCalledForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetLastServiceToBeCalledForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 	
 	public String getLastServiceToBeCalledForRun(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {

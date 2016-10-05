@@ -24,8 +24,8 @@ import org.springframework.http.HttpStatus;
 
 public class GetUrlOfFileMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetUrlOfFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetUrlOfFileMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getUrlOfFile(BigInteger runID, ContentDataFormatEnum contentDataFormatEnum,

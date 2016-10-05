@@ -27,8 +27,8 @@ import org.springframework.http.HttpStatus;
  */
 public class InsertAndStartRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public InsertAndStartRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public InsertAndStartRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String insertAndStartRun(String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
@@ -48,15 +48,15 @@ public class InsertAndStartRunMethod extends BaseBrokerServiceAccessorMethod {
 
 			RunResult runResult;
 			if (object instanceof RunSimulationMessage) {
-				runResult = impl.runSimulation((RunSimulationMessage) object);
+				runResult = impl.runSimulation((RunSimulationMessage) object, authentication);
 			} else if (object instanceof RunSimulationsMessage) {
-				runResult = impl.runSimulations((RunSimulationsMessage) object);
+				runResult = impl.runSimulations((RunSimulationsMessage) object, authentication);
 			} else if (object instanceof RunVisualizationMessage) {
-				runResult = impl.runVisualization((RunVisualizationMessage) object);
+				runResult = impl.runVisualization((RunVisualizationMessage) object, authentication);
 			} else if (object instanceof RunInfectiousDiseaseTransmissionExperimentMessage) {
-				runResult = impl.runInfectiousDiseaseTransmissionExperiment((RunInfectiousDiseaseTransmissionExperimentMessage) object);
+				runResult = impl.runInfectiousDiseaseTransmissionExperiment((RunInfectiousDiseaseTransmissionExperimentMessage) object, authentication);
 			} else if (object instanceof RunSimulatorOutputQueryMessage) {
-                runResult = impl.runSimulatorOutputQuery((RunSimulatorOutputQueryMessage) object);
+                runResult = impl.runSimulatorOutputQuery((RunSimulatorOutputQueryMessage) object, authentication);
             } else {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
 						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage");

@@ -35,8 +35,8 @@ import org.springframework.http.HttpStatus;
  */
 public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public InsertRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public InsertRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String insertRun(String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
@@ -63,7 +63,7 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 			} else {
 
 				try {
-					InsertRunResult insertRunResult = impl.insertRun(object);
+					InsertRunResult insertRunResult = impl.insertRun(object, authentication);
 
 					ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
 					objectSerializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);

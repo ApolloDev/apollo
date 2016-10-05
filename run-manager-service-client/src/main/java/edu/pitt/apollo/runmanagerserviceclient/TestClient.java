@@ -50,8 +50,6 @@ public class TestClient {
 		fis.close();
 
 		Authentication auth = new Authentication();
-		auth.setRequesterId(properties.getProperty("username"));
-		auth.setRequesterPassword(properties.getProperty("password"));
 		return auth;
 	}
 
@@ -68,9 +66,9 @@ public class TestClient {
 		return runSimulationMessage;
 	}
 
-	private static void run(RunMessage message) throws IOException, JobRunningServiceException, RunManagementException {
+	private static void run(RunMessage message, Authentication authentication) throws IOException, JobRunningServiceException, RunManagementException {
 		RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
-		InsertRunResult runResult = runManagementInterface.insertRun(message);
+		InsertRunResult runResult = runManagementInterface.insertRun(message, authentication);
 		if (!runResult.isRunCached()) {
 			BigInteger runId = runResult.getRunId();
 			while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
@@ -103,8 +101,7 @@ public class TestClient {
 		runSimulationsMessage
 				.setBaseInfectiousDiseaseScenario(runSimulationMessage
 						.getInfectiousDiseaseScenario());
-		runSimulationsMessage.setAuthentication(runSimulationMessage
-				.getAuthentication());
+
 		runSimulationsMessage.setSoftwareIdentification(runSimulationMessage
 				.getSoftwareIdentification());
 		runSimulationsMessage
@@ -166,8 +163,9 @@ public class TestClient {
 
 	public static void main(String[] args) throws IOException, RunManagementException, JobRunningServiceException {
 		RunSimulationMessage runSimulationMessage = TestClient.getRunSimulationMessage();
+        Authentication authentication = new Authentication();
 		//RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(20);
-		run(runSimulationMessage);
+		run(runSimulationMessage, authentication);
 	}
 
 }

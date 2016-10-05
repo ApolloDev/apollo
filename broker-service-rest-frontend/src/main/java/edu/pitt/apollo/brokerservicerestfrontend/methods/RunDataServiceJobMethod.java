@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatus;
  */
 public class RunDataServiceJobMethod extends BaseBrokerServiceAccessorMethod {
 
-	public RunDataServiceJobMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public RunDataServiceJobMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String runDataServiceJob(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {

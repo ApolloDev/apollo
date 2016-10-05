@@ -33,7 +33,6 @@ public class ApolloServiceTypeFactory {
 	public static RunVisualizationMessage getRunVisualizationMessage(SoftwareIdentification visualizerSoftwareIdentification,
 			RunIdentificationAndLabel[] runIdentificationsAndLabels) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
-		runVisualizationMessage.setAuthentication(getAuthentication());
 		runVisualizationMessage.setSoftwareIdentification(visualizerSoftwareIdentification);
 		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels) {
 			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
@@ -52,15 +51,12 @@ public class ApolloServiceTypeFactory {
 
 	private static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId(REQUESTER_ID);
-		auth.setRequesterPassword(REQUESTER_PASSWORD);
 		return auth;
 	}
 
 	public static RunSimulationMessage getMinimalistRunSimulationMessage(SimulatorIdentificationEnum simulator) {
 		RunSimulationMessage message = new RunSimulationMessage();
 		message.setInfectiousDiseaseScenario(ExampleInfectiousDiseaseScenario.getScenario());
-		message.setAuthentication(getAuthentication());
 		message.setSoftwareIdentification(getSoftwareIdentificationForSimulator(simulator));
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpecification(SIMULATION_RUN_LENGTH,
 				UNIT_OF_TIME_FOR_SIMULATOR_TIME_STEP, NUMBER_OF_UNITS_OF_TIME_IN_ONE_SIMULATOR_TIME_STEP));

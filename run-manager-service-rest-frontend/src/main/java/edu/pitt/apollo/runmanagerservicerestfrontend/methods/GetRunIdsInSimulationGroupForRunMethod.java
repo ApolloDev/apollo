@@ -24,8 +24,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetRunIdsInSimulationGroupForRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public GetRunIdsInSimulationGroupForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetRunIdsInSimulationGroupForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getRunIdsInSimulationGroupForRun(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {

@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
 
 
@@ -32,13 +33,15 @@ public class Chapter8_RunSimulationWithVaccinationControlStrategy extends Abstra
 		RunSimulationMessage runSimulationMessageWithoutVaccination = ApolloServiceTypeFactory
 				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
 
+        Authentication authentication = new Authentication();
+
 		ExampleVaccinationControlStrategy vaccinationControlMeasure = new ExampleVaccinationControlStrategy();
 		RunSimulationMessage runSimulationMessageWithVaccination = vaccinationControlMeasure
 				.addVaccinationControlMeasureToRunSimulationMessage(ApolloServiceTypeFactory
 						.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR));
 
 		runScenariosAndDisplayResults("No Vaccination", runSimulationMessageWithoutVaccination, "Vaccination",
-				runSimulationMessageWithVaccination);
+				runSimulationMessageWithVaccination, authentication);
 
 	}
 

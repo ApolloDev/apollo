@@ -23,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetSoftwareIdentificationForRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public GetSoftwareIdentificationForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetSoftwareIdentificationForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getSoftwareIdentificationForRun(BigInteger runId) throws UnsupportedSerializationFormatException, SerializationException {

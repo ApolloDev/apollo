@@ -413,8 +413,6 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
     @Override
     protected Authentication getAuthentication() {
         Authentication auth = new Authentication();
-        auth.setRequesterId("apollo_user");
-        auth.setRequesterPassword("apollo_password");
         return auth;
     }
 

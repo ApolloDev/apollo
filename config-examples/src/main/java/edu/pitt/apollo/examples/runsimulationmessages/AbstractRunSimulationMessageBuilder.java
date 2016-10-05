@@ -55,7 +55,6 @@ public abstract class AbstractRunSimulationMessageBuilder {
 
 		message.setSoftwareIdentification(getSoftwareIdentification());
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpeficiation());
-		message.setAuthentication(getAuthentication());
 		message.setInfectiousDiseaseScenario(getBaseInfectiousDiseaseScenario());
 
 		return message;

@@ -51,22 +51,10 @@ public abstract class BaseStageMethod {
 		apolloServiceQueue = new ApolloServiceQueue();
 	}
 
-	public BaseStageMethod(RunMessage runMessage) throws RunManagementException, UnrecognizedMessageTypeException, ApolloDatabaseException {
+	public BaseStageMethod(RunMessage runMessage, Authentication authentication) throws RunManagementException, UnrecognizedMessageTypeException, ApolloDatabaseException {
 		this.message = runMessage;
-		this.authentication = getAuthentication(message);
+		this.authentication = authentication;
 		dataServiceDao = DatastoreAccessorFactory.getDatabaseAccessor(message);
-	}
-
-	private Authentication cloneAuthentication(Authentication srcAuthentication) {
-		Authentication authentication = new Authentication();
-		authentication.setRequesterId(srcAuthentication.getRequesterId());
-		authentication.setRequesterPassword(srcAuthentication.getRequesterPassword());
-		return authentication;
-	}
-
-	private Authentication getAuthentication(RunMessage message) throws RunManagementException {
-		Authentication authentication = message.getAuthentication();
-		return cloneAuthentication(authentication);
 	}
 
 	public static void translateRun(BigInteger runId, DatastoreAccessor datastoreAccessor, Authentication authentication) throws DatastoreException, RunManagementException, TranslatorServiceException {

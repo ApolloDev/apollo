@@ -31,12 +31,12 @@ import org.springframework.http.HttpStatus;
  */
 public class UploadFileMethod extends BaseFileStoreMethod {
 
-	public UploadFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public UploadFileMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorization);
 	}
 
 	public String uploadFile(BigInteger runId, String urlToFile, String filename,
-			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataTypeEnum, Authentication authentication) throws SerializationException, DeserializationException, UnsupportedSerializationFormatException {
+			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataTypeEnum) throws SerializationException, DeserializationException, UnsupportedSerializationFormatException {
 		try {
 			
 			fileStoreService.uploadFile(runId, urlToFile, filename, contentDataFormatEnum, contentDataTypeEnum, authentication);

@@ -22,8 +22,8 @@ import org.springframework.http.HttpStatus;
  */
 public class AddRunIdsToSimulationGroupForRun extends BaseBrokerServiceAccessorMethod {
 
-	public AddRunIdsToSimulationGroupForRun(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public AddRunIdsToSimulationGroupForRun(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String addRunIdsToSimulationGroupForRun(BigInteger runId, String runIdList) throws UnsupportedSerializationFormatException, SerializationException {

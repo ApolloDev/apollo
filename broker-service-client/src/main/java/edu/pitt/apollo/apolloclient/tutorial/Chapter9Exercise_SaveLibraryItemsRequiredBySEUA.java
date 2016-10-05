@@ -49,8 +49,6 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 	private static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("TutorialUser");
-		auth.setRequesterPassword("TutorialPassword");
 		return auth;
 	}
 

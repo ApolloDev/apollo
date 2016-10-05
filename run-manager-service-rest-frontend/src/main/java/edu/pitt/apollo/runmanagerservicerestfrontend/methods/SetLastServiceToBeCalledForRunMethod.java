@@ -25,8 +25,8 @@ import org.springframework.http.HttpStatus;
  */
 public class SetLastServiceToBeCalledForRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public SetLastServiceToBeCalledForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public SetLastServiceToBeCalledForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String setLastServiceToBeCalledForRunMethod(BigInteger runId, String softwareName, String softwareVersion,

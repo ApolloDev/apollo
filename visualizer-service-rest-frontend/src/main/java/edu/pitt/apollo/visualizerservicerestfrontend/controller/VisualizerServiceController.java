@@ -34,11 +34,10 @@ public class VisualizerServiceController {
 	public @ResponseBody
 	String run(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Action", required = true) @RequestParam("action") RunActionEnum action,
-			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password)
+               @RequestHeader("Authorization") String authorization)
 			throws UnsupportedSerializationFormatException, SerializationException,
 			UnsupportedRunActionException, FilestoreException, RunManagementException {
 
-		return new StartRunMethod(username, password, SerializationFormat.XML).startRun(runId);
+		return new StartRunMethod(SerializationFormat.XML, authorization).startRun(runId);
 	}
 }

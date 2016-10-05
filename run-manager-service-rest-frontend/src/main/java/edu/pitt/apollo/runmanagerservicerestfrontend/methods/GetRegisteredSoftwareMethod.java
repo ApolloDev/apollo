@@ -24,8 +24,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetRegisteredSoftwareMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public GetRegisteredSoftwareMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetRegisteredSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {

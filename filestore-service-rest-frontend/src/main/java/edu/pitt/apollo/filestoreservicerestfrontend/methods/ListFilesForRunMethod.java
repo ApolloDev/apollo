@@ -20,6 +20,7 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
@@ -36,13 +37,13 @@ import org.springframework.http.HttpStatus;
  */
 public class ListFilesForRunMethod extends BaseFileStoreMethod {
 
-	public ListFilesForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+		super(serializationFormat, authorization);
 	}
 
 	public String listFilesForRun(BigInteger runId) throws SerializationException {
 		try {
-			List<FileIdentification> files = fileStoreService.listFilesForRun(runId, null);
+			List<FileIdentification> files = fileStoreService.listFilesForRun(runId, authentication);
 
 			List<String> serializedObjects = new ArrayList<>();
 			for (FileIdentification file : files) {

@@ -127,8 +127,6 @@ public class DataServiceClient {
 		fis.close();
 
 		Authentication auth = new Authentication();
-		auth.setRequesterId(properties.getProperty("user"));
-		auth.setRequesterPassword(properties.getProperty("password"));
 		return auth;
 	}
 }

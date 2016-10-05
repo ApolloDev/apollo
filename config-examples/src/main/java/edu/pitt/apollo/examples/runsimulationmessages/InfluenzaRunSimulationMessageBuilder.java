@@ -1047,8 +1047,6 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 	@Override
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("apollo_user");
-		auth.setRequesterPassword("preemptiveVaccinationAdminSchedule=100,200,300,400,500");
 		return auth;
 	}
 }

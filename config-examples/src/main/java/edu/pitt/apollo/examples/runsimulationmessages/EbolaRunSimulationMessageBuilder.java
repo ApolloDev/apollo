@@ -174,8 +174,6 @@ public class EbolaRunSimulationMessageBuilder extends AbstractRunSimulationMessa
 	@Override
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("apollo_user");
-		auth.setRequesterPassword("password");
 		return auth;
 	}
 

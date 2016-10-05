@@ -22,11 +22,7 @@ import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMeth
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
-import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.JobRunningServiceException;
-import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.*;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
@@ -61,9 +57,9 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunMessage;
 import edu.pitt.apollo.services_common.v4_0.RunResult;
 import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.utilities.ApolloSecurityManager;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,12 +83,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	private static final String RUN_MANAGER_SERVICE_URL_PROPERTY = "run_manager_service_url";
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String LIBRARY_SERVICE_URL_PROPERTY = "filestore_service_url";
-	private static final String AUTHENTICATION_USER = "authentication_user";
-	private static final String AUTHENTICATION_PASSWORD = "authentication_password";
 	private static String runManagerServiceUrl;
 	private static String filestoreServiceUrl;
 	private static String libraryServiceUrl;
-	private static Authentication dataServiceAuthentication;
 	private static RunManagerServiceConnector runManagerServiceConnector;
 	private static FilestoreServiceConnector filestoreServiceConnector;
 	private static LibraryServiceConnector libraryServiceConnector;
@@ -171,28 +164,6 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 		return libraryServiceUrl;
 	}
 
-	protected static Authentication getDataServiceAuthentication() throws IOException {
-		if (dataServiceAuthentication == null) {
-			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
-
-			File configurationFile = new File(apolloDir + File.separator + BROKER_SERVICE_PROPERTIES);
-			Properties brokerServiceProperties = new Properties();
-
-			try (InputStream input = new FileInputStream(configurationFile)) {
-				// load a properties file
-				brokerServiceProperties.load(input);
-
-				String authenticationUser = brokerServiceProperties.getProperty(AUTHENTICATION_USER);
-				String authenticationPassword = brokerServiceProperties.getProperty(AUTHENTICATION_PASSWORD);
-
-				dataServiceAuthentication = new Authentication();
-				dataServiceAuthentication.setRequesterId(authenticationUser);
-				dataServiceAuthentication.setRequesterPassword(authenticationPassword);
-			}
-		}
-		return dataServiceAuthentication;
-	}
-
 	protected static String getRunManagerServiceUrl() throws IOException {
 		if (runManagerServiceUrl == null) {
 			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
@@ -211,58 +182,69 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
-		return getRunManagerServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
+        ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication, softwareId);
+        return getRunManagerServiceConnector().getURLForSoftwareIdentification(softwareId, authentication);
 	}
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		return getRunManagerServiceConnector().getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
+		ApolloSecurityManager.authorizeUserForRunData(authentication, runId);
+        return getRunManagerServiceConnector().getRunIdsAssociatedWithSimulationGroupForRun(runId, authentication);
 	}
 
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		return getRunManagerServiceConnector().getSoftwareIdentificationForRun(runId, authentication);
+		ApolloSecurityManager.authorizeUserForRunData(authentication, runId);
+        return getRunManagerServiceConnector().getSoftwareIdentificationForRun(runId, authentication);
 	}
 
 	@Override
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-		return getRunManagerServiceConnector().insertRun(message);
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
+		ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication, message.getSoftwareIdentification());
+        return getRunManagerServiceConnector().insertRun(message, authentication);
 	}
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
-		getRunManagerServiceConnector().updateStatusOfRun(runId, statusEnumToSet, messageToSet, authentication);
+		ApolloSecurityManager.authorizeService(authentication);
+        getRunManagerServiceConnector().updateStatusOfRun(runId, statusEnumToSet, messageToSet, authentication);
 	}
 
 	@Override
 	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
-		getRunManagerServiceConnector().updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
+		ApolloSecurityManager.authorizeService(authentication);
+        getRunManagerServiceConnector().updateLastServiceToBeCalledForRun(runId, softwareIdentification, authentication);
 	}
 
 	@Override
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		return getRunManagerServiceConnector().getLastServiceToBeCalledForRun(runId, authentication);
+		ApolloSecurityManager.authorizeService(authentication);
+        return getRunManagerServiceConnector().getLastServiceToBeCalledForRun(runId, authentication);
 	}
 
 	@Override
 	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
-		getRunManagerServiceConnector().addRunIdsToSimulationGroupForRun(runId, runIds, authentication);
+		ApolloSecurityManager.authorizeService(authentication);
+        getRunManagerServiceConnector().addRunIdsToSimulationGroupForRun(runId, runIds, authentication);
 	}
 
 	@Override
 	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
-		getRunManagerServiceConnector().removeRunData(runId, authentication);
+		ApolloSecurityManager.authorizeUserForRunData(authentication, runId);
+        getRunManagerServiceConnector().removeRunData(runId, authentication);
 	}
 
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
-		return getRunManagerServiceConnector().getRunStatus(runId, authentication);
+		ApolloSecurityManager.authorizeServiceOrUserForRunData(authentication, runId);
+        return getRunManagerServiceConnector().getRunStatus(runId, authentication);
 	}
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		try {
-			getRunManagerServiceConnector().run(runId, authentication);
+        try {
+            ApolloSecurityManager.authorizeUserForRunData(authentication, runId);
+            getRunManagerServiceConnector().run(runId, authentication);
 		} catch (RunManagementException ex) {
 			throw new JobRunningServiceException(ex.getMessage());
 		}
@@ -271,7 +253,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 	@Override
 	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		try {
-			getRunManagerServiceConnector().terminate(runId, authentication);
+            ApolloSecurityManager.authorizeUserForRunData(authentication, runId);
+            getRunManagerServiceConnector().terminate(runId, authentication);
 		} catch (RunManagementException ex) {
 			throw new JobRunningServiceException(ex.getMessage());
 		}
@@ -279,58 +262,70 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
 	@Override
 	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
-		return getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
+		ApolloSecurityManager.authorizeService(authentication);
+        return getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
 	}
 
-	public RunResult runSimulation(RunSimulationMessage runSimulationMessage) {
+	public RunResult runSimulation(RunSimulationMessage runSimulationMessage, Authentication authentication) {
 		try {
+            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+                    runSimulationMessage.getSoftwareIdentification());
 			InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-			return method.insertAndStartRun(runSimulationMessage, BrokerServiceImpl.getDataServiceAuthentication());
-		} catch (IOException e) {
+			return method.insertAndStartRun(runSimulationMessage, authentication);
+		} catch (UserNotAuthorizedException | IOException e) {
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
 	}
 
-	public RunResult runVisualization(RunVisualizationMessage runVisualizationMessage) {
+	public RunResult runVisualization(RunVisualizationMessage runVisualizationMessage, Authentication authentication) {
 		try {
+            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+                    runVisualizationMessage.getSoftwareIdentification());
 			InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-			return method.insertAndStartRun(runVisualizationMessage, BrokerServiceImpl.getDataServiceAuthentication());
-		} catch (IOException e) {
+			return method.insertAndStartRun(runVisualizationMessage, authentication);
+		} catch (UserNotAuthorizedException | IOException e) {
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
 	}
 
 	public RunResult runSimulations(
-			edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage) {
+			edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
 		InsertAndStartSimulationMethod method = null;
 		try {
+            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+                    runSimulationsMessage.getSoftwareIdentification());
 			method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-			return method.insertAndStartRun(runSimulationsMessage, BrokerServiceImpl.getDataServiceAuthentication());
-		} catch (IOException e) {
+			return method.insertAndStartRun(runSimulationsMessage, authentication);
+		} catch (UserNotAuthorizedException | IOException e) {
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
 	}
 
-    public RunResult runSimulatorOutputQuery(RunSimulatorOutputQueryMessage message) {
+    public RunResult runSimulatorOutputQuery(RunSimulatorOutputQueryMessage message, Authentication authentication) {
         InsertAndStartQueryMethod method = null;
         try {
+            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+                    message.getSoftwareIdentification());
             method = new InsertAndStartQueryMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(message, BrokerServiceImpl.getDataServiceAuthentication());
-        } catch (IOException e) {
+            return method.insertAndStartRun(message, authentication);
+        } catch (UserNotAuthorizedException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
     }
 
-	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage runInfectiousDiseaseTransmissionExperimentMessage) {
+	public RunResult runInfectiousDiseaseTransmissionExperiment(RunInfectiousDiseaseTransmissionExperimentMessage runInfectiousDiseaseTransmissionExperimentMessage,
+                                                                Authentication authentication) {
 		InsertAndStartSimulationMethod method = null;
 		try {
+            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+                    runInfectiousDiseaseTransmissionExperimentMessage.getSoftwareIdentification());
 			method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-			return method.insertAndStartRun(runInfectiousDiseaseTransmissionExperimentMessage, BrokerServiceImpl.getDataServiceAuthentication());
-		} catch (IOException e) {
+			return method.insertAndStartRun(runInfectiousDiseaseTransmissionExperimentMessage, authentication);
+		} catch (UserNotAuthorizedException | IOException e) {
 			logger.error(e.getClass().getName() + ": " + e.getMessage());
 			return null;
 		}
