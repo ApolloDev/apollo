@@ -20,16 +20,14 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**

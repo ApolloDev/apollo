@@ -16,21 +16,17 @@ package edu.pitt.apollo.brokersoapservice;
 
 import edu.pitt.apollo.BrokerServiceImpl;
 
-import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 
 import edu.pitt.apollo.data_service_types.v4_0.*;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlRequest;
 import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlResult;
@@ -48,8 +44,8 @@ import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.utils.AuthorizationUtility;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import java.util.List;
 

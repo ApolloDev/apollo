@@ -22,8 +22,8 @@ import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
-import edu.pitt.apollo.utils.AuthorizationUtility;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 
 /**
  *

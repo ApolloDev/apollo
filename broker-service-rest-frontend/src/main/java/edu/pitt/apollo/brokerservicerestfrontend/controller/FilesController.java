@@ -15,7 +15,7 @@ import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

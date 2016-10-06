@@ -12,9 +12,7 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilde
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
-import org.springframework.http.HttpStatus;import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**

@@ -5,7 +5,6 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -15,7 +14,7 @@ import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import java.util.List;
 
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**

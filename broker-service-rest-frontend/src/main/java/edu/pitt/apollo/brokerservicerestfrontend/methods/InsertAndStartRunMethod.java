@@ -18,7 +18,7 @@ import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.XMLDeserializer;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.springframework.http.HttpStatus;
 

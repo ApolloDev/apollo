@@ -1,6 +1,6 @@
 package edu.pitt.apollo.visualizerservicerestfrontend.controller;
 
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizerservicerestfrontend.utils.StartRunMethod;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;

@@ -12,8 +12,7 @@ import edu.pitt.apollo.filestoreservicerestfrontend.methods.ListFilesForRunMetho
 import edu.pitt.apollo.filestoreservicerestfrontend.methods.UploadFileMethod;
 import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.utilities.SerializerFactory;
-import edu.pitt.apollo.utils.AuthorizationUtility;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

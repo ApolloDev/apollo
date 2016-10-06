@@ -8,7 +8,6 @@ package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
@@ -26,7 +25,7 @@ import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.XMLDeserializer;
-import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.springframework.http.HttpStatus;
 

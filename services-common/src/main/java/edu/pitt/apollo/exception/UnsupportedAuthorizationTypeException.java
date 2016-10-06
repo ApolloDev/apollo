@@ -1,4 +1,4 @@
-package edu.pitt.apollo.utils;
+package edu.pitt.apollo.exception;
 
 /**
  * Created by nem41 on 10/5/16.

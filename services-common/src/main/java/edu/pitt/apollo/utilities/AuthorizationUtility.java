@@ -1,4 +1,4 @@
-package edu.pitt.apollo.utils;
+package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
