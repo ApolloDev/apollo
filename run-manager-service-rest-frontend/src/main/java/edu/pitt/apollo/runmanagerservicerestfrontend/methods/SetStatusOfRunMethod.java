@@ -13,6 +13,8 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilde
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -21,7 +23,7 @@ import org.springframework.http.HttpStatus;
  */
 public class SetStatusOfRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public SetStatusOfRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public SetStatusOfRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

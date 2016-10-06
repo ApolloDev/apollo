@@ -12,6 +12,7 @@ import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.RunActionEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}/rungroup", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getRunIdsInSimulationGroup(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                      @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                                      @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new GetRunIdsInSimulationGroupForRunMethod(SerializationFormat.XML, authorization).getRunIdsInSimulationGroupForRun(runId);
 	}
@@ -48,7 +49,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}/softwareIdentification", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getSoftwareIdentificationForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                           @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                                           @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new GetSoftwareIdentificationForRunMethod(SerializationFormat.XML, authorization).getSoftwareIdentificationForRun(runId);
 	}
@@ -61,7 +62,7 @@ public class RunsController {
 	@RequestMapping(value = "/runs", method = RequestMethod.POST, headers = "Accept=application/xml")
 	public @ResponseBody
 	String postRunToRunsCollection(@RequestHeader("Authorization") String authorization,
-			@ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Run message.", required = true) @RequestBody String messageBody) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		return new InsertRunMethod(SerializationFormat.XML, authorization).insertRun(messageBody);
 	}
 	
@@ -75,7 +76,7 @@ public class RunsController {
 	String updateStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Method call status enum", required = true) @RequestParam("methodCallStatusEnum") MethodCallStatusEnum statusToUpdateTo,
 			@ApiParam(value = "Status message", required = true) @RequestParam("statusMessage") String statusMessage,
-                             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new SetStatusOfRunMethod(SerializationFormat.XML, authorization).setStatusOfRun(runId, statusToUpdateTo, statusMessage);
 	}
@@ -92,7 +93,7 @@ public class RunsController {
 			@ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
 			@ApiParam(value = "Software developer", required = true) @RequestParam("softwareDeveloper") String softwareDeveloper,
 			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum,
-                                             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                                             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new SetLastServiceToBeCalledForRunMethod(SerializationFormat.XML, authorization).setLastServiceToBeCalledForRunMethod(runId, softwareName,
 				softwareVersion, softwareDeveloper, softwareTypeEnum);
@@ -106,7 +107,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}/lastServiceToBeCalled", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getLastServiceToBeCalledForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                                          @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                                          @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new GetLastServiceToBeCalledForRunMethod(SerializationFormat.XML, authorization).getLastServiceToBeCalledForRun(runId);
 	}
@@ -120,7 +121,7 @@ public class RunsController {
 	public @ResponseBody
 	String addRunIdsToSimulationGroupForRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "List of run IDs to associate.", required = true) @RequestParam("runIdsToAssociate") String runIdsToAssociate,
-                                            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                                            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new AddRunIdsToSimulationGroupForRun(SerializationFormat.XML, authorization).addRunIdsToSimulationGroupForRun(runId, runIdsToAssociate);
 		
@@ -134,7 +135,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}", method = RequestMethod.DELETE, headers = "Accept=application/xml")
 	public @ResponseBody
 	String deleteRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                     @RequestHeader("Authorization") String authorization) throws SerializationException, UnsupportedSerializationFormatException {
+                     @RequestHeader("Authorization") String authorization) throws SerializationException, UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		
 		return new DeleteRunMethod(SerializationFormat.XML, authorization).deleteRun(runId);
 	}
@@ -147,7 +148,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}/status", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getStatusOfRun(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                          @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+                          @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 		
 		return new GetStatusOfRunMethod(SerializationFormat.XML, authorization).getStatusForRun(runId);
 	}
@@ -161,7 +162,7 @@ public class RunsController {
 	public @ResponseBody
 	String run(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Action", required = true) @RequestParam("action") RunActionEnum action,
-               @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedRunActionException {
+               @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedRunActionException, UnsupportedAuthorizationTypeException {
 		
 		switch (action) {
 			case START:
@@ -185,7 +186,7 @@ public class RunsController {
 	@RequestMapping(value = "/run/{runId}", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
 	String getRunInformation(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
-                             @RequestHeader("Authorization") String authorization) throws SerializationException, UnsupportedSerializationFormatException {
+                             @RequestHeader("Authorization") String authorization) throws SerializationException, UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
 		return new GetInformationForRunMethod(SerializationFormat.XML, authorization).getInformationForRun(runId);
 	}

@@ -17,6 +17,8 @@ import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -27,7 +29,7 @@ import org.springframework.http.HttpStatus;
 
 public class ListFilesForRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

@@ -99,7 +99,7 @@
         
         <module>visualizer-service</module>
         <module>visualizer-service-rest-frontend</module>
-        <!-- <module>filestore-service-rest-frontend</module> -->
+        <module>security-manager</module>
     </modules>
 
     <dependencies>

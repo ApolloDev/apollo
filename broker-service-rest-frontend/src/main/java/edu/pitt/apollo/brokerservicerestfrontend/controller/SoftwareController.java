@@ -10,6 +10,7 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class SoftwareController {
 	})
 	@RequestMapping(value = "/software", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getListOfSoftwareFromCollection(@RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException {
+	String getListOfSoftwareFromCollection(@RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
 		return new GetRegisteredSoftwareMethod(SerializationFormat.XML, authorization).getRegisteredSoftware();
 	}
@@ -48,7 +49,7 @@ public class SoftwareController {
 			@ApiParam(value = "Software name", required = true) @RequestParam("softwareName") String softwareName,
 			@ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
 			@ApiParam(value = "Software developer", required = true) @RequestParam("softwareDeveloper") String softwareDeveloper,
-			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum) throws UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
 		return new GetURLOfSoftwareMethod(SerializationFormat.XML, authorization).getURLOfSoftwareMethod(softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum);
 	}

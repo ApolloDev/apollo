@@ -1,5 +1,6 @@
 package edu.pitt.apollo.visualizerservicerestfrontend.controller;
 
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizerservicerestfrontend.utils.StartRunMethod;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -35,8 +36,8 @@ public class VisualizerServiceController {
 	String run(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Action", required = true) @RequestParam("action") RunActionEnum action,
                @RequestHeader("Authorization") String authorization)
-			throws UnsupportedSerializationFormatException, SerializationException,
-			UnsupportedRunActionException, FilestoreException, RunManagementException {
+            throws UnsupportedSerializationFormatException, SerializationException,
+            UnsupportedRunActionException, FilestoreException, RunManagementException, UnsupportedAuthorizationTypeException {
 
 		return new StartRunMethod(SerializationFormat.XML, authorization).startRun(runId);
 	}

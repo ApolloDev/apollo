@@ -11,6 +11,8 @@ import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -19,7 +21,7 @@ import org.springframework.http.HttpStatus;
  */
 public class StartRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public StartRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public StartRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

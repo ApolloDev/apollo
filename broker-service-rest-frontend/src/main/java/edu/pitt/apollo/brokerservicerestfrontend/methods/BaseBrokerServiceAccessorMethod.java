@@ -13,6 +13,7 @@ import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import edu.pitt.apollo.utils.AuthorizationUtility;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 
 /**
  *
@@ -26,7 +27,7 @@ public abstract class BaseBrokerServiceAccessorMethod {
 	protected final BrokerServiceImpl impl;
 	protected final ResponseMessageBuilder responseBuilder;
 
-	public BaseBrokerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHesder) throws UnsupportedSerializationFormatException {
+	public BaseBrokerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHesder) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
 		authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHesder);
 

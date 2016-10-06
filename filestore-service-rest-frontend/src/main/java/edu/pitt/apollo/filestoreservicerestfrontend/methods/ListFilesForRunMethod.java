@@ -29,6 +29,7 @@ import java.util.List;
 
 import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -37,7 +38,7 @@ import org.springframework.http.HttpStatus;
  */
 public class ListFilesForRunMethod extends BaseFileStoreMethod {
 
-	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+	public ListFilesForRunMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorization);
 	}
 

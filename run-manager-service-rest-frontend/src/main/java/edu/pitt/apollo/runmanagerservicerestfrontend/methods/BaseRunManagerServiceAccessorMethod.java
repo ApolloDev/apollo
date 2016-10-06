@@ -13,6 +13,7 @@ import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import edu.pitt.apollo.utils.AuthorizationUtility;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 
 /**
  *
@@ -25,7 +26,7 @@ public abstract class BaseRunManagerServiceAccessorMethod {
 	protected final RunManagerServiceImpl impl;
 	protected final ResponseMessageBuilder responseBuilder;
 
-	public BaseRunManagerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public BaseRunManagerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
         authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 

@@ -16,6 +16,8 @@ import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.utilities.Serializer;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -24,7 +26,7 @@ import org.springframework.http.HttpStatus;
  */
 public class GetRegisteredSoftwareMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public GetRegisteredSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public GetRegisteredSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>services-common</artifactId>
+    <artifactId>security-manager</artifactId>
     <packaging>jar</packaging>
 	
     <licenses>
@@ -111,6 +111,28 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+        </dependency>
+
+
+        <dependency>
+    <groupId>com.auth0</groupId>
+    <artifactId>java-jwt</artifactId>
+    <version>2.2.0</version>
+</dependency>
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>services-common</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>db-common</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -193,7 +215,7 @@
 
         </plugins>
     </build>
-    <name>services-common</name>
+    <name>security-manager</name>
     <groupId>edu.pitt.apollo</groupId>
     <version>4.0-SNAPSHOT</version>
 </project>

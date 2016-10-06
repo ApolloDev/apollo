@@ -13,6 +13,8 @@ import edu.pitt.apollo.runmanagerservicerestfrontend.utils.RestDataServiceUtils;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import java.util.List;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -21,7 +23,7 @@ import org.springframework.http.HttpStatus;
  */
 public class AddRunIdsToSimulationGroupForRun extends BaseRunManagerServiceAccessorMethod {
 
-	public AddRunIdsToSimulationGroupForRun(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public AddRunIdsToSimulationGroupForRun(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

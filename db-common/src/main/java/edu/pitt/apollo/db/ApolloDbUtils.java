@@ -69,7 +69,7 @@ public class ApolloDbUtils extends BaseDbUtils {
                 Integer count = rs.getInt("count");
                 if (count == null || count == 0) {
                     throw new ApolloDatabaseException("No simulation group for run ID " + runId);
-                } else if (count == 1){
+                } else if (count == 1) {
                     return false;
                 } else {
                     return true;
@@ -228,10 +228,10 @@ public class ApolloDbUtils extends BaseDbUtils {
 
         try (Connection conn = datasource.getConnection()) {
 
-           String query = "SELECT id, developer, name, version, service_type, wsdl_url, license_name, license_version, license_url, license_attribution FROM software_identification";
-            PreparedStatement  pstmt = conn.prepareStatement(query);
+            String query = "SELECT id, developer, name, version, service_type, wsdl_url, license_name, license_version, license_url, license_attribution FROM software_identification";
+            PreparedStatement pstmt = conn.prepareStatement(query);
 
-           ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 ServiceRegistrationRecord srr = new ServiceRegistrationRecord();
                 srr.setSoftwareIdentification(new SoftwareIdentification());
@@ -291,20 +291,42 @@ public class ApolloDbUtils extends BaseDbUtils {
 //        return si;
 //    }
 
+    public String getUserFromKey(int userKey)
+            throws ApolloDatabaseException {
+
+        String query = "SELECT requester_id FROM users WHERE id = ?";
+        try (Connection conn = datasource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, userKey);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("requester_id");
+            } else {
+                throw new ApolloDatabaseKeyNotFoundException(
+                        "No entry in the users table where id = " + userKey);
+            }
+        } catch (SQLException ex) {
+            throw new ApolloDatabaseException(
+                    "SQLException attempting to get user id: "
+                            + ex.getMessage());
+        }
+    }
+
     public int getUserKey(String userId)
             throws ApolloDatabaseException {
 
-        String query = "SELECT id FROM users WHERE user_id = ?";
+        String query = "SELECT id FROM users WHERE requester_id = ?";
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                    return rs.getInt("id");
+                return rs.getInt("id");
             } else {
                 throw new ApolloDatabaseKeyNotFoundException(
-                        "No entry in the users table where user_id = " + userId);
+                        "No entry in the users table where requester_id = " + userId);
             }
         } catch (SQLException ex) {
             throw new ApolloDatabaseException(
@@ -328,7 +350,7 @@ public class ApolloDbUtils extends BaseDbUtils {
                     "A user with userID \"" + userId + "\" already exists.");
         }
 
-        String query = "INSERT INTO users (user_id) VALUES (?)";
+        String query = "INSERT INTO users (requester_id) VALUES (?)";
         try (Connection conn = datasource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, userId);
@@ -497,6 +519,34 @@ public class ApolloDbUtils extends BaseDbUtils {
         }
     }
 
+    public String getUserForRun(
+            BigInteger runId) throws ApolloDatabaseException {
+
+        String query = "SELECT requester_id from run WHERE " + "id = ?";
+
+        try (Connection conn = datasource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, runId.intValue());
+            ResultSet rs = pstmt.executeQuery();
+            int userKey = 0;
+            if (rs.next()) {
+                userKey = rs.getInt("requester_id");
+            } else {
+                throw new ApolloDatabaseKeyNotFoundException(
+                        "No entry found in run where id = " + runId);
+            }
+
+            if (userKey == 0) {
+                return null;
+            }
+
+            return getUserFromKey(userKey);
+
+        } catch (SQLException ex) {
+            throw new ApolloDatabaseException("SQLException getting user for run " + runId + ": " + ex.getMessage());
+        }
+    }
+
     public int getSoftwareIdentificationKeyForRun(BigInteger runId)
             throws ApolloDatabaseException {
 
@@ -584,7 +634,13 @@ public class ApolloDbUtils extends BaseDbUtils {
         if (identificationOfSoftwareToRun != null) {
             softwareKey = getSoftwareIdentificationKey(identificationOfSoftwareToRun);
         }
-        int userKey = getUserKey(userId);
+
+        int userKey;
+        try {
+            userKey = getUserKey(userId);
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            userKey = addUser(userId);
+        }
 
         BigInteger simulationGroupId = null;
         String additionalInsertField = "";
@@ -1025,7 +1081,12 @@ public class ApolloDbUtils extends BaseDbUtils {
             throws ApolloDatabaseException,
             ApolloDatabaseRecordNotInsertedException, Md5UtilsException {
 
-        int userKey = getUserKey(userId);
+        int userKey;
+        try {
+            userKey = getUserKey(userId);
+        } catch (ApolloDatabaseKeyNotFoundException ex) {
+            userKey = addUser(userId);
+        }
 
         int softwareKey = getSoftwareIdentificationKey(runVisualizationMessage
                 .getSoftwareIdentification());

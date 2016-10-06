@@ -14,6 +14,8 @@ import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -22,7 +24,7 @@ import org.springframework.http.HttpStatus;
  */
 public class SetLastServiceToBeCalledForRunMethod extends BaseBrokerServiceAccessorMethod {
 
-	public SetLastServiceToBeCalledForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException {
+	public SetLastServiceToBeCalledForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorizationHeader);
 	}
 

@@ -28,6 +28,8 @@ import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -36,7 +38,7 @@ import org.springframework.http.HttpStatus;
  */
 public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 
-	public GetStatusOfFileUploadMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException {
+	public GetStatusOfFileUploadMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 		super(serializationFormat, authorization);
 	}
 
