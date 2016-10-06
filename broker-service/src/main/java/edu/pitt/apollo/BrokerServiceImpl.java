@@ -310,8 +310,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
         try {
-            // this method uses authorization after getting the registered software
-            List<ServiceRecord> records = getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(authentication);
+            // this method uses the original authorization after getting the registered software
+            Authentication userAuthentication = ApolloSecurityManager.getUsernameAuthentication(authentication);
+            List<ServiceRecord> records = getRunManagerServiceConnector().getListOfRegisteredSoftwareRecords(userAuthentication);
             ApolloSecurityManager.filterSoftwareListForServiceOrUser(authentication, records);
             return records;
         } catch (ApolloSecurityException ex) {

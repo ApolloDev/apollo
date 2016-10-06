@@ -58,7 +58,16 @@ public class RestServiceUtils {
         // set the headers
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
         headers.setContentType(MediaType.APPLICATION_XML);
-        headers.set("Authorization", authentication.getPayload());
+        String authorizationString = "";
+        if (authentication.getAuthorizationType() == null) {
+            authorizationString = "UserId=" + authentication.getPayload();
+        } else if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.JWT)) {
+            authorizationString = "JWT=" + authentication.getPayload();
+        } else if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.SSO)) {
+            authorizationString = "UserIdToken=" + authentication.getPayload();
+        }
+
+        headers.set("Authorization", authorizationString);
         return headers;
     }
 

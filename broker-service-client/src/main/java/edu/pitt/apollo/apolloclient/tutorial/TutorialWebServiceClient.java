@@ -153,7 +153,6 @@ public class TutorialWebServiceClient {
 				Thread.sleep(TWO_SECONDS);
 				RunStatusRequest request = new RunStatusRequest();
 				request.setRunIdentification(runIdentification);
-				request.setAuthentication(authentication);
 				MethodCallStatus callStatus = port
 						.getRunStatus(request);
 				MethodCallStatusEnum status = callStatus.getStatus();

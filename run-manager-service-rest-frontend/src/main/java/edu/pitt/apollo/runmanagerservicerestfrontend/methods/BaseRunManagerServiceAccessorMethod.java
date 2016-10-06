@@ -30,7 +30,6 @@ public abstract class BaseRunManagerServiceAccessorMethod {
 
         authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 
-
         responseBuilder = new ResponseMessageBuilder();
 		
 		serializer = SerializerFactory.getSerializer(serializationFormat);

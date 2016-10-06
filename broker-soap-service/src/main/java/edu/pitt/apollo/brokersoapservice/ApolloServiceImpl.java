@@ -16,17 +16,21 @@ package edu.pitt.apollo.brokersoapservice;
 
 import edu.pitt.apollo.BrokerServiceImpl;
 
+import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import edu.pitt.apollo.data_service_types.v4_0.*;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.UserNotAuthenticatedException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlRequest;
 import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlResult;
@@ -44,11 +48,16 @@ import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
 import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
 import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
 import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.utils.AuthorizationUtility;
+import edu.pitt.apollo.utils.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import java.util.List;
+
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@org.apache.cxf.interceptor.InInterceptors (interceptors = {"edu.pitt.apollo.brokersoapservice.HTTPHeaderInterceptor" })
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI")
 class ApolloServiceImpl implements ApolloServiceEI {
 
@@ -237,7 +246,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@Override
 	public RunResult runSimulations(
 			edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage) {
-		return brokerService.runSimulations(runSimulationsMessage, null);
+        try {
+            return brokerService.runSimulations(runSimulationsMessage, getAuthetication());
+        } catch (UnsupportedAuthorizationTypeException ex) {
+            RunResult result = new RunResult();
+            result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
+            return result;
+        }
 	}
 
 	@Override
@@ -245,12 +260,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRegisteredServices")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRegisteredServices")
 	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRegisteredServicesResponse")
-	public GetRegisteredServicesResult getRegisteredServices(@WebParam(name = "authentication", targetNamespace = "") Authentication authentication) {
-		GetRegisteredServicesResult result = new GetRegisteredServicesResult();
+	public GetRegisteredServicesResult getRegisteredServices() {
+
+        GetRegisteredServicesResult result = new GetRegisteredServicesResult();
 		try {
-			result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(authentication));
+			result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(getAuthetication()));
 			result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-		} catch (RunManagementException ex) {
+		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
 			result = new GetRegisteredServicesResult();
 			result.setStatus(createStatus("Error running getLibraryItemContainer: " + ex.getMessage(),
 					MethodCallStatusEnum.FAILED));
@@ -313,7 +329,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunSimulationResponse")
 	public RunResult runSimulation(
 			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
-		return brokerService.runSimulation(runSimulationMessage, null);
+        try {
+            return brokerService.runSimulation(runSimulationMessage, getAuthetication());
+        } catch (UnsupportedAuthorizationTypeException ex) {
+            RunResult result = new RunResult();
+            result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
+            return result;
+        }
 	}
 
 	@Override
@@ -337,7 +359,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunVisualizationResponse")
 	public RunResult runVisualization(
 			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
-		return brokerService.runVisualization(runVisualizationMessage, null);
+        try {
+            return brokerService.runVisualization(runVisualizationMessage, getAuthetication());
+        } catch (UnsupportedAuthorizationTypeException ex) {
+            RunResult result = new RunResult();
+            result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
+            return result;
+        }
 	}
 
 	@Override
@@ -348,8 +376,8 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public MethodCallStatus getRunStatus(
 			@WebParam(name = "runStatusRequest", targetNamespace = "") RunStatusRequest runStatusRequest) {
 		try {
-			return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), runStatusRequest.getAuthentication());
-		} catch (RunManagementException ex) {
+			return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthetication());
+		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
 			return createStatus("Error running getLibraryItemURNs: " + ex.getMessage(),
 					MethodCallStatusEnum.FAILED);
 		}
@@ -367,7 +395,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrl")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
 	@ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrlResponse")
-	
+
 	public GetFileUrlResult getFileUrl(GetFileUrlRequest getFileUrlRequest) {
 		GetFileUrlResult result = new GetFileUrlResult();
 		MethodCallStatus status = new MethodCallStatus();
@@ -376,13 +404,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 					getFileUrlRequest.getFileIdentification().getLabel(),
 					getFileUrlRequest.getFileIdentification().getFormat(),
 					getFileUrlRequest.getFileIdentification().getType(),
-					getFileUrlRequest.getAuthentication());
+					getAuthetication());
 			result.setUrl(url);
 			status.setMessage("Completed");
 			status.setStatus(MethodCallStatusEnum.COMPLETED);
 			result.setStatus(status);
 			return result;
-		} catch (FilestoreException ex) {
+		} catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
 			status.setMessage("The file URL could not be retrieved: " + ex.getMessage());
 			status.setStatus(MethodCallStatusEnum.FAILED);
 			result.setStatus(status);
@@ -395,7 +423,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRun")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
 	@ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRunResponse")
-	
+
 	public ListFilesForRunResult listFilesForRun(@WebParam(name = "listFilesForRunRequest", targetNamespace = "")ListFilesForRunRequest listFilesForRunRequest) {
 
 		ListFilesForRunResult result = new ListFilesForRunResult();
@@ -403,13 +431,13 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 		try {
 			List<FileIdentification> files = brokerService.listFilesForRun(listFilesForRunRequest.getRunId(),
-					listFilesForRunRequest.getAuthentication());
+					getAuthetication());
 			result.getFiles().addAll(files);
 			status.setMessage("Completed");
 			status.setStatus(MethodCallStatusEnum.COMPLETED);
 			result.setStatus(status);
 			return result;
-		} catch (FilestoreException ex) {
+		} catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
 			status.setMessage("The list of files could not be retrieved: " + ex.getMessage());
 			status.setStatus(MethodCallStatusEnum.FAILED);
 			result.setStatus(status);
@@ -422,5 +450,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
+	private Authentication getAuthetication() throws UnsupportedAuthorizationTypeException {
+        String authorization = (String) PhaseInterceptorChain.getCurrentMessage().getExchange().get(HTTPHeaderInterceptor.AUTHORIZATION_EXCHANGE_PROPERTY);
+        Authentication authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorization);
+        return authentication;
+    }
 
 }

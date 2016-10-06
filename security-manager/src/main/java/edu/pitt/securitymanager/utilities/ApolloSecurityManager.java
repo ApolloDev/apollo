@@ -61,6 +61,7 @@ public class ApolloSecurityManager {
     public static void authorizeUserForRunData(Authentication authentication, BigInteger runId) throws ApolloSecurityException {
         UserProfileData userProfile = getUserProfileFromAuthentication(authentication);
         checkOwnershipOfRun(userProfile, runId);
+        setAuthenticationUserName(authentication, userProfile);
     }
 
     public static void authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
@@ -78,6 +79,8 @@ public class ApolloSecurityManager {
         if (!foundSoftware) {
             throw new UserNotAuthorizedException("The user is not authorized to run the specified software");
         }
+
+        setAuthenticationUserName(authentication, userProfile);
     }
 
     public static void authorizeService(Authentication authentication) throws ApolloSecurityException {
@@ -85,6 +88,8 @@ public class ApolloSecurityManager {
         if (!userProfileData.isService) {
             throw new ApolloSecurityException("Only services are allowed to execute this action");
         }
+
+        setAuthenticationUserName(authentication, userProfileData);
     }
 
     public static void filterSoftwareListForServiceOrUser(Authentication authentication,
@@ -115,6 +120,15 @@ public class ApolloSecurityManager {
             // check ownership
             checkOwnershipOfRun(userProfile, runId);
         }
+        setAuthenticationUserName(authentication, userProfile);
+    }
+
+    public static Authentication getUsernameAuthentication(Authentication authentication) throws ApolloSecurityException {
+        UserProfileData userProfileData = getUserProfileFromAuthentication(authentication);
+        Authentication newAuthentication = new Authentication();
+        newAuthentication.setAuthorizationType(null);
+        newAuthentication.setPayload(userProfileData.userId);
+        return newAuthentication;
     }
 
     private static void checkOwnershipOfRun(UserProfileData userProfileData, BigInteger runId) throws ApolloSecurityException {
@@ -210,5 +224,10 @@ public class ApolloSecurityManager {
                 && softwareIdentification1.getSoftwareDeveloper().equals(softwareIdentification2.getSoftwareDeveloper())
                 && softwareIdentification1.getSoftwareVersion().equals(softwareIdentification2.getSoftwareVersion()));
 
+    }
+
+    private static void setAuthenticationUserName(Authentication authentication, UserProfileData userProfileData) {
+        authentication.setAuthorizationType(null);
+        authentication.setPayload(userProfileData.userId);
     }
 }

@@ -13,6 +13,7 @@ public class AuthorizationUtility {
 
     private static final String JWT_TOKEN_PROPERTY = "JWT";
     private static final String SSO_TOKEN_PROPERTY = "UserIdToken";
+    private static final String USER_ID_PROPERTY = "UserId";
 
     public static Authentication createAuthenticationFromAuthorizationHeader(String authorizationHeader) throws UnsupportedAuthorizationTypeException {
 
@@ -33,6 +34,9 @@ public class AuthorizationUtility {
         } else if (authorizationPropertyMap.containsKey(SSO_TOKEN_PROPERTY)) {
             authentication.setAuthorizationType(AuthorizationTypeEnum.SSO);
             authentication.setPayload(authorizationPropertyMap.get(SSO_TOKEN_PROPERTY));
+        } else if (authorizationPropertyMap.containsKey(USER_ID_PROPERTY)) {
+            authentication.setAuthorizationType(null);
+            authentication.setPayload(authorizationPropertyMap.get(USER_ID_PROPERTY));
         } else {
             throw new UnsupportedAuthorizationTypeException();
         }
