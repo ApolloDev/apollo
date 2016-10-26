@@ -57,6 +57,9 @@
     <modules>
         <module>db-common</module>
         <module>services-common</module>
+
+        <module>apollo-translator</module>
+	<module>apollo-translator-service</module>
         <module>rest-services-frontend-common</module>
 
         <module>run-manager-service-rest-connector</module>

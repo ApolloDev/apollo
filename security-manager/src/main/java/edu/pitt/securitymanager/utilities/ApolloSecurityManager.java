@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -48,6 +49,7 @@ public class ApolloSecurityManager {
     private static final String SOFTWARE_VERSION_KEY = "v";
     private static final String IS_SERVICE_KEY = "isService";
     private static final Map<String, String> userDelegatedTokenMap = new HashMap<>();
+    private static final Map<String, UserProfileData> userProfileMap = new HashMap<>();
 
     static {
 
@@ -76,7 +78,7 @@ public class ApolloSecurityManager {
         setAuthenticationUserName(authentication, userProfile.userId);
     }
 
-    public static void authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
+    public static String authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
             throws ApolloSecurityException {
         Jws<Claims> claims = getClaims(authentication);
         UserProfileData userProfile = getUserProfileFromClaims(claims);
@@ -94,6 +96,7 @@ public class ApolloSecurityManager {
         }
 
         setAuthenticationUserName(authentication, userProfile.userId);
+        return userProfile.userId;
     }
 
     public static void authorizeService(Authentication authentication) throws ApolloSecurityException {
@@ -235,7 +238,7 @@ public class ApolloSecurityManager {
             con.setRequestMethod("POST");
             con.addRequestProperty("Content-Type", "application/" + "json");
             con.setRequestProperty("Content-Length", Integer.toString(content.length()));
-            con.getOutputStream().write(content.getBytes("UTF8"));
+            con.getOutputStream().write(content.getBytes(StandardCharsets.UTF_8));
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -261,6 +264,10 @@ public class ApolloSecurityManager {
     }
 
     private static UserProfileData getUserProfile(String userId) throws ApolloSecurityException {
+
+        if (userProfileMap.containsKey(userId)) {
+            return userProfileMap.get(userId);
+        }
 
         try {
             URL obj = new URL(HUB_URL + URLEncoder.encode(userId));
@@ -302,6 +309,9 @@ public class ApolloSecurityManager {
             UserProfileData userProfileData = new UserProfileData();
             userProfileData.allowedSoftware = softwareIdentificationList;
             userProfileData.userId = userId;
+
+            userProfileMap.put(userId, userProfileData);
+
             return userProfileData;
 
         } catch (IOException ex) {

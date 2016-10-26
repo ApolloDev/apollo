@@ -322,8 +322,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
     public RunResult runSimulation(RunSimulationMessage runSimulationMessage, Authentication authentication) {
         try {
-            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            String userId = ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runSimulationMessage.getSoftwareIdentification());
+            runSimulationMessage.setUserId(userId);
             InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
             return method.insertAndStartRun(runSimulationMessage, authentication);
         } catch (ApolloSecurityException | IOException e) {
@@ -334,8 +335,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
     public RunResult runVisualization(RunVisualizationMessage runVisualizationMessage, Authentication authentication) {
         try {
-            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            String userId = ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runVisualizationMessage.getSoftwareIdentification());
+            runVisualizationMessage.setUserId(userId);
             InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
             return method.insertAndStartRun(runVisualizationMessage, authentication);
         } catch (ApolloSecurityException | IOException e) {
@@ -348,8 +350,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
             edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
         InsertAndStartSimulationMethod method = null;
         try {
-            ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            String userId = ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runSimulationsMessage.getSoftwareIdentification());
+            runSimulationsMessage.setUserId(userId);
             method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
             return method.insertAndStartRun(runSimulationsMessage, authentication);
         } catch (ApolloSecurityException | IOException e) {
