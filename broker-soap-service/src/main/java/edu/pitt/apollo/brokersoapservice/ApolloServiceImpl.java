@@ -264,7 +264,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 			result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
 		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
 			result = new GetRegisteredServicesResult();
-			result.setStatus(createStatus("Error running getLibraryItemContainer: " + ex.getMessage(),
+			result.setStatus(createStatus("Error running getRegisteredServices: " + ex.getMessage(),
 					MethodCallStatusEnum.FAILED));
 		}
 
@@ -374,7 +374,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 		try {
 			return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthetication());
 		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
-			return createStatus("Error running getLibraryItemURNs: " + ex.getMessage(),
+			return createStatus("Error running getRunStatus: " + ex.getMessage(),
 					MethodCallStatusEnum.FAILED);
 		}
 	}

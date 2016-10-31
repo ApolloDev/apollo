@@ -8,6 +8,7 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0.AuthorizationTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
@@ -15,7 +16,6 @@ import edu.pitt.securitymanager.exception.UserNotAuthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.postgresql.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -41,6 +41,8 @@ public class ApolloSecurityManager {
     private static final String HUB_URL;
     private static final String AUTH0_URL_PROPERTY = "auth0_url";
     private static final String AUTH0_URL;
+    private static final String HUB_TOKEN_PROPERTY = "hub_token";
+    private static final String HUB_TOKEN;
     private static final String USER_ID_KEY = "sub";
     private static final String APP_METADATA_KEY = "appMetadata";
     private static final String ALLOWED_SERVICES_KEY = "allowedServices";
@@ -60,6 +62,7 @@ public class ApolloSecurityManager {
             HUB_URL = securityProperties.getProperty(HUB_URL_PROPERTY);
             AUTH0_URL = securityProperties.getProperty(AUTH0_URL_PROPERTY);
             APOLLO_CLIENT_ID = securityProperties.getProperty(APOLLO_CLIENT_ID_PROPERTY);
+            HUB_TOKEN = securityProperties.getProperty(HUB_TOKEN_PROPERTY);
         } catch (IOException ex) {
             throw new ExceptionInInitializerError("IOException: " + ex.getMessage());
         }
@@ -174,7 +177,7 @@ public class ApolloSecurityManager {
         switch (authentication.getAuthorizationType()) {
             case JWT:
                 try {
-                    Jws<Claims> claims = Jwts.parser().setSigningKey(Base64.encodeBytes(APOLLO_CLIENT_SECRET.getBytes())).parseClaimsJws(authentication.getPayload());
+                    Jws<Claims> claims = Jwts.parser().setSigningKey(APOLLO_CLIENT_SECRET).parseClaimsJws(authentication.getPayload());
                     return claims;
                 } catch (Exception ex) {
                     throw new ApolloSecurityException("Exception verifying JWT: " + ex.getMessage());
@@ -185,7 +188,7 @@ public class ApolloSecurityManager {
                     Jws<Claims> claims = Jwts.parser().setSigningKey(APOLLO_CLIENT_SECRET).parseClaimsJws(token);
                     return claims;
                 } catch (Exception ex) {
-                    throw new ApolloSecurityException("Exception verifying JWT: " + ex.getMessage());
+                    throw new ApolloSecurityException("Exception verifying SSO: " + ex.getMessage());
                 }
             default:
                 throw new ApolloSecurityException("Unrecognized authorization type");
@@ -275,6 +278,8 @@ public class ApolloSecurityManager {
 
             // optional default is GET
             con.setRequestMethod("GET");
+            con.addRequestProperty("Accept", "application/" + "json");
+            con.addRequestProperty("Authorization", "Bearer " + HUB_TOKEN);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -293,6 +298,9 @@ public class ApolloSecurityManager {
 
             JsonObject metadata = userProfile.get(APP_METADATA_KEY).getAsJsonObject();
 
+            if (metadata.get(ALLOWED_SERVICES_KEY) == null) {
+                throw new ApolloSecurityException("User profile does not contain any allowed services");
+            }
             JsonArray allowedServices = metadata.get(ALLOWED_SERVICES_KEY).getAsJsonArray();
 
             List<SoftwareIdentification> softwareIdentificationList = new ArrayList<>();
@@ -330,5 +338,12 @@ public class ApolloSecurityManager {
     private static void setAuthenticationUserName(Authentication authentication, String userName) {
         authentication.setAuthorizationType(null);
         authentication.setPayload(userName);
+    }
+
+    public static void main(String[] args) throws ApolloSecurityException {
+        Authentication authentication = new Authentication();
+        authentication.setAuthorizationType(AuthorizationTypeEnum.SSO);
+        authentication.setPayload("");
+        getUsernameAuthentication(authentication);
     }
 }

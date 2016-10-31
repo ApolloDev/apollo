@@ -34,34 +34,20 @@ import java.util.*;
  */
 public class DatastoreAccessor implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
 
-	protected static final String OUTPUT_DIRECTORY;
-	protected static final String OUTPUT_FILE_NAME;
-	protected static final String ZIP_FILE_NAME;
-	protected static final int DATA_SERVICE_SOFTWARE_KEY;
-	protected static final SoftwareIdentification dataServiceSoftwareId;
 	private static final String BATCH_REMOTE_FILE_NAME = "run_messages.zip";
 	private static final String BATCH_ZIP_FILE_NAME = "batch_run_messages_%d.zip";
-	private static final String DATA_SERVICE_PROPERTIES_NAME = "data_service.properties";
+	private static final String RUN_MANAGER_SERVICE_PROPERTIES_NAME = "run_manager_service.properties";
 	private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
 	private static final String LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY = "local_file_storage_dir";
 	private static final String LOCAL_FILE_BASE_URL_PROPERTY = "local_file_base_url";
 	protected static final String LOCAL_FILE_BASE_URL;
 	protected static final String LOCAL_FILE_STORAGE_DIR;
-	private static final String OUTPUT_DIRECTORY_KEY = "output_directory";
-	private static final String OUTPUT_FILE_NAME_KEY = "output_file_name";
 	private static final String APOLLO_DIR;
-	private static final String ZIP_FILE_NAME_KEY = "zip_file_name";
-	private static final String FILE_PREFIX = "run_%d_";
 	private static FilestoreServiceConnector filestoreServiceConnector;
 	private static String filestoreServiceUrl;
 	static Logger logger = LoggerFactory.getLogger(DatastoreAccessor.class);
 
 	static {
-		dataServiceSoftwareId = new SoftwareIdentification();
-		dataServiceSoftwareId.setSoftwareDeveloper("UPitt");
-		dataServiceSoftwareId.setSoftwareName("Data Service");
-		dataServiceSoftwareId.setSoftwareVersion("1.0");
-		dataServiceSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.DATA);
 		Map<String, String> env = System.getenv();
 		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
 		System.out.println("apolloDir: " + apolloDir);
@@ -74,10 +60,10 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 
 			FileInputStream fis;
 			try {
-				fis = new FileInputStream(APOLLO_DIR + DATA_SERVICE_PROPERTIES_NAME);
+				fis = new FileInputStream(APOLLO_DIR + RUN_MANAGER_SERVICE_PROPERTIES_NAME);
 			} catch (FileNotFoundException e) {
 				throw new ExceptionInInitializerError("Error initializing Data Service.  Can not find file \""
-						+ DATA_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
+						+ RUN_MANAGER_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
 						+ "\". Error message is " + e.getMessage());
 			}
 
@@ -86,7 +72,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 				properties.load(fis);
 			} catch (IOException e) {
 				throw new ExceptionInInitializerError("Error initializing Data Service.  Unable to read file \""
-						+ DATA_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
+						+ RUN_MANAGER_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
 						+ "\". Error message is " + e.getMessage());
 			}
 
@@ -94,37 +80,12 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 				fis.close();
 			} catch (IOException e) {
 				throw new ExceptionInInitializerError("Error initializing Data Service.  Unable to close file \""
-						+ DATA_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
+						+ RUN_MANAGER_SERVICE_PROPERTIES_NAME + " \" in directory \"" + APOLLO_DIR
 						+ "\". Error message is " + e.getMessage());
 			}
 
-			String outputDir = properties.getProperty(OUTPUT_DIRECTORY_KEY);
-			if (!outputDir.endsWith(File.separator)) {
-				outputDir = outputDir + File.separator;
-			}
-			OUTPUT_DIRECTORY = outputDir;
-			OUTPUT_FILE_NAME = properties.getProperty(OUTPUT_FILE_NAME_KEY);
 			LOCAL_FILE_STORAGE_DIR = properties.getProperty(LOCAL_FILE_STORAGE_DIRECTORY_PROPERTY);
 			LOCAL_FILE_BASE_URL = properties.getProperty(LOCAL_FILE_BASE_URL_PROPERTY);
-
-			ZIP_FILE_NAME = properties.getProperty(ZIP_FILE_NAME_KEY);
-
-			try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {
-				//dbUtils = new ApolloDbUtils(new File(APOLLO_DIR + DATABASE_PROPERTIES_FILENAME));
-
-				try {
-					DATA_SERVICE_SOFTWARE_KEY = dbUtils.getSoftwareIdentificationKey(dataServiceSoftwareId);
-				} catch (ApolloDatabaseException ex) {
-					logger.error(ex.getMessage());
-					throw new ExceptionInInitializerError("ApolloDatabaseException getting the key for the data service software ID");
-				}
-			} catch (ApolloDatabaseException ex) {
-				throw new ExceptionInInitializerError("ApolloDatabaseException creating ApolloDbUtils: " + ex.getMessage());
-			}
-//			} catch (IOException ex) {
-//				throw new ExceptionInInitializerError("Error creating ApolloDbUtils when initializing the data service: "
-//						+ ex.getMessage());
-//			}
 		} else {
 			throw new ExceptionInInitializerError("No Apollo Work Dir evironment variable found when initializing data service!");
 		}
@@ -146,7 +107,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 		if (filestoreServiceUrl == null) {
 			String apolloDir = ApolloServiceConstants.APOLLO_DIR;
 
-			File configurationFile = new File(apolloDir + File.separator + DATA_SERVICE_PROPERTIES_NAME);
+			File configurationFile = new File(apolloDir + File.separator + RUN_MANAGER_SERVICE_PROPERTIES_NAME);
 			Properties brokerServiceProperties = new Properties();
 
 			try (InputStream input = new FileInputStream(configurationFile)) {

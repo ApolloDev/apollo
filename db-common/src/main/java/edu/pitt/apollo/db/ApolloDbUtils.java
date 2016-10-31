@@ -1824,10 +1824,10 @@ public class ApolloDbUtils extends BaseDbUtils {
         }
     }
 
-    @Override
-    protected String getSystemSaltFileDir() {
-        return APOLLO_DIR + SALT_FILE_NAME;
-    }
+//    @Override
+//    protected String getSystemSaltFileDir() {
+//        return APOLLO_DIR + SALT_FILE_NAME;
+//    }
 
     @Override
     protected String getDatabasePropertiesFileName() {
