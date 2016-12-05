@@ -1,29 +1,18 @@
 package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.*;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
-import edu.pitt.apollo.interfaces.UserManagementInterface;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.methods.run.AbstractRunMethod;
 import edu.pitt.apollo.runmanagerservice.methods.run.RunMethodFactory;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
-import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.soapjobrunningserviceconnector.RestJobRunningServiceConnector;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 
@@ -33,7 +22,7 @@ import java.util.List;
 /**
  * Created by jdl50 on 6/3/15.
  */
-public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, UserManagementInterface, JobRunningServiceInterface {
+public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunManagementInterface, ContentManagementInterface, JobRunningServiceInterface {
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
@@ -56,10 +45,10 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 	}
 
 	@Override
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
 		final BigInteger NULL_PARENT_RUN_ID = null;
 		try {
-			StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID);
+			StageMethod stageMethod = new StageMethod(message, NULL_PARENT_RUN_ID, authentication);
 			return stageMethod.stage();
 		} catch (ApolloDatabaseException | UnrecognizedMessageTypeException ex) {
 			throw new RunManagementException("Exception inserting run: " + ex.getMessage());
@@ -165,67 +154,6 @@ public class RunManagerServiceImpl implements SoftwareRegistryInterface, RunMana
 		try {
 			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
 			return dba.getURLForSoftwareIdentification(softwareId, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void addUserRole(String username, String userPassword, SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean canRequestPrivileged, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.addUserRole(username, userPassword, softwareIdentification, canRunSoftware, canRequestPrivileged, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void addUser(String userId, String userPassword, String userEmail, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.addUser(userId, userPassword, userEmail, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void deleteUser(String username, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.deleteUser(username, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void addRole(SoftwareIdentification softwareIdentification, boolean canRunSoftware, boolean allowPrivilegedRequest,
-			String roleDescription, Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.addRole(softwareIdentification, canRunSoftware, allowPrivilegedRequest, roleDescription, authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void authenticateUser(Authentication authentication) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.authenticateUser(authentication);
-		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
-			throw new DatastoreException(ex.getMessage());
-		}
-	}
-
-	@Override
-	public void authorizeUser(Authentication authentication, SoftwareIdentification softwareIdentification, boolean requestToRunSoftware) throws DatastoreException {
-		try {
-			DatastoreAccessor dba = DatastoreAccessorFactory.getDatabaseAccessor();
-			dba.authorizeUser(authentication, softwareIdentification, requestToRunSoftware);
 		} catch (UnrecognizedMessageTypeException | ApolloDatabaseException ex) {
 			throw new DatastoreException(ex.getMessage());
 		}

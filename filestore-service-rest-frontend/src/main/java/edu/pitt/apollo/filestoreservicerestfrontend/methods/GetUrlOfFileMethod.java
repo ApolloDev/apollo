@@ -19,11 +19,12 @@ import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -32,12 +33,12 @@ import org.springframework.http.HttpStatus;
  */
 public class GetUrlOfFileMethod extends BaseFileStoreMethod {
 
-	public GetUrlOfFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetUrlOfFileMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorization);
 	}
 
 	public String getUrlOfFile(BigInteger runId, String filename,
-			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws SerializationException {
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType) throws SerializationException {
 		try {
 			String url = fileStoreService.getUrlOfFile(runId, filename, fileFormat, fileType, authentication);
 

@@ -54,7 +54,6 @@ public class RunUtils {
 	private static String brokerServiceUrl;
 	private static FilestoreServiceConnector filestoreServiceConnector;
 	private static BrokerServiceConnector brokerServiceConnector;
-	private static Authentication authentication;
 
 	static {
 		FileInputStream fis;
@@ -82,9 +81,6 @@ public class RunUtils {
 		filestoreServiceConnector = new RestFilestoreServiceConnector(filestoreServiceUrl);
 		brokerServiceConnector = new RestBrokerServiceConnector(brokerServiceUrl);
 
-		authentication = new Authentication();
-		authentication.setRequesterId(properties.getProperty(AUTHENTICATION_USER_PROPERTY));
-		authentication.setRequesterPassword(properties.getProperty(AUTHENTICATION_PASSWORD_PROPERTY));
 		IMAGE_FILE_TYPE = properties.getProperty(IMAGE_FILE_TYPE_PROPERTY);
 	}
 
@@ -100,7 +96,7 @@ public class RunUtils {
 		return LOCAL_FILE_BASE_URL;
 	}
 
-	public static void uploadFile(String url, BigInteger runId, FileIdentification fileIdentification) throws FilestoreException {
+	public static void uploadFile(String url, BigInteger runId, FileIdentification fileIdentification, Authentication authentication) throws FilestoreException {
 
 		FileStoreServiceUtility.uploadFile(runId, url, fileIdentification,
 				authentication, filestoreServiceConnector);
@@ -134,12 +130,13 @@ public class RunUtils {
 	}
 
 	public static String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat,
-			ContentDataTypeEnum fileType) throws FilestoreException {
+			ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		return filestoreServiceConnector.getUrlOfFile(runId, filename,
 				fileFormat, fileType, authentication);
 	}
 
-	public static void updateStatus(BigInteger runId, MethodCallStatusEnum statusEnum, String message) throws RunManagementException {
+	public static void updateStatus(BigInteger runId, MethodCallStatusEnum statusEnum, String message,
+                                    Authentication authentication) throws RunManagementException {
 		brokerServiceConnector.updateStatusOfRun(runId, statusEnum, message, authentication);
 	}
 
@@ -148,7 +145,7 @@ public class RunUtils {
 		return DigestUtils.md5Hex(string);
 	}
 
-	public static SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId) throws RunManagementException {
+	public static SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 
 		return brokerServiceConnector.getSoftwareIdentificationForRun(runId, authentication);
 	}
@@ -160,10 +157,9 @@ public class RunUtils {
 		return directory;
 	}
 
-	public static void runQueryService(RunSimulatorOutputQueryMessage message, BigInteger visualizerRunId) throws RunManagementException, TimeSeriesVisualizerException {
+	public static void runQueryService(RunSimulatorOutputQueryMessage message, BigInteger visualizerRunId, Authentication authentication) throws RunManagementException, TimeSeriesVisualizerException {
 
-		message.setAuthentication(authentication);
-		BigInteger runId = brokerServiceConnector.insertRun(message).getRunId();
+		BigInteger runId = brokerServiceConnector.insertRun(message, authentication).getRunId();
 
 		// wait until complete
 		MethodCallStatus status = brokerServiceConnector.getRunStatus(runId, authentication);
@@ -196,7 +192,7 @@ public class RunUtils {
 				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
 				fileIdentification.setLabel(label);
 				fileIdentification.setType(ContentDataTypeEnum.QUERY_RESULT);
-				uploadFile(url, visualizerRunId, fileIdentification);
+				uploadFile(url, visualizerRunId, fileIdentification, authentication);
 				
 			}
 		} catch (FilestoreException | IOException ex) {
@@ -204,7 +200,7 @@ public class RunUtils {
 		}
 	}
 
-	public static void uploadFiles(Map<String, String> resourcesMap, BigInteger visualizerRunId)
+	public static void uploadFiles(Map<String, String> resourcesMap, BigInteger visualizerRunId, Authentication authentication)
 			throws TimeSeriesVisualizerException {
 
 		try {
@@ -216,7 +212,7 @@ public class RunUtils {
 				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
 				fileIdentification.setLabel(imageName);
 				fileIdentification.setType(ContentDataTypeEnum.IMAGE);
-				uploadFile(url, visualizerRunId, fileIdentification);
+				uploadFile(url, visualizerRunId, fileIdentification, authentication);
 			}
 		} catch (FilestoreException ex) {
 			throw new TimeSeriesVisualizerException("Filestore exception uploading image: " + ex.getMessage());

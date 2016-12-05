@@ -14,6 +14,8 @@ import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -24,8 +26,8 @@ import org.springframework.http.HttpStatus;
 
 public class UploadFileMethod extends BaseBrokerServiceAccessorMethod {
 
-	public UploadFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public UploadFileMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String uploadFile(BigInteger runId, String urlOfFile, String filename, ContentDataFormatEnum contentDataFormatEnum,

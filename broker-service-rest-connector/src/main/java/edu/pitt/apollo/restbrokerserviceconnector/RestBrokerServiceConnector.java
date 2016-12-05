@@ -30,9 +30,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public List<BigInteger> getRunIdsAssociatedWithSimulationGroupForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/rungroup";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, BigInteger.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, authentication, BigInteger.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -41,19 +41,19 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	@Override
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
 
-		String uri = restServiceUri + "run/" + runId + "/softwareIdentification?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/softwareIdentification";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, SoftwareIdentification.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, SoftwareIdentification.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
 	}
 
 	@Override
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-		String uri = restServiceUri + "runs?" + RestServiceUtils.getUsernameAndPasswordQueryParams(message.getAuthentication());
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
+		String uri = restServiceUri + "runs";
 		try {
-			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, message, InsertRunResult.class);
+			return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, message, InsertRunResult.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -61,10 +61,10 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/status?";
 		uri += "&methodCallStatusEnum=" + statusEnumToSet + "&statusMessage=" + messageToSet;
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -72,11 +72,11 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public void updateLastServiceToBeCalledForRun(BigInteger runId, SoftwareIdentification softwareIdentification, Authentication authentication) throws RunManagementException {
-		String uri = "run/" + runId + "/lastServiceToBeCalled?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = "run/" + runId + "/lastServiceToBeCalled?";
 		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
 				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -84,9 +84,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public SoftwareIdentification getLastServiceToBeCalledForRun(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "/lastServiceToBeCalled?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/lastServiceToBeCalled";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, SoftwareIdentification.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, SoftwareIdentification.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -94,7 +94,7 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public void addRunIdsToSimulationGroupForRun(BigInteger runId, List<BigInteger> runIds, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "/rungroup?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/rungroup";
 
 		StringBuilder listOfRunIds = new StringBuilder();
 		for (BigInteger id : runIds) {
@@ -103,7 +103,7 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 		listOfRunIds.deleteCharAt(listOfRunIds.length() - 1);
 		uri += "&runIdsToAssociate=" + listOfRunIds.toString();
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -111,9 +111,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public void removeRunData(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId;
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -121,9 +121,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public MethodCallStatus getRunStatus(BigInteger runId, Authentication authentication) throws RunManagementException {
-		String uri = restServiceUri + "run/" + runId + "/status?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "run/" + runId + "/status";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, MethodCallStatus.class);
 		} catch (RestServiceException ex) {
 			throw new RunManagementException(ex.getMessage());
 		}
@@ -137,10 +137,10 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		String uri = "run/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = "run/" + runId;
 		uri += "&action=" + RunActionEnum.TERMINATE;
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new JobRunningServiceException(ex.getMessage());
 		}
@@ -148,11 +148,11 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public String getURLForSoftwareIdentification(SoftwareIdentification softwareIdentification, Authentication authentication) throws DatastoreException {
-		String uri = restServiceUri + "software/url?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "software/url?";
 		uri += "&softwareName=" + softwareIdentification.getSoftwareName() + "&softwareVersion=" + softwareIdentification.getSoftwareVersion()
 				+ "&softwareDeveloper=" + softwareIdentification.getSoftwareDeveloper() + "&softwareTypeEnum=" + softwareIdentification.getSoftwareType();
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, String.class);
 		} catch (RestServiceException ex) {
 			throw new DatastoreException(ex.getMessage());
 		}
@@ -160,9 +160,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public List<ServiceRecord> getListOfRegisteredSoftwareRecords(Authentication authentication) throws DatastoreException {
-		String uri = restServiceUri + "software?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "software";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, ServiceRecord.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, authentication, ServiceRecord.class);
 		} catch (RestServiceException ex) {
 			throw new DatastoreException(ex.getMessage());
 		}
@@ -171,10 +171,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	@Override
 	public void uploadFile(BigInteger runId, String urlToFile, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = "run/" + runId + "?" + "urlToFile=" + urlToFile + "&"
-				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType + "&"
-				+ RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType + "&";
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -183,9 +182,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	@Override
 	public String getUrlOfFile(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + "files/" + runId + "/url?fileName=" + filename + "&fileFormat=" + fileFormat
-				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "&fileType=" + fileType + "&";
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, String.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -194,9 +193,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	@Override
 	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename, ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + "files/" + runId + "/status?fileName=" + filename + "&fileFormat=" + fileFormat
-				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "&fileType=" + fileType;
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, MethodCallStatus.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -204,9 +203,9 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 
 	@Override
 	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
-		String uri = restServiceUri + "files/" + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + "files/" + runId;
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, FileIdentification.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, authentication, FileIdentification.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}

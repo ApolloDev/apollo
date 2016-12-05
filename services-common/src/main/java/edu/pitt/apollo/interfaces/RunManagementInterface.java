@@ -21,7 +21,7 @@ public interface RunManagementInterface {
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException;
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException;
 
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException;
 

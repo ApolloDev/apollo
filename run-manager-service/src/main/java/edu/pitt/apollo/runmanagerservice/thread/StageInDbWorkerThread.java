@@ -81,7 +81,6 @@ public class StageInDbWorkerThread implements Runnable {
             RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException, JsonUtilsException {
 
         RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
-        runSimulationMessage.setAuthentication(template.getAuthentication());
         runSimulationMessage.setInfectiousDiseaseScenario(copyInfectiousDiseaseScenarioForTemplate(template.getBaseInfectiousDiseaseScenario()));
         runSimulationMessage.setSoftwareIdentification(template
                 .getSoftwareIdentification());
@@ -158,8 +157,6 @@ public class StageInDbWorkerThread implements Runnable {
 
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
-                    currentRunSimulationMessage.getAuthentication().setRequesterId(authentication.getRequesterId());
-                    currentRunSimulationMessage.getAuthentication().setRequesterPassword(authentication.getRequesterPassword());
 //                    try {
 //                        System.out.println("From " + paramLineOrNullIfEndOfStream + " Creating worker for run " + md5Utils.getMd5(currentRunSimulationMessage) + " (" + currentRunSimulationMessage + ")" + "\n");
 //                    } catch (Md5UtilsException e) {
@@ -182,7 +179,7 @@ public class StageInDbWorkerThread implements Runnable {
                 }
                 StageMethod stageMethod = null;
                 try {
-                    stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
+                    stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId, authentication);
                     InsertRunResult result = stageMethod.stage();
                     BigInteger runId = result.getRunId();
 

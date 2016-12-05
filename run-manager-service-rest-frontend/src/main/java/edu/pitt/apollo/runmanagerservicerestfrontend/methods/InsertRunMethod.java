@@ -8,7 +8,6 @@ package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
 import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
@@ -26,6 +25,7 @@ import edu.pitt.apollo.utilities.Deserializer;
 import edu.pitt.apollo.utilities.DeserializerFactory;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.XMLDeserializer;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
 import org.springframework.http.HttpStatus;
 
@@ -35,8 +35,8 @@ import org.springframework.http.HttpStatus;
  */
 public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public InsertRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public InsertRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String insertRun(String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
@@ -63,7 +63,7 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 			} else {
 
 				try {
-					InsertRunResult insertRunResult = impl.insertRun(object);
+					InsertRunResult insertRunResult = impl.insertRun(object, authentication);
 
 					ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
 					objectSerializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);

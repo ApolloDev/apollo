@@ -31,7 +31,6 @@ public class ApolloServiceTypeFactory {
 	private static RunVisualizationMessage getRunVisualizationMessage(Authentication visualizerAuthentication,
 			SoftwareIdentification visualizerSoftwareIdentification, RunIdentificationAndLabel... runIdentificationsAndLabels) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
-		runVisualizationMessage.setAuthentication(visualizerAuthentication);
 		runVisualizationMessage.setSoftwareIdentification(visualizerSoftwareIdentification);
 		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels) {
 			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
@@ -50,15 +49,11 @@ public class ApolloServiceTypeFactory {
 
 	public static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId(REQUESTER_ID);
-		auth.setRequesterPassword(REQUESTER_PASSWORD);
 		return auth;
 	}
 
 	public static Authentication getAuthentication(String requesterId, String requesterPassword) {
 		Authentication auth = new Authentication();
-		auth.setRequesterId(requesterId);
-		auth.setRequesterPassword(requesterPassword);
 		return auth;
 	}
 

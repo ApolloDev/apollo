@@ -9,13 +9,13 @@ import edu.pitt.apollo.VisualizerServiceImpl;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.exception.*;
 import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Serializer;
 import edu.pitt.apollo.utilities.SerializerFactory;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.utilities.AuthorizationUtility;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -29,10 +29,8 @@ public class StartRunMethod {
 	protected final Serializer serializer;
 	protected final ResponseMessageBuilder responseBuilder;
 
-	public StartRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		authentication = new Authentication();
-		authentication.setRequesterId(username);
-		authentication.setRequesterPassword(password);
+	public StartRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 
 		responseBuilder = new ResponseMessageBuilder();
 		serializer = SerializerFactory.getSerializer(serializationFormat);

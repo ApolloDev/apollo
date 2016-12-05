@@ -18,8 +18,6 @@ public class BrokerRestClient {
         RestBrokerServiceConnector connector = new RestBrokerServiceConnector("http://betaweb.rods.pitt.edu/broker-service-rest-frontend-3.1.0-SNAPSHOT/");
 
         Authentication authentication = new Authentication();
-        authentication.setRequesterId("apollo_demo");
-        authentication.setRequesterPassword("apollo_demo");
 
         try {
             RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
@@ -29,7 +27,7 @@ public class BrokerRestClient {
                     .getInfectionAcquisitionsFromInfectedHosts().get(0)
                     .getBasicReproductionNumbers().get(0).setExactValue(1.76);
 
-            InsertRunResult result = connector.insertRun(runSimulationMessage);
+            InsertRunResult result = connector.insertRun(runSimulationMessage, authentication);
 
             System.out.println(result.getRunId());
 

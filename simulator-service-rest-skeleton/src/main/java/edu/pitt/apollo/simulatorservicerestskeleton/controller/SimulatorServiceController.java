@@ -10,6 +10,7 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.simulatorservicerestskeleton.exception.UnsupportedRunActionException;
 import edu.pitt.apollo.services_common.v4_0.RunActionEnum;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +33,7 @@ public abstract class SimulatorServiceController {
 	public abstract @ResponseBody
 	String run(@ApiParam(value = "Run ID.", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Action", required = true) @RequestParam("action") RunActionEnum action,
-			@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password)
+               @RequestHeader("Authorization") String authorization)
 			throws UnsupportedSerializationFormatException, SerializationException, 
-			UnsupportedRunActionException, FilestoreException, RunManagementException;
+			UnsupportedRunActionException, FilestoreException, RunManagementException, UnsupportedAuthorizationTypeException, UnsupportedAuthorizationTypeException;
 }

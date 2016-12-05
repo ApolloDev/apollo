@@ -6,7 +6,6 @@
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
 import edu.pitt.apollo.data_service_types.v4_0.RunInformation;
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
@@ -16,6 +15,8 @@ import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -24,8 +25,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetInformationForRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public GetInformationForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetInformationForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getInformationForRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {

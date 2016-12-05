@@ -57,6 +57,9 @@
     <modules>
         <module>db-common</module>
         <module>services-common</module>
+
+        <module>apollo-translator</module>
+	<module>apollo-translator-service</module>
         <module>rest-services-frontend-common</module>
         <module>apollotranslator</module>
         <module>apollotranslatorservice</module>
@@ -85,7 +88,7 @@
         <module>filestore-service</module>
         <module>visualizer-service</module>
         <module>visualizer-service-rest-frontend</module>
-        <!-- <module>filestore-service-rest-frontend</module> -->
+        <module>security-manager</module>
     </modules>
 
     <dependencies>

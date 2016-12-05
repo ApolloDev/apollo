@@ -20,7 +20,6 @@ import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
@@ -28,6 +27,8 @@ import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.utilities.Serializer;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -36,12 +37,12 @@ import org.springframework.http.HttpStatus;
  */
 public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 
-	public GetStatusOfFileUploadMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetStatusOfFileUploadMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorization);
 	}
 
 	public String getStatusOfFileUpload(BigInteger runId, String filename,
-			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws SerializationException {
+			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType) throws SerializationException {
 
 		try {
 			//        //used for testing
@@ -49,7 +50,7 @@ public class GetStatusOfFileUploadMethod extends BaseFileStoreMethod {
 			fileIdentification.setFormat(fileFormat);
 			fileIdentification.setType(fileType);
 			fileIdentification.setLabel(filename);
-			MethodCallStatus status = fileStoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), null);
+			MethodCallStatus status = fileStoreService.getStatusOfFileUpload(runId, fileIdentification.getLabel(), fileIdentification.getFormat(), fileIdentification.getType(), authentication);
 
 			ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
 			objectSerializationInformation.setClassNameSpace(Serializer.APOLLO_NAMESPACE);

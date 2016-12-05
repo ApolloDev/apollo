@@ -1,9 +1,6 @@
 package edu.pitt.apollo.filestoreservice;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.db.LibraryDbUtils;
-import edu.pitt.apollo.db.LibraryReadOnlyDbUtils;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservice.methods.*;

@@ -310,8 +310,6 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
     @Override
     protected Authentication getAuthentication() {
         Authentication authentication = new Authentication();
-        authentication.setRequesterId("");
-        authentication.setRequesterPassword("");
         return authentication;
     }
 

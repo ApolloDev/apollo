@@ -7,16 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import edu.pitt.apollo.services_common.v4_0.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import edu.pitt.apollo.utilities.JsonUtils;
@@ -34,16 +31,17 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 	private ImageGenerator ig = null;
 	private List<RunIdentificationAndLabel> runIdentificationsAndLabels;
 	private SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+    private Authentication authentication;
 
-	public ImageGeneratorRunnable(BigInteger virualizerRunId, ApolloServiceQueue queue) {
+	public ImageGeneratorRunnable(BigInteger virualizerRunId, ApolloServiceQueue queue, Authentication authentication) {
 		super(virualizerRunId, queue);
-//		this.runId = virualizerRunId;
+        this.authentication = authentication;
 	}
 
 	private void loadRunMessage() throws FilestoreException {
 
 		String url = RunUtils.getUrlOfFile(runId, "run_message.json",
-				ContentDataFormatEnum.TEXT, ContentDataTypeEnum.RUN_MESSAGE);
+				ContentDataFormatEnum.TEXT, ContentDataTypeEnum.RUN_MESSAGE, authentication);
 		try {
 			String json = RunUtils.getContent(url);
 			JsonUtils jsonUtils = new JsonUtils();
@@ -60,7 +58,7 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 		try {
 			loadRunMessage();
 			RunUtils.updateStatus(runId, MethodCallStatusEnum.RUNNING,
-					"Started at " + sdf.format(new Date(System.currentTimeMillis())));
+					"Started at " + sdf.format(new Date(System.currentTimeMillis())), authentication);
 		} catch (RunManagementException | FilestoreException e) {
 			logger.error("Error setting the status of {} run {} to RUNNING.  Error message was {}.", ImageGenerator.SOFTWARE_NAME,
 					runId, e.getMessage());
@@ -69,11 +67,11 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 		}
 
 		try {
-			ig = new ImageGenerator(runIdentificationsAndLabels, runId);
+			ig = new ImageGenerator(runIdentificationsAndLabels, runId, authentication);
 		} catch (TimeSeriesVisualizerException | RunManagementException e) {
 			try {
 				RunUtils.updateStatus(runId, MethodCallStatusEnum.FAILED,
-						"TimeSeriesVisualizerException creating ImageGenerator: " + e.getMessage());
+						"TimeSeriesVisualizerException creating ImageGenerator: " + e.getMessage(), authentication);
 			} catch (RunManagementException e1) {
 				logger.error("Error setting the status of {} run {} to FAILED.  The error message was {}.",
 						ImageGenerator.SOFTWARE_NAME, runId, e1.getMessage());
@@ -87,7 +85,7 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 		} catch (Exception ex) {
 			try {
 				RunUtils.updateStatus(runId, MethodCallStatusEnum.FAILED,
-						"Exception running Time-series visualizer: " + ex.getMessage());
+						"Exception running Time-series visualizer: " + ex.getMessage(), authentication);
 			} catch (RunManagementException e) {
 				logger.error("Error setting the status of {} run {} to FAILED. Error message was {}.",
 						ImageGenerator.SOFTWARE_NAME, runId, e.getMessage());
@@ -98,7 +96,7 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 
 		try {
 			RunUtils.updateStatus(runId, MethodCallStatusEnum.COMPLETED,
-					"Completed at " + sdf.format(new Date(System.currentTimeMillis())));
+					"Completed at " + sdf.format(new Date(System.currentTimeMillis())), authentication);
 		} catch (RunManagementException e) {
 			logger.error("Error setting the status of {} run {} to COMPLETED.  Error message was {}.", ImageGenerator.SOFTWARE_NAME,
 					runId, e.getMessage());

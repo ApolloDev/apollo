@@ -5,7 +5,6 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
@@ -14,6 +13,8 @@ import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import java.math.BigInteger;
 import java.util.List;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -22,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class AddRunIdsToSimulationGroupForRun extends BaseBrokerServiceAccessorMethod {
 
-	public AddRunIdsToSimulationGroupForRun(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public AddRunIdsToSimulationGroupForRun(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String addRunIdsToSimulationGroupForRun(BigInteger runId, String runIdList) throws UnsupportedSerializationFormatException, SerializationException {

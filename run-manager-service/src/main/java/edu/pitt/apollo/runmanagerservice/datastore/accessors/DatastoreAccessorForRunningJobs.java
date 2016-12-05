@@ -79,14 +79,7 @@ public class DatastoreAccessorForRunningJobs extends
 //		}
 //	}
     @Override
-    public InsertRunResult insertRun(RunMessage message) throws RunManagementException {
-
-        if (message.getAuthentication().getRequesterId().equals("default_user")) {
-            throw new RunManagementException("Default user set in run message");
-        }
-
-        Authentication authentication = message.getAuthentication();
-        message.setAuthentication(new Authentication());
+    public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
 
         InsertRunResult insertRunResult = new InsertRunResult();
         RunIdAndCollisionId runIdAndHighestMD5CollisionIdForRun = null;
@@ -113,7 +106,7 @@ public class DatastoreAccessorForRunningJobs extends
                         runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1,
                         softwareIdentification,
                         ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-                        destSoftwareId, authentication);
+                        destSoftwareId, authentication.getPayload());
             } else {
                 insertRunResult.setRunCached(true);
                 insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());

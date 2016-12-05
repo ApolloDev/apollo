@@ -28,10 +28,9 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 	public void uploadFile(BigInteger runId, String urlToFile, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + runId + "?" + "urlToFile=" + urlToFile + "&"
-				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType + "&"
-				+ RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "fileName=" + filename + "&fileFormat=" + fileFormat + "&fileType=" + fileType;
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -41,9 +40,9 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 	public String getUrlOfFile(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + runId + "/url?fileName=" + filename + "&fileFormat=" + fileFormat
-				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "&fileType=" + fileType;
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, String.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, String.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -53,9 +52,9 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 	public MethodCallStatus getStatusOfFileUpload(BigInteger runId, String filename,
 			ContentDataFormatEnum fileFormat, ContentDataTypeEnum fileType, Authentication authentication) throws FilestoreException {
 		String uri = restServiceUri + runId + "/status?fileName=" + filename + "&fileFormat=" + fileFormat
-				+ "&fileType=" + fileType + "&" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+				+ "&fileType=" + fileType;
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, MethodCallStatus.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, MethodCallStatus.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}
@@ -63,9 +62,9 @@ public class RestFilestoreServiceConnector extends FilestoreServiceConnector {
 
 	@Override
 	public List<FileIdentification> listFilesForRun(BigInteger runId, Authentication authentication) throws FilestoreException {
-		String uri = restServiceUri + runId + "?" + RestServiceUtils.getUsernameAndPasswordQueryParams(authentication);
+		String uri = restServiceUri + runId;
 		try {
-			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, FileIdentification.class);
+			return restServiceUtils.makeGetRequestCheckResponseAndGetObjects(uri, authentication, FileIdentification.class);
 		} catch (RestServiceException ex) {
 			throw new FilestoreException(ex.getMessage());
 		}

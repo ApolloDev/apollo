@@ -29,7 +29,7 @@ public abstract class InsertAndStartRunMethod extends BaseRunManagementServiceAc
 		MethodCallStatus status;
 		InsertRunResult insertRunResult;
 		try {
-			insertRunResult = connector.insertRun(message);
+			insertRunResult = connector.insertRun(message, authentication);
 		} catch (RunManagementException ex) {
 			status = getFailedMethodCallStatus("Exception inserting run: " + ex.getMessage());
 			runResult.setMethodCallStatus(status);

@@ -184,6 +184,12 @@
             <version>4.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>rest-services-frontend-common</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

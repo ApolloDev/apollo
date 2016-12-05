@@ -164,12 +164,11 @@ public class StageExperimentThread extends ApolloServiceThread {
 
 							// new scenario is ready to be staged
 							RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
-							runSimulationMessage.setAuthentication(authentication);
 							runSimulationMessage.setSimulatorTimeSpecification(message.getSimulatorTimeSpecification());
 							runSimulationMessage.setSoftwareIdentification(modelId);
 							runSimulationMessage.setInfectiousDiseaseScenario(newScenario);
 
-							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId);
+							StageMethod stageMethod = new StageMethod(runSimulationMessage, runId, authentication);
 							InsertRunResult result = stageMethod.stage();
 							BigInteger newRunId = result.getRunId();
 							
@@ -213,7 +212,6 @@ public class StageExperimentThread extends ApolloServiceThread {
 				InfectiousDiseaseTransmissionExperimentSpecification.class);
 
 		RunInfectiousDiseaseTransmissionExperimentMessage runMessage = new RunInfectiousDiseaseTransmissionExperimentMessage();
-		runMessage.setAuthentication(null);
 		runMessage.setInfectiousDiseaseTransmissionExperimentSpecification(test);
 		runMessage.setSimulatorTimeSpecification(null);
 

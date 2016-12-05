@@ -19,10 +19,11 @@ import edu.pitt.apollo.exception.DeserializationException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v4_0.*;
 import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -31,12 +32,12 @@ import org.springframework.http.HttpStatus;
  */
 public class UploadFileMethod extends BaseFileStoreMethod {
 
-	public UploadFileMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public UploadFileMethod(SerializationFormat serializationFormat, String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorization);
 	}
 
 	public String uploadFile(BigInteger runId, String urlToFile, String filename,
-			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataTypeEnum, Authentication authentication) throws SerializationException, DeserializationException, UnsupportedSerializationFormatException {
+			ContentDataFormatEnum contentDataFormatEnum, ContentDataTypeEnum contentDataTypeEnum) throws SerializationException, DeserializationException, UnsupportedSerializationFormatException {
 		try {
 			
 			fileStoreService.uploadFile(runId, urlToFile, filename, contentDataFormatEnum, contentDataTypeEnum, authentication);

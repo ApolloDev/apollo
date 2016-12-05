@@ -110,6 +110,8 @@
             <type>jar</type>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+
     </dependencies>
 
     <profiles>

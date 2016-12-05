@@ -5,7 +5,6 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
@@ -14,9 +13,8 @@ import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
 import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
 import java.math.BigInteger;
-import org.springframework.http.HttpStatus;import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import java.math.BigInteger;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -25,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class SetLastServiceToBeCalledForRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public SetLastServiceToBeCalledForRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public SetLastServiceToBeCalledForRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String setLastServiceToBeCalledForRunMethod(BigInteger runId, String softwareName, String softwareVersion,

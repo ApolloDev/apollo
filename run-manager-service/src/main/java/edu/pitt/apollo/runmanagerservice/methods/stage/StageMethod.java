@@ -11,12 +11,7 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
+import edu.pitt.apollo.services_common.v4_0.*;
 import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
 import edu.pitt.apollo.utilities.XMLSerializer;
@@ -38,8 +33,8 @@ public class StageMethod extends BaseStageMethod {
 	static Logger logger = LoggerFactory.getLogger(StageMethod.class);
 	private final BigInteger parentRunId;
 	
-	public StageMethod(RunMessage message, BigInteger parentRunId) throws RunManagementException, UnrecognizedMessageTypeException, ApolloDatabaseException {
-		super(message);
+	public StageMethod(RunMessage message, BigInteger parentRunId, Authentication authentication) throws RunManagementException, UnrecognizedMessageTypeException, ApolloDatabaseException {
+		super(message, authentication);
 		this.parentRunId = parentRunId;
 	}
 	
@@ -47,7 +42,7 @@ public class StageMethod extends BaseStageMethod {
 
 		try {
 
-			InsertRunResult insertRunResult = dataServiceDao.insertRun(message);
+			InsertRunResult insertRunResult = dataServiceDao.insertRun(message, authentication);
 
 			BigInteger runId = insertRunResult.getRunId();
 			if (parentRunId != null) {

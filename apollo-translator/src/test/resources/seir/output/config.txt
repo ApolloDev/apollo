@@ -1,0 +1,6 @@
+init_SEIR_counts = 9313830.51695,52824.094900000004,59206.188149999994,392744.2
+asymptomatic_fraction = 0.33
+infectious_period = 6
+latent_period = 2
+r0 = 1.3
+run_length = 150

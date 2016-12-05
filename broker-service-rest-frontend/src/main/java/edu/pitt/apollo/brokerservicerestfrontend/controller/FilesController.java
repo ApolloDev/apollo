@@ -15,6 +15,7 @@ import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +41,11 @@ public class FilesController {
 			@ApiParam(value = "URL of the file to upload", required = true) @RequestParam("urlToFile") String urlToFile,
 			@ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
 			@ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
-			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType
-	) throws FilestoreException, DeserializationException, UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType,
+                      @RequestHeader("Authorization") String authorization
+	) throws FilestoreException, DeserializationException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
-		return new UploadFileMethod(null, null, SerializationFormat.XML).uploadFile(runId, urlToFile, filename,
+		return new UploadFileMethod(SerializationFormat.XML, authorization).uploadFile(runId, urlToFile, filename,
 				fileFormat, fileType);
 	}
 
@@ -57,9 +59,10 @@ public class FilesController {
 	String getUrlOfFileXML(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
 			@ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
-			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType,
+                           @RequestHeader("Authorization") String authorization) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
-		return new GetUrlOfFileMethod(null, null, SerializationFormat.XML).getUrlOfFile(runId, fileFormat, fileType, filename);
+		return new GetUrlOfFileMethod(SerializationFormat.XML, authorization).getUrlOfFile(runId, fileFormat, fileType, filename);
 	}
 
     @GET
@@ -72,9 +75,10 @@ public class FilesController {
     String getUrlOfFileJSON(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
                         @ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
                         @ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
-                        @ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
+                        @ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType,
+                            @RequestHeader("Authorization") String authorization) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
-        return new GetUrlOfFileMethod(null, null, SerializationFormat.JSON).getUrlOfFile(runId, fileFormat, fileType, filename);
+        return new GetUrlOfFileMethod(SerializationFormat.JSON, authorization).getUrlOfFile(runId, fileFormat, fileType, filename);
     }
 
 	@GET
@@ -87,8 +91,9 @@ public class FilesController {
 	String getStatusOfFileUpload(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
 			@ApiParam(value = "Name of the file", required = true) @RequestParam("fileName") String filename,
 			@ApiParam(value = "Format of the file", required = true) @RequestParam("fileFormat") ContentDataFormatEnum fileFormat,
-			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
-		return new GetStatusOfFileUploadMethod(null, null, SerializationFormat.XML).getStatus(runId, fileFormat, fileType, filename);
+			@ApiParam(value = "Type of the file", required = true) @RequestParam("fileType") ContentDataTypeEnum fileType,
+                                 @RequestHeader("Authorization") String authorization) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+		return new GetStatusOfFileUploadMethod(SerializationFormat.XML, authorization).getStatus(runId, fileFormat, fileType, filename);
 	}
 
 	@GET
@@ -98,8 +103,9 @@ public class FilesController {
 	})
 	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String listFilesForRunXML(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
-		return new ListFilesForRunMethod(null, null, SerializationFormat.XML).listFilesForRun(runId);
+	String listFilesForRunXML(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
+                              @RequestHeader("Authorization") String authorization) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+		return new ListFilesForRunMethod(SerializationFormat.XML, authorization).listFilesForRun(runId);
 	}
 
 	@GET
@@ -109,7 +115,8 @@ public class FilesController {
 	})
 	@RequestMapping(value = "/{runId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
-	String listFilesForRunJSON(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException {
-		return new ListFilesForRunMethod(null, null, SerializationFormat.JSON).listFilesForRun(runId);
+	String listFilesForRunJSON(@ApiParam(value = "Run ID", required = true) @PathVariable("runId") BigInteger runId,
+                               @RequestHeader("Authorization") String authorization) throws FilestoreException, UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+		return new ListFilesForRunMethod(SerializationFormat.JSON, authorization).listFilesForRun(runId);
 	}
 }

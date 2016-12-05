@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import edu.pitt.apollo.services_common.v4_0.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,10 +37,11 @@ public class TimeSeriesProcessor {
 
 	static Logger logger = LoggerFactory.getLogger(TimeSeriesProcessor.class);
 	private BigInteger visualizerRunId;
+    private Authentication authentication;
 
-	public TimeSeriesProcessor(BigInteger visualizerRunId) throws TimeSeriesVisualizerException {
+	public TimeSeriesProcessor(BigInteger visualizerRunId, Authentication authentication) throws TimeSeriesVisualizerException {
 		this.visualizerRunId = visualizerRunId;
-
+        this.authentication = authentication;
 	}
 
 	private Map<InfectionStateEnum, TreeMap<Integer, Double>> processQueryResultFile(String filePath) throws TimeSeriesVisualizerException {
@@ -172,7 +174,7 @@ public class TimeSeriesProcessor {
 
 			message.setOutputFileIdentification(fileIdentification);
 			try {
-				RunUtils.runQueryService(message, visualizerRunId);
+				RunUtils.runQueryService(message, visualizerRunId, authentication);
 
 				// process file
 				String filePath = RunUtils.getLocalFilePath("1.csv", visualizerRunId);
