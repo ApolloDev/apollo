@@ -132,6 +132,7 @@ public class RestBrokerServiceConnector extends BrokerServiceConnector {
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 		throw new JobRunningServiceException("Not supported yet");
+
 	}
 
 	@Override

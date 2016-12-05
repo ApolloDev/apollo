@@ -62,7 +62,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 
 	public void runExample() {
 		RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory
-				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.SEIR);
+				.getMinimalistRunSimulationMessage(SimulatorIdentificationEnum.FRED);
 
         runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
                 .getInfectionAcquisitionsFromInfectedHosts().get(0)
@@ -91,7 +91,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 		}
 
 		
-		runScenarioAndDisplayResults(runSimulationMessage);
+//		runScenarioAndDisplayResults(runSimulationMessage);
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {

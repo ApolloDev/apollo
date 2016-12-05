@@ -40,12 +40,12 @@ public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-3.1.0-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-4.0-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(
 			"http://service.apollo.pitt.edu/apolloservice/v4_0/",
-			"ApolloService_v3.1.0");
+			"ApolloService_v4.0");
 	public static final long TWO_SECONDS = 2000;
 	public static final boolean RUN_IS_NOT_COMPLETED_OR_FAILED = true;
 	public static final boolean RUN_WAS_SUCCESSFUL = true;
@@ -55,51 +55,6 @@ public class TutorialWebServiceClient {
 	public TutorialWebServiceClient() {
 	}
 
-//	public static List<String> getScenarioLocationCodesSupportedBySimulatorOrNull(
-//			SoftwareIdentification simulatorIdentification) {
-//		GetScenarioLocationCodesSupportedBySimulatorResult resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall = port
-//				.getScenarioLocationCodesSupportedBySimulator(simulatorIdentification);
-//
-//		MethodCallStatusEnum callStatus = resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall
-//				.getMethodCallStatus().getStatus();
-//		System.out
-//				.printf("Call to getScenarioLocationCodesSupportedBySimulator() returned with result: %s\n",
-//						callStatus);
-//		if (callStatus == MethodCallStatusEnum.COMPLETED) {
-//			return resultOfGetScenarioLocationCodesSupportedBySimulatorWebServiceCall
-//					.getLocationCodes();
-//		} else {
-//			return null;
-//		}
-//
-//	}
-//	public static PopulationAndEnvironmentCensus getPopulationAndEnvironmentCensus(
-//			SoftwareIdentification simulatorSoftwareIdentification,
-//			String apolloLocationCode) {
-//		GetPopulationAndEnvironmentCensusResult getPopulationAndEnvironmentCensusResult = port
-//				.getPopulationAndEnvironmentCensus(
-//						simulatorSoftwareIdentification, apolloLocationCode);
-//
-//		return getPopulationAndEnvironmentCensusResult
-//				.getPopulationAndEnvironmentCensus();
-//	}
-//	protected static List<UrlOutputResource> getUrlOutputResourcesForVisualization(
-//			BigInteger visualizationRunIdentifier) {
-//		GetVisualizerOutputResourcesResult results = port
-//				.getVisualizerOutputResources(visualizationRunIdentifier);
-//		if (results.getMethodCallStatus().getStatus()
-//				.equals(MethodCallStatusEnum.COMPLETED)) {
-//			for (UrlOutputResource r : results.getUrlOutputResources()) {
-//				System.out.println("\t" + r.getURL());
-//			}
-//		} else {
-//			System.out
-//					.printf("Unable to retrieve visualizer output resources. MethodCallStatus was %s with message: %s\n",
-//							results.getMethodCallStatus().getStatus(), results
-//									.getMethodCallStatus().getMessage());
-//		}
-//		return results.getUrlOutputResources();
-//	}
 	public static BigInteger runSimulation(
 			RunSimulationMessage runSimulationMessage) {
 		RunResult simulationRunResult = port
@@ -204,16 +159,5 @@ public class TutorialWebServiceClient {
 		}
 	}
 
-	// public static GetLibraryItemResult getLibraryItem(String uuid) {
-	// return port.getLibraryItem(uuid);
-	// }
-	//
-	// public static AddLibraryItemResult addLibraryItem(Authentication
-	// authentication, ApolloIndexableItem ApolloIndexableItem, String
-	// itemDescription,
-	// String itemSource, String itemType, ArrayList<String> itemIndexingLabels)
-	// {
-	// return port.addLibraryItem(authentication, ApolloIndexableItem,
-	// itemDescription, itemSource, itemType, itemIndexingLabels);
-	// }
+
 }
