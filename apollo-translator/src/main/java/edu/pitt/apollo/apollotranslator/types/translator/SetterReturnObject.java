@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apollotranslator.types.translator;
 
-import java.util.List;
-
 import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator.CssWarningClasses;
+
+import java.util.List;
 
 public class SetterReturnObject {
 

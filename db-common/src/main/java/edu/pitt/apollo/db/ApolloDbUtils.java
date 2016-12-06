@@ -1,36 +1,23 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.ApolloServiceConstants;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.db.exceptions.*;
+import edu.pitt.apollo.exception.Md5UtilsException;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_1.SoftwareLicenseIdentification;
+import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 
-import java.io.*;
+import java.io.File;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.types.v4_0_1.SoftwareLicenseIdentification;
-import edu.pitt.apollo.utilities.Md5Utils;
-import edu.pitt.apollo.exception.Md5UtilsException;
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
-
-import edu.pitt.apollo.data_service_types.v4_0_1.DataRetrievalRequestMessage;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordAlreadyExistsException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseRecordNotInsertedException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseStatusNotFoundForRunIdException;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseUserPasswordException;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
 

@@ -1,17 +1,12 @@
 package edu.pitt.apollo.apollotranslator.file;
 
+import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-
-import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
-import java.io.ByteArrayOutputStream;
+import java.util.*;
 
 /**
  *

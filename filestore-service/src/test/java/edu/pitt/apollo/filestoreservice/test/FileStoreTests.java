@@ -6,13 +6,8 @@ import edu.pitt.apollo.filestoreservice.FileStoreService;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
-import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
-import edu.pitt.isg.objectserializer.JsonUtils;
 import junit.framework.TestCase;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 

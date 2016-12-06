@@ -1,8 +1,5 @@
 package edu.pitt.apollo.translatorservice.thread;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-
 import edu.pitt.apollo.apollotranslator.types.translator.TranslatorInput;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.Md5UtilsException;
@@ -10,12 +7,16 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import edu.pitt.apollo.translatorservice.TranslatorRunner;
 import edu.pitt.apollo.translatorservice.exception.TranslatorServiceException;
-import static edu.pitt.apollo.translatorservice.thread.TranslationThread.logger;
 import edu.pitt.apollo.translatorservice.types.BatchResultSetRow;
 import edu.pitt.apollo.translatorservice.utility.TranslatorServiceUtils;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.JsonUtils;
 import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+
+import static edu.pitt.apollo.translatorservice.thread.TranslationThread.logger;
 
 /**
  *

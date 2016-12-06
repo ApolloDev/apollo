@@ -2,14 +2,12 @@ package edu.pitt.apollo.restlibraryserviceconnector;
 
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.interfaces.LibraryServiceInterface;
 import edu.pitt.apollo.library_service_types.v4_0_1.*;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigInteger;
 
 /**
  * Created by jdl50 on 8/4/15.

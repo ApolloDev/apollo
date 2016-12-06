@@ -1,7 +1,10 @@
 package edu.pitt.apollo.runmanagerservice;
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.exception.*;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;

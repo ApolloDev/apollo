@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apollotranslator.types.translator;
 
+import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator.CssWarningClasses;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator.CssWarningClasses;
 
 /**
  * 

@@ -6,10 +6,9 @@ import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v4_0_1.Location;
 import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensus;
-import java.math.BigInteger;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 public class PopulationInfectionAndImmunityCensusSetter extends AbstractTypedSetter<PopulationInfectionAndImmunityCensus> {
 

@@ -1,12 +1,9 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.LibraryServiceImpl;
-
-
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.apollo.utils.ResponseMessageBuilder;
 import edu.pitt.isg.objectserializer.Serializer;

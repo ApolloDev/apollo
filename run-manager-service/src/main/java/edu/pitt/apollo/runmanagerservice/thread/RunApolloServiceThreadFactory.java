@@ -6,7 +6,6 @@ import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 

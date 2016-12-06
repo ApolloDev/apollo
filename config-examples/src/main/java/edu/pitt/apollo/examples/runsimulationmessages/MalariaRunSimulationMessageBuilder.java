@@ -1,7 +1,6 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v4_0_1.*;
 

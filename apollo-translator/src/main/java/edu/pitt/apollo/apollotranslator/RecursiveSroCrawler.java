@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apollotranslator;
 
+import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 
 /**
  *

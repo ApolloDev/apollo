@@ -23,6 +23,10 @@ import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
 import edu.pitt.apollo.translatorservice.exception.TranslatorServiceException;
 import edu.pitt.apollo.translatorservice.types.BatchResultSetRow;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.maven.wagon.util.FileUtils;
+import org.zeroturnaround.zip.ZipUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -31,9 +35,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Queue;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.maven.wagon.util.FileUtils;
-import org.zeroturnaround.zip.ZipUtil;
 
 /**
  *

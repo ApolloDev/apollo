@@ -1,10 +1,6 @@
 package edu.pitt.apollo.connector;
 
-import edu.pitt.apollo.interfaces.ContentManagementInterface;
-import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
-import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
-import edu.pitt.apollo.interfaces.RunManagementInterface;
-import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
+import edu.pitt.apollo.interfaces.*;
 
 /**
  * Created by nem41 on 8/17/15.

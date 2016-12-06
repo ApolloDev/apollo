@@ -3,26 +3,20 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.Properties;
+
+;
 
 /**
  *

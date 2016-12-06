@@ -1,8 +1,5 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import edu.pitt.apollo.apollotranslator.XMLUtility;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
@@ -11,6 +8,9 @@ import edu.pitt.apollo.apollotranslator.types.translator.TranslatorElement;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  *

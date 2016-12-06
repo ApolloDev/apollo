@@ -1,5 +1,8 @@
 package edu.pitt.apollo.apollotranslator;
 
+import edu.pitt.apollo.apollotranslator.exception.ApolloParserException;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,9 +10,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import edu.pitt.apollo.apollotranslator.exception.ApolloParserException;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 public class SimulatorConfigurationParser {
 

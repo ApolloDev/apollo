@@ -1,10 +1,11 @@
 package edu.pitt.apollo.filestoreservicerestfrontend.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
-import com.wordnik.swagger.annotations.ApiParam;
 import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.filestoreservicerestfrontend.methods.GetStatusOfFileUploadMethod;
 import edu.pitt.apollo.filestoreservicerestfrontend.methods.GetUrlOfFileMethod;
@@ -13,18 +14,15 @@ import edu.pitt.apollo.filestoreservicerestfrontend.methods.UploadFileMethod;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
-
-
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import java.math.BigInteger;
 
 /**
  * Created by mas400 on 3/9/16.

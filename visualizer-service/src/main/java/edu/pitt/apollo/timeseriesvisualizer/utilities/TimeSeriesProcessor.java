@@ -1,33 +1,27 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import java.io.File;
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0_1.FileTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
+import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
 import edu.pitt.apollo.types.v4_0_1.InfectionStateEnum;
 import edu.pitt.apollo.types.v4_0_1.SimulatorCountOutputSpecification;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.types.v4_0_1.TemporalGranularityEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.math.BigInteger;
+import java.util.*;
 
 /**
  *

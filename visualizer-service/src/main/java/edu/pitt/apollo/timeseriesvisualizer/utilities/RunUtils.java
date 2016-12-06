@@ -1,6 +1,5 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import static edu.pitt.apollo.ApolloServiceConstants.APOLLO_DIR;
 import edu.pitt.apollo.connector.BrokerServiceConnector;
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.exception.FilestoreException;
@@ -9,31 +8,23 @@ import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.restbrokerserviceconnector.RestBrokerServiceConnector;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
-import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.*;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.types.v4_0_1.SimulatorCountOutputSpecification;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.utilities.FileStoreServiceUtility;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.net.URL;
-import java.util.Map;
-import java.util.Properties;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.Map;
+import java.util.Properties;
+
+import static edu.pitt.apollo.ApolloServiceConstants.APOLLO_DIR;
 
 public class RunUtils {
 

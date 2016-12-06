@@ -1,13 +1,13 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import au.com.bytecode.opencsv.CSVReader;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.XMLTranslationInstruction;
 import edu.pitt.apollo.apollotranslator.types.translator.XMLTranslationInstruction.XMLNativeValueType;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

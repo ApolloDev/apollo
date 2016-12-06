@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.IOException;
-
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
+
+import java.io.IOException;
 
 /**
  *

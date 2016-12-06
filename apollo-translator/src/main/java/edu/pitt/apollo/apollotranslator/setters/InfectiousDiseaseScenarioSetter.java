@@ -1,14 +1,13 @@
 package edu.pitt.apollo.apollotranslator.setters;
 
-import com.sun.org.apache.bcel.internal.generic.POP;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.*;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Feb 2, 2014 Time: 10:35:08 AM Class: InfectiousDiseaseScenarioSetter IDE: NetBeans 6.9.1

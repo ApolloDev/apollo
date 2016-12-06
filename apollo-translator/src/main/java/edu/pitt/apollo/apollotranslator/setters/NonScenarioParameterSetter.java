@@ -1,10 +1,10 @@
 package edu.pitt.apollo.apollotranslator.setters;
 
-import java.util.List;
-
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
+
+import java.util.List;
 
 public class NonScenarioParameterSetter extends AbstractSetter {
 

@@ -1,6 +1,7 @@
 package edu.pitt.apollo.apolloclient.tutorialv2;
 
-import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunRequest;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
 import edu.pitt.apollo.services_common.v4_0_1.*;
@@ -8,8 +9,6 @@ import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 import javax.xml.namespace.QName;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * In this example "SoapRun" class, we show how to interact with the Apollo Web Service by connecting to the service,

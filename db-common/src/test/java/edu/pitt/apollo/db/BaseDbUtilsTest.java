@@ -1,16 +1,10 @@
 package edu.pitt.apollo.db;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
 import junit.framework.TestCase;
 import org.hsqldb.Server;
+
+import java.sql.Connection;
+import java.util.Properties;
 
 /**
  *

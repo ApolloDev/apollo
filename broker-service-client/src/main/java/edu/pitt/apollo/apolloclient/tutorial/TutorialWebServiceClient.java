@@ -14,27 +14,17 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0_1.RunResult;
-import edu.pitt.apollo.services_common.v4_0_1.RunStatusRequest;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.services_common.v4_0_1.UrlOutputResource;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.services_common.v4_0_1.*;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.GetVisualizerOutputResourcesResult;
 import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+
+import javax.xml.namespace.QName;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class TutorialWebServiceClient {
 

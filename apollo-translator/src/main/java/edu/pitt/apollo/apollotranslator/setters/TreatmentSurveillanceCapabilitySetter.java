@@ -7,6 +7,7 @@ import edu.pitt.apollo.types.v4_0_1.Duration;
 import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentEnum;
 import edu.pitt.apollo.types.v4_0_1.Location;
 import edu.pitt.apollo.types.v4_0_1.TreatmentSurveillanceCapability;
+
 import java.util.ArrayList;
 import java.util.List;
 

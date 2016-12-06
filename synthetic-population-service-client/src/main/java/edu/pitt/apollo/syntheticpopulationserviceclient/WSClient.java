@@ -15,18 +15,18 @@
 
 package edu.pitt.apollo.syntheticpopulationserviceclient;
 
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunRequest;
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunResponse;
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.SyntheticPopulationServiceEI;
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.SyntheticPopulationServiceV401;
 import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationRunStatusMessage;
+
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WSClient {
 	public static void main(String[] args) throws MalformedURLException {

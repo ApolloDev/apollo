@@ -7,6 +7,7 @@ import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
 import edu.pitt.apollo.types.v4_0_1.CategoryDefinition;
 import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeCategoryDefinition;
 import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
+
 import java.util.List;
 
 /**

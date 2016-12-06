@@ -15,30 +15,28 @@
 
 package edu.pitt.apollo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.util.Properties;
-import java.util.Date;
-import java.sql.*;
-
-import javax.mail.*;
-import javax.mail.Provider.Type;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunRequest;
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunResponse;
 import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.SyntheticPopulationServiceEI;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
 import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationRunStatusMessage;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.sql.*;
+import java.util.Date;
+import java.util.Properties;
 
 
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/",

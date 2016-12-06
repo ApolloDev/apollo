@@ -3,8 +3,8 @@ package edu.pitt.apollo.db;
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.utilities.ApolloClassList;
-import edu.pitt.isg.objectserializer.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.isg.objectserializer.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,12 +12,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.*;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Author: Nick Millett

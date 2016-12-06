@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" 
-    targetNamespace="http://infectious_disease_experiment_specification.apollo.pitt.edu/v4_0/"
-	xmlns:tns="http://infectious_disease_experiment_specification.apollo.pitt.edu/v4_0/"
-	xmlns:apollo="http://types.apollo.pitt.edu/v4_0/"
-	elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://infectious_disease_experiment_specification.apollo.pitt.edu/v4_0/"
+        xmlns:apollo="http://types.apollo.pitt.edu/v4_0/"
+        elementFormDefault="qualified">
 
 	<import schemaLocation="apollo_types_4.0.xsd" namespace="http://types.apollo.pitt.edu/v4_0/"></import>
 

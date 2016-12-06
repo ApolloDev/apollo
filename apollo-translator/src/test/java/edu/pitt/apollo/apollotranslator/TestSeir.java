@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apollotranslator;
 
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationMode;
-import edu.pitt.apollo.examples.runsimulationmessages.RunSimulationMessageFactory;
 import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder.ControlMeasureTypeEnum;
+import edu.pitt.apollo.examples.runsimulationmessages.RunSimulationMessageFactory;
 
 import java.io.File;
 import java.util.Set;

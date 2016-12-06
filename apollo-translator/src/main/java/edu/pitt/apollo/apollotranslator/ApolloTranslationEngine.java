@@ -1,5 +1,18 @@
 package edu.pitt.apollo.apollotranslator;
 
+import edu.pitt.apollo.apollotranslator.exception.ApolloParserException;
+import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
+import edu.pitt.apollo.apollotranslator.file.AbstractTranslationInstructionsFileLoader;
+import edu.pitt.apollo.apollotranslator.file.JsFileLoader;
+import edu.pitt.apollo.apollotranslator.file.PlainTextTranslationInstructionsFileLoader;
+import edu.pitt.apollo.apollotranslator.file.XMLTranslationInstructionsFileLoader;
+import edu.pitt.apollo.apollotranslator.instructions.TranslationInstructionsProcessor;
+import edu.pitt.apollo.apollotranslator.types.js.JsContainer;
+import edu.pitt.apollo.apollotranslator.types.js.JsFunction;
+import edu.pitt.apollo.apollotranslator.types.translator.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import org.mozilla.javascript.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -9,27 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-
-import edu.pitt.apollo.apollotranslator.instructions.TranslationInstructionsProcessor;
-import edu.pitt.apollo.apollotranslator.types.translator.*;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
-import org.mozilla.javascript.JavaScriptException;
-import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-
-import edu.pitt.apollo.apollotranslator.exception.ApolloParserException;
-import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
-import edu.pitt.apollo.apollotranslator.file.AbstractTranslationInstructionsFileLoader;
-import edu.pitt.apollo.apollotranslator.file.JsFileLoader;
-import edu.pitt.apollo.apollotranslator.file.PlainTextTranslationInstructionsFileLoader;
-import edu.pitt.apollo.apollotranslator.file.XMLTranslationInstructionsFileLoader;
-import edu.pitt.apollo.apollotranslator.types.js.JsContainer;
-import edu.pitt.apollo.apollotranslator.types.js.JsFunction;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Aug 9, 2013 Time:

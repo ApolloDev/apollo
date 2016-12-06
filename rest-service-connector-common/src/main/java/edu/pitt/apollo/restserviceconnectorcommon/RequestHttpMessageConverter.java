@@ -17,13 +17,6 @@ package edu.pitt.apollo.restserviceconnectorcommon;
 
 
 import edu.pitt.apollo.services_common.v4_0_1.Request;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;
@@ -38,6 +31,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *

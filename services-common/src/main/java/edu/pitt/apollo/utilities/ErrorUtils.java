@@ -1,15 +1,11 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.FileLocks;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import edu.pitt.apollo.FileLocks.FileLockAction;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import edu.pitt.apollo.FileLocks.FileLockAction;
 
 /**
  * A helper class which allows thread-safe file operations suitable for using

@@ -1,20 +1,7 @@
 package edu.pitt.apollo.examples;
 
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import java.math.BigInteger;
-
-import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.ConditionalProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0_1.ConditioningVariable;
-import edu.pitt.apollo.types.v4_0_1.CategoricalVariableEnum;
-import edu.pitt.apollo.types.v4_0_1.CategoricalVariableNode;
-import edu.pitt.apollo.types.v4_0_1.CategoryValueNode;
-import edu.pitt.apollo.types.v4_0_1.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.GenderEnum;
-import edu.pitt.apollo.types.v4_0_1.ProbabilityValuePair;
-import edu.pitt.apollo.types.v4_0_1.UncertainDuration;
-import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 public class ExampleConditionalProbabilityDistribution {
 

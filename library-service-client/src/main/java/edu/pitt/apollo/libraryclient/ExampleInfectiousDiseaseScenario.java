@@ -3,14 +3,13 @@ package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.types.v4_0_1.*;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *

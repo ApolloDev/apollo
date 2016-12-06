@@ -15,20 +15,11 @@
  */
 package edu.pitt.apollo.examples;
 
-import edu.pitt.isg.objectserializer.exceptions.SerializationException;
-import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.CategoricalVariableEnum;
-import edu.pitt.apollo.types.v4_0_1.CategoricalVariableNode;
-import edu.pitt.apollo.types.v4_0_1.CategoryValueNode;
-import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.GenderEnum;
-import edu.pitt.apollo.types.v4_0_1.SimulatorCountOutput;
-import edu.pitt.apollo.types.v4_0_1.SpatialGranularityEnum;
-import edu.pitt.apollo.types.v4_0_1.TemporalGranularityEnum;
-import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v4_0_1.VariableCategoryValueTree;
+import edu.pitt.apollo.types.v4_0_1.*;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.XMLSerializer;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 

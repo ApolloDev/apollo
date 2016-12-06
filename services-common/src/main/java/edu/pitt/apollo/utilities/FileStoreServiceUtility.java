@@ -22,7 +22,7 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
 import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.utilities.Md5Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;

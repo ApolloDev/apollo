@@ -1,16 +1,15 @@
 package edu.pitt.apollo.apollotranslator.types.js;
 
+import edu.pitt.apollo.apollotranslator.ApolloLogger;
+import org.mozilla.javascript.ast.AstNode;
+import org.mozilla.javascript.ast.FunctionNode;
+import org.mozilla.javascript.ast.NodeVisitor;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
-
-import org.mozilla.javascript.ast.AstNode;
-import org.mozilla.javascript.ast.FunctionNode;
-import org.mozilla.javascript.ast.NodeVisitor;
-
-import edu.pitt.apollo.apollotranslator.ApolloLogger;
 
 /**
  *

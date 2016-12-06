@@ -1,13 +1,13 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.IOException;
-import java.util.List;
-
 import edu.pitt.apollo.apollotranslator.RecursiveSroCrawler;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.NativeFileCreatorInput;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**

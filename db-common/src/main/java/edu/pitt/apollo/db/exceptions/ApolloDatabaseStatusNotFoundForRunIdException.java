@@ -1,7 +1,5 @@
 package edu.pitt.apollo.db.exceptions;
 
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-
 /**
  *
  * Author: Nick Millett

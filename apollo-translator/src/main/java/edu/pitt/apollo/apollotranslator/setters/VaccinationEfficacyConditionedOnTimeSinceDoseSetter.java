@@ -1,14 +1,14 @@
 package edu.pitt.apollo.apollotranslator.setters;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.TimeAxisCategoryLabels;
 import edu.pitt.apollo.types.v4_0_1.VaccinationEfficacyConditionedOnTimeSinceDose;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JDL50 on 1/13/14.

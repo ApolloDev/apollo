@@ -1,7 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
 
-import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;

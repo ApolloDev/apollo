@@ -6,9 +6,10 @@ import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.AbioticThingCensus;
 import edu.pitt.apollo.types.v4_0_1.Census;
 import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensus;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *

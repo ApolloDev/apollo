@@ -1,14 +1,13 @@
 package edu.pitt.apollo.examples;
 
-import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
-import edu.pitt.apollo.types.v4_0_1.*;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 public class ExampleInfectiousDiseaseScenario {

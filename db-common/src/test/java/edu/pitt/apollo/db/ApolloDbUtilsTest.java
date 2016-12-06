@@ -1,14 +1,8 @@
 package edu.pitt.apollo.db;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Map;
-
-import junit.framework.TestCase;
-import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import junit.framework.TestCase;
 
 
 public class ApolloDbUtilsTest extends TestCase {

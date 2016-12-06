@@ -16,14 +16,13 @@
 package edu.pitt.apollo.filestoreservicerestfrontend.methods;
 
 
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
 import edu.pitt.apollo.filestoreservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.isg.objectserializer.Serializer;
 import edu.pitt.isg.objectserializer.SerializerFactory;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;

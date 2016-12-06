@@ -15,8 +15,9 @@
 package edu.pitt.apollo.translatorservice;
 
 import edu.pitt.apollo.interfaces.TranslatorServiceInterface;
-import edu.pitt.apollo.translatorservice.thread.TranslationThread;
 import edu.pitt.apollo.translatorservice.thread.BatchTranslationThread;
+import edu.pitt.apollo.translatorservice.thread.TranslationThread;
+
 import java.math.BigInteger;
 
 public class TranslatorServiceImpl implements TranslatorServiceInterface {

@@ -1,12 +1,12 @@
 package edu.pitt.apollo.apollotranslator.setters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.SpatialKernelFunctionParameters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpatialKernelFunctionParametersSetter extends
 		AbstractTypedSetter<SpatialKernelFunctionParameters> {

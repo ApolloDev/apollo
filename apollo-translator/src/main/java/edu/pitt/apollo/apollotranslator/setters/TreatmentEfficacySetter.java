@@ -6,6 +6,7 @@ import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
 import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v4_0_1.TreatmentEfficacy;
 import edu.pitt.apollo.types.v4_0_1.TreatmentPreventableOutcomeEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 

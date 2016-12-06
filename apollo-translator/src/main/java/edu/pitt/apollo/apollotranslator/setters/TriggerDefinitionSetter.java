@@ -7,6 +7,7 @@ import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition;
 import edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition;
 import edu.pitt.apollo.types.v4_0_1.TreatmentSurveillanceTriggerDefinition;
 import edu.pitt.apollo.types.v4_0_1.TriggerDefinition;
+
 import java.util.List;
 
 /**

@@ -1,15 +1,14 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-import org.mozilla.javascript.Parser;
-import org.mozilla.javascript.ast.AstNode;
-
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.js.JsContainer;
 import edu.pitt.apollo.apollotranslator.types.js.JsFunctionList;
+import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.ast.AstNode;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  *

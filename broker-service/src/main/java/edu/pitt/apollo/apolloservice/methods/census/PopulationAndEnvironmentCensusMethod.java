@@ -1,19 +1,5 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
-import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.types.v4_0_1.Location;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Scanner;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 /**
  *
  * Author: Nick Millett

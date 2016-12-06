@@ -7,6 +7,7 @@ import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
 import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeWithProbability;
 import edu.pitt.apollo.types.v4_0_1.Duration;
 import edu.pitt.apollo.types.v4_0_1.InfectiousDisease;
+
 import java.util.ArrayList;
 import java.util.List;
 

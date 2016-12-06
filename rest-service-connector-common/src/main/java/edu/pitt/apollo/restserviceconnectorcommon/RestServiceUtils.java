@@ -16,29 +16,25 @@
 package edu.pitt.apollo.restserviceconnectorcommon;
 
 
-import edu.pitt.apollo.utilities.ApolloClassList;
-import edu.pitt.apollo.utilities.SerializationUtils;
-import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
 import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.apollo.utilities.SerializationUtils;
+import edu.pitt.isg.objectserializer.Deserializer;
+import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.SerializerFactory;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-import edu.pitt.isg.objectserializer.*;
-import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
-import edu.pitt.isg.objectserializer.exceptions.SerializationException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
 
 /**
  *

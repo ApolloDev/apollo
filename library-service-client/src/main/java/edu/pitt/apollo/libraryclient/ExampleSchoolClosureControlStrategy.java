@@ -1,16 +1,6 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
-import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceCapability;
-import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v4_0_1.FixedDuration;
-import edu.pitt.apollo.types.v4_0_1.Location;
-import edu.pitt.apollo.types.v4_0_1.OperatorEnum;
-import edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure;
-import edu.pitt.apollo.types.v4_0_1.PlaceEnum;
-import edu.pitt.apollo.types.v4_0_1.UnitOfMeasureEnum;
-import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 /**
  *

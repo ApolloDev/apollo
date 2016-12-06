@@ -6,7 +6,6 @@ import edu.pitt.isg.objectserializer.JsonUtils;
 import junit.framework.TestCase;
 
 import javax.xml.bind.JAXBException;
-import java.io.Serializable;
 import java.util.Arrays;
 
 /**

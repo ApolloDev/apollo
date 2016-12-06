@@ -1,30 +1,21 @@
 package edu.pitt.apollo.runmanagerservice.datastore.accessors;
 
 import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.runmanagerservice.utils.ApolloSoftwareIdentificationResolver;
-
-import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.util.Map;
-
-import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
+import edu.pitt.apollo.runmanagerservice.utils.ApolloSoftwareIdentificationResolver;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
 import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
 import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.utilities.FileStoreServiceUtility;
 import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: May 7, 2014 Time: 11:56:26 AM Class: DatabaseAccessorForRunningSimulations IDE: NetBeans 6.9.1

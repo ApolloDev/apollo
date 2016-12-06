@@ -2,7 +2,6 @@ package edu.pitt.apollo.translatorservice.utility;
 
 import au.com.bytecode.opencsv.CSVReader;
 import edu.pitt.apollo.ApolloServiceConstants;
-
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationMode;
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.db.ApolloDbUtils;
@@ -19,20 +18,14 @@ import edu.pitt.apollo.translatorservice.types.TranslatorResources;
 import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.utilities.FileStoreServiceUtility;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *

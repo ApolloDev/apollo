@@ -7,6 +7,7 @@ import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceCapability;
 import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition;
 import edu.pitt.apollo.types.v4_0_1.OperatorEnum;
 import edu.pitt.apollo.types.v4_0_1.UnitOfMeasureEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 

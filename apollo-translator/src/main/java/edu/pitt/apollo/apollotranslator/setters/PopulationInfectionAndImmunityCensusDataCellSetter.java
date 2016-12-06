@@ -3,11 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeEnum;
-import edu.pitt.apollo.types.v4_0_1.GenderEnum;
-import edu.pitt.apollo.types.v4_0_1.InfectionStateEnum;
-import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensusDataCell;
+import edu.pitt.apollo.types.v4_0_1.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

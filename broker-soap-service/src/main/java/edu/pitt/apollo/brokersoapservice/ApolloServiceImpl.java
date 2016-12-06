@@ -15,6 +15,21 @@
 package edu.pitt.apollo.brokersoapservice;
 
 import edu.pitt.apollo.BrokerServiceImpl;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunResult;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
+import edu.pitt.apollo.library_service_types.v4_0_1.*;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import org.apache.cxf.phase.PhaseInterceptorChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -22,36 +37,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-
-import edu.pitt.apollo.data_service_types.v4_0_1.*;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlResult;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunResult;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.GetRegisteredServicesResult;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0_1.RunResult;
-import edu.pitt.apollo.services_common.v4_0_1.RunStatusRequest;
-import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v4_0_1.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v4_0_1.TerminteRunResult;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.utilities.AuthorizationUtility;
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import java.util.List;
-
-import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @org.apache.cxf.interceptor.InInterceptors (interceptors = {"edu.pitt.apollo.brokersoapservice.HTTPHeaderInterceptor" })
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI")

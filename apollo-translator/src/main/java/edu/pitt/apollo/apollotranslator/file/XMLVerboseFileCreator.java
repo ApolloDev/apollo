@@ -1,10 +1,5 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import edu.pitt.apollo.apollotranslator.RecursiveSroCrawler;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.setters.AbstractSetter;
@@ -15,6 +10,10 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  *

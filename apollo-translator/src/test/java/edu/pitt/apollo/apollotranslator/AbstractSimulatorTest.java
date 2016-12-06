@@ -1,14 +1,13 @@
 package edu.pitt.apollo.apollotranslator;
 
-import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator.CssKeyValueClasses;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationMode;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslatorInput;
 import edu.pitt.apollo.examples.exception.ConfigurationExampleException;
+import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder.ControlMeasureTypeEnum;
+import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder.DefReproductionNumber;
 import edu.pitt.apollo.examples.runsimulationmessages.RunSimulationMessageFactory;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder.DefReproductionNumber;
-import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder.ControlMeasureTypeEnum;
 import junit.framework.TestCase;
 import org.mozilla.javascript.RhinoException;
 

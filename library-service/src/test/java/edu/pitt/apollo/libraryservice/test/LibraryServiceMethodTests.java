@@ -1,13 +1,11 @@
 package edu.pitt.apollo.libraryservice.test;
 
 
-import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.JsonUtils;
 import junit.framework.TestCase;
 
 import javax.xml.bind.JAXBException;
-import java.io.Serializable;
 import java.util.Arrays;
 
 /**

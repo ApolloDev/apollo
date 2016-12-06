@@ -8,19 +8,12 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.utilities.ErrorUtils;
-
-import static edu.pitt.apollo.utilities.ErrorUtils.checkFileExists;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.readErrorFromFile;
-import static edu.pitt.apollo.utilities.ErrorUtils.writeErrorToFile;
 
 /**
  * Author: Nick Millett

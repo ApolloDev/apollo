@@ -5,21 +5,15 @@ import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
 import edu.pitt.apollo.translatorservice.exception.TranslatorServiceException;
 import edu.pitt.apollo.translatorservice.types.TranslatorResources;
 import edu.pitt.apollo.translatorservice.utility.TranslatorServiceUtils;
-import static edu.pitt.apollo.translatorservice.utility.TranslatorServiceUtils.ERROR_PREFIX;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *

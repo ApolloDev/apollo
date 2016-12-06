@@ -8,20 +8,18 @@ package edu.pitt.apollo.brokerservicerestfrontend.methods;
 import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.Serializer;
 import edu.pitt.isg.objectserializer.XMLDeserializer;
 import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-
-import edu.pitt.isg.objectserializer.Serializer;
-
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import org.springframework.http.HttpStatus;
 
 /**

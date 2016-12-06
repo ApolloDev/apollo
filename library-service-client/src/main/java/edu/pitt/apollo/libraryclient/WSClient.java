@@ -23,23 +23,17 @@ import edu.pitt.apollo.types.v4_0_1.Census;
 import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
 import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
 import edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
-
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 

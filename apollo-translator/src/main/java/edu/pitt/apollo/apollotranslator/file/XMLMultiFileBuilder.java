@@ -1,17 +1,11 @@
 package edu.pitt.apollo.apollotranslator.file;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-
-import edu.pitt.apollo.apollotranslator.ApolloLogger;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.apollotranslator.types.translator.XMLTranslationInstruction.XMLNativeValueType;
-import edu.pitt.apollo.apollotranslator.types.translator.XMLTranslationReturnObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  *

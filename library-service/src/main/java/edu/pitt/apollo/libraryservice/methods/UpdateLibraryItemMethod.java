@@ -4,7 +4,6 @@ import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v4_0_1.UpdateLibraryItemContainerMessage;
 import edu.pitt.apollo.library_service_types.v4_0_1.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;

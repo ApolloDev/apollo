@@ -17,9 +17,9 @@ package edu.pitt.apollo;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import java.math.BigInteger;
-
 import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
+
+import java.math.BigInteger;
 
 public class VisualizerServiceImpl implements JobRunningServiceInterface {
 

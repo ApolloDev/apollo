@@ -6,15 +6,17 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetRegisteredSoftwareMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetURLOfSoftwareMethod;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.GET;
+
+;
 
 
 /*

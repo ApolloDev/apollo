@@ -1,18 +1,20 @@
 package edu.pitt.apollo.apollotranslator;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
-import edu.pitt.apollo.apollotranslator.file.*;
+import edu.pitt.apollo.apollotranslator.file.NativeFileCreator;
+import edu.pitt.apollo.apollotranslator.file.NativeFileCreatorFactory;
+import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator;
+import edu.pitt.apollo.apollotranslator.file.VerboseFileCreatorFactory;
 import edu.pitt.apollo.apollotranslator.types.translator.*;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ApolloTranslator {
 

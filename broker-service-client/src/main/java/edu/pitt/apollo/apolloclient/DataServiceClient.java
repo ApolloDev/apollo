@@ -14,28 +14,14 @@ package edu.pitt.apollo.apolloclient;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v4_0_1.RunIdAndFiles;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import javax.xml.namespace.QName;
+import java.io.*;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.namespace.QName;
 
 public class DataServiceClient {
 
