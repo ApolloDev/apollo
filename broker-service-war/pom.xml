@@ -59,7 +59,6 @@
 	<profiles>
 		<profile>
 			<id>CXF</id>
-			<!-- Remove activation element below if using Metro -->
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>

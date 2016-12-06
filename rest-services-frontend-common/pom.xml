@@ -122,7 +122,7 @@
     <profiles>
         <profile>
             <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>

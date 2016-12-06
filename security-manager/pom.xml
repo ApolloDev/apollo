@@ -151,7 +151,7 @@
     <profiles>
         <profile>
             <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -168,19 +168,6 @@
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-rt-transports-http</artifactId>
                     <version>${cxf.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <!-- See http://metro.java.net/guide/Using_Mavenized_Metro_Binaries.html 
-            for more Metro/Maven config info -->
-            <id>Metro</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.glassfish.metro</groupId>
-                    <artifactId>webservices-rt</artifactId>
-                    <version>2.2.1-1</version>
                 </dependency>
             </dependencies>
         </profile>
