@@ -22,7 +22,7 @@ public class PopulationInfectionAndImmunityCensusDataCellSetter extends
 
 	public PopulationInfectionAndImmunityCensusDataCellSetter() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public PopulationInfectionAndImmunityCensusDataCellSetter(String type,

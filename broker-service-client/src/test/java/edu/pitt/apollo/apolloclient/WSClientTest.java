@@ -30,7 +30,7 @@ public class WSClientTest {
 //		try {
 //			service = new ApolloService(new URL(WSClient.WSDL_LOC));
 //		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
+//
 //			e.printStackTrace();
 //			
 //		}
@@ -61,7 +61,7 @@ public class WSClientTest {
 //		try {
 //			service = new ApolloService(new URL(WSClient.WSDL_LOC));
 //		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
+//
 //			e.printStackTrace();
 //			
 //		}

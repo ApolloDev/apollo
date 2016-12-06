@@ -113,11 +113,11 @@ public abstract class PopulationAndEnvironmentCensusMethod {
 //            try {
 //                readCensusData();
 //            } catch (DatatypeConfigurationException e) {
-//                // TODO Auto-generated catch block
+//
 //                e.printStackTrace();
 //            }
 //        } catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
+//
 //            e.printStackTrace();
 //        }
 //    }

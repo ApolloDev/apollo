@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI")
 public class ApolloServiceImpl implements ApolloServiceEI {
 
-	//TODO: Implement library methods?
+	//TODO: Implement library methods
 	public ApolloServiceImpl() {
 
 	}
@@ -184,7 +184,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
 //	@Override
 //	public TerminteRunResult terminateRun(
 //			TerminateRunRequest terminateRunRequest) {
-//		// TODO Auto-generated method stub
+//
 //		return null;
 //	}
 

@@ -621,10 +621,10 @@ public class ApolloTranslationEngine {
                             methodSignature, scope));
 
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 

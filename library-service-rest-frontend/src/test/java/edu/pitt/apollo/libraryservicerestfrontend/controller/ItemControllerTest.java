@@ -34,7 +34,7 @@ public class ItemControllerTest extends TestCase {
 	public void testUpdateItem() {
 		try {
 			Authentication authentication = new Authentication();
-			//TODO: Fix this
+			//TODO: Update to most recent authentication scheme
 /*			authentication.setRequesterId(username);
 			authentication.setRequesterPassword(password);*/
 			UpdateLibraryItemContainerMessage ulicm = new UpdateLibraryItemContainerMessage();
@@ -100,7 +100,7 @@ public class ItemControllerTest extends TestCase {
 	public void testAddItem() {
 		try {
 			Authentication authentication = new Authentication();
-			//TODO: Fix this
+			//TODO: update authentication scheme
 			/*authentication.setRequesterId(username);
 			authentication.setRequesterPassword(password);*/
 			AddLibraryItemContainerMessage alicm = new AddLibraryItemContainerMessage();

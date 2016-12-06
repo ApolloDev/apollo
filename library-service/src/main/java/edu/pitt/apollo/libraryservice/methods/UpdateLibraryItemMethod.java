@@ -30,6 +30,7 @@ public class UpdateLibraryItemMethod {
         try {
             boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
             if (userAuthorized) {
+                //TODO: hookup authentication
                 int version = dbUtils.updateLibraryItem(urn, item, "looks_like_not_working", comment);
                 result.setVersion(version);
                 status.setStatus(MethodCallStatusEnum.COMPLETED);

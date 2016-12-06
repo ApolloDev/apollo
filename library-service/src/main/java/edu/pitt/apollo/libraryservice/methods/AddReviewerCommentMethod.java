@@ -28,6 +28,7 @@ public class AddReviewerCommentMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.REVIEWER);
 			if (userAuthorized) {
+				//TODO: hookup authentication
 				dbUtils.addReviewerComment(urn, version, comment, "looks_like_not_working");
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {

@@ -15,7 +15,7 @@ public class FileLocks {
 	Lock write = readWriteLock.writeLock();
 
 	public FileLocks() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public void lock() {
@@ -30,7 +30,7 @@ public class FileLocks {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 
 	}
 

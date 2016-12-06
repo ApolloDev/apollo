@@ -63,7 +63,7 @@ public class TestFred extends AbstractSimulatorTest {
 		try {
 			checkPopFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			fail(e.getMessage());
 		}
 		// checkAtLeastOneCommentExists();

@@ -32,7 +32,7 @@ public class SpatialKernelFunctionParametersSetter extends
 //	public SpatialKernelFunctionParametersSetter(
 //			ApolloTranslationEngine apolloTranslationEngine) {
 //		super("spatialKernalFunctionParameters", section, apolloTranslationEngine);
-//		// TODO Auto-generated constructor stub
+//
 //	}
 
 //	public SpatialKernelFunctionParametersSetter(String type,

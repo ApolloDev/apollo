@@ -278,5 +278,5 @@
         </plugins>
         <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
-    <name>output-translator-service-rest-frontend</name>
+    <name>Output Translator Service REST Front-end</name>
 </project>

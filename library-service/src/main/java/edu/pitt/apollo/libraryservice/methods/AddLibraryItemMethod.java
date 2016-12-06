@@ -31,6 +31,7 @@ public class AddLibraryItemMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
+				//TODO: hookup authentication
 				result = dbUtils.addLibraryItem(libraryItemContainer, "looks_like_this_isnt_hooked_up", comment);
 
 				result.setStatus(status);

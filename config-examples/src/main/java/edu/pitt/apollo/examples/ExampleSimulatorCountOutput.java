@@ -61,6 +61,7 @@ public class ExampleSimulatorCountOutput {
 		for (int[] ageRange : ageRanges) {
 			CategoryValueNode node = new CategoryValueNode();
 			AgeRangeCategoryDefinition ageRangeCatDef = new AgeRangeCategoryDefinition();
+			//TODO: update to use Bounds
 			/*ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
 			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));*/
 			ageRangeCatDef.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
@@ -82,6 +83,7 @@ public class ExampleSimulatorCountOutput {
 		for (int[] ageRange : ageRanges) {
 			CategoryValueNode node = new CategoryValueNode();
 			AgeRangeCategoryDefinition ageRangeCatDef = new AgeRangeCategoryDefinition();
+			//TODO: update to use Bounds
 		/*	ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
 			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));*/
 			ageRangeCatDef.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);

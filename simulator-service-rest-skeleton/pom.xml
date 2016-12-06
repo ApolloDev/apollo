@@ -277,5 +277,5 @@
         </plugins>
         <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
-    <name>simulator-service-rest-skeleton</name>
+    <name>Simulator Service REST Skeleton</name>
 </project>

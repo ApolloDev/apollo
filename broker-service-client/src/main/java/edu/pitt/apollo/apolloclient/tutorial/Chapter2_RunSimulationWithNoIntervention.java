@@ -55,7 +55,6 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 			System.out.println(baos.toString());
 			return baos.toString();
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "hello";
@@ -89,7 +88,7 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 			System.out.println(runSimulationMessage2
 					.getInfectiousDiseaseScenario().getScenarioDate());
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 

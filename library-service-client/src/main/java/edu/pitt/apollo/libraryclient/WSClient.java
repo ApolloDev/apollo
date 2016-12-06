@@ -17,7 +17,7 @@ package edu.pitt.apollo.libraryclient;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.library_service_types.v4_0_1.*;
 import edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceV40;
+import edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceV401;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.types.v4_0_1.Census;
 import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
@@ -65,7 +65,7 @@ public class WSClient {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV40 ls = new LibraryServiceV40(new URL(WSDL_LOC), SERVICE);
+		LibraryServiceV401 ls = new LibraryServiceV401(new URL(WSDL_LOC), SERVICE);
 		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
 		Authentication a = getAuthentication();
@@ -97,7 +97,7 @@ public class WSClient {
 		fis.close();
 
 		Authentication auth = new Authentication();
-		//TODO:Fix this
+		//TODO: Hookup authentication
 		/*auth.setRequesterId(properties.getProperty("user"));
 		auth.setRequesterPassword(properties.getProperty("password"));*/
 		return auth;

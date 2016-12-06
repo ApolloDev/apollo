@@ -10,7 +10,7 @@
   <groupId>edu.pitt.apollo</groupId>
   <artifactId>library-service-rest-connector</artifactId>
   <version>4.0.1-SNAPSHOT</version>
-  <name>library-service-rest-connector</name>
+  <name>Library Service Rest Connector</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

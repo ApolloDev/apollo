@@ -25,7 +25,7 @@ public class InfectionSetter extends AbstractTypedSetter<Infection> {
 
     public InfectionSetter(ApolloTranslationEngine apolloTranslationEngine, String type, String section) {
         super(type, section, apolloTranslationEngine);
-        // TODO Auto-generated constructor stub
+
     }
 
     private List<SetterReturnObject> setPathogen(ApolloPathogenCode id)

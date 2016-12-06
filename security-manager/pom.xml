@@ -227,7 +227,7 @@
 
         </plugins>
     </build>
-    <name>security-manager</name>
+    <name>Security Manager</name>
     <groupId>edu.pitt.apollo</groupId>
     <version>4.0.1-SNAPSHOT</version>
 </project>

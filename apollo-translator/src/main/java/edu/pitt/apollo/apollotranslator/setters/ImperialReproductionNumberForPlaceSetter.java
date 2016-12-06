@@ -43,7 +43,7 @@
 ////	public ImperialReproductionNumberForPlaceSetter(
 ////			ApolloTranslationEngine apolloTranslationEngine) {
 ////		super("infectiousDisease", SECTION, apolloTranslationEngine);
-////		// TODO Auto-generated constructor stub
+////
 ////	}
 ////
 ////	public ImperialReproductionNumberForPlaceSetter(String type,

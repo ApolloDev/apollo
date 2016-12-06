@@ -38,7 +38,7 @@ public class IndividualTreatmentControlMeasureSetter extends InfectiousDiseaseCo
 
     public IndividualTreatmentControlMeasureSetter() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
     public IndividualTreatmentControlMeasureSetter(ApolloTranslationEngine apolloTranslationEngine, String prefix, String section) {

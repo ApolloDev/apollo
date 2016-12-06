@@ -199,7 +199,7 @@
 
         </plugins>
     </build>
-    <name>services-common</name>
+    <name>Common Services Module</name>
     <groupId>edu.pitt.apollo</groupId>
     <version>4.0.1-SNAPSHOT</version>
 </project>

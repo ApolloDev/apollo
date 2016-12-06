@@ -28,7 +28,7 @@ public class SeasonalityFunctionParametersSetter extends
 //	public SeasonalityFunctionParametersSetter(
 //			ApolloTranslationEngine apolloTranslationEngine) {
 //		super("seasonalityFunctionParameters", SECTION, apolloTranslationEngine);
-//		// TODO Auto-generated constructor stub
+//
 //	}
 //
 //	public SeasonalityFunctionParametersSetter(String type,

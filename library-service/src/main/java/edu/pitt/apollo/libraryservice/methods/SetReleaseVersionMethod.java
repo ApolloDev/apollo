@@ -29,7 +29,8 @@ public class SetReleaseVersionMethod {
 		try {
 			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
 			if (userAuthorized) {
-				dbUtils.setReleaseVersion(urn, version, "not_impelmented_yet", comment);
+				//TODO: hookup authentication
+				dbUtils.setReleaseVersion(urn, version, "hookup_authentication_first", comment);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
 			} else {
 				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
