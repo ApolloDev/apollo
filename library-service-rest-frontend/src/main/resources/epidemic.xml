@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:Epidemic xmlns:tns="http://types.apollo.pitt.edu/v4_0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://types.apollo.pitt.edu/v4_0/apollo-types_3.0.0.xsd ">
+    <tns:causalPathogens>
+        <tns:ncbiTaxonId>1200</tns:ncbiTaxonId>
+    </tns:causalPathogens>
+    <tns:epidemicPeriod>
+        <tns:startDate>2001-01-01</tns:startDate>
+        <tns:startDateDefinition>symptomOnsetFirstCase</tns:startDateDefinition>
+    </tns:epidemicPeriod>
+    <tns:administrativeLocations>
+        <tns:apolloLocationCode>32</tns:apolloLocationCode>
+    </tns:administrativeLocations>
+    <tns:infections>
+        <tns:pathogen>
+            <tns:ncbiTaxonId>3</tns:ncbiTaxonId>
+        </tns:pathogen>
+        <tns:hostTaxonId>3</tns:hostTaxonId>
+        <tns:infectionAcquisitionsFromInfectiousHosts>
+            <tns:infectiousHostTaxonId>3</tns:infectiousHostTaxonId>
+            <tns:latentPeriodDuration>
+                <tns:unitOfTime>year</tns:unitOfTime>
+            </tns:latentPeriodDuration>
+            <tns:infectiousPeriodDuration>
+                <tns:unitOfTime>year</tns:unitOfTime>
+            </tns:infectiousPeriodDuration>
+            <tns:basicReproductionNumbers>
+                <tns:exactValue>0.0</tns:exactValue>
+            </tns:basicReproductionNumbers>
+        </tns:infectionAcquisitionsFromInfectiousHosts>
+    </tns:infections>
+    <tns:references>
+        <tns:id>0</tns:id>
+        <tns:title>tns:title</tns:title>
+        <tns:url>tns:url</tns:url>
+    </tns:references>
+</tns:Epidemic>

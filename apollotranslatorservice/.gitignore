@@ -1,6 +1,0 @@
-*.iml
-*/target
-.DS_Store
-translator-service/src/main/resources/*.xsd
-translator-service/src/main/resources/*.wsdl
-/target/
