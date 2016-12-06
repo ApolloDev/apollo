@@ -255,7 +255,7 @@ function getBeginTreatmentInterval(triggers) {
     var time;
     for (var i = 0; i < triggers.size(); i++) {
         var trigger = triggers.get(i);
-        if (trigger instanceof edu.pitt.apollo.types.v4_0.TemporalTriggerDefinition) {
+        if (trigger instanceof edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition) {
             var timeScale = trigger.getTimeScale();
             if (timeScale == "SIMULATOR_TIME_SCALE") {
                 foundTrigger = true;

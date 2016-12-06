@@ -13,11 +13,11 @@ import edu.pitt.apollo.apollotranslator.setters.NonScenarioParameterSetter;
 import edu.pitt.apollo.apollotranslator.setters.SimulatorIdentificationSetter;
 import edu.pitt.apollo.apollotranslator.setters.SimulatorTimeSpecificationSetter;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v4_0.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0_1.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 
 public class ManualSimulatorConfigurationParser {
 

@@ -6,8 +6,8 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.PopulationInfectionAndImmunityCensusData;
-import edu.pitt.apollo.types.v4_0.PopulationInfectionAndImmunityCensusDataCell;
+import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensusData;
+import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensusDataCell;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 public class PopulationInfectionAndImmunityCensusDataSetter extends AbstractTypedSetter<PopulationInfectionAndImmunityCensusData> {

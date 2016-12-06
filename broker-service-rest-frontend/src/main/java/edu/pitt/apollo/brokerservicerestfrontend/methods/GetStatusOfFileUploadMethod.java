@@ -7,15 +7,15 @@ package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
 ;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.Serializer;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;

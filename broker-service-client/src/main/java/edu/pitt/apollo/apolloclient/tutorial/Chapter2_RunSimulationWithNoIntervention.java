@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
@@ -30,7 +30,7 @@ import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 public class Chapter2_RunSimulationWithNoIntervention extends
 		AbstractRunAndVisualizeSimulationClass {

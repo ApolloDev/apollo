@@ -1,13 +1,14 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v4_0.*;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.Md5UtilsException;
@@ -17,7 +18,7 @@ import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeExcept
 import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import java.io.FileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -47,7 +49,7 @@ public class StageInDbWorkerThread implements Runnable {
     private final List<BigInteger> failedRunIds;
     private final Authentication authentication;
     private final String line;
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 
     public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
                                  XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,

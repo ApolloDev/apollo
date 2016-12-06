@@ -1,20 +1,20 @@
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import java.math.BigInteger;
 
-import edu.pitt.apollo.types.v4_0.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.ConditionalProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0.ConditioningVariable;
-import edu.pitt.apollo.types.v4_0.CategoricalVariableEnum;
-import edu.pitt.apollo.types.v4_0.CategoricalVariableNode;
-import edu.pitt.apollo.types.v4_0.CategoryValueNode;
-import edu.pitt.apollo.types.v4_0.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0.GenderCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.GenderEnum;
-import edu.pitt.apollo.types.v4_0.ProbabilityValuePair;
-import edu.pitt.apollo.types.v4_0.UncertainDuration;
-import edu.pitt.apollo.types.v4_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_1.ConditionalProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.ConditioningVariable;
+import edu.pitt.apollo.types.v4_0_1.CategoricalVariableEnum;
+import edu.pitt.apollo.types.v4_0_1.CategoricalVariableNode;
+import edu.pitt.apollo.types.v4_0_1.CategoryValueNode;
+import edu.pitt.apollo.types.v4_0_1.DiscreteNonparametricProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_1.GenderEnum;
+import edu.pitt.apollo.types.v4_0_1.ProbabilityValuePair;
+import edu.pitt.apollo.types.v4_0_1.UncertainDuration;
+import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
 
 public class ExampleConditionalProbabilityDistribution {
 
@@ -67,9 +67,9 @@ public class ExampleConditionalProbabilityDistribution {
 		gender.getCategories().add(female);
 
 		AgeRangeCategoryDefinition ageGroupRange = new AgeRangeCategoryDefinition();
-		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
+		/*ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
 		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
-		
+		*/
 		CategoryValueNode ageGroup = new CategoryValueNode();
 		ageGroup.setCategoryDefinition(ageGroupRange);
 		ageGroup.setNextCategoricalVariable(gender);
@@ -104,8 +104,8 @@ public class ExampleConditionalProbabilityDistribution {
 		gender.getCategories().add(femaleGenderCategoryDefinition);
 
 		AgeRangeCategoryDefinition ageGroupRange = new AgeRangeCategoryDefinition();
-		ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
-		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));
+		/*ageGroupRange.setLowerBound(new BigInteger(ageRangeLowerBound.toString()));
+		ageGroupRange.setUpperBound(new BigInteger(ageRangeUpperBound.toString()));*/
 
 		CategoryValueNode ageGroup = new CategoryValueNode();
 		ageGroup.setCategoryDefinition(ageGroupRange);

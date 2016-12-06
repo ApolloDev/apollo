@@ -29,7 +29,7 @@ import edu.pitt.apollo.apollotranslator.file.PlainTextTranslationInstructionsFil
 import edu.pitt.apollo.apollotranslator.file.XMLTranslationInstructionsFileLoader;
 import edu.pitt.apollo.apollotranslator.types.js.JsContainer;
 import edu.pitt.apollo.apollotranslator.types.js.JsFunction;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Aug 9, 2013 Time:

@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.DiseaseSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v4_0.TemporalTriggerDefinition;
-import edu.pitt.apollo.types.v4_0.TreatmentSurveillanceTriggerDefinition;
-import edu.pitt.apollo.types.v4_0.TriggerDefinition;
+import edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition;
+import edu.pitt.apollo.types.v4_0_1.TreatmentSurveillanceTriggerDefinition;
+import edu.pitt.apollo.types.v4_0_1.TriggerDefinition;
 import java.util.List;
 
 /**

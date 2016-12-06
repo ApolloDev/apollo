@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>edu.pitt.apollo</groupId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
         <artifactId>apollo-ws</artifactId>
     </parent>
     <artifactId>output-translator-service</artifactId>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>run-manager-service-rest-connector</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
    

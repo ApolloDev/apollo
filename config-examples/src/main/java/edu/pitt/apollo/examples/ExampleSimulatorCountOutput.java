@@ -15,20 +15,22 @@
  */
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.types.v4_0.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.CategoricalVariableEnum;
-import edu.pitt.apollo.types.v4_0.CategoricalVariableNode;
-import edu.pitt.apollo.types.v4_0.CategoryValueNode;
-import edu.pitt.apollo.types.v4_0.GenderCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.GenderEnum;
-import edu.pitt.apollo.types.v4_0.SimulatorCountOutput;
-import edu.pitt.apollo.types.v4_0.SpatialGranularityEnum;
-import edu.pitt.apollo.types.v4_0.TemporalGranularityEnum;
-import edu.pitt.apollo.types.v4_0.UnitOfTimeEnum;
-import edu.pitt.apollo.types.v4_0.VariableCategoryValueTree;
-import edu.pitt.apollo.utilities.XMLSerializer;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_1.CategoricalVariableEnum;
+import edu.pitt.apollo.types.v4_0_1.CategoricalVariableNode;
+import edu.pitt.apollo.types.v4_0_1.CategoryValueNode;
+import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_1.GenderEnum;
+import edu.pitt.apollo.types.v4_0_1.SimulatorCountOutput;
+import edu.pitt.apollo.types.v4_0_1.SpatialGranularityEnum;
+import edu.pitt.apollo.types.v4_0_1.TemporalGranularityEnum;
+import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.VariableCategoryValueTree;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.XMLSerializer;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  *
@@ -36,7 +38,7 @@ import java.math.BigInteger;
  */
 public class ExampleSimulatorCountOutput {
 	
-	public static void main(String[] args) throws SerializationException {
+	public static void main(String[] args) throws SerializationException, edu.pitt.isg.objectserializer.exceptions.SerializationException {
 		
 		int[][] ageRanges = {{0, 1}, {2, 10}, {10, 20}, {20, 80}};
 		
@@ -59,8 +61,8 @@ public class ExampleSimulatorCountOutput {
 		for (int[] ageRange : ageRanges) {
 			CategoryValueNode node = new CategoryValueNode();
 			AgeRangeCategoryDefinition ageRangeCatDef = new AgeRangeCategoryDefinition();
-			ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
-			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));
+			/*ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
+			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));*/
 			ageRangeCatDef.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 			ageRangeCatDef.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 			node.setCategoryDefinition(ageRangeCatDef);
@@ -80,8 +82,8 @@ public class ExampleSimulatorCountOutput {
 		for (int[] ageRange : ageRanges) {
 			CategoryValueNode node = new CategoryValueNode();
 			AgeRangeCategoryDefinition ageRangeCatDef = new AgeRangeCategoryDefinition();
-			ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
-			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));
+		/*	ageRangeCatDef.setLowerBound(new BigInteger(Integer.toString(ageRange[0])));
+			ageRangeCatDef.setUpperBound(new BigInteger(Integer.toString(ageRange[1])));*/
 			ageRangeCatDef.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 			ageRangeCatDef.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 			node.setCategoryDefinition(ageRangeCatDef);
@@ -99,7 +101,7 @@ public class ExampleSimulatorCountOutput {
 		
 		output.setCountArray(tree);
 		
-		System.out.println(new XMLSerializer().serializeObject(tree));
+		System.out.println(new XMLSerializer(Arrays.asList(ApolloClassList.classList)).serializeObject(tree));
 	}
 	
 }

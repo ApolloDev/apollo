@@ -3,8 +3,8 @@ package edu.pitt.apollo.runmanagerservice.utils;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

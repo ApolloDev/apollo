@@ -15,7 +15,7 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartQueryMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
@@ -23,43 +23,43 @@ import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.*;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.FilestoreServiceInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.LibraryServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
-import edu.pitt.apollo.library_service_types.v4_0.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v4_0.AddReviewerCommentResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetCommentsResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetLibraryItemURNsResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v4_0.GetRevisionsResult;
-import edu.pitt.apollo.library_service_types.v4_0.LibraryItemContainer;
-import edu.pitt.apollo.library_service_types.v4_0.ModifyGroupOwnershipResult;
-import edu.pitt.apollo.library_service_types.v4_0.QueryResult;
-import edu.pitt.apollo.library_service_types.v4_0.SetLibraryItemAsNotReleasedResult;
-import edu.pitt.apollo.library_service_types.v4_0.SetReleaseVersionResult;
-import edu.pitt.apollo.library_service_types.v4_0.UpdateLibraryItemContainerResult;
-import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.AddReviewerCommentResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetCommentsResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemURNsResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetRevisionsResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
+import edu.pitt.apollo.library_service_types.v4_0_1.ModifyGroupOwnershipResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.QueryResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.SetLibraryItemAsNotReleasedResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.SetReleaseVersionResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.UpdateLibraryItemContainerResult;
+import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
-import edu.pitt.apollo.services_common.v4_0.RunResult;
-import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
+import edu.pitt.apollo.services_common.v4_0_1.RunResult;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRecord;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -347,7 +347,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     }
 
     public RunResult runSimulations(
-            edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
+            edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
         InsertAndStartSimulationMethod method = null;
         try {
             String userId = ApolloSecurityManager.authorizeUserForSpecifiedSoftware(authentication,

@@ -4,7 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.POP;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.*;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import java.util.ArrayList;
 import java.util.List;

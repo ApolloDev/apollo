@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.MeanWithConfidenceInterval;
-import edu.pitt.apollo.types.v4_0.MeanWithStandardDeviation;
-import edu.pitt.apollo.types.v4_0.ProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0.UncertainValue;
+import edu.pitt.apollo.types.v4_0_1.MeanWithConfidenceInterval;
+import edu.pitt.apollo.types.v4_0_1.MeanWithStandardDeviation;
+import edu.pitt.apollo.types.v4_0_1.ProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.UncertainValue;
 import java.util.List;
 
 /**

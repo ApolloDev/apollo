@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apollotranslator;
 
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.utilities.XMLDeserializer;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.XMLDeserializer;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

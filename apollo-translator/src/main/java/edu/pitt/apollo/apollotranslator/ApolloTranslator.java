@@ -9,7 +9,7 @@ import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.file.*;
 import edu.pitt.apollo.apollotranslator.types.translator.*;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;

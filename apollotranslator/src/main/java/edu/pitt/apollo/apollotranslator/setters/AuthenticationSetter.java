@@ -5,7 +5,7 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 
 /**
  * Created by JDL50 on 1/14/14.

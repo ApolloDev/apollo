@@ -1,21 +1,18 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
-import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Jan 22, 2015 Time: 12:17:43 PM Class: RunMethodForSimulationAndVisualization
@@ -43,7 +40,7 @@ public class RunMethodForQueryService extends AbstractRunMethod {
 
 	@Override
 	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
-		JsonUtils jsonUtils = new JsonUtils();
+		JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 		return (RunSimulatorOutputQueryMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, runMessageClass);
 	}
 

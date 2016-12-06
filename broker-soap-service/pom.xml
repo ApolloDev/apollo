@@ -4,7 +4,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>broker-soap-service</artifactId>
     <name>Broker Soap Service</name>
@@ -218,9 +218,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/apollo_service_4.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/apollo_service_v4.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:apollo_service_4.0.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:apollo_service_v4.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

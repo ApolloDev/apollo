@@ -3,8 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v4_0.NonparametricProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.DiscreteNonparametricProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.NonparametricProbabilityDistribution;
 import java.util.List;
 
 /**

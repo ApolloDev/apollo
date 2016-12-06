@@ -2,8 +2,8 @@ package edu.pitt.apollo.runmanagerservice.utils;
 
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 
 import java.util.Map;
 

@@ -1,39 +1,40 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>edu.pitt.apollo</groupId>
-		<artifactId>apollo-ws</artifactId>
-		<version>4.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>synthetic-population-service</artifactId>
-	<name>Synthetic Population Service</name>
-	<packaging>jar</packaging>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>edu.pitt.apollo</groupId>
+        <artifactId>apollo-ws</artifactId>
+        <version>4.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>synthetic-population-service</artifactId>
+    <name>Synthetic Population Service</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4-1201-jdbc41</version>
-		</dependency>
-		
-		<dependency>
-			<!--<groupId>javax.mail</groupId>-->
-			<!--<artifactId>javax.mail-api</artifactId>-->
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.5.3</version>
-		</dependency>
-	</dependencies>
-	
-<distributionManagement>
-       <repository>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1201-jdbc41</version>
+        </dependency>
+
+        <dependency>
+            <!--<groupId>javax.mail</groupId>-->
+            <!--<artifactId>javax.mail-api</artifactId>-->
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
             <id>rods-nexus-deployment</id>
             <name>RODS Nexus</name>
             <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
@@ -95,7 +96,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>truezip-maven-plugin</artifactId>
@@ -128,8 +129,8 @@
                     <version>2.3.7</version>
                     <extensions>true</extensions>
                 </plugin>
-                
-                       
+
+
             </plugins>
         </pluginManagement>
         <!-- Name of the generated WAR file -->
@@ -158,9 +159,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/synthetic_population_service_4.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/synthetic_population_service_v4.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:synthetic_population_service_4.0.wsdl</wsdlLocation>
+                                            <wsdlLocation>classpath:synthetic_population_service_v4.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

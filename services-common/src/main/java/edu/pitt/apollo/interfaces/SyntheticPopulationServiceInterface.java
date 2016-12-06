@@ -1,7 +1,7 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.SyntheticPopulationServiceException;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
 import java.math.BigInteger;
 
 /**

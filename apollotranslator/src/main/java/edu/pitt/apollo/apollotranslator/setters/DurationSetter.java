@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.Duration;
-import edu.pitt.apollo.types.v4_0.FixedDuration;
-import edu.pitt.apollo.types.v4_0.UncertainDuration;
-import edu.pitt.apollo.types.v4_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.Duration;
+import edu.pitt.apollo.types.v4_0_1.FixedDuration;
+import edu.pitt.apollo.types.v4_0_1.UncertainDuration;
+import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
 import java.util.ArrayList;
 import java.util.List;
 

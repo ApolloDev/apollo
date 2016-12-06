@@ -3,7 +3,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>broker-service-rest-connector</artifactId>
     <name>Broker Service Rest Connector</name>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>rest-service-connector-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

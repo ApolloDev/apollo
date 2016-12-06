@@ -3,9 +3,9 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.Schedule;
-import edu.pitt.apollo.types.v4_0.ScheduleElement;
-import edu.pitt.apollo.types.v4_0.UnitOfMeasureEnum;
+import edu.pitt.apollo.types.v4_0_1.Schedule;
+import edu.pitt.apollo.types.v4_0_1.ScheduleElement;
+import edu.pitt.apollo.types.v4_0_1.UnitOfMeasureEnum;
 
 import java.util.ArrayList;
 import java.util.List;

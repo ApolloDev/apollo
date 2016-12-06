@@ -6,15 +6,15 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.AntiviralTreatment;
-import edu.pitt.apollo.types.v4_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v4_0.ControlMeasureTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v4_0.DrugTreatment;
-import edu.pitt.apollo.types.v4_0.Duration;
-import edu.pitt.apollo.types.v4_0.IndividualTreatmentControlMeasure;
-import edu.pitt.apollo.types.v4_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v4_0.Treatment;
-import edu.pitt.apollo.types.v4_0.Vaccination;
+import edu.pitt.apollo.types.v4_0_1.AntiviralTreatment;
+import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
+import edu.pitt.apollo.types.v4_0_1.ControlMeasureTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v4_0_1.DrugTreatment;
+import edu.pitt.apollo.types.v4_0_1.Duration;
+import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v4_0_1.ProbabilisticParameter;
+import edu.pitt.apollo.types.v4_0_1.Treatment;
+import edu.pitt.apollo.types.v4_0_1.Vaccination;
 
 /**
  *

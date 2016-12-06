@@ -8,7 +8,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import edu.pitt.apollo.types.v4_0.*;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 
 public class ExampleInfectiousDiseaseScenario {

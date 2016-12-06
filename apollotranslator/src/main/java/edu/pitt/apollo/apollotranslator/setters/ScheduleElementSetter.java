@@ -3,7 +3,7 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.ScheduleElement;
+import edu.pitt.apollo.types.v4_0_1.ScheduleElement;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;

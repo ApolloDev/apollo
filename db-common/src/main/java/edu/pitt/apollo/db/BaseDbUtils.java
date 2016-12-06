@@ -2,7 +2,8 @@ package edu.pitt.apollo.db;
 
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public abstract class BaseDbUtils implements AutoCloseable {
     protected static String APOLLO_DIR;
     protected static Logger logger = LoggerFactory.getLogger(BaseDbUtils.class);
     protected final DataSource datasource;
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
     Md5Utils md5Utils = new Md5Utils();
 
     protected abstract void setBaseDirectory();

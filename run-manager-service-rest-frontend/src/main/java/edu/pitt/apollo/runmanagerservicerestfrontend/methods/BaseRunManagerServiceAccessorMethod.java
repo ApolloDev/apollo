@@ -5,15 +5,20 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+
+import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.SerializerFactory;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+
+import java.util.Arrays;
 
 /**
  *
@@ -32,7 +37,17 @@ public abstract class BaseRunManagerServiceAccessorMethod {
 
         responseBuilder = new ResponseMessageBuilder();
 		
-		serializer = SerializerFactory.getSerializer(serializationFormat);
+
+		switch (serializationFormat) {
+			case JSON:
+				serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON, Arrays.asList(ApolloClassList.classList));
+				break;
+			case XML:
+				serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
+				break;
+			default:
+				serializer = null;
+		}
 
 		impl = new RunManagerServiceImpl();
 	}

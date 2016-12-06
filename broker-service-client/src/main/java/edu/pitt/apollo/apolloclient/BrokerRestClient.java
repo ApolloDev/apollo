@@ -3,9 +3,9 @@ package edu.pitt.apollo.apolloclient;
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.restbrokerserviceconnector.RestBrokerServiceConnector;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.InsertRunResult;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 /**
  * Created by nem41 on 8/17/15.

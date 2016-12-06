@@ -15,11 +15,11 @@
  */
 package edu.pitt.apollo.brokersoapservice;
 
-import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunResult;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceV40;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunResult;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +31,7 @@ import java.net.URL;
 public class WSClient {
 	
 	public static void main(String[] args) throws MalformedURLException {
-		ApolloServiceV40 service = new ApolloServiceV40(new URL("http://localhost:8080/broker-service-war-4.0-SNAPSHOT/services/apolloservice?wsdl"));
+		ApolloServiceV401 service = new ApolloServiceV401(new URL("http://localhost:8080/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl"));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 	
 		ListFilesForRunRequest message = new ListFilesForRunRequest();

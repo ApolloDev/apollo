@@ -3,15 +3,17 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  *
@@ -25,7 +27,7 @@ public class RunMethodForVisualization extends AbstractRunMethod {
 
 	@Override
 	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
-		JsonUtils jsonUtils = new JsonUtils();
+		JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 		return (RunVisualizationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunVisualizationMessage.class);
 	}
 

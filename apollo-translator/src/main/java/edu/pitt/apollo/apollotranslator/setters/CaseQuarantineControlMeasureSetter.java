@@ -3,9 +3,9 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.Duration;
-import edu.pitt.apollo.types.v4_0.ProbabilisticParameter;
-import edu.pitt.apollo.types.v4_0.CaseQuarantineControlMeasure;
+import edu.pitt.apollo.types.v4_0_1.Duration;
+import edu.pitt.apollo.types.v4_0_1.ProbabilisticParameter;
+import edu.pitt.apollo.types.v4_0_1.CaseQuarantineControlMeasure;
 import java.util.ArrayList;
 import java.util.List;
 

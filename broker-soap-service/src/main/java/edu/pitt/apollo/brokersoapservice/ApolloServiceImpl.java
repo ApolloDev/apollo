@@ -23,30 +23,30 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
-import edu.pitt.apollo.data_service_types.v4_0.*;
+import edu.pitt.apollo.data_service_types.v4_0_1.*;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
-import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0.GetFileUrlResult;
-import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0.ListFilesForRunResult;
-import edu.pitt.apollo.library_service_types.v4_0.*;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.GetRegisteredServicesResult;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunResult;
-import edu.pitt.apollo.services_common.v4_0.RunStatusRequest;
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.services_common.v4_0.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v4_0.TerminteRunResult;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlResult;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunResult;
+import edu.pitt.apollo.library_service_types.v4_0_1.*;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.GetRegisteredServicesResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunResult;
+import edu.pitt.apollo.services_common.v4_0_1.RunStatusRequest;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v4_0_1.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v4_0_1.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import java.util.List;
 
 import org.apache.cxf.phase.PhaseInterceptorChain;
@@ -54,8 +54,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @org.apache.cxf.interceptor.InInterceptors (interceptors = {"edu.pitt.apollo.brokersoapservice.HTTPHeaderInterceptor" })
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI")
-class ApolloServiceImpl implements ApolloServiceEI {
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI")
+public class ApolloServiceImpl implements ApolloServiceEI {
+
+	//TODO: Implement library methods?
+	public ApolloServiceImpl() {
+
+	}
 
 	Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
 	private static final BrokerServiceImpl brokerService = new BrokerServiceImpl();
@@ -64,9 +69,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.UnRegisterService")
+	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterService")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/unRegisterService")
-	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.UnRegisterServiceResponse")
+	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterServiceResponse")
 	public MethodCallStatus unRegisterService(
 			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
 		throw new UnsupportedOperationException("Not implemented yet");
@@ -80,7 +85,7 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	public RunResult runSimulations(
-			edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage runSimulationsMessage) {
+			edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage) {
         try {
             return brokerService.runSimulations(runSimulationsMessage, getAuthetication());
         } catch (UnsupportedAuthorizationTypeException ex) {
@@ -91,10 +96,65 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	}
 
 	@Override
+	public UpdateLibraryItemContainerResult updateLibraryItemContainer(UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
+		return null;
+	}
+
+	@Override
+	public SetReleaseVersionResult setReleaseVersionForLibraryItem(SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
+		return null;
+	}
+
+	@Override
+	public GetCommentsResult getCommentsForLibraryItem(GetCommentsMessage getCommentsForLibraryItemMessage) {
+		return null;
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
+		return null;
+	}
+
+	@Override
+	public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
+		return null;
+	}
+
+	@Override
+	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
+		return null;
+	}
+
+	@Override
+	public QueryResult query(QueryMessage queryMessage) {
+		return null;
+	}
+
+	@Override
+	public GetLibraryItemContainerResult getLibraryItemContainer(GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
+		return null;
+	}
+
+	@Override
+	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
+		return null;
+	}
+
+	@Override
+	public AddLibraryItemContainerResult addLibraryItemContainer(AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
+		return null;
+	}
+
+	@Override
+	public GetRevisionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+		return null;
+	}
+
+	@Override
 	@WebResult(name = "serviceRecords", targetNamespace = "")
-	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRegisteredServices")
+	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServices")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRegisteredServices")
-	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRegisteredServicesResponse")
+	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServicesResponse")
 	public GetRegisteredServicesResult getRegisteredServices() {
 
         GetRegisteredServicesResult result = new GetRegisteredServicesResult();
@@ -113,9 +173,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RegisterService")
+	@RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterService")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/registerService")
-	@ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RegisterServiceResponse")
+	@ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterServiceResponse")
 	public MethodCallStatus registerService(
 			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
 		throw new UnsupportedOperationException("Not implemented yet.");
@@ -132,9 +192,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "simulationRunId", targetNamespace = "")
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunSimulation")
+	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulation")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunSimulationResponse")
+	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulationResponse")
 	public RunResult runSimulation(
 			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
         try {
@@ -146,13 +206,22 @@ class ApolloServiceImpl implements ApolloServiceEI {
         }
 	}
 
+	@Override
+	public AddReviewerCommentResult addReviewerCommentToLibraryItem(AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
+		return null;
+	}
 
 
 	@Override
+	public GetLibraryItemURNsResult getLibraryItemURNs(GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
+		return null;
+	}
+
+	@Override
 	@WebResult(name = "visualizationResult", targetNamespace = "")
-	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunVisualization")
+	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualization")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runVisualization")
-	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.RunVisualizationResponse")
+	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualizationResponse")
 	public RunResult runVisualization(
 			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
         try {
@@ -166,9 +235,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRunStatus")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatus")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetRunStatusResponse")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatusResponse")
 	public MethodCallStatus getRunStatus(
 			@WebParam(name = "runStatusRequest", targetNamespace = "") RunStatusRequest runStatusRequest) {
 		try {
@@ -188,9 +257,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "getFileUrlResult", targetNamespace = "")
-	@RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrl")
+	@RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrl")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
-	@ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.GetFileUrlResponse")
+	@ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrlResponse")
 
 	public GetFileUrlResult getFileUrl(GetFileUrlRequest getFileUrlRequest) {
 		GetFileUrlResult result = new GetFileUrlResult();
@@ -216,9 +285,9 @@ class ApolloServiceImpl implements ApolloServiceEI {
 
 	@Override
 	@WebResult(name = "listFilesForRunResult", targetNamespace = "")
-	@RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRun")
+	@RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRun")
 	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
-	@ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0.ListFilesForRunResponse")
+	@ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRunResponse")
 
 	public ListFilesForRunResult listFilesForRun(@WebParam(name = "listFilesForRunRequest", targetNamespace = "")ListFilesForRunRequest listFilesForRunRequest) {
 
@@ -245,6 +314,11 @@ class ApolloServiceImpl implements ApolloServiceEI {
 	@Override
 	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public GetReleaseVersionResult getLibraryItemReleaseVersion(GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
+		return null;
 	}
 
 	private Authentication getAuthetication() throws UnsupportedAuthorizationTypeException {

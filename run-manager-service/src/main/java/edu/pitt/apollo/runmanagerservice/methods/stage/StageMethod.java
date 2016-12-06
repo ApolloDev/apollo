@@ -1,21 +1,26 @@
 package edu.pitt.apollo.runmanagerservice.methods.stage;
 
-import edu.pitt.apollo.exception.*;
-import edu.pitt.apollo.query_service_types.v4_0.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.TranslatorServiceException;
+import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservice.thread.StageExperimentThread;
 import edu.pitt.apollo.runmanagerservice.thread.BatchStageThread;
-import edu.pitt.apollo.apollo_service_types.v4_0.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.apollo_service_types.v4_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v4_0.DataRetrievalRequestMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.DataRetrievalRequestMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
-import edu.pitt.apollo.utilities.XMLSerializer;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.isg.objectserializer.XMLSerializer;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +82,7 @@ public class StageMethod extends BaseStageMethod {
 				fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
 				fileIdentification.setType(ContentDataTypeEnum.RUN_MESSAGE);
 				fileIdentification.setLabel("run_message.json");
-				String content = new JsonUtils().getJSONString(message);
+				String content = new JsonUtils(Arrays.asList(ApolloClassList.classList)).getJSONString(message);
 				DatastoreAccessor.uploadTextFileContent(content, runId, fileIdentification, authentication);
 
                 if (message instanceof RunSimulatorOutputQueryMessage) {
@@ -86,7 +91,8 @@ public class StageMethod extends BaseStageMethod {
                     fileIdentification.setFormat(ContentDataFormatEnum.TEXT);
                     fileIdentification.setType(ContentDataTypeEnum.RUN_MESSAGE);
                     fileIdentification.setLabel("run_message.xml");
-                    content = new XMLSerializer().serializeObject(message);
+                    content = new XMLSerializer(Arrays.asList(ApolloClassList.classList)).serializeObject(message);
+
                     DatastoreAccessor.uploadTextFileContent(content, runId, fileIdentification, authentication);
                 }
             }

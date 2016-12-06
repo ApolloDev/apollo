@@ -4,20 +4,22 @@ import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import edu.pitt.apollo.services_common.v4_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.visualizer_service_types.v4_0.RunVisualizationMessage;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import java.io.IOException;
 
 /**
@@ -44,7 +46,7 @@ public class ImageGeneratorRunnable extends ApolloServiceThread {
 				ContentDataFormatEnum.TEXT, ContentDataTypeEnum.RUN_MESSAGE, authentication);
 		try {
 			String json = RunUtils.getContent(url);
-			JsonUtils jsonUtils = new JsonUtils();
+			JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 			RunVisualizationMessage message = (RunVisualizationMessage) jsonUtils.getObjectFromJson(json, RunVisualizationMessage.class);
 			this.runIdentificationsAndLabels = message.getSimulationRunIds();
 		} catch (IOException | JsonUtilsException ex) {

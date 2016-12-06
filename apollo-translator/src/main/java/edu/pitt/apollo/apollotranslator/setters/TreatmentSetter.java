@@ -7,10 +7,10 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v4_0.Duration;
-import edu.pitt.apollo.types.v4_0.Treatment;
-import edu.pitt.apollo.types.v4_0.TreatmentContraindication;
+import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
+import edu.pitt.apollo.types.v4_0_1.Duration;
+import edu.pitt.apollo.types.v4_0_1.Treatment;
+import edu.pitt.apollo.types.v4_0_1.TreatmentContraindication;
 
 /**
  *

@@ -1,7 +1,7 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,10 +1,10 @@
 package edu.pitt.apollo.filestoreservice.threads;
 
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.filestoreservice.methods.FileStoreCoreMethod;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,11 +6,11 @@
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.RestDataServiceUtils;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
 import java.math.BigInteger;
 import java.util.List;
 

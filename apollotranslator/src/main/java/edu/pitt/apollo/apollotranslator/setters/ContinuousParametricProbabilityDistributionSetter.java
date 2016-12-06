@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apollotranslator.setters;
 
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
-import edu.pitt.apollo.types.v4_0.ContinuousParametricProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_1.ContinuousParametricProbabilityDistribution;
 
 /**
  *

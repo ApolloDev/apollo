@@ -3,7 +3,10 @@ package edu.pitt.apollo.utilities;
 import edu.pitt.apollo.exception.Md5UtilsException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Random;
+
+import edu.pitt.isg.objectserializer.JsonUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -11,7 +14,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class Md5Utils {
 
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 
     public String getMd5FromString(String string) {
         return DigestUtils.md5Hex(string);

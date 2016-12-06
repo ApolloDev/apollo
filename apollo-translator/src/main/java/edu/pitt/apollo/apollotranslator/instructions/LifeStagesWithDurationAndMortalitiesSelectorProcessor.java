@@ -2,8 +2,8 @@ package edu.pitt.apollo.apollotranslator.instructions;
 
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationInstructionSelector;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0.LifeStageWithDurationAndMortality;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.LifeStageWithDurationAndMortality;
 import java.util.List;
 
 /**

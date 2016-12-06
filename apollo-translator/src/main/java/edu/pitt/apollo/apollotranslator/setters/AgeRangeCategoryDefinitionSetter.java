@@ -7,8 +7,8 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
 
 /**
  *
@@ -52,10 +52,10 @@ public class AgeRangeCategoryDefinitionSetter extends AbstractTypedSetter<AgeRan
     public List<SetterReturnObject> set(AgeRangeCategoryDefinition ageRange) throws ApolloSetterException {
 
         List<SetterReturnObject> list = new ArrayList<SetterReturnObject>();
-        list.addAll(setAgeRangeLowerBound(ageRange.getLowerBound()));
+       /* list.addAll(setAgeRangeLowerBound(ageRange.getLowerBound()));
         list.addAll(setUnitOfTimeForLowerBound(ageRange.getUnitOfTimeForLowerBound()));
         list.addAll(setAgeRangeUpperBound(ageRange.getUpperBound()));
-        list.addAll(setUnitOfTimeForUpperBound(ageRange.getUnitOfTimeForUpperBound()));
+        list.addAll(setUnitOfTimeForUpperBound(ageRange.getUnitOfTimeForUpperBound()));*/
 
         return list;
     }

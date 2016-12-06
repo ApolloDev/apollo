@@ -1,8 +1,8 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.AuthorizationTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -57,12 +57,9 @@
     <modules>
         <module>db-common</module>
         <module>services-common</module>
-
         <module>apollo-translator</module>
-	<module>apollo-translator-service</module>
+	    <module>apollo-translator-service</module>
         <module>rest-services-frontend-common</module>
-        <module>apollotranslator</module>
-        <module>apollotranslatorservice</module>
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
         <module>filestore-service-rest-connector</module>
@@ -96,7 +93,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -126,11 +123,11 @@
         </dependency>
 
 
-        <dependency>
+       <!-- <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <profiles>

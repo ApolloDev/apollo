@@ -6,9 +6,9 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.CartesianCircleLocationDefinition;
-import edu.pitt.apollo.types.v4_0.Location;
-import edu.pitt.apollo.types.v4_0.LocationDefinition;
+import edu.pitt.apollo.types.v4_0_1.CartesianCircleLocationDefinition;
+import edu.pitt.apollo.types.v4_0_1.Location;
+import edu.pitt.apollo.types.v4_0_1.LocationDefinition;
 
 /**
  *

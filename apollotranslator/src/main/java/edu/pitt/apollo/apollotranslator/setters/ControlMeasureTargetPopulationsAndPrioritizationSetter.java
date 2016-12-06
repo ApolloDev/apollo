@@ -6,9 +6,9 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.ControlMeasureTargetPopulationsAndPrioritization;
-import edu.pitt.apollo.types.v4_0.NamedPrioritizationSchemeEnum;
-import edu.pitt.apollo.types.v4_0.TargetPriorityPopulation;
+import edu.pitt.apollo.types.v4_0_1.ControlMeasureTargetPopulationsAndPrioritization;
+import edu.pitt.apollo.types.v4_0_1.NamedPrioritizationSchemeEnum;
+import edu.pitt.apollo.types.v4_0_1.TargetPriorityPopulation;
 
 /**
  *

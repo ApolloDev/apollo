@@ -34,11 +34,11 @@ function getCoverRadius(controlStrategyType, controlStrategies) {
     for (var i = 0; i < controlStrategies.size(); i++) {
         var cm = controlStrategies.get(i);
 
-        if (cm instanceof edu.pitt.apollo.types.v4_0.ContainerReductionControlMeasure) {
+        if (cm instanceof edu.pitt.apollo.types.v4_0_1.ContainerReductionControlMeasure) {
             currentCmType = "indoorResidualSpraying";
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.LarvicideControlMeasure) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.LarvicideControlMeasure) {
             currentCmType = "larvicide";
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.IndoorResidualSprayingVectorControlMeasure) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndoorResidualSprayingVectorControlMeasure) {
             currentCmType = "containerReduction";
         } else {
             continue;
@@ -53,13 +53,13 @@ function getCoverRadius(controlStrategyType, controlStrategies) {
         if (smallestCoverRadius == null || (coverRadius < smallestCoverRadius)) {
             smallestCoverRadius = coverRadius;
 
-            if (cm instanceof edu.pitt.apollo.types.v4_0.IndoorResidualSprayingVectorControlMeasure) {
+            if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndoorResidualSprayingVectorControlMeasure) {
                 smallestCoverRadiusCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 smallestCoverRadiusCmType = "indoorResidualSpraying";
-            } else if (cm instanceof edu.pitt.apollo.types.v4_0.LarvicideControlMeasure) {
+            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.LarvicideControlMeasure) {
                 smallestCoverRadiusCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 smallestCoverRadiusCmType = "larvicide";
-            } else if (cm instanceof edu.pitt.apollo.types.v4_0.ContainerReductionControlMeasure) {
+            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.ContainerReductionControlMeasure) {
                 smallestCoverRadiusCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 smallestCoverRadiusCmType = "containerReduction";
             }
@@ -100,9 +100,9 @@ function getControlStrategyTime(triggers) {
     var foundTime = false;
     for (var i = 0; i < triggers.size(); i++) {
         var trigger = triggers.get(i);
-        if (trigger instanceof edu.pitt.apollo.types.v4_0.TemporalTriggerDefinition) {
+        if (trigger instanceof edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition) {
             var startTime = trigger.getTimeSinceTimeScaleZero();
-            if (startTime instanceof edu.pitt.apollo.types.v4_0.FixedDuration) {
+            if (startTime instanceof edu.pitt.apollo.types.v4_0_1.FixedDuration) {
                 var unitOfTime = startTime.getUnitOfTime();
                 if (unitOfTime == 'DAY') {
                     var val = startTime.getValue();

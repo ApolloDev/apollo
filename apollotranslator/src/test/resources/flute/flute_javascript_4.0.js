@@ -141,26 +141,26 @@ function controlStrategyResponseDelay(controlStrategyType, controlStrategies) {
         if (largestResponseDelay == null || (responseDelay > largestResponseDelay)) {
             largestResponseDelay = responseDelay;
 
-            if (cm instanceof edu.pitt.apollo.types.v4_0.IndividualTreatmentControlMeasure) {
+            if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure) {
                 // get treatment
                 var treatment = cm.getIndividualTreatment();
-                if (treatment instanceof edu.pitt.apollo.types.v4_0.Vaccination) {
+                if (treatment instanceof edu.pitt.apollo.types.v4_0_1.Vaccination) {
                     largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                     largestResponseDelayCmType = "vaccination";
-                } else if (treatment instanceof edu.pitt.apollo.types.v4_0.AntiviralTreatment) {
+                } else if (treatment instanceof edu.pitt.apollo.types.v4_0_1.AntiviralTreatment) {
                     largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                     largestResponseDelayCmType = "antiviralTreatment";
                 }
-            } else if (cm instanceof edu.pitt.apollo.types.v4_0.PlaceClosureControlMeasure) {
+            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure) {
                 largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 largestResponseDelayCmType = "placeClosure";
-            } else if (cm instanceof edu.pitt.apollo.types.v4_0.CaseQuarantineControlMeasure) {
+            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.CaseQuarantineControlMeasure) {
                 largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 largestResponseDelayCmType = "caseQuarantine";
-                //            } else if (cm instanceof edu.pitt.apollo.types.v4_0.BorderControlStrategy) {
+                //            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.BorderControlStrategy) {
                 //                largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 //                largestResponseDelayCmType = "border";
-                //            } else if (cm instanceof edu.pitt.apollo.types.v4_0.TravelRestrictionControlStrategy) {
+                //            } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.TravelRestrictionControlStrategy) {
                 //                largestResponseDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
                 //                largestResponseDelayCmType = "travelRestriction";
             }
@@ -207,7 +207,7 @@ function controlStrategyResponseThreshold(controlStrategyType, controlStrategies
         var numTriggersUsed = 0;
         for (var j = 0; j < triggers.size(); j++) {
             var trigger = triggers.get(j);
-            if (trigger instanceof edu.pitt.apollo.types.v4_0.DiseaseSurveillanceTriggerDefinition) {
+            if (trigger instanceof edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition) {
                 var operator = trigger.getReactiveControlMeasureOperator();
                 if (operator == 'GREATER_THAN_OR_EQUAL') {
                     var unit = trigger.getUnitOfMeasureForThreshold();
@@ -232,16 +232,16 @@ function controlStrategyResponseThreshold(controlStrategyType, controlStrategies
 
         var responseThreshold = (thresholdSum / numTriggersUsed) / 100.0; // convert into percent
 
-        if (cm instanceof edu.pitt.apollo.types.v4_0.IndividualTreatmentControlStrategy) {
+        if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlStrategy) {
             var treatment = cm.getIndividualTreatment();
-            if (treatment instanceof edu.pitt.apollo.types.v4_0.Vaccination) {
+            if (treatment instanceof edu.pitt.apollo.types.v4_0_1.Vaccination) {
                 currentCsType = "vaccination";
-            } else if (treatment instanceof edu.pitt.apollo.types.v4_0.AntiviralTreatment) {
+            } else if (treatment instanceof edu.pitt.apollo.types.v4_0_1.AntiviralTreatment) {
                 currentCsType = "antiviralTreatment";
             }
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.PlaceClosureControlStrategy) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.PlaceClosureControlStrategy) {
             currentCsType = "placeClosure";
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.CaseQuarantineControlStrategy) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.CaseQuarantineControlStrategy) {
             currentCsType = "caseQuarantine";
         }
 
@@ -306,7 +306,7 @@ function controlStrategyAscertainmentFraction(controlStrategyType, controlStrate
         var numTriggersUsed = 0;
         for (var j = 0; j < triggers.size(); j++) {
             var trigger = triggers.get(j);
-            if (trigger instanceof edu.pitt.apollo.types.v4_0.DiseaseSurveillanceTriggerDefinition) {
+            if (trigger instanceof edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition) {
                 var diseaseSurveillanceCapacility = trigger.getDiseaseSurveillanceCapability();
                 var caseDefinition = diseaseSurveillanceCapacility.getCaseDefinition();
                 if (caseDefinition == 'SYMPTOMATIC') {
@@ -324,22 +324,22 @@ function controlStrategyAscertainmentFraction(controlStrategyType, controlStrate
 
         var ascertainmentFraction = fractionSum / numTriggersUsed;
 
-        if (cm instanceof edu.pitt.apollo.types.v4_0.IndividualTreatmentControlStrategy) {
+        if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlStrategy) {
             var treatment = cm.getIndividualTreatment();
-            if (treatment instanceof edu.pitt.apollo.types.v4_0.Vaccination) {
+            if (treatment instanceof edu.pitt.apollo.types.v4_0_1.Vaccination) {
                 currentCsType = "vaccination";
-            } else if (treatment instanceof edu.pitt.apollo.types.v4_0.AntiviralTreatment) {
+            } else if (treatment instanceof edu.pitt.apollo.types.v4_0_1.AntiviralTreatment) {
                 currentCsType = "antiviralTreatment";
             }
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.PlaceClosureControlStrategy) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.PlaceClosureControlStrategy) {
             currentCsType = "placeClosure";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.CaseQuarantineControlStrategy) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.CaseQuarantineControlStrategy) {
             //                    smallestAscertainmentFractionCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    smallestAscertainmentFractionCmType = "caseQuarantine";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.BorderControlMeasure) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.BorderControlMeasure) {
             //                    smallestAscertainmentFractionCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    smallestAscertainmentFractionCmType = "border";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.TravelRestrictionControlMeasure) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.TravelRestrictionControlMeasure) {
             //                    smallestAscertainmentFractionCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    smallestAscertainmentFractionCmType = "travelRestriction";
         }
@@ -405,7 +405,7 @@ function controlStrategyAscertainmentDelay(controlStrategyType, controlStrategie
         var numTriggersUsed = 0;
         for (var j = 0; j < triggers.size(); j++) {
             var trigger = triggers.get(j);
-            if (trigger instanceof edu.pitt.apollo.types.v4_0.DiseaseSurveillanceTriggerDefinition) {
+            if (trigger instanceof edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition) {
                 var diseaseSurveillanceCapacility = trigger.getDiseaseSurveillanceCapability();
                 var caseDefinition = diseaseSurveillanceCapacility.getCaseDefinition();
                 if (caseDefinition == 'SYMPTOMATIC') {
@@ -429,22 +429,22 @@ function controlStrategyAscertainmentDelay(controlStrategyType, controlStrategie
         //        foundReactiveTrigger = true;
 
 
-        if (cm instanceof edu.pitt.apollo.types.v4_0.IndividualTreatmentControlStrategy) {
+        if (cm instanceof edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlStrategy) {
             var treatment = cm.getIndividualTreatment();
-            if (treatment instanceof edu.pitt.apollo.types.v4_0.Vaccination) {
+            if (treatment instanceof edu.pitt.apollo.types.v4_0_1.Vaccination) {
                 currentCsType = "vaccination";
-            } else if (treatment instanceof edu.pitt.apollo.types.v4_0.AntiviralTreatment) {
+            } else if (treatment instanceof edu.pitt.apollo.types.v4_0_1.AntiviralTreatment) {
                 currentCsType = "antiviralTreatment";
             }
-        } else if (cm instanceof edu.pitt.apollo.types.v4_0.PlaceClosureControlStrategy) {
+        } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.PlaceClosureControlStrategy) {
             currentCsType = "placeClosure";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.CaseQuarantineControlStrategy) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.CaseQuarantineControlStrategy) {
             //                    largestAscertainmentDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    largestAscertainmentDelayCmType = "caseQuarantine";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.BorderControlMeasure) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.BorderControlMeasure) {
             //                    largestAscertainmentDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    largestAscertainmentDelayCmType = "border";
-            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0.TravelRestrictionControlMeasure) {
+            //                } else if (cm instanceof edu.pitt.apollo.types.v4_0_1.TravelRestrictionControlMeasure) {
             //                    largestAscertainmentDelayCm = "infectiousDiseaseControlStrategy[" + i + "]";
             //                    largestAscertainmentDelayCmType = "travelRestriction";
         }
@@ -1462,7 +1462,7 @@ function vaccinationFraction(stopTimes) {
     }
     for (var j = 0; j < stopTimes.size(); j++) {
         var stopTime = stopTimes.get(j);
-        if (stopTime instanceof edu.pitt.apollo.types.v4_0.TreatmentSurveillanceTriggerDefinition) {
+        if (stopTime instanceof edu.pitt.apollo.types.v4_0_1.TreatmentSurveillanceTriggerDefinition) {
 
             //            foundTime = true;
             var foundTrigger = false;

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.filestoreservice.types;
 
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 
 import java.util.Comparator;
 

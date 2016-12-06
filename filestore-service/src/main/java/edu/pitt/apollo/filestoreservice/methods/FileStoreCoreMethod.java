@@ -1,11 +1,11 @@
 package edu.pitt.apollo.filestoreservice.methods;
 
 import com.google.gson.Gson;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.filestoreservice.FileStoreService;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFile;
 import edu.pitt.apollo.filestoreservice.types.DirectoryContentFileEntry;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 

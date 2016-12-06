@@ -2,12 +2,12 @@ package edu.pitt.apollo.apolloclient.tutorialv2;
 
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.filestore_service_types.v4_0.*;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
 import edu.pitt.apollo.restbrokerserviceconnector.RestBrokerServiceConnector;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceV40;
-import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 import javax.xml.namespace.QName;
 import java.math.BigInteger;
@@ -30,11 +30,11 @@ import java.net.URL;
  * In order to begin executing these remote methods, we first connect to the web service as a client and then send
  * requests through this client.  The service that we connect to in this tutorial is the service named
  * ApolloService_v4.0, which is defined by the following WSDL:
- * <a href="http://betaweb.rods.pitt.edu/broker-service-war-4.0-SNAPSHOT/services/apolloservice?wsdl">
- *     http://betaweb.rods.pitt.edu/broker-service-war-4.0-SNAPSHOT/services/apolloservice?wsdl</a>.
+ * <a href="http://betaweb.rods.pitt.edu/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl">
+ *     http://betaweb.rods.pitt.edu/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl</a>.
  * <p/>
  * <h3>Creating a client connection to {@link SoapRun#SERVICE_NAME ApolloService_v4.0}</h3>
- * A {@link edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceV40} is the class that provides the client view of
+ * A {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV40} is the class that provides the client view of
  * the ApolloService_v4.0.  In this example, we name the variable {@link SoapRun#apolloServiceClientView}.
  * <p/>
  * To create the client view of ApolloService_v4.0, we execute the following code in {@link SoapRun#initializeServiceClientView()}:
@@ -49,8 +49,8 @@ import java.net.URL;
  * explore the capabilities of the service you would see that it contains many confusing looking boilerplate methods
  * that having nothing to do with running simulators.  Luckily SOAP allows us to ask for specific function sets (or "endpoints")
  * that implement an interface.  The interface that defines the web service methods on the Apollo Web Service, is the
- * {@link edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI ApolloServiceEI}
- * We ask for an instance of the object that implements the {@link edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI ApolloServiceEI}
+ * {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI ApolloServiceEI}
+ * We ask for an instance of the object that implements the {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI ApolloServiceEI}
  * by executing the following command in {@link SoapRun#getApolloServiceEndpoint()}:
  * <pre>
  *     {@code
@@ -71,7 +71,7 @@ import java.net.URL;
  * Now that we have an instance of the apolloServiceEndpoint we can run a simulation.  Running a simulation entails
  * calling the following method: {@link ApolloServiceEI#runSimulation(RunSimulationMessage)}
  * <p/>
- * Note that runSimulation takes as input {@link edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage}.
+ * Note that runSimulation takes as input {@link edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage}.
  * This is a farily complicated object that tells the Apollo Web Service three things:
  * <ul>
  * <li>1. A description of the infectious disease scenario that is to be simulated</li>
@@ -100,7 +100,7 @@ import java.net.URL;
  * <p/>
  * <h2>3. Checking the status of a run using {@link RunResult}</h2>
  * To check on the status of a run, we submit a {@link ApolloServiceEI#getRunStatus(RunStatusRequest)}, which takes a
- * {@link edu.pitt.apollo.services_common.v4_0.RunStatusRequest}.  The RunStatusRequest class takes a runId, and the cridentals of the user checking the status.
+ * {@link edu.pitt.apollo.services_common.v4_0_1.RunStatusRequest}.  The RunStatusRequest class takes a runId, and the cridentals of the user checking the status.
  * Once the RunStatusRequest is built, we can periodically check back on the status of the run by issuing the following command:
  * <pre>
  *     <code>
@@ -164,34 +164,37 @@ public class RestRun {
     public RestRun() {
 
     }
-
-    /**
+/*
+    *//**
      * A simple method that initializes the global Authentication variable which is used throughout the demo.
-     */
+     *//*
     private void initailizeAuthentication() {
         System.out.println("Creating Authentication object...");
 
         authentication = new Authentication();
-        authentication.setRequesterId("apollo_demo");
-        authentication.setRequesterPassword("apollo_demo");
+        //TODO: Implement authentication
+       *//* authentication.setRequesterId("apollo_demo");
+        authentication.setRequesterPassword("apollo_demo");*//*
     }
 
-    /**
+    *//**
      * Connect to the {@link SoapRun#SERVICE_NAME} to instantiate the service.
-     */
+     *//*
     private void initializeServiceClientView() {
         connector = new RestBrokerServiceConnector(REST_ENDPOINT);
     }
 
-    /**
+    *//**
      * Waits for the current run (indicated by the global variable runIdentification) to complete, or fail.
      *
      * @return "true" if the run completes, "false" if the run encounters and error
-     */
+     *//*
     protected boolean waitForRunToCompleteOrFail() throws RunManagementException {
         RunStatusRequest request = new RunStatusRequest();
         request.setRunIdentification(runIdentification);
-        request.setAuthentication(authentication);
+
+        //TODO: Implement authentication
+        *//*request.setAuthentication(authentication);*//*
         while (true) {
             try {
                 Thread.sleep(2000);
@@ -238,17 +241,18 @@ public class RestRun {
 
     }
 
-    /**
+    *//**
      * Runs a preconfigured simulation and returns when the run either completes or fails.
      *
      * @return "true" if the run completes, "false" if the run encounters and error
-     */
+     *//*
     private boolean runSimulation() {
         System.out.println("Retreieving a prebuilt RunSimulationMessage...");
         RunSimulationMessage runSimulationMessage = ApolloServiceTypeFactory.getExampleRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
         System.out.println("Submitting RunSimulationMessage to the Apollo Web Service...");
-        RunResult simulationRunResult = connector.run(runIdentification, runSimulationMessage);
+        //TODO:Fix this
+        *//*RunResult simulationRunResult = connector.run(runIdentification, runSimulationMessage);
 
         runIdentification = simulationRunResult.getRunId();
 
@@ -258,46 +262,48 @@ public class RestRun {
                 + simulationRunResult.getMethodCallStatus().getStatus() + " : "
                 + simulationRunResult.getMethodCallStatus().getMessage());
 
-        return waitForRunToCompleteOrFail();
+        return waitForRunToCompleteOrFail();*//*
+        return false;
 
     }
 
-    /**
+    *//**
      * Retrieves the list of output files for a run, finds the file that ends with h5, and reports the download location.
-     */
+     *//*
     private void retrieveResults() {
         System.out.println("Requesting the names of available output files for run " + runIdentification +"...");
 
-        /**
+        *//**
          * Here, we build the ListFilesForRunRequest object, passing in the runId,  and authentication information.
-         */
+         *//*
         ListFilesForRunRequest listFilesForRunRequest = new ListFilesForRunRequest();
         listFilesForRunRequest.setRunId(runIdentification);
-        listFilesForRunRequest.setAuthentication(authentication);
+        //TODO:fix this
+        //listFilesForRunRequest.setAuthentication(authentication);
 
-        /**
+        *//**
          * We now pass the ListFilesForRunRequest to the listFilesForRun method.  This method returns a list of output
          * files that are available for download.
-         */
+         *//*
         ListFilesForRunResult files = apolloServiceEndpoint.listFilesForRun(listFilesForRunRequest);
         FileIdentification fileIdentificationToDownload = null;
         for (FileIdentification fileIdentification : files.getFiles()) {
             System.out.println("\tOutput file available: " + fileIdentification.getLabel());
-            /**
+            *//**
              * For example purposes, we are going to download the file with the .h5 extension, so we save the
              * cooresponding FileIdentification object for late.
-             */
+             *//*
             if (fileIdentification.getLabel().endsWith("h5")) {
                 fileIdentificationToDownload = fileIdentification;
             }
         }
         System.out.println();
 
-        /**
+        *//**
          * Finally, we download the "h5" file mentioned in the comment directly above this comment."   The
          * GetFileUrlRequest needs to know the authentication, runId, and fileIdentificationToDownload.  We send the
          * built GetFileUrlRequest to the .getFileUrl endpoint, and in response we get a URL to the requested file.
-         */
+         *//*
 
         System.out.println("Getting download URL for file: " + fileIdentificationToDownload.getLabel());
         GetFileUrlRequest getFileUrlRequest = new GetFileUrlRequest();
@@ -308,9 +314,9 @@ public class RestRun {
         System.out.println("\tFile: " + fileIdentificationToDownload.getLabel() + " is available for download at: " + url.getUrl());
     }
 
-    /**
+    *//**
      * Runs the example program.
-     */
+     *//*
     public void run() {
         initailizeAuthentication();
         initializeServiceClientView();
@@ -322,5 +328,5 @@ public class RestRun {
     public static void main(String[] args) {
         SoapRun soapRun = new SoapRun();
         soapRun.run();
-    }
+    }*/
 }

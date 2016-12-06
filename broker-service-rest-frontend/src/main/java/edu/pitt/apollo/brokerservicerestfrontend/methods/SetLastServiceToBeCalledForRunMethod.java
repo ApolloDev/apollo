@@ -5,13 +5,13 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v4_0.SerializationFormat;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import java.math.BigInteger;
 
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;

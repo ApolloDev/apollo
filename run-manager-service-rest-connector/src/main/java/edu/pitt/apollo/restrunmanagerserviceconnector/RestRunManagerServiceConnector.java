@@ -6,8 +6,8 @@ import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 
 import java.math.BigInteger;
 import java.util.List;

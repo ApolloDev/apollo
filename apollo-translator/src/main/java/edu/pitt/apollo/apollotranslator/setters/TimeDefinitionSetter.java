@@ -6,7 +6,7 @@ import java.util.List;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.TimeDefinition;
+import edu.pitt.apollo.types.v4_0_1.TimeDefinition;
 
 public class TimeDefinitionSetter extends AbstractSetter {
 

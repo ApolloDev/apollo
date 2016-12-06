@@ -15,16 +15,16 @@ package edu.pitt.apollo.apolloclient;
  * the License.
  */
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.data_service_types.v4_0.GetAllOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v4_0.GetAllOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v4_0.GetOutputFilesURLAsZipMessage;
-import edu.pitt.apollo.data_service_types.v4_0.GetOutputFilesURLAsZipResult;
-import edu.pitt.apollo.data_service_types.v4_0.GetOutputFilesURLsMessage;
-import edu.pitt.apollo.data_service_types.v4_0.GetOutputFilesURLsResult;
-import edu.pitt.apollo.data_service_types.v4_0.RunIdAndFiles;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v4_0.ApolloServiceV40;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetAllOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetAllOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLAsZipMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLAsZipResult;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLsMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.GetOutputFilesURLsResult;
+import edu.pitt.apollo.data_service_types.v4_0_1.RunIdAndFiles;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

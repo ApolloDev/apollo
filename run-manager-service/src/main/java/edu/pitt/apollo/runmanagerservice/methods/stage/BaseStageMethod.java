@@ -25,13 +25,13 @@ import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFa
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import static edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod.logger;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0.RunMessage;
-import edu.pitt.apollo.services_common.v4_0.ServiceRecord;
-import edu.pitt.apollo.services_common.v4_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRecord;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
 import java.math.BigInteger;
 import java.util.List;
 

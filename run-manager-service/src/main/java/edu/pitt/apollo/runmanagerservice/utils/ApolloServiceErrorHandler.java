@@ -4,9 +4,9 @@ import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.utilities.ErrorUtils;
 
 import static edu.pitt.apollo.utilities.ErrorUtils.checkFileExists;

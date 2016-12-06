@@ -1,11 +1,11 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
 ;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -503,8 +503,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication infantsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("6"));
+	/*	ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("6"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.MONTH);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.MONTH);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -516,8 +516,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication preSchoolContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -529,8 +529,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication schoolAgeContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+	/*	ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -542,8 +542,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication youngAdultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -555,8 +555,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication adultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		/*ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -568,8 +568,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication elderlyContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("150"));
+		/*ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("150"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		// ageRange.setLowerBound(new BigInteger("700"));
@@ -582,8 +582,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication pregnantAdultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("64"));
+	/*	ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -673,8 +673,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("17"));
-		ageRange.setUpperBound(new BigInteger("75"));
+/*		ageRange.setLowerBound(new BigInteger("17"));
+		ageRange.setUpperBound(new BigInteger("75"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -715,8 +715,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -732,8 +732,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+		/*ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -749,8 +749,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+	/*	ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -766,8 +766,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -783,8 +783,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		/*ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -800,8 +800,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+	/*	ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -817,8 +817,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("200"));
+/*		ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("200"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -834,8 +834,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -850,8 +850,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+	/*	ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -867,8 +867,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -884,8 +884,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+	/*	ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -901,8 +901,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("200"));
+		/*ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("200"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);

@@ -4,7 +4,7 @@ import edu.pitt.apollo.apollotranslator.types.translator.TranslationMode;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslatorInput;
 import edu.pitt.apollo.examples.runsimulationmessages.AbstractRunSimulationMessageBuilder;
 import edu.pitt.apollo.examples.runsimulationmessages.RunSimulationMessageFactory;
-import edu.pitt.apollo.simulator_service_types.v4_0.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 
 import java.io.File;
 import java.io.IOException;

@@ -4,10 +4,10 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>filestore-service-rest-frontend</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     
     <licenses>
@@ -169,27 +169,27 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>filestore-service</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>rest-services-frontend-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>db-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

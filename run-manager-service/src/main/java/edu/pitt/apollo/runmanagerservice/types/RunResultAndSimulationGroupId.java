@@ -1,6 +1,6 @@
 package edu.pitt.apollo.runmanagerservice.types;
 
-import edu.pitt.apollo.services_common.v4_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0_1.RunResult;
 
 import java.math.BigInteger;
 

@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v4_0.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
 
 /**
  *

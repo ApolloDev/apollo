@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
         <groupId>edu.pitt.apollo</groupId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     <artifactId>translator-service</artifactId>
     <packaging>jar</packaging>
     <name>TranslatorService</name>
@@ -34,25 +34,25 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>ApolloTranslator</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>db-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
         
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>filestore-service-rest-connector</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0.ApolloPathogenCode;
-import edu.pitt.apollo.types.v4_0.DiseaseOutcomeWithProbability;
-import edu.pitt.apollo.types.v4_0.Duration;
-import edu.pitt.apollo.types.v4_0.InfectiousDisease;
+import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
+import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeWithProbability;
+import edu.pitt.apollo.types.v4_0_1.Duration;
+import edu.pitt.apollo.types.v4_0_1.InfectiousDisease;
 import java.util.ArrayList;
 import java.util.List;
 

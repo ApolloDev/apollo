@@ -19,8 +19,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
-//import edu.pitt.apollo.types.v4_0.PopulationAndEnvironmentCensus;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+//import edu.pitt.apollo.types.v4_0_1.PopulationAndEnvironmentCensus;
 
 public class Chapter6_PopulationAndEnvironmentCensusExample {
 

@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.pitt.apollo.services_common.v4_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.pitt.apollo.timeseriesvisualizer.utilities.TimeSeriesProcessor;
-import edu.pitt.apollo.services_common.v4_0.RunIdentificationAndLabel;
+import edu.pitt.apollo.services_common.v4_0_1.RunIdentificationAndLabel;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;
@@ -23,7 +23,7 @@ import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
 import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 
 /**
  *

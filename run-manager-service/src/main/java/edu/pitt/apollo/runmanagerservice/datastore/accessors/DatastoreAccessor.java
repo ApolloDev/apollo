@@ -6,19 +6,20 @@ import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.*;
-import edu.pitt.apollo.filestore_service_types.v4_0.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
 import edu.pitt.apollo.interfaces.ContentManagementInterface;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.interfaces.SoftwareRegistryInterface;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.runmanagerservice.exception.RunMessageFileNotFoundException;
-import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.types.v4_0.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v4_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.apollo.utilities.FileStoreServiceUtility;
-import edu.pitt.apollo.utilities.JsonUtils;
 import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,7 +122,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 
 	protected final ApolloDbUtils dbUtils;
 //	protected final Authentication authentication;
-	protected JsonUtils jsonUtils = new JsonUtils();
+	protected JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 	protected Md5Utils md5Utils = new Md5Utils();
 
 	public DatastoreAccessor() throws DatastoreException {
@@ -313,7 +314,7 @@ public class DatastoreAccessor implements SoftwareRegistryInterface, RunManageme
 
 	public <T> T getRunMessageAssociatedWithRunIdAsTypeOrNull(BigInteger runId, Authentication authentication, String runMessageFilename, Class<T> clazz) throws DatastoreException, JsonUtilsException, FilestoreException {
 		String json = getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename);
-		JsonUtils jsonUtils = new JsonUtils();
+		JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 		return (T) jsonUtils.getObjectFromJson(json, clazz);
 	}
 

@@ -5,8 +5,8 @@ import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.outputtranslatorservice.exception.OutputTranslatorException;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.services_common.v4_0.Authentication;
-import edu.pitt.apollo.services_common.v4_0.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.utilities.Md5Utils;
 
 import java.io.*;

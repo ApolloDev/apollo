@@ -5,9 +5,9 @@
  */
 package edu.pitt.apollo.visualizerservicerestfrontend.utils;
 
-import edu.pitt.apollo.services_common.v4_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v4_0.Response;
-import edu.pitt.apollo.services_common.v4_0.ResponseMeta;
+import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_1.Response;
+import edu.pitt.apollo.services_common.v4_0_1.ResponseMeta;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

@@ -15,19 +15,22 @@
  */
 package edu.pitt.apollo.restserviceconnectorcommon;
 
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.apollo.utilities.SerializationUtils;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v4_0.*;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.*;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -81,13 +84,22 @@ public class RestServiceUtils {
 		}
 	}
 
+
 	public <T> T getObjectFromResponseBody(Response response, Class<T> clazz) throws RestServiceException {
 		ResponseMeta meta = response.getResponseMeta();
 
 		if (meta.isIsBodySerialized()) {
 			SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 			try {
-				Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
+				Deserializer deserializer = null;
+				switch (serializationFormat) {
+					case JSON:
+						deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON);
+						break;
+					case XML:
+						deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
+						break;
+				}
 				T object = deserializer.getObjectFromMessage(response.getResponseBody().get(0), clazz);
 				return object;
 			} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
@@ -103,7 +115,15 @@ public class RestServiceUtils {
 		if (meta.isIsBodySerialized()) {
 			SerializationFormat serializationFormat = meta.getResponseBodySerializationInformation().getFormat();
 			try {
-				Deserializer deserializer = DeserializerFactory.getDeserializer(serializationFormat);
+				Deserializer deserializer = null;
+				switch (serializationFormat) {
+					case JSON:
+						deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON);
+						break;
+					case XML:
+						deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
+						break;
+				}
 				List<T> deserializedObjects = new ArrayList<>();
 
 				List<String> serializedObjects = response.getResponseBody();
@@ -131,8 +151,9 @@ public class RestServiceUtils {
 		requestMeta.setIsBodySerialized(true);
 
 		try {
-			Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
-			ObjectSerializationInformation objectSerializationInformation = serializer.getObjectSerializationInformation(bodyObject);
+			Serializer serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
+			SerializationUtils serializationUtils = new SerializationUtils(SerializationFormat.XML);
+			ObjectSerializationInformation objectSerializationInformation = serializationUtils.getObjectSerializationInformation(bodyObject);
 			requestMeta.setRequestBodySerializationInformation(objectSerializationInformation);
 
 			String serializedObject = serializer.serializeObject(bodyObject);
