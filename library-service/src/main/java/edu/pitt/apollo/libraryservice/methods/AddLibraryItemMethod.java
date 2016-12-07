@@ -1,7 +1,6 @@
 package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
@@ -28,18 +27,18 @@ public class AddLibraryItemMethod {
 		result.setStatus(status);
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
-			if (userAuthorized) {
+//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
+//			if (userAuthorized) {
 				//TODO: hookup authentication
 				result = dbUtils.addLibraryItem(libraryItemContainer, "looks_like_this_isnt_hooked_up", comment);
 
 				result.setStatus(status);
 
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to add items to the library.");
-			}
+//			} else {
+//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+//				status.setMessage("You are not authorized to add items to the library.");
+//			}
 
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);

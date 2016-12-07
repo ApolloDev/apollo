@@ -1,7 +1,6 @@
 package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.QueryResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -25,14 +24,14 @@ public class QueryLibraryMethod {
 		MethodCallStatus status = new MethodCallStatus();
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-			if (userAuthorized) {
+//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+//			if (userAuthorized) {
 				result = readOnlyDbUtils.queryObjects(query);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to use queries.");
-			}
+//			} else {
+//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+//				status.setMessage("You are not authorized to use queries.");
+//			}
 
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);

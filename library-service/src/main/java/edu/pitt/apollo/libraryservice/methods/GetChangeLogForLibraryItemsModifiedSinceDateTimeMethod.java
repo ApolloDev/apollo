@@ -1,7 +1,6 @@
 package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.ChangeLogEntry;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
@@ -31,17 +30,17 @@ public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod {
 		result.setStatus(status);
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-			if (userAuthorized) {
+//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+//			if (userAuthorized) {
 				
 				List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime);
 				result.getChangeLogEntries().addAll(changeLog);
 				
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to retrieve a change log from the library.");
-			}
+//			} else {
+//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+//				status.setMessage("You are not authorized to retrieve a change log from the library.");
+//			}
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);
 			status.setMessage(ex.getMessage());

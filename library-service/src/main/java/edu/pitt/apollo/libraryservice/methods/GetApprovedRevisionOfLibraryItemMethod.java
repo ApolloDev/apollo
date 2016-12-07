@@ -1,7 +1,6 @@
 package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetReleaseVersionResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -20,8 +19,8 @@ public class GetApprovedRevisionOfLibraryItemMethod {
 		MethodCallStatus status = new MethodCallStatus();
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-			if (userAuthorized) {
+//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+//			if (userAuthorized) {
 				Integer revision = dbUtils.getReleaseVersion(urn);
 				result = new GetReleaseVersionResult();
 				if (revision != null) {
@@ -33,11 +32,11 @@ public class GetApprovedRevisionOfLibraryItemMethod {
 					status.setMessage("No approved revision found");
 					result.setHasReleasedVersion(false);
 				}
-			} else {
-				result = new GetReleaseVersionResult();
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to retrieve items from the library.");
-			}
+//			} else {
+//				result = new GetReleaseVersionResult();
+//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+//				status.setMessage("You are not authorized to retrieve items from the library.");
+//			}
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);
 			status.setMessage(ex.getMessage());

@@ -1,7 +1,6 @@
 package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryUserRoleTypeEnum;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetRevisionsResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.RevisionAndComments;
@@ -29,15 +28,15 @@ public class GetVersionsMethod {
 		result.setStatus(status);
 
 		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-			if (userAuthorized) {
+//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
+//			if (userAuthorized) {
 				List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn);
 				result.getRevisionsAndComments().addAll(versions);
 				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to get versions.");
-			}
+//			} else {
+//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
+//				status.setMessage("You are not authorized to get versions.");
+//			}
 
 		} catch (ApolloDatabaseException ex) {
 			status.setStatus(MethodCallStatusEnum.FAILED);
