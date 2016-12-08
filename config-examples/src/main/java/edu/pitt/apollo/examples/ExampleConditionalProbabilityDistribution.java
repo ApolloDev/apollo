@@ -170,7 +170,7 @@ public class ExampleConditionalProbabilityDistribution {
 		
 		UncertainDuration uncertainDuration = new UncertainDuration();
 		uncertainDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
-		uncertainDuration.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
+		uncertainDuration.setUncertainValue(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
 				.getInfectionAcquisitionsFromInfectedHosts().get(0).setLatentPeriodDuration(uncertainDuration);

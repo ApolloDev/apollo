@@ -9,7 +9,6 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 /**
- *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
  * Date: Aug 13, 2014
@@ -18,33 +17,21 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class AddLibraryItemMethod {
 
-	public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) {
+    public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) {
 
+        AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
+        MethodCallStatus status = new MethodCallStatus();
+        result.setStatus(status);
 
+        try {
+            result = dbUtils.addLibraryItem(libraryItemContainer, authentication.getPayload(), comment);
+            result.setStatus(status);
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+        } catch (ApolloDatabaseException ex) {
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            status.setMessage(ex.getMessage());
+        }
 
-		AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
-		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
-
-		try {
-//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
-//			if (userAuthorized) {
-				//TODO: hookup authentication
-				result = dbUtils.addLibraryItem(libraryItemContainer, "looks_like_this_isnt_hooked_up", comment);
-
-				result.setStatus(status);
-
-				status.setStatus(MethodCallStatusEnum.COMPLETED);
-//			} else {
-//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-//				status.setMessage("You are not authorized to add items to the library.");
-//			}
-
-		} catch (ApolloDatabaseException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage(ex.getMessage());
-		}
-
-		return result;
-	}
+        return result;
+    }
 }

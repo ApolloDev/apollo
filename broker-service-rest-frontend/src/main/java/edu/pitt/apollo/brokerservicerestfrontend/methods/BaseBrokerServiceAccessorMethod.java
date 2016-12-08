@@ -30,9 +30,9 @@ public abstract class BaseBrokerServiceAccessorMethod {
 	protected final BrokerServiceImpl impl;
 	protected final ResponseMessageBuilder responseBuilder;
 
-	public BaseBrokerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHesder) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+	public BaseBrokerServiceAccessorMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
-		authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHesder);
+		authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 
 		responseBuilder = new ResponseMessageBuilder();
 		this.serializationFormat = serializationFormat;

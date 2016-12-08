@@ -3,8 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.ProbabilityDistribution;
 import edu.pitt.apollo.types.v4_0_1.UncertainDuration;
+import edu.pitt.apollo.types.v4_0_1.UncertainValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class UncertainDurationSetter extends AbstractTypedSetter<UncertainDuration> {
 
-    private static final String PROBABILITY_DISTRIBUTION = "probabilityDistribution";
+    private static final String PROBABILITY_DISTRIBUTION = "uncertainValue";
 
     public UncertainDurationSetter() {
     }
@@ -29,15 +29,15 @@ public class UncertainDurationSetter extends AbstractTypedSetter<UncertainDurati
         super(prefix, section, apolloTranslationEngine);
     }
 
-    private List<SetterReturnObject> setProbabilityDistribution(ProbabilityDistribution dist) throws ApolloSetterException {
-        ProbabilityDistributionSetter setter = new ProbabilityDistributionSetter(apolloTranslationEngine, type + "." + PROBABILITY_DISTRIBUTION, section);
-        return setter.set(dist);
+    private List<SetterReturnObject> setUncertainValue(UncertainValue value) throws ApolloSetterException {
+        UncertainValueSetter setter = new UncertainValueSetter(apolloTranslationEngine, type + "." + PROBABILITY_DISTRIBUTION, section);
+        return setter.set(value);
     }
 
     @Override
     public List<SetterReturnObject> set(UncertainDuration t) throws ApolloSetterException {
         List<SetterReturnObject> list = new ArrayList<SetterReturnObject>();
-        list.addAll(setProbabilityDistribution(t.getProbabilityDistribution()));
+        list.addAll(setUncertainValue(t.getUncertainValue()));
         return list;
     }
 }

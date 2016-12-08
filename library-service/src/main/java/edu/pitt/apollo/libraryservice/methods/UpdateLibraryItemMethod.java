@@ -26,17 +26,9 @@ public class UpdateLibraryItemMethod {
         result.setStatus(status);
 
         try {
-//            boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.COMMITTER);
-//            if (userAuthorized) {
-                //TODO: hookup authentication
-                int version = dbUtils.updateLibraryItem(urn, item, "looks_like_not_working", comment);
-                result.setVersion(version);
-                status.setStatus(MethodCallStatusEnum.COMPLETED);
-//            } else {
-//                status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-//                status.setMessage("You are not authorized to update items in the library.");
-//            }
-
+            int version = dbUtils.updateLibraryItem(urn, item, authentication.getPayload(), comment);
+            result.setVersion(version);
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException ex) {
             status.setStatus(MethodCallStatusEnum.FAILED);
             status.setMessage(ex.getMessage());

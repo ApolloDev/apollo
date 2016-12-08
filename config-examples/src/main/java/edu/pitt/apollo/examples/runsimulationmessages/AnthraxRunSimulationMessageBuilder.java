@@ -72,7 +72,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution incubationPeriodDistribution = new LogNormalDistribution();
         incubationPeriodDistribution.setMean((4.54) / 24);
         incubationPeriodDistribution.setStandardDeviation((0.19) / 24);
-        incubationPeriodDuration.setProbabilityDistribution(incubationPeriodDistribution);
+        incubationPeriodDuration.setUncertainValue(incubationPeriodDistribution);
         incubationPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setIncubationPeriod(incubationPeriodDuration);
 
@@ -80,7 +80,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution prodromalPeriodDistribution = new LogNormalDistribution();
         prodromalPeriodDistribution.setMean((4.58) / 24);
         prodromalPeriodDistribution.setStandardDeviation((0.44) / 24);
-        prodromalPeriodDuration.setProbabilityDistribution(prodromalPeriodDistribution);
+        prodromalPeriodDuration.setUncertainValue(prodromalPeriodDistribution);
         prodromalPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setProdromalPeriod(prodromalPeriodDuration);
 
@@ -88,7 +88,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution fulminantPeriodDistribution = new LogNormalDistribution();
         fulminantPeriodDistribution.setMean((3.58) / 24);
         fulminantPeriodDistribution.setStandardDeviation((0.36) / 24);
-        fulminantPeriodDuration.setProbabilityDistribution(fulminantPeriodDistribution);
+        fulminantPeriodDuration.setUncertainValue(fulminantPeriodDistribution);
         fulminantPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setFulminantPeriod(fulminantPeriodDuration);
 

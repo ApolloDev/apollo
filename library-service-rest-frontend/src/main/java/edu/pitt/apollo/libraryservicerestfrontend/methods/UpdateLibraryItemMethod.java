@@ -1,6 +1,7 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v4_0_1.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
@@ -15,8 +16,8 @@ import org.springframework.http.HttpStatus;
  */
 public class UpdateLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
-	public UpdateLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat, UpdateLibraryItemContainerResult.class);
+	public UpdateLibraryItemMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, UpdateLibraryItemContainerResult.class, authorizationHeader);
 	}
 
 	public String updateLibraryItem(String messageBody, String comment, int urn) {

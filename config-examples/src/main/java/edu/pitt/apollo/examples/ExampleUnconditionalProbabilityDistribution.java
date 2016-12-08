@@ -43,7 +43,7 @@ public class ExampleUnconditionalProbabilityDistribution  {
 		UncertainDuration uncertainDurationOfLatentPeriod = new UncertainDuration();
 		uncertainDurationOfLatentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		uncertainDurationOfLatentPeriod
-				.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
+				.setUncertainValue(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
 				.getInfectionAcquisitionsFromInfectedHosts().get(0).setLatentPeriodDuration(uncertainDurationOfLatentPeriod);

@@ -1,6 +1,7 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetCommentsResult;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
@@ -12,8 +13,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetCommentsForLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
-	public GetCommentsForLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat, GetCommentsResult.class);
+	public GetCommentsForLibraryItemMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, GetCommentsResult.class, authorizationHeader);
 	}
 
 	public String getCommentsForLibraryItem(int urn, int version) {

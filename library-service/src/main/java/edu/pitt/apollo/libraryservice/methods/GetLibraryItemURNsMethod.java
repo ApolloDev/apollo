@@ -9,32 +9,25 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 public class GetLibraryItemURNsMethod {
 
-	public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
-															  String itemType, Authentication authentication) {
+    public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
+                                                              String itemType, Authentication authentication) {
 
 
+        //execute query
+        GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();
+        MethodCallStatus status = new MethodCallStatus();
+        result.setStatus(status);
 
-		//execute query
-		GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();
-		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
+        try {
+            result.getURNs().addAll(dbUtils.getURNs(itemType));
+            status.setMessage("");
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+        } catch (ApolloDatabaseException ex) {
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            status.setMessage(ex.getMessage());
+        }
 
-		try {
-//			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-//			if (userAuthorized) {
-				result.getURNs().addAll(dbUtils.getURNs(itemType));
-				status.setMessage("");
-				status.setStatus(MethodCallStatusEnum.COMPLETED);
-//			} else {
-//				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-//				status.setMessage("You are not authorized to get item URIs from the library.");
-//			}
-		} catch (ApolloDatabaseException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage(ex.getMessage());
-		}
-
-		return result;
-	}
+        return result;
+    }
 
 }

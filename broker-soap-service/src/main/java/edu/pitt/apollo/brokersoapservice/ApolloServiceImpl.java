@@ -18,6 +18,7 @@ import edu.pitt.apollo.BrokerServiceImpl;
 import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunMessage;
 import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunResult;
 import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
@@ -39,39 +40,36 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import java.util.List;
 
-@org.apache.cxf.interceptor.InInterceptors (interceptors = {"edu.pitt.apollo.brokersoapservice.HTTPHeaderInterceptor" })
+@org.apache.cxf.interceptor.InInterceptors(interceptors = {"edu.pitt.apollo.brokersoapservice.HTTPHeaderInterceptor"})
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", portName = "ApolloServiceEndpoint", serviceName = "ApolloService_v4.0", endpointInterface = "edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI")
 public class ApolloServiceImpl implements ApolloServiceEI {
 
-	//TODO: Implement library methods
-	public ApolloServiceImpl() {
+    public ApolloServiceImpl() {
 
-	}
+    }
 
-	Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
-	private static final BrokerServiceImpl brokerService = new BrokerServiceImpl();
-
+    Logger logger = LoggerFactory.getLogger(ApolloServiceImpl.class);
+    private static final BrokerServiceImpl brokerService = new BrokerServiceImpl();
 
 
-	@Override
-	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterService")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/unRegisterService")
-	@ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterServiceResponse")
-	public MethodCallStatus unRegisterService(
-			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
-		throw new UnsupportedOperationException("Not implemented yet");
-	}
+    @Override
+    @WebResult(name = "methodCallStatus", targetNamespace = "")
+    @RequestWrapper(localName = "unRegisterService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterService")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/unRegisterService")
+    @ResponseWrapper(localName = "unRegisterServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.UnRegisterServiceResponse")
+    public MethodCallStatus unRegisterService(
+            @WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
-	@Override
-	public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage getSoftwareIdentificationForRunMessage) {
-		return null;
-	}
+    @Override
+    public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage getSoftwareIdentificationForRunMessage) {
+        return null;
+    }
 
-
-	@Override
-	public RunResult runSimulations(
-			edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage) {
+    @Override
+    public RunResult runSimulations(
+            edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage) {
         try {
             return brokerService.runSimulations(runSimulationsMessage, getAuthetication());
         } catch (UnsupportedAuthorizationTypeException ex) {
@@ -79,110 +77,225 @@ public class ApolloServiceImpl implements ApolloServiceEI {
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
             return result;
         }
-	}
+    }
 
-	@Override
-	public UpdateLibraryItemContainerResult updateLibraryItemContainer(UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
-		return null;
-	}
+    @Override
+    public UpdateLibraryItemContainerResult updateLibraryItemContainer(UpdateLibraryItemContainerMessage updateLibraryItemContainerMessage) {
+        UpdateLibraryItemContainerResult result;
+        try {
+            result = brokerService.reviseLibraryItem(updateLibraryItemContainerMessage.getUrn(),
+                    updateLibraryItemContainerMessage.getLibraryItemContainer(), updateLibraryItemContainerMessage.getComment(),
+                    updateLibraryItemContainerMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new UpdateLibraryItemContainerResult();
+            result.setStatus(createStatus("Error calling updateLibraryItemContainer: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	public SetReleaseVersionResult setReleaseVersionForLibraryItem(SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
-		return null;
-	}
+        return result;
+    }
 
-	@Override
-	public GetCommentsResult getCommentsForLibraryItem(GetCommentsMessage getCommentsForLibraryItemMessage) {
-		return null;
-	}
+    @Override
+    public SetReleaseVersionResult setReleaseVersionForLibraryItem(SetReleaseVersionMessage setReleaseVersionForLibraryItemMessage) {
+        SetReleaseVersionResult result;
+        try {
+            result = brokerService.approveRevisionOfLibraryItem(setReleaseVersionForLibraryItemMessage.getUrn(),
+                    setReleaseVersionForLibraryItemMessage.getVersion(), setReleaseVersionForLibraryItemMessage.getComment(),
+                    setReleaseVersionForLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new SetReleaseVersionResult();
+            result.setStatus(createStatus("Error calling setReleaseVersionForLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
-		return null;
-	}
+        return result;
+    }
 
-	@Override
-	public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
-		return null;
-	}
+    @Override
+    public GetCommentsResult getCommentsForLibraryItem(GetCommentsMessage getCommentsForLibraryItemMessage) {
+        GetCommentsResult result;
+        try {
+            result = brokerService.getCommentsForLibraryItem(getCommentsForLibraryItemMessage.getUrn(),
+                    getCommentsForLibraryItemMessage.getVersion(), getCommentsForLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetCommentsResult();
+            result.setStatus(createStatus("Error calling getCommentsForLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
-		return null;
-	}
+        return result;
+    }
 
-	@Override
-	public QueryResult query(QueryMessage queryMessage) {
-		return null;
-	}
+    @Override
+    public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(ModifyGroupOwnershipMessage grantGroupAccessToLibraryItemMessage) {
+        ModifyGroupOwnershipResult result;
+        try {
+            result = brokerService.grantGroupAccessToLibraryItem(grantGroupAccessToLibraryItemMessage.getUrn(),
+                    grantGroupAccessToLibraryItemMessage.getGroup(), grantGroupAccessToLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new ModifyGroupOwnershipResult();
+            result.setStatus(createStatus("Error calling grantGroupAccessToLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	public GetLibraryItemContainerResult getLibraryItemContainer(GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
-		return null;
-	}
+        return result;
+    }
 
-	@Override
-	public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
-		return null;
-	}
+    @Override
+    public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(SetLibraryItemAsNotReleasedMessage setLibraryItemAsNotReleasedMessage) {
+        SetLibraryItemAsNotReleasedResult result;
+        try {
+            result = brokerService.hideLibraryItem(setLibraryItemAsNotReleasedMessage.getUrn(),
+                    setLibraryItemAsNotReleasedMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new SetLibraryItemAsNotReleasedResult();
+            result.setStatus(createStatus("Error calling setLibraryItemAsNotReleased: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	public AddLibraryItemContainerResult addLibraryItemContainer(AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
-		return null;
-	}
+        return result;
+    }
 
-	@Override
-	public GetRevisionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
-		return null;
-	}
+    @Override
+    public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage getChangeLogForLibraryItemsModifiedSinceDateTimeMessage) {
+        GetChangeLogForLibraryItemsModifiedSinceDateTimeResult result;
+        try {
+            result = brokerService.getChangeLogForLibraryItemsModifiedSinceDateTime(
+                    getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getDateTime(),
+                    getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
+            result.setStatus(createStatus("Error calling getChangeLogForLibraryItemsModifiedSinceDateTime: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	@WebResult(name = "serviceRecords", targetNamespace = "")
-	@RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServices")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRegisteredServices")
-	@ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServicesResponse")
-	public GetRegisteredServicesResult getRegisteredServices() {
+        return result;
+    }
+
+    @Override
+    public QueryResult query(QueryMessage queryMessage) {
+        QueryResult result;
+        try {
+            result = brokerService.query(queryMessage.getQuery(), queryMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new QueryResult();
+            result.setStatus(createStatus("Error calling query: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public GetLibraryItemContainerResult getLibraryItemContainer(GetLibraryItemContainerMessage getLibraryItemContainerMessage) {
+        GetLibraryItemContainerResult result;
+        try {
+            result = brokerService.getLibraryItem(getLibraryItemContainerMessage.getUrn(),
+                    getLibraryItemContainerMessage.getVersion(), getLibraryItemContainerMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetLibraryItemContainerResult();
+            result.setStatus(createStatus("Error calling getLibraryItemContainer: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(ModifyGroupOwnershipMessage removeGroupAccessToLibraryItemMessage) {
+        ModifyGroupOwnershipResult result;
+        try {
+            result = brokerService.removeGroupAccessToLibraryItem(removeGroupAccessToLibraryItemMessage.getUrn(),
+                    removeGroupAccessToLibraryItemMessage.getGroup(), removeGroupAccessToLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new ModifyGroupOwnershipResult();
+            result.setStatus(createStatus("Error calling removeGroupAccessToLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public AddLibraryItemContainerResult addLibraryItemContainer(AddLibraryItemContainerMessage addLibraryItemContainerMessage) {
+        AddLibraryItemContainerResult result;
+        try {
+            result = brokerService.addLibraryItem(addLibraryItemContainerMessage.getLibraryItemContainer(),
+                    addLibraryItemContainerMessage.getComment(), addLibraryItemContainerMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new AddLibraryItemContainerResult();
+            result.setStatus(createStatus("Error calling addLibraryItemContainer: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public GetRevisionsResult getVersionNumbersForLibraryItem(GetVersionsMessage getVersionNumbersForLibraryItemMessage) {
+        GetRevisionsResult result;
+        try {
+            result = brokerService.getAllRevisionsOfLibraryItem(getVersionNumbersForLibraryItemMessage.getUrn(),
+                    getVersionNumbersForLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetRevisionsResult();
+            result.setStatus(createStatus("Error calling getVersionNumbersForLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+
+    @Override
+    @WebResult(name = "serviceRecords", targetNamespace = "")
+    @RequestWrapper(localName = "getRegisteredServices", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServices")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRegisteredServices")
+    @ResponseWrapper(localName = "getRegisteredServicesResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRegisteredServicesResponse")
+    public GetRegisteredServicesResult getRegisteredServices() {
 
         GetRegisteredServicesResult result = new GetRegisteredServicesResult();
-		try {
-			result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(getAuthetication()));
-			result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
-			result = new GetRegisteredServicesResult();
-			result.setStatus(createStatus("Error running getRegisteredServices: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED));
-		}
+        try {
+            result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(getAuthetication()));
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
+            result = new GetRegisteredServicesResult();
+            result.setStatus(createStatus("Error running getRegisteredServices: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-		return result;
-	}
-
-
-	@Override
-	@WebResult(name = "methodCallStatus", targetNamespace = "")
-	@RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterService")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/registerService")
-	@ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterServiceResponse")
-	public MethodCallStatus registerService(
-			@WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
-		throw new UnsupportedOperationException("Not implemented yet.");
-	}
-
-//	@Override
-//	public TerminteRunResult terminateRun(
-//			TerminateRunRequest terminateRunRequest) {
-//
-//		return null;
-//	}
+        return result;
+    }
 
 
+    @Override
+    @WebResult(name = "methodCallStatus", targetNamespace = "")
+    @RequestWrapper(localName = "registerService", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterService")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/registerService")
+    @ResponseWrapper(localName = "registerServiceResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RegisterServiceResponse")
+    public MethodCallStatus registerService(
+            @WebParam(name = "serviceRegistrationRecord", targetNamespace = "") ServiceRegistrationRecord serviceRegistrationRecord) {
+        throw new UnsupportedOperationException("Not implemented yet.");
+    }
 
-	@Override
-	@WebResult(name = "simulationRunId", targetNamespace = "")
-	@RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulation")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runSimulation")
-	@ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulationResponse")
-	public RunResult runSimulation(
-			@WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
+    @Override
+    @WebResult(name = "simulationRunId", targetNamespace = "")
+    @RequestWrapper(localName = "runSimulation", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulation")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runSimulation")
+    @ResponseWrapper(localName = "runSimulationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunSimulationResponse")
+    public RunResult runSimulation(
+            @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
         try {
             return brokerService.runSimulation(runSimulationMessage, getAuthetication());
         } catch (UnsupportedAuthorizationTypeException ex) {
@@ -190,26 +303,48 @@ public class ApolloServiceImpl implements ApolloServiceEI {
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
             return result;
         }
-	}
+    }
 
-	@Override
-	public AddReviewerCommentResult addReviewerCommentToLibraryItem(AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
-		return null;
-	}
+    @Override
+    public AddReviewerCommentResult addReviewerCommentToLibraryItem(AddReviewerCommentMessage addReviewerCommentToLibraryItemMessage) {
+        AddReviewerCommentResult result;
+        try {
+            result = brokerService.addReviewerCommentToLibraryItem(addReviewerCommentToLibraryItemMessage.getUrn(),
+                    addReviewerCommentToLibraryItemMessage.getVersion(), addReviewerCommentToLibraryItemMessage.getComment(),
+                    addReviewerCommentToLibraryItemMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new AddReviewerCommentResult();
+            result.setStatus(createStatus("Error calling addReviewerCommentToLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
+        return result;
+    }
 
-	@Override
-	public GetLibraryItemURNsResult getLibraryItemURNs(GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
-		return null;
-	}
+    @Override
+    public GetLibraryItemURNsResult getLibraryItemURNs(GetLibraryItemURNsMessage getLibraryItemURNsMessage) {
+        GetLibraryItemURNsResult result;
+        try {
+            result = brokerService.getLibraryItemURNs(getLibraryItemURNsMessage.getItemType(),
+                    getLibraryItemURNsMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetLibraryItemURNsResult();
+            result.setStatus(createStatus("Error calling getLibraryItemURNs: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	@Override
-	@WebResult(name = "visualizationResult", targetNamespace = "")
-	@RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualization")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runVisualization")
-	@ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualizationResponse")
-	public RunResult runVisualization(
-			@WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
+        return result;
+    }
+
+    @Override
+    @WebResult(name = "visualizationResult", targetNamespace = "")
+    @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualization")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/runVisualization")
+    @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.RunVisualizationResponse")
+    public RunResult runVisualization(
+            @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
         try {
             return brokerService.runVisualization(runVisualizationMessage, getAuthetication());
         } catch (UnsupportedAuthorizationTypeException ex) {
@@ -217,97 +352,108 @@ public class ApolloServiceImpl implements ApolloServiceEI {
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
             return result;
         }
-	}
+    }
 
-	@Override
-	@WebResult(name = "runStatus", targetNamespace = "")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatus")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatusResponse")
-	public MethodCallStatus getRunStatus(
-			@WebParam(name = "runStatusRequest", targetNamespace = "") RunStatusRequest runStatusRequest) {
-		try {
-			return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthetication());
-		} catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
-			return createStatus("Error running getRunStatus: " + ex.getMessage(),
-					MethodCallStatusEnum.FAILED);
-		}
-	}
+    @Override
+    @WebResult(name = "runStatus", targetNamespace = "")
+    @RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatus")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/getRunStatus")
+    @ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetRunStatusResponse")
+    public MethodCallStatus getRunStatus(
+            @WebParam(name = "runStatusRequest", targetNamespace = "") RunStatusRequest runStatusRequest) {
+        try {
+            return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthetication());
+        } catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
+            return createStatus("Error running getRunStatus: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED);
+        }
+    }
 
-	private MethodCallStatus createStatus(String message, MethodCallStatusEnum enumVal) {
-		MethodCallStatus status = new MethodCallStatus();
-		status.setMessage(message);
-		status.setStatus(enumVal);
-		return status;
-	}
+    private MethodCallStatus createStatus(String message, MethodCallStatusEnum enumVal) {
+        MethodCallStatus status = new MethodCallStatus();
+        status.setMessage(message);
+        status.setStatus(enumVal);
+        return status;
+    }
 
-	@Override
-	@WebResult(name = "getFileUrlResult", targetNamespace = "")
-	@RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrl")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
-	@ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrlResponse")
+    @Override
+    @WebResult(name = "getFileUrlResult", targetNamespace = "")
+    @RequestWrapper(localName = "getFileUrl", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrl")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
+    @ResponseWrapper(localName = "getFileUrlResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.GetFileUrlResponse")
 
-	public GetFileUrlResult getFileUrl(GetFileUrlRequest getFileUrlRequest) {
-		GetFileUrlResult result = new GetFileUrlResult();
-		MethodCallStatus status = new MethodCallStatus();
-		try {
-			String url = brokerService.getUrlOfFile(getFileUrlRequest.getRunId(),
-					getFileUrlRequest.getFileIdentification().getLabel(),
-					getFileUrlRequest.getFileIdentification().getFormat(),
-					getFileUrlRequest.getFileIdentification().getType(),
-					getAuthetication());
-			result.setUrl(url);
-			status.setMessage("Completed");
-			status.setStatus(MethodCallStatusEnum.COMPLETED);
-			result.setStatus(status);
-			return result;
-		} catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
-			status.setMessage("The file URL could not be retrieved: " + ex.getMessage());
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			result.setStatus(status);
-			return result;
-		}
-	}
+    public GetFileUrlResult getFileUrl(GetFileUrlRequest getFileUrlRequest) {
+        GetFileUrlResult result = new GetFileUrlResult();
+        MethodCallStatus status = new MethodCallStatus();
+        try {
+            String url = brokerService.getUrlOfFile(getFileUrlRequest.getRunId(),
+                    getFileUrlRequest.getFileIdentification().getLabel(),
+                    getFileUrlRequest.getFileIdentification().getFormat(),
+                    getFileUrlRequest.getFileIdentification().getType(),
+                    getAuthetication());
+            result.setUrl(url);
+            status.setMessage("Completed");
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+            result.setStatus(status);
+            return result;
+        } catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
+            status.setMessage("The file URL could not be retrieved: " + ex.getMessage());
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            result.setStatus(status);
+            return result;
+        }
+    }
 
-	@Override
-	@WebResult(name = "listFilesForRunResult", targetNamespace = "")
-	@RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRun")
-	@WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
-	@ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRunResponse")
+    @Override
+    @WebResult(name = "listFilesForRunResult", targetNamespace = "")
+    @RequestWrapper(localName = "listFilesForRun", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRun")
+    @WebMethod(action = "http://service.apollo.pitt.edu/apolloservice/v4_0/listFilesForRun")
+    @ResponseWrapper(localName = "listFilesForRunResponse", targetNamespace = "http://service.apollo.pitt.edu/apolloservice/v4_0/", className = "edu.pitt.apollo.service.apolloservice.v4_0_1.ListFilesForRunResponse")
 
-	public ListFilesForRunResult listFilesForRun(@WebParam(name = "listFilesForRunRequest", targetNamespace = "")ListFilesForRunRequest listFilesForRunRequest) {
+    public ListFilesForRunResult listFilesForRun(@WebParam(name = "listFilesForRunRequest", targetNamespace = "") ListFilesForRunRequest listFilesForRunRequest) {
 
-		ListFilesForRunResult result = new ListFilesForRunResult();
-		MethodCallStatus status = new MethodCallStatus();
+        ListFilesForRunResult result = new ListFilesForRunResult();
+        MethodCallStatus status = new MethodCallStatus();
 
-		try {
-			List<FileIdentification> files = brokerService.listFilesForRun(listFilesForRunRequest.getRunId(),
-					getAuthetication());
-			result.getFiles().addAll(files);
-			status.setMessage("Completed");
-			status.setStatus(MethodCallStatusEnum.COMPLETED);
-			result.setStatus(status);
-			return result;
-		} catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
-			status.setMessage("The list of files could not be retrieved: " + ex.getMessage());
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			result.setStatus(status);
-			return result;
-		}
+        try {
+            List<FileIdentification> files = brokerService.listFilesForRun(listFilesForRunRequest.getRunId(),
+                    getAuthetication());
+            result.getFiles().addAll(files);
+            status.setMessage("Completed");
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+            result.setStatus(status);
+            return result;
+        } catch (FilestoreException | UnsupportedAuthorizationTypeException ex) {
+            status.setMessage("The list of files could not be retrieved: " + ex.getMessage());
+            status.setStatus(MethodCallStatusEnum.FAILED);
+            result.setStatus(status);
+            return result;
+        }
 
-	}
+    }
 
-	@Override
-	public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
+    @Override
+    public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-	@Override
-	public GetReleaseVersionResult getLibraryItemReleaseVersion(GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
-		return null;
-	}
+    @Override
+    public GetReleaseVersionResult getLibraryItemReleaseVersion(GetReleaseVersionMessage getLibraryItemReleaseVersionMessage) {
+        GetReleaseVersionResult result;
+        try {
+            result = brokerService.getApprovedRevisionOfLibraryItem(getLibraryItemReleaseVersionMessage.getUrn(),
+                    getLibraryItemReleaseVersionMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetReleaseVersionResult();
+            result.setStatus(createStatus("Error calling getLibraryItemReleaseVersion: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
 
-	private Authentication getAuthetication() throws UnsupportedAuthorizationTypeException {
+        return result;
+    }
+
+    private Authentication getAuthetication() throws UnsupportedAuthorizationTypeException {
         String authorization = (String) PhaseInterceptorChain.getCurrentMessage().getExchange().get(HTTPHeaderInterceptor.AUTHORIZATION_EXCHANGE_PROPERTY);
         Authentication authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorization);
         return authentication;

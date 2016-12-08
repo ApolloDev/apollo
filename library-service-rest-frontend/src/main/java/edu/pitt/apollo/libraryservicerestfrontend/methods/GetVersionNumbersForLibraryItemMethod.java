@@ -1,6 +1,7 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetRevisionsResult;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
@@ -12,8 +13,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetVersionNumbersForLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
-	public GetVersionNumbersForLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat, GetRevisionsResult.class);
+	public GetVersionNumbersForLibraryItemMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, GetRevisionsResult.class, authorizationHeader);
 	}
 
 	public String getVersionNumbersForLibraryItem(int urn) {

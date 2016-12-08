@@ -1,10 +1,12 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.LibraryServiceImpl;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
 import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
 import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.utils.ResponseMessageBuilder;
 import edu.pitt.isg.objectserializer.Serializer;
 import edu.pitt.isg.objectserializer.SerializerFactory;
@@ -26,17 +28,11 @@ public class BaseLibraryServiceAccessorMethod {
     protected final Class responseClass;
     protected final ObjectSerializationInformation serializationInformation;
 
-    public BaseLibraryServiceAccessorMethod(String username, String password, SerializationFormat serializationFormat, Class responseClass) throws UnsupportedSerializationFormatException {
+    public BaseLibraryServiceAccessorMethod(SerializationFormat serializationFormat, Class responseClass, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
-        authentication = new Authentication();
-        //TODO:Update to latest authentication scheme
-        /*authentication.setRequesterId(username);
-        authentication.setRequesterPassword(password);*/
-
+        authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 
         responseBuilder = new ResponseMessageBuilder();
-
-
 
         switch (serializationFormat) {
             case JSON:
