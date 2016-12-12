@@ -2,16 +2,20 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemURNsResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
-public class GetLibraryItemURNsMethod {
+public class GetLibraryItemURNsMethod extends BaseLibraryMethod {
 
-    public static GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
-                                                              String itemType, Authentication authentication) {
+    public GetLibraryItemURNsMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
 
+    public GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,
+                                                              String itemType) throws LibraryServiceException {
 
         //execute query
         GetLibraryItemURNsResult result = new GetLibraryItemURNsResult();
@@ -23,8 +27,7 @@ public class GetLibraryItemURNsMethod {
             status.setMessage("");
             status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException ex) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage(ex.getMessage());
+            throw new LibraryServiceException(ex.getMessage());
         }
 
         return result;

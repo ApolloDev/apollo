@@ -143,8 +143,6 @@ public class ApolloClassList {
 				LibrarySubCollection.class,
 				ModifyGroupOwnershipMessage.class,
 				ModifyGroupOwnershipResult.class,
-				QueryMessage.class,
-				QueryResult.class,
 				RevisionAndComments.class,
 				SetLibraryItemAsNotReleasedMessage.class,
 				SetLibraryItemAsNotReleasedResult.class,

@@ -2,6 +2,8 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -15,21 +17,26 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  * Time: 3:41:53 PM
  * Class: AddLibraryItemMethod
  */
-public class AddLibraryItemMethod {
+public class AddLibraryItemMethod extends BaseLibraryMethod {
 
-    public static AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) {
+    public AddLibraryItemMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
+
+    public AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment) throws LibraryServiceException {
 
         AddLibraryItemContainerResult result = new AddLibraryItemContainerResult();
         MethodCallStatus status = new MethodCallStatus();
         result.setStatus(status);
 
         try {
-            result = dbUtils.addLibraryItem(libraryItemContainer, authentication.getPayload(), comment);
+            result = dbUtils.addLibraryItem(libraryItemContainer, userName, comment, role);
             result.setStatus(status);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException ex) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage(ex.getMessage());
+            throw new LibraryServiceException(ex.getMessage());
+        } catch (UserNotAuthorizedException ex) {
+            throw new LibraryServiceException(ex.getMessage());
         }
 
         return result;

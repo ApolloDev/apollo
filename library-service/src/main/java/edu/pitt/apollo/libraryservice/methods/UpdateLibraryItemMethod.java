@@ -2,6 +2,8 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
 import edu.pitt.apollo.library_service_types.v4_0_1.UpdateLibraryItemContainerResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -15,10 +17,14 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  * Time: 10:40:39 AM
  * Class: UpdateLibraryItemMethod
  */
-public class UpdateLibraryItemMethod {
+public class UpdateLibraryItemMethod extends BaseLibraryMethod{
 
-    public static UpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
-                                                                     int urn, LibraryItemContainer item, String comment, Authentication authentication) {
+    public UpdateLibraryItemMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
+
+    public UpdateLibraryItemContainerResult updateLibraryItem(LibraryDbUtils dbUtils,
+                                                                     int urn, LibraryItemContainer item, String comment) throws LibraryServiceException {
 
 
         UpdateLibraryItemContainerResult result = new UpdateLibraryItemContainerResult();
@@ -26,12 +32,11 @@ public class UpdateLibraryItemMethod {
         result.setStatus(status);
 
         try {
-            int version = dbUtils.updateLibraryItem(urn, item, authentication.getPayload(), comment);
+            int version = dbUtils.updateLibraryItem(urn, role, item, userName, comment);
             result.setVersion(version);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
-        } catch (ApolloDatabaseException ex) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage(ex.getMessage());
+        } catch (ApolloDatabaseException | UserNotAuthorizedException ex) {
+            throw new LibraryServiceException(ex.getMessage());
         }
 
         return result;

@@ -2,6 +2,7 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetRevisionsResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.RevisionAndComments;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -17,9 +18,13 @@ import java.util.List;
  * Time: 12:14:11 PM
  * Class: GetVersionsMethod
  */
-public class GetVersionsMethod {
+public class GetVersionsMethod extends BaseLibraryMethod {
 
-    public static GetRevisionsResult getVersions(LibraryDbUtils dbUtils, int urn, Authentication authentication) {
+    public GetVersionsMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
+
+    public GetRevisionsResult getVersions(LibraryDbUtils dbUtils, int urn) throws LibraryServiceException {
 
 
         GetRevisionsResult result = new GetRevisionsResult();
@@ -27,12 +32,11 @@ public class GetVersionsMethod {
         result.setStatus(status);
 
         try {
-            List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn);
+            List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn, role);
             result.getRevisionsAndComments().addAll(versions);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException ex) {
-            status.setStatus(MethodCallStatusEnum.FAILED);
-            status.setMessage(ex.getMessage());
+            throw new LibraryServiceException(ex.getMessage());
         }
 
         return result;

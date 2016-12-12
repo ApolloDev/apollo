@@ -86,12 +86,12 @@
                             <resources>
                                 <resource>
                                 
-                                    <directory>${basedir}/../../apollo-xsd-and-types-3.1.0/src/main/resources</directory>
+                                    <directory>${basedir}/../../apollo-xsd-and-types/src/main/resources</directory>
                                     <includes>
-                                        <include>library_service_4.0.wsdl</include>
-                                        <include>library_service_4.0.xsd</include>
-                                        <include>apollo_types_4.0.xsd</include>
-                                        <include>services_common_4.0.xsd</include>
+                                        <include>library_service_v4.wsdl</include>
+                                        <include>library_service_v4.xsd</include>
+                                        <include>apollo_types_v4.xsd</include>
+                                        <include>services_common_v4.xsd</include>
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>

@@ -15,7 +15,6 @@
 package edu.pitt.apollo;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
-import edu.pitt.apollo.database.LibraryReadOnlyDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.interfaces.LibraryServiceInterface;
@@ -34,7 +33,6 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 	public static final String APOLLO_DIR;
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
 	private static final LibraryDbUtils libraryDbUtils;
-	private static final LibraryDbUtils readonlyLibraryDbUtils;
 
 	static {
 		Map<String, String> env = System.getenv();
@@ -51,7 +49,6 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 		APOLLO_DIR = apolloDir;
 		try {
 			libraryDbUtils = new LibraryDbUtils();
-			readonlyLibraryDbUtils = new LibraryReadOnlyDbUtils();
 		} catch (ApolloDatabaseException ex) {
 			throw new ExceptionInInitializerError("ApolloDatabaseException initializing LibraryDbUtils: " + ex.getMessage());
 		}
@@ -59,27 +56,27 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 
 	@Override
 	public GetLibraryItemContainerResult getLibraryItem(int urn, Integer version, Authentication authentication) throws LibraryServiceException {
-		return GetLibraryItemMethod.getLibraryItemMethod(libraryDbUtils, urn, version, authentication);
+		return new GetLibraryItemMethod(authentication).getLibraryItemMethod(libraryDbUtils, urn, version);
 	}
 
 	@Override
 	public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
-		return UpdateLibraryItemMethod.updateLibraryItem(libraryDbUtils, urn, libraryItemContainer, comment, authentication);
+		return new UpdateLibraryItemMethod(authentication).updateLibraryItem(libraryDbUtils, urn, libraryItemContainer, comment);
 	}
 
 	@Override
 	public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
-		return AddLibraryItemMethod.addLibraryItem(libraryDbUtils, libraryItemContainer, comment, authentication);
+		return new AddLibraryItemMethod(authentication).addLibraryItem(libraryDbUtils, libraryItemContainer, comment);
 	}
 
 	@Override
 	public GetCommentsResult getCommentsForLibraryItem(int urn, int version, Authentication authentication) throws LibraryServiceException {
-		return GetCommentsMethod.getComments(libraryDbUtils, urn, version, authentication);
+		return new GetCommentsMethod(authentication).getComments(libraryDbUtils, urn, version);
 	}
 
 	@Override
 	public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
-		return GetVersionsMethod.getVersions(libraryDbUtils, urn, authentication);
+		return new GetVersionsMethod(authentication).getVersions(libraryDbUtils, urn);
 	}
 
 	@Override
@@ -89,12 +86,12 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 
 	@Override
 	public GetLibraryItemURNsResult getLibraryItemURNs(String itemType, Authentication authentication) throws LibraryServiceException {
-		return GetLibraryItemURNsMethod.getLibraryItemURIs(libraryDbUtils, itemType, authentication);
+		return new GetLibraryItemURNsMethod(authentication).getLibraryItemURIs(libraryDbUtils, itemType);
 	}
 
 	@Override
 	public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
-		return SetReleaseVersionMethod.setReleaseVersion(libraryDbUtils, urn, version, comment, authentication);
+		return new SetReleaseVersionMethod(authentication).setReleaseVersion(libraryDbUtils, urn, version, comment);
 	}
 
 	@Override
@@ -104,26 +101,41 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 
 	@Override
 	public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int version, String comment, Authentication authentication) throws LibraryServiceException {
-		return AddReviewerCommentMethod.addReviewerComment(libraryDbUtils, urn, version, comment, authentication);
+		return new AddReviewerCommentMethod(authentication).addReviewerComment(libraryDbUtils, urn, version, comment);
 	}
 
 	@Override
 	public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
-		return SetLibraryItemAsNotReleasedMethod.setLibraryItemAsNotReleased(libraryDbUtils, urn, authentication);
-	}
-
-	@Override
-	public QueryResult query(String query, Authentication authentication) {
-		return QueryLibraryMethod.queryLibrary(libraryDbUtils, readonlyLibraryDbUtils, query, authentication);
+		return new SetLibraryItemAsNotReleasedMethod(authentication).setLibraryItemAsNotReleased(libraryDbUtils, urn);
 	}
 
 	@Override
 	public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException {
-		return GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod.getChangeLogForLibraryItemsModifiedSinceDateTime(libraryDbUtils, dateTime, authentication);
+		return new GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod(authentication).getChangeLogForLibraryItemsModifiedSinceDateTime(libraryDbUtils, dateTime);
 	}
 
 	@Override
 	public GetReleaseVersionResult getApprovedRevisionOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
-		return getApprovedRevisionOfLibraryItem(urn, authentication);
+		return new GetApprovedRevisionOfLibraryItemMethod(authentication).getLibraryItemMethod(libraryDbUtils, urn);
 	}
+
+    @Override
+    public GetCacheDataResult getCacheData(Authentication authentication) throws LibraryServiceException {
+        return new GetCacheDataMethod(authentication).getCacheData(libraryDbUtils);
+    }
+
+    @Override
+    public GetLibraryItemContainersResult getLibraryItemContainers(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return new GetLibraryItemContainersMethod(authentication).getLibraryItemContainers(libraryDbUtils, className, includeUnreleasedItems);
+    }
+
+    @Override
+    public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return null;
+    }
+
+    @Override
+    public GetMembersOfCollectionMessage getMembersOfCollection(int urn, int revision, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return null;
+    }
 }
