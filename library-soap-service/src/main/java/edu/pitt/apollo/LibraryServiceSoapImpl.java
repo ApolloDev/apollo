@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v4_0/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v4.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceEI")
+@WebService(targetNamespace = "http://service.apollo.pitt.edu/libraryservice/v4_0_1/", portName = "LibraryServiceEndpoint", serviceName = "LibraryService_v4.0", endpointInterface = "edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceEI")
 public class LibraryServiceSoapImpl implements LibraryServiceEI {
 
 	static final Logger logger = LoggerFactory.getLogger(LibraryServiceSoapImpl.class);

@@ -1,5 +1,6 @@
 package edu.pitt.securitymanager.managers;
 
+import com.google.gson.JsonObject;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -26,13 +27,13 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         super(SECURITY_FILE);
     }
 
-    public String authorizeUserForRunData(Authentication authentication, BigInteger runId) throws ApolloSecurityException {
+    public Authentication authorizeUserForRunData(Authentication authentication, BigInteger runId) throws ApolloSecurityException {
         UserProfile userProfile = getUserProfileFromAuthentication(authentication);
         checkOwnershipOfRun(userProfile, runId);
-        return userProfile.getUserId();
+        return createAuthenticationWithJSON(userProfile);
     }
 
-    public String authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
+    public Authentication authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
             throws ApolloSecurityException {
         // TODO update apollo authorization to use roles
 //        UserProfile userProfile = getUserProfileFromAuthentication(authentication);
@@ -54,12 +55,12 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         return null;
     }
 
-    public String authorizeService(Authentication authentication) throws ApolloSecurityException {
+    public Authentication authorizeService(Authentication authentication) throws ApolloSecurityException {
         Jws<Claims> claims = getClaims(authentication);
         if (!isService(claims)) {
             throw new ApolloSecurityException("Only services are allowed to execute this action");
         } else {
-            return getUserNameFromClaims(claims);
+            return createAuthenticationWithJSON(claims);
         }
 
     }
@@ -89,16 +90,16 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         }
     }
 
-    public String authorizeServiceOrUserForRunData(Authentication authentication, BigInteger runId) throws ApolloSecurityException {
+    public Authentication authorizeServiceOrUserForRunData(Authentication authentication, BigInteger runId) throws ApolloSecurityException {
 
         Jws<Claims> claims = getClaims(authentication);
         if (!isService(claims)) {
             UserProfile userProfile = getUserProfileFromClaims(claims);
             // check ownership
             checkOwnershipOfRun(userProfile, runId);
-            return userProfile.getUserId();
+            return createAuthenticationWithJSON(userProfile);
         } else {
-            return getUserNameFromClaims(claims);
+            return createAuthenticationWithJSON(claims);
         }
     }
 
@@ -137,5 +138,15 @@ public class ApolloServicesSecurityManager extends SecurityManager {
 //        authentication.setAuthorizationType(AuthorizationTypeEnum.SSO);
 //        authentication.setPayload("");
 //        getUsernameAuthentication(authentication);
+    }
+
+    @Override
+    protected JsonObject createAuthenticationJSONObject(UserProfile userProfile) {
+        return null;
+    }
+
+    @Override
+    protected JsonObject createAuthenticationJSONObject(Jws<Claims> claims) {
+        return null;
     }
 }

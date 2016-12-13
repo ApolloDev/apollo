@@ -39,7 +39,8 @@ public abstract class SecurityManager {
     private static final String HUB_URL_PROPERTY = "hub_url";
     protected static final String HUB_URL;
     private static final String USER_ID_USER_PROFILE_KEY = "sub";
-    private static final String ROLES_USER_PROFILE_KEY = "roles";
+    protected static final String ROLES_KEY = "roles";
+    protected static final String USERNAME_KEY = "userName";
     private final Map<String, String> userDelegatedTokenMap = new HashMap<>();
     private final Map<String, UserProfile> userProfileMap = new HashMap<>();
 
@@ -68,9 +69,16 @@ public abstract class SecurityManager {
         return newAuthentication;
     }
 
-    public void setAuthenticationJSONPayload(Authentication authentication, String payload) {
-        authentication.setAuthorizationType(AuthorizationTypeEnum.JSON);
-        authentication.setPayload(payload);
+    protected Authentication createAuthenticationWithJSON(UserProfile userProfile) {
+        Gson gson = new Gson();
+        String payload = gson.toJson(createAuthenticationJSONObject(userProfile));
+        return createAuthenticationWithJSONString(payload);
+    }
+
+    protected Authentication createAuthenticationWithJSON(Jws<Claims> claimsJws) {
+        Gson gson = new Gson();
+        String payload = gson.toJson(createAuthenticationJSONObject(claimsJws));
+        return createAuthenticationWithJSONString(payload);
     }
 
     protected UserProfile getUserProfileFromAuthentication(Authentication authentication) throws ApolloSecurityException {
@@ -148,10 +156,10 @@ public abstract class SecurityManager {
         }
 
         JsonObject metadata = getUserProfileMetadata(userId);
-        if (metadata.get(ROLES_USER_PROFILE_KEY) == null) {
+        if (metadata.get(ROLES_KEY) == null) {
             throw new ApolloSecurityException("User profile does not contain any roles");
         }
-        JsonArray rolesJsonObject = metadata.get(ROLES_USER_PROFILE_KEY).getAsJsonArray();
+        JsonArray rolesJsonObject = metadata.get(ROLES_KEY).getAsJsonArray();
         Set<String> roles = new HashSet<>();
         for (int i = 0; i < rolesJsonObject.size(); i++) {
             String role = rolesJsonObject.get(i).getAsString();
@@ -173,14 +181,21 @@ public abstract class SecurityManager {
     }
 
     protected boolean claimsHasRole(Jws<Claims> claims, String role) {
-        String roles = (String) claims.getBody().get(ROLES_USER_PROFILE_KEY);
+        String roles = (String) claims.getBody().get(ROLES_KEY);
 
         return false;
     }
 
-    protected abstract String createAuthenticationJSON(UserProfile userProfile);
+    protected abstract JsonObject createAuthenticationJSONObject(UserProfile userProfile);
 
-    protected abstract String createAuthenticationJSON(Jws<Claims> claims);
+    protected abstract JsonObject createAuthenticationJSONObject(Jws<Claims> claims);
+
+    private Authentication createAuthenticationWithJSONString(String json) {
+        Authentication authentication = new Authentication();
+        authentication.setPayload(json);
+        authentication.setAuthorizationType(AuthorizationTypeEnum.JSON);
+        return authentication;
+    }
 
     private UserProfile getUserProfileDataFromRoles(Set<String> roles, String userId) throws ApolloSecurityException {
         UserProfile userProfile = new UserProfile();
