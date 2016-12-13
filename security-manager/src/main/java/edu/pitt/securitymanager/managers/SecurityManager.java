@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.types.UserProfile;
 import io.jsonwebtoken.Claims;
@@ -67,9 +68,9 @@ public abstract class SecurityManager {
         return newAuthentication;
     }
 
-    public void setAuthenticationUserName(Authentication authentication, String userName) {
-        authentication.setAuthorizationType(null);
-        authentication.setPayload(userName);
+    public void setAuthenticationJSONPayload(Authentication authentication, String payload) {
+        authentication.setAuthorizationType(AuthorizationTypeEnum.JSON);
+        authentication.setPayload(payload);
     }
 
     protected UserProfile getUserProfileFromAuthentication(Authentication authentication) throws ApolloSecurityException {
@@ -163,10 +164,6 @@ public abstract class SecurityManager {
         return userProfile;
     }
 
-    protected void setAuthenticationUserName(Authentication authentication, UserProfile userProfile) {
-        setAuthenticationUserName(authentication, userProfile.getUserId());
-    }
-
     protected boolean userProfileHasRole(UserProfile userProfile, String role) {
         if (userProfile.getRoles() != null) {
             return userProfile.getRoles().contains(role);
@@ -174,6 +171,16 @@ public abstract class SecurityManager {
 
         return false;
     }
+
+    protected boolean claimsHasRole(Jws<Claims> claims, String role) {
+        String roles = (String) claims.getBody().get(ROLES_USER_PROFILE_KEY);
+
+        return false;
+    }
+
+    protected abstract String createAuthenticationJSON(UserProfile userProfile);
+
+    protected abstract String createAuthenticationJSON(Jws<Claims> claims);
 
     private UserProfile getUserProfileDataFromRoles(Set<String> roles, String userId) throws ApolloSecurityException {
         UserProfile userProfile = new UserProfile();

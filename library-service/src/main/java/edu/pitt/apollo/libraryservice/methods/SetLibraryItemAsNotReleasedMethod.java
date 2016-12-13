@@ -2,6 +2,7 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.SetLibraryItemAsNotReleasedResult;
@@ -33,7 +34,7 @@ public class SetLibraryItemAsNotReleasedMethod extends BaseLibraryMethod {
             result.setVersion(previousReleaseVersion);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
 
-        } catch (ApolloDatabaseException | UserNotAuthorizedException ex) {
+        } catch (ApolloDatabaseException | UserNotAuthorizedException | NoLibraryItemException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
 

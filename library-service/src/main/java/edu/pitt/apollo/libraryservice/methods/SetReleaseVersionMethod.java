@@ -2,6 +2,8 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.SetReleaseVersionResult;
@@ -33,7 +35,7 @@ public class SetReleaseVersionMethod extends BaseLibraryMethod {
             dbUtils.setReleaseVersion(urn, version, role, userName, comment);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
 
-        } catch (ApolloDatabaseException | UserNotAuthorizedException ex) {
+        } catch (ApolloDatabaseException | UserNotAuthorizedException | NoLibraryItemException | ApolloDatabaseExplicitException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
 

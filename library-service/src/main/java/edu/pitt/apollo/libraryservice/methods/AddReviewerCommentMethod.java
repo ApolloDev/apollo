@@ -2,6 +2,8 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.AddReviewerCommentResult;
@@ -31,9 +33,9 @@ public class AddReviewerCommentMethod extends BaseLibraryMethod {
         try {
             dbUtils.addReviewerComment(urn, version, comment, userName, role);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
-        } catch (ApolloDatabaseException ex) {
+        } catch (ApolloDatabaseException | ApolloDatabaseExplicitException ex) {
             throw new LibraryServiceException(ex.getMessage());
-        } catch (UserNotAuthorizedException ex) {
+        } catch (UserNotAuthorizedException | NoLibraryItemException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
 

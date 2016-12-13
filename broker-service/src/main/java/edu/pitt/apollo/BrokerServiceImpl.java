@@ -433,17 +433,6 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     }
 
     @Override
-    public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
-        try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().query(query, authentication);
-        } catch (ApolloSecurityException ex) {
-            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
-        }
-    }
-
-    @Override
     public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
         try {
             String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
@@ -578,5 +567,31 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public GetCacheDataResult getCacheData(Authentication authentication) throws LibraryServiceException {
+        try {
+            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            librarySecurityManager.setAuthenticationUserName(authentication, userName);
+            return getLibraryServiceConnector().getCacheData(authentication);
+        } catch (ApolloSecurityException ex) {
+            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public GetLibraryItemContainersResult getLibraryItemContainers(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return null;
+    }
+
+    @Override
+    public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return null;
+    }
+
+    @Override
+    public GetMembersOfCollectionMessage getMembersOfCollection(int urn, int revision, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return null;
     }
 }

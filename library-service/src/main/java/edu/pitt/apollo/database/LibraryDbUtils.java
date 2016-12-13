@@ -302,7 +302,7 @@ public class LibraryDbUtils extends BaseDbUtils {
     public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer item, String userIdentification, String commitMessage, int role) throws ApolloDatabaseException, UserNotAuthorizedException {
         // user has already been authenticated
 
-        checkRoleForEditingPermission(role);
+        checkRoleForAddingItemPermission(role);
 
         try (Connection conn = getConnection(false)) {
 
@@ -360,7 +360,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     public int updateLibraryItem(int urn, int role, LibraryItemContainer item, String userIdentification, String comment) throws ApolloDatabaseException, UserNotAuthorizedException {
 
-        checkRoleForEditingPermission(role);
+        checkRoleForAddingItemPermission(role);
 
         try (Connection conn = getConnection(false)) {
 //			int catalogId = getCatalogIDFromURN(urn);
@@ -445,8 +445,8 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     }
 
-    public void addReviewerComment(int urn, int version, String comment, String userIdentification, int role) throws ApolloDatabaseException, UserNotAuthorizedException {
-        checkRoleForEditingPermission(role);
+    public void addReviewerComment(int urn, int version, String comment, String userIdentification, int role) throws ApolloDatabaseException, UserNotAuthorizedException, ApolloDatabaseExplicitException, NoLibraryItemException {
+        checkRoleForEditingItemPermission(urn, version, role);
         try (Connection conn = getConnection(false)) {
             try {
                 addComment(urn, version, role, comment, userIdentification, LibraryCommentTypeEnum.REVIEW, conn);
@@ -572,9 +572,9 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public void setReleaseVersion(int urn, int version, int role, String userIdentification, String message) throws ApolloDatabaseException, UserNotAuthorizedException {
+    public void setReleaseVersion(int urn, int version, int role, String userIdentification, String message) throws ApolloDatabaseException, UserNotAuthorizedException, ApolloDatabaseExplicitException, NoLibraryItemException {
 
-        checkRoleForEditingPermission(role);
+        checkRoleForEditingItemPermission(urn, version, role);
 
         try (Connection conn = getConnection(false)) {
 //			int catalogId = getCatalogIDFromURN(urn);
@@ -655,15 +655,14 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public int setLibraryItemAsNotReleased(int urn, int role) throws ApolloDatabaseException, UserNotAuthorizedException {
-
-        checkRoleForEditingPermission(role);
+    public int setLibraryItemAsNotReleased(int urn, int role) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException {
 
         try {
             Integer currentReleaseVersion = getReleaseVersion(urn);
             if (currentReleaseVersion == null) {
                 return -1;
             } else {
+                checkRoleForEditingItemPermission(urn, currentReleaseVersion, role);
 //				int catalogId = getCatalogIDFromURN(urn);
                 clearPreviousReleaseVersion(urn, null);
                 return currentReleaseVersion;
@@ -820,7 +819,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     private String getItemJSONFromCatalogIdAndVersion(int versionId, int urn, int role, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
             ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
-        String sql =  ;
+        String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + versionId + " AND role <= " + role;
         Connection conn = null;
         try {
             conn = existingConnection != null ? existingConnection : getConnection(false);
@@ -1061,14 +1060,42 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    private void checkRoleForEditingPermission(int role) throws UserNotAuthorizedException {
+    private void checkRoleForAddingItemPermission(int role) throws UserNotAuthorizedException {
         if (role > 2) {
             throw new UserNotAuthorizedException("You are not authorized to add a library item");
         }
     }
 
-    private int getItemRole(int urn, int version) {
+    private void checkRoleForEditingItemPermission(int urn, int version, int role) throws ApolloDatabaseExplicitException, UserNotAuthorizedException, NoLibraryItemException {
+        int itemRole = getItemRole(urn, version);
+        if (itemRole > role) {
+            throw new UserNotAuthorizedException("You are not authorized to edit this library item");
+        }
+    }
 
+    private int getItemRole(int urn, int version) throws ApolloDatabaseExplicitException, NoLibraryItemException {
+        String sql = "SELECT role FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + version;
+
+        Connection conn = null;
+        try {
+            conn = getConnection(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                throw new NoLibraryItemException("No library item was found with URN \"" + urn + "\" and version " + version);
+            }
+
+            int storedRole = rs.getInt(1);
+            return storedRole;
+        } catch (SQLException ex) {
+            throw new ApolloDatabaseExplicitException("SQLException checking library_item_containers table");
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                //this is okay.
+            }
+        }
     }
 
     private static Epidemic getEpidemic() {
