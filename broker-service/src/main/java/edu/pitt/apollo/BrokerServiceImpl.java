@@ -435,7 +435,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().query(query, authentication);
         } catch (ApolloSecurityException ex) {
@@ -446,7 +446,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().getLibraryItem(urn, revision, authentication);
         } catch (ApolloSecurityException ex) {
@@ -457,7 +457,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().reviseLibraryItem(urn, libraryItemContainer, comment, authentication);
         } catch (ApolloSecurityException ex) {
@@ -468,7 +468,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().addLibraryItem(libraryItemContainer, comment, authentication);
         } catch (ApolloSecurityException ex) {
@@ -479,7 +479,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetCommentsResult getCommentsForLibraryItem(int urn, int revision, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().getCommentsForLibraryItem(urn, revision, authentication);
         } catch (ApolloSecurityException ex) {
@@ -490,7 +490,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().getAllRevisionsOfLibraryItem(urn, authentication);
         } catch (ApolloSecurityException ex) {
@@ -501,7 +501,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().removeGroupAccessToLibraryItem(urn, group, authentication);
         } catch (ApolloSecurityException ex) {
@@ -517,7 +517,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().approveRevisionOfLibraryItem(urn, revision, comment, authentication);
         } catch (ApolloSecurityException ex) {
@@ -528,7 +528,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().grantGroupAccessToLibraryItem(urn, group, authentication);
         } catch (ApolloSecurityException ex) {
@@ -539,7 +539,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().addReviewerCommentToLibraryItem(urn, revision, comment, authentication);
         } catch (ApolloSecurityException ex) {
@@ -550,7 +550,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().hideLibraryItem(urn, authentication);
         } catch (ApolloSecurityException ex) {
@@ -561,7 +561,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
             librarySecurityManager.setAuthenticationUserName(authentication, userName);
             return getLibraryServiceConnector().getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, authentication);
         } catch (ApolloSecurityException ex) {

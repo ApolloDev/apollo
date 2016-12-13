@@ -1,6 +1,7 @@
 package edu.pitt.securitymanager.managers;
 
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.exception.UserNotAuthorizedException;
 import edu.pitt.securitymanager.types.UserProfile;
@@ -19,13 +20,20 @@ public class LibrarySecurityManager extends SecurityManager {
     }
 
     public String authorizeUserToReadLibrary(Authentication authentication) throws ApolloSecurityException {
-        UserProfile userProfile = getUserProfileFromAuthentication(authentication);
-        if (!userProfileHasRole(userProfile, LIBRARY_USER_ROLE)
-                && !userProfileHasRole(userProfile, LIBRARY_CURATOR_ROLE)) {
-            throw new UserNotAuthorizedException("The user is not authorized to view the library");
-        }
 
-        return userProfile.getUserId();
+        if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.JWT)) {
+            return getUserNameFromClaims(getClaims(authentication));
+        } else if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.SSO)) {
+            UserProfile userProfile = getUserProfileFromAuthentication(authentication);
+            if (!userProfileHasRole(userProfile, LIBRARY_USER_ROLE)
+                    && !userProfileHasRole(userProfile, LIBRARY_CURATOR_ROLE)) {
+                throw new UserNotAuthorizedException("The user is not authorized to view the library");
+            }
+
+            return userProfile.getUserId();
+        } else {
+            throw new ApolloSecurityException("Unsupported authorization type");
+        }
     }
 
     public String authorizeUserToEditLibrary(Authentication authentication) throws ApolloSecurityException {
