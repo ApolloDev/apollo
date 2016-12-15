@@ -58,7 +58,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     private static final String BROKER_SERVICE_PROPERTIES = "broker_service.properties";
     private static final String RUN_MANAGER_SERVICE_URL_PROPERTY = "run_manager_service_url";
     private static final String FILESTORE_SERVICE_URL_PROPERTY = "filestore_service_url";
-    private static final String LIBRARY_SERVICE_URL_PROPERTY = "filestore_service_url";
+    private static final String LIBRARY_SERVICE_URL_PROPERTY = "library_service_url";
     private static String runManagerServiceUrl;
     private static String filestoreServiceUrl;
     private static String libraryServiceUrl;

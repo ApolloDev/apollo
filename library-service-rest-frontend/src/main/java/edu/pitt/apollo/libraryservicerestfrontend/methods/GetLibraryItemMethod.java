@@ -19,7 +19,7 @@ public class GetLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
 	public String getLibraryItem(int urn, Integer version) {
 
-		Object result;
+        GetLibraryItemContainerResult result;
 		try {
 			result = impl.getLibraryItem(urn, version, authentication);
 		} catch (LibraryServiceException ex) {
