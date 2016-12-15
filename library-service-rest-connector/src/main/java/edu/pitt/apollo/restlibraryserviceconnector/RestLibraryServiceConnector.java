@@ -24,14 +24,20 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 
 	@Override
 	public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
-		return null;
+        try {
+            String uri = restServiceUri + "query";
+
+            return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, query, QueryResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
 	}
 
 	@Override
 	public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
 
-		String revisionString = (revision == null ? "" : "revision=" + Integer.toString(revision) + "&");
-		String uri = restServiceUri + "items/" + urn;
+		String revisionString = (revision == null ? "" : "?revision=" + Integer.toString(revision));
+		String uri = restServiceUri + "items/" + urn  + revisionString;
 		try {
 			return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, GetLibraryItemContainerResult.class);
 		} catch (RestServiceException ex) {

@@ -28,7 +28,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getLibraryItem(
@@ -43,7 +43,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/revisions", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getAllRevisionsOfLibraryItem(
@@ -57,7 +57,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getCommentsForLibraryItem(
@@ -72,7 +72,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
     String addCommentToLibraryItem(
@@ -90,7 +90,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/changelog", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/changelog", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getChangeLog(
@@ -106,7 +106,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/approved", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/approved", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getApprovedRevisionOfLibraryItem(
@@ -121,7 +121,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items", method = RequestMethod.GET, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
     String getLibraryItemUrns(
@@ -137,7 +137,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/approve", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/approve", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
     String setLibraryItemReleaseVersion(
@@ -153,7 +153,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/hide", method = RequestMethod.POST, headers = "Accept=applicaton/xml")
+    @RequestMapping(value = "/items/{urn}/hide", method = RequestMethod.POST, headers = "Accept=application/xml")
     public
     @ResponseBody
     String hideLibraryItem(
@@ -191,5 +191,19 @@ public class ItemsController {
                              @ApiParam(value = "Library item container", required = true) @RequestBody String messageBody,
                              @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
         return new UpdateLibraryItemMethod(SerializationFormat.XML, authorization).updateLibraryItem(messageBody, comment, urn);
+    }
+
+    @POST
+    @ApiOperation(value = "Update an existing library item.", notes = "Revises an existing library item.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/query", method = RequestMethod.POST, headers = "Accept=application/xml")
+    public
+    @ResponseBody
+    String query(
+            @ApiParam(value = "Query string", required = true) @RequestBody String messageBody,
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+        return new QueryMethod(SerializationFormat.XML, authorization).query(messageBody);
     }
 }

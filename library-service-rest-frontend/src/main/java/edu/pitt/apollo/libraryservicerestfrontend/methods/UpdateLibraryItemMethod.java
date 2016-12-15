@@ -25,7 +25,7 @@ public class UpdateLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
 
 			LibraryItemContainer container = (LibraryItemContainer) ResponseDeserializer.deserialize(messageBody);
 
-			Object result = impl.reviseLibraryItem(urn, container, comment, authentication);
+			UpdateLibraryItemContainerResult result = impl.reviseLibraryItem(urn, container, comment, authentication);
 			return getResponseAsString(result);
 		} catch (DeserializationException | UnsupportedSerializationFormatException | LibraryServiceException e) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getClass().getName() + ": " + e.getMessage());

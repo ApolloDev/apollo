@@ -1033,6 +1033,8 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     private QueryResult queryObjects(String sql) throws ApolloDatabaseException {
 
+        logger.warn("QUERY: " + sql);
+
         QueryResult result = new QueryResult();
         try (Connection conn = getConnection(false)) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
