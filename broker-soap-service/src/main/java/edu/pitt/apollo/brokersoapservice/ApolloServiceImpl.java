@@ -26,6 +26,7 @@ import edu.pitt.apollo.library_service_types.v4_0_1.*;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
 import edu.pitt.apollo.services_common.v4_0_1.*;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import org.apache.cxf.phase.PhaseInterceptorChain;
@@ -64,7 +65,34 @@ public class ApolloServiceImpl implements ApolloServiceEI {
 
     @Override
     public GetSoftwareIdentificationForRunResult getSoftwareIdentificationForRun(GetSoftwareIdentificationForRunMessage getSoftwareIdentificationForRunMessage) {
-        return null;
+        GetSoftwareIdentificationForRunResult result = new GetSoftwareIdentificationForRunResult();
+        try {
+            SoftwareIdentification softwareIdentification = brokerService.getSoftwareIdentificationForRun(getSoftwareIdentificationForRunMessage.getRunId(),
+                    getSoftwareIdentificationForRunMessage.getAuthentication());
+            result.setSoftwareIdentification(softwareIdentification);
+            result.setMethodCallStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (RunManagementException ex) {
+            result.setMethodCallStatus(createStatus("Error calling getSoftwareIdentificationForRun: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public GetCollectionsResult getCollections(GetCollectionsMessage getCollectionsMessage) {
+        GetCollectionsResult result;
+        try {
+            result = brokerService.getCollections(getCollectionsMessage.getClassName(), getCollectionsMessage.isIncludeUnreleasedItems(),
+                    getCollectionsMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetCollectionsResult();
+            result.setStatus(createStatus("Error calling getCollections: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
     }
 
     @Override
@@ -77,6 +105,22 @@ public class ApolloServiceImpl implements ApolloServiceEI {
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
             return result;
         }
+    }
+
+    @Override
+    public GetLibraryItemContainersResult getLibraryItemContainers(GetLibraryItemContainersMessage getLibraryItemContainersMessage) {
+        GetLibraryItemContainersResult result;
+        try {
+            result = brokerService.getLibraryItemContainers(getLibraryItemContainersMessage.getClassName(),
+                    getLibraryItemContainersMessage.isIncludeUnreleasedItems(), getLibraryItemContainersMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetLibraryItemContainersResult();
+            result.setStatus(createStatus("Error calling getLibraryItemContainers: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
     }
 
     @Override
@@ -107,6 +151,21 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         } catch (LibraryServiceException ex) {
             result = new SetReleaseVersionResult();
             result.setStatus(createStatus("Error calling setReleaseVersionForLibraryItem: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    @Override
+    public GetCacheDataResult getCacheData(GetCacheDataMessage getCacheDataMessage) {
+        GetCacheDataResult result;
+        try {
+            result = brokerService.getCacheData(getCacheDataMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetCacheDataResult();
+            result.setStatus(createStatus("Error calling getCacheData: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
         }
 
@@ -172,21 +231,6 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         } catch (LibraryServiceException ex) {
             result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
             result.setStatus(createStatus("Error calling getChangeLogForLibraryItemsModifiedSinceDateTime: " + ex.getMessage(),
-                    MethodCallStatusEnum.FAILED));
-        }
-
-        return result;
-    }
-
-    @Override
-    public QueryResult query(QueryMessage queryMessage) {
-        QueryResult result;
-        try {
-            result = brokerService.query(queryMessage.getQuery(), queryMessage.getAuthentication());
-            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
-            result = new QueryResult();
-            result.setStatus(createStatus("Error calling query: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
         }
 
@@ -435,6 +479,23 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     @Override
     public TerminteRunResult terminateRun(TerminateRunRequest terminateRunRequest) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public GetMembersOfCollectionResult getMembersOfCollection(GetMembersOfCollectionMessage getMembersOfCollectionMessage) {
+        GetMembersOfCollectionResult result;
+        try {
+            result = brokerService.getMembersOfCollection(getMembersOfCollectionMessage.getCollectionUrn(),
+                    getMembersOfCollectionMessage.getCollectionVersion(), getMembersOfCollectionMessage.isIncludeUnreleasedItems(),
+                    getMembersOfCollectionMessage.getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException ex) {
+            result = new GetMembersOfCollectionResult();
+            result.setStatus(createStatus("Error calling getMembersOfCollection: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
     }
 
     @Override

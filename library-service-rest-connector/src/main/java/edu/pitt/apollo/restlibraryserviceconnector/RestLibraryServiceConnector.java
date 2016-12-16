@@ -23,17 +23,6 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 	}
 
 	@Override
-	public QueryResult query(String query, Authentication authentication) throws LibraryServiceException {
-        try {
-            String uri = restServiceUri + "query";
-
-            return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, query, QueryResult.class);
-        } catch (RestServiceException ex) {
-            throw new LibraryServiceException(ex.getMessage());
-        }
-	}
-
-	@Override
 	public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
 
 		String revisionString = (revision == null ? "" : "?revision=" + Integer.toString(revision));
@@ -155,4 +144,44 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 			throw new LibraryServiceException(ex.getMessage());
 		}
 	}
+
+    @Override
+    public GetCacheDataResult getCacheData(Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "cache";
+        try {
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, GetCacheDataResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public GetLibraryItemContainersResult getLibraryItemContainers(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "items/class/" + className + "?unreleased=" + includeUnreleasedItems;
+        try {
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, GetLibraryItemContainersResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "items/collections/" + className + "?unreleased=" + includeUnreleasedItems;
+        try {
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, GetCollectionsResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public GetMembersOfCollectionResult getMembersOfCollection(int urn, int revision, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        String uri = restServiceUri + "items/collections/members/" + urn + "/" + revision + "?unreleased=" + includeUnreleasedItems;
+        try {
+            return restServiceUtils.makeGetRequestCheckResponseAndGetObject(uri, authentication, GetMembersOfCollectionResult.class);
+        } catch (RestServiceException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
+    }
 }

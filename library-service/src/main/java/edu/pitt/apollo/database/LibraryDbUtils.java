@@ -1021,6 +1021,103 @@ public class LibraryDbUtils extends BaseDbUtils {
         return containers;
     }
 
+    public List<LibraryItemContainerAndURN> getCollections(String collectionClassName, boolean includeUnreleasedItems, int role) throws ApolloDatabaseException {
+        List<LibraryItemContainerAndURN> libraryCollections = new ArrayList<>();
+
+        String query = "SELECT\n"
+                + "           distinct urn_id, version, json_representation\n"
+                + "       FROM\n"
+                + "           library_item_containers\n"
+                + "       WHERE\n"
+                + "           json_representation -> 'libraryItem' ->> 'javaClassNameOfMembers' = '" + collectionClassName + "' AND\n"
+                + "           json_representation -> 'libraryItem' @> '{\"type\":\"LibraryCollection\"}' = 't'\n"
+                + "           AND role <= " + role + "\n";
+        if (!includeUnreleasedItems) {
+            query += "       AND is_latest_release_version = TRUE";
+        }
+
+        QueryResult result = queryObjects(query);
+        List<String> table = result.table;
+        List<String> columns = result.columnNames;
+        int numColumns = columns.size();
+        int numRows = table.size() / numColumns;
+        for (int i = 0; i < numRows; i++) {
+
+            String json = table.get(i * numColumns + 2);
+
+            LibraryItemContainerAndURN libraryItemAndUrn = new LibraryItemContainerAndURN();
+            libraryItemAndUrn.setUrn(Integer.parseInt(table.get(i * numColumns)));
+            libraryItemAndUrn.setVersion(Integer.parseInt(table.get(i * numColumns + 1)));
+            try {
+                libraryItemAndUrn.setLibraryItemContainer(getLibraryItemContainderFromJson(json));
+            } catch (IOException ex) {
+                throw new ApolloDatabaseException("Could not get LibraryItemContainer from json. Json string was: " + json);
+            }
+
+            libraryCollections.add(libraryItemAndUrn);
+        }
+
+        return libraryCollections;
+    }
+
+    public List<LibraryItemContainerAndURN> getMembersOfCollection(int urn, int version,
+                                                                   boolean includeUnreleasedItems, int role) throws ApolloDatabaseException {
+        // THIS DOESN'T AUTO GENERATE TITLES FOR EPIDEMICS YET
+        String query = "SELECT\n"
+                + "     lic.urn_id,\n"
+                + "	lic.json_representation,\n"
+                + "  version\n"
+                + "FROM\n"
+                + "     library_item_containers lic,\n"
+                + "     ( \n"
+                + "          SELECT\n"
+                + "               jsonb_array_elements (\n"
+                + "                    json_representation -> 'libraryItem' -> 'membersOfCollection'\n"
+                + "               ) as collection_member_urns\n"
+                + "          FROM\n"
+                + "               library_item_containers\n"
+                + "          WHERE\n"
+                + "               urn_id = " + urn + "\n"
+                +                 "AND role <= " + role + "\n";
+        if (!includeUnreleasedItems) {
+            query += "      AND is_latest_release_version = TRUE\n";
+        } else {
+            query += "      AND version = " + version + "\n";
+        }
+        query += "     ) members\n"
+                + "WHERE\n"
+                + "     lic.urn_id::text = members.collection_member_urns::text\n";
+        if (!includeUnreleasedItems) {
+            query += "     AND lic.is_latest_release_version = TRUE\n";
+        }
+        query += "AND lic.role <= " + role;
+
+        List<LibraryItemContainerAndURN> libraryItemContainerAndURNs = new ArrayList<>();
+        QueryResult result = queryObjects(query);
+        List<String> table = result.table;
+        List<String> columns = result.columnNames;
+        int numColumns = columns.size();
+        int numRows = table.size() / numColumns;
+        for (int i = 0; i < numRows; i++) {
+            LibraryItemContainerAndURN libraryItemAndUrn = new LibraryItemContainerAndURN();
+            int itemUrn = Integer.parseInt(table.get(i * numColumns));
+            libraryItemAndUrn.setUrn(itemUrn);
+            String json = table.get(i * numColumns + 1);
+            int itemVersion = Integer.parseInt(table.get(i * numColumns + 2));
+
+            libraryItemAndUrn.setVersion(itemVersion);
+            try {
+                libraryItemAndUrn.setLibraryItemContainer(getLibraryItemContainderFromJson(json));
+            } catch (IOException ex) {
+                throw new ApolloDatabaseException("Could not get LibraryItemContainer from json. Json string was: " + json);
+            }
+
+            libraryItemContainerAndURNs.add(libraryItemAndUrn);
+        }
+
+        return libraryItemContainerAndURNs;
+    }
+
     private static void setLocationCodesFromJsonArray(String jsonArray, Set<String> locationsSet) {
         jsonArray = jsonArray.replace("\"", "");
         jsonArray = jsonArray.replace("[", "");

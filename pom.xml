@@ -90,7 +90,6 @@
         <module>library-service-client</module>
         <module>library-service-rest-connector</module>
         <module>library-service-rest-frontend</module>
-        <module>library-soap-service</module>
         <module>library-service-war</module>
     </modules>
 

@@ -37,6 +37,7 @@ import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.managers.ApolloServicesSecurityManager;
 import edu.pitt.securitymanager.managers.LibrarySecurityManager;
+import edu.pitt.securitymanager.types.AuthenticationAndUserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,8 +168,9 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException {
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication, softwareId);
-            return getRunManagerServiceConnector().getURLForSoftwareIdentification(softwareId, newAuthentication);
+
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication, softwareId);
+            return getRunManagerServiceConnector().getURLForSoftwareIdentification(softwareId, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException ex) {
             throw new DatastoreException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -197,8 +199,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException {
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication, message.getSoftwareIdentification());
-            return getRunManagerServiceConnector().insertRun(message, newAuthentication);
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication, message.getSoftwareIdentification());
+            return getRunManagerServiceConnector().insertRun(message, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException ex) {
             throw new DatastoreException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -304,11 +306,11 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
     public RunResult runSimulation(RunSimulationMessage runSimulationMessage, Authentication authentication) {
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runSimulationMessage.getSoftwareIdentification());
-            runSimulationMessage.setUserId(userId);
+            runSimulationMessage.setUserId(authenticationAndUserId.getUserId());
             InsertAndStartSimulationMethod method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationMessage, newAuthentication);
+            return method.insertAndStartRun(runSimulationMessage, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -317,11 +319,11 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
     public RunResult runVisualization(RunVisualizationMessage runVisualizationMessage, Authentication authentication) {
         try {
-            Authentication  newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runVisualizationMessage.getSoftwareIdentification());
-            runVisualizationMessage.setUserId(userId);
+            runVisualizationMessage.setUserId(authenticationAndUserId.getUserId());
             InsertAndStartVisualizationMethod method = new InsertAndStartVisualizationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runVisualizationMessage, newAuthentication);
+            return method.insertAndStartRun(runVisualizationMessage, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -332,11 +334,11 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
             edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
         InsertAndStartSimulationMethod method = null;
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runSimulationsMessage.getSoftwareIdentification());
-            runSimulationsMessage.setUserId(userId);
+            runSimulationsMessage.setUserId(authenticationAndUserId.getUserId());
             method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runSimulationsMessage, newAuthentication);
+            return method.insertAndStartRun(runSimulationsMessage, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -346,10 +348,10 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     public RunResult runSimulatorOutputQuery(RunSimulatorOutputQueryMessage message, Authentication authentication) {
         InsertAndStartQueryMethod method = null;
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     message.getSoftwareIdentification());
             method = new InsertAndStartQueryMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(message, newAuthentication);
+            return method.insertAndStartRun(message, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -360,10 +362,10 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
                                                                 Authentication authentication) {
         InsertAndStartSimulationMethod method = null;
         try {
-            Authentication newAuthentication = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
+            AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,
                     runInfectiousDiseaseTransmissionExperimentMessage.getSoftwareIdentification());
             method = new InsertAndStartSimulationMethod(BrokerServiceImpl.getRunManagerServiceUrl(), apolloServiceQueue);
-            return method.insertAndStartRun(runInfectiousDiseaseTransmissionExperimentMessage, newAuthentication);
+            return method.insertAndStartRun(runInfectiousDiseaseTransmissionExperimentMessage, authenticationAndUserId.getAuthentication());
         } catch (ApolloSecurityException | IOException e) {
             logger.error(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -415,8 +417,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     public GetLibraryItemContainerResult getLibraryItem(int urn, Integer revision, Authentication authentication) throws LibraryServiceException {
         try {
             Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getLibraryItem(urn, revision, authentication);
+            return getLibraryServiceConnector().getLibraryItem(urn, revision, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -425,9 +426,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public UpdateLibraryItemContainerResult reviseLibraryItem(int urn, LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().reviseLibraryItem(urn, libraryItemContainer, comment, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().reviseLibraryItem(urn, libraryItemContainer, comment, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -436,9 +436,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public AddLibraryItemContainerResult addLibraryItem(LibraryItemContainer libraryItemContainer, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().addLibraryItem(libraryItemContainer, comment, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().addLibraryItem(libraryItemContainer, comment, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -447,9 +446,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetCommentsResult getCommentsForLibraryItem(int urn, int revision, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getCommentsForLibraryItem(urn, revision, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().getCommentsForLibraryItem(urn, revision, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -458,9 +456,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetRevisionsResult getAllRevisionsOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getAllRevisionsOfLibraryItem(urn, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().getAllRevisionsOfLibraryItem(urn, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -469,9 +466,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public ModifyGroupOwnershipResult removeGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().removeGroupAccessToLibraryItem(urn, group, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().removeGroupAccessToLibraryItem(urn, group, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -485,9 +481,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().approveRevisionOfLibraryItem(urn, revision, comment, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().approveRevisionOfLibraryItem(urn, revision, comment, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -496,9 +491,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public ModifyGroupOwnershipResult grantGroupAccessToLibraryItem(int urn, String group, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().grantGroupAccessToLibraryItem(urn, group, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().grantGroupAccessToLibraryItem(urn, group, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -507,9 +501,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().addReviewerCommentToLibraryItem(urn, revision, comment, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().addReviewerCommentToLibraryItem(urn, revision, comment, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -518,9 +511,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().hideLibraryItem(urn, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().hideLibraryItem(urn, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -529,9 +521,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(XMLGregorianCalendar dateTime, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -540,9 +531,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetReleaseVersionResult getApprovedRevisionOfLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToReadLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getApprovedRevisionOfLibraryItem(urn, authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToReadLibrary(authentication);
+            return getLibraryServiceConnector().getApprovedRevisionOfLibraryItem(urn, newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -551,9 +541,8 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     @Override
     public GetCacheDataResult getCacheData(Authentication authentication) throws LibraryServiceException {
         try {
-            String userName = librarySecurityManager.authorizeUserToEditLibrary(authentication);
-            librarySecurityManager.setAuthenticationUserName(authentication, userName);
-            return getLibraryServiceConnector().getCacheData(authentication);
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            return getLibraryServiceConnector().getCacheData(newAuthentication);
         } catch (ApolloSecurityException ex) {
             throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
         }
@@ -561,16 +550,31 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
 
     @Override
     public GetLibraryItemContainersResult getLibraryItemContainers(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
-        return null;
+        try {
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            return getLibraryServiceConnector().getLibraryItemContainers(className, includeUnreleasedItems, newAuthentication);
+        } catch (ApolloSecurityException ex) {
+            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
+        }
     }
 
     @Override
     public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
-        return null;
+        try {
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            return getLibraryServiceConnector().getCollections(className, includeUnreleasedItems, newAuthentication);
+        } catch (ApolloSecurityException ex) {
+            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
+        }
     }
 
     @Override
-    public GetMembersOfCollectionMessage getMembersOfCollection(int urn, int revision, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
-        return null;
+    public GetMembersOfCollectionResult getMembersOfCollection(int urn, int revision, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        try {
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToEditLibrary(authentication);
+            return getLibraryServiceConnector().getMembersOfCollection(urn, revision, includeUnreleasedItems, newAuthentication);
+        } catch (ApolloSecurityException ex) {
+            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
+        }
     }
 }

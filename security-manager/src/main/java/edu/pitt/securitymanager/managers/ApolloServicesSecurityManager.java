@@ -8,6 +8,7 @@ import edu.pitt.apollo.services_common.v4_0_1.ServiceRecord;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.exception.UserNotAuthorizedException;
+import edu.pitt.securitymanager.types.AuthenticationAndUserId;
 import edu.pitt.securitymanager.types.UserProfile;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -33,7 +34,7 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         return createAuthenticationWithJSON(userProfile);
     }
 
-    public Authentication authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
+    public AuthenticationAndUserId authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
             throws ApolloSecurityException {
         // TODO update apollo authorization to use roles
 //        UserProfile userProfile = getUserProfileFromAuthentication(authentication);

@@ -193,17 +193,62 @@ public class ItemsController {
         return new UpdateLibraryItemMethod(SerializationFormat.XML, authorization).updateLibraryItem(messageBody, comment, urn);
     }
 
-    @POST
-    @ApiOperation(value = "Update an existing library item.", notes = "Revises an existing library item.", response = String.class)
+    @GET
+    @ApiOperation(value = "Retrieve cache data from the library", notes = "Retrieves cache data from the library.", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/query", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/cache", method = RequestMethod.GET, headers = "Accept=application/xml")
     public
     @ResponseBody
-    String query(
-            @ApiParam(value = "Query string", required = true) @RequestBody String messageBody,
-            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
-        return new QueryMethod(SerializationFormat.XML, authorization).query(messageBody);
+    String getCacheData(
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+        return new GetCacheDataMethod(SerializationFormat.XML, authorization).getCacheData();
+    }
+
+    @GET
+    @ApiOperation(value = "Retrieve items from the library", notes = "Retrieves items from the library matching the specified class.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/items/class/{class}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    public
+    @ResponseBody
+    String getLibraryItemContainers(
+            @ApiParam(value = "Item class", required = true) @PathVariable("class") String className,
+            @ApiParam(value = "Include unreleased items", required = false) @RequestParam(value = "unreleased", required = false) Boolean includeUnreleasedItems,
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+        return new GetLibraryItemContainersMethod(SerializationFormat.XML, authorization).getLibraryItems(className, includeUnreleasedItems);
+    }
+
+    @GET
+    @ApiOperation(value = "Retrieve collections from the library", notes = "Retrieves collections from the library with members matching the specified class.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/items/collections/{class}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    public
+    @ResponseBody
+    String getCollections(
+            @ApiParam(value = "Item class", required = true) @PathVariable("class") String className,
+            @ApiParam(value = "Include unreleased items", required = false) @RequestParam(value = "unreleased", required = false) Boolean includeUnreleasedItems,
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+        return new GetCollectionsMethod(SerializationFormat.XML, authorization).getCollections(className, includeUnreleasedItems);
+    }
+
+    @GET
+    @ApiOperation(value = "Retrieve the members of a collection from the library", notes = "Retrieves the members of a collection from the library.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/items/collections/members/{urn}/{version}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    public
+    @ResponseBody
+    String getMembersOfCollection(
+            @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
+            @ApiParam(value = "Revision", required = true) @PathVariable("revision") int revision,
+            @ApiParam(value = "Include unreleased items", required = false) @RequestParam(value = "unreleased", required = false) Boolean includeUnreleasedItems,
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+        return new GetMembersOfCollectionMethod(SerializationFormat.XML, authorization).getMembers(urn, revision, includeUnreleasedItems);
     }
 }
