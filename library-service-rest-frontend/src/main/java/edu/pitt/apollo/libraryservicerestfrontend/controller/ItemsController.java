@@ -28,7 +28,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getLibraryItem(
@@ -57,7 +57,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getCommentsForLibraryItem(
@@ -72,7 +72,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/comments", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String addCommentToLibraryItem(
@@ -90,7 +90,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/changelog", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/changelog", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getChangeLog(
@@ -106,7 +106,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/approved", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/approved", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getApprovedRevisionOfLibraryItem(
@@ -121,7 +121,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getLibraryItemUrns(
@@ -137,7 +137,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/revisions/{revision}/approve", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}/revisions/{revision}/approve", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String setLibraryItemReleaseVersion(
@@ -153,7 +153,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}/hide", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}/hide", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String hideLibraryItem(
@@ -167,7 +167,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String addLibraryItem(
@@ -182,7 +182,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/{urn}", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/{urn}", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String reviseLibraryItem(
@@ -198,7 +198,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/cache", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/cache", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getCacheData(
@@ -211,7 +211,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/class/{class}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/class/{class}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getLibraryItemContainers(
@@ -226,7 +226,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/collections/{class}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/collections/{class}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getCollections(
@@ -241,7 +241,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/collections/members/{urn}/{version}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/items/collections/members/{urn}/{version}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getMembersOfCollection(
