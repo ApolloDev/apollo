@@ -9,13 +9,14 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nem41 on 12/12/16.
  */
 public class GetCollectionsMethod extends BaseLibraryMethod {
-    public GetCollectionsMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetCollectionsMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetCollectionsResult getCollections(LibraryDbUtils libraryDbUtils, String className, boolean includeUnreleasedItems) throws LibraryServiceException {
@@ -24,7 +25,7 @@ public class GetCollectionsMethod extends BaseLibraryMethod {
         MethodCallStatus status = new MethodCallStatus();
 
         try {
-            List<LibraryItemContainerAndURN> collections = libraryDbUtils.getCollections(className, includeUnreleasedItems, role);
+            List<LibraryItemContainerAndURN> collections = libraryDbUtils.getCollections(className, includeUnreleasedItems, highestRole);
             result.getCollections().addAll(collections);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
             result.setStatus(status);

@@ -2,12 +2,16 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetCommentsResult;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+
+import java.util.Map;
 
 /**
  * Author: Nick Millett
@@ -18,8 +22,8 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class GetCommentsMethod extends BaseLibraryMethod {
 
-    public GetCommentsMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetCommentsMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetCommentsResult getComments(LibraryDbUtils dbUtils, int urn, int version) throws LibraryServiceException {
@@ -29,10 +33,10 @@ public class GetCommentsMethod extends BaseLibraryMethod {
         MethodCallStatus status = new MethodCallStatus();
 
         try {
-            result = dbUtils.getComments(urn, version, role);
+            result = dbUtils.getComments(urn, version, highestRole);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
 
-        } catch (ApolloDatabaseException | UserNotAuthorizedException ex) {
+        } catch (ApolloDatabaseException | UserNotAuthorizedException | NoLibraryItemException | ApolloDatabaseExplicitException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
         result.setStatus(status);

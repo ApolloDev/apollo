@@ -8,20 +8,22 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Created by nem41 on 12/12/16.
  */
 public class GetCacheDataMethod extends BaseLibraryMethod {
 
 
-    public GetCacheDataMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetCacheDataMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetCacheDataResult getCacheData(LibraryDbUtils dbUtils) throws LibraryServiceException {
 
         try {
-            GetCacheDataResult result = dbUtils.getCacheData(role);
+            GetCacheDataResult result = dbUtils.getCacheData();
             MethodCallStatus status = new MethodCallStatus();
             result.setStatus(status);
             status.setStatus(MethodCallStatusEnum.COMPLETED);

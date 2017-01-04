@@ -10,6 +10,8 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
@@ -19,8 +21,8 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class AddLibraryItemMethod extends BaseLibraryMethod {
 
-    public AddLibraryItemMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public AddLibraryItemMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public AddLibraryItemContainerResult addLibraryItem(LibraryDbUtils dbUtils, LibraryItemContainer libraryItemContainer, String comment) throws LibraryServiceException {
@@ -30,7 +32,7 @@ public class AddLibraryItemMethod extends BaseLibraryMethod {
         result.setStatus(status);
 
         try {
-            result = dbUtils.addLibraryItem(libraryItemContainer, userName, comment, role);
+            result = dbUtils.addLibraryItem(libraryItemContainer, userName, comment, highestRole);
             result.setStatus(status);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException ex) {

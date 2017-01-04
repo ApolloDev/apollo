@@ -312,10 +312,11 @@ public class LibraryDbUtils extends BaseDbUtils {
 //						+ ". The specified URI \"" + urn + "\" already exists in the library.");
 //			}
 
-            String sql = "INSERT INTO library_item_container_urns DEFAULT VALUES";
+            String sql = "INSERT INTO library_item_container_urns (role) VALUES (?)";
 
             try {
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setInt(1, role);
                 pstmt.executeUpdate();
 
                 ResultSet rs = pstmt.getGeneratedKeys();
@@ -328,7 +329,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 }
 
                 int itemVersion = updateLibraryItem(catalogId, item, userIdentification, conn);
-                addComment(catalogId, itemVersion, role, commitMessage, userIdentification, LibraryCommentTypeEnum.COMMIT, conn);
+                addComment(catalogId, itemVersion, commitMessage, userIdentification, LibraryCommentTypeEnum.COMMIT, conn);
 
                 Timestamp date = getDateOfItem(catalogId, itemVersion, conn);
 
@@ -358,14 +359,14 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public int updateLibraryItem(int urn, int role, LibraryItemContainer item, String userIdentification, String comment) throws ApolloDatabaseException, UserNotAuthorizedException {
+    public int updateLibraryItem(int urn, int role, LibraryItemContainer item, String userIdentification, String comment) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
 
-        checkRoleForAddingItemPermission(role);
+        checkItemForRoleLevel(urn, role);
 
         try (Connection conn = getConnection(false)) {
 //			int catalogId = getCatalogIDFromURN(urn);
             int version = updateLibraryItem(urn, item, userIdentification, conn);
-            addComment(urn, version, role, comment, userIdentification, LibraryCommentTypeEnum.COMMIT, conn);
+            addComment(urn, version, comment, userIdentification, LibraryCommentTypeEnum.COMMIT, conn);
 
             Timestamp date = getDateOfItem(urn, version, conn);
 
@@ -379,7 +380,8 @@ public class LibraryDbUtils extends BaseDbUtils {
     }
 
     private int updateLibraryItem(int catalogId, LibraryItemContainer item, String userIdentification, Connection existingConnection) throws ApolloDatabaseException,
-            ApolloDatabaseExplicitException {
+            ApolloDatabaseExplicitException, UserNotAuthorizedException, NoLibraryItemException {
+
         Connection conn = null;
         try {
             conn = existingConnection != null ? existingConnection : getConnection(false);
@@ -446,10 +448,10 @@ public class LibraryDbUtils extends BaseDbUtils {
     }
 
     public void addReviewerComment(int urn, int version, String comment, String userIdentification, int role) throws ApolloDatabaseException, UserNotAuthorizedException, ApolloDatabaseExplicitException, NoLibraryItemException {
-        checkRoleForEditingItemPermission(urn, version, role);
+        checkItemForRoleLevel(urn, role);
         try (Connection conn = getConnection(false)) {
             try {
-                addComment(urn, version, role, comment, userIdentification, LibraryCommentTypeEnum.REVIEW, conn);
+                addComment(urn, version, comment, userIdentification, LibraryCommentTypeEnum.REVIEW, conn);
 
                 Timestamp date = getDateOfItem(urn, version, conn);
                 insertActionPerformed(urn, version, date, LibraryActionTypeEnum.ADDED_REVIEWER_COMMENT, conn);
@@ -474,11 +476,11 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    private void addComment(int catalogId, int version, int role, String comment, String userIdentification, LibraryCommentTypeEnum commentEnum, Connection existingConnection)
+    private void addComment(int catalogId, int version, String comment, String userIdentification, LibraryCommentTypeEnum commentEnum, Connection existingConnection)
             throws ApolloDatabaseExplicitException, ApolloDatabaseException, NoLibraryItemException, UserNotAuthorizedException {
 
         // check catalogId and itemVersion
-        int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version, role, existingConnection);
+        int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version, existingConnection);
         int userId = getOrAddUserId(userIdentification, existingConnection);
         int commentTypeId = getCommentTypeId(commentEnum, existingConnection);
         String sql = "INSERT INTO comments (item_id,comment,comment_type,user_id) VALUES (?,?,?,?)";
@@ -522,11 +524,12 @@ public class LibraryDbUtils extends BaseDbUtils {
         throw new ApolloDatabaseExplicitException("There was no comment type with ID " + id);
     }
 
-    public GetCommentsResult getComments(int urn, int version, int role) throws ApolloDatabaseException, UserNotAuthorizedException {
+    public GetCommentsResult getComments(int urn, int version, int role) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
+
+        checkItemForRoleLevel(urn, role);
 
         try (Connection conn = getConnection(false)) {
-//			int catalogId = getCatalogIDFromURN(urn);
-            int itemId = getItemIdFromCatalogIdAndVersion(urn, version, role, conn);
+            int itemId = getItemIdFromCatalogIdAndVersion(urn, version, conn);
             String sql = "SELECT date_created,comment,comment_type,user_id FROM comments WHERE item_id = " + itemId;
 
             GetCommentsResult result = new GetCommentsResult();
@@ -574,13 +577,13 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     public void setReleaseVersion(int urn, int version, int role, String userIdentification, String message) throws ApolloDatabaseException, UserNotAuthorizedException, ApolloDatabaseExplicitException, NoLibraryItemException {
 
-        checkRoleForEditingItemPermission(urn, version, role);
+        checkItemForRoleLevel(urn, role);
 
         try (Connection conn = getConnection(false)) {
 //			int catalogId = getCatalogIDFromURN(urn);
             try {
-                setReleaseVersion(urn, version, role, conn);
-                addComment(urn, version, role, message, userIdentification, LibraryCommentTypeEnum.RELEASE, conn);
+                setReleaseVersion(urn, version, conn);
+                addComment(urn, version, message, userIdentification, LibraryCommentTypeEnum.RELEASE, conn);
 
                 Timestamp date = getDateOfItem(urn, version, conn);
                 insertActionPerformed(urn, version, date, LibraryActionTypeEnum.SET_AS_RELEASE_VERSION, conn);
@@ -604,10 +607,10 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    private void setReleaseVersion(int catalogId, int version, int role, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException,
+    private void setReleaseVersion(int catalogId, int version, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException,
             NoLibraryItemException, ApolloDatabaseException, UserNotAuthorizedException {
 
-        int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version, role, existingConnection);
+        int itemId = getItemIdFromCatalogIdAndVersion(catalogId, version, existingConnection);
         String sql = "UPDATE library_item_containers SET is_latest_release_version = true WHERE id = " + itemId;
 
         Connection conn = null;
@@ -658,11 +661,11 @@ public class LibraryDbUtils extends BaseDbUtils {
     public int setLibraryItemAsNotReleased(int urn, int role) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException {
 
         try {
+            checkItemForRoleLevel(urn, role);
             Integer currentReleaseVersion = getReleaseVersion(urn);
             if (currentReleaseVersion == null) {
                 return -1;
             } else {
-                checkRoleForEditingItemPermission(urn, currentReleaseVersion, role);
 //				int catalogId = getCatalogIDFromURN(urn);
                 clearPreviousReleaseVersion(urn, null);
                 return currentReleaseVersion;
@@ -674,12 +677,14 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public List<RevisionAndComments> getRevisionsAndComments(int urn, int role) throws ApolloDatabaseException {
+    public List<RevisionAndComments> getRevisionsAndComments(int urn, int role) throws ApolloDatabaseException, ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
+
+        checkItemForRoleLevel(urn, role);
 
         try (Connection conn = getConnection(false)) {
             String sql = "SELECT lics.version, cmts.comment, cmts.date_created, users.user_name " +
                     "FROM library_item_containers lics, comments cmts, users WHERE urn_id = " + urn +
-                    " AND cmts.item_id = lics.id AND users.id = cmts.user_id AND lics.role <= " + role;
+                    " AND cmts.item_id = lics.id AND users.id = cmts.user_id";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
@@ -768,7 +773,9 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public GetLibraryItemContainerResult getLibraryItemContainer(int urn, Integer version, int role) throws ApolloDatabaseException, UserNotAuthorizedException {
+    public GetLibraryItemContainerResult getLibraryItemContainer(int urn, Integer version, int role) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
+
+        checkItemForRoleLevel(urn, role);
 
         try {
 
@@ -779,7 +786,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 result.setIsApprovedRevision(true);
             }
 
-            String itemJson = getLibraryItemContainerJSON(urn, version, role, null);
+            String itemJson = getLibraryItemContainerJSON(urn, version, null);
             LibraryItemContainer container = getLibraryItemContainderFromJson(itemJson);
 
             if (!result.isIsLatestApprovedRevision()) {
@@ -812,14 +819,14 @@ public class LibraryDbUtils extends BaseDbUtils {
 //		}
 //	}
 
-    private String getLibraryItemContainerJSON(int urn, int version, int role, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
+    private String getLibraryItemContainerJSON(int urn, int version, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
             ApolloDatabaseExplicitException, NoURNFoundException, NoLibraryItemException, UserNotAuthorizedException {
-        return getItemJSONFromCatalogIdAndVersion(version, urn, role, existingConnection);
+        return getItemJSONFromCatalogIdAndVersion(version, urn, existingConnection);
     }
 
-    private String getItemJSONFromCatalogIdAndVersion(int versionId, int urn, int role, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
+    private String getItemJSONFromCatalogIdAndVersion(int versionId, int urn, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
             ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
-        String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + versionId + " AND role <= " + role;
+        String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + versionId;
         Connection conn = null;
         try {
             conn = existingConnection != null ? existingConnection : getConnection(false);
@@ -827,11 +834,6 @@ public class LibraryDbUtils extends BaseDbUtils {
             ResultSet rs = pstmt.executeQuery();
             if (!rs.next()) {
                 throw new NoLibraryItemException("No library item was found with URN \"" + urn + "\" and version " + versionId);
-            }
-
-            int storedRole = rs.getInt(2);
-            if (storedRole > role) {
-                throw new UserNotAuthorizedException("You are not authorized to view this library item");
             }
 
             String json = rs.getString(1);
@@ -848,9 +850,9 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    private int getItemIdFromCatalogIdAndVersion(int catalogId, int versionId, int role, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
+    private int getItemIdFromCatalogIdAndVersion(int catalogId, int versionId, Connection existingConnection) throws ApolloDatabaseKeyNotFoundException,
             ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
-        String sql = "SELECT id, role FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
+        String sql = "SELECT id FROM library_item_containers WHERE urn_id = " + catalogId + " AND version = " + versionId;
         Connection conn = null;
         try {
             conn = existingConnection != null ? existingConnection : getConnection(false);
@@ -861,10 +863,6 @@ public class LibraryDbUtils extends BaseDbUtils {
             }
 
             int id = rs.getInt(1);
-            int storedRole = rs.getInt(2);
-            if (storedRole > role) {
-                throw new UserNotAuthorizedException("You are not authorized to view this item");
-            }
             return id;
         } catch (SQLException ex) {
             throw new ApolloDatabaseExplicitException("SQLException checking library_item_containers table");
@@ -889,7 +887,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                     + "ON library_item_action_history.urn_id = library_item_container_urns.id "
                     + "INNER JOIN library_actions "
                     + "ON library_item_action_history.action_performed = library_actions.id "
-                    + "WHERE library_item_action_history.date_of_action >= ? AND library_item_action_history.role <= " + role;
+                    + "WHERE library_item_action_history.date_of_action >= ? AND library_item_container_urns.role <= " + role;
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setTimestamp(1, timestamp);
             ResultSet rs = pstmt.executeQuery();
@@ -920,7 +918,7 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
-    public GetCacheDataResult getCacheData(int role) throws ApolloDatabaseException {
+    public GetCacheDataResult getCacheData() throws ApolloDatabaseException {
 
         GetCacheDataResult getCacheDataResult = new GetCacheDataResult();
 
@@ -934,8 +932,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 + "WHERE\n"
                 + "	((json_representation -> 'libraryItem' ->> 'administrativeLocations') IS NOT NULL\n"
                 + "OR (json_representation -> 'libraryItem' ->> 'epidemicZones') IS NOT NULL\n"
-                + "OR (json_representation -> 'libraryItem' ->> 'location') IS NOT NULL) \n"
-                + "AND role <= " + role;
+                + "OR (json_representation -> 'libraryItem' ->> 'location') IS NOT NULL)";
 
         Set<String> locations = new HashSet<>();
         QueryResult result = queryObjects(query);
@@ -967,7 +964,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 + "json_representation->'libraryItem'->'infections'->0->>'host' AS host, "
                 + " json_representation->'libraryItem'->'infections'->0->'infectionAcquisitionsFromInfectedHosts'->0->>'infectedHost' AS infectedHost "
                 + "FROM library_item_containers "
-                + "WHERE json_representation->'libraryItem'->>'type' = 'Epidemic' AND role <= " + role;
+                + "WHERE json_representation->'libraryItem'->>'type' = 'Epidemic'";
 
         result = queryObjects(query);
         table = result.table;
@@ -996,9 +993,13 @@ public class LibraryDbUtils extends BaseDbUtils {
     public List<LibraryItemContainer> getLibraryItemContainers(String className, boolean includeUnreleasedItems, int role) throws ApolloDatabaseException {
         String query = "SELECT json_representation "
                 + "FROM library_item_containers "
-                + "WHERE json_representation->'libraryItem'->>'type' = '" + className + "' AND role <= " + role;
-        if (includeUnreleasedItems) {
+                + "INNER JOIN library_item_container_urns "
+                + "ON library_item_containers.urn_id = library_item_container_urns.id "
+                + " WHERE json_representation->'libraryItem'->>'type' = '" + className;
+        if (!includeUnreleasedItems) { // only select released items
             query += " AND is_latest_release_version = 'true' ";
+        } else { // select items which can be used by the role
+            query += " AND library_item_container_urns.role <= " + role;
         }
 
         QueryResult result = queryObjects(query);
@@ -1028,12 +1029,15 @@ public class LibraryDbUtils extends BaseDbUtils {
                 + "           distinct urn_id, version, json_representation\n"
                 + "       FROM\n"
                 + "           library_item_containers\n"
+                + "       INNER JOIN library_item_container_urns "
+                + "       ON library_item_containers.urn_id = library_item_container_urns.id "
                 + "       WHERE\n"
                 + "           json_representation -> 'libraryItem' ->> 'javaClassNameOfMembers' = '" + collectionClassName + "' AND\n"
-                + "           json_representation -> 'libraryItem' @> '{\"type\":\"LibraryCollection\"}' = 't'\n"
-                + "           AND role <= " + role + "\n";
+                + "           json_representation -> 'libraryItem' @> '{\"type\":\"LibraryCollection\"}' = 't'\n";
         if (!includeUnreleasedItems) {
             query += "       AND is_latest_release_version = TRUE";
+        } else {
+            query += "           AND library_item_container_urns.role <= " + role + "\n";
         }
 
         QueryResult result = queryObjects(query);
@@ -1060,8 +1064,33 @@ public class LibraryDbUtils extends BaseDbUtils {
         return libraryCollections;
     }
 
+    public Map<String, Integer> getRoles() throws ApolloDatabaseException {
+
+        Map<String, Integer> roles = new HashMap<>();
+        String query = "SELECT\n"
+                + "           id, role\n"
+                + "       FROM\n"
+                + "           roles\n";
+        QueryResult result = queryObjects(query);
+        List<String> table = result.table;
+        List<String> columns = result.columnNames;
+        int numColumns = columns.size();
+        int numRows = table.size() / numColumns;
+        for (int i = 0; i < numRows; i++) {
+            int id = Integer.parseInt(table.get(i * numColumns));
+            String role = table.get(i * numColumns + 1);
+            roles.put(role, id);
+        }
+
+        return roles;
+    }
+
     public List<LibraryItemContainerAndURN> getMembersOfCollection(int urn, int version,
-                                                                   boolean includeUnreleasedItems, int role) throws ApolloDatabaseException {
+                                                                   boolean includeUnreleasedItems, int role) throws ApolloDatabaseException, ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
+        if (includeUnreleasedItems) {
+            checkItemForRoleLevel(urn, role);
+        }
+
         // THIS DOESN'T AUTO GENERATE TITLES FOR EPIDEMICS YET
         String query = "SELECT\n"
                 + "     lic.urn_id,\n"
@@ -1076,21 +1105,26 @@ public class LibraryDbUtils extends BaseDbUtils {
                 + "               ) as collection_member_urns\n"
                 + "          FROM\n"
                 + "               library_item_containers\n"
+                + "       INNER JOIN library_item_container_urns "
+                + "       ON library_item_containers.urn_id = library_item_container_urns.id "
                 + "          WHERE\n"
-                + "               urn_id = " + urn + "\n"
-                +                 "AND role <= " + role + "\n";
-        if (!includeUnreleasedItems) {
+                + "               urn_id = " + urn + "\n";
+        if (!includeUnreleasedItems) { // show only released items
             query += "      AND is_latest_release_version = TRUE\n";
-        } else {
+        } else { // only show items the role can see
+            query += "AND library_item_container_urns.role <= " + role + "\n";
             query += "      AND version = " + version + "\n";
         }
         query += "     ) members\n"
+                + "       INNER JOIN library_item_container_urns "
+                + "       ON lic.urn_id = library_item_container_urns.id "
                 + "WHERE\n"
                 + "     lic.urn_id::text = members.collection_member_urns::text\n";
-        if (!includeUnreleasedItems) {
+        if (!includeUnreleasedItems) { // show only released items
             query += "     AND lic.is_latest_release_version = TRUE\n";
+        } else { // show only items the role can see
+            query += "AND library_item_container_urns.role <= " + role;
         }
-        query += "AND lic.role <= " + role;
 
         List<LibraryItemContainerAndURN> libraryItemContainerAndURNs = new ArrayList<>();
         QueryResult result = queryObjects(query);
@@ -1130,8 +1164,6 @@ public class LibraryDbUtils extends BaseDbUtils {
 
     private QueryResult queryObjects(String sql) throws ApolloDatabaseException {
 
-        logger.warn("QUERY: " + sql);
-
         QueryResult result = new QueryResult();
         try (Connection conn = getConnection(false)) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -1160,20 +1192,20 @@ public class LibraryDbUtils extends BaseDbUtils {
     }
 
     private void checkRoleForAddingItemPermission(int role) throws UserNotAuthorizedException {
-        if (role > 2) {
+        if (role < 2) {
             throw new UserNotAuthorizedException("You are not authorized to add a library item");
         }
     }
 
-    private void checkRoleForEditingItemPermission(int urn, int version, int role) throws ApolloDatabaseExplicitException, UserNotAuthorizedException, NoLibraryItemException {
-        int itemRole = getItemRole(urn, version);
-        if (itemRole > role) {
-            throw new UserNotAuthorizedException("You are not authorized to edit this library item");
+    private void checkItemForRoleLevel(int urn, int role) throws UserNotAuthorizedException, ApolloDatabaseExplicitException, NoLibraryItemException {
+        int itemRole = getItemRole(urn);
+        if (role < itemRole) {
+            throw new UserNotAuthorizedException("You are not authorized to access this library item");
         }
     }
 
-    private int getItemRole(int urn, int version) throws ApolloDatabaseExplicitException, NoLibraryItemException {
-        String sql = "SELECT role FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + version;
+    private int getItemRole(int urn) throws ApolloDatabaseExplicitException, NoLibraryItemException {
+        String sql = "SELECT role FROM library_item_container_urns WHERE id = " + urn;
 
         Connection conn = null;
         try {
@@ -1181,7 +1213,7 @@ public class LibraryDbUtils extends BaseDbUtils {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             if (!rs.next()) {
-                throw new NoLibraryItemException("No library item was found with URN \"" + urn + "\" and version " + version);
+                throw new NoLibraryItemException("No library item was found with URN \"" + urn);
             }
 
             int storedRole = rs.getInt(1);
@@ -1195,14 +1227,6 @@ public class LibraryDbUtils extends BaseDbUtils {
                 //this is okay.
             }
         }
-    }
-
-    private static Epidemic getEpidemic() {
-        Epidemic epidemic = new Epidemic();
-        ApolloPathogenCode code = new ApolloPathogenCode();
-        code.setNcbiTaxonId("12");
-        epidemic.getCausalPathogens().add(code);
-        return epidemic;
     }
 
     public static void main(String[] args) throws IOException, ApolloDatabaseException, ApolloDatabaseKeyNotFoundException, ApolloDatabaseExplicitException, DatatypeConfigurationException, JAXBException, SQLException {

@@ -8,13 +8,15 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Author: Nick Millett Email: nick.millett@gmail.com Date: Aug 13, 2014 Time: 3:46:59 PM Class: GetLibraryItemMethod
  */
 public class GetApprovedRevisionOfLibraryItemMethod extends BaseLibraryMethod {
 
-    public GetApprovedRevisionOfLibraryItemMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetApprovedRevisionOfLibraryItemMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetReleaseVersionResult getLibraryItemMethod(LibraryDbUtils dbUtils, int urn) throws LibraryServiceException {

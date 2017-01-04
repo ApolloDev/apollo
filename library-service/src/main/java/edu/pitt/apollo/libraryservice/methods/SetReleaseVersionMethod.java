@@ -11,6 +11,8 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
@@ -20,8 +22,8 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class SetReleaseVersionMethod extends BaseLibraryMethod {
 
-    public SetReleaseVersionMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public SetReleaseVersionMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public SetReleaseVersionResult setReleaseVersion(LibraryDbUtils dbUtils, int urn, int version, String comment) throws LibraryServiceException {
@@ -32,7 +34,7 @@ public class SetReleaseVersionMethod extends BaseLibraryMethod {
         result.setStatus(status);
 
         try {
-            dbUtils.setReleaseVersion(urn, version, role, userName, comment);
+            dbUtils.setReleaseVersion(urn, version, highestRole, userName, comment);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
 
         } catch (ApolloDatabaseException | UserNotAuthorizedException | NoLibraryItemException | ApolloDatabaseExplicitException ex) {

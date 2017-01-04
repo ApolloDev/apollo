@@ -2,7 +2,10 @@ package edu.pitt.apollo.libraryservice.methods;
 
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetRevisionsResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.RevisionAndComments;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
@@ -10,6 +13,7 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: Nick Millett
@@ -20,8 +24,8 @@ import java.util.List;
  */
 public class GetVersionsMethod extends BaseLibraryMethod {
 
-    public GetVersionsMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetVersionsMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetRevisionsResult getVersions(LibraryDbUtils dbUtils, int urn) throws LibraryServiceException {
@@ -32,10 +36,10 @@ public class GetVersionsMethod extends BaseLibraryMethod {
         result.setStatus(status);
 
         try {
-            List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn, role);
+            List<RevisionAndComments> versions = dbUtils.getRevisionsAndComments(urn, highestRole);
             result.getRevisionsAndComments().addAll(versions);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
-        } catch (ApolloDatabaseException ex) {
+        } catch (ApolloDatabaseException | NoLibraryItemException | UserNotAuthorizedException | ApolloDatabaseExplicitException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
 
