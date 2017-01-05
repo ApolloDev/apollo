@@ -1092,39 +1092,37 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
 
         // THIS DOESN'T AUTO GENERATE TITLES FOR EPIDEMICS YET
-        String query = "SELECT\n"
-                + "     lic.urn_id,\n"
-                + "	lic.json_representation,\n"
-                + "  version\n"
-                + "FROM\n"
-                + "     library_item_containers lic,\n"
-                + "     ( \n"
-                + "          SELECT\n"
-                + "               jsonb_array_elements (\n"
-                + "                    json_representation -> 'libraryItem' -> 'membersOfCollection'\n"
-                + "               ) as collection_member_urns\n"
-                + "          FROM\n"
-                + "               library_item_containers\n"
-                + "       INNER JOIN library_item_container_urns "
-                + "       ON library_item_containers.urn_id = library_item_container_urns.id "
-                + "          WHERE\n"
-                + "               urn_id = " + urn + "\n";
-        if (!includeUnreleasedItems) { // show only released items
-            query += "      AND is_latest_release_version = TRUE\n";
-        } else { // only show items the role_id can see
-            query += "AND library_item_container_urns.role_id <= " + role_id + "\n";
-            query += "      AND version = " + version + "\n";
+
+        String query = "SELECT\n" +
+                "\tlic.urn_id,\n" +
+                "\tlic.json_representation,\n" +
+                "\tVERSION\n" +
+                "FROM\n" +
+                "\tlibrary_item_containers lic\n" +
+                "    INNER JOIN library_item_container_urns \n";
+        if (includeUnreleasedItems) {
+            query += "\t\tON lic.urn_id = library_item_container_urns.id\n" +
+                    "\t\tAND library_item_container_urns.role_id <= 2\n";
+        } else {
+            query += "\t\tAND lic.is_latest_release_version = TRUE\n";
         }
-        query += "     ) members\n"
-                + "       INNER JOIN library_item_container_urns "
-                + "       ON lic.urn_id = library_item_container_urns.id "
-                + "WHERE\n"
-                + "     lic.urn_id::text = members.collection_member_urns::text\n";
-        if (!includeUnreleasedItems) { // show only released items
-            query += "     AND lic.is_latest_release_version = TRUE\n";
-        } else { // show only items the role_id can see
-            query += "AND library_item_container_urns.role_id <= " + role_id;
+        query += "     JOIN (\n" +
+                "\t\tSELECT\n" +
+                "\t\t\tjsonb_array_elements (\n" +
+                "\t\t\t\tjson_representation -> 'libraryItem' -> 'membersOfCollection'\n" +
+                "\t\t\t) AS collection_member_urns\n" +
+                "\t\tFROM\n" +
+                "\t\t\tlibrary_item_containers\n" +
+                "\t\tINNER JOIN library_item_container_urns ON library_item_containers.urn_id = library_item_container_urns.id\n" +
+                "\t\tWHERE\n" +
+                "\t\t\turn_id = " + urn + "\n";
+        if (includeUnreleasedItems) {
+            query += "\t\t    AND VERSION = " + version + "\n";
+        } else {
+            query += "\t\t   AND is_latest_release_version = TRUE\n";
         }
+        query += "\t) members\n" +
+                "\t\tON lic.urn_id :: TEXT = members.collection_member_urns :: TEXT ";
 
         List<LibraryItemContainerAndURN> libraryItemContainerAndURNs = new ArrayList<>();
         QueryResult result = queryObjects(query);
