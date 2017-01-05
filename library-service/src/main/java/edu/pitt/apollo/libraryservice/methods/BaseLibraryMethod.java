@@ -14,7 +14,7 @@ import java.util.Map;
 public class BaseLibraryMethod {
 
      final Map<String, Integer> roles;
-     int highestRole;
+     int highestRole = 1;
      String userName;
 
     public BaseLibraryMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {

@@ -1,6 +1,7 @@
 SET SCHEMA 'public';
 DROP TABLE IF EXISTS library_actions CASCADE;
 DROP TABLE IF EXISTS library_item_action_history CASCADE;
+DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS library_item_container_urns CASCADE;
 DROP TABLE IF EXISTS library_item_containers CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -15,8 +16,17 @@ CREATE TABLE users (
     user_id TEXT NOT NULL
 );
 
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    role TEXT NOT NULL
+);
+
+INSERT INTO roles (role) VALUES ('ISG_USER');
+INSERT INTO roles (role) VALUES('ISG_ADMIN');
+
 CREATE TABLE library_item_container_urns (
-    id SERIAL PRIMARY KEY
+    id SERIAL PRIMARY KEY,
+    role_id INT REFERENCES roles (id) NOT NULL,
 );
 
 CREATE TABLE library_item_containers (
