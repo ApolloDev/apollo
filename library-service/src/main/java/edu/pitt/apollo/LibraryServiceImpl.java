@@ -51,7 +51,7 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
 		try {
 			libraryDbUtils = new LibraryDbUtils();
 
-			roles = libraryDbUtils.getRoles();
+			roles = libraryDbUtils.getRoleIds();
 
 		} catch (ApolloDatabaseException ex) {
 			throw new ExceptionInInitializerError("ApolloDatabaseException initializing LibraryDbUtils: " + ex.getMessage());

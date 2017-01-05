@@ -1064,7 +1064,7 @@ public class LibraryDbUtils extends BaseDbUtils {
         return libraryCollections;
     }
 
-    public Map<String, Integer> getrole_ids() throws ApolloDatabaseException {
+    public Map<String, Integer> getRoleIds() throws ApolloDatabaseException {
 
         Map<String, Integer> role_ids = new HashMap<>();
         String query = "SELECT\n"
