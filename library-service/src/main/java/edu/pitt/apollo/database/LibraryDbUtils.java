@@ -1026,7 +1026,8 @@ public class LibraryDbUtils extends BaseDbUtils {
         List<LibraryItemContainerAndURN> libraryCollections = new ArrayList<>();
 
         String query = "SELECT\n"
-                + "           distinct urn_id, version, json_representation\n"
+                + "           distinct urn_id, version, json_representation,\n"
+                + " is_latest_release_version AS released,\n"
                 + "       FROM\n"
                 + "           library_item_containers\n"
                 + "       INNER JOIN library_item_container_urns "
@@ -1052,7 +1053,12 @@ public class LibraryDbUtils extends BaseDbUtils {
             LibraryItemContainerAndURN libraryItemAndUrn = new LibraryItemContainerAndURN();
             libraryItemAndUrn.setUrn(Integer.parseInt(table.get(i * numColumns)));
             libraryItemAndUrn.setVersion(Integer.parseInt(table.get(i * numColumns + 1)));
-            try {
+            String released = table.get(i * numColumns + 3);
+            if (released.equals("t")) {
+                libraryItemAndUrn.setIsReleased(true);
+            } else {
+                libraryItemAndUrn.setIsReleased(false);
+            }            try {
                 libraryItemAndUrn.setLibraryItemContainer(getLibraryItemContainderFromJson(json));
             } catch (IOException ex) {
                 throw new ApolloDatabaseException("Could not get LibraryItemContainer from json. Json string was: " + json);
