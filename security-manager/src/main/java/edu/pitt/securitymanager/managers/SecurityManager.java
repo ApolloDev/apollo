@@ -98,7 +98,7 @@ public abstract class SecurityManager {
             case SSO:
                 try {
                     String token = getDelegatedToken(authentication.getPayload(), CLIENT_ID);
-                    Jws<Claims> claims = Jwts.parser().setSigningKey(CLIENT_ID).parseClaimsJws(token);
+                    Jws<Claims> claims = Jwts.parser().setSigningKey(CLIENT_SECRET).parseClaimsJws(token);
                     return claims;
                 } catch (Exception ex) {
                     throw new ApolloSecurityException("Exception verifying SSO: " + ex.getMessage());
@@ -181,7 +181,7 @@ public abstract class SecurityManager {
     }
 
     protected boolean claimsHasRole(Jws<Claims> claims, String role) {
-        String roles = (String) claims.getBody().get(ROLES_KEY);
+        String roles = claims.getBody().get(ROLES_KEY).toString();
 
         return false;
     }
