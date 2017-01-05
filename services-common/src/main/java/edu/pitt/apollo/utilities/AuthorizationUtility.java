@@ -17,6 +17,7 @@ public class AuthorizationUtility {
     private static final String JWT_TOKEN_PROPERTY = "JWT";
     private static final String SSO_TOKEN_PROPERTY = "UserIdToken";
     private static final String USER_ID_PROPERTY = "UserId";
+    private static final String JSON_PROPERTY = "JSON";
 
     public static Authentication createAuthenticationFromAuthorizationHeader(String authorizationHeader) throws UnsupportedAuthorizationTypeException {
 
@@ -40,6 +41,9 @@ public class AuthorizationUtility {
         } else if (authorizationPropertyMap.containsKey(USER_ID_PROPERTY)) {
             authentication.setAuthorizationType(null);
             authentication.setPayload(authorizationPropertyMap.get(USER_ID_PROPERTY));
+        } else if (authorizationPropertyMap.containsKey(JSON_PROPERTY)) {
+            authentication.setAuthorizationType(AuthorizationTypeEnum.JSON);
+            authentication.setPayload(authorizationPropertyMap.get(JSON_PROPERTY));
         } else {
             throw new UnsupportedAuthorizationTypeException();
         }
