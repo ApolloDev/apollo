@@ -22,14 +22,10 @@ public class AuthorizationUtility {
     public static Authentication createAuthenticationFromAuthorizationHeader(String authorizationHeader) throws UnsupportedAuthorizationTypeException {
 
         Map<String, String> authorizationPropertyMap = new HashMap<>();
-        String[] authorizationProps = authorizationHeader.split(",");
-        for (String propString : authorizationProps) {
-            String[] keyValue = propString.split("=");
-            if (keyValue.length < 2) {
-                continue;
-            }
-            authorizationPropertyMap.put(keyValue[0], keyValue[1]);
-        }
+        String key = authorizationHeader.substring(0, authorizationHeader.indexOf("="));
+        String keyValue = authorizationHeader.substring(authorizationHeader.indexOf("=") + 1);
+        authorizationPropertyMap.put(key, keyValue);
+
 
         Authentication authentication = new Authentication();
         if (authorizationPropertyMap.containsKey(JWT_TOKEN_PROPERTY)) {

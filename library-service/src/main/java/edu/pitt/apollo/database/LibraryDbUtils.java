@@ -30,8 +30,8 @@ import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABL
 public class LibraryDbUtils extends BaseDbUtils {
 
     private class QueryResult {
-        public List<String> table;
-        public List<String> columnNames;
+        public List<String> table = new ArrayList<>();
+        public List<String> columnNames = new ArrayList<>();
     }
 
     private static final Logger libraryLogger = LoggerFactory.getLogger(LibraryDbUtils.class);
@@ -774,9 +774,6 @@ public class LibraryDbUtils extends BaseDbUtils {
     }
 
     public GetLibraryItemContainerResult getLibraryItemContainer(int urn, Integer version, int role_id) throws ApolloDatabaseException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
-
-        checkItemForRoleLevel(urn, role_id);
-
         try {
 
             GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
@@ -784,15 +781,19 @@ public class LibraryDbUtils extends BaseDbUtils {
                 version = getReleaseVersion(urn);
                 result.setIsLatestApprovedRevision(true);
                 result.setIsApprovedRevision(true);
+            } else {
+                boolean approved = checkIfVersionIsApproved(urn, version);
+
+                if (version == getReleaseVersion(urn)) {
+                    result.setIsLatestApprovedRevision(true);
+                } else {
+                    checkItemForRoleLevel(urn, role_id);
+                }
+                result.setIsApprovedRevision(approved);
             }
 
             String itemJson = getLibraryItemContainerJSON(urn, version, null);
             LibraryItemContainer container = getLibraryItemContainderFromJson(itemJson);
-
-            if (!result.isIsLatestApprovedRevision()) {
-                // check if it is an approved version
-                result.setIsApprovedRevision(checkIfVersionIsApproved(urn, version));
-            }
 
             result.setLibraryItemContainer(container);
             result.setRevision(version);
@@ -995,7 +996,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 + "FROM library_item_containers "
                 + "INNER JOIN library_item_container_urns "
                 + "ON library_item_containers.urn_id = library_item_container_urns.id "
-                + " WHERE json_representation->'libraryItem'->>'type' = '" + className;
+                + " WHERE json_representation->'libraryItem'->>'type' = '" + className + "'";
         if (!includeUnreleasedItems) { // only select released items
             query += " AND is_latest_release_version = 'true' ";
         } else { // select items which can be used by the role_id
@@ -1027,7 +1028,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
         String query = "SELECT\n"
                 + "           distinct urn_id, version, json_representation,\n"
-                + " is_latest_release_version AS released,\n"
+                + " is_latest_release_version AS released\n"
                 + "       FROM\n"
                 + "           library_item_containers\n"
                 + "       INNER JOIN library_item_container_urns "
@@ -1075,9 +1076,9 @@ public class LibraryDbUtils extends BaseDbUtils {
 
         Map<String, Integer> role_ids = new HashMap<>();
         String query = "SELECT\n"
-                + "           id, role_id\n"
+                + "           id, role\n"
                 + "       FROM\n"
-                + "           role_ids\n";
+                + "           roles\n";
         QueryResult result = queryObjects(query);
         List<String> table = result.table;
         List<String> columns = result.columnNames;
@@ -1107,10 +1108,10 @@ public class LibraryDbUtils extends BaseDbUtils {
                 "\tVERSION\n" +
                 "FROM\n" +
                 "\tlibrary_item_containers lic\n" +
-                "    INNER JOIN library_item_container_urns \n";
+                "    INNER JOIN library_item_container_urns \n" +
+                "\t\tON lic.urn_id = library_item_container_urns.id\n";
         if (includeUnreleasedItems) {
-            query += "\t\tON lic.urn_id = library_item_container_urns.id\n" +
-                    "\t\tAND library_item_container_urns.role_id <= 2\n";
+            query += "\t\tAND library_item_container_urns.role_id <= 2\n";
         } else {
             query += "\t\tAND lic.is_latest_release_version = TRUE\n";
         }

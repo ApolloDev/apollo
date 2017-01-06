@@ -226,7 +226,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/collections/{class}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
+    @RequestMapping(value = "/items/collections/{class:.+}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getCollections(
@@ -241,7 +241,7 @@ public class ItemsController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })
-    @RequestMapping(value = "/items/collections/members/{urn}/{version}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
+    @RequestMapping(value = "/items/collections/members/{urn}/{revision}", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
     public
     @ResponseBody
     String getMembersOfCollection(
