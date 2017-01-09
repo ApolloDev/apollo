@@ -76,6 +76,9 @@ public class LibrarySecurityManager extends SecurityManager {
 
     @Override
     protected JsonObject createAuthenticationJSONObject(Jws<Claims> claims) {
-        return null;
+        JsonObject object = new JsonObject();
+        object.addProperty(LIBRARY_ROLE_KEY, claims.getBody().get(ROLES_KEY).toString());
+        object.addProperty(USERNAME_KEY, claims.getBody().get(USER_ID_USER_PROFILE_KEY).toString());
+        return object;
     }
 }

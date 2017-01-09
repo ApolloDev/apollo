@@ -38,7 +38,7 @@ public abstract class SecurityManager {
     protected static final String AUTH0_URL;
     private static final String HUB_URL_PROPERTY = "hub_url";
     protected static final String HUB_URL;
-    private static final String USER_ID_USER_PROFILE_KEY = "sub";
+    protected static final String USER_ID_USER_PROFILE_KEY = "sub";
     protected static final String ROLES_KEY = "roles";
     protected static final String USERNAME_KEY = "userName";
     private final Map<String, String> userDelegatedTokenMap = new HashMap<>();
@@ -181,7 +181,11 @@ public abstract class SecurityManager {
     }
 
     protected boolean claimsHasRole(Jws<Claims> claims, String role) {
-        String roles = claims.getBody().get(ROLES_KEY).toString();
+        List<String> roles = (List<String>)claims.getBody().get(ROLES_KEY);
+        for(String roleCheck : roles) {
+            if(roleCheck.equals(role))
+                return true;
+        }
 
         return false;
     }
