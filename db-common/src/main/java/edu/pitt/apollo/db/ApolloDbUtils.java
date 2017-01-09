@@ -28,7 +28,7 @@ public class ApolloDbUtils extends BaseDbUtils {
 
     private static final String APOLLO_DB_PROPERTIES_FILE = "database.properties";
     private static final boolean APOLLO_DB_AUTO_COMMIT = true;
-    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_400";
+    private static final String APOLLO_DB_RESOURCE_IDENTIFIER = "ApolloDB_401";
     static Map<String, Integer> softwareIdentificationKeyMap = new HashMap<>();
     static Map<String, Integer> populationAxisCache = new HashMap<>();
     static Map<String, Integer> runDataDescriptionIdCache = new HashMap<>();

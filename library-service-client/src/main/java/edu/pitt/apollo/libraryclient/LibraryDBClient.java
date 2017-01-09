@@ -7,6 +7,7 @@ import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
 import edu.pitt.apollo.library_service_types.v4_0_1.CatalogEntry;
+import edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
 import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
 
@@ -34,6 +35,38 @@ public class LibraryDBClient {
         return dbUtils.addLibraryItem(lic, USER, "Adding H1N1 scenario for Allegheny County in 2009", ROLE);
     }
 
+    private static int updateInfectiousDiseaseScenario(LibraryDbUtils dbUtils) throws DatatypeConfigurationException, ParseException, UserNotAuthorizedException, ApolloDatabaseException, NoLibraryItemException, ApolloDatabaseExplicitException {
+        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(scenario);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+        entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.updateLibraryItem(101, ROLE, lic, USER, "Adding H1N1 scenario for Allegheny County in 2009");
+    }
+
+    private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioCollection(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+        LibraryCollection collection = new LibraryCollection();
+        collection.setDescription("H1N1 Infectious Disease Scenarios");
+        collection.setJavaClassNameOfMembers("edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario");
+        collection.setName("H1N1 Infectious Disease Scenarios");
+        collection.getMembersOfCollection().add(101);
+
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(collection);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("H1N1 Infectious Disease Scenarios");
+        entry.setTextualIdentifier("H1N1 Infectious Disease Scenarios");
+        entry.setJavaClassName("edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection");
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.addLibraryItem(lic, USER, "Adding H1N1 Infectious Disease Scenario Collections", ROLE);
+    }
+
     private static void setReleaseVersion(LibraryDbUtils dbUtils, int urn, int version) throws UserNotAuthorizedException, ApolloDatabaseExplicitException, ApolloDatabaseException, NoLibraryItemException {
         dbUtils.setReleaseVersion(urn, version, ROLE, USER, "Releasing H1N1 scenario for Allegheny County in 2009");
     }
@@ -41,8 +74,9 @@ public class LibraryDBClient {
     public static void main(String[] args) throws ApolloDatabaseException, ParseException, DatatypeConfigurationException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
         LibraryDbUtils dbUtils = new LibraryDbUtils();
 
-        AddLibraryItemContainerResult result = addInfectiousDiseaseScenario(dbUtils);
-        setReleaseVersion(dbUtils, result.getUrn(), result.getVersion());
+        updateInfectiousDiseaseScenario(dbUtils);
+//        AddLibraryItemContainerResult result = addInfectiousDiseaseScenarioCollection(dbUtils);
+//        setReleaseVersion(dbUtils, result.getUrn(), result.getVersion());
     }
 
 

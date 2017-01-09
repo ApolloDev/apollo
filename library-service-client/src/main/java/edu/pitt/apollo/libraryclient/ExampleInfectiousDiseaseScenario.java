@@ -76,9 +76,7 @@ public class ExampleInfectiousDiseaseScenario {
 		scenario.getInfections().add(infection);
 
 		Location location = new Location();
-		LocationDefinition locationDefinition = new LocationDefinition();
-		locationDefinition.getLocationsIncluded().add("42003");
-		location.setLocationDefinition(locationDefinition);
+		location.setApolloLocationCode("1169");
 
         scenario.setScenarioLocation(location);
 
