@@ -1,4 +1,4 @@
-var apollo_version = "Apollo 4.0";
+var apollo_version = "Apollo 4.0.1";
 var fred_version = "FRED 2.0.2";
 
 function isInt(n) {

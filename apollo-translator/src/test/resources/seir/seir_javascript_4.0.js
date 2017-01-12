@@ -1,4 +1,4 @@
-var apollo_version = "Apollo 3.0.2";
+var apollo_version = "Apollo 4.0.1";
 var seir_version = "SEIR 3.0";
 
 function identity(value) {
