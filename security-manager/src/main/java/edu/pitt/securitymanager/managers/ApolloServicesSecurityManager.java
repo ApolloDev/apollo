@@ -116,7 +116,8 @@ public class ApolloServicesSecurityManager extends SecurityManager {
 //        Authentication authentication = new Authentication();
 //        authentication.setAuthorizationType(AuthorizationTypeEnum.SSO);
 //        authentication.setPayload("");
-//        getUsernameAuthentication(authentication);
+//        Authentication auth2 = new ApolloServicesSecurityManager().getUsernameAuthentication(authentication);
+//        System.out.println("done");
     }
 
     @Override

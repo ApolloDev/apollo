@@ -27,6 +27,7 @@ public class IndividualTreatmentControlMeasureSetter extends InfectiousDiseaseCo
     public static final String COMPLIANCE = "compliance";
     public static final String DELAY_FROM_SYSMPTOMS_TO_TREATMENT = "delayFromSymptomsToTreatment";
     public static final String PATHOGEN = "pathogen";
+    public static final String TREATMENT_SYSTEM_LOGISTICS = "treatmentSystemLogistics";
 
     public IndividualTreatmentControlMeasureSetter() {
         super();
@@ -70,6 +71,12 @@ public class IndividualTreatmentControlMeasureSetter extends InfectiousDiseaseCo
         return setter.set(duration);
     }
 
+    private List<SetterReturnObject> setTreatmentSystemLogistics(List<TreatmentSystemLogistics> logistics) throws ApolloSetterException {
+        ListSetter setter = new ListSetter(TreatmentSystemLogisticsSetter.class,
+                TreatmentSystemLogistics.class, logistics, apolloTranslationEngine, section, type + "." + TREATMENT_SYSTEM_LOGISTICS);
+        return setter.set();
+    }
+
     private List<SetterReturnObject> setTargetPopulationsAndPrioritization(ControlMeasureTargetPopulationsAndPrioritization populationsAndPrioritization) throws ApolloSetterException {
         ControlMeasureTargetPopulationsAndPrioritizationSetter setter = new ControlMeasureTargetPopulationsAndPrioritizationSetter(apolloTranslationEngine, type + "." + TARGET_POPULATIONS_AND_PRIORITIZATIONS_FIELD, section);
         return setter.set(populationsAndPrioritization);
@@ -94,6 +101,7 @@ public class IndividualTreatmentControlMeasureSetter extends InfectiousDiseaseCo
         if (strategy.getDelayFromSymptomsToTreatment() != null) {
             list.addAll(setDelayFromSymptomsToTreatment(strategy.getDelayFromSymptomsToTreatment()));
         }
+        list.addAll(setTreatmentSystemLogistics(strategy.getTreatmentSystemLogistics()));
         list.addAll(setCompliance(strategy.getCompliance()));
         list.addAll(setPathogen(strategy.getPathogen()));
         return list;

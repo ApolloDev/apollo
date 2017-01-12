@@ -116,9 +116,8 @@ function getInitialSEIRCounts(populationFileLocation, censusData) {
     return obj;
 }
 
-function getSchedule(scheduleElements, scheduleName, runLength, startDate) {
+function getSchedule(scheduleElements, scheduleName, runLength) {
 
-    var startTimeMillis = startDate.toGregorianCalendar().getTimeInMillis();
     var obj = new Object();
     obj.print = true;
     if (scheduleElements == null || scheduleElements.size() == 0) {
@@ -126,48 +125,13 @@ function getSchedule(scheduleElements, scheduleName, runLength, startDate) {
     }
 
     var scheduleString = "";
-
-    // process first date separately
-
-    var totalDays = 0;
-    var previousDate = startDate;
-    var scheduleElement = scheduleElements.get(0);
-    var currentDate = scheduleElement.getDateTime();
-
-    var daysBetween = getDaysBetween(previousDate, currentDate);
-    if (daysBetween > 0) {
-        for (var i = 0; i < daysBetween; i++) {
-            totalDays++;
-            scheduleString = scheduleString + "0,";
-        }
+    for (var i = 0; i < scheduleElements.size() - 1; i++) {
+        scheduleString = scheduleString + scheduleElements.get(i) + ",";
     }
+    scheduleString = scheduleString + scheduleElements.get(scheduleElements.size() - 1);
 
-    totalDays++;
-    scheduleString = scheduleString + scheduleElement.getQuantity() + ",";
-    previousDate = currentDate;
-
-    for (var i = 1; i < scheduleElements.size(); i++) {
-
-        scheduleElement = scheduleElements.get(i);
-        currentDate = scheduleElement.getDateTime();
-
-        var daysBetween = getDaysBetween(previousDate, currentDate);
-
-        if (daysBetween > 1) {
-            for (var i = 0; i < daysBetween - 1; i++) {
-                totalDays++;
-                scheduleString = scheduleString + "0,";
-            }
-        }
-
-        totalDays++;
-        scheduleString = scheduleString + scheduleElement.getQuantity() + ",";
-        previousDate = currentDate;
-    }
-    scheduleString = scheduleString.substring(0, scheduleString.length - 1);
-
-    if (totalDays < runLength) {
-        for (i = totalDays; i < runLength; i++) {
+    if (scheduleElements.size() < runLength) {
+        for (i = scheduleElements.size(); i < runLength; i++) {
             scheduleString = scheduleString + ",0";
         }
 
