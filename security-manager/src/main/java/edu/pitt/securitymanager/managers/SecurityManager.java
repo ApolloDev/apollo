@@ -60,15 +60,6 @@ public abstract class SecurityManager {
         loadSecurityProperties(securityPropertiesFile);
     }
 
-    public Authentication getUsernameAuthentication(Authentication authentication) throws ApolloSecurityException {
-        Jws<Claims> claims = getClaims(authentication);
-        UserProfile userProfileData = getUserProfileFromClaims(claims);
-        Authentication newAuthentication = new Authentication();
-        newAuthentication.setAuthorizationType(null);
-        newAuthentication.setPayload(userProfileData.getUserId());
-        return newAuthentication;
-    }
-
     protected Authentication createAuthenticationWithJSON(UserProfile userProfile) {
         Gson gson = new Gson();
         String payload = gson.toJson(createAuthenticationJSONObject(userProfile));

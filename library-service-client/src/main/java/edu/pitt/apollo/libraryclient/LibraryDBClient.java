@@ -9,6 +9,7 @@ import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResul
 import edu.pitt.apollo.library_service_types.v4_0_1.CatalogEntry;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
+import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
 import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -67,6 +68,22 @@ public class LibraryDBClient {
         return dbUtils.addLibraryItem(lic, USER, "Adding H1N1 Infectious Disease Scenario Collections", ROLE);
     }
 
+    private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+
+        IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.addLibraryItem(lic, USER, "Adding vaccination control strategy", ROLE);
+
+    }
+
     private static void setReleaseVersion(LibraryDbUtils dbUtils, int urn, int version) throws UserNotAuthorizedException, ApolloDatabaseExplicitException, ApolloDatabaseException, NoLibraryItemException {
         dbUtils.setReleaseVersion(urn, version, ROLE, USER, "Releasing H1N1 scenario for Allegheny County in 2009");
     }
@@ -74,9 +91,10 @@ public class LibraryDBClient {
     public static void main(String[] args) throws ApolloDatabaseException, ParseException, DatatypeConfigurationException, UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseExplicitException {
         LibraryDbUtils dbUtils = new LibraryDbUtils();
 
-        updateInfectiousDiseaseScenario(dbUtils);
+//        updateInfectiousDiseaseScenario(dbUtils);
 //        AddLibraryItemContainerResult result = addInfectiousDiseaseScenarioCollection(dbUtils);
-//        setReleaseVersion(dbUtils, result.getUrn(), result.getVersion());
+//        addVaccinationControlMeasureToLibrary(dbUtils);
+        setReleaseVersion(dbUtils, 103, 1);
     }
 
 

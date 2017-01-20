@@ -82,6 +82,16 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         }
     }
 
+    public Authentication authorizeServiceOrUser(Authentication authentication) throws ApolloSecurityException {
+        Jws<Claims> claims = getClaims(authentication);
+        if (!isService(claims)) {
+            UserProfile userProfile = getUserProfileFromClaims(claims);
+            return createAuthenticationWithJSON(userProfile);
+        } else {
+            return createAuthenticationWithJSON(claims);
+        }
+    }
+
     private static void checkOwnershipOfRun(UserProfile userProfileData, BigInteger runId) throws ApolloSecurityException {
 
         try (ApolloDbUtils dbUtils = new ApolloDbUtils()) {

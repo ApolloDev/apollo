@@ -26,7 +26,7 @@ INSERT INTO roles (role) VALUES('ISG_ADMIN');
 
 CREATE TABLE library_item_container_urns (
     id SERIAL PRIMARY KEY,
-    role_id INT REFERENCES roles (id) NOT NULL,
+    role_id INT REFERENCES roles (id) NOT NULL
 );
 
 CREATE TABLE library_item_containers (
