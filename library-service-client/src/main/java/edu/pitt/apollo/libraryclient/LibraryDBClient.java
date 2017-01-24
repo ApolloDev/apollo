@@ -11,6 +11,7 @@ import edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection;
 import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
 import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
 import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.text.ParseException;
@@ -84,6 +85,70 @@ public class LibraryDBClient {
 
     }
 
+    private static int updateVaccinationControlMeasureToLibrary(LibraryDbUtils dbUtils, int urn) throws UserNotAuthorizedException, NoLibraryItemException, ApolloDatabaseException, ApolloDatabaseExplicitException {
+
+        IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.updateLibraryItem(urn, ROLE, lic, USER, "Adding vaccination control strategy");
+
+    }
+
+    private static AddLibraryItemContainerResult addAntiviralControlMeasureToLibrary(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+
+        IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlStrategy.getAntiviralControlMeasure();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 Antiviral Control Strategy (Tamiflu)");
+        entry.setTextualIdentifier("2009 Antiviral Control Strategy (Tamiflu)");
+
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.addLibraryItem(lic, USER, "Adding antiviral control strategy", ROLE);
+
+    }
+
+    private static AddLibraryItemContainerResult addIndividualSchoolClosureControlMeasure(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+
+        PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlMeasure();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
+        entry.setTextualIdentifier("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
+
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.addLibraryItem(lic, USER, "Adding individual school control strategy", ROLE);
+
+    }
+
+    private static AddLibraryItemContainerResult addAllSchoolClosureControlMeasure(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+
+        PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlMeasure();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
+
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
+        entry.setTextualIdentifier("A school closure control strategy where all schools in the jurisdiction are closed to mitigate the spread of an infectious disease.");
+
+        lic.setCatalogEntry(entry);
+
+        return dbUtils.addLibraryItem(lic, USER, "Adding all schools control strategy", ROLE);
+
+    }
+
     private static void setReleaseVersion(LibraryDbUtils dbUtils, int urn, int version) throws UserNotAuthorizedException, ApolloDatabaseExplicitException, ApolloDatabaseException, NoLibraryItemException {
         dbUtils.setReleaseVersion(urn, version, ROLE, USER, "Releasing H1N1 scenario for Allegheny County in 2009");
     }
@@ -94,7 +159,10 @@ public class LibraryDBClient {
 //        updateInfectiousDiseaseScenario(dbUtils);
 //        AddLibraryItemContainerResult result = addInfectiousDiseaseScenarioCollection(dbUtils);
 //        addVaccinationControlMeasureToLibrary(dbUtils);
-        setReleaseVersion(dbUtils, 103, 1);
+//        int version = updateVaccinationControlMeasureToLibrary(dbUtils, 103);
+//        AddLibraryItemContainerResult result = addAntiviralControlMeasureToLibrary(dbUtils);
+        AddLibraryItemContainerResult result = addAllSchoolClosureControlMeasure(dbUtils);
+        setReleaseVersion(dbUtils, result.getUrn(), 1);
     }
 
 
