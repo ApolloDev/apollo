@@ -134,6 +134,11 @@ public class LibraryServiceImpl implements LibraryServiceInterface {
     }
 
     @Override
+    public GetLibraryItemDisplayNamesAndURNsResult getLibraryItemDisplayNamesAndURNs(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        return new GetLibraryItemDisplayNamesAndURNsMethod(authentication, roles).getLibraryItemDisplayNamesAndURNs(libraryDbUtils, className, includeUnreleasedItems);
+    }
+
+    @Override
     public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
         return new GetCollectionsMethod(authentication, roles).getCollections(libraryDbUtils, className, includeUnreleasedItems);
     }

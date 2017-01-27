@@ -1,5 +1,6 @@
 package edu.pitt.apollo.database;
 
+import edu.pitt.apollo.LibraryLocationUtility;
 import edu.pitt.apollo.db.BaseDbUtils;
 import edu.pitt.apollo.db.exceptions.*;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
@@ -20,6 +21,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static edu.pitt.apollo.GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE;
@@ -53,9 +55,9 @@ public class LibraryDbUtils extends BaseDbUtils {
     private static final String GETTING_CHANGE_LOG = "getting the change log for library items modeified since the specified date and time";
     private static final String SETTING_ITEM_AS_NOT_RELEASED = "setting the library item as not released";
     private static final boolean LIBRARY_AUTO_COMMIT = false;
-    private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB_400";
-    protected static Logger logger = LoggerFactory.getLogger(LibraryDbUtils.class);
+    private static final String LIBRARY_DB_RESOURCE_NAME = "ApolloLibraryDB_401";
 
+    protected static Logger logger = LoggerFactory.getLogger(LibraryDbUtils.class);
 
     JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 
@@ -379,6 +381,100 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
+    private String getLibraryItemDisplayName(ApolloIndexableItem item, String description) throws IOException {
+        String location, startDateStr, endDateStr = null;
+        if (item instanceof CaseSeries) {
+            CaseSeries caseSeries = (CaseSeries) item;
+            location = caseSeries.getLocation();
+            startDateStr = caseSeries.getCaseSeriesStartDate().toString();
+            if (caseSeries.getCaseSeriesEndDate() != null)
+                endDateStr = caseSeries.getCaseSeriesEndDate().toString();
+        } else if (item instanceof Epidemic) {
+            Epidemic epidemic = (Epidemic) item;
+            location = epidemic.getAdministrativeLocations().toString();
+            startDateStr = epidemic.getEpidemicPeriod().getStartDate().toString();
+            if (epidemic.getEpidemicPeriod().getEndDate() != null)
+                endDateStr = epidemic.getEpidemicPeriod().getEndDate().toString();
+            description = "";
+
+        } else if (item instanceof InfectiousDiseaseScenario) {
+            InfectiousDiseaseScenario infectiousDiseaseScenario = (InfectiousDiseaseScenario) item;
+            if (infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition() != null && infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition().getLocationsIncluded().size() > 0) {
+                location = infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition().getLocationsIncluded().get(0);
+            } else {
+                location = infectiousDiseaseScenario.getScenarioLocation().getApolloLocationCode();
+            }
+            startDateStr = infectiousDiseaseScenario.getScenarioDate().toString();
+
+        } else {
+            return description;
+        }
+
+        String name = getDisplayTitleForLibraryItem(description, location, startDateStr, endDateStr, item);
+        return name;
+    }
+
+    private String getDisplayTitleForLibraryItem(String description, String apolloLocationCode, String startDate, String endDate, ApolloIndexableItem item) throws IOException {
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+        Locale locale = Locale.getDefault();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+        String date = "";
+
+        try {
+            String startYear = "";
+            String endYear = "";
+
+            String startMonth = "";
+            String endMonth = "";
+            startCal.setTime(formatter.parse(startDate.substring(0, startDate.length() - 1)));
+            startYear = Integer.valueOf(startCal.get(Calendar.YEAR)).toString();
+
+            if (endDate != null) {
+                endCal.setTime(formatter.parse(endDate.substring(0, endDate.length() - 1)));
+                endYear = Integer.valueOf(endCal.get(Calendar.YEAR)).toString();
+
+                if (startYear.equals(endYear)) {
+                    startMonth = startCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, locale);
+                    endMonth = endCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, locale);
+
+                    if (startMonth.equals(endMonth)) {
+//						date = startYear + " (" + startMonth + ")";
+                        date = startYear;
+                    } else {
+//						date = startYear + " (" + startMonth + " - " + endMonth + ")";
+                        date = startYear;
+                    }
+                } else {
+                    date = startYear + " - " + endYear;
+                }
+            } else {
+                if (item instanceof InfectiousDiseaseScenario) {
+                    date = startYear;
+                } else {
+                    date = startYear + " - ongoing";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String locationDescription = null;
+        if (apolloLocationCode == null) {
+            locationDescription = "Still in progress.";
+        } else {
+            List<String> adminLocationList = Arrays.asList(apolloLocationCode.replaceAll("\\[|\\]|\"| ", "").split(","));
+
+            locationDescription = LibraryLocationUtility.getLocationNameFromCodes(adminLocationList).trim();
+        }
+
+        if (description.equals("")) {
+            return date + locationDescription;
+        } else {
+            return date + locationDescription + ", " + description;
+        }
+    }
+
     private int updateLibraryItem(int catalogId, LibraryItemContainer item, String userIdentification, Connection existingConnection) throws ApolloDatabaseException,
             ApolloDatabaseExplicitException, UserNotAuthorizedException, NoLibraryItemException {
 
@@ -389,7 +485,9 @@ public class LibraryDbUtils extends BaseDbUtils {
 
             // set the java class name for the library item
             item.getCatalogEntry().setJavaClassName(item.getLibraryItem().getClass().getName());
-
+            // set the display name
+            String displayName = getLibraryItemDisplayName(item.getLibraryItem(), item.getCatalogEntry().getDisplayName());
+            item.getCatalogEntry().setDisplayName(displayName);
 
             String itemJson = getJSONStringForLibraryItem(item);
             String sql = "INSERT INTO library_item_containers (urn_id,json_representation,committer_id) VALUES (?,?::jsonb,?)";
@@ -409,6 +507,8 @@ public class LibraryDbUtils extends BaseDbUtils {
             throw new ApolloDatabaseExplicitException("SQLException updating library item: " + ex.getMessage());
         } catch (JAXBException ex) {
             throw new ApolloDatabaseExplicitException("JAXBException updating library item: " + ex.getMessage());
+        } catch (IOException ex) {
+            throw new ApolloDatabaseExplicitException("IOException updating library item: " + ex.getMessage());
         } finally {
             if (existingConnection == null)
                 try {
@@ -991,6 +1091,47 @@ public class LibraryDbUtils extends BaseDbUtils {
         return getCacheDataResult;
     }
 
+    public List<LibraryItemDisplayNameAndURN> getLibraryItemDisplayNamesAndURNs(String className, boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException {
+        String query = "SELECT urn_id, json_representation->catalogEntry->>displayName, is_latest_release_version," +
+                " version "
+                + "FROM library_item_containers "
+                + "INNER JOIN library_item_container_urns "
+                + "ON library_item_containers.urn_id = library_item_container_urns.id "
+                + " WHERE json_representation->'libraryItem'->>'type' = '" + className + "'";
+        if (!includeUnreleasedItems) { // only select released items
+            query += " AND is_latest_release_version = 'true' ";
+        } else { // select items which can be used by the role_id
+            query += " AND library_item_container_urns.role_id <= " + role_id;
+        }
+
+        QueryResult result = queryObjects(query);
+        List<String> table = result.table;
+        List<String> columns = result.columnNames;
+        int numColumns = columns.size();
+        int numRows = table.size() / numColumns;
+
+        List<LibraryItemDisplayNameAndURN> items = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            int urn = Integer.parseInt(table.get(i * numColumns));
+            String name = table.get(i * numColumns + 1);
+            LibraryItemDisplayNameAndURN libraryItemDisplayNameAndURN = new LibraryItemDisplayNameAndURN();
+            libraryItemDisplayNameAndURN.setUrn(urn);
+            libraryItemDisplayNameAndURN.setDisplayName(name);
+            String released = table.get(i * numColumns + 2);
+            int version = Integer.parseInt(table.get(i * numColumns + 3));
+            libraryItemDisplayNameAndURN.setVersion(version);
+            if (released.equals("t")) {
+                libraryItemDisplayNameAndURN.setIsReleased(true);
+            } else {
+                libraryItemDisplayNameAndURN.setIsReleased(false);
+            }
+
+            items.add(libraryItemDisplayNameAndURN);
+        }
+
+        return items;
+    }
+
     public List<LibraryItemContainer> getLibraryItemContainers(String className, boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException {
         String query = "SELECT json_representation "
                 + "FROM library_item_containers "
@@ -1093,8 +1234,8 @@ public class LibraryDbUtils extends BaseDbUtils {
         return role_ids;
     }
 
-    public List<LibraryItemContainerAndURN> getMembersOfCollection(int urn, int version,
-                                                                   boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException, ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
+    public List<LibraryItemDisplayNameAndURN> getMembersOfCollection(int urn, int version,
+                                                                     boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException, ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
         if (includeUnreleasedItems) {
             checkItemForRoleLevel(urn, role_id);
         }
@@ -1103,7 +1244,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
         String query = "SELECT\n" +
                 "\tlic.urn_id,\n" +
-                "\tlic.json_representation,\n" +
+                "\tlic.json_representation->catalogEntry->>displayName,\n" +
                 "\tis_latest_release_version AS released,\n" +
                 "\tVERSION\n" +
                 "FROM\n" +
@@ -1133,17 +1274,17 @@ public class LibraryDbUtils extends BaseDbUtils {
         query += "\t) members\n" +
                 "\t\tON lic.urn_id :: TEXT = members.collection_member_urns :: TEXT ";
 
-        List<LibraryItemContainerAndURN> libraryItemContainerAndURNs = new ArrayList<>();
+        List<LibraryItemDisplayNameAndURN> libraryItemContainerAndURNs = new ArrayList<>();
         QueryResult result = queryObjects(query);
         List<String> table = result.table;
         List<String> columns = result.columnNames;
         int numColumns = columns.size();
         int numRows = table.size() / numColumns;
         for (int i = 0; i < numRows; i++) {
-            LibraryItemContainerAndURN libraryItemAndUrn = new LibraryItemContainerAndURN();
+            LibraryItemDisplayNameAndURN libraryItemAndUrn = new LibraryItemDisplayNameAndURN();
             int itemUrn = Integer.parseInt(table.get(i * numColumns));
             libraryItemAndUrn.setUrn(itemUrn);
-            String json = table.get(i * numColumns + 1);
+            String name = table.get(i * numColumns + 1);
             String released = table.get(i * numColumns + 2);
             int itemVersion = Integer.parseInt(table.get(i * numColumns + 3));
 
@@ -1154,11 +1295,7 @@ public class LibraryDbUtils extends BaseDbUtils {
             }
 
             libraryItemAndUrn.setVersion(itemVersion);
-            try {
-                libraryItemAndUrn.setLibraryItemContainer(getLibraryItemContainderFromJson(json));
-            } catch (IOException ex) {
-                throw new ApolloDatabaseException("Could not get LibraryItemContainer from json. Json string was: " + json);
-            }
+            libraryItemAndUrn.setDisplayName(name);
 
             libraryItemContainerAndURNs.add(libraryItemAndUrn);
         }

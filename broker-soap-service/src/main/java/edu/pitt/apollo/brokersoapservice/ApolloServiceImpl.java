@@ -511,6 +511,22 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         return result;
     }
 
+    @Override
+    public GetLibraryItemDisplayNamesAndURNsResult getLibraryItemNamesAndURNs(GetLibraryItemDisplayNamesAndURNsMessage getLibraryItemDisplayNamesAndURNsMessage) {
+        GetLibraryItemDisplayNamesAndURNsResult result;
+        try {
+            result = brokerService.getLibraryItemDisplayNamesAndURNs(getLibraryItemDisplayNamesAndURNsMessage.getClassName(),
+                    getLibraryItemDisplayNamesAndURNsMessage.isIncludeUnreleasedItems(), getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
+            result = new GetLibraryItemDisplayNamesAndURNsResult();
+            result.setStatus(createStatus("Error calling getLibraryItemContainers: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
     private Authentication getAuthentication() throws UnsupportedAuthorizationTypeException {
         String authorization = (String) PhaseInterceptorChain.getCurrentMessage().getExchange().get(HTTPHeaderInterceptor.AUTHORIZATION_EXCHANGE_PROPERTY);
         Authentication authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorization);

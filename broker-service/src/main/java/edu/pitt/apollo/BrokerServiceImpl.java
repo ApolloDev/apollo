@@ -564,6 +564,16 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     }
 
     @Override
+    public GetLibraryItemDisplayNamesAndURNsResult getLibraryItemDisplayNamesAndURNs(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
+        try {
+            Authentication newAuthentication = librarySecurityManager.authorizeUserToAccessLibrary(authentication);
+            return getLibraryServiceConnector().getLibraryItemDisplayNamesAndURNs(className, includeUnreleasedItems, newAuthentication);
+        } catch (ApolloSecurityException ex) {
+            throw new LibraryServiceException("ApolloSecurityException: " + ex.getMessage());
+        }
+    }
+
+    @Override
     public GetCollectionsResult getCollections(String className, boolean includeUnreleasedItems, Authentication authentication) throws LibraryServiceException {
         try {
             Authentication newAuthentication = librarySecurityManager.authorizeUserToAccessLibrary(authentication);

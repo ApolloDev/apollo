@@ -7,7 +7,7 @@ import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
 import edu.pitt.apollo.library_service_types.v4_0_1.GetMembersOfCollectionResult;
-import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainerAndURN;
+import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemDisplayNameAndURN;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
@@ -29,7 +29,7 @@ public class GetMembersOfCollectionMethod extends BaseLibraryMethod {
         MethodCallStatus status = new MethodCallStatus();
 
         try {
-            List<LibraryItemContainerAndURN> collections = libraryDbUtils.getMembersOfCollection(urn, version, includeUnreleasedItems, highestRole);
+            List<LibraryItemDisplayNameAndURN> collections = libraryDbUtils.getMembersOfCollection(urn, version, includeUnreleasedItems, highestRole);
 
             result.getMembers().addAll(collections);
             status.setStatus(MethodCallStatusEnum.COMPLETED);

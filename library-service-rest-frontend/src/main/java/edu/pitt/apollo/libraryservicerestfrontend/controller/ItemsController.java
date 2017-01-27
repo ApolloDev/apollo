@@ -251,4 +251,19 @@ public class ItemsController {
             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
         return new GetMembersOfCollectionMethod(SerializationFormat.XML, authorization).getMembers(urn, revision, includeUnreleasedItems);
     }
+
+    @GET
+    @ApiOperation(value = "Retrieve item names and URNs from the library", notes = "Retrieves item names and URNs from the library matching the specified class.", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "")
+    })
+    @RequestMapping(value = "/items/class/{class}/names", method = RequestMethod.GET, headers = "Accept=application/xml; charset=utf-8")
+    public
+    @ResponseBody
+    String getLibraryItemNamesAndURNs(
+            @ApiParam(value = "Item class", required = true) @PathVariable("class") String className,
+            @ApiParam(value = "Include unreleased items", required = false) @RequestParam(value = "unreleased", required = false) Boolean includeUnreleasedItems,
+            @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
+        return new GetLibraryItemNamesAndURNsMethod(SerializationFormat.XML, authorization).getLibraryItems(className, includeUnreleasedItems);
+    }
 }
