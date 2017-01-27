@@ -79,7 +79,7 @@ public class LocationNameUtility {
 //            }
         }
 
-        if (adminLocationList.size() == 1 && baseFeature != null) {
+        if (adminLocationList.size() == 1 && baseFeature != null && baseFeature.getAdminLevel() == SpatialGranularityEnum.ADMIN_3) {
             sb.append(baseFeature.getLocationName()).append(", ");
         }
 

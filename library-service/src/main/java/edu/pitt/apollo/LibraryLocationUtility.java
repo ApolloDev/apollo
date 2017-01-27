@@ -32,8 +32,7 @@ public class LibraryLocationUtility {
 
     public static void main(String[] args) {
         List<String> locations = new ArrayList<>();
-        locations.add("275");
-        locations.add("274");
+        locations.add("7468");
         System.out.println("");
         System.out.println(getLocationNameFromCodes(locations));
     }

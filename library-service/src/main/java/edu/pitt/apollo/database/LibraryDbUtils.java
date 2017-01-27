@@ -469,9 +469,9 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
 
         if (description.equals("")) {
-            return date + locationDescription;
+            return date + ", " + locationDescription;
         } else {
-            return date + locationDescription + ", " + description;
+            return date + ", " + locationDescription + ", " + description;
         }
     }
 
@@ -1244,7 +1244,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
         String query = "SELECT\n" +
                 "\tlic.urn_id,\n" +
-                "\tlic.json_representation->catalogEntry->>displayName,\n" +
+                "\tlic.json_representation->'catalogEntry'->>'displayName',\n" +
                 "\tis_latest_release_version AS released,\n" +
                 "\tVERSION\n" +
                 "FROM\n" +
