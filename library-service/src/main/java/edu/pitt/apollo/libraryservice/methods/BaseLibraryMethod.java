@@ -27,8 +27,9 @@ public class BaseLibraryMethod {
             JsonObject jsonObject = AuthorizationUtility.getJsonFromAuthentication(authentication);
 
             String rolesString = jsonObject.get("libraryRoles").getAsString();
+            rolesString = rolesString.substring(1, rolesString.length() - 1);
             if (rolesString != null) {
-                String[] rolesArray = rolesString.split(",");
+                String[] rolesArray = rolesString.split(", ");
                 for (String role : rolesArray) {
                     if (roles.containsKey(role)) {
                         if (highestRole < roles.get(role)) {

@@ -50,12 +50,12 @@ public class LibraryDBClient {
         return dbUtils.updateLibraryItem(101, ROLE, lic, USER, "Adding H1N1 scenario for Allegheny County in 2009");
     }
 
-    private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioCollection(LibraryDbUtils dbUtils) throws UserNotAuthorizedException, ApolloDatabaseException {
+    private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioCollection(LibraryDbUtils dbUtils, int member) throws UserNotAuthorizedException, ApolloDatabaseException {
         LibraryCollection collection = new LibraryCollection();
         collection.setDescription("H1N1 Infectious Disease Scenarios");
         collection.setJavaClassNameOfMembers("edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario");
         collection.setName("H1N1 Infectious Disease Scenarios");
-        collection.getMembersOfCollection().add(101);
+        collection.getMembersOfCollection().add(member);
 
         LibraryItemContainer lic = new LibraryItemContainer();
         lic.setLibraryItem(collection);
@@ -157,12 +157,14 @@ public class LibraryDBClient {
         LibraryDbUtils dbUtils = new LibraryDbUtils();
 
 //        updateInfectiousDiseaseScenario(dbUtils);
-//        AddLibraryItemContainerResult result = addInfectiousDiseaseScenarioCollection(dbUtils);
+        AddLibraryItemContainerResult result = addInfectiousDiseaseScenario(dbUtils);
+        setReleaseVersion(dbUtils, result.getUrn(), 1);
+        result = addInfectiousDiseaseScenarioCollection(dbUtils, result.getUrn());
+        setReleaseVersion(dbUtils, result.getUrn(), 1);
 //        addVaccinationControlMeasureToLibrary(dbUtils);
 //        int version = updateVaccinationControlMeasureToLibrary(dbUtils, 103);
 //        AddLibraryItemContainerResult result = addAntiviralControlMeasureToLibrary(dbUtils);
-        AddLibraryItemContainerResult result = addAllSchoolClosureControlMeasure(dbUtils);
-        setReleaseVersion(dbUtils, result.getUrn(), 1);
+//        AddLibraryItemContainerResult result = addAllSchoolClosureControlMeasure(dbUtils);
     }
 
 
