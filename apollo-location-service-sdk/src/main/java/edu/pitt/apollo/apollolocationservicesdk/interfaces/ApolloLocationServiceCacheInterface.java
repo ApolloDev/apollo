@@ -1,4 +1,4 @@
-package edu.pitt.apollo.apollolocationservicesdk.Interfaces;
+package edu.pitt.apollo.apollolocationservicesdk.interfaces;
 
 /**
  * Created by mas400 on 7/12/16.

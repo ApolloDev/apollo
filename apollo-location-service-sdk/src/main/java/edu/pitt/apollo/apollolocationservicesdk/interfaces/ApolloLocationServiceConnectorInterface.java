@@ -1,4 +1,4 @@
-package edu.pitt.apollo.apollolocationservicesdk.Interfaces;
+package edu.pitt.apollo.apollolocationservicesdk.interfaces;
 
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationCacheException;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationServicesUnreachableException;

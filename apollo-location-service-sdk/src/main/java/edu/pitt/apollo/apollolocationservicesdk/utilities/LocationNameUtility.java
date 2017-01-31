@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apollolocationservicesdk.utilities;
 
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceInterface;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceFeature;
 import edu.pitt.apollo.types.v4_0_1.SpatialGranularityEnum;
 

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apollolocationservicesdk;
 
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceAsFileInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceAsFileInterface;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceEntry;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

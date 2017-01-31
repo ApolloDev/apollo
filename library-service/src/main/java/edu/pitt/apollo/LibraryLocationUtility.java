@@ -2,7 +2,7 @@ package edu.pitt.apollo;
 
 import edu.pitt.apollo.apollolocationservicesdk.ApolloLocationService;
 import edu.pitt.apollo.apollolocationservicesdk.FileBackedApolloLocationServiceCache;
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceInterface;
 import edu.pitt.apollo.apollolocationservicesdk.LeastRecentlyUsedCache;
 import edu.pitt.apollo.apollolocationservicesdk.connectors.ApolloLocationServiceCachedConnector;
 import edu.pitt.apollo.apollolocationservicesdk.connectors.ApolloLocationServiceWebConnector;

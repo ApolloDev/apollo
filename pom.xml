@@ -91,7 +91,6 @@
         <module>library-service-client</module>
         <module>library-service-rest-connector</module>
         <module>library-service-rest-frontend</module>
-        <module>library-service-war</module>
     </modules>
 
     <dependencies>

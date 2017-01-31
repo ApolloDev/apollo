@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apollolocationservicesdk;
 
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceCacheInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceCacheInterface;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceCacheContainer;
 
 /**

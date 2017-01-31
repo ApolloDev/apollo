@@ -2,12 +2,12 @@ package edu.pitt.apollo.apollolocationservicesdk;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceInterface;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationCacheException;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationServicesUnreachableException;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceFeature;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceFeatureConstants;
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceConnectorInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceConnectorInterface;
 import org.codehaus.jettison.json.JSONException;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;

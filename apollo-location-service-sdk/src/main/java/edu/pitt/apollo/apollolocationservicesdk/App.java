@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apollolocationservicesdk;
 
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceInterface;
 import edu.pitt.apollo.apollolocationservicesdk.connectors.ApolloLocationServiceAsFileConnector;
 import edu.pitt.apollo.apollolocationservicesdk.connectors.ApolloLocationServiceWebConnector;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceFeature;

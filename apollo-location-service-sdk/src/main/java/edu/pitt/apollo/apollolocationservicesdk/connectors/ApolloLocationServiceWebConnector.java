@@ -2,7 +2,7 @@ package edu.pitt.apollo.apollolocationservicesdk.connectors;
 
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationCacheException;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationServicesUnreachableException;
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceConnectorInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceConnectorInterface;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

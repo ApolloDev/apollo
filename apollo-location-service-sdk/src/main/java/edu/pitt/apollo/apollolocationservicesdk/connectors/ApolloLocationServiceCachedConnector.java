@@ -1,9 +1,9 @@
 package edu.pitt.apollo.apollolocationservicesdk.connectors;
 
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceCacheInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceCacheInterface;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationCacheException;
 import edu.pitt.apollo.apollolocationservicesdk.exception.ApolloLocationServicesUnreachableException;
-import edu.pitt.apollo.apollolocationservicesdk.Interfaces.ApolloLocationServiceConnectorInterface;
+import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceConnectorInterface;
 import org.codehaus.jettison.json.JSONException;
 
 import java.io.IOException;

@@ -149,19 +149,25 @@
                     <plugin>
                         <groupId>org.apache.cxf</groupId>
                         <artifactId>cxf-codegen-plugin</artifactId>
-                        <version>${cxf.version}</version>
+                        <version>2.7.3</version>
                         <executions>
                             <execution>
+                                <id>generate-sources</id>
+                                <phase>generate-sources</phase>
                                 <configuration>
-                                    <sourceRoot>
-                                        ${basedir}/target/generated-sources
-                                    </sourceRoot>
+                                    <!--<sourceRoot>-->
+                                        <!--${basedir}/target/generated-sources-->
+                                    <!--</sourceRoot>-->
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
                                                 ${basedir}/../../apollo-xsd-and-types/src/main/resources/synthetic_population_service_v4.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:synthetic_population_service_v4.wsdl</wsdlLocation>
+                                            <extraargs>
+                                                <extraarg>-nexclude</extraarg>
+                                                <extraarg>http://types.apollo.pitt.edu/v4_0_1/</extraarg>
+                                            </extraargs>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>
