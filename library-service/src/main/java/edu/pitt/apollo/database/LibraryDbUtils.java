@@ -782,7 +782,7 @@ public class LibraryDbUtils extends BaseDbUtils {
         checkItemForRoleLevel(urn, role_id);
 
         try (Connection conn = getConnection(false)) {
-            String sql = "SELECT lics.version, cmts.comment, cmts.date_created, users.user_name " +
+            String sql = "SELECT lics.version, cmts.comment, cmts.date_created, users.user_id " +
                     "FROM library_item_containers lics, comments cmts, users WHERE urn_id = " + urn +
                     " AND cmts.item_id = lics.id AND users.id = cmts.user_id";
 
