@@ -314,7 +314,7 @@ function getPeriodMean(uncertainDuration) {
     obj.warnings = [];
 
     var unitOfTime = uncertainDuration.getUnitOfTime();
-    var mean = uncertainDuration.getProbabilityDistribution().getMean();
+    var mean = uncertainDuration.getUncertainValue().getMean();
     if (unitOfTime == "DAY") {
         var adjMean = mean * 24;
         obj.value = adjMean;
@@ -337,7 +337,7 @@ function getPeriodStdDev(uncertainDuration) {
     obj.warnings = [];
 
     var unitOfTime = uncertainDuration.getUnitOfTime();
-    var mean = uncertainDuration.getProbabilityDistribution().getStandardDeviation();
+    var mean = uncertainDuration.getUncertainValue().getStandardDeviation();
     if (unitOfTime == "DAY") {
         var adjMean = mean * 24;
         obj.value = adjMean;
