@@ -11,6 +11,7 @@ import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.runmanagerservice.utils.ApolloSoftwareIdentificationResolver;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
@@ -81,9 +82,18 @@ public class DatastoreAccessorForRunningJobs extends
             runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
 
             boolean needToAddRun = true;
+            BigInteger prevRunId = null;
             if (runIdAndHighestMD5CollisionIdForRun.getCollisionId() > 0) {
                 //just assume they are the same for now...it's not like MD5 will collide, but we should verify
                 needToAddRun = false;
+
+                // check status
+                MethodCallStatusEnum statusEnum =
+                        dbUtils.getStatusOfLastServiceToBeCalledForRun(runIdAndHighestMD5CollisionIdForRun.getRunId()).getStatus();
+                if (statusEnum.equals(MethodCallStatusEnum.FAILED)) {
+                    prevRunId = runIdAndHighestMD5CollisionIdForRun.getRunId();
+                    needToAddRun = true;
+                }
             }
 
             SoftwareIdentification destSoftwareId;
@@ -103,7 +113,7 @@ public class DatastoreAccessorForRunningJobs extends
                         runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1,
                         softwareIdentification,
                         ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-                        destSoftwareId, authenticationJson.get("userName").getAsString());
+                        destSoftwareId, authenticationJson.get("userName").getAsString(), prevRunId);
             } else {
                 insertRunResult.setRunCached(true);
                 insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
