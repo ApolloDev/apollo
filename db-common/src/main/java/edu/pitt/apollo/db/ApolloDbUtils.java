@@ -615,7 +615,7 @@ public class ApolloDbUtils extends BaseDbUtils {
                                          SoftwareIdentification identificationOfSoftwareToRun,
                                          int sourceSoftwareIdKey,
                                          SoftwareIdentification destinationSoftwareForRunSimulationMessage,
-                                         String userId, BigInteger prevRunId) throws ApolloDatabaseException, Md5UtilsException {
+                                         String userId) throws ApolloDatabaseException, Md5UtilsException {
 
         Integer softwareKey = null;
         if (identificationOfSoftwareToRun != null) {
@@ -635,11 +635,7 @@ public class ApolloDbUtils extends BaseDbUtils {
         BigInteger[] runIdSimulationGroupId = new BigInteger[2];
         String md5 = md5Utils.getMd5(runMessage);
 
-        try (Connection conn = getConnection(false)) {
-
-            if (prevRunId != null) {
-                removeRunData(prevRunId);
-            }
+        try (Connection conn = datasource.getConnection()) {
 
             simulationGroupId = getNewSimulationGroupId();
             runIdSimulationGroupId[1] = simulationGroupId;
@@ -683,8 +679,6 @@ public class ApolloDbUtils extends BaseDbUtils {
                 throw new ApolloDatabaseRecordNotInsertedException(
                         "Record not inserted!");
             }
-
-            conn.commit();
 
             List<BigInteger> runIds = new ArrayList<>();
             runIds.add(runId);
@@ -1147,8 +1141,7 @@ public class ApolloDbUtils extends BaseDbUtils {
         // find out if there any other runs that reference this data content
 //        String query = "SELECT content_id FROM run_data WHERE run_id = ?";
 //
-        try (Connection conn = datasource.getConnection()){
-
+        try (Connection conn = datasource.getConnection()) {
 //            PreparedStatement pstmt = conn.prepareStatement(query);
 //            pstmt.setInt(1, runId.intValue());
 //            ResultSet rs = pstmt.executeQuery();
@@ -1175,50 +1168,49 @@ public class ApolloDbUtils extends BaseDbUtils {
 //            pstmt.setInt(1, runId.intValue());
 //            pstmt.execute();
 
-                String query = "SELECT simulation_group_id FROM run WHERE id = ?";
-                PreparedStatement pstmt = conn.prepareStatement(query);
-                pstmt.setInt(1, runId.intValue());
-                ResultSet rs = pstmt.executeQuery();
-                List<Integer> simulationGroupIds = new ArrayList<>();
-                if (rs.next()) {
-                    if (!rs.wasNull()) {
-                        simulationGroupIds.add(rs.getInt(1));
-                    }
-
+            String query = "SELECT simulation_group_id FROM run WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, runId.intValue());
+            ResultSet rs = pstmt.executeQuery();
+            List<Integer> simulationGroupIds = new ArrayList<>();
+            if (rs.next()) {
+                if (!rs.wasNull()) {
+                    simulationGroupIds.add(rs.getInt(1));
                 }
 
-                query = "DELETE FROM run_status WHERE run_id = ?";
-                pstmt = conn.prepareStatement(query);
-                pstmt.setInt(1, runId.intValue());
+            }
+
+            query = "DELETE FROM run_status WHERE run_id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, runId.intValue());
+            pstmt.execute();
+
+            query = "DELETE FROM time_series WHERE run_id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, runId.intValue());
+            pstmt.execute();
+
+            query = "DELETE FROM run WHERE id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, runId.intValue());
+            pstmt.execute();
+
+            for (Integer simulation_group_id : simulationGroupIds) {
+                // int simulation_group_id = rs.getInt(1);
+                String innerQuery = "DELETE FROM simulation_group_definition WHERE simulation_group_id = ?";
+                pstmt = conn.prepareStatement(innerQuery);
+                pstmt.setInt(1, simulation_group_id);
                 pstmt.execute();
 
-//            query = "DELETE FROM time_series WHERE run_id = ?";
-//            pstmt = conn.prepareStatement(query);
-//            pstmt.setInt(1, runId.intValue());
-//            pstmt.execute();
+                innerQuery = "DELETE FROM simulation_groups WHERE id = ?";
+                pstmt = conn.prepareStatement(innerQuery);
+                pstmt.setInt(1, simulation_group_id);
+                pstmt.execute();
 
-                for (Integer simulation_group_id : simulationGroupIds) {
-                    // int simulation_group_id = rs.getInt(1);
-                    String innerQuery = "DELETE FROM simulation_group_definition WHERE simulation_group_id = ?";
-                    pstmt = conn.prepareStatement(innerQuery);
-                    pstmt.setInt(1, simulation_group_id);
-                    pstmt.execute();
-
-                    query = "DELETE FROM run WHERE id = ?";
-                    pstmt = conn.prepareStatement(query);
-                    pstmt.setInt(1, runId.intValue());
-                    pstmt.execute();
-
-                    innerQuery = "DELETE FROM simulation_groups WHERE id = ?";
-                    pstmt = conn.prepareStatement(innerQuery);
-                    pstmt.setInt(1, simulation_group_id);
-                    pstmt.execute();
-
-                }
-
+            }
         } catch (SQLException ex) {
             throw new ApolloDatabaseException(
-                    "SQLException attempting to remove data for run "
+                    "SQLException attempting to remove all data for run "
                             + runId + ": " + ex.getMessage());
         }
 
