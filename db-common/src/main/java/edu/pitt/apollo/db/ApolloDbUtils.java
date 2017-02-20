@@ -615,7 +615,11 @@ public class ApolloDbUtils extends BaseDbUtils {
                                          SoftwareIdentification identificationOfSoftwareToRun,
                                          int sourceSoftwareIdKey,
                                          SoftwareIdentification destinationSoftwareForRunSimulationMessage,
-                                         String userId) throws ApolloDatabaseException, Md5UtilsException {
+                                         String userId, BigInteger previousRunId) throws ApolloDatabaseException, Md5UtilsException {
+
+        if (previousRunId != null) {
+            removeRunData(previousRunId);
+        }
 
         Integer softwareKey = null;
         if (identificationOfSoftwareToRun != null) {
@@ -1185,15 +1189,10 @@ public class ApolloDbUtils extends BaseDbUtils {
             pstmt.setInt(1, runId.intValue());
             pstmt.execute();
 
-            query = "DELETE FROM time_series WHERE run_id = ?";
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, runId.intValue());
-            pstmt.execute();
-
-            query = "DELETE FROM run WHERE id = ?";
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, runId.intValue());
-            pstmt.execute();
+//            query = "DELETE FROM time_series WHERE run_id = ?";
+//            pstmt = conn.prepareStatement(query);
+//            pstmt.setInt(1, runId.intValue());
+//            pstmt.execute();
 
             for (Integer simulation_group_id : simulationGroupIds) {
                 // int simulation_group_id = rs.getInt(1);
@@ -1201,8 +1200,15 @@ public class ApolloDbUtils extends BaseDbUtils {
                 pstmt = conn.prepareStatement(innerQuery);
                 pstmt.setInt(1, simulation_group_id);
                 pstmt.execute();
+            }
 
-                innerQuery = "DELETE FROM simulation_groups WHERE id = ?";
+                query = "DELETE FROM run WHERE id = ?";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setInt(1, runId.intValue());
+                pstmt.execute();
+
+            for (Integer simulation_group_id : simulationGroupIds) {
+                String innerQuery = "DELETE FROM simulation_groups WHERE id = ?";
                 pstmt = conn.prepareStatement(innerQuery);
                 pstmt.setInt(1, simulation_group_id);
                 pstmt.execute();
