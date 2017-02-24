@@ -14,7 +14,7 @@ import java.io.IOException;
  * the ApolloTranslator class.
  * 
  */
-public class JavaScriptAccessableMethods {
+public class JavaScriptAccessibleMethods {
 
 	public static void printline(String s) {
 		System.out.println(s);
