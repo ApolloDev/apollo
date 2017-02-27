@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class ApolloServicesSecurityManager extends SecurityManager {
 
+    private static final String GENERAL_APOLLO_SOFTWARE_ROLE = "ISG_USER";
     private static final String IS_SERVICE_KEY = "isService";
     private static final String SECURITY_FILE = "apollo_security.properties";
 
@@ -37,23 +38,16 @@ public class ApolloServicesSecurityManager extends SecurityManager {
     public AuthenticationAndUserId authorizeUserForSpecifiedSoftware(Authentication authentication, SoftwareIdentification softwareId)
             throws ApolloSecurityException {
         // TODO update apollo authorization to use roles
-//        UserProfile userProfile = getUserProfileFromAuthentication(authentication);
-//
-//        boolean foundSoftware = false;
-//        for (String role : userProfile.getRoles()) {
-//            if (softwareEqual(userSoftwareIdentification, softwareId)) {
-//                foundSoftware = true;
-//                break;
-//            }
-//        }
-//
-//        if (!foundSoftware) {
-//            throw new UserNotAuthorizedException("The user is not authorized to run the specified software");
-//        }
-//
-//        setAuthenticationUserName(authentication, userProfile.getUserId());
-//        return userProfile.getUserId();
-        return null;
+        UserProfile userProfile = getUserProfileFromAuthentication(authentication);
+        if (!userProfileHasRole(userProfile, GENERAL_APOLLO_SOFTWARE_ROLE)) {
+            throw new UserNotAuthorizedException("The user is not authorized to access the library");
+        }
+
+        AuthenticationAndUserId authenticationAndUserId = new AuthenticationAndUserId();
+        authenticationAndUserId.setUserId(userProfile.getUserId());
+        authenticationAndUserId.setAuthentication(createAuthenticationWithJSON(userProfile));
+
+        return authenticationAndUserId;
     }
 
     public Authentication authorizeService(Authentication authentication) throws ApolloSecurityException {
@@ -71,23 +65,7 @@ public class ApolloServicesSecurityManager extends SecurityManager {
         Jws<Claims> claims = getClaims(authentication);
         if (!isService(claims)) {
 
-            UserProfile userProfile = getUserProfileFromClaims(claims);
-
-            //TODO fix filter software list
-//            List<SoftwareIdentification> userSoftwareList = userProfile.getAllowedSoftware();
-//            for (Iterator<ServiceRecord> iterator = serviceRecords.iterator(); iterator.hasNext(); ) {
-//                boolean userAllowedToRun = false;
-//                SoftwareIdentification software = iterator.next().getSoftwareIdentification();
-//                for (SoftwareIdentification userSoftware : userSoftwareList) {
-//                    if (softwareEqual(software, userSoftware)) {
-//                        userAllowedToRun = true;
-//                        break;
-//                    }
-//                }
-//                if (!userAllowedToRun) {
-//                    iterator.remove();
-//                }
-//            }
+            // right now verified users are allowed to run all software
         }
     }
 
@@ -98,6 +76,16 @@ public class ApolloServicesSecurityManager extends SecurityManager {
             UserProfile userProfile = getUserProfileFromClaims(claims);
             // check ownership
             checkOwnershipOfRun(userProfile, runId);
+            return createAuthenticationWithJSON(userProfile);
+        } else {
+            return createAuthenticationWithJSON(claims);
+        }
+    }
+
+    public Authentication authorizeServiceOrUser(Authentication authentication) throws ApolloSecurityException {
+        Jws<Claims> claims = getClaims(authentication);
+        if (!isService(claims)) {
+            UserProfile userProfile = getUserProfileFromClaims(claims);
             return createAuthenticationWithJSON(userProfile);
         } else {
             return createAuthenticationWithJSON(claims);
@@ -138,16 +126,21 @@ public class ApolloServicesSecurityManager extends SecurityManager {
 //        Authentication authentication = new Authentication();
 //        authentication.setAuthorizationType(AuthorizationTypeEnum.SSO);
 //        authentication.setPayload("");
-//        getUsernameAuthentication(authentication);
+//        Authentication auth2 = new ApolloServicesSecurityManager().getUsernameAuthentication(authentication);
+//        System.out.println("done");
     }
 
     @Override
     protected JsonObject createAuthenticationJSONObject(UserProfile userProfile) {
-        return null;
+        JsonObject object = new JsonObject();
+        object.addProperty(USERNAME_KEY, userProfile.getUserId());
+        return object;
     }
 
     @Override
     protected JsonObject createAuthenticationJSONObject(Jws<Claims> claims) {
-        return null;
+        JsonObject object = new JsonObject();
+        object.addProperty(USERNAME_KEY, claims.getBody().get(USER_ID_USER_PROFILE_KEY).toString());
+        return object;
     }
 }

@@ -11,6 +11,7 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: Nick Millett
@@ -21,8 +22,8 @@ import java.util.List;
  */
 public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod extends BaseLibraryMethod {
 
-    public GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(LibraryDbUtils dbUtils,
@@ -33,7 +34,7 @@ public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod extends Base
         result.setStatus(status);
 
         try {
-            List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, role);
+            List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, highestRole);
             result.getChangeLogEntries().addAll(changeLog);
 
             status.setStatus(MethodCallStatusEnum.COMPLETED);

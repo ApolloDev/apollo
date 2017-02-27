@@ -30,9 +30,16 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	protected DefReproductionNumber reproductionNumberType = DefReproductionNumber.R0;
 	protected final RunSimulationMessageFactory.RunSimulationMessageDiseaseType runSimulationMessageDiseaseType;
 
-	protected AbstractSimulatorTest(RunSimulationMessageFactory.RunSimulationMessageDiseaseType type, TranslationMode translationMode) {
+	protected AbstractSimulatorTest(RunSimulationMessageFactory.RunSimulationMessageDiseaseType type, TranslationMode translationMode,
+                                    String htmlFileName, String outputDirectory, String translationFile, String javaScriptFile,
+                                    String configFile) {
 		this.runSimulationMessageDiseaseType = type;
         this.translationMode = translationMode;
+        this.htmlFileName = htmlFileName;
+        this.outputDirectory = outputDirectory;
+        this.configFile = configFile;
+        this.translationFile = translationFile;
+        this.javaScriptFile = javaScriptFile;
 	}
 
 	@Override
@@ -172,9 +179,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 		checkBaseParameters();
 	}
 	public void runVaccControlMeasureTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.VACC_CM, ControlMeasureTypeEnum.NO_AV_CM,
-                ControlMeasureTypeEnum.NO_SC_CM, ControlMeasureTypeEnum.NO_VI_CM, ControlMeasureTypeEnum.NO_VQ_CM,
-                ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.VACC_CM);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		// check that the base parameters were written correctly
@@ -185,9 +190,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	}
 
 	public void runAvControlMeasureTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM, ControlMeasureTypeEnum.AV_CM,
-				ControlMeasureTypeEnum.NO_SC_CM, ControlMeasureTypeEnum.NO_VI_CM, ControlMeasureTypeEnum.NO_VQ_CM,
-				ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.AV_CM);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		// check that the base parameters were written correctly
@@ -208,9 +211,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	}
 
 	public void runSchoolClosureControlMeasure_AllSchools_FixedStartTimeTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM,
-				ControlMeasureTypeEnum.NO_AV_CM, ControlMeasureTypeEnum.ALL_SC_CM_FIXED, ControlMeasureTypeEnum.NO_VI_CM,
-				ControlMeasureTypeEnum.NO_VQ_CM, ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.ALL_SC_CM_FIXED);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();
@@ -218,20 +219,14 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	}
 
 	public void runSchoolClosureControlMeasure_AllSchools_ReactiveStartTimeTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM,
-				ControlMeasureTypeEnum.NO_AV_CM, ControlMeasureTypeEnum.ALL_SC_CM_REACTIVE, ControlMeasureTypeEnum.NO_VI_CM,
-				ControlMeasureTypeEnum.NO_VQ_CM, ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.ALL_SC_CM_REACTIVE);
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();
 		checkSchoolClosureControlMeasure(true, false);
 	}
 
 	public void runSchoolClosureControlMeasure_IndividualSchools_FixedStartTimeTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM,
-				ControlMeasureTypeEnum.NO_AV_CM, ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_FIXED,
-				ControlMeasureTypeEnum.NO_VI_CM,
-				ControlMeasureTypeEnum.NO_VQ_CM,
-				ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_FIXED);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();
@@ -239,11 +234,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	}
 
 	public void runSchoolClosureControlMeasure_IndividualSchools_ReactiveStartTimeTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM,
-				ControlMeasureTypeEnum.NO_AV_CM, ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_REACTIVE,
-				ControlMeasureTypeEnum.NO_VI_CM,
-				ControlMeasureTypeEnum.NO_VQ_CM,
-				ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.INDIVIDUAL_SC_CM_REACTIVE);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();
@@ -273,7 +264,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	public void runVaccAvAllScFixedVoluntaryLibralComboTest() {
 		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.VACC_CM, ControlMeasureTypeEnum.AV_CM,
 				ControlMeasureTypeEnum.ALL_SC_CM_FIXED, ControlMeasureTypeEnum.VI_CM,
-				ControlMeasureTypeEnum.VQ_CM, ControlMeasureTypeEnum.LSL_CM, ControlMeasureTypeEnum.NO_DRUG_CM);
+				ControlMeasureTypeEnum.VQ_CM, ControlMeasureTypeEnum.LSL_CM);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();
@@ -296,9 +287,7 @@ public abstract class AbstractSimulatorTest extends TestCase {
 	}
 
 	public void runDrugCmTest() {
-		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.NO_VACC_CM, ControlMeasureTypeEnum.NO_AV_CM,
-				ControlMeasureTypeEnum.NO_SC_CM, ControlMeasureTypeEnum.NO_VI_CM,
-				ControlMeasureTypeEnum.NO_VQ_CM, ControlMeasureTypeEnum.NO_LSL_CM, ControlMeasureTypeEnum.DRUG_CM);
+		EnumSet<ControlMeasureTypeEnum> controlMeasureTypes = EnumSet.of(ControlMeasureTypeEnum.DRUG_CM);
 
 		translateNewSimulatorConfiguration(controlMeasureTypes);
 		checkBaseParameters();

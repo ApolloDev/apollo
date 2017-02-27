@@ -29,17 +29,8 @@ public class TestEbola extends AbstractSimulatorTest {
 
 	public TestEbola() {
 		// influenza is similar enough we can use it for now
-		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.EBOLA, TranslationMode.PLAIN_TEXT);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-        htmlFileName = HTML_FILE_NAME;
-        outputDirectory = OUTPUT_DIR;
-        configFile = CONFIG_FILE;
-        translationFile = TRANSLATION_FILE;
-        javaScriptFile = JAVASCRIPT_FILE;
-		super.setUp();
+		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.EBOLA, TranslationMode.PLAIN_TEXT,
+                HTML_FILE_NAME, OUTPUT_DIR, TRANSLATION_FILE, JAVASCRIPT_FILE, CONFIG_FILE);
 	}
 
 	@Override

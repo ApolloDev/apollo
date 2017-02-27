@@ -17,10 +17,7 @@ package edu.pitt.apollo.brokersoapservice;
 import edu.pitt.apollo.BrokerServiceImpl;
 import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunMessage;
 import edu.pitt.apollo.data_service_types.v4_0_1.GetSoftwareIdentificationForRunResult;
-import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.exception.*;
 import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
 import edu.pitt.apollo.library_service_types.v4_0_1.*;
 import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
@@ -68,10 +65,10 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetSoftwareIdentificationForRunResult result = new GetSoftwareIdentificationForRunResult();
         try {
             SoftwareIdentification softwareIdentification = brokerService.getSoftwareIdentificationForRun(getSoftwareIdentificationForRunMessage.getRunId(),
-                    getSoftwareIdentificationForRunMessage.getAuthentication());
+                    getAuthentication());
             result.setSoftwareIdentification(softwareIdentification);
             result.setMethodCallStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (RunManagementException ex) {
+        } catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
             result.setMethodCallStatus(createStatus("Error calling getSoftwareIdentificationForRun: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
         }
@@ -84,9 +81,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetCollectionsResult result;
         try {
             result = brokerService.getCollections(getCollectionsMessage.getClassName(), getCollectionsMessage.isIncludeUnreleasedItems(),
-                    getCollectionsMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetCollectionsResult();
             result.setStatus(createStatus("Error calling getCollections: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -99,7 +96,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     public RunResult runSimulations(
             edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage) {
         try {
-            return brokerService.runSimulations(runSimulationsMessage, getAuthetication());
+            return brokerService.runSimulations(runSimulationsMessage, getAuthentication());
         } catch (UnsupportedAuthorizationTypeException ex) {
             RunResult result = new RunResult();
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
@@ -112,9 +109,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetLibraryItemContainersResult result;
         try {
             result = brokerService.getLibraryItemContainers(getLibraryItemContainersMessage.getClassName(),
-                    getLibraryItemContainersMessage.isIncludeUnreleasedItems(), getLibraryItemContainersMessage.getAuthentication());
+                    getLibraryItemContainersMessage.isIncludeUnreleasedItems(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetLibraryItemContainersResult();
             result.setStatus(createStatus("Error calling getLibraryItemContainers: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -129,9 +126,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = brokerService.reviseLibraryItem(updateLibraryItemContainerMessage.getUrn(),
                     updateLibraryItemContainerMessage.getLibraryItemContainer(), updateLibraryItemContainerMessage.getComment(),
-                    updateLibraryItemContainerMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new UpdateLibraryItemContainerResult();
             result.setStatus(createStatus("Error calling updateLibraryItemContainer: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -146,9 +143,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = brokerService.approveRevisionOfLibraryItem(setReleaseVersionForLibraryItemMessage.getUrn(),
                     setReleaseVersionForLibraryItemMessage.getVersion(), setReleaseVersionForLibraryItemMessage.getComment(),
-                    setReleaseVersionForLibraryItemMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new SetReleaseVersionResult();
             result.setStatus(createStatus("Error calling setReleaseVersionForLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -161,9 +158,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     public GetCacheDataResult getCacheData(GetCacheDataMessage getCacheDataMessage) {
         GetCacheDataResult result;
         try {
-            result = brokerService.getCacheData(getCacheDataMessage.getAuthentication());
+            result = brokerService.getCacheData(getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetCacheDataResult();
             result.setStatus(createStatus("Error calling getCacheData: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -177,9 +174,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetCommentsResult result;
         try {
             result = brokerService.getCommentsForLibraryItem(getCommentsForLibraryItemMessage.getUrn(),
-                    getCommentsForLibraryItemMessage.getVersion(), getCommentsForLibraryItemMessage.getAuthentication());
+                    getCommentsForLibraryItemMessage.getVersion(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetCommentsResult();
             result.setStatus(createStatus("Error calling getCommentsForLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -193,9 +190,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         ModifyGroupOwnershipResult result;
         try {
             result = brokerService.grantGroupAccessToLibraryItem(grantGroupAccessToLibraryItemMessage.getUrn(),
-                    grantGroupAccessToLibraryItemMessage.getGroup(), grantGroupAccessToLibraryItemMessage.getAuthentication());
+                    grantGroupAccessToLibraryItemMessage.getGroup(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new ModifyGroupOwnershipResult();
             result.setStatus(createStatus("Error calling grantGroupAccessToLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -209,9 +206,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         SetLibraryItemAsNotReleasedResult result;
         try {
             result = brokerService.hideLibraryItem(setLibraryItemAsNotReleasedMessage.getUrn(),
-                    setLibraryItemAsNotReleasedMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new SetLibraryItemAsNotReleasedResult();
             result.setStatus(createStatus("Error calling setLibraryItemAsNotReleased: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -226,9 +223,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = brokerService.getChangeLogForLibraryItemsModifiedSinceDateTime(
                     getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getDateTime(),
-                    getChangeLogForLibraryItemsModifiedSinceDateTimeMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
             result.setStatus(createStatus("Error calling getChangeLogForLibraryItemsModifiedSinceDateTime: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -242,9 +239,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetLibraryItemContainerResult result;
         try {
             result = brokerService.getLibraryItem(getLibraryItemContainerMessage.getUrn(),
-                    getLibraryItemContainerMessage.getVersion(), getLibraryItemContainerMessage.getAuthentication());
+                    getLibraryItemContainerMessage.getVersion(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetLibraryItemContainerResult();
             result.setStatus(createStatus("Error calling getLibraryItemContainer: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -258,9 +255,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         ModifyGroupOwnershipResult result;
         try {
             result = brokerService.removeGroupAccessToLibraryItem(removeGroupAccessToLibraryItemMessage.getUrn(),
-                    removeGroupAccessToLibraryItemMessage.getGroup(), removeGroupAccessToLibraryItemMessage.getAuthentication());
+                    removeGroupAccessToLibraryItemMessage.getGroup(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new ModifyGroupOwnershipResult();
             result.setStatus(createStatus("Error calling removeGroupAccessToLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -274,9 +271,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         AddLibraryItemContainerResult result;
         try {
             result = brokerService.addLibraryItem(addLibraryItemContainerMessage.getLibraryItemContainer(),
-                    addLibraryItemContainerMessage.getComment(), addLibraryItemContainerMessage.getAuthentication());
+                    addLibraryItemContainerMessage.getComment(), getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new AddLibraryItemContainerResult();
             result.setStatus(createStatus("Error calling addLibraryItemContainer: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -290,9 +287,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetRevisionsResult result;
         try {
             result = brokerService.getAllRevisionsOfLibraryItem(getVersionNumbersForLibraryItemMessage.getUrn(),
-                    getVersionNumbersForLibraryItemMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetRevisionsResult();
             result.setStatus(createStatus("Error calling getVersionNumbersForLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -311,7 +308,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
 
         GetRegisteredServicesResult result = new GetRegisteredServicesResult();
         try {
-            result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(getAuthetication()));
+            result.getServiceRecords().addAll(brokerService.getListOfRegisteredSoftwareRecords(getAuthentication()));
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
         } catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
             result = new GetRegisteredServicesResult();
@@ -341,7 +338,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     public RunResult runSimulation(
             @WebParam(name = "runSimulationMessage", targetNamespace = "") RunSimulationMessage runSimulationMessage) {
         try {
-            return brokerService.runSimulation(runSimulationMessage, getAuthetication());
+            return brokerService.runSimulation(runSimulationMessage, getAuthentication());
         } catch (UnsupportedAuthorizationTypeException ex) {
             RunResult result = new RunResult();
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
@@ -355,9 +352,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = brokerService.addReviewerCommentToLibraryItem(addReviewerCommentToLibraryItemMessage.getUrn(),
                     addReviewerCommentToLibraryItemMessage.getVersion(), addReviewerCommentToLibraryItemMessage.getComment(),
-                    addReviewerCommentToLibraryItemMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new AddReviewerCommentResult();
             result.setStatus(createStatus("Error calling addReviewerCommentToLibraryItem: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -371,9 +368,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetLibraryItemURNsResult result;
         try {
             result = brokerService.getLibraryItemURNs(getLibraryItemURNsMessage.getItemType(),
-                    getLibraryItemURNsMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (UnsupportedAuthorizationTypeException | LibraryServiceException ex) {
             result = new GetLibraryItemURNsResult();
             result.setStatus(createStatus("Error calling getLibraryItemURNs: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -390,7 +387,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     public RunResult runVisualization(
             @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
         try {
-            return brokerService.runVisualization(runVisualizationMessage, getAuthetication());
+            return brokerService.runVisualization(runVisualizationMessage, getAuthentication());
         } catch (UnsupportedAuthorizationTypeException ex) {
             RunResult result = new RunResult();
             result.setMethodCallStatus(createStatus("UnsupportedAuthorizationTypeException: " + ex.getMessage(), MethodCallStatusEnum.FAILED));
@@ -406,7 +403,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
     public MethodCallStatus getRunStatus(
             @WebParam(name = "runStatusRequest", targetNamespace = "") RunStatusRequest runStatusRequest) {
         try {
-            return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthetication());
+            return brokerService.getRunStatus(runStatusRequest.getRunIdentification(), getAuthentication());
         } catch (RunManagementException | UnsupportedAuthorizationTypeException ex) {
             return createStatus("Error running getRunStatus: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED);
@@ -434,7 +431,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
                     getFileUrlRequest.getFileIdentification().getLabel(),
                     getFileUrlRequest.getFileIdentification().getFormat(),
                     getFileUrlRequest.getFileIdentification().getType(),
-                    getAuthetication());
+                    getAuthentication());
             result.setUrl(url);
             status.setMessage("Completed");
             status.setStatus(MethodCallStatusEnum.COMPLETED);
@@ -461,7 +458,7 @@ public class ApolloServiceImpl implements ApolloServiceEI {
 
         try {
             List<FileIdentification> files = brokerService.listFilesForRun(listFilesForRunRequest.getRunId(),
-                    getAuthetication());
+                    getAuthentication());
             result.getFiles().addAll(files);
             status.setMessage("Completed");
             status.setStatus(MethodCallStatusEnum.COMPLETED);
@@ -487,9 +484,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         try {
             result = brokerService.getMembersOfCollection(getMembersOfCollectionMessage.getCollectionUrn(),
                     getMembersOfCollectionMessage.getCollectionVersion(), getMembersOfCollectionMessage.isIncludeUnreleasedItems(),
-                    getMembersOfCollectionMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetMembersOfCollectionResult();
             result.setStatus(createStatus("Error calling getMembersOfCollection: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -503,9 +500,9 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         GetReleaseVersionResult result;
         try {
             result = brokerService.getApprovedRevisionOfLibraryItem(getLibraryItemReleaseVersionMessage.getUrn(),
-                    getLibraryItemReleaseVersionMessage.getAuthentication());
+                    getAuthentication());
             result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
-        } catch (LibraryServiceException ex) {
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
             result = new GetReleaseVersionResult();
             result.setStatus(createStatus("Error calling getLibraryItemReleaseVersion: " + ex.getMessage(),
                     MethodCallStatusEnum.FAILED));
@@ -514,7 +511,23 @@ public class ApolloServiceImpl implements ApolloServiceEI {
         return result;
     }
 
-    private Authentication getAuthetication() throws UnsupportedAuthorizationTypeException {
+    @Override
+    public GetLibraryItemDisplayNamesAndURNsResult getLibraryItemNamesAndURNs(GetLibraryItemDisplayNamesAndURNsMessage getLibraryItemDisplayNamesAndURNsMessage) {
+        GetLibraryItemDisplayNamesAndURNsResult result;
+        try {
+            result = brokerService.getLibraryItemDisplayNamesAndURNs(getLibraryItemDisplayNamesAndURNsMessage.getClassName(),
+                    getLibraryItemDisplayNamesAndURNsMessage.isIncludeUnreleasedItems(), getAuthentication());
+            result.setStatus(createStatus("Success", MethodCallStatusEnum.COMPLETED));
+        } catch (LibraryServiceException | UnsupportedAuthorizationTypeException ex) {
+            result = new GetLibraryItemDisplayNamesAndURNsResult();
+            result.setStatus(createStatus("Error calling getLibraryItemContainers: " + ex.getMessage(),
+                    MethodCallStatusEnum.FAILED));
+        }
+
+        return result;
+    }
+
+    private Authentication getAuthentication() throws UnsupportedAuthorizationTypeException {
         String authorization = (String) PhaseInterceptorChain.getCurrentMessage().getExchange().get(HTTPHeaderInterceptor.AUTHORIZATION_EXCHANGE_PROPERTY);
         Authentication authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorization);
         return authentication;

@@ -63,6 +63,8 @@ public class RestServiceUtils {
             authorizationString = "JWT=" + authentication.getPayload();
         } else if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.SSO)) {
             authorizationString = "UserIdToken=" + authentication.getPayload();
+        } else if (authentication.getAuthorizationType().equals(AuthorizationTypeEnum.JSON)) {
+            authorizationString = "JSON=" + authentication.getPayload();
         }
 
         headers.set("Authorization", authorizationString);

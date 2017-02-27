@@ -1,16 +1,20 @@
 package edu.pitt.apollo.runmanagerservice.datastore.accessors;
 
+import com.google.gson.JsonObject;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.db.RunIdAndCollisionId;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.runmanagerservice.utils.ApolloSoftwareIdentificationResolver;
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
 import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,9 +82,18 @@ public class DatastoreAccessorForRunningJobs extends
             runIdAndHighestMD5CollisionIdForRun = dbUtils.getRunIdAndHighestMD5CollisionIdForRun(message);
 
             boolean needToAddRun = true;
+            BigInteger previousRunId = null;
             if (runIdAndHighestMD5CollisionIdForRun.getCollisionId() > 0) {
                 //just assume they are the same for now...it's not like MD5 will collide, but we should verify
-                needToAddRun = false;
+
+                MethodCallStatusEnum status = dbUtils.getStatusOfLastServiceToBeCalledForRun
+                        (runIdAndHighestMD5CollisionIdForRun.getRunId()).getStatus();
+                if (status.equals(MethodCallStatusEnum.FAILED)) {
+                    needToAddRun = true;
+                    previousRunId = runIdAndHighestMD5CollisionIdForRun.getRunId();
+                } else {
+                    needToAddRun = false;
+                }
             }
 
             SoftwareIdentification destSoftwareId;
@@ -92,12 +105,15 @@ public class DatastoreAccessorForRunningJobs extends
             BigInteger[] runIdSimulationGroupId;
             if (needToAddRun) {
                 insertRunResult.setRunCached(false);
+
+                JsonObject authenticationJson = AuthorizationUtility.getJsonFromAuthentication(authentication);
+
                 runIdSimulationGroupId = dbUtils.addSimulationRun(
                         message,
                         runIdAndHighestMD5CollisionIdForRun.getCollisionId() + 1,
                         softwareIdentification,
                         ApolloServiceConstants.END_USER_APPLICATION_SOURCE_ID,
-                        destSoftwareId, authentication.getPayload());
+                        destSoftwareId, authenticationJson.get("userName").getAsString(), previousRunId);
             } else {
                 insertRunResult.setRunCached(true);
                 insertRunResult.setRunId(runIdAndHighestMD5CollisionIdForRun.getRunId());
@@ -105,7 +121,7 @@ public class DatastoreAccessorForRunningJobs extends
             }
             insertRunResult.setRunId(runIdSimulationGroupId[0]);
             return insertRunResult;
-        } catch (ApolloDatabaseException | Md5UtilsException e) {
+        } catch (ApolloDatabaseException | Md5UtilsException | UnsupportedAuthorizationTypeException e) {
             throw new RunManagementException("Error adding run to the database.  Error (" + e.getClass().getName() + ") was " + e.getMessage());
         }
     }

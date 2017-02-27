@@ -20,17 +20,8 @@ public class TestSeir extends AbstractSimulatorTest {
 	private static final String CONFIG_FILE = OUTPUT_DIR + File.separator + "config.txt";
 
 	public TestSeir() {
-		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.INFLUENZA, TranslationMode.PLAIN_TEXT);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-        htmlFileName = HTML_FILE_NAME;
-        outputDirectory = OUTPUT_DIR;
-        configFile = CONFIG_FILE;
-        translationFile = TRANSLATION_FILE;
-        javaScriptFile = JAVASCRIPT_FILE;
-		super.setUp();
+		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.INFLUENZA, TranslationMode.PLAIN_TEXT,
+                HTML_FILE_NAME, OUTPUT_DIR, TRANSLATION_FILE, JAVASCRIPT_FILE, CONFIG_FILE);
 	}
 
 	@Override
@@ -43,13 +34,11 @@ public class TestSeir extends AbstractSimulatorTest {
 		assertEquals("9313830.51695,52824.094900000004,59206.188149999994,392744.2",
 				getProperty("init_SEIR_counts"));
 		checkNoDuplicateLinesInFile();
-		// checkAtLeastOneCommentExists();
-
 	}
 
 	@Override
 	protected void checkControlMeasuresDontExist(Set<ControlMeasureTypeEnum> controlMeasureTypes) {
-		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.NO_VACC_CM)) {
+		if (!controlMeasureTypes.contains(ControlMeasureTypeEnum.VACC_CM)) {
 			assertNull(getProperty("vaccination_efficacy"));
 			assertNull(getProperty("vaccination_efficacy_delay"));
 			assertNull(getProperty("vaccination_compliance"));
@@ -57,15 +46,12 @@ public class TestSeir extends AbstractSimulatorTest {
 			assertNull(getProperty("vaccination_admin_schedule"));
 		}
 
-		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.NO_AV_CM)) {
+		if (!controlMeasureTypes.contains(ControlMeasureTypeEnum.AV_CM)) {
 			assertNull(getProperty("antiviral_treatment_efficacy"));
 			assertNull(getProperty("antiviral_treatment_compliance"));
 			assertNull(getProperty("antiviral_supply_schedule"));
 			assertNull(getProperty("antiviral_admin_schedule"));
 		}
-
-		/*		if (scCm == DefScCm.NO_SC_CM) {
-		 }*/
 	}
 
 	@Override

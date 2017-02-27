@@ -11,6 +11,8 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
@@ -20,8 +22,8 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class AddReviewerCommentMethod extends BaseLibraryMethod {
 
-    public AddReviewerCommentMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public AddReviewerCommentMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, int urn, int version, String comment) throws LibraryServiceException {
@@ -31,7 +33,7 @@ public class AddReviewerCommentMethod extends BaseLibraryMethod {
         result.setStatus(status);
 
         try {
-            dbUtils.addReviewerComment(urn, version, comment, userName, role);
+            dbUtils.addReviewerComment(urn, version, comment, userName, highestRole);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
         } catch (ApolloDatabaseException | ApolloDatabaseExplicitException ex) {
             throw new LibraryServiceException(ex.getMessage());

@@ -34,7 +34,8 @@ public class TestOpenMalaria extends AbstractSimulatorTest {
 	private static final String INITIAL_BASE_CONFIG_FILE = RES_DIR + File.separator + "initial_base_config.xml";
 
 	public TestOpenMalaria() {
-		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.MALARIA, TranslationMode.XML);
+		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.MALARIA, TranslationMode.XML,
+                HTML_FILE_NAME, OUTPUT_DIR, TRANSLATION_FILE, JAVASCRIPT_FILE, CONFIG_FILE);
 	}
 
 	@Override
@@ -57,11 +58,6 @@ public class TestOpenMalaria extends AbstractSimulatorTest {
 
 	@Override
 	protected void setUp() throws Exception {
-		htmlFileName = HTML_FILE_NAME;
-		outputDirectory = OUTPUT_DIR;
-		configFile = CONFIG_FILE;
-		translationFile = TRANSLATION_FILE;
-		javaScriptFile = JAVASCRIPT_FILE;
 		super.setUp();
 	}
 

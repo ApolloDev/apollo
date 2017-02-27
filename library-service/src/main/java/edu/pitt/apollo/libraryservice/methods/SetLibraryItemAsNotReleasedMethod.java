@@ -10,6 +10,8 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 /**
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
@@ -19,8 +21,8 @@ import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
  */
 public class SetLibraryItemAsNotReleasedMethod extends BaseLibraryMethod {
 
-    public SetLibraryItemAsNotReleasedMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public SetLibraryItemAsNotReleasedMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public SetLibraryItemAsNotReleasedResult setLibraryItemAsNotReleased(LibraryDbUtils dbUtils, int urn) throws LibraryServiceException {
@@ -30,7 +32,7 @@ public class SetLibraryItemAsNotReleasedMethod extends BaseLibraryMethod {
         result.setStatus(status);
 
         try {
-            int previousReleaseVersion = dbUtils.setLibraryItemAsNotReleased(urn, role);
+            int previousReleaseVersion = dbUtils.setLibraryItemAsNotReleased(urn, highestRole);
             result.setVersion(previousReleaseVersion);
             status.setStatus(MethodCallStatusEnum.COMPLETED);
 

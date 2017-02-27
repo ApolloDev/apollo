@@ -4,11 +4,12 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import edu.pitt.apollo.types.v4_0_1.*;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 ;
 
@@ -370,50 +371,20 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //                .getTargetPopulationsAndPrioritizations().add(
 //                targetPriorityPopulation);
 
-		LogisticalSystem logisticalSystem = new LogisticalSystem();
-		logisticalSystem.setProduct("Tamiflu");
-		LogisticalSystemNode outputNode = new LogisticalSystemNode();
-		Schedule outputSchedule = new Schedule();
-		outputNode.setOutputSchedule(outputSchedule);
-		outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+        TreatmentSystemLogistics treatmentSystemLogistics = new TreatmentSystemLogistics();
+        treatmentSystemLogistics.setLocation(location);
 
-		Calendar calendar = startDate.toGregorianCalendar();
+        List<BigInteger> antiviralSupplySchedule = treatmentSystemLogistics.getSupplySchedulePerDay();
+        for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
+            antiviralSupplySchedule.add(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
+        }
 
-		LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-		Schedule capacitySchedule = new Schedule();
-		capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-		capacityNode.setCapacitySchedule(capacitySchedule);
+        List<BigInteger> antiviralAdministrationCapacity = treatmentSystemLogistics.getAdministrationCapacityPerDay();
+        for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
+            antiviralAdministrationCapacity.add(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
+        }
 
-		try {
-			for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
-				ScheduleElement element = new ScheduleElement();
-				GregorianCalendar gregorianCalendar = new GregorianCalendar();
-				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-				element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
-				calendar.add(Calendar.DATE, 1);
-				outputSchedule.getScheduleElements().add(element);
-			}
-
-			calendar = startDate.toGregorianCalendar();
-
-			for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
-				ScheduleElement element = new ScheduleElement();
-				GregorianCalendar gregorianCalendar = new GregorianCalendar();
-				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-				element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
-				calendar.add(Calendar.DATE, 1);
-				capacitySchedule.getScheduleElements().add(element);
-			}
-		} catch (DatatypeConfigurationException ex) {
-			throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-		}
-
-		outputNode.getChildren().add(capacityNode);
-		logisticalSystem.getLogisticalSystemNodes().add(outputNode);
-
-		antiviralTreatmentControlMeasure.getLogisticalSystems().add(logisticalSystem);
+        antiviralTreatmentControlMeasure.getTreatmentSystemLogistics().add(treatmentSystemLogistics);
 
 		return antiviralTreatmentControlMeasure;
 	}
@@ -941,41 +912,27 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		Calendar calendar = startDate.toGregorianCalendar();
 
-		LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-		Schedule capacitySchedule = new Schedule();
-		capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-		capacityNode.setCapacitySchedule(capacitySchedule);
+        TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
+        logistics.setLocation(location);
+        List<BigInteger> vaccineSupplySchedule = logistics.getSupplySchedulePerDay();
+        for (int i = 0; i < supplyConstrainedVaccinationCapacityTable.length; i++) {
+            vaccineSupplySchedule.add(BigInteger.valueOf(supplyConstrainedVaccinationCapacityTable[i].longValue()));
+        }
 
-		try {
-			for (int i = 0; i < supplyConstrainedVaccinationCapacityTable.length; i++) {
-				ScheduleElement element = new ScheduleElement();
-				GregorianCalendar gregorianCalendar = new GregorianCalendar();
-				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-				element.setQuantity(BigInteger.valueOf(supplyConstrainedVaccinationCapacityTable[i].longValue()));
-				calendar.add(Calendar.DATE, 1);
-				outputSchedule.getScheduleElements().add(element);
-			}
+        List<BigInteger> vaccinationAdministationCapacity = logistics.getAdministrationCapacityPerDay();
+        for (int i = 0; i < runLength; i++) {
+            vaccinationAdministationCapacity.add(BigInteger.valueOf(50000l));
+        }
 
-			calendar = startDate.toGregorianCalendar();
-
-			for (int i = 0; i < runLength; i++) {
-				ScheduleElement element = new ScheduleElement();
-				GregorianCalendar gregorianCalendar = new GregorianCalendar();
-				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-				element.setQuantity(BigInteger.valueOf(50000l));
-				calendar.add(Calendar.DATE, 1);
-				capacitySchedule.getScheduleElements().add(element);
-			}
-		} catch (DatatypeConfigurationException ex) {
-			throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-		}
-
-		outputNode.getChildren().add(capacityNode);
-		logisticalSystem.getLogisticalSystemNodes().add(outputNode);
-
-		vaccinationControlMeasure.getLogisticalSystems().add(logisticalSystem);
+		/*       for (int i = 0; i < vaccineSupplySchedule.size(); i++) {
+		 if ((vaccineSupplySchedule.get(i) > 0.00 && i == 0)
+		 || (vaccineSupplySchedule.get(i) > 0.00 && vaccineSupplySchedule
+		 .get(i - 1) < 0.01)) {
+		 // System.out.println(i + ": " + vaccineSupplySchedule.get(i));
+		 }
+		 }
+		 */
+        vaccinationControlMeasure.getTreatmentSystemLogistics().add(logistics);
 
 		return vaccinationControlMeasure;
 

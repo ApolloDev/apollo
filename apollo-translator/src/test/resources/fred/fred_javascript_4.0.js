@@ -1,4 +1,4 @@
-var apollo_version = "Apollo 4.0";
+var apollo_version = "Apollo 4.0.1";
 var fred_version = "FRED 2.0.2";
 
 function isInt(n) {
@@ -599,14 +599,23 @@ function getSchedule(scheduleElements, startDate) {
     return tot;
 }
 
-//function getTotalNumAv(scheduleElements, startDate) {
-//    var supply = antiviralTreatmentControlStrategy.treatmentSystemLogistics.get(0).supplySchedulePerDay;
-//    var tot = 0;
-//    for (var i = 0; i < supply.size(); i++) {
-//        tot += parseInt(supply.get(i));
-//    }
-//    return tot;
-//}
+function getTotalNumVaccines(vaccinationControlStrategy) {
+    var supply = vaccinationControlStrategy.treatmentSystemLogistics.get(0).supplySchedulePerDay;
+    var tot = 0;
+    for ( var i = 0; i < supply.size(); i++) {
+        tot += parseInt(supply.get(i));
+    }
+    return tot;
+}
+
+function getTotalNumAv(antiviralTreatmentControlStrategy) {
+    var supply = antiviralTreatmentControlStrategy.treatmentSystemLogistics.get(0).supplySchedulePerDay;
+    var tot = 0;
+    for ( var i = 0; i < supply.size(); i++) {
+        tot += parseInt(supply.get(i));
+    }
+    return tot;
+}
 
 function getFREDStyleCapacitySchedule(antiviralTreatmentControlStrategy) {
 
@@ -638,6 +647,15 @@ function getAvgOfSchedule(scheduleElements, startDate) {
     if (schedule.length > 0) {
         var tot = getSchedule(scheduleElements, startDate);
         return tot / schedule.length;
+    } else
+        return 0;
+}
+
+function getAvgAv(antiviralTreatmentControlStrategy) {
+    var supply = antiviralTreatmentControlStrategy.treatmentSystemLogistics.get(0).supplySchedulePerDay;
+    if (supply.size() > 0) {
+        var tot = getTotalNumAv(antiviralTreatmentControlStrategy);
+        return tot / supply.size();
     } else
         return 0;
 }
@@ -748,7 +766,7 @@ function setDelay() {
 
 }
 
-function writeVaccSchedule(logisticalSystemNode, runLength, startDate) {
+function writeVaccSchedule(controlStrategy, runLength) {
     var obj = new Object();
     obj.print = true;
     var resultString = "";
@@ -756,31 +774,15 @@ function writeVaccSchedule(logisticalSystemNode, runLength, startDate) {
 
     var useToday = 0;
 
-    var supplyScheduleElements = logisticalSystemNode.getOutputSchedule().getScheduleElements();
-    var administrationScheduleElements = logisticalSystemNode.getChildren().get(0).getCapacitySchedule().getScheduleElements();
-
-    // convert the schedule elements into arrays and use the legacy code
-
-    var capacity = getArraySchedule(startDate, administrationScheduleElements);
-    var supply = getArraySchedule(startDate, supplyScheduleElements);
-
+    var capacity = controlStrategy.treatmentSystemLogistics.get(0).administrationCapacityPerDay;
+    var supply = controlStrategy.treatmentSystemLogistics.get(0).supplySchedulePerDay;
 
     var implicitly_timeed_preemptive_array = undefined;
 
-    //if (passwordField.indexOf("=") > -1) {
-    //    implicitly_timeed_preemptive_array = passwordField.split("=")[1];
-    //    var preemptive_vacc_schedule = implicitly_timeed_preemptive_array
-    //            .split(",");
-    //    for (var i = preemptive_vacc_schedule.length - 1; i >= 0; i--) {
-    //        resultString += "-" + (i + 1) + " " + preemptive_vacc_schedule[i]
-    //                + "\n";
-    //    }
-    //}
+    for ( var i = 0; i < supply.size(); i++) {
 
-    for (var i = 0; i < supply.length; i++) {
-
-        supplyVal = supply[i];
-        capacityVal = capacity[i];
+        supplyVal = parseInt(supply.get(i));
+        capacityVal = parseInt(capacity.get(i));
 
         if (supplyVal >= capacityVal) {
             totalSurplus = supplyVal - capacityVal;
@@ -801,8 +803,8 @@ function writeVaccSchedule(logisticalSystemNode, runLength, startDate) {
         resultString += "\n";
     }
 
-    if (supply.length < runLength) {
-        for (i = supply.length; i < runLength; i++) {
+    if (supply.size() < runLength) {
+        for (i = supply.size(); i < runLength; i++) {
             resultString += i + " " + "0";
             resultString += "\n";
         }

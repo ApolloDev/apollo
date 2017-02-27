@@ -8,10 +8,12 @@ import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
 import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
+import java.util.Map;
+
 public class GetLibraryItemURNsMethod extends BaseLibraryMethod {
 
-    public GetLibraryItemURNsMethod(Authentication authentication) throws LibraryServiceException {
-        super(authentication);
+    public GetLibraryItemURNsMethod(Authentication authentication, Map<String, Integer> roles) throws LibraryServiceException {
+        super(authentication, roles);
     }
 
     public GetLibraryItemURNsResult getLibraryItemURIs(LibraryDbUtils dbUtils,

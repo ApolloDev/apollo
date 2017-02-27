@@ -211,6 +211,8 @@
                         <version>${cxf.version}</version>
                         <executions>
                             <execution>
+                                <id>generate-sources</id>
+                                <phase>generate-sources</phase>
                                 <configuration>
                                     <sourceRoot>
                                         ${basedir}/target/generated-sources
@@ -221,6 +223,10 @@
                                                 ${basedir}/../../apollo-xsd-and-types/src/main/resources/apollo_service_v4.wsdl
                                             </wsdl>
                                             <wsdlLocation>classpath:apollo_service_v4.wsdl</wsdlLocation>
+                                            <extraargs>
+                                                <extraarg>-nexclude</extraarg>
+                                                <extraarg>http://types.apollo.pitt.edu/v4_0_1/</extraarg>
+                                            </extraargs>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

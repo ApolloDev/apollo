@@ -2,12 +2,8 @@ package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.types.v4_0_1.*;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  *
@@ -19,7 +15,7 @@ import java.util.GregorianCalendar;
  */
 public class ExampleAntiviralControlStrategy {
 
-	public static IndividualTreatmentControlMeasure getAntiviralControlMeasure(XMLGregorianCalendar startDate) {
+	public static IndividualTreatmentControlMeasure getAntiviralControlMeasure() {
 
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
@@ -83,46 +79,58 @@ public class ExampleAntiviralControlStrategy {
 		trigger.setTimeSinceTimeScaleZero(startTime);
 		atcm.getControlMeasureStartTime().add(trigger);
 
-        LogisticalSystem logisticalSystem = new LogisticalSystem();
-        logisticalSystem.setProduct("Tamiflu");
-        LogisticalSystemNode outputNode = new LogisticalSystemNode();
-        Schedule outputSchedule = new Schedule();
-        outputNode.setOutputSchedule(outputSchedule);
-        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+//        LogisticalSystem logisticalSystem = new LogisticalSystem();
+//        logisticalSystem.setProduct("Tamiflu");
+//        LogisticalSystemNode outputNode = new LogisticalSystemNode();
+//        Schedule outputSchedule = new Schedule();
+//        outputNode.setOutputSchedule(outputSchedule);
+//        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+//
+//        Calendar cal = startDate.toGregorianCalendar();
+//
+//        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+//        Schedule capacitySchedule = new Schedule();
+//        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+//        capacityNode.setCapacitySchedule(capacitySchedule);
 
-        Calendar cal = startDate.toGregorianCalendar();
+        Location location = new Location();
+        location.setApolloLocationCode("1169");
 
-        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-        Schedule capacitySchedule = new Schedule();
-        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-        capacityNode.setCapacitySchedule(capacitySchedule);
+        TreatmentSystemLogistics logistics = new TreatmentSystemLogistics();
+        logistics.setLocation(location);
+        List<BigInteger> avSupplySchedule = logistics.getSupplySchedulePerDay();
+        List<BigInteger> avAdministationCapacity = logistics.getAdministrationCapacityPerDay();
 
-        try {
+//        try {
 
             for (int i = 0; i < 128; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(cal.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(new BigInteger("2000"));
-                outputSchedule.getScheduleElements().add(element);
+//                ScheduleElement element = new ScheduleElement();
+//                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//                gregorianCalendar.setTimeInMillis(cal.getTimeInMillis());
+//                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+//                element.setQuantity(new BigInteger("2000"));
+//                outputSchedule.getScheduleElements().add(element);
+
+                avSupplySchedule.add(new BigInteger("2000"));
 
 
-                ScheduleElement capacityElement = new ScheduleElement();
-                capacityElement.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                capacityElement.setQuantity(new BigInteger("2000"));
-                capacitySchedule.getScheduleElements().add(capacityElement);
+//                ScheduleElement capacityElement = new ScheduleElement();
+//                capacityElement.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+//                capacityElement.setQuantity(new BigInteger("2000"));
+//                capacitySchedule.getScheduleElements().add(capacityElement);
+                avAdministationCapacity.add(new BigInteger("2000"));
 
-                cal.add(Calendar.DATE, 1);
+//                cal.add(Calendar.DATE, 1);
             }
-        } catch (DatatypeConfigurationException ex) {
-            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-        }
+//        } catch (DatatypeConfigurationException ex) {
+//            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+//        }
 
-        outputNode.getChildren().add(capacityNode);
-        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
-
-        atcm.getLogisticalSystems().add(logisticalSystem);
+//        outputNode.getChildren().add(capacityNode);
+//        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+//
+//        atcm.getLogisticalSystems().add(logisticalSystem);
+        atcm.getTreatmentSystemLogistics().add(logistics);
 
         return atcm;
 	}

@@ -38,7 +38,7 @@ public abstract class SecurityManager {
     protected static final String AUTH0_URL;
     private static final String HUB_URL_PROPERTY = "hub_url";
     protected static final String HUB_URL;
-    private static final String USER_ID_USER_PROFILE_KEY = "sub";
+    protected static final String USER_ID_USER_PROFILE_KEY = "sub";
     protected static final String ROLES_KEY = "roles";
     protected static final String USERNAME_KEY = "userName";
     private final Map<String, String> userDelegatedTokenMap = new HashMap<>();
@@ -58,15 +58,6 @@ public abstract class SecurityManager {
 
     protected SecurityManager(String securityPropertiesFile) throws ApolloSecurityException {
         loadSecurityProperties(securityPropertiesFile);
-    }
-
-    public Authentication getUsernameAuthentication(Authentication authentication) throws ApolloSecurityException {
-        Jws<Claims> claims = getClaims(authentication);
-        UserProfile userProfileData = getUserProfileFromClaims(claims);
-        Authentication newAuthentication = new Authentication();
-        newAuthentication.setAuthorizationType(null);
-        newAuthentication.setPayload(userProfileData.getUserId());
-        return newAuthentication;
     }
 
     protected Authentication createAuthenticationWithJSON(UserProfile userProfile) {
@@ -98,7 +89,7 @@ public abstract class SecurityManager {
             case SSO:
                 try {
                     String token = getDelegatedToken(authentication.getPayload(), CLIENT_ID);
-                    Jws<Claims> claims = Jwts.parser().setSigningKey(CLIENT_ID).parseClaimsJws(token);
+                    Jws<Claims> claims = Jwts.parser().setSigningKey(CLIENT_SECRET).parseClaimsJws(token);
                     return claims;
                 } catch (Exception ex) {
                     throw new ApolloSecurityException("Exception verifying SSO: " + ex.getMessage());
@@ -181,7 +172,11 @@ public abstract class SecurityManager {
     }
 
     protected boolean claimsHasRole(Jws<Claims> claims, String role) {
-        String roles = (String) claims.getBody().get(ROLES_KEY);
+        List<String> roles = (List<String>)claims.getBody().get(ROLES_KEY);
+        for(String roleCheck : roles) {
+            if(roleCheck.equals(role))
+                return true;
+        }
 
         return false;
     }
