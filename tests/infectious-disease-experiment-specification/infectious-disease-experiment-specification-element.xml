@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<apollo:InfectiousDiseaseTransmissionExperimentSpecificationElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apollo="http://types.apollo.pitt.edu/v3_1_0/"
-    xsi:schemaLocation="http://types.apollo.pitt.edu/v3_1_0/ apollo_types_3.1.0.xsd">
+<apollo:InfectiousDiseaseTransmissionExperimentSpecificationElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apollo="http://types.apollo.pitt.edu/v4_0/"
+    xsi:schemaLocation="http://types.apollo.pitt.edu/v4_0/ apollo_types_4.0.xsd">
     <apollo:infectiousDiseaseControlStrategies>
         <apollo:controlMeasures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="apollo:InsecticideTreatedNetControlMeasure">
             <apollo:description>An insecticide treated net control strategy.</apollo:description>

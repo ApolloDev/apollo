@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apolloservice.methods.services;
 
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.ServiceRegistrationRecord;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
 
 
 /**

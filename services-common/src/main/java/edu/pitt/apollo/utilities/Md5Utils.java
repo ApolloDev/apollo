@@ -1,17 +1,20 @@
 package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.exception.Md5UtilsException;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Random;
-import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Created by jdl50 on 5/18/15.
  */
 public class Md5Utils {
 
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 
     public String getMd5FromString(String string) {
         return DigestUtils.md5Hex(string);

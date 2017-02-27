@@ -6,13 +6,16 @@
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpStatus;
+
+;
 
 /**
  *
@@ -20,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class GetURLOfSoftwareMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetURLOfSoftwareMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetURLOfSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getURLOfSoftwareMethod(String softwareName, String softwareVersion,
@@ -39,7 +42,7 @@ public class GetURLOfSoftwareMethod extends BaseBrokerServiceAccessorMethod {
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.addContentToBody(url).setIsBodySerialized(false);
 
-		} catch (DataServiceException ex) {
+		} catch (DatastoreException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

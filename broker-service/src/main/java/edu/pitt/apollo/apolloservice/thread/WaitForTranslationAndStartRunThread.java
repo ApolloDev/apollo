@@ -3,15 +3,16 @@ package edu.pitt.apollo.apolloservice.thread;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import java.math.BigInteger;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
 
 /**
  *
@@ -44,7 +45,7 @@ public class WaitForTranslationAndStartRunThread extends ApolloServiceThread {
 				
 				try {
 					statusOfRun = connector.getRunStatus(runId, authentication);
-				} catch (DataServiceException ex) {
+				} catch (DatastoreException ex) {
 					connector.updateStatusOfRun(runId, MethodCallStatusEnum.FAILED, "Could not get status for run " + runId + ": " + ex.getMessage(), authentication);
 					return;
 				}

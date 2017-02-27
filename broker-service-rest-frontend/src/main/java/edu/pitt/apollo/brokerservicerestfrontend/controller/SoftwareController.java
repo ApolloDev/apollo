@@ -6,14 +6,17 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetRegisteredSoftwareMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.GetURLOfSoftwareMethod;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.GET;
+
+;
 
 
 /*
@@ -32,10 +35,9 @@ public class SoftwareController {
 	})
 	@RequestMapping(value = "/software", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getListOfSoftwareFromCollection(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password) throws UnsupportedSerializationFormatException, SerializationException {
+	String getListOfSoftwareFromCollection(@RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
-		return new GetRegisteredSoftwareMethod(username, password, SerializationFormat.XML).getRegisteredSoftware();
+		return new GetRegisteredSoftwareMethod(SerializationFormat.XML, authorization).getRegisteredSoftware();
 	}
 
 	@GET
@@ -45,14 +47,13 @@ public class SoftwareController {
 	})
 	@RequestMapping(value = "/software/url", method = RequestMethod.GET, headers = "Accept=application/xml")
 	public @ResponseBody
-	String getURLForSoftwareIdentification(@ApiParam(value = "Username", required = true) @RequestParam("username") String username,
-			@ApiParam(value = "Password", required = true) @RequestParam("password") String password,
+	String getURLForSoftwareIdentification(@RequestHeader("Authorization") String authorization,
 			@ApiParam(value = "Software name", required = true) @RequestParam("softwareName") String softwareName,
 			@ApiParam(value = "Software version", required = true) @RequestParam("softwareVersion") String softwareVersion,
 			@ApiParam(value = "Software developer", required = true) @RequestParam("softwareDeveloper") String softwareDeveloper,
-			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum) throws UnsupportedSerializationFormatException, SerializationException {
+			@ApiParam(value = "Apollo software type enum", required = true) @RequestParam("softwareTypeEnum") ApolloSoftwareTypeEnum softwareTypeEnum) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
 
-		return new GetURLOfSoftwareMethod(username, password, SerializationFormat.XML).getURLOfSoftwareMethod(softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum);
+		return new GetURLOfSoftwareMethod(SerializationFormat.XML, authorization).getURLOfSoftwareMethod(softwareName, softwareVersion, softwareDeveloper, softwareTypeEnum);
 	}
 //    @ApiIgnore
 //    @POST

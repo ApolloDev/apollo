@@ -1,57 +1,48 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.LibraryDbUtils;
-import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_1_0.ChangeLogEntry;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeMessage;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v3_1_0.LibraryItemContainer;
-import edu.pitt.apollo.service.libraryservice.v3_1_0.GetChangeLogForLibraryItemsModifiedSinceDateTimeResponse;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import java.util.List;
+import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.library_service_types.v4_0_1.ChangeLogEntry;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetChangeLogForLibraryItemsModifiedSinceDateTimeResult;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.List;
 
 /**
- *
  * Author: Nick Millett
- Email: nick.millett@gmail.com
- Date: Dec 3, 2014
- Time: 3:15:58 PM
- Class: GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod
+ * Email: nick.millett@gmail.com
+ * Date: Dec 3, 2014
+ * Time: 3:15:58 PM
+ * Class: GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod
  */
-public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod {
+public class GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod extends BaseLibraryMethod {
 
-	public static GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(LibraryDbUtils dbUtils,
-																														  XMLGregorianCalendar dateTime, Authentication authentication) {
+    public GetChangeLogForLibraryItemsModifiedSinceDateTimeMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
 
-		
-		GetChangeLogForLibraryItemsModifiedSinceDateTimeResult result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
-		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
+    public GetChangeLogForLibraryItemsModifiedSinceDateTimeResult getChangeLogForLibraryItemsModifiedSinceDateTime(LibraryDbUtils dbUtils,
+                                                                                                                   XMLGregorianCalendar dateTime) throws LibraryServiceException {
 
-		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.READONLY);
-			if (userAuthorized) {
-				
-				List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime);
-				result.getChangeLogEntries().addAll(changeLog);
-				
-				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to retrieve a change log from the library.");
-			}
-		} catch (ApolloDatabaseException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage(ex.getMessage());
-		}
+        GetChangeLogForLibraryItemsModifiedSinceDateTimeResult result = new GetChangeLogForLibraryItemsModifiedSinceDateTimeResult();
+        MethodCallStatus status = new MethodCallStatus();
+        result.setStatus(status);
 
-		return result;
-		
-	}
-	
+        try {
+            List<ChangeLogEntry> changeLog = dbUtils.getChangeLogForLibraryItemsModifiedSinceDateTime(dateTime, role);
+            result.getChangeLogEntries().addAll(changeLog);
+
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+        } catch (ApolloDatabaseException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
+
+        return result;
+
+    }
+
 }

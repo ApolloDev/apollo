@@ -1,14 +1,15 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
-import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
-
-import edu.pitt.apollo.services_common.v3_1_0.*;
+import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;
 
@@ -17,19 +18,19 @@ public abstract class AbstractRunMethod implements RunMethod {
     private static final long STATUS_CHECK_INTERVAL_TIME_IN_MILLIS = 5000;
     protected final BigInteger runId;
     protected RunMessage runMessage;
-    protected DataServiceAccessor dataServiceDao;
+    protected DatastoreAccessor dataServiceDao;
     protected Authentication authentication;
 
 
-    public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DataServiceException, JsonUtilsException {
+    public AbstractRunMethod(BigInteger runId, Authentication authentication, String runMessageFilename) throws DatastoreException, JsonUtilsException, FilestoreException {
         this.runId = runId;
         this.authentication = authentication;
-        dataServiceDao = new DataServiceAccessor();
+        dataServiceDao = new DatastoreAccessor();
         String json = getRunMessageJson(runMessageFilename);
         runMessage = convertRunMessageJson(json);
     }
 
-    protected String getRunMessageJson(String runMessageFilename) throws DataServiceException {
+    protected String getRunMessageJson(String runMessageFilename) throws DatastoreException, FilestoreException {
         return dataServiceDao.getRunMessageAssociatedWithRunIdAsJsonOrNull(runId, authentication, runMessageFilename);
     }
 
@@ -100,7 +101,7 @@ public abstract class AbstractRunMethod implements RunMethod {
                 returnObj.setStatus(status);
                 return returnObj;
             }
-        } catch (DataServiceException e) {
+        } catch (RunManagementException e) {
             status.setStatus(MethodCallStatusEnum.FAILED);
             status.setMessage("Error getting run status for runId " + runId + ", error was:" + e.getMessage());
             returnObj.setStatus(status);

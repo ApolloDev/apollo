@@ -1,25 +1,20 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
  *
- * Author: Nick Millett
- * Email: nick.millett@gmail.com
- * Date: Dec 9, 2014
- * Time: 5:17:04 PM
- * Class: ExampleVaccinationControlMeasure
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Dec 9, 2014 Time: 5:17:04 PM Class: ExampleVaccinationControlMeasure
  */
 public class ExampleVaccinationControlStrategy {
 
-	public static IndividualTreatmentControlMeasure getStrategy(XMLGregorianCalendar startDate) {
+	public static IndividualTreatmentControlMeasure getStrategy() {
 		ApolloPathogenCode strain = new ApolloPathogenCode();
 		strain.setNcbiTaxonId("114727");
 
@@ -96,74 +91,100 @@ public class ExampleVaccinationControlStrategy {
 		vcm.setDescription("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 		vcm.setPathogen(strain);
 
-        LogisticalSystem logisticalSystem = new LogisticalSystem();
-        logisticalSystem.setProduct("Influenza A (H1N1) 2009 Monovalent Vaccine");
-        LogisticalSystemNode outputNode = new LogisticalSystemNode();
-        Schedule outputSchedule = new Schedule();
-        outputNode.setOutputSchedule(outputSchedule);
+		LogisticalSystem logisticalSystem = new LogisticalSystem();
+		logisticalSystem.setProduct("Influenza A (H1N1) 2009 Monovalent Vaccine");
+		LogisticalSystemNode outputNode = new LogisticalSystemNode();
+		Schedule outputSchedule = new Schedule();
+		outputNode.setOutputSchedule(outputSchedule);
 		outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
-        Calendar outputCal = startDate.toGregorianCalendar();
-        outputCal.add(Calendar.DATE, 28);
+		Calendar outputCal = Calendar.getInstance();
+		outputCal.set(2009, 8, 8, 0, 0, 0);
+//		outputCal.add(Calendar.DATE, 28);
 
-        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-        Schedule capacitySchedule = new Schedule();
-        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-        capacityNode.setCapacitySchedule(capacitySchedule);
+		LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+		Schedule capacitySchedule = new Schedule();
+		capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+		capacityNode.setCapacitySchedule(capacitySchedule);
 
-        try {
-            for (int i = 28; i < 84; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(new BigInteger("3500"));
-                outputCal.add(Calendar.DATE, 1);
-                outputSchedule.getScheduleElements().add(element);
-            }
+		try {
+			for (int i = 0; i < 28; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("0"));
+				outputCal.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-            for (int i = 84; i < 115; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(new BigInteger("10000"));
-                outputCal.add(Calendar.DATE, 1);
-                outputSchedule.getScheduleElements().add(element);
-            }
+			for (int i = 28; i < 84; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("3500"));
+				outputCal.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-            for (int i = 115; i < 127; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(new BigInteger("3500"));
-                outputCal.add(Calendar.DATE, 1);
-                outputSchedule.getScheduleElements().add(element);
-            }
+			for (int i = 84; i < 115; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("10000"));
+				outputCal.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-            Calendar capacityCal = startDate.toGregorianCalendar();
-            capacityCal.add(Calendar.DATE, 28);
+			for (int i = 115; i < 127; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("3500"));
+				outputCal.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-            for (int i = 28; i < 127; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(outputCal.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(new BigInteger("5000"));
-                capacityCal.add(Calendar.DATE, 1);
-                capacitySchedule.getScheduleElements().add(element);
-            }
-        } catch (DatatypeConfigurationException ex) {
-            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-        }
+			Calendar capacityCal = Calendar.getInstance();
+			capacityCal.set(2009, 8, 8, 0, 0, 0);
+//			capacityCal.add(Calendar.DATE, 28);
 
-        outputNode.getChildren().add(capacityNode);
-        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+			for (int i = 0; i < 28; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(capacityCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("0"));
+				capacityCal.add(Calendar.DATE, 1);
+				capacitySchedule.getScheduleElements().add(element);
+			}
 
-        vcm.getLogisticalSystems().add(logisticalSystem);
+			for (int i = 28; i < 127; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(capacityCal.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(new BigInteger("5000"));
+				capacityCal.add(Calendar.DATE, 1);
+				capacitySchedule.getScheduleElements().add(element);
+			}
+		} catch (DatatypeConfigurationException ex) {
+			throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+		}
 
-        return vcm;
+		outputNode.getChildren().add(capacityNode);
+		logisticalSystem.getLogisticalSystemNodes().add(outputNode);
+
+		vcm.getLogisticalSystems().add(logisticalSystem);
+
+		return vcm;
+	}
+
+	public static void main(String[] args) {
+		getStrategy();
 	}
 
 }

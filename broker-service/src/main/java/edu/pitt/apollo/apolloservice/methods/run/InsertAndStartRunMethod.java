@@ -3,12 +3,7 @@ package edu.pitt.apollo.apolloservice.methods.run;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.apolloservice.thread.WaitForTranslationAndStartRunThread;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.services_common.v3_1_0.RunResult;
+import edu.pitt.apollo.services_common.v4_0_1.*;
 
 /**
  *
@@ -29,7 +24,7 @@ public abstract class InsertAndStartRunMethod extends BaseRunManagementServiceAc
 		MethodCallStatus status;
 		InsertRunResult insertRunResult;
 		try {
-			insertRunResult = connector.insertRun(message);
+			insertRunResult = connector.insertRun(message, authentication);
 		} catch (RunManagementException ex) {
 			status = getFailedMethodCallStatus("Exception inserting run: " + ex.getMessage());
 			runResult.setMethodCallStatus(status);

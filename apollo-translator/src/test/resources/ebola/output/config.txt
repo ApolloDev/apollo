@@ -1,0 +1,11 @@
+initialSusceptible=6030932.50000
+initialExposed=0.00000
+initialInfectiousDying=63483.50000
+initialInfectiousSurviving=253934.00000
+initialRecovered=0.00000
+symptomaticFraction=0.67000
+caseFatalityRate=0.2
+infectiousPeriod=6
+latentPeriod=2
+R0=1.3
+runLength=150

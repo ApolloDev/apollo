@@ -1,11 +1,15 @@
 package edu.pitt.apollo.utils;
 
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.XMLDeserializer;
+
+import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_1.Request;
+import edu.pitt.apollo.services_common.v4_0_1.RequestMeta;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.Deserializer;
+import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.XMLDeserializer;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 
 /**
  * Created by jdl50 on 8/7/15.
@@ -18,7 +22,16 @@ public class ResponseDeserializer {
         ObjectSerializationInformation config = meta.getRequestBodySerializationInformation();
 
         SerializationFormat format = config.getFormat();
-        Deserializer deserializer = DeserializerFactory.getDeserializer(format);
+        Deserializer deserializer = null;
+        switch (format) {
+            case JSON:
+                deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON);
+                break;
+            case XML:
+                deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
+                break;
+        }
+
 
         String className = config.getClassName();
         String classNamespace = config.getClassNameSpace();

@@ -1,28 +1,33 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v3_1_0.*;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.Md5UtilsException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.methods.run.ApolloServiceErrorHandler;
-import edu.pitt.apollo.runmanagerservice.methods.stage.BatchStageMethod;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
+import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -39,17 +44,17 @@ public class StageInDbWorkerThread implements Runnable {
     private final XMLGregorianCalendar scenarioDate;
     private final BigInteger batchRunId;
     private final SoftwareIdentification simulatorIdentification;
-    private final BatchStageMethod.BooleanRef errorRef;
-    private final BatchStageMethod.CounterRef counterRef;
+    private final BatchStageThread.BooleanRef errorRef;
+    private final BatchStageThread.CounterRef counterRef;
     private final List<BigInteger> failedRunIds;
     private final Authentication authentication;
     private final String line;
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 
     public StageInDbWorkerThread(BigInteger batchRunId, String line, RunSimulationsMessage message,
                                  XMLGregorianCalendar scenarioDate, SynchronizedStringBuilder batchInputsWithRunIdsStringBuilder,
-                                 BatchStageMethod.BooleanRef errorRef, BatchStageMethod.CounterRef counterRef,
-                                 List<BigInteger> failedRunIds, Authentication authentication) throws DataServiceException {
+                                 BatchStageThread.BooleanRef errorRef, BatchStageThread.CounterRef counterRef,
+                                 List<BigInteger> failedRunIds, Authentication authentication) throws DatastoreException {
         this.line = line;
         this.message = message;
         this.batchInputsWithRunIdsStringBuilder = batchInputsWithRunIdsStringBuilder;
@@ -78,7 +83,6 @@ public class StageInDbWorkerThread implements Runnable {
             RunSimulationsMessage template, BatchConfigRecord batchConfigRecord, XMLGregorianCalendar scenarioDate) throws DatatypeConfigurationException, JsonUtilsException {
 
         RunSimulationMessage runSimulationMessage = new RunSimulationMessage();
-        runSimulationMessage.setAuthentication(template.getAuthentication());
         runSimulationMessage.setInfectiousDiseaseScenario(copyInfectiousDiseaseScenarioForTemplate(template.getBaseInfectiousDiseaseScenario()));
         runSimulationMessage.setSoftwareIdentification(template
                 .getSoftwareIdentification());
@@ -155,8 +159,6 @@ public class StageInDbWorkerThread implements Runnable {
 
                     currentRunSimulationMessage = populateTemplateWithRecord(
                             message, batchConfigRecord, scenarioDate);
-                    currentRunSimulationMessage.getAuthentication().setRequesterId(authentication.getRequesterId());
-                    currentRunSimulationMessage.getAuthentication().setRequesterPassword(authentication.getRequesterPassword());
 //                    try {
 //                        System.out.println("From " + paramLineOrNullIfEndOfStream + " Creating worker for run " + md5Utils.getMd5(currentRunSimulationMessage) + " (" + currentRunSimulationMessage + ")" + "\n");
 //                    } catch (Md5UtilsException e) {
@@ -179,11 +181,13 @@ public class StageInDbWorkerThread implements Runnable {
                 }
                 StageMethod stageMethod = null;
                 try {
-                    stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId);
+                    stageMethod = new StageMethod(currentRunSimulationMessage, batchRunId, authentication);
                     InsertRunResult result = stageMethod.stage();
                     BigInteger runId = result.getRunId();
 
-                    DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+					DatastoreAccessor.addRunSimulationMessageFileToBatchDirectory(batchRunId, runId, currentRunSimulationMessage);
+					
+                    DatastoreAccessor dataServiceAccessor = new DatastoreAccessor();
                     MethodCallStatus status = dataServiceAccessor.getRunStatus(runId, authentication);
                     if (status.getStatus().equals(MethodCallStatusEnum.FAILED)) {
                         failedRunIds.add(runId);
@@ -191,7 +195,8 @@ public class StageInDbWorkerThread implements Runnable {
 
                     String lineWithRunId = paramLineOrNullIfEndOfStream + "," + runId;
                     batchInputsWithRunIdsStringBuilder.append(lineWithRunId).append("\n");
-                } catch (DataServiceException e) {
+                } catch (RunManagementException | FileNotFoundException | Md5UtilsException | UnrecognizedMessageTypeException
+						| ApolloDatabaseException e) {
                     errorRef.value = true;
                     ApolloServiceErrorHandler
                             .reportError(

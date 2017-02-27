@@ -1,16 +1,15 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -55,7 +54,6 @@ public abstract class AbstractRunSimulationMessageBuilder {
 
 		message.setSoftwareIdentification(getSoftwareIdentification());
 		message.setSimulatorTimeSpecification(getSimulatorTimeSpeficiation());
-		message.setAuthentication(getAuthentication());
 		message.setInfectiousDiseaseScenario(getBaseInfectiousDiseaseScenario());
 
 		return message;

@@ -15,66 +15,61 @@
 package edu.pitt.apollo.libraryclient;
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.library_service_types.v3_1_0.*;
-import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceEI;
-import edu.pitt.apollo.service.libraryservice.v3_1_0.LibraryServiceV310;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.Census;
-import edu.pitt.apollo.types.v3_1_0.IndividualTreatmentControlMeasure;
-import edu.pitt.apollo.types.v3_1_0.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v3_1_0.PlaceClosureControlMeasure;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import edu.pitt.apollo.library_service_types.v4_0_1.*;
+import edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceEI;
+import edu.pitt.apollo.service.libraryservice.v4_0_1.LibraryServiceV401;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.Census;
+import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
-
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
 
 public class WSClient {
 
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-3.1.0-SNAPSHOT/services/libraryservice?wsdl";
-	public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v3_1_0/", "LibraryService_v3.1.0");
-	private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
+    public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/library-service-war-4.0.1-SNAPSHOT/services/libraryservice?wsdl";
+    public static final QName SERVICE = new QName("http://service.apollo.pitt.edu/libraryservice/v4_0/", "LibraryService_v4.0");
+    private static final String LIBRARY_CONNECTION_PROPERTIES_FILE = "library_service_connection.properties";
 
-	public static final String APOLLO_DIR;
+    public static final String APOLLO_DIR;
 
-	static {
-		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-		if (apolloDir != null) {
-			if (!apolloDir.endsWith(File.separator)) {
-				apolloDir += File.separator;
-			}
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + apolloDir);
-		} else {
-			System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
-		}
+    static {
+        Map<String, String> env = System.getenv();
+        String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
+        if (apolloDir != null) {
+            if (!apolloDir.endsWith(File.separator)) {
+                apolloDir += File.separator;
+            }
+            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + apolloDir);
+        } else {
+            System.out.println(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + "environment variable not found!");
+        }
 
-		APOLLO_DIR = apolloDir;
-	}
+        APOLLO_DIR = apolloDir;
+    }
 
-	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
-		LibraryServiceV310 ls = new LibraryServiceV310(new URL(WSDL_LOC), SERVICE);
-		LibraryServiceEI port = ls.getLibraryServiceEndpoint();
+    public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, JAXBException, DatatypeConfigurationException, ParseException {
+        LibraryServiceV401 ls = new LibraryServiceV401(new URL(WSDL_LOC), SERVICE);
+        LibraryServiceEI port = ls.getLibraryServiceEndpoint();
 
-		Authentication a = getAuthentication();
-		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
+        Authentication a = getAuthentication();
+//		AddLibraryItemContainerResult scenarioResult = addInfectiousDiseaseScenarioToLibrary(a, port);
 //        UpdateLibraryItemContainerResult result = updateInfectiousDiseaseScenarioInLibrary(a, 1, port);
-
-		//setReleaseVersionForInfectiousDiseaseScenario(a, port, scenarioResult.getVersion(), scenarioResult.getUrn());
+//		setReleaseVersionForInfectiousDiseaseScenario(a, port, result.getVersion(), 1);
 //		AddLibraryItemContainerResult vaccResult = addVaccinationControlMeasureToLibrary(a, port);
-//		setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), vaccResult.getUrn());
+        UpdateLibraryItemContainerResult vaccResult = updateVaccinationControlMeasureInLibrary(a, port, 2);
+        setReleaseVersionForVaccinationControlStratgy(a, port, vaccResult.getVersion(), 2);
 ////
 //		AddLibraryItemContainerResult antiviralResult = addAntiviralControlMeasureToLibrary(a, port);
 //		setReleaseVersionForAntiviralControlStratgy(a, port, antiviralResult.getVersion(), antiviralResult.getUrn());
@@ -86,303 +81,303 @@ public class WSClient {
 //		setReleaseVersionForIndividualSchoolsControlStratgy(a, port, individualSchoolsResult.getVersion(), individualSchoolsResult.getUrn());
 //		AddOrUpdateLibraryItemContainerResult result = updateVaccinationControlMeasureInLibrary(a, port);
 //		GetLibraryItemContainerResult result = getLibraryItem(a, port);
-		System.out.println("finished");
-	}
+        System.out.println("finished");
+    }
 
-	private static Authentication getAuthentication() throws FileNotFoundException, IOException {
-		File props = new File(APOLLO_DIR + LIBRARY_CONNECTION_PROPERTIES_FILE);
-		InputStream fis = new FileInputStream(props);
-		Properties properties = new Properties();
-		properties.load(fis);
-		fis.close();
+    private static Authentication getAuthentication() throws FileNotFoundException, IOException {
+        File props = new File(APOLLO_DIR + LIBRARY_CONNECTION_PROPERTIES_FILE);
+        InputStream fis = new FileInputStream(props);
+        Properties properties = new Properties();
+        properties.load(fis);
+        fis.close();
 
-		Authentication auth = new Authentication();
-		auth.setRequesterId(properties.getProperty("user"));
-		auth.setRequesterPassword(properties.getProperty("password"));
-		return auth;
-	}
+        Authentication auth = new Authentication();
+        auth.setAuthorizationType(AuthorizationTypeEnum.JWT);
+        auth.setPayload(properties.getProperty("jwt"));
+        return auth;
+    }
 
-	private static GetLibraryItemURNsResult getURNs(Authentication auth, LibraryServiceEI port) {
+    private static GetLibraryItemURNsResult getURNs(Authentication auth, LibraryServiceEI port) {
 
-		GetLibraryItemURNsMessage message = new GetLibraryItemURNsMessage();
-		message.setAuthentication(auth);
-		message.setItemType("Epidemic");
+        GetLibraryItemURNsMessage message = new GetLibraryItemURNsMessage();
+        message.setAuthentication(auth);
+        message.setItemType("Epidemic");
 
-		return port.getLibraryItemURNs(message);
-	}
+        return port.getLibraryItemURNs(message);
+    }
 
-	private static SetReleaseVersionResult setReleaseVersionForInfectiousDiseaseScenario(Authentication auth, LibraryServiceEI port, int version, int urn) {
+    private static SetReleaseVersionResult setReleaseVersionForInfectiousDiseaseScenario(Authentication auth, LibraryServiceEI port, int version, int urn) {
 
-		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
-		message.setAuthentication(auth);
-		message.setComment("Setting release version for influenza scenario");
-		message.setUrn(urn);
-		message.setVersion(version);
+        SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+        message.setAuthentication(auth);
+        message.setComment("Setting release version for influenza scenario");
+        message.setUrn(urn);
+        message.setVersion(version);
 
-		return port.setReleaseVersionForLibraryItem(message);
-	}
+        return port.setReleaseVersionForLibraryItem(message);
+    }
 
-	private static SetReleaseVersionResult setReleaseVersionForVaccinationControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
+    private static SetReleaseVersionResult setReleaseVersionForVaccinationControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
 
-		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
-		message.setAuthentication(auth);
-		message.setComment("Setting release version for 2009 Allegheny County vaccination control strategy");
-		message.setUrn(urn);
-		message.setVersion(version);
+        SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+        message.setAuthentication(auth);
+        message.setComment("Setting release version for 2009 Allegheny County vaccination control strategy");
+        message.setUrn(urn);
+        message.setVersion(version);
 
-		return port.setReleaseVersionForLibraryItem(message);
-	}
+        return port.setReleaseVersionForLibraryItem(message);
+    }
 
-	private static SetReleaseVersionResult setReleaseVersionForAntiviralControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
+    private static SetReleaseVersionResult setReleaseVersionForAntiviralControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
 
-		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
-		message.setAuthentication(auth);
-		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
-		message.setUrn(urn);
-		message.setVersion(version);
+        SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+        message.setAuthentication(auth);
+        message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+        message.setUrn(urn);
+        message.setVersion(version);
 
-		return port.setReleaseVersionForLibraryItem(message);
-	}
+        return port.setReleaseVersionForLibraryItem(message);
+    }
 
-	private static SetReleaseVersionResult setReleaseVersionForAllSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
+    private static SetReleaseVersionResult setReleaseVersionForAllSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
 
-		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
-		message.setAuthentication(auth);
-		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
-		message.setUrn(urn);
-		message.setVersion(version);
+        SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+        message.setAuthentication(auth);
+        message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+        message.setUrn(urn);
+        message.setVersion(version);
 
-		return port.setReleaseVersionForLibraryItem(message);
-	}
+        return port.setReleaseVersionForLibraryItem(message);
+    }
 
-	private static SetReleaseVersionResult setReleaseVersionForIndividualSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
+    private static SetReleaseVersionResult setReleaseVersionForIndividualSchoolsControlStratgy(Authentication auth, LibraryServiceEI port, int version, int urn) {
 
-		SetReleaseVersionMessage message = new SetReleaseVersionMessage();
-		message.setAuthentication(auth);
-		message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
-		message.setUrn(urn);
-		message.setVersion(version);
+        SetReleaseVersionMessage message = new SetReleaseVersionMessage();
+        message.setAuthentication(auth);
+        message.setComment("Setting release version for 2009 Allegheny County antiviral control strategy");
+        message.setUrn(urn);
+        message.setVersion(version);
 
-		return port.setReleaseVersionForLibraryItem(message);
-	}
+        return port.setReleaseVersionForLibraryItem(message);
+    }
 
-	private static QueryResult query(Authentication auth, LibraryServiceEI port) {
+    private static QueryResult query(Authentication auth, LibraryServiceEI port) {
 
-		QueryMessage message = new QueryMessage();
+        QueryMessage message = new QueryMessage();
 
-		message.setAuthentication(auth);
+        message.setAuthentication(auth);
 
-		String query = "SELECT id,json_of_library_object->1->'catalogEntry'->1->'itemDescription' AS description FROM library_objects";
-		message.setQuery(query);
+        String query = "SELECT id,json_of_library_object->1->'catalogEntry'->1->'itemDescription' AS description FROM library_objects";
+        message.setQuery(query);
 
-		QueryResult result = port.query(message);
-		return result;
-	}
+        QueryResult result = port.query(message);
+        return result;
+    }
 
-//	private static GetLibraryItemURNsResult getURNs(Authentication auth, LibraryServiceEI port) {
+    //	private static GetLibraryItemURNsResult getURNs(Authentication auth, LibraryServiceEI port) {
 //
 //		GetLibraryItemURNsMessage message = new GetLibraryItemURNsMessage();
 //		message.setAuthentication(auth);
 //		message.setItemType("Treatment");
 //		return port.getLibraryItemURNs(message);
 //	}
-	private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioToLibrary(Authentication auth, LibraryServiceEI port)
-			throws DatatypeConfigurationException, ParseException {
+    private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioToLibrary(Authentication auth, LibraryServiceEI port)
+            throws DatatypeConfigurationException, ParseException {
 
-		InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(scenario);
+        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(scenario);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
-		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
-		lic.setCatalogEntry(entry);
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+        entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
+        lic.setCatalogEntry(entry);
 
-		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+        AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
 
-		return port.addLibraryItemContainer(message);
-	}
+        return port.addLibraryItemContainer(message);
+    }
 
-	private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
-			throws DatatypeConfigurationException, ParseException {
+    private static UpdateLibraryItemContainerResult updateInfectiousDiseaseScenarioInLibrary(Authentication auth, int urn, LibraryServiceEI port)
+            throws DatatypeConfigurationException, ParseException {
 
-		InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(scenario);
+        InfectiousDiseaseScenario scenario = ExampleInfectiousDiseaseScenario.getScenario();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(scenario);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
-		entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
-		lic.setCatalogEntry(entry);
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 H1N1 Allegheny County R0 = 1.3");
+        entry.setTextualIdentifier("2009 H1N1 Allegheny County R0 = 1.3");
+        lic.setCatalogEntry(entry);
 
-		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
-		message.setUrn(urn);
+        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding H1N1 scenario for Allegheny County in 2009");
+        message.setUrn(urn);
 
-		return port.updateLibraryItemContainer(message);
-	}
+        return port.updateLibraryItemContainer(message);
+    }
 
-	private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
+    private static AddLibraryItemContainerResult addVaccinationControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(strategy);
+        IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
-		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding vaccination control strategy for Allegheny County in 2009");
+        AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding vaccination control strategy for Allegheny County in 2009");
 
-		return port.addLibraryItemContainer(message);
+        return port.addLibraryItemContainer(message);
 
-	}
+    }
 
-	private static AddLibraryItemContainerResult addAntiviralControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
+    private static AddLibraryItemContainerResult addAntiviralControlMeasureToLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlStrategy.getAntiviralControlMeasure(startDate);
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(strategy);
+        IndividualTreatmentControlMeasure strategy = ExampleAntiviralControlStrategy.getAntiviralControlMeasure(startDate);
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("2009 Antiviral Control Strategy (Tamiflu)");
-		entry.setTextualIdentifier("2009 Antiviral Control Strategy (Tamiflu)");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 Antiviral Control Strategy (Tamiflu)");
+        entry.setTextualIdentifier("2009 Antiviral Control Strategy (Tamiflu)");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding antiviral control strategy for Allegheny County in 2009");
+        AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding antiviral control strategy for Allegheny County in 2009");
 
-		return port.addLibraryItemContainer(message);
+        return port.addLibraryItemContainer(message);
 
-	}
+    }
 
-	private static AddLibraryItemContainerResult addAllSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
+    private static AddLibraryItemContainerResult addAllSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlMeasure();
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(strategy);
+        PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getAllSchoolsControlMeasure();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("2009 School Closure (All Schools)");
-		entry.setTextualIdentifier("2009 School Closure (All Schools)");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 School Closure (All Schools)");
+        entry.setTextualIdentifier("2009 School Closure (All Schools)");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding all school closure control strategy for Allegheny County in 2009");
+        AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding all school closure control strategy for Allegheny County in 2009");
 
-		return port.addLibraryItemContainer(message);
+        return port.addLibraryItemContainer(message);
 
-	}
+    }
 
-	private static AddLibraryItemContainerResult addIndividualSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
+    private static AddLibraryItemContainerResult addIndividualSchoolClosureControlMeasureToLibrary(Authentication auth, LibraryServiceEI port) {
 
-		PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlMeasure();
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(strategy);
+        PlaceClosureControlMeasure strategy = ExampleSchoolClosureControlStrategy.getIndividualSchoolsControlMeasure();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("2009 School Closure (Individual Schools)");
-		entry.setTextualIdentifier("2009 School Closure (Individual Schools)");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("2009 School Closure (Individual Schools)");
+        entry.setTextualIdentifier("2009 School Closure (Individual Schools)");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setComment("Adding individual school closure control strategy for Allegheny County in 2009");
+        AddLibraryItemContainerMessage message = new AddLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setComment("Adding individual school closure control strategy for Allegheny County in 2009");
 
-		return port.addLibraryItemContainer(message);
+        return port.addLibraryItemContainer(message);
 
-	}
+    }
 
-	private static UpdateLibraryItemContainerResult updateVaccinationControlMeasureInLibrary(XMLGregorianCalendar startDate, Authentication auth, LibraryServiceEI port, int urn) {
+    private static UpdateLibraryItemContainerResult updateVaccinationControlMeasureInLibrary(Authentication auth, LibraryServiceEI port, int urn) {
 
-		IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy(startDate);
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(strategy);
+        IndividualTreatmentControlMeasure strategy = ExampleVaccinationControlStrategy.getStrategy();
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(strategy);
 
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
-		entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
+        entry.setTextualIdentifier("The vaccination control strategy used by Allegheny County to mitigate the spread of H1N1 for the 2009 Influenza season.");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setUrn(urn);
-		message.setComment("Adding vaccination control strategy for Allegheny County in 2009");
+        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setUrn(urn);
+        message.setComment("Adding vaccination control strategy for Allegheny County in 2009");
 
-		return port.updateLibraryItemContainer(message);
-	}
+        return port.updateLibraryItemContainer(message);
+    }
 
-	private static UpdateLibraryItemContainerResult updateLibraryItemComtainer(Authentication auth, LibraryServiceEI port, int urn) {
+    private static UpdateLibraryItemContainerResult updateLibraryItemComtainer(Authentication auth, LibraryServiceEI port, int urn) {
 
-		Census c = new Census();
-		c.setDescription("test description 3rd time");
-		c.setSimulatorTime(17);
+        Census c = new Census();
+        c.setDescription("test description 3rd time");
+        c.setSimulatorTime(17);
 //		try {
 //			c.setReferenceDate(DatatypeFactory.newInstance().newXMLGregorianCalendar());
 //		} catch (DatatypeConfigurationException ex) {
 //			ex.printStackTrace();
 //		}
-		LibraryItemContainer lic = new LibraryItemContainer();
-		lic.setLibraryItem(c);
+        LibraryItemContainer lic = new LibraryItemContainer();
+        lic.setLibraryItem(c);
 
 //		GetVersionsMessage test =  new GetVersionsMessage();
 //		test.setAuthentication(auth);
 //		test.setUri("http://test");
 //		lic.setLibraryItem(test);
-		CatalogEntry entry = new CatalogEntry();
-		entry.setDisplayName("test item update");
-		entry.setTextualIdentifier("test item update");
+        CatalogEntry entry = new CatalogEntry();
+        entry.setDisplayName("test item update");
+        entry.setTextualIdentifier("test item update");
 
-		lic.setCatalogEntry(entry);
+        lic.setCatalogEntry(entry);
 
-		UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
-		message.setLibraryItemContainer(lic);
-		message.setAuthentication(auth);
-		message.setUrn(urn);
-		message.setComment("update 1");
+        UpdateLibraryItemContainerMessage message = new UpdateLibraryItemContainerMessage();
+        message.setLibraryItemContainer(lic);
+        message.setAuthentication(auth);
+        message.setUrn(urn);
+        message.setComment("update 1");
 
-		return port.updateLibraryItemContainer(message);
-	}
+        return port.updateLibraryItemContainer(message);
+    }
 
-	private static GetRevisionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
+    private static GetRevisionsResult getVersions(Authentication auth, LibraryServiceEI port, int urn) {
 
-		GetVersionsMessage message = new GetVersionsMessage();
-		message.setAuthentication(auth);
-		message.setUrn(urn);
+        GetVersionsMessage message = new GetVersionsMessage();
+        message.setAuthentication(auth);
+        message.setUrn(urn);
 
-		return port.getVersionNumbersForLibraryItem(message);
+        return port.getVersionNumbersForLibraryItem(message);
 
-	}
+    }
 
-	private static GetLibraryItemContainerResult getLibraryItem(Authentication auth, LibraryServiceEI port, int urn) {
+    private static GetLibraryItemContainerResult getLibraryItem(Authentication auth, LibraryServiceEI port, int urn) {
 
-		GetLibraryItemContainerMessage message = new GetLibraryItemContainerMessage();
-		message.setAuthentication(auth);
-		message.setUrn(urn);
-		message.setVersion(4);
+        GetLibraryItemContainerMessage message = new GetLibraryItemContainerMessage();
+        message.setAuthentication(auth);
+        message.setUrn(urn);
+        message.setVersion(4);
 
-		return port.getLibraryItemContainer(message);
-	}
+        return port.getLibraryItemContainer(message);
+    }
 
 //    private static Authentication getAuthentication() {
 //

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.pitt.apollo</groupId>
 		<artifactId>apollo-ws</artifactId>
-		<version>3.1.0-SNAPSHOT</version>
+		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>library-service-war</artifactId>
 	<name>Library Service WAR</name>
@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>edu.pitt.apollo</groupId>
-			<artifactId>library-service</artifactId>
+			<artifactId>library-soap-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
@@ -37,13 +37,13 @@
 					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 					<webResources>
 						<resource>
-							<directory>${basedir}/../src/main/resources</directory>
+							<directory>../../apollo-xsd-and-types/src/main/resources</directory>
 							<targetPath>WEB-INF/wsdl</targetPath>
 							<includes>
-								<include>library_service_3.1.0.wsdl</include>
-								<include>apollo_types_3.1.0.xsd</include>
-								<include>library_service_3.1.0.xsd</include>
-								<include>services_common_3.1.0.xsd</include>
+								<include>library_service_4.0.wsdl</include>
+								<include>library_service_4.0.xsd</include>
+								<include>services_common_4.0.xsd</include>								<include>library_service_4.0.xsd</include>
+								<include>apollo_types_4.0.xsd</include>
 							</includes>
 						</resource>
 					
@@ -58,7 +58,6 @@
 	<profiles>
 		<profile>
 			<id>CXF</id>
-			<!-- Remove activation element below if using Metro -->
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>

@@ -5,15 +5,17 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.RestDataServiceUtils;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+import org.springframework.http.HttpStatus;
+
 import java.math.BigInteger;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -21,8 +23,8 @@ import org.springframework.http.HttpStatus;
  */
 public class AddRunIdsToSimulationGroupForRun extends BaseRunManagerServiceAccessorMethod {
 
-	public AddRunIdsToSimulationGroupForRun(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public AddRunIdsToSimulationGroupForRun(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String addRunIdsToSimulationGroupForRun(BigInteger runId, String runIdList) throws UnsupportedSerializationFormatException, SerializationException {
@@ -33,7 +35,7 @@ public class AddRunIdsToSimulationGroupForRun extends BaseRunManagerServiceAcces
 			impl.addRunIdsToSimulationGroupForRun(runId, groupIdsAsList, authentication);
 
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

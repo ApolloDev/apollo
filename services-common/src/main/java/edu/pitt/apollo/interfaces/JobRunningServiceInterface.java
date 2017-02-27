@@ -1,7 +1,7 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.JobRunningServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 
 import java.math.BigInteger;
 

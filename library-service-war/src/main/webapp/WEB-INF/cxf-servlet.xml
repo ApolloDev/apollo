@@ -14,8 +14,8 @@
 
     <jaxws:endpoint 
         id="libraryservice"
-        implementor="edu.pitt.apollo.LibraryServiceImpl"
-        wsdlLocation="WEB-INF/wsdl/libraryservice210.wsdl"
+        implementor="edu.pitt.apollo.LibraryServiceSoapImpl"
+        wsdlLocation="WEB-INF/wsdl/library_service_4.0.wsdl"
         address="/libraryservice">
     </jaxws:endpoint>
 </beans>

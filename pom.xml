@@ -4,40 +4,42 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Releases</name>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Snapshots</name>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
-        </snapshotRepository>
-
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>apollo-snapshots</id>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
-        </repository>
-        <repository>
-            <id>apollo-releases</id>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
-        </repository>
-        <repository>
-            <id>nexus</id>
-            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-private-snapshots/</url>
-        </repository>
-    </repositories>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <scm>
+        <connection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</connection>
+        <developerConnection>scm:svn:https://apollo.googlecode.com/svn/apollo-ws/service-skeletons/java/trunk</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>local_repo</id>
+            <name>Local Repository</name>
+            <url>file:${user.home}/.m2/repository</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>research.rods.pitt.edu</id>
+            <name>Apollo Repository</name>
+            <url>http://research.rods.pitt.edu/repo</url>
+        </repository>
+
+
+        <repository>
+            <id>oss.sonatype.org</id>
+            <name>OSS Sonatype Staging</name>
+            <url>https://oss.sonatype.org/content/groups/staging</url>
+        </repository>
+
+
+    </repositories>
 
     <licenses>
         <license>
@@ -55,57 +57,50 @@
     <modules>
         <module>db-common</module>
         <module>services-common</module>
+        <module>apollo-translator</module>
+	    <module>apollo-translator-service</module>
         <module>rest-services-frontend-common</module>
-
-        <module>data-service-rest-connector</module>
         <module>run-manager-service-rest-connector</module>
         <module>rest-service-connector-common</module>
-
-        <module>translator-service-skeleton</module>
-
-        <module>library-service</module>
-        <module>library-service-client</module>
-        <module>library-service-war</module>
-        <module>library-service-rest-frontend</module>
-
-        <module>data-service</module>
-        <module>data-service-war</module>
-        <module>data-service-rest-frontend</module>
-
-        <module>simulator-service</module>
-        <module>simulator-service-client</module>
-        <module>simulator-service-war</module>
-
-        <module>visualizer-service</module>
-        <module>visualizer-service-client</module>
-        <module>visualizer-service-war</module>
-
-        <module>job-running-service-soap-connector</module>
+        <module>filestore-service-rest-connector</module>
+        <module>filestore-service-rest-frontend</module>
         <module>job-running-service-rest-connector</module>
-        <module>translator-service-soap-connector</module>
-
+        <module>simulator-service-rest-skeleton</module>
         <module>synthetic-population-service</module>
         <module>synthetic-population-service-client</module>
         <module>synthetic-population-service-war</module>
         <module>synthetic-population-service-soap-connector</module>
-
+        <module>output-translator-service-rest-frontend</module>
         <module>run-manager-service</module>
         <module>run-manager-service-rest-frontend</module>
-
+        <module>output-translator-service</module>
         <module>broker-service</module>
-        <module>broker-service-war</module>
         <module>broker-service-rest-frontend</module>
         <module>broker-service-rest-connector</module>
-
+        <module>broker-soap-service</module>
+        <module>broker-service-client</module>
+        <module>broker-service-war</module>
         <module>config-examples</module>
         <module>run-manager-service-client</module>
-        <module>broker-service-client</module>
-
-
+        <module>filestore-service</module>
+        <module>visualizer-service</module>
+        <module>visualizer-service-rest-frontend</module>
+        <module>security-manager</module>
+        <module>library-service</module>
+        <module>library-service-client</module>
         <module>library-service-rest-connector</module>
+        <module>library-service-rest-frontend</module>
+        <module>library-service-war</module>
     </modules>
 
     <dependencies>
+
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>xsd-types</artifactId>
+            <version>4.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -126,28 +121,24 @@
             <version>1.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>services-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
+
+       <!-- <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>xsd-types</artifactId>
+            <version>${project.version}</version>
+        </dependency>-->
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>edu.pitt.apollo</groupId>
-                <artifactId>xsd-types</artifactId>
-                <version>3.1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.pitt.apollo</groupId>
-                <artifactId>services-common</artifactId>
-                <version>3.1.0-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <profiles>
         <profile>
             <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -180,33 +171,33 @@
         <defaultGoal>install</defaultGoal>
         <pluginManagement>
             <plugins>
-                <!-- <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-dependency-plugin</artifactId>
-                     <executions>
-                         <execution>
-                             <id>unpack-xsd-files</id>
+               <!-- <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-xsd-files</id>
 
-                             <phase>initialize</phase>
-                             <goals>
-                                 <goal>unpack</goal>
-                             </goals>
-                             <configuration>
-                                 <artifactItems>
-                                     <artifactItem>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
 
-                                         <groupId>edu.pitt.apollo</groupId>
-                                         <artifactId>xsd-types</artifactId>
-                                         <version>${version}</version>
-                                         <type>jar</type>
-                                     </artifactItem>
-                                 </artifactItems>
-                                 <includes>**/*.xsd</includes>
-                                 <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
-                             </configuration>
-                         </execution>
-                     </executions>
-                 </plugin> -->
+                                        <groupId>edu.pitt.apollo</groupId>
+                                        <artifactId>xsd-types</artifactId>
+                                        <version>${version}</version>
+                                        <type>jar</type>
+                                    </artifactItem>
+                                </artifactItems>
+                                <includes>**/*.xsd</includes>
+                                <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin> -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
@@ -258,11 +249,12 @@
                         <source>1.7</source>
                         <target>1.7</target>
                     </configuration>
+
                 </plugin>
+
+
             </plugins>
         </pluginManagement>
     </build>
-
-
     <name>Apollo Web Services</name>
 </project>

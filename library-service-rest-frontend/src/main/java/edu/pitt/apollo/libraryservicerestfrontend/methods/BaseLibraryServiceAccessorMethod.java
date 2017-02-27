@@ -1,18 +1,20 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
-import edu.pitt.apollo.BrokerServiceImpl;
 import edu.pitt.apollo.LibraryServiceImpl;
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_1_0.Request;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.apollo.utilities.AuthorizationUtility;
 import edu.pitt.apollo.utils.ResponseMessageBuilder;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.SerializerFactory;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpStatus;
+
+import java.util.Arrays;
 
 /**
  * Created by jdl50 on 8/7/15.
@@ -26,15 +28,23 @@ public class BaseLibraryServiceAccessorMethod {
     protected final Class responseClass;
     protected final ObjectSerializationInformation serializationInformation;
 
-    public BaseLibraryServiceAccessorMethod(String username, String password, SerializationFormat serializationFormat, Class responseClass) throws UnsupportedSerializationFormatException {
+    public BaseLibraryServiceAccessorMethod(SerializationFormat serializationFormat, Class responseClass, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
 
-        authentication = new Authentication();
-        authentication.setRequesterId(username);
-        authentication.setRequesterPassword(password);
+        authentication = AuthorizationUtility.createAuthenticationFromAuthorizationHeader(authorizationHeader);
 
         responseBuilder = new ResponseMessageBuilder();
 
-        serializer = SerializerFactory.getSerializer(serializationFormat);
+        switch (serializationFormat) {
+            case JSON:
+                serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON, Arrays.asList(ApolloClassList.classList));
+                break;
+            case XML:
+                serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
+                break;
+            default:
+                serializer = null;
+        }
+
 
         impl = new LibraryServiceImpl();
         this.responseClass = responseClass;

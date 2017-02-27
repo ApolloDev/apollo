@@ -1,31 +1,38 @@
 package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetLibraryItemContainerMessage;
-import edu.pitt.apollo.library_service_types.v3_1_0.GetLibraryItemContainerResult;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
+import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemContainerResult;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+import org.springframework.http.HttpStatus;
 
 /**
  * Created by jdl50 on 8/11/15.
  */
 public class GetLibraryItemMethod extends BaseLibraryServiceAccessorMethod {
-    public GetLibraryItemMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-        super(username, password, serializationFormat, GetLibraryItemContainerResult.class);
-    }
 
-    public String getLibraryItem(int urn, Integer version) {
+	public GetLibraryItemMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, GetLibraryItemContainerResult.class, authorizationHeader);
+	}
 
-        GetLibraryItemContainerMessage getLibraryItemContainerMessage = new GetLibraryItemContainerMessage();
-        getLibraryItemContainerMessage.setAuthentication(authentication);
-        getLibraryItemContainerMessage.setUrn(urn);
-        getLibraryItemContainerMessage.setVersion(version);
-        Object result = impl.getLibraryItemContainer(getLibraryItemContainerMessage);
+	public String getLibraryItem(int urn, Integer version) {
 
+        GetLibraryItemContainerResult result;
+		try {
+			result = impl.getLibraryItem(urn, version, authentication);
+		} catch (LibraryServiceException ex) {
+			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getClass().getName() + ": " + ex.getMessage());
+			try {
+				return serializer.serializeObject(responseBuilder.getResponse());
+			} catch (SerializationException e1) {
+				return "Error: " + e1.getClass().getName() + ": " + e1.getMessage();
+			}
+		}
 
-        return getResponseAsString(result);
+		return getResponseAsString(result);
 
-
-    }
-
+	}
 
 }

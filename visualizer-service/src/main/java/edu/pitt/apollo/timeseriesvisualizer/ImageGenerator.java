@@ -1,48 +1,41 @@
 package edu.pitt.apollo.timeseriesvisualizer;
 
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.RunIdentificationAndLabel;
+import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
+import edu.pitt.apollo.timeseriesvisualizer.types.*;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.RunUtils;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.TimeSeriesProcessor;
+import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
-import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
-import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
-import edu.pitt.apollo.timeseriesvisualizer.utilities.DatabaseUtility;
-import edu.pitt.apollo.timeseriesvisualizer.utilities.VisualizerChartUtility;
 
 /**
- * 
- * Author: Nick Millett Email: nick.millett@gmail.com Date: Feb 12, 2013 Time:
- * 6:03:46 PM Class: ImageGenerator IDE: NetBeans 6.9.1
+ *
+ * Author: Nick Millett Email: nick.millett@gmail.com Date: Feb 12, 2013 Time: 6:03:46 PM Class: ImageGenerator IDE: NetBeans 6.9.1
  */
+
+
 public class ImageGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImageGenerator.class);
 
 	public static final String SOFTWARE_NAME = "TimeSeriesVisualizer";
-	private static final String VISUALIZER_PROPERTIES_FILENAME = "visualizer.properties";
-	private static final String IMAGE_FILES_DIRECTORY_PARAM = "image_files_directory";
-	private static final String IMAGE_FILE_TYPE_PARAM = "image_file_type";
-	private static final String IMAGE_BASE_URL_PARAM = "image_base_url";
-	private static final String IMAGE_FILES_DIRECTORY, IMAGE_FILE_TYPE, IMAGE_BASE_URL;
+//	private static final String VISUALIZER_PROPERTIES_FILENAME = "visualizer.properties";
+//	private static final String IMAGE_FILES_DIRECTORY_PARAM = "image_files_directory";
+//	private static final String IMAGE_FILE_TYPE_PARAM = "image_file_type";
+//	private static final String IMAGE_BASE_URL_PARAM = "image_base_url";
+//	private static final String IMAGE_FILE_TYPE, IMAGE_BASE_URL;
 	private static final String INFECTION_STATES_IMAGE_NAME = "prevalence";
 	private static final String INCIDENCE_IMAGE_NAME = "incidence";
 	private static final String NEWLY_DECEASED_IMAGE_NAME = "newly_deceased";
@@ -51,57 +44,68 @@ public class ImageGenerator {
 
 	private List<BigInteger> runIds;
 	private Map<BigInteger, String> runIdLabelMap;
+	private Map<BigInteger, SoftwareIdentification> runIdSimulatorMap;
 	private String combinedIncidenceImagePath;
 	private final boolean multipleRunsSpecified;
 	private final BigInteger visualizerRunId;
 //	private final boolean multiVaccChart = false;
-	private final DatabaseUtility dbUtil;
-	private static final String APOLLO_DIR;
+//	private final DatabaseUtility dbUtil;
+	private TimeSeriesProcessor outputFileUtility;
+//	private static final String APOLLO_DIR;
+	private String runDirectory;
+	private String imageFileType;
+	private String localFileBaseUrl;
+    private Authentication authentication;
 
 	public ImageGenerator(List<RunIdentificationAndLabel> initialRunIds,
-			SoftwareIdentification visualizerSoftwareId, BigInteger visualizerRunId)
-			throws TimeSeriesVisualizerException {
+                          BigInteger visualizerRunId, Authentication authentication)
+			throws TimeSeriesVisualizerException, RunManagementException {
 
-		dbUtil = new DatabaseUtility(visualizerSoftwareId);
+//		dbUtil = new DatabaseUtility(visualizerSoftwareId);
+		runDirectory = RunUtils.createRunDirectory(visualizerRunId);
+		imageFileType = RunUtils.getImageFileType();
+		localFileBaseUrl = RunUtils.getLocalFileBaseUrl();
+		outputFileUtility = new TimeSeriesProcessor(visualizerRunId, authentication);
 		setRunIdsAndLabels(initialRunIds); // need to do this first
 
 		this.visualizerRunId = visualizerRunId;
 		multipleRunsSpecified = (runIds.size() > 1);
 		// get the visualizer ID from the run ID
-		String runDirectory = getRunDirectory(visualizerRunId);
 
 		// set file paths and urls
 		if (!multipleRunsSpecified) {
 		} else {
-			combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE;
+			combinedIncidenceImagePath = runDirectory + File.separator + INCIDENCE_IMAGE_NAME + "." + imageFileType;
 		}
 	}
 
-	public final String getRunDirectory(BigInteger visualizerRunId) {
-		return IMAGE_FILES_DIRECTORY + File.separator + visualizerRunId;
-	}
-
+//	public final String getRunDirectory(BigInteger visualizerRunId) {
+//		return IMAGE_FILES_DIRECTORY + File.separator + visualizerRunId;
+//	}
 	private String getImageFileName(String imageFileName) {
-		return imageFileName + "." + IMAGE_FILE_TYPE;
+		return imageFileName + "." + imageFileType;
 	}
 
 	private String getURLForImage(String imageName) {
-		if (IMAGE_BASE_URL.charAt(IMAGE_BASE_URL.length() - 1) == '/') {
-			return IMAGE_BASE_URL + visualizerRunId + "/" + imageName + "." + IMAGE_FILE_TYPE;
+		if (localFileBaseUrl.charAt(localFileBaseUrl.length() - 1) == '/') {
+			return localFileBaseUrl + visualizerRunId + "/" + imageName + "." + imageFileType;
 		} else {
-			return IMAGE_BASE_URL + "/" + visualizerRunId + "/" + imageName + "." + IMAGE_FILE_TYPE;
+			return localFileBaseUrl + "/" + visualizerRunId + "/" + imageName + "." + imageFileType;
 		}
 
 	}
 
 	private void setRunIdsAndLabels(List<RunIdentificationAndLabel> initialRunIdsAndLabels)
-			throws TimeSeriesVisualizerException {
+			throws TimeSeriesVisualizerException, RunManagementException {
 		runIds = new ArrayList<BigInteger>();
 		runIdLabelMap = new HashMap<BigInteger, String>();
+		runIdSimulatorMap = new HashMap<>();
 		for (RunIdentificationAndLabel runIdAndLabel : initialRunIdsAndLabels) {
 			BigInteger runId = runIdAndLabel.getRunIdentification();
 			runIds.add(runId);
 			runIdLabelMap.put(runId, runIdAndLabel.getRunLabel());
+			SoftwareIdentification softwareIdentification = RunUtils.getSoftwareIdentificationForRun(runId, authentication);
+			runIdSimulatorMap.put(runId, softwareIdentification);
 		}
 	}
 
@@ -109,7 +113,7 @@ public class ImageGenerator {
 
 		ChartTypeProperties props = new ChartTypeProperties();
 		props.setChartTypeEnum(chartType);
-		props.setDirectoryForChart(getRunDirectory(visualizerRunId));
+		props.setDirectoryForChart(runDirectory);
 		props.setFileNameForChart(name);
 		props.setTitleForChart(title);
 		props.setUrlForChart(url);
@@ -172,10 +176,10 @@ public class ImageGenerator {
 
 		} else {
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.SUSCEPTIBLE);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.LATENT);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.INFECTIOUS);
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.RECOVERED);
-			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
+//			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
 
 			String infectionStatesTitle = "Infection states over time";
 			String incidenceTitle = "Incidence of newly latent over time";
@@ -188,9 +192,9 @@ public class ImageGenerator {
 					getChartTypeProperties(ChartTypeEnum.INFECTION_STATES, infectionStatesTitle,
 							getImageFileName(INFECTION_STATES_IMAGE_NAME), getURLForImage(INFECTION_STATES_IMAGE_NAME)));
 
-			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
-					getChartTypeProperties(ChartTypeEnum.INCIDENCE, incidenceTitle,
-							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
+//			timeSeriesCurveTypesToUseForHuman.setChartTypePropertiesForChart(ChartTypeEnum.INCIDENCE,
+//					getChartTypeProperties(ChartTypeEnum.INCIDENCE, incidenceTitle,
+//							getImageFileName(INCIDENCE_IMAGE_NAME), getURLForImage(INCIDENCE_IMAGE_NAME)));
 		}
 
 		return timeSeriesCurveTypesToUseForHuman;
@@ -201,22 +205,26 @@ public class ImageGenerator {
 		String chartXAxisLabel = "simulation time step (days)"; // this is a hack for now, should change in the future
 		Map<String, TimeSeriesCurveTypeList> timeSeriesCurveTypesBySpecies = new HashMap<String, TimeSeriesCurveTypeList>();
 		TimeSeriesCurveTypeList timeSeriesCurveTypesToUseForHuman = new TimeSeriesCurveTypeList();
-
 		if (runIds.size() == 1) {
-			String simulatorName = dbUtil.getSimulatorSoftwareNameForRun(runIds.get(0)).toLowerCase();
-			if (simulatorName.equals("anthrax")) {
-				chartXAxisLabel = "simulation time step (hours)";
-			}
+//			try {
+//				String simulatorName = RunUtils.getSoftwareIdentificationForRun(runIds.get(0)).getSoftwareName().toLowerCase();
+				String simulatorName = "fred";
+				if (simulatorName.equals("anthrax")) {
+					chartXAxisLabel = "simulation time step (hours)";
+				}
 
-			timeSeriesCurveTypesToUseForHuman = getTimeSeriesCurveTypeListForHuman(simulatorName);
-			timeSeriesCurveTypesToUseForHuman.processAddedCurveTypes();
-			timeSeriesCurveTypesBySpecies.put("human", timeSeriesCurveTypesToUseForHuman);
+				timeSeriesCurveTypesToUseForHuman = getTimeSeriesCurveTypeListForHuman(simulatorName);
+				timeSeriesCurveTypesToUseForHuman.processAddedCurveTypes();
+				timeSeriesCurveTypesBySpecies.put("human", timeSeriesCurveTypesToUseForHuman);
 
-			if (simulatorName.equals("clara")) {
-				TimeSeriesCurveTypeList timeSeriesCurveTypeForMosquito = getTimeSeriesCurveTypeListForMosquito();
-				timeSeriesCurveTypeForMosquito.processAddedCurveTypes();
-				timeSeriesCurveTypesBySpecies.put("mosquito", timeSeriesCurveTypeForMosquito);
-			}
+				if (simulatorName.equals("clara")) {
+					TimeSeriesCurveTypeList timeSeriesCurveTypeForMosquito = getTimeSeriesCurveTypeListForMosquito();
+					timeSeriesCurveTypeForMosquito.processAddedCurveTypes();
+					timeSeriesCurveTypesBySpecies.put("mosquito", timeSeriesCurveTypeForMosquito);
+				}
+//			} catch (RunManagementException ex) {
+//				throw new TimeSeriesVisualizerException("RunManagementException getting software for run " + runIds.get(0));
+//			}
 		} else {
 			timeSeriesCurveTypesToUseForHuman.add(TimeSeriesCurveTypeEnum.NEWLY_LATENT);
 			timeSeriesCurveTypesToUseForHuman.processAddedCurveTypes();
@@ -277,7 +285,8 @@ public class ImageGenerator {
 
 			TimeSeriesCurveTypeList timeSeriesCurveTypeListForSpecies = timeSeriesCurveTypeListBySpecies.get(species);
 
-			TimeSeriesContainerList timeSeriesContainerList = dbUtil.retrieveTimeSeriesFromDatabaseFiles(runIds,
+			TimeSeriesContainerList timeSeriesContainerList = outputFileUtility.retrieveTimeSeriesFromSimulatorOutput(runIds,
+					runIdSimulatorMap,
 					timeSeriesCurveTypeListForSpecies);
 
 			// adjustGlobalEpidemicSimulatorIncidence(imageSeriesMap);
@@ -301,23 +310,17 @@ public class ImageGenerator {
 			if (generateCombinedIncidence) {
 				// comnined incidence
 				chartUtility.createCombinedIncidenceTimeSeriesChart(combinedIncidenceImagePath, runIdLabelMap);
-				resourceMap.put(INCIDENCE_IMAGE_NAME + "." + IMAGE_FILE_TYPE, getURLForImage(INCIDENCE_IMAGE_NAME));
+				resourceMap.put(INCIDENCE_IMAGE_NAME + "." + imageFileType, getURLForImage(INCIDENCE_IMAGE_NAME));
 			} else if (timeSeriesCurveTypeListForSpecies.listContainsIncidenceCurveTypes()) {
 				chartUtility.createTimeSeriesChart(timeSeriesCurveTypeListForSpecies.getChartTypePropertiesForChartType(ChartTypeEnum.INCIDENCE), chartXAxisLabel,
 						TimeSeriesCurveTypeEnum.CURVE_TYPES_FOR_INCIDENCE_CHART, resourceMap);
 			}
 		}
 
-		dbUtil.insertURLsIntoDatabase(resourceMap, visualizerRunId);
+		RunUtils.uploadFiles(resourceMap, visualizerRunId, authentication);
 	}
 
-	public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException {
-
-		SoftwareIdentification visualizerSoftwareId = new SoftwareIdentification();
-		visualizerSoftwareId.setSoftwareDeveloper("UPitt");
-		visualizerSoftwareId.setSoftwareName("Time Series Visualizer");
-		visualizerSoftwareId.setSoftwareVersion("1.0");
-		visualizerSoftwareId.setSoftwareType(ApolloSoftwareTypeEnum.VISUALIZER);
+	public static void main(String[] args) throws NoSuchAlgorithmException, TimeSeriesVisualizerException, RunManagementException {
 
 		List<RunIdentificationAndLabel> runIdsAndLabels = new ArrayList<RunIdentificationAndLabel>();
 
@@ -326,17 +329,17 @@ public class ImageGenerator {
 		// runIdSeriesLabels.put("3", "FluTE");
 		// runIdSeriesLabels.put("3", "SEIR");
 		RunIdentificationAndLabel runIdAndLabel = new RunIdentificationAndLabel();
-		runIdAndLabel.setRunIdentification(new BigInteger("22"));
+		runIdAndLabel.setRunIdentification(new BigInteger("27"));
 		runIdAndLabel.setRunLabel("LABEL 1");
 
 		runIdsAndLabels.add(runIdAndLabel);
-		runIdAndLabel = new RunIdentificationAndLabel();
-		runIdAndLabel.setRunIdentification(new BigInteger("25"));
-		runIdAndLabel.setRunLabel("LABEL 2");
-		runIdsAndLabels.add(runIdAndLabel);
+//		runIdAndLabel = new RunIdentificationAndLabel();
+//		runIdAndLabel.setRunIdentification(new BigInteger("25"));
+//		runIdAndLabel.setRunLabel("LABEL 2");
+//		runIdsAndLabels.add(runIdAndLabel);
 
-		ImageGenerator generator = new ImageGenerator(runIdsAndLabels, visualizerSoftwareId, new BigInteger(
-				"11"));
+		ImageGenerator generator = new ImageGenerator(runIdsAndLabels, new BigInteger(
+				"601"), new Authentication());
 		try {
 			generator.createTimeSeriesImages();
 		} catch (Exception ex) {
@@ -345,62 +348,4 @@ public class ImageGenerator {
 
 	}
 
-	static {
-		Map<String, String> env = System.getenv();
-		String apolloDir = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
-		if (apolloDir != null) {
-			if (!apolloDir.endsWith(File.separator)) {
-				apolloDir += File.separator;
-			}
-			APOLLO_DIR = apolloDir;
-			logger.info(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE + " is now:" + APOLLO_DIR);
-
-			boolean errored = false;
-			FileInputStream fis = null;
-			try {
-				fis = new FileInputStream(APOLLO_DIR + VISUALIZER_PROPERTIES_FILENAME);
-			} catch (FileNotFoundException e) {
-				logger.info("Error initializing Visualizer Service.  Can not find file \""
-						+ VISUALIZER_PROPERTIES_FILENAME + " \" in directory \"" + APOLLO_DIR
-						+ "\". Error message is " + e.getMessage());
-				errored = true;
-			}
-
-			Properties properties = new Properties();
-			try {
-				properties.load(fis);
-			} catch (IOException e) {
-				logger.info("Error initializing Visualizer Service.  Unable to read file \""
-						+ VISUALIZER_PROPERTIES_FILENAME + " \" in directory \"" + APOLLO_DIR
-						+ "\". Error message is " + e.getMessage());
-				errored = true;
-			}
-
-			try {
-				if (fis != null) {
-					fis.close();
-				}
-			} catch (IOException e) {
-				logger.info("Error initializing Visualizer Service.  Unable to close file \""
-						+ VISUALIZER_PROPERTIES_FILENAME + " \" in directory \"" + APOLLO_DIR
-						+ "\". Error message is " + e.getMessage());
-				errored = true;
-			}
-
-			IMAGE_FILES_DIRECTORY = errored ? "" : properties.getProperty(IMAGE_FILES_DIRECTORY_PARAM);
-			IMAGE_FILE_TYPE = errored ? "" : properties.getProperty(IMAGE_FILE_TYPE_PARAM);
-			IMAGE_BASE_URL = errored ? "" : properties.getProperty(IMAGE_BASE_URL_PARAM);
-		} else {
-			logger.error(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE
-					+ " environment variable not found!");
-			APOLLO_DIR = "";
-			IMAGE_FILES_DIRECTORY = "";
-			IMAGE_FILE_TYPE = "";
-			IMAGE_BASE_URL = "";
-		}
-		logger.info(SOFTWARE_NAME + " will use the following IMAGE_FILES_DIRECTORY: " + IMAGE_FILES_DIRECTORY);
-		logger.info(SOFTWARE_NAME + " will use the following IMAGE_FILE_TYPE: " + IMAGE_FILE_TYPE);
-		logger.info(SOFTWARE_NAME + " will use the following IMAGE_BASE_URL" + IMAGE_BASE_URL);
-
-	}
 }

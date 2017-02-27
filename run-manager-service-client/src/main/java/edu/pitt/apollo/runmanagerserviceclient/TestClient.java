@@ -5,19 +5,16 @@ import com.github.sardine.Sardine;
 import com.github.sardine.SardineFactory;
 import edu.pitt.apollo.ApolloServiceConstants;
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.DataServiceException;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
 import edu.pitt.apollo.interfaces.RunManagementInterface;
 import edu.pitt.apollo.runmanagerservice.RunManagerServiceImpl;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.FixedDuration;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.FixedDuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,12 +47,10 @@ public class TestClient {
 		fis.close();
 
 		Authentication auth = new Authentication();
-		auth.setRequesterId(properties.getProperty("username"));
-		auth.setRequesterPassword(properties.getProperty("password"));
 		return auth;
 	}
 
-	private static RunSimulationMessage getRunSimulationMessage() throws IOException, DataServiceException {
+	private static RunSimulationMessage getRunSimulationMessage() throws IOException, DatastoreException {
 		RunSimulationMessage runSimulationMessage
 				= ApolloServiceTypeFactory.getMinimalistRunSimulationMessage(ApolloServiceTypeFactory.SimulatorIdentificationEnum.FRED);
 
@@ -68,9 +63,9 @@ public class TestClient {
 		return runSimulationMessage;
 	}
 
-	private static void run(RunMessage message) throws IOException, JobRunningServiceException, DataServiceException {
+	private static void run(RunMessage message, Authentication authentication) throws IOException, JobRunningServiceException, RunManagementException {
 		RunManagementInterface runManagementInterface = new RunManagerServiceImpl();
-		InsertRunResult runResult = runManagementInterface.insertRun(message);
+		InsertRunResult runResult = runManagementInterface.insertRun(message, authentication);
 		if (!runResult.isRunCached()) {
 			BigInteger runId = runResult.getRunId();
 			while (runManagementInterface.getRunStatus(runId, getAuthentication()).getStatus() != (MethodCallStatusEnum.TRANSLATION_COMPLETED)) {
@@ -103,8 +98,7 @@ public class TestClient {
 		runSimulationsMessage
 				.setBaseInfectiousDiseaseScenario(runSimulationMessage
 						.getInfectiousDiseaseScenario());
-		runSimulationsMessage.setAuthentication(runSimulationMessage
-				.getAuthentication());
+
 		runSimulationsMessage.setSoftwareIdentification(runSimulationMessage
 				.getSoftwareIdentification());
 		runSimulationsMessage
@@ -164,10 +158,11 @@ public class TestClient {
 		return message;
 	}
 
-	public static void main(String[] args) throws IOException, DataServiceException, JobRunningServiceException {
+	public static void main(String[] args) throws IOException, RunManagementException, JobRunningServiceException {
 		RunSimulationMessage runSimulationMessage = TestClient.getRunSimulationMessage();
+        Authentication authentication = new Authentication();
 		//RunSimulationsMessage runSimulationsMessage = TestClient.getRunSimulationsMessage(20);
-		run(runSimulationMessage);
+		run(runSimulationMessage, authentication);
 	}
 
 }

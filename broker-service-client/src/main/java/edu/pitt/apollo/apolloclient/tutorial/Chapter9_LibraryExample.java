@@ -15,8 +15,8 @@
 
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.libraryclient.ExampleVaccinationControlStrategy;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.examples.ExampleVaccinationControlStrategy;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 
 import java.net.MalformedURLException;
 
@@ -34,8 +34,6 @@ public class Chapter9_LibraryExample extends AbstractRunAndVisualizeSimulationCl
 
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("TutorialUser");
-		auth.setRequesterPassword("TutorialPassword");
 		return auth;
 	}
 

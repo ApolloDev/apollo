@@ -1,0 +1,50 @@
+===== FRED Parameter File =======
+#FRED PARAM FILE
+days = 150
+symp[0] = 0.67
+R0 = 1.9791
+primary_cases_file[0] = fred_initial_population_0.txt
+residual_immunity_ages[0] = 2 0 100
+fips = 42003
+days_latent[0] =  4 0.00 0.28 0.81 1.00
+days_infectious[0] =  6 0.00 0.00 0.08 0.44 0.80 1.00
+days_symptomatic[0] =  6 0.00 0.00 0.08 0.44 0.80 1.00
+residual_immunity_values[0] = 1 0.2
+advanced_seeding = exposed:0.47;infectious:0.53
+track_infection_events = 1
+pregnancy_prob_ages = 8 0 18 19 24 25 49 50 110
+pregnancy_prob_values = 4 0.0 0.0576 0.0314 0.0
+
+at_risk_ages[0] = 14 0 1 2 4 5 18 19 24 25 49 50 64 65 110
+at_risk_values[0] = 7 0.039 0.0883 0.1168 0.1235 0.1570 0.3056 0.4701
+##### VACCINE PARAMETERS
+enable_behaviors = 1
+enable_vaccination = 1
+number_of_vaccines = 1
+accept_vaccine_enabled = 1
+accept_vaccine_strategy_distribution = 7 0.1 0.9 0 0 0 0 0
+### VACCINE 1
+vaccine_number_of_doses[0] = 1
+vaccine_total_avail[0] = 300000000
+vaccine_additional_per_day[0] = 300000000
+vaccine_starting_day[0] = 0
+##### Vaccine 1 Dose 0
+vaccine_next_dosage_day[0][0] = 0
+vaccine_dose_efficacy_ages[0][0] = 2 0 100
+vaccine_dose_efficacy_values[0][0] = 1 0.7
+vaccine_dose_efficacy_delay_ages[0][0] = 2 0 100
+vaccine_dose_efficacy_delay_values[0][0] = 1 14
+vaccination_capacity_file = fred-vaccination-schedule_0.txt
+##### ANTIVIRAL DEFINITIONS ####
+enable_antivirals = 1
+number_antivirals = 1
+av_disease[0] = 0
+av_prophylaxis[0] = 1
+av_start_day[0] = 0
+av_total_avail[0] = 30000000
+av_additional_per_day[0] = 6000
+av_initial_stock[0] = 0
+av_course_length[0] = 1
+av_reduce_susceptibility[0] = 0.0
+av_reduce_infectivity[0] = 0.7
+av_reduce_symptomatic_period[0] = 0.7

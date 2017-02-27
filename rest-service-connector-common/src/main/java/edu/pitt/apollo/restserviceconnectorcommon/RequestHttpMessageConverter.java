@@ -15,24 +15,27 @@
  */
 package edu.pitt.apollo.restserviceconnectorcommon;
 
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.Request;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import edu.pitt.apollo.services_common.v4_0_1.Request;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.Deserializer;
+import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.SerializerFactory;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -62,7 +65,7 @@ public class RequestHttpMessageConverter implements HttpMessageConverter<Request
 	@Override
 	public Request read(Class<? extends Request> type, HttpInputMessage him) throws IOException, HttpMessageNotReadableException {
 		try {
-			Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+			Deserializer deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
 			return deserializer.getObjectFromMessage(him.getBody().toString(), Request.class);
 		} catch (DeserializationException | UnsupportedSerializationFormatException ex) {
 			throw new HttpMessageNotReadableException("The object could not be parsed from XML");
@@ -74,9 +77,9 @@ public class RequestHttpMessageConverter implements HttpMessageConverter<Request
 		try {
 			Serializer serializer;
 			if (mt.equals(MediaType.APPLICATION_XML)) {
-				serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
+				serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
 			} else if (mt.equals(MediaType.APPLICATION_JSON)) {
-				serializer = SerializerFactory.getSerializer(SerializationFormat.JSON);
+				serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON, Arrays.asList(ApolloClassList.classList));
 			} else {
 				throw new HttpMessageNotWritableException("Unsupported media type: " + mt);
 			}

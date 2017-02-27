@@ -14,22 +14,21 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.transform.stream.StreamSource;
-
+import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.JAXBMarshaller;
 import org.eclipse.persistence.jaxb.JAXBUnmarshaller;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
-import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Chapter2_RunSimulationWithNoIntervention extends
 		AbstractRunAndVisualizeSimulationClass {
@@ -54,7 +53,6 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 			System.out.println(baos.toString());
 			return baos.toString();
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "hello";
@@ -67,6 +65,8 @@ public class Chapter2_RunSimulationWithNoIntervention extends
         runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
                 .getInfectionAcquisitionsFromInfectedHosts().get(0)
                 .getBasicReproductionNumbers().get(0).setExactValue(1.73);
+
+        Authentication authentication = new Authentication();
 
 		String contentForRun = getJSONString(runSimulationMessage);
 		Map<String, Object> properties = new HashMap<String, Object>(2);
@@ -86,12 +86,12 @@ public class Chapter2_RunSimulationWithNoIntervention extends
 			System.out.println(runSimulationMessage2
 					.getInfectiousDiseaseScenario().getScenarioDate());
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 		
-		runScenarioAndDisplayResults(runSimulationMessage);
+		runScenarioAndDisplayResults(runSimulationMessage, authentication);
 	}
 
 	public static void main(String args[]) throws java.lang.Exception {

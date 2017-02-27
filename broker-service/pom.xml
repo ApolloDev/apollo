@@ -4,11 +4,24 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>broker-service</artifactId>
     <name>Broker Service</name>
     <packaging>jar</packaging>
+
+    <distributionManagement>
+        <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
@@ -29,22 +42,7 @@
             <artifactId>xstream</artifactId>
             <version>1.4.4</version>
         </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>simulator-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>library-service-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>visualizer-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>synthetic-population-service-client</artifactId>
@@ -99,10 +97,20 @@
             <artifactId>run-manager-service-rest-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>data-service-rest-connector</artifactId>
+            <artifactId>library-service-rest-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+        <groupId>edu.pitt.apollo</groupId>
+        <artifactId>filestore-service-rest-connector</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>security-manager</artifactId>
             <version>${project.version}</version>
         </dependency>
        
@@ -195,71 +203,4 @@
         <!--<finalName>apollo-service202</finalName> -->
     </build>
 
-    <profiles>
-        <profile>
-            <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.cxf</groupId>
-                        <artifactId>cxf-codegen-plugin</artifactId>
-                        <version>${cxf.version}</version>
-                        <executions>
-                            <execution>
-                                <configuration>
-                                    <sourceRoot>
-                                        ${basedir}/target/generated-sources
-                                    </sourceRoot>
-                                    <wsdlOptions>
-                                        <wsdlOption>
-                                            <wsdl>
-                                                ${basedir}/../src/main/resources/apollo_service_3.1.0.wsdl
-                                            </wsdl>
-                                            <wsdlLocation>classpath:apollo_service_3.1.0.wsdl</wsdlLocation>
-                                            <extraargs>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://library-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://services-common.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://apollo-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://data_service_types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://simulator-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://synthetic-population-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://visualizer-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                            </extraargs>
-                                        </wsdlOption>
-                                    </wsdlOptions>
-                                </configuration>
-                                <goals>
-                                    <goal>wsdl2java</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <configuration>
-                            <instructions>
-                                <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                                <Require-Bundle>org.apache.cxf.bundle,org.springframework.beans</Require-Bundle>
-                                <Export-Package>edu.pitt.apollo.service</Export-Package>
-                            </instructions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

@@ -5,26 +5,23 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v3_1_0.DataRetrievalRequestMessage;
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v4_0_1.DataRetrievalRequestMessage;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_1_0.Request;
-import edu.pitt.apollo.services_common.v3_1_0.RequestMeta;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.XMLDeserializer;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.isg.objectserializer.Deserializer;
+import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.XMLDeserializer;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -33,8 +30,8 @@ import org.springframework.http.HttpStatus;
  */
 public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public InsertRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public InsertRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String insertRun(String messageBody) throws UnsupportedSerializationFormatException, SerializationException {
@@ -45,7 +42,19 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 			ObjectSerializationInformation config = meta.getRequestBodySerializationInformation();
 
 			SerializationFormat format = config.getFormat();
-			Deserializer deserializer = DeserializerFactory.getDeserializer(format);
+			Deserializer deserializer;
+			switch (format) {
+				case XML:
+					deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
+					break;
+				case JSON:
+					deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.JSON);
+					break;
+				default:
+					deserializer = null;
+			}
+
+
 
 			String className = config.getClassName();
 			String classNamespace = config.getClassNameSpace();
@@ -54,13 +63,14 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 
 			if (!(object instanceof RunSimulationMessage) && !(object instanceof RunSimulationsMessage)
 					&& !(object instanceof RunVisualizationMessage) && !(object instanceof DataRetrievalRequestMessage)
-					&& !(object instanceof RunInfectiousDiseaseTransmissionExperimentMessage)) {
+					&& !(object instanceof RunInfectiousDiseaseTransmissionExperimentMessage) && !(object instanceof RunSimulatorOutputQueryMessage)) {
 				responseBuilder.setStatus(HttpStatus.BAD_REQUEST, "The object in the message body was not an instance of a valid run message type. "
-						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage");
+						+ "The valid types are: RunSimulationMessage, RunSimulationsMessage, RunVisualizationMessage, RunInfectiousDiseaseTransmissionExperimentMessage," +
+                        "RunSimulatorOutputQueryMessage");
 			} else {
 
 				try {
-					InsertRunResult insertRunResult = impl.insertRun(object);
+					InsertRunResult insertRunResult = impl.insertRun(object, authentication);
 
 					ObjectSerializationInformation objectSerializationInformation = new ObjectSerializationInformation();
 					objectSerializationInformation.setClassNameSpace(Serializer.SERVICES_COMMON_NAMESPACE);
@@ -70,7 +80,7 @@ public class InsertRunMethod extends BaseRunManagerServiceAccessorMethod {
 					String serializedObject = serializer.serializeObject(insertRunResult);
 					responseBuilder.setResponseBodySerializationInformation(objectSerializationInformation).addContentToBody(serializedObject).setIsBodySerialized(true);
 					responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE);
-				} catch (DataServiceException ex) {
+				} catch (RunManagementException ex) {
 					responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 				}
 			}

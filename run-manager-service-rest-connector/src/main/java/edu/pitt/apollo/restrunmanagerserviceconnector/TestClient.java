@@ -15,8 +15,9 @@
  */
 package edu.pitt.apollo.restrunmanagerserviceconnector;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.exception.RunManagementException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -30,14 +31,14 @@ public class TestClient {
 		RestRunManagerServiceConnector connector = new RestRunManagerServiceConnector("http://localhost:8080/run-manager-service-rest-frontend/");
 
 		Authentication authentication = new Authentication();
-		authentication.setRequesterId("apollo_demo");
-		authentication.setRequesterPassword("apollo_demo");
+//		authentication.setRequesterId("apollo_demo");
+//		authentication.setRequesterPassword("apollo_demo");
 
 		try {
 			List<BigInteger> list = connector.getRunIdsAssociatedWithSimulationGroupForRun(new BigInteger("100"), authentication);
 			System.out.println(list.get(0));
 
-		} catch (DataServiceException ex) {
+		} catch (RunManagementException ex) {
 			System.out.println("Exception: " + ex.getMessage());
 		}
 

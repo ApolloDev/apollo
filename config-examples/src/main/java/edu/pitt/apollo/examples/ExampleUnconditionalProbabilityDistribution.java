@@ -1,11 +1,7 @@
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.DiscreteNonparametricProbabilityDistribution;
-import edu.pitt.apollo.types.v3_1_0.ProbabilityValuePair;
-import edu.pitt.apollo.types.v3_1_0.UncertainDuration;
-import edu.pitt.apollo.types.v3_1_0.UnconditionalProbabilityDistribution;
-import edu.pitt.apollo.types.v3_1_0.UnitOfTimeEnum;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 public class ExampleUnconditionalProbabilityDistribution  {
 	
@@ -47,7 +43,7 @@ public class ExampleUnconditionalProbabilityDistribution  {
 		UncertainDuration uncertainDurationOfLatentPeriod = new UncertainDuration();
 		uncertainDurationOfLatentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		uncertainDurationOfLatentPeriod
-				.setProbabilityDistribution(distributionRepresentingLatentPeriodDuration);
+				.setUncertainValue(distributionRepresentingLatentPeriodDuration);
 
 		runSimulationMessage.getInfectiousDiseaseScenario().getInfections().get(0)
 				.getInfectionAcquisitionsFromInfectedHosts().get(0).setLatentPeriodDuration(uncertainDurationOfLatentPeriod);

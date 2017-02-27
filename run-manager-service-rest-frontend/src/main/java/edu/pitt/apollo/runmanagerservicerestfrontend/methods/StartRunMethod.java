@@ -5,13 +5,15 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.exception.SerializationException;
 import edu.pitt.apollo.exception.JobRunningServiceException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import java.math.BigInteger;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpStatus;
+
+import java.math.BigInteger;
 
 /**
  *
@@ -19,8 +21,8 @@ import org.springframework.http.HttpStatus;
  */
 public class StartRunMethod extends BaseRunManagerServiceAccessorMethod {
 
-	public StartRunMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public StartRunMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String startRun(BigInteger runId) throws SerializationException, UnsupportedSerializationFormatException {

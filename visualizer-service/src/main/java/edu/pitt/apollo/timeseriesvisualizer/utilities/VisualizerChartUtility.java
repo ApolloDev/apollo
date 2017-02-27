@@ -1,25 +1,6 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
-import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeEnum;
-import edu.pitt.apollo.timeseriesvisualizer.types.ChartTypeProperties;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-
+import edu.pitt.apollo.timeseriesvisualizer.types.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisState;
@@ -39,12 +20,16 @@ import org.jfree.ui.RectangleInsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
-import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeList;
-import edu.pitt.apollo.timeseriesvisualizer.types.XYDatasetAndTimeSeriesCurveTypes;
-import java.util.EnumMap;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.List;
 
 /**
  * 

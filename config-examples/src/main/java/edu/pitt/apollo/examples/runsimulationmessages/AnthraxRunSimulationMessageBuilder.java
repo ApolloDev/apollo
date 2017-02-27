@@ -1,16 +1,16 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.util.*;
+
+;
 
 /**
  * Author: Nick Millett
@@ -72,7 +72,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution incubationPeriodDistribution = new LogNormalDistribution();
         incubationPeriodDistribution.setMean((4.54) / 24);
         incubationPeriodDistribution.setStandardDeviation((0.19) / 24);
-        incubationPeriodDuration.setProbabilityDistribution(incubationPeriodDistribution);
+        incubationPeriodDuration.setUncertainValue(incubationPeriodDistribution);
         incubationPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setIncubationPeriod(incubationPeriodDuration);
 
@@ -80,7 +80,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution prodromalPeriodDistribution = new LogNormalDistribution();
         prodromalPeriodDistribution.setMean((4.58) / 24);
         prodromalPeriodDistribution.setStandardDeviation((0.44) / 24);
-        prodromalPeriodDuration.setProbabilityDistribution(prodromalPeriodDistribution);
+        prodromalPeriodDuration.setUncertainValue(prodromalPeriodDistribution);
         prodromalPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setProdromalPeriod(prodromalPeriodDuration);
 
@@ -88,7 +88,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         LogNormalDistribution fulminantPeriodDistribution = new LogNormalDistribution();
         fulminantPeriodDistribution.setMean((3.58) / 24);
         fulminantPeriodDistribution.setStandardDeviation((0.36) / 24);
-        fulminantPeriodDuration.setProbabilityDistribution(fulminantPeriodDistribution);
+        fulminantPeriodDuration.setUncertainValue(fulminantPeriodDistribution);
         fulminantPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
         disease.setFulminantPeriod(fulminantPeriodDuration);
 
@@ -232,7 +232,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         DrugTreatmentEfficacyForSimulatorConfiguration dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         ConditionalProbabilityDistribution distribution = new ConditionalProbabilityDistribution();
         ConditioningVariable firstVariable = new ConditioningVariable();
-        Category diseaseOutcomeCategory = new Category();
+        CategoryValueNode diseaseOutcomeCategory = new CategoryValueNode();
         DiseaseOutcomeCategoryDefinition categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.ASYMPTOMATIC);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);
@@ -243,7 +243,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         categoryDistribution.getProbabilityValuePairs().add(probability);
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         distribution.setFirstConditioningVariable(firstVariable);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);
@@ -256,7 +256,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         distribution = new ConditionalProbabilityDistribution();
         firstVariable = new ConditioningVariable();
-        diseaseOutcomeCategory = new Category();
+        diseaseOutcomeCategory = new CategoryValueNode();
         categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.SYMPTOMATIC);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);
@@ -268,7 +268,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
         distribution.setFirstConditioningVariable(firstVariable);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);
         dte.setStrainIdentifier(strain);
@@ -280,7 +280,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         dte = new DrugTreatmentEfficacyForSimulatorConfiguration();
         distribution = new ConditionalProbabilityDistribution();
         firstVariable = new ConditioningVariable();
-        diseaseOutcomeCategory = new Category();
+        diseaseOutcomeCategory = new CategoryValueNode();
         categoryDefinition = new DiseaseOutcomeCategoryDefinition();
         categoryDefinition.setDiseaseOutcome(DiseaseOutcomeEnum.FULMINANT);
         diseaseOutcomeCategory.setCategoryDefinition(categoryDefinition);
@@ -291,7 +291,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
         categoryDistribution.getProbabilityValuePairs().add(probability);
         diseaseOutcomeCategory.setUnconditionalProbabilityDistribution(categoryDistribution);
         firstVariable.getCategories().add(diseaseOutcomeCategory);
-        firstVariable.setName(ConditioningVariableEnum.DISEASE_OUTCOME);
+        firstVariable.setName(CategoricalVariableEnum.DISEASE_OUTCOME);
         distribution.setFirstConditioningVariable(firstVariable);
         dte.setDrugEfficaciesConditionedOnCurrentDiseaseOutcome(distribution);
         dte.setAverageDrugEfficacy((asympEfficacy + prodEfficacy + fulEfficacy) / 3);
@@ -413,8 +413,6 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
     @Override
     protected Authentication getAuthentication() {
         Authentication auth = new Authentication();
-        auth.setRequesterId("apollo_user");
-        auth.setRequesterPassword("apollo_password");
         return auth;
     }
 

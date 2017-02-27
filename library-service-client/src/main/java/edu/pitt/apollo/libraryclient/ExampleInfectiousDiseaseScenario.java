@@ -1,16 +1,15 @@
 package edu.pitt.apollo.libraryclient;
 
 
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.types.v4_0_1.*;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *
@@ -56,7 +55,7 @@ public class ExampleInfectiousDiseaseScenario {
 		FixedDuration infectiousPeriod = new FixedDuration();
 		infectiousPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		infectiousPeriod.setValue(6.0);
-		iafih.setInfectiousPeriodDuration(latentPeriod);
+		iafih.setInfectiousPeriodDuration(infectiousPeriod);
 
 		infection.getInfectionAcquisitionsFromInfectedHosts().add(iafih);
 

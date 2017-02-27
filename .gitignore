@@ -15,5 +15,4 @@ nb-configuration.xml
 classlist.txt
 .*.swp
 */nbactions.xml
-*.releaseBackup
-*.versionsBackup
+

@@ -5,7 +5,7 @@
 
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>library-service-rest-frontend</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <parent>
         <groupId>edu.pitt.apollo</groupId>
@@ -24,6 +24,13 @@
 
 
     <dependencies>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Spring core & mvc -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -140,16 +147,17 @@
             <artifactId>commons-math3</artifactId>
             <version>3.2</version>
         </dependency>
+        
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
-            <artifactId>broker-service</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <artifactId>library-service</artifactId>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>rest-services-frontend-common</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <!--Jersey imports-->
@@ -236,7 +244,7 @@
                     <path>/mkyongWebApp</path>
                 </configuration>
             </plugin>
-               <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>

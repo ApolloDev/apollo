@@ -1,18 +1,22 @@
 package edu.pitt.apollo.libraryservicerestfrontend.controller;
 
-import edu.pitt.apollo.exception.DeserializationException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.library_service_types.v3_1_0.*;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-import edu.pitt.apollo.utilities.Deserializer;
-import edu.pitt.apollo.utilities.DeserializerFactory;
-import edu.pitt.apollo.utilities.Serializer;
-import edu.pitt.apollo.utilities.SerializerFactory;
+
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.library_service_types.v4_0_1.*;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.isg.objectserializer.Deserializer;
+import edu.pitt.isg.objectserializer.DeserializerFactory;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.SerializerFactory;
+import edu.pitt.isg.objectserializer.exceptions.DeserializationException;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class ItemControllerTest extends TestCase {
 
@@ -30,8 +34,8 @@ public class ItemControllerTest extends TestCase {
 	public void testUpdateItem() {
 		try {
 			Authentication authentication = new Authentication();
-			authentication.setRequesterId(username);
-			authentication.setRequesterPassword(password);
+/*			authentication.setRequesterId(username);
+			authentication.setRequesterPassword(password);*/
 			UpdateLibraryItemContainerMessage ulicm = new UpdateLibraryItemContainerMessage();
 			ulicm.setAuthentication(authentication);
 			ulicm.setComment("Hello this is a comment");
@@ -53,7 +57,8 @@ public class ItemControllerTest extends TestCase {
 			ulicm.setAuthentication(authentication);
 			ulicm.setLibraryItemContainer(lic);
 
-			Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
+			Serializer serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
+
 			String serializedString = serializer.serializeObject(ulicm);
 
 			Request request = new Request();
@@ -69,14 +74,15 @@ public class ItemControllerTest extends TestCase {
 
 			ItemsController ic = new ItemsController();
 			try {
-				String apolloResponse = ic.reviseLibraryItem(username, password, "", 5, serializer.serializeObject(request));
-				Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+				String apolloResponse = ic.reviseLibraryItem("", 5, serializer.serializeObject(request), "");
+				Deserializer deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
+
 				Response response = (Response) deserializer.getObjectFromMessage(apolloResponse, Response.class);
 				UpdateLibraryItemContainerResult updateLibraryItemContainerResult = (UpdateLibraryItemContainerResult) deserializer.getObjectFromMessage(response.getResponseBody().get(0), UpdateLibraryItemContainerResult.class);
 				if (!updateLibraryItemContainerResult.getStatus().getStatus().equals(MethodCallStatusEnum.COMPLETED)) {
 					fail(updateLibraryItemContainerResult.getStatus().getMessage());
 				}
-			} catch (UnsupportedSerializationFormatException e) {
+			} catch (UnsupportedSerializationFormatException | UnsupportedAuthorizationTypeException e) {
 				e.printStackTrace();
 			} catch (DeserializationException e) {
 				e.printStackTrace();
@@ -93,8 +99,8 @@ public class ItemControllerTest extends TestCase {
 	public void testAddItem() {
 		try {
 			Authentication authentication = new Authentication();
-			authentication.setRequesterId(username);
-			authentication.setRequesterPassword(password);
+			/*authentication.setRequesterId(username);
+			authentication.setRequesterPassword(password);*/
 			AddLibraryItemContainerMessage alicm = new AddLibraryItemContainerMessage();
 			alicm.setAuthentication(authentication);
 			alicm.setComment("Hello this is a comment");
@@ -113,7 +119,9 @@ public class ItemControllerTest extends TestCase {
 
 			alicm.setLibraryItemContainer(lic);
 
-			Serializer serializer = SerializerFactory.getSerializer(SerializationFormat.XML);
+			Serializer serializer = SerializerFactory.getSerializer(edu.pitt.isg.objectserializer.SerializationFormat.XML, Arrays.asList(ApolloClassList.classList));
+
+
 			String serializedString = serializer.serializeObject(alicm);
 
 			Request request = new Request();
@@ -129,14 +137,14 @@ public class ItemControllerTest extends TestCase {
 
 			ItemsController ic = new ItemsController();
 			try {
-				String apolloResponse = ic.addLibraryItem(username, password, "", serializer.serializeObject(request));
-				Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+				String apolloResponse = ic.addLibraryItem("", serializer.serializeObject(request), "");
+				Deserializer deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
 				Response response = (Response) deserializer.getObjectFromMessage(apolloResponse, Response.class);
 				AddLibraryItemContainerResult addLibraryItemContainerResult = (AddLibraryItemContainerResult) deserializer.getObjectFromMessage(response.getResponseBody().get(0), AddLibraryItemContainerResult.class);
 				if (!addLibraryItemContainerResult.getStatus().getStatus().equals(MethodCallStatusEnum.COMPLETED)) {
 					fail(addLibraryItemContainerResult.getStatus().getMessage());
 				}
-			} catch (UnsupportedSerializationFormatException e) {
+			} catch (UnsupportedSerializationFormatException | UnsupportedAuthorizationTypeException e) {
 				e.printStackTrace();
 			} catch (DeserializationException e) {
 				e.printStackTrace();
@@ -154,7 +162,7 @@ public class ItemControllerTest extends TestCase {
 	public void testSetLibraryItemReleaseVersion() {
 		ItemsController ic = new ItemsController();
 		try {
-			ic.setLibraryItemReleaseVersion(username, password, TEST_URN, 1, "Testing setting the release version!");
+			ic.setLibraryItemReleaseVersion(TEST_URN, 1, "Testing setting the release version!", "");
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -183,7 +191,7 @@ public class ItemControllerTest extends TestCase {
 	public void testSetItemAsNotReleased() {
 		ItemsController ic = new ItemsController();
 		try {
-			String result = ic.hideLibraryItem(username, password, TEST_URN);
+			String result = ic.hideLibraryItem(TEST_URN, "");
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -194,9 +202,9 @@ public class ItemControllerTest extends TestCase {
 		ItemsController ic = new ItemsController();
 		String item = null;
 		try {
-			item = ic.getLibraryItem(username, password, TEST_URN, 1);
+			item = ic.getLibraryItem(TEST_URN, 1, "");
 
-			Deserializer deserializer = DeserializerFactory.getDeserializer(SerializationFormat.XML);
+			Deserializer deserializer = DeserializerFactory.getDeserializer(edu.pitt.isg.objectserializer.SerializationFormat.XML);
 			Response response = (Response) deserializer.getObjectFromMessage(item, Response.class);
 			if (!response.getResponseMeta().getStatus().equals(new BigInteger("200"))) {
 				fail(response.getResponseMeta().getStatusMessage());
@@ -208,7 +216,7 @@ public class ItemControllerTest extends TestCase {
 				TextContainer mytc = (TextContainer) mylic.getLibraryItemContainer().getLibraryItem();
 				assertEquals(mytc.getText(), "Hello this is the container text!");
 			}
-		} catch (UnsupportedSerializationFormatException e) {
+		} catch (UnsupportedSerializationFormatException | UnsupportedAuthorizationTypeException e) {
 			fail(e.getMessage());
 		} catch (SerializationException e) {
 			fail(e.getMessage());

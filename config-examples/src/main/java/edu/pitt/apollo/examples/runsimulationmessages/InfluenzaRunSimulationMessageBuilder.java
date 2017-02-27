@@ -1,16 +1,18 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.util.*;
+
+;
+
+
 
 public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationMessageBuilder {
 
@@ -67,7 +69,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		asymtptomaticProb.setProbability(DEFAULT_ASYMPTOMTIC_INFECTION_FRACTION);
 		dowp.setProbability(asymtptomaticProb);
 		disease.getDiseaseOutcomesWithProbabilities().add(dowp);
-		
+
 		infection.getInfectiousDiseases().add(disease);
 
 		InfectionAcquisitionFromInfectedHost iafih = new InfectionAcquisitionFromInfectedHost();
@@ -81,9 +83,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		latentPeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
 		latentPeriod.setValue(DEFAULT_LATENT_PERIOD);
 		iafih.setLatentPeriodDuration(latentPeriod);
-		
+
 		ReproductionNumber reproductionNumber = new ReproductionNumber();
-		
+
 		reproductionNumber.setExactValue(DEFAULT_R0);
 		iafih.getBasicReproductionNumbers().add(reproductionNumber);
 
@@ -97,10 +99,10 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 	protected List<Population> getPopulations() {
 		List<PopulationInfectionAndImmunityCensus> censuses = new ArrayList<PopulationInfectionAndImmunityCensus>();
 
-        Population population = new Population();
-        population.setTaxonId("9606");
-        population.setLocation(DEFAULT_INCITS);
-        population.setCount(new BigInteger("9000000"));
+		Population population = new Population();
+		population.setTaxonId("9606");
+		population.setLocation(DEFAULT_INCITS);
+		population.setCount(new BigInteger("9000000"));
 
 		PopulationInfectionAndImmunityCensus census = new PopulationInfectionAndImmunityCensus();
 
@@ -141,9 +143,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		censuses.add(census);
 
-        population.getInfectionAndImmunityCensuses().add(census);
-        List<Population> populations = new ArrayList<>();
-        populations.add(population);
+		population.getInfectionAndImmunityCensuses().add(census);
+		List<Population> populations = new ArrayList<>();
+		populations.add(population);
 
 		return populations;
 	}
@@ -164,9 +166,8 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 			supplyConstrainedVaccinationCapacityTable[i] = new Double(3000 + i);
 		}
 
-
 		Location location = getLocation();
-        XMLGregorianCalendar date = getDate();
+		XMLGregorianCalendar date = getDate();
 
 		List<InfectiousDiseaseControlMeasure> strategies = new ArrayList<InfectiousDiseaseControlMeasure>();
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.VACC_CM)) {
@@ -217,11 +218,11 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		InfectiousDiseaseScenario scenario = simulatorConfiguration.getInfectiousDiseaseScenario();
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.VQ_CM)) {
-			scenario.getNonApolloParameters().add(getVoluntaryQuarantineControlMeasure());
+			strategies.add(getVoluntaryQuarantineControlMeasure());
 		}
 
 		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.LSL_CM)) {
-			scenario.getNonApolloParameters().add(getLiberalSickLeaveControlMeasure());
+			strategies.add(getLiberalSickLeaveControlMeasure());
 		}
 
 		scenario.getInfectiousDiseaseControlStrategies().addAll(strategies);
@@ -249,24 +250,28 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		return strategy;
 	}
 
-	public static NonApolloParameter getVoluntaryQuarantineControlMeasure() {
+	public VoluntaryHouseholdQuarantineControlMeasure getVoluntaryQuarantineControlMeasure() {
 
-		NonApolloParameter parameter = new NonApolloParameter();
-		parameter.setDescription("voluntary_quarantine_control_measure");
-		parameter.setParameterFloatValue(0.75);
-		parameter.setParameterName("quarantine");
+		VoluntaryHouseholdQuarantineControlMeasure cm = new VoluntaryHouseholdQuarantineControlMeasure();
+		ProbabilisticParameter value = new ProbabilisticParameter();
+		value.setProbability(0.75);
+		cm.setCompliance(value);
 
-		return parameter;
+		setBaseInfectiousDiseaseControlMeasure(cm);
+		
+		return cm;
 	}
 
-	public static NonApolloParameter getLiberalSickLeaveControlMeasure() {
+	public LiberalSickLeaveControlMeasure getLiberalSickLeaveControlMeasure() {
 
-		NonApolloParameter parameter = new NonApolloParameter();
-		parameter.setDescription("liberal_sick_leave_control_measure");
-		parameter.setParameterName("liberalleave");
-		parameter.setParameterFloatValue(0.85);
+		LiberalSickLeaveControlMeasure cm = new LiberalSickLeaveControlMeasure();
+		ProbabilisticParameter value = new ProbabilisticParameter();
+		value.setProbability(0.85);
+		cm.setCompliance(value);
 
-		return parameter;
+		setBaseInfectiousDiseaseControlMeasure(cm);
+		
+		return cm;
 	}
 
 	public static InfectiousDiseaseControlMeasure getAntiviralTreatmentControlMeasure(
@@ -365,52 +370,50 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 //                .getTargetPopulationsAndPrioritizations().add(
 //                targetPriorityPopulation);
 
-        LogisticalSystem logisticalSystem = new LogisticalSystem();
-        logisticalSystem.setProduct("Tamiflu");
-        LogisticalSystemNode outputNode = new LogisticalSystemNode();
-        Schedule outputSchedule = new Schedule();
-        outputNode.setOutputSchedule(outputSchedule);
-        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+		LogisticalSystem logisticalSystem = new LogisticalSystem();
+		logisticalSystem.setProduct("Tamiflu");
+		LogisticalSystemNode outputNode = new LogisticalSystemNode();
+		Schedule outputSchedule = new Schedule();
+		outputNode.setOutputSchedule(outputSchedule);
+		outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
+		Calendar calendar = startDate.toGregorianCalendar();
 
-        Calendar calendar = startDate.toGregorianCalendar();
+		LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+		Schedule capacitySchedule = new Schedule();
+		capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+		capacityNode.setCapacitySchedule(capacitySchedule);
 
-        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-        Schedule capacitySchedule = new Schedule();
-        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-        capacityNode.setCapacitySchedule(capacitySchedule);
+		try {
+			for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
+				calendar.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-        try {
-            for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
-                calendar.add(Calendar.DATE, 1);
-                outputSchedule.getScheduleElements().add(element);
-            }
+			calendar = startDate.toGregorianCalendar();
 
+			for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
+				calendar.add(Calendar.DATE, 1);
+				capacitySchedule.getScheduleElements().add(element);
+			}
+		} catch (DatatypeConfigurationException ex) {
+			throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+		}
 
-            calendar = startDate.toGregorianCalendar();
+		outputNode.getChildren().add(capacityNode);
+		logisticalSystem.getLogisticalSystemNodes().add(outputNode);
 
-            for (int i = 0; i < supplyConstrainedAntiviralCapacityTable.length; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(BigInteger.valueOf(supplyConstrainedAntiviralCapacityTable[i].longValue()));
-                calendar.add(Calendar.DATE, 1);
-                capacitySchedule.getScheduleElements().add(element);
-            }
-        } catch (DatatypeConfigurationException ex) {
-            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-        }
-
-        outputNode.getChildren().add(capacityNode);
-        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
-
-        antiviralTreatmentControlMeasure.getLogisticalSystems().add(logisticalSystem);
+		antiviralTreatmentControlMeasure.getLogisticalSystems().add(logisticalSystem);
 
 		return antiviralTreatmentControlMeasure;
 	}
@@ -499,8 +502,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication infantsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("6"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("6"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.MONTH);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.MONTH);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -512,8 +516,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication preSchoolContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -525,8 +530,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication schoolAgeContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -538,8 +544,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication youngAdultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -551,8 +558,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication adultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -564,8 +572,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication elderlyContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("150"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("150"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		// ageRange.setLowerBound(new BigInteger("700"));
@@ -578,8 +587,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentContraindication pregnantAdultsContraindication = new TreatmentContraindication();
 		targetPopulationDefinition = new TargetPopulationDefinition();
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		targetPopulationDefinition.setAgeRange(ageRange);
@@ -669,8 +679,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("17"));
-		ageRange.setUpperBound(new BigInteger("75"));
+		//TODO:Update to use Bounds
+/*		ageRange.setLowerBound(new BigInteger("17"));
+		ageRange.setUpperBound(new BigInteger("75"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -711,8 +722,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -728,8 +740,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -745,8 +758,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -762,8 +776,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -779,8 +794,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -796,8 +812,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -813,8 +830,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("200"));
+		//TODO:Update to use Bounds
+/*		ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("200"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -830,8 +848,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("0"));
-		ageRange.setUpperBound(new BigInteger("4"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("0"));
+		ageRange.setUpperBound(new BigInteger("4"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -846,8 +865,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("5"));
-		ageRange.setUpperBound(new BigInteger("18"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("5"));
+		ageRange.setUpperBound(new BigInteger("18"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -863,8 +883,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("19"));
-		ageRange.setUpperBound(new BigInteger("29"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("19"));
+		ageRange.setUpperBound(new BigInteger("29"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -880,8 +901,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("30"));
-		ageRange.setUpperBound(new BigInteger("64"));
+		//TODO:Update to use Bounds
+	/*	ageRange.setLowerBound(new BigInteger("30"));
+		ageRange.setUpperBound(new BigInteger("64"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -897,8 +919,9 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
-		ageRange.setLowerBound(new BigInteger("65"));
-		ageRange.setUpperBound(new BigInteger("200"));
+		//TODO:Update to use Bounds
+		/*ageRange.setLowerBound(new BigInteger("65"));
+		ageRange.setUpperBound(new BigInteger("200"));*/
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -909,52 +932,50 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		vaccinationControlMeasure.setTargetPopulationsAndPrioritizations(prioritization);
 
-        LogisticalSystem logisticalSystem = new LogisticalSystem();
-        logisticalSystem.setProduct("H1N1 vaccine");
-        LogisticalSystemNode outputNode = new LogisticalSystemNode();
-        Schedule outputSchedule = new Schedule();
-        outputNode.setOutputSchedule(outputSchedule);
-        outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+		LogisticalSystem logisticalSystem = new LogisticalSystem();
+		logisticalSystem.setProduct("H1N1 vaccine");
+		LogisticalSystemNode outputNode = new LogisticalSystemNode();
+		Schedule outputSchedule = new Schedule();
+		outputNode.setOutputSchedule(outputSchedule);
+		outputSchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
 
+		Calendar calendar = startDate.toGregorianCalendar();
 
-        Calendar calendar = startDate.toGregorianCalendar();
+		LogisticalSystemNode capacityNode = new LogisticalSystemNode();
+		Schedule capacitySchedule = new Schedule();
+		capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
+		capacityNode.setCapacitySchedule(capacitySchedule);
 
-        LogisticalSystemNode capacityNode = new LogisticalSystemNode();
-        Schedule capacitySchedule = new Schedule();
-        capacitySchedule.setUnitOfMeasure(UnitOfMeasureEnum.INDIVIDUAL_TREATMENTS);
-        capacityNode.setCapacitySchedule(capacitySchedule);
+		try {
+			for (int i = 0; i < supplyConstrainedVaccinationCapacityTable.length; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(BigInteger.valueOf(supplyConstrainedVaccinationCapacityTable[i].longValue()));
+				calendar.add(Calendar.DATE, 1);
+				outputSchedule.getScheduleElements().add(element);
+			}
 
-        try {
-            for (int i = 0; i < supplyConstrainedVaccinationCapacityTable.length; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(BigInteger.valueOf(supplyConstrainedVaccinationCapacityTable[i].longValue()));
-                calendar.add(Calendar.DATE, 1);
-                outputSchedule.getScheduleElements().add(element);
-            }
+			calendar = startDate.toGregorianCalendar();
 
+			for (int i = 0; i < runLength; i++) {
+				ScheduleElement element = new ScheduleElement();
+				GregorianCalendar gregorianCalendar = new GregorianCalendar();
+				gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
+				element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
+				element.setQuantity(BigInteger.valueOf(50000l));
+				calendar.add(Calendar.DATE, 1);
+				capacitySchedule.getScheduleElements().add(element);
+			}
+		} catch (DatatypeConfigurationException ex) {
+			throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
+		}
 
-            calendar = startDate.toGregorianCalendar();
+		outputNode.getChildren().add(capacityNode);
+		logisticalSystem.getLogisticalSystemNodes().add(outputNode);
 
-            for (int i = 0; i < runLength; i++) {
-                ScheduleElement element = new ScheduleElement();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTimeInMillis(calendar.getTimeInMillis());
-                element.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
-                element.setQuantity(BigInteger.valueOf(50000l));
-                calendar.add(Calendar.DATE, 1);
-                capacitySchedule.getScheduleElements().add(element);
-            }
-        } catch (DatatypeConfigurationException ex) {
-            throw new RuntimeException("DatatypeConfigurationException: " + ex.getMessage());
-        }
-
-        outputNode.getChildren().add(capacityNode);
-        logisticalSystem.getLogisticalSystemNodes().add(outputNode);
-
-        vaccinationControlMeasure.getLogisticalSystems().add(logisticalSystem);
+		vaccinationControlMeasure.getLogisticalSystems().add(logisticalSystem);
 
 		return vaccinationControlMeasure;
 
@@ -1045,8 +1066,6 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 	@Override
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("apollo_user");
-		auth.setRequesterPassword("preemptiveVaccinationAdminSchedule=100,200,300,400,500");
 		return auth;
 	}
 }

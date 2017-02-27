@@ -14,10 +14,10 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.service.apolloservice.v3_1_0.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v3_1_0.ApolloServiceV310;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -49,8 +49,6 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 
 	private static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("TutorialUser");
-		auth.setRequesterPassword("TutorialPassword");
 		return auth;
 	}
 
@@ -520,7 +518,7 @@ public class Chapter9Exercise_SaveLibraryItemsRequiredBySEUA {
 	public static void main(String[] args) throws InterruptedException,
 			IOException, DatatypeConfigurationException {
 
-		ApolloServiceV310 service = new ApolloServiceV310(new URL(WSDL_LOC));
+		ApolloServiceV401 service = new ApolloServiceV401(new URL(WSDL_LOC));
 		ApolloServiceEI port = service.getApolloServiceEndpoint();
 
 		addAcVcm(port);

@@ -1,15 +1,17 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.RunIdentificationAndLabel;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+
 import java.math.BigInteger;
 
-import edu.pitt.apollo.types.v3_1_0.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.v3_1_0.UnitOfTimeEnum;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+;
 
 public class ApolloServiceTypeFactory {
 
@@ -31,7 +33,6 @@ public class ApolloServiceTypeFactory {
 	private static RunVisualizationMessage getRunVisualizationMessage(Authentication visualizerAuthentication,
 			SoftwareIdentification visualizerSoftwareIdentification, RunIdentificationAndLabel... runIdentificationsAndLabels) {
 		RunVisualizationMessage runVisualizationMessage = new RunVisualizationMessage();
-		runVisualizationMessage.setAuthentication(visualizerAuthentication);
 		runVisualizationMessage.setSoftwareIdentification(visualizerSoftwareIdentification);
 		for (RunIdentificationAndLabel runIdentificationAndLabel : runIdentificationsAndLabels) {
 			runVisualizationMessage.getSimulationRunIds().add(runIdentificationAndLabel);
@@ -50,15 +51,11 @@ public class ApolloServiceTypeFactory {
 
 	public static Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId(REQUESTER_ID);
-		auth.setRequesterPassword(REQUESTER_PASSWORD);
 		return auth;
 	}
 
 	public static Authentication getAuthentication(String requesterId, String requesterPassword) {
 		Authentication auth = new Authentication();
-		auth.setRequesterId(requesterId);
-		auth.setRequesterPassword(requesterPassword);
 		return auth;
 	}
 

@@ -14,36 +14,26 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceEI;
-import edu.pitt.apollo.services_common.v3_1_0.RunIdentificationAndLabel;
-import java.math.BigInteger;
-import java.util.List;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
+import edu.pitt.apollo.exception.JobRunningServiceException;
+import edu.pitt.apollo.interfaces.JobRunningServiceInterface;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 import edu.pitt.apollo.timeseriesvisualizer.ImageGeneratorRunnable;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
 
-@WebService(targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", portName = "VisualizerServiceEndpoint", serviceName = "VisualizerService_v3.1.0", endpointInterface = "edu.pitt.apollo.service.visualizerservice.v3_1_0.VisualizerServiceEI")
-class VisualizerServiceImpl implements VisualizerServiceEI {
+import java.math.BigInteger;
 
-   
+public class VisualizerServiceImpl implements JobRunningServiceInterface {
 
-    @Override
-    @RequestWrapper(localName = "runVisualization", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", className = "edu.pitt.apollo.service.visualizerservice.v3_1_0.RunVisualization")
-    @WebMethod(action = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/runVisualization")
-    @ResponseWrapper(localName = "runVisualizationResponse", targetNamespace = "http://service.apollo.pitt.edu/visualizerservice/v3_1_0/", className = "edu.pitt.apollo.service.visualizerservice.v3_1_0.RunVisualizationResponse")
-    public void runVisualization(@WebParam(name = "visualizationRunId", targetNamespace = "") BigInteger visualizationRunId,
-            @WebParam(name = "runVisualizationMessage", targetNamespace = "") RunVisualizationMessage runVisualizationMessage) {
+	protected static final ApolloServiceQueue serviceQueue = new ApolloServiceQueue();
 
-        List<RunIdentificationAndLabel> runIdsAndLabels = runVisualizationMessage.getSimulationRunIds();
+	@Override
+	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
 
-        ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(visualizationRunId, runIdsAndLabels, runVisualizationMessage.getSoftwareIdentification());
-        Thread thread = new Thread(runnable);
-        thread.start();
-    }
+		ImageGeneratorRunnable runnable = new ImageGeneratorRunnable(runId, serviceQueue, authentication);
+		serviceQueue.addThreadToQueueAndRun(runnable);
+	}
+
+	@Override
+	public void terminate(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }

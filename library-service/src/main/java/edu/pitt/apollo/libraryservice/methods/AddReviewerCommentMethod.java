@@ -1,46 +1,45 @@
 package edu.pitt.apollo.libraryservice.methods;
 
-import edu.pitt.apollo.db.LibraryDbUtils;
-import edu.pitt.apollo.db.LibraryUserRoleTypeEnum;
+import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.library_service_types.v3_1_0.AddReviewerCommentMessage;
-import edu.pitt.apollo.library_service_types.v3_1_0.AddReviewerCommentResult;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
+import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
+import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
+import edu.pitt.apollo.exception.LibraryServiceException;
+import edu.pitt.apollo.exception.UserNotAuthorizedException;
+import edu.pitt.apollo.library_service_types.v4_0_1.AddReviewerCommentResult;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
 
 /**
- *
  * Author: Nick Millett
  * Email: nick.millett@gmail.com
  * Date: Nov 7, 2014
  * Time: 11:21:20 AM
  * Class: AddReviewerCommentMethod
  */
-public class AddReviewerCommentMethod {
+public class AddReviewerCommentMethod extends BaseLibraryMethod {
 
-	public static AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, int urn, int version, String comment, Authentication authentication) {
+    public AddReviewerCommentMethod(Authentication authentication) throws LibraryServiceException {
+        super(authentication);
+    }
 
-		AddReviewerCommentResult result = new AddReviewerCommentResult();
-		MethodCallStatus status = new MethodCallStatus();
-		result.setStatus(status);
+    public AddReviewerCommentResult addReviewerComment(LibraryDbUtils dbUtils, int urn, int version, String comment) throws LibraryServiceException {
 
-		try {
-			boolean userAuthorized = dbUtils.authorizeUser(authentication, LibraryUserRoleTypeEnum.REVIEWER);
-			if (userAuthorized) {
-				dbUtils.addReviewerComment(urn, version, comment, authentication);
-				status.setStatus(MethodCallStatusEnum.COMPLETED);
-			} else {
-				status.setStatus(MethodCallStatusEnum.AUTHENTICATION_FAILURE);
-				status.setMessage("You are not authorized to add reviewer comments.");
-			}
+        AddReviewerCommentResult result = new AddReviewerCommentResult();
+        MethodCallStatus status = new MethodCallStatus();
+        result.setStatus(status);
 
-		} catch (ApolloDatabaseException ex) {
-			status.setStatus(MethodCallStatusEnum.FAILED);
-			status.setMessage(ex.getMessage());
-		}
+        try {
+            dbUtils.addReviewerComment(urn, version, comment, userName, role);
+            status.setStatus(MethodCallStatusEnum.COMPLETED);
+        } catch (ApolloDatabaseException | ApolloDatabaseExplicitException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        } catch (UserNotAuthorizedException | NoLibraryItemException ex) {
+            throw new LibraryServiceException(ex.getMessage());
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 }

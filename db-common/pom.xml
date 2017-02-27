@@ -3,7 +3,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>db-common</artifactId>
     <name>Common Database Module</name>
@@ -42,6 +42,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.3-1100-jdbc41</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.pitt.isg</groupId>
+            <artifactId>object-serializer</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 
@@ -116,13 +122,13 @@
         <!--<        <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>config-examples</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency>-->
         
         <!-- <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
-            <version>3.1.0-SNAPSHOT</version>
+            <version>4.0.1-SNAPSHOT</version>
         </dependency> -->
         
     </dependencies>

@@ -1,10 +1,5 @@
 package edu.pitt.apollo.apolloservice.methods.census;
 
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.GetScenarioLocationCodesSupportedBySimulatorResult;
-
 /**
  *
  * Author: Nick Millett
@@ -16,15 +11,15 @@ import edu.pitt.apollo.simulator_service_types.v3_1_0.GetScenarioLocationCodesSu
  */
 public class GetScenarioLocationCodesSupportedBySimulatorMethod extends PopulationAndEnvironmentCensusMethod {
 
-    public static GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
-            SoftwareIdentification simulatorIdentification) {
-        GetScenarioLocationCodesSupportedBySimulatorResult res = getScenarioLocationCodesSupportedBySimulator();
-        MethodCallStatus status = new MethodCallStatus();
-        status.setStatus(MethodCallStatusEnum.COMPLETED);
-        status.setMessage("Returned " + res.getLocationCodes().size()
-                + " items.");
-        res.setMethodCallStatus(status);
-        return res;
-
-    }
+//    public static GetScenarioLocationCodesSupportedBySimulatorResult getScenarioLocationCodesSupportedBySimulator(
+//            SoftwareIdentification simulatorIdentification) {
+//        GetScenarioLocationCodesSupportedBySimulatorResult res = getScenarioLocationCodesSupportedBySimulator();
+//        MethodCallStatus status = new MethodCallStatus();
+//        status.setStatus(MethodCallStatusEnum.COMPLETED);
+//        status.setMessage("Returned " + res.getLocationCodes().size()
+//                + " items.");
+//        res.setMethodCallStatus(status);
+//        return res;
+//
+//    }
 }

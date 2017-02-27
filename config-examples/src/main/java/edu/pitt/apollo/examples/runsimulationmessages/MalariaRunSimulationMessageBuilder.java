@@ -1,9 +1,8 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -131,8 +130,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.02);
         AgeRangeCategoryDefinition ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
-        ageRangeCategoryDefinition.setLowerBound(new BigInteger("0"));
-        ageRangeCategoryDefinition.setUpperBound(new BigInteger("5"));
+        //TODO: Fix this
+       /* ageRangeCategoryDefinition.setLowerBound(new BigInteger("0"));
+        ageRangeCategoryDefinition.setUpperBound(new BigInteger("5"));*/
         ageRangeCategoryDefinition.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
         ageRangeCategoryDefinition.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
         susceptibleCell.setAgeRange(ageRangeCategoryDefinition);
@@ -142,8 +142,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.08);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
-        ageRangeCategoryDefinition.setLowerBound(new BigInteger("5"));
-        ageRangeCategoryDefinition.setUpperBound(new BigInteger("12"));
+        //TODO: Fix this
+      /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("5"));
+        ageRangeCategoryDefinition.setUpperBound(new BigInteger("12"));*/
         ageRangeCategoryDefinition.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
         ageRangeCategoryDefinition.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
         susceptibleCell.setAgeRange(ageRangeCategoryDefinition);
@@ -153,8 +154,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.2);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
-        ageRangeCategoryDefinition.setLowerBound(new BigInteger("12"));
-        ageRangeCategoryDefinition.setUpperBound(new BigInteger("25"));
+        //TODO:Fix this
+      /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("12"));
+        ageRangeCategoryDefinition.setUpperBound(new BigInteger("25"));*/
         ageRangeCategoryDefinition.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
         ageRangeCategoryDefinition.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
         susceptibleCell.setAgeRange(ageRangeCategoryDefinition);
@@ -164,8 +166,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.5);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
-        ageRangeCategoryDefinition.setLowerBound(new BigInteger("25"));
-        ageRangeCategoryDefinition.setUpperBound(new BigInteger("50"));
+        //TODO:Fix this
+      /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("25"));
+        ageRangeCategoryDefinition.setUpperBound(new BigInteger("50"));*/
         ageRangeCategoryDefinition.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
         ageRangeCategoryDefinition.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
         susceptibleCell.setAgeRange(ageRangeCategoryDefinition);
@@ -175,8 +178,9 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.2);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
-        ageRangeCategoryDefinition.setLowerBound(new BigInteger("50"));
-        ageRangeCategoryDefinition.setUpperBound(new BigInteger("100"));
+        //TODO:Fix this
+      /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("50"));
+        ageRangeCategoryDefinition.setUpperBound(new BigInteger("100"));*/
         ageRangeCategoryDefinition.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
         ageRangeCategoryDefinition.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
         susceptibleCell.setAgeRange(ageRangeCategoryDefinition);
@@ -310,8 +314,6 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
     @Override
     protected Authentication getAuthentication() {
         Authentication authentication = new Authentication();
-        authentication.setRequesterId("");
-        authentication.setRequesterPassword("");
         return authentication;
     }
 

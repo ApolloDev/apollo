@@ -25,7 +25,7 @@
 		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>edu.pitt.apollo.brokerservicerestfrontend</param-value>
+			<param-value>edu.pitt.apollo.libraryservicerestfrontend</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

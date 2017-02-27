@@ -1,33 +1,5 @@
 package edu.pitt.apollo.runmanagerservice.thread;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
-import edu.pitt.apollo.runmanagerservice.types.SynchronizedStringBuilder;
-import edu.pitt.apollo.ApolloServiceConstants;
-import edu.pitt.apollo.apollo_service_types.v3_1_0.RunSimulationsMessage;
-import edu.pitt.apollo.exception.JobRunningServiceException;
-
-import edu.pitt.apollo.runmanagerservice.exception.BatchException;
-
-import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
-import edu.pitt.apollo.services_common.v3_1_0.*;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.WebServiceException;
-import java.io.*;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-import java.util.Timer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class RunSimulationsThread
 { //extends RunApolloServiceThread {
 /*
@@ -52,7 +24,7 @@ public class RunSimulationsThread
     }
 
     private final RunSimulationsMessage message;
-    DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+    DataAccessor dataServiceAccessor = new DataAccessor();
     Exception error = null;
     BigInteger simulationGroupId;
     private URL configFileUrl;

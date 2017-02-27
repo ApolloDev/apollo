@@ -1,14 +1,8 @@
 package edu.pitt.apollo.db;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Map;
-
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
 import junit.framework.TestCase;
-import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.db.ApolloServiceTypeFactory.SimulatorIdentificationEnum;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
 
 
 public class ApolloDbUtilsTest extends TestCase {
@@ -23,7 +17,7 @@ public class ApolloDbUtilsTest extends TestCase {
 
 
     public ApolloDbUtilsTest() {
-        // TODO Auto-generated constructor stub
+
     }
 
 	public void testTemp() {
@@ -39,7 +33,7 @@ public class ApolloDbUtilsTest extends TestCase {
     // 5. Associate data content with run
 //    @Override
 //    protected void setUp() throws Exception {
-//        // TODO Auto-generated method stub
+//
 //        super.setUp();
 //        Map<String, String> env = System.getenv();
 //        APOLLO_DIR = env.get(GlobalConstants.APOLLO_WORKDIR_ENVIRONMENT_VARIABLE);
@@ -63,7 +57,7 @@ public class ApolloDbUtilsTest extends TestCase {
 
 //    @Override
 //    protected void tearDown() throws Exception {
-//        // TODO Auto-generated method stub
+//
 //        super.tearDown();
 //        message = null;
 //    }
@@ -98,10 +92,10 @@ public class ApolloDbUtilsTest extends TestCase {
 //			assertEquals(2, userKey);
 //
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//
 //			e.printStackTrace();
 //		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
+//
 //			e.printStackTrace();
 //		}
 //	}
@@ -226,6 +220,6 @@ public class ApolloDbUtilsTest extends TestCase {
      * @param args
      */
 //    public static void main(String[] args) {
-//        // TODO Auto-generated method stub
+//
 //    }
 }

@@ -2,8 +2,9 @@ package edu.pitt.apollo.db;
 
 
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
-import edu.pitt.apollo.utilities.JsonUtils;
+import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.apollo.utilities.Md5Utils;
+import edu.pitt.isg.objectserializer.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +12,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.*;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Author: Nick Millett
@@ -27,34 +31,33 @@ import java.util.*;
  */
 public abstract class BaseDbUtils implements AutoCloseable {
 
-    protected static String systemSalt;
-    protected static final String SALT_FILE_NAME = "salt.txt";
+//    protected static String systemSalt;
     protected static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
     protected static String APOLLO_DIR;
-    static Logger logger = LoggerFactory.getLogger(BaseDbUtils.class);
+    protected static Logger logger = LoggerFactory.getLogger(BaseDbUtils.class);
     protected final DataSource datasource;
-    JsonUtils jsonUtils = new JsonUtils();
+    JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
     Md5Utils md5Utils = new Md5Utils();
 
     protected abstract void setBaseDirectory();
-    protected abstract String getSystemSaltFileDir();
+//    protected abstract String getSystemSaltFileDir();
     protected abstract String getDatabasePropertiesFileName();
 
-    protected String getSystemSalt(String saltFileDir) {
-
-
-        File saltFile = new File(saltFileDir);
-        Scanner saltFileScanner;
-        try {
-            saltFileScanner = new Scanner(saltFile);
-        } catch (FileNotFoundException ex) {
-            throw new ExceptionInInitializerError("File \"" + saltFile.getAbsolutePath() + "\" could not be found");
-        }
-
-        String salt = saltFileScanner.nextLine();
-        saltFileScanner.close();
-        return salt;
-    }
+//    protected String getSystemSalt(String saltFileDir) {
+//
+//
+//        File saltFile = new File(saltFileDir);
+//        Scanner saltFileScanner;
+//        try {
+//            saltFileScanner = new Scanner(saltFile);
+//        } catch (FileNotFoundException ex) {
+//            throw new ExceptionInInitializerError("File \"" + saltFile.getAbsolutePath() + "\" could not be found");
+//        }
+//
+//        String salt = saltFileScanner.nextLine();
+//        saltFileScanner.close();
+//        return salt;
+//    }
 
     protected Connection getConnection(boolean autoCommit) throws SQLException {
         Connection connection = datasource.getConnection();
@@ -101,23 +104,23 @@ public abstract class BaseDbUtils implements AutoCloseable {
             throw new ApolloDatabaseException("No datasource was created");
         }
 
-        if (systemSalt == null) {
-            systemSalt = getSystemSalt(getSystemSaltFileDir());
-        }
+//        if (systemSalt == null) {
+//            systemSalt = getSystemSalt(getSystemSaltFileDir());
+//        }
     }
 
     @Override
     public void close() throws ApolloDatabaseException {
     }
 
-    protected String getHashOfUserPasswordAndSalt(String password, String salt) {
-
-        String passwordAndSalt = password + salt + systemSalt;
-        return md5Utils.getMd5FromString(passwordAndSalt);
-    }
-
-    protected String getSecureRandomString() {
-        Random random = new SecureRandom();
-        return new BigInteger(130, random).toString(32);
-    }
+//    protected String getHashOfUserPasswordAndSalt(String password, String salt) {
+//
+//        String passwordAndSalt = password + salt + systemSalt;
+//        return md5Utils.getMd5FromString(passwordAndSalt);
+//    }
+//
+//    protected String getSecureRandomString() {
+//        Random random = new SecureRandom();
+//        return new BigInteger(130, random).toString(32);
+//    }
 }

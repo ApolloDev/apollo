@@ -2,12 +2,9 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.InsertRunResult;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public interface RunManagementInterface {
 
 	public SoftwareIdentification getSoftwareIdentificationForRun(BigInteger runId, Authentication authentication) throws RunManagementException;
 
-	public InsertRunResult insertRun(RunMessage message) throws RunManagementException;
+	public InsertRunResult insertRun(RunMessage message, Authentication authentication) throws RunManagementException;
 
 	public void updateStatusOfRun(BigInteger runId, MethodCallStatusEnum statusEnumToSet, String messageToSet, Authentication authentication) throws RunManagementException;
 

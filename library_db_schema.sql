@@ -5,8 +5,6 @@ DROP TABLE IF EXISTS library_item_container_urns CASCADE;
 DROP TABLE IF EXISTS library_item_containers CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
-DROP TABLE IF EXISTS roles CASCADE;
-DROP TABLE IF EXISTS user_roles CASCADE;
 DROP TABLE IF EXISTS comment_type CASCADE;
 DROP FUNCTION IF EXISTS increment_version();
 DROP FUNCTION IF EXISTS set_date();
@@ -14,27 +12,7 @@ DROP CAST IF EXISTS (VARCHAR AS json);
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    user_name TEXT NOT NULL,
-    hash_of_user_password_and_salt TEXT NOT NULL,
-    salt TEXT NOT NULL,
-    user_email TEXT,
-    CONSTRAINT user_unique UNIQUE (user_name, hash_of_user_password_and_salt)
-);
-
-CREATE TABLE roles (
-  id SERIAL PRIMARY KEY,
-  description TEXT
-);
-
-INSERT INTO roles (description) VALUES ('committer');
-INSERT INTO roles (description) VALUES ('reviewer');
-INSERT INTO roles (description) VALUES ('readonly');
-
-CREATE TABLE user_roles (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users (id),
-    role_id INT REFERENCES roles (id),
-    CONSTRAINT user_role_unique UNIQUE (user_id, role_id)
+    user_id TEXT NOT NULL
 );
 
 CREATE TABLE library_item_container_urns (

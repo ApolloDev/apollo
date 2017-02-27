@@ -19,7 +19,9 @@ import edu.pitt.apollo.connector.JobRunningServiceConnector;
 import edu.pitt.apollo.exception.JobRunningServiceException;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.RunActionEnum;
+
 import java.math.BigInteger;
 
 /**
@@ -34,14 +36,14 @@ public class RestJobRunningServiceConnector extends JobRunningServiceConnector {
 	public RestJobRunningServiceConnector(String url) throws JobRunningServiceException {
 		super(url);
 		restServiceUri = serviceUrl + "/";
-
 	}
 
 	@Override
 	public void run(BigInteger runId, Authentication authentication) throws JobRunningServiceException {
-		String uri = restServiceUri + "runsimulation/" + runId;
+		String uri = restServiceUri + "run/" + runId + "?";
+		uri += "&action=" + RunActionEnum.START;
 		try {
-			restServiceUtils.makePostRequestAndCheckResponse(uri, "");
+			restServiceUtils.makePostRequestAndCheckResponse(uri, authentication, "");
 		} catch (RestServiceException ex) {
 			throw new JobRunningServiceException(ex.getMessage());
 		}

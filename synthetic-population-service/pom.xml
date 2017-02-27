@@ -1,42 +1,51 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>edu.pitt.apollo</groupId>
-		<artifactId>apollo-ws</artifactId>
-		<version>3.1.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>synthetic-population-service</artifactId>
-	<name>Synthetic Population Service</name>
-	<packaging>jar</packaging>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>edu.pitt.apollo</groupId>
+        <artifactId>apollo-ws</artifactId>
+        <version>4.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>synthetic-population-service</artifactId>
+    <name>Synthetic Population Service</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4-1201-jdbc41</version>
-		</dependency>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>xsd-types</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1201-jdbc41</version>
         </dependency>
-		
-		<dependency>
-			<!--<groupId>javax.mail</groupId>-->
-			<!--<artifactId>javax.mail-api</artifactId>-->
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.5.3</version>
-		</dependency>
-	</dependencies>
+
+        <dependency>
+            <!--<groupId>javax.mail</groupId>-->
+            <!--<artifactId>javax.mail-api</artifactId>-->
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rods-nexus-deployment</id>
+            <name>RODS Nexus</name>
+            <url>https://internal.rods.pitt.edu/nexus/content/repositories/apollo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <build>
         <plugins>
@@ -55,11 +64,7 @@
                             <outputDirectory>${basedir}/target/classes</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../../src/main/resources</directory>
-                                    <includes>
-                                    <include>synthetic_population_service_3.1.0.xsd</include>
-
-                                    </includes>
+                                    <directory>${basedir}/../src/main/resources</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -91,7 +96,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>truezip-maven-plugin</artifactId>
@@ -124,8 +129,8 @@
                     <version>2.3.7</version>
                     <extensions>true</extensions>
                 </plugin>
-                
-                       
+
+
             </plugins>
         </pluginManagement>
         <!-- Name of the generated WAR file -->
@@ -135,7 +140,7 @@
     <profiles>
         <profile>
             <id>CXF</id>
-            <!-- To use Metro by default, move activation element to its profile below -->
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -154,27 +159,9 @@
                                     <wsdlOptions>
                                         <wsdlOption>
                                             <wsdl>
-                                                ${basedir}/../src/main/resources/synthetic_population_service_3.1.0.wsdl
+                                                ${basedir}/../../apollo-xsd-and-types/src/main/resources/synthetic_population_service_v4.wsdl
                                             </wsdl>
-                                            <wsdlLocation>classpath:synthetic_population_service_3.1.0.wsdl</wsdlLocation>
-                                            <extraargs>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://library-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://services-common.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://apollo-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://data_service_types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://simulator-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://synthetic-population-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                                <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://visualizer-service-types.apollo.pitt.edu/v3_1_0/</extraarg>
-                                            </extraargs>
+                                            <wsdlLocation>classpath:synthetic_population_service_v4.wsdl</wsdlLocation>
                                         </wsdlOption>
                                     </wsdlOptions>
                                 </configuration>

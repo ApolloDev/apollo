@@ -1,23 +1,26 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.JsonUtilsException;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.runmanagerservice.serviceaccessors.DataServiceAccessor;
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
+import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;
+
+;
 
 /**
  * Created by nem41 on 9/2/15.
  */
 public class RunMethodFactory {
 
-    public static AbstractRunMethod getRunMethod(BigInteger runId, Authentication authentication) throws DataServiceException, JsonUtilsException {
+    public static AbstractRunMethod getRunMethod(BigInteger runId, Authentication authentication) throws RunManagementException, JsonUtilsException, DatastoreException, FilestoreException {
 
-        DataServiceAccessor dataServiceAccessor = new DataServiceAccessor();
+        DatastoreAccessor dataServiceAccessor = new DatastoreAccessor();
         SoftwareIdentification runSoftwareId = dataServiceAccessor.getSoftwareIdentificationForRun(runId, authentication);
         ApolloSoftwareTypeEnum type;
         if (runSoftwareId != null) {
@@ -36,8 +39,8 @@ public class RunMethodFactory {
             case VISUALIZER:
                 runMethod = new RunMethodForVisualization(runId ,authentication);
                 break;
-            case DATA:
-                runMethod = new RunMethodForDataService(runId, authentication);
+			case QUERY_SERVICE:
+				runMethod = new RunMethodForQueryService(runId, authentication);
                 break;
             default:
                 throw new RunManagementException("The requested software to run is of an unsupported type");

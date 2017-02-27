@@ -1,32 +1,16 @@
 
 package edu.pitt.apollo.interfaces;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v3_1_0.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v3_1_0.FileAndURLDescription;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import java.math.BigInteger;
-import java.util.Map;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
 
 /**
  *
  * @author nem41
  */
 public interface ContentManagementInterface {
-	
-	public void associateContentWithRunId(BigInteger runId, String content, SoftwareIdentification sourceSoftware,
-			SoftwareIdentification destinationSoftware, String contentLabel, ContentDataFormatEnum contentDataFormat, ContentDataTypeEnum contentDataType, Authentication authentication) throws DataServiceException;
 
-	public Map<BigInteger, FileAndURLDescription> getListOfFilesForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
-
-	public Map<BigInteger, FileAndURLDescription> getListOfURLsForRunId(BigInteger runId, Authentication authentication) throws DataServiceException;
-
-	public void removeFileAssociationWithRun(BigInteger runId, BigInteger fileId, Authentication authentication) throws DataServiceException;
-
-	public String getContentForContentId(BigInteger urlId, Authentication authentication) throws DataServiceException;
-
-	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DataServiceException;
+	public String getURLForSoftwareIdentification(SoftwareIdentification softwareId, Authentication authentication) throws DatastoreException;
 	
 }

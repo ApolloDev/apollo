@@ -6,16 +6,19 @@
 package edu.pitt.apollo.brokerservicerestfrontend.methods;
 
 import edu.pitt.apollo.brokerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.SerializationException;
-import edu.pitt.apollo.exception.UnsupportedSerializationFormatException;
-import edu.pitt.apollo.services_common.v3_1_0.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v3_1_0.SerializationFormat;
-import edu.pitt.apollo.services_common.v3_1_0.ServiceRegistrationRecord;
-import edu.pitt.apollo.utilities.Serializer;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
+import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRecord;
+import edu.pitt.apollo.services_common.v4_0_1.ServiceRegistrationRecord;
+import edu.pitt.isg.objectserializer.Serializer;
+import edu.pitt.isg.objectserializer.exceptions.SerializationException;
+import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
+import org.springframework.http.HttpStatus;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -23,18 +26,18 @@ import org.springframework.http.HttpStatus;
  */
 public class GetRegisteredSoftwareMethod extends BaseBrokerServiceAccessorMethod {
 
-	public GetRegisteredSoftwareMethod(String username, String password, SerializationFormat serializationFormat) throws UnsupportedSerializationFormatException {
-		super(username, password, serializationFormat);
+	public GetRegisteredSoftwareMethod(SerializationFormat serializationFormat, String authorizationHeader) throws UnsupportedSerializationFormatException, UnsupportedAuthorizationTypeException {
+		super(serializationFormat, authorizationHeader);
 	}
 
 	public String getRegisteredSoftware() throws UnsupportedSerializationFormatException, SerializationException {
 
 		try {
-			List<ServiceRegistrationRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
+			List<ServiceRecord> listOfRecords = impl.getListOfRegisteredSoftwareRecords(authentication);
 
 			List<String> serializedServiceRecords = new ArrayList<>();
 
-			for (ServiceRegistrationRecord record : listOfRecords) {
+			for (ServiceRecord record : listOfRecords) {
 				String serializedRecord = serializer.serializeObject(record);
 				serializedServiceRecords.add(serializedRecord);
 			}
@@ -47,7 +50,7 @@ public class GetRegisteredSoftwareMethod extends BaseBrokerServiceAccessorMethod
 			responseBuilder.setStatus(HttpStatus.OK, ResponseMessageBuilder.DEFAULT_SUCCESS_MESSAGE)
 					.setResponseBodySerializationInformation(serializationInformation).addContentToBody(serializedServiceRecords).setIsBodySerialized(true);
 
-		} catch (DataServiceException | SerializationException ex) {
+		} catch (DatastoreException | SerializationException ex) {
 			responseBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 

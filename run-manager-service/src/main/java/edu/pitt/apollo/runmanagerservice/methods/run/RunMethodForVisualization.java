@@ -1,15 +1,18 @@
 package edu.pitt.apollo.runmanagerservice.methods.run;
 
-import edu.pitt.apollo.exception.DataServiceException;
-import edu.pitt.apollo.exception.JsonUtilsException;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatus;
-import edu.pitt.apollo.services_common.v3_1_0.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v3_1_0.RunMessage;
-import edu.pitt.apollo.utilities.JsonUtils;
-import edu.pitt.apollo.visualizer_service_types.v3_1_0.RunVisualizationMessage;
+import edu.pitt.apollo.exception.DatastoreException;
+import edu.pitt.apollo.exception.FilestoreException;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_1.RunMessage;
+import edu.pitt.apollo.utilities.ApolloClassList;
+import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.isg.objectserializer.JsonUtils;
+import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  *
@@ -17,13 +20,13 @@ import java.math.BigInteger;
  */
 public class RunMethodForVisualization extends AbstractRunMethod {
 
-	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DataServiceException {
-		super(runId, authentication, "run_visualization_message.json");
+	public RunMethodForVisualization(BigInteger runId, Authentication authentication) throws JsonUtilsException, DatastoreException, FilestoreException {
+		super(runId, authentication, "run_message.json");
 	}
 
 	@Override
 	protected RunMessage convertRunMessageJson(String jsonForRunMessage) throws JsonUtilsException {
-		JsonUtils jsonUtils = new JsonUtils();
+		JsonUtils jsonUtils = new JsonUtils(Arrays.asList(ApolloClassList.classList));
 		return (RunVisualizationMessage) jsonUtils.getObjectFromJson(jsonForRunMessage, RunVisualizationMessage.class);
 	}
 

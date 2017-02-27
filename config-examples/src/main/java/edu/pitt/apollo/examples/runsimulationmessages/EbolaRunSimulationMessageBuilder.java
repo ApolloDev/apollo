@@ -1,15 +1,15 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.types.v3_1_0.ApolloSoftwareTypeEnum;;
-import edu.pitt.apollo.services_common.v3_1_0.Authentication;
-import edu.pitt.apollo.types.v3_1_0.SoftwareIdentification;
-import edu.pitt.apollo.simulator_service_types.v3_1_0.RunSimulationMessage;
-import edu.pitt.apollo.types.v3_1_0.*;
+import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_1.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+;
 
 /**
  *
@@ -174,8 +174,6 @@ public class EbolaRunSimulationMessageBuilder extends AbstractRunSimulationMessa
 	@Override
 	protected Authentication getAuthentication() {
 		Authentication auth = new Authentication();
-		auth.setRequesterId("apollo_user");
-		auth.setRequesterPassword("password");
 		return auth;
 	}
 
