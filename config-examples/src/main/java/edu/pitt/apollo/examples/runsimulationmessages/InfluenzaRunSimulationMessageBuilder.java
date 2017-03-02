@@ -653,6 +653,17 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		//TODO:Update to use Bounds
 /*		ageRange.setLowerBound(new BigInteger("17"));
 		ageRange.setUpperBound(new BigInteger("75"));*/
+
+		Bound lb = new Bound();
+		lb.setFiniteBoundary(17d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		Bound ub = new Bound();
+		ub.setFiniteBoundary(75d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
+
 		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 		psd.setAgeRange(ageRange);
@@ -667,14 +678,27 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		pop2.setPriority(new BigInteger("1"));
 		psd = new TargetPopulationDefinition();
 
+		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(17d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(50d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
+		
+		ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
+		ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 //        ageRange = new AgeRangeCategoryDefinition();
 //        ageRange.setLowerBound(new BigInteger("17"));
 //        ageRange.setUpperBound(new BigInteger("50"));
 //        ageRange.setUnitOfTimeForLowerBound(UnitOfTimeEnum.YEAR);
 //        ageRange.setUnitOfTimeForUpperBound(UnitOfTimeEnum.YEAR);
 //        psd.setAgeRange(ageRange);
-//        psd.setGender(GenderEnum.F);
-//        psd.setOtherStratification(PopulationStratificationEnum.PREGNANT);
+        psd.setSex(GenderEnum.F);
+        psd.setOtherStratification(PopulationStratificationEnum.PREGNANT);
 		pop2.setTargetPopulationDefinition(psd);
 		prioritization.getControlMeasureTargetPopulationsAndPrioritization().add(pop2);
 
@@ -693,6 +717,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(0d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(4d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("0"));
 		ageRange.setUpperBound(new BigInteger("4"));*/
@@ -711,6 +744,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(5d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(18d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("5"));
 		ageRange.setUpperBound(new BigInteger("18"));*/
@@ -729,6 +771,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(19d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(29d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 	/*	ageRange.setLowerBound(new BigInteger("19"));
 		ageRange.setUpperBound(new BigInteger("29"));*/
@@ -747,6 +798,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(19d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(29d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("19"));
 		ageRange.setUpperBound(new BigInteger("29"));*/
@@ -765,6 +825,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(30d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(64d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("30"));
 		ageRange.setUpperBound(new BigInteger("64"));*/
@@ -783,6 +852,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(30d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(64d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 	/*	ageRange.setLowerBound(new BigInteger("30"));
 		ageRange.setUpperBound(new BigInteger("64"));*/
@@ -801,6 +879,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(65d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(200d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 /*		ageRange.setLowerBound(new BigInteger("65"));
 		ageRange.setUpperBound(new BigInteger("200"));*/
@@ -819,6 +906,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(0d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(4d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("0"));
 		ageRange.setUpperBound(new BigInteger("4"));*/
@@ -836,6 +932,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(5d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(18d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 	/*	ageRange.setLowerBound(new BigInteger("5"));
 		ageRange.setUpperBound(new BigInteger("18"));*/
@@ -854,6 +959,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(19d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(29d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("19"));
 		ageRange.setUpperBound(new BigInteger("29"));*/
@@ -872,6 +986,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(30d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(64d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 	/*	ageRange.setLowerBound(new BigInteger("30"));
 		ageRange.setUpperBound(new BigInteger("64"));*/
@@ -890,6 +1013,15 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		psd = new TargetPopulationDefinition();
 
 		ageRange = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(65d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(200d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRange.setUpperBound(ub);
 		//TODO:Update to use Bounds
 		/*ageRange.setLowerBound(new BigInteger("65"));
 		ageRange.setUpperBound(new BigInteger("200"));*/

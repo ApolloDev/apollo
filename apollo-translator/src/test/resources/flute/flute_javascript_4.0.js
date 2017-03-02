@@ -708,8 +708,8 @@ function setFluteFractions(targetPopulationsAndPrioritizations) {
                 var ageRange = targetPopulationDefinition.getAgeRange();
                 var otherStrat = targetPopulationDefinition.getOtherStratification();
                 if (ageRange != null && otherStrat != null) {
-                    var lb = ageRange.getLowerBound();
-                    var ub = ageRange.getUpperBound();
+                    var lb = ageRange.getLowerBound().getFiniteBoundary();
+                    var ub = ageRange.getUpperBound().getFiniteBoundary();
                     var unitlb = ageRange.getUnitOfTimeForLowerBound();
                     var unitub = ageRange.getUnitOfTimeForUpperBound();
 
@@ -893,10 +893,9 @@ function vaccineBuildup(vaccEffByTimeSinceDose) {
     return obj;
 }
 
-function vaccineDoses(scheduleElements, startDate) {
+function vaccineDoses(supplySchedule) {
 
-    var schedule = getArraySchedule(startDate, scheduleElements);
-    return "0 " + schedule[0];
+    return "0 " + supplySchedule.get(0);
 }
 
 function vaccineData(treatment) {
@@ -1067,25 +1066,23 @@ function vaccineData(treatment) {
     return obj;
 }
 
-function vaccineProduction(scheduleElements, startDate) {
-
-    var supplySchedule = getArraySchedule(startDate, scheduleElements);
+function vaccineProduction(supplySchedule) {
 
     var obj = new Object();
     obj.print = true;
     obj.warnings = [];
     var returnVal = '0';
     var defaultRunLength = 180;
-    var scheduleLength = Math.min(supplySchedule.length - 1, defaultRunLength);
+    var scheduleLength = Math.min(supplySchedule.size() - 1, defaultRunLength);
 
-    if (supplySchedule.length - 1 > defaultRunLength) {
+    if (supplySchedule.size() - 1 > defaultRunLength) {
         var warningString = "no-native-param#" + flute_version + " only supports running for a maximum of 180 days. The vaccine supply schedule was " + supplySchedule.size()
                 + " days, and was truncated to 180 days. ";
         obj.warnings.push(warningString.toString());
     }
 
     for (var i = 1; i <= scheduleLength; i++) {
-        returnVal = returnVal + ' ' + supplySchedule[i];
+        returnVal = returnVal + ' ' + supplySchedule.get(i);
     }
 
     if (scheduleLength < defaultRunLength) {
@@ -1100,20 +1097,18 @@ function vaccineProduction(scheduleElements, startDate) {
     return obj;
 }
 
-function vaccineDosesDaily(scheduleElements, startDate) {
-
-    var adminSchedule = getArraySchedule(startDate, scheduleElements);
+function vaccineDosesDaily(adminSchedule) {
 
     var allValuesTheSame = true;
-    var value = adminSchedule[0];
+    var value = parseFloat(adminSchedule.get(0));
     var avgVaccineAdmin = 0.0;
-    for (var i = 0; i < adminSchedule.length; i++) {
-        var newValue = adminSchedule[i];
+    for (var i = 0; i < adminSchedule.size(); i++) {
+        var newValue = parseFloat(adminSchedule.get(i))
         allValuesTheSame = allValuesTheSame && (value == newValue);
         avgVaccineAdmin = avgVaccineAdmin + newValue;
     }
 
-    avgVaccineAdmin = avgVaccineAdmin / adminSchedule.length;
+    avgVaccineAdmin = avgVaccineAdmin / adminSchedule.size();
 
     var returnValue = String(Math.round(avgVaccineAdmin));
 
@@ -1178,6 +1173,7 @@ function vaccinePriorities(targetPopulationsAndPrioritizations) {
             var priority = targetPriorityPopulation.getPriority();
             var targetPopulationDefinition = targetPriorityPopulation.getTargetPopulationDefinition();
             var targetPopulationEnum = targetPriorityPopulation.getTargetPopulationEnum();
+            
             // for reference, the required age ranges and fractions came from the
             // Analyses we will demo on SEUA or BioEcon.doc document in the Apollo Dropbox folder
             if (targetPopulationEnum != null) {
@@ -1192,8 +1188,8 @@ function vaccinePriorities(targetPopulationsAndPrioritizations) {
                 var ageRange = targetPopulationDefinition.getAgeRange();
                 if (ageRange != null) {
                     var otherStrat = targetPopulationDefinition.getOtherStratification();
-                    var lb = ageRange.getLowerBound();
-                    var ub = ageRange.getUpperBound();
+                    var lb = ageRange.getLowerBound().getFiniteBoundary();
+                    var ub = ageRange.getUpperBound().getFiniteBoundary();
                     var unitlb = ageRange.getUnitOfTimeForLowerBound();
                     var unitub = ageRange.getUnitOfTimeForUpperBound();
 
@@ -1493,10 +1489,8 @@ function vaccinationFraction(stopTimes) {
     return obj;
 }
 
-function antiviralDoses(scheduleElements, startDate) {
-
-    var supplySchedule = getArraySchedule(startDate, scheduleElements);
-    return supplySchedule[0];
+function antiviralDoses(supplySchedule) {
+    return supplySchedule.get(0);
 }
 
 function antiviralEfficacy(efficacies, outcome) {
@@ -1552,20 +1546,18 @@ function antiviralPolicy(namedPrioritizationScheme) {
     return obj;
 }
 
-function antiviralDosesDaily(scheduleElements, startDate) {
-
-    var administrationCapacity = getArraySchedule(startDate, scheduleElements);
+function antiviralDosesDaily(administrationCapacity) {
 
     var avg = 0.0;
     var allValuesTheSame = true;
-    var value = administrationCapacity[0];
-    for (var i = 0; i < administrationCapacity.length; i++) {
-        var newValue = administrationCapacity[i];
+    var value = parseFloat(administrationCapacity.get(0));
+    for (var i = 0; i < administrationCapacity.size(); i++) {
+        var newValue = parseFloat(administrationCapacity.get(i));
         allValuesTheSame = allValuesTheSame && (value == newValue)
         avg += newValue;
     }
 
-    avg = avg / administrationCapacity.length;
+    avg = avg / administrationCapacity.size();
 
     var returnValue = String(Math.round(avg));
 

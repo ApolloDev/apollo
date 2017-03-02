@@ -1,9 +1,0 @@
-unexposed_compartment_size = 9313830.51695
-asymptomatic_compartment_size = 52824.094900000004
-asymptomatic_to_prodromal_mu = 4.54
-asymptomatic_to_prodromal_sigma = 0.19
-prodromal_to_fulminant_mu = 4.58
-prodromal_to_fulminant_sigma = 0.44
-fulminant_to_dead_mu = 3.58
-fulminant_to_dead_sigma = 0.36
-run_duration = 3600
