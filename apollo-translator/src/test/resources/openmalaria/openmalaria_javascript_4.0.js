@@ -237,8 +237,8 @@ function getAgeGroups(xPathString, censusDataCells) {
 
         var dataCell = censusDataCells.get(i);
         var ageGroupCatDef = dataCell.getAgeRange();
-        var lowerBound = ageGroupCatDef.getLowerBound();
-        var upperBound = ageGroupCatDef.getUpperBound();
+        var lowerBound = parseInt(ageGroupCatDef.getLowerBound().getFiniteBoundary());
+        var upperBound = parseInt(ageGroupCatDef.getUpperBound().getFiniteBoundary());
         if (lowerBound < minimumLowerBound) {
             minimumLowerBound = lowerBound;
         }
@@ -262,13 +262,13 @@ function getMaximumAge(xPathString, censusDataCells) {
 
         var dataCell = censusDataCells.get(i);
         var ageGroupCatDef = dataCell.getAgeRange();
-        var upperBound = ageGroupCatDef.getUpperBound();
+        var upperBound = ageGroupCatDef.getUpperBound().getFiniteBoundary();
         if (upperBound > maximumAgeUpperBound) {
-            maximumAgeUpperBound = upperBound;
+            maximumAgeUpperBound = parseInt(upperBound);
         }
     }
 
-    return getSingleReturnObject(xPathString, maximumAgeUpperBound);
+    return getSingleReturnObject(xPathString, maximumAgeUpperBound.toString());
 }
 
 function getControlStrategyTemplate(xPathString, templateUrls, simulator) {

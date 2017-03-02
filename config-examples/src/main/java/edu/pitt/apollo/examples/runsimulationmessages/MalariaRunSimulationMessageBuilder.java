@@ -130,6 +130,15 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.02);
         AgeRangeCategoryDefinition ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
+		Bound lb = new Bound();
+		lb.setFiniteBoundary(0d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setLowerBound(lb);
+		
+		Bound ub = new Bound();
+		ub.setFiniteBoundary(5d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setUpperBound(ub);
         //TODO: Fix this
        /* ageRangeCategoryDefinition.setLowerBound(new BigInteger("0"));
         ageRangeCategoryDefinition.setUpperBound(new BigInteger("5"));*/
@@ -142,6 +151,15 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.08);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(5d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(12d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setUpperBound(ub);
         //TODO: Fix this
       /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("5"));
         ageRangeCategoryDefinition.setUpperBound(new BigInteger("12"));*/
@@ -154,6 +172,15 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.2);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(12d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(25d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setUpperBound(ub);
         //TODO:Fix this
       /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("12"));
         ageRangeCategoryDefinition.setUpperBound(new BigInteger("25"));*/
@@ -166,6 +193,15 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.5);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(25d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(50d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setUpperBound(ub);
         //TODO:Fix this
       /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("25"));
         ageRangeCategoryDefinition.setUpperBound(new BigInteger("50"));*/
@@ -178,6 +214,15 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         susceptibleCell.setInfectionState(InfectionStateEnum.SUSCEPTIBLE);
         susceptibleCell.setFractionInState(0.2);
         ageRangeCategoryDefinition = new AgeRangeCategoryDefinition();
+		lb = new Bound();
+		lb.setFiniteBoundary(50d);
+		lb.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setLowerBound(lb);
+		
+		ub = new Bound();
+		ub.setFiniteBoundary(100d);
+		ub.setFiniteBoundaryType(FiniteBoundaryTypeEnum.INCLUSIVE);
+		ageRangeCategoryDefinition.setUpperBound(ub);
         //TODO:Fix this
       /*  ageRangeCategoryDefinition.setLowerBound(new BigInteger("50"));
         ageRangeCategoryDefinition.setUpperBound(new BigInteger("100"));*/
