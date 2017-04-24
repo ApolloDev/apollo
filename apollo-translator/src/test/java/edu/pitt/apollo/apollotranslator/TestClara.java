@@ -32,18 +32,13 @@ public class TestClara extends AbstractSimulatorTest {
 	private static final String CONFIG_FILE = OUTPUT_DIR + File.separator + "config.txt";
 
 	public TestClara() {
-		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.DENGUE, TranslationMode.PLAIN_TEXT);
+		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.DENGUE, TranslationMode.PLAIN_TEXT,
+                HTML_FILE_NAME, OUTPUT_DIR, TRANSLATION_FILE, JAVASCRIPT_FILE, CONFIG_FILE);
 	}
 
 	@Override
 	protected void setUp() throws Exception {
-        htmlFileName = HTML_FILE_NAME;
-        outputDirectory = OUTPUT_DIR;
-        configFile = CONFIG_FILE;
-        translationFile = TRANSLATION_FILE;
-        javaScriptFile = JAVASCRIPT_FILE;
-		super.setUp();
-
+	    super.setUp();
 		reproductionNumberType = InfluenzaRunSimulationMessageBuilder.DefReproductionNumber.TRANSMISSION_PROBABILITY;
 	}
 

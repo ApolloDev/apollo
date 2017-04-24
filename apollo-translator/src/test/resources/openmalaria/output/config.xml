@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <om:scenario xmlns:om="http://openmalaria.org/schema/scenario_32" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" analysisNo="0" name="Experiment169055022__Transmission-ITN-Medium_campaign-IRS80.IRS80_Usage-65_Seed-1_Resistance-northern-high_ModelVariants-000" schemaVersion="32" wuID="1079137500" xsi:schemaLocation="http://openmalaria.org/schema/scenario_32 scenario_current.xsd">
   <!-- This template scenario derived from MOZ-2014.12.14-20.27.02/execution100/execution100.0.xml -->
-  <demography maximumAgeYrs="100" name="test location" popSize="25000">
-    <ageGroup lowerbound="0">
-      <group poppercent="2" upperbound="5" />
-      <group poppercent="8" upperbound="12" />
-      <group poppercent="20" upperbound="25" />
-      <group poppercent="50" upperbound="50" />
-      <group poppercent="20" upperbound="100" />
+  <demography maximumAgeYrs="0.0" name="test location" popSize="25000">
+    <ageGroup lowerbound="null">
+      <group poppercent="2" upperbound="null" />
+      <group poppercent="8" upperbound="null" />
+      <group poppercent="20" upperbound="null" />
+      <group poppercent="50" upperbound="null" />
+      <group poppercent="20" upperbound="null" />
     </ageGroup>
   </demography>
   <monitoring name="Monthly Surveys">

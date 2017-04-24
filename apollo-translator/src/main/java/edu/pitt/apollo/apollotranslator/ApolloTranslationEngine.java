@@ -591,21 +591,21 @@ public class ApolloTranslationEngine {
 
 
         try {
-            methodSignature = JavaScriptAccessableMethods.class.getMethod(
+            methodSignature = JavaScriptAccessibleMethods.class.getMethod(
                     "readFile", parameters);
 
             scope.put(
                     "readFile", scope, new FunctionObject("readFile",
                             methodSignature, scope));
 
-            methodSignature = JavaScriptAccessableMethods.class.getMethod(
+            methodSignature = JavaScriptAccessibleMethods.class.getMethod(
                     "printline", parameters);
 
             scope.put(
                     "printline", scope, new FunctionObject("printline",
                             methodSignature, scope));
 
-            methodSignature = JavaScriptAccessableMethods.class.getMethod(
+            methodSignature = JavaScriptAccessibleMethods.class.getMethod(
                     "parseApolloObjectFromXml", String.class, String.class, String.class);
 
             scope.put(

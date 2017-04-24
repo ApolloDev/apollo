@@ -28,19 +28,8 @@ public class TestFred extends AbstractSimulatorTest {
 	private static final String CONFIG_FILE = OUTPUT_DIR + File.separator + "config.txt";
 
 	public TestFred() {
-		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.INFLUENZA, TranslationMode.PLAIN_TEXT);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-
-        htmlFileName = HTML_FILE_NAME;
-        outputDirectory = OUTPUT_DIR;
-        configFile = CONFIG_FILE;
-        translationFile = TRANSLATION_FILE;
-        javaScriptFile = JAVASCRIPT_FILE;
-		super.setUp();
-
+		super(RunSimulationMessageFactory.RunSimulationMessageDiseaseType.INFLUENZA, TranslationMode.PLAIN_TEXT,
+                HTML_FILE_NAME, OUTPUT_DIR, TRANSLATION_FILE, JAVASCRIPT_FILE, CONFIG_FILE);
 	}
 
 	@Override
@@ -72,7 +61,7 @@ public class TestFred extends AbstractSimulatorTest {
 
 	@Override
 	protected void checkControlMeasuresDontExist(Set<ControlMeasureTypeEnum> controlMeasureTypes) {
-		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.NO_VACC_CM)) {
+		if (!controlMeasureTypes.contains(ControlMeasureTypeEnum.VACC_CM)) {
 			assertNull(getProperty("enable_vaccination"));
 			assertNull(getProperty("enable_behaviors"));
 			assertNull(getProperty("number_of_vaccines"));
@@ -91,7 +80,7 @@ public class TestFred extends AbstractSimulatorTest {
 
 		}
 
-		if (controlMeasureTypes.contains(ControlMeasureTypeEnum.NO_AV_CM)) {
+		if (!controlMeasureTypes.contains(ControlMeasureTypeEnum.AV_CM)) {
 			assertNull(getProperty("enable_antivirals"));
 			assertNull(getProperty("av_initial_stock[0]"));
 		}

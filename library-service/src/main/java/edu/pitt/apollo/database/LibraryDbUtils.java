@@ -1117,7 +1117,7 @@ public class LibraryDbUtils extends BaseDbUtils {
     }
 
     public List<LibraryItemDisplayNameAndURN> getLibraryItemDisplayNamesAndURNs(String className, boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException {
-        String query = "SELECT urn_id, json_representation->catalogEntry->>displayName, is_latest_release_version," +
+        String query = "SELECT urn_id, json_representation->'catalogEntry'->>'displayName', is_latest_release_version," +
                 " version "
                 + "FROM library_item_containers "
                 + "INNER JOIN library_item_container_urns "
