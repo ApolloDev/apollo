@@ -8,6 +8,8 @@ import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException
 import edu.pitt.apollo.services_common.v4_0_1.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * Created by jdl50 on 8/4/15.
@@ -92,10 +94,15 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 
     @Override
     public SetReleaseVersionResult approveRevisionOfLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/revisions/" + revision + "/approve?comment=" + comment;
         try {
+            String uri = restServiceUri + "items/" + urn + "/revisions/" + revision + "/approve?comment=" + URLEncoder.encode(comment, "UTF-8");
+
             return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, "", SetReleaseVersionResult.class);
-        } catch (RestServiceException ex) {
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new LibraryServiceException(e.getMessage());
+        }
+        catch (RestServiceException ex) {
             throw new LibraryServiceException(ex.getMessage());
         }
     }
@@ -107,7 +114,7 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 
     @Override
     public AddReviewerCommentResult addReviewerCommentToLibraryItem(int urn, int revision, String comment, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/revisions/" + revision + "/comments?comment=" + comment;
+        String uri = restServiceUri + "items/" + urn + "/revisions/" + revision + "/comments?comment=" + comment;
         try {
             return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, "", AddReviewerCommentResult.class);
         } catch (RestServiceException ex) {
@@ -117,7 +124,7 @@ public class RestLibraryServiceConnector extends LibraryServiceConnector {
 
     @Override
     public SetLibraryItemAsNotReleasedResult hideLibraryItem(int urn, Authentication authentication) throws LibraryServiceException {
-        String uri = restServiceUri + "/items/" + urn + "/hide";
+        String uri = restServiceUri + "items/" + urn + "/hide";
         try {
             return restServiceUtils.makePostRequestCheckResponseAndGetObject(uri, authentication, "", SetLibraryItemAsNotReleasedResult.class);
         } catch (RestServiceException ex) {

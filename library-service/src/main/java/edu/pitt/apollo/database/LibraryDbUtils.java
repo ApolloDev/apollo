@@ -854,6 +854,27 @@ public class LibraryDbUtils extends BaseDbUtils {
         }
     }
 
+    public Integer getLatestVersion(int urn) throws ApolloDatabaseException {
+
+        try (Connection conn = getConnection(false)) {
+            String sql = "SELECT MAX(version) FROM library_item_containers WHERE urn_id =" + urn;
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            int version;
+            if (rs.next()) {
+                version = rs.getInt(1);
+                return version;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            throw createApolloDatabaseExceptionAndLog(GETTING_RELEASE_VERSION, ex);
+        }
+    }
+
     public boolean checkIfVersionIsApproved(int urn, int version) throws ApolloDatabaseException {
 
         try (Connection conn = getConnection(false)) {
@@ -878,9 +899,13 @@ public class LibraryDbUtils extends BaseDbUtils {
 
             GetLibraryItemContainerResult result = new GetLibraryItemContainerResult();
             if (version == null) {
-                version = getReleaseVersion(urn);
-                result.setIsLatestApprovedRevision(true);
+                version = getLatestVersion(urn);
+                result.setIsApprovedRevision(checkIfVersionIsApproved(urn, version));
                 result.setIsApprovedRevision(true);
+
+//                version = getReleaseVersion(urn);
+//                result.setIsLatestApprovedRevision(true);
+//                result.setIsApprovedRevision(true);
             } else {
                 boolean approved = checkIfVersionIsApproved(urn, version);
 
@@ -1167,20 +1192,32 @@ public class LibraryDbUtils extends BaseDbUtils {
     public List<LibraryItemContainerAndURN> getCollections(String collectionClassName, boolean includeUnreleasedItems, int role_id) throws ApolloDatabaseException {
         List<LibraryItemContainerAndURN> libraryCollections = new ArrayList<>();
 
-        String query = "SELECT\n"
-                + "           distinct urn_id, version, json_representation,\n"
-                + " is_latest_release_version AS released\n"
-                + "       FROM\n"
-                + "           library_item_containers\n"
-                + "       INNER JOIN library_item_container_urns "
-                + "       ON library_item_containers.urn_id = library_item_container_urns.id "
-                + "       WHERE\n"
-                + "           json_representation -> 'libraryItem' ->> 'javaClassNameOfMembers' = '" + collectionClassName + "' AND\n"
-                + "           json_representation -> 'libraryItem' @> '{\"type\":\"LibraryCollection\"}' = 't'\n";
+        String query = "SELECT\n" +
+                "  library_item_containers.urn_id,\n" +
+                "  library_item_containers.version,\n" +
+                "  library_item_containers.json_representation,\n" +
+                "  library_item_containers.is_latest_release_version AS released\n" +
+                "FROM\n" +
+                "  library_item_containers,\n" +
+                "  library_item_container_urns";
+        if (includeUnreleasedItems) {
+            query += ", (SELECT " +
+                    "     urn_id,\n" +
+                    "     MAX(version) AS max_version\n" +
+                    "   FROM library_item_containers\n" +
+                    "   WHERE library_item_containers.urn_id = urn_id\n" +
+                    "   GROUP BY urn_id) AS m";
+        }
+        query += "\nWHERE\n" +
+                "  library_item_containers.urn_id = library_item_container_urns.id AND\n" +
+                "  library_item_containers.json_representation -> 'libraryItem' ->> 'javaClassNameOfMembers' = '" + collectionClassName + "' AND\n" +
+                "  library_item_containers.json_representation -> 'libraryItem' @> '{\"type\":\"LibraryCollection\"}' = 't'\n";
         if (!includeUnreleasedItems) {
-            query += "       AND is_latest_release_version = TRUE";
+            query += " AND is_latest_release_version = TRUE";
         } else {
-            query += "           AND library_item_container_urns.role_id <= " + role_id + "\n";
+            query += " AND library_item_container_urns.role_id <= " + role_id + " AND\n" +
+                    " m.urn_id = library_item_containers.urn_id AND\n" +
+                    " m.max_version = library_item_containers.version\n";
         }
 
         QueryResult result = queryObjects(query);
@@ -1252,7 +1289,7 @@ public class LibraryDbUtils extends BaseDbUtils {
                 "    INNER JOIN library_item_container_urns \n" +
                 "\t\tON lic.urn_id = library_item_container_urns.id\n";
         if (includeUnreleasedItems) {
-            query += "\t\tAND library_item_container_urns.role_id <= 2\n";
+            query += "\t\tAND library_item_container_urns.role_id <= " + role_id+ "\n";
         } else {
             query += "\t\tAND lic.is_latest_release_version = TRUE\n";
         }
