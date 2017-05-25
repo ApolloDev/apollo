@@ -37,7 +37,7 @@ The development version of the ontology is always available at: http://purl.obol
 
 For instructions on viewing Apollo-SV, click [https://github.com/ApolloDev/apollo/wiki/Apollo-SV-BasicsOfViewing here].
 
-##Acknowledgements
+## Acknowledgements
 
 <table border=0>
 <tr>
