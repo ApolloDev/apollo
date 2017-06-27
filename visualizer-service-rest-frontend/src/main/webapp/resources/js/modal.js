@@ -49,7 +49,6 @@ $(document)
 														});
 
 											} else if ($(this).attr("id") == 'set-version') {
-												console.log('in version');
 												var urn = $(this).attr(
 														'data-uri');
 												var formData = {
