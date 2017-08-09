@@ -52,8 +52,14 @@ public class ApolloLocationServiceFeature extends Feature {
     }
 
     public SpatialGranularityEnum getAdminLevel() {
+        int adminLevel = 0;
         List<LinkedHashMap> encompassingRegions = getProperty(ApolloLocationServiceFeatureConstants.LINEAGE);
-        return SpatialGranularityEnum.fromValue("admin" + Integer.toString(encompassingRegions.size() + 1));
+        for(LinkedHashMap encompassingRegion : encompassingRegions) {
+            if(!encompassingRegion.get("locationTypeName").equals("Planet") && !encompassingRegion.get("locationTypeName").equals("Continent") && !encompassingRegion.get("locationTypeName").equals("Sub-Continent Region")) {
+                adminLevel++;
+            }
+        }
+        return SpatialGranularityEnum.fromValue("admin" + Integer.toString(adminLevel + 1));
     }
 
     public ArrayList getEncompassingRegions() {

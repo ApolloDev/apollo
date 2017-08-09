@@ -30,20 +30,22 @@ public class LocationNameUtility {
             return;
         }
 
-        String name = feature.getLocationName();
-        SpatialGranularityEnum spatialGranularity = feature.getAdminLevel();
+        if(!feature.getLocationTypeName().equals("Planet") && !feature.getLocationTypeName().equals("Continent") && !feature.getLocationTypeName().equals("Sub-Continent Region")) {
+            String name = feature.getLocationName();
+            SpatialGranularityEnum spatialGranularity = feature.getAdminLevel();
 
-        if (spatialGranularity.equals(SpatialGranularityEnum.ADMIN_2)) {
-            String formattedName = formatCountry(name);
-            adminLevelTwo.add(formattedName);
-        } else if (spatialGranularity.equals(SpatialGranularityEnum.ADMIN_1)) {
-            String formattedName = formatCountry(name);
-            adminLevelOne.add(formattedName);
+            if (spatialGranularity.equals(SpatialGranularityEnum.ADMIN_2)) {
+                String formattedName = formatCountry(name);
+                adminLevelTwo.add(formattedName);
+            } else if (spatialGranularity.equals(SpatialGranularityEnum.ADMIN_1)) {
+                String formattedName = formatCountry(name);
+                adminLevelOne.add(formattedName);
+            }
+
+            String encompassingCode = feature.getEncompassingRegionCode();
+            ApolloLocationServiceFeature encompassingFeature = service.getFeatureFromLocationCode(encompassingCode);
+            buildLineage(adminLevelOne, adminLevelTwo, encompassingFeature, service);
         }
-
-        String encompassingCode = feature.getEncompassingRegionCode();
-        ApolloLocationServiceFeature encompassingFeature = service.getFeatureFromLocationCode(encompassingCode);
-        buildLineage(adminLevelOne, adminLevelTwo, encompassingFeature, service);
     }
 
 
