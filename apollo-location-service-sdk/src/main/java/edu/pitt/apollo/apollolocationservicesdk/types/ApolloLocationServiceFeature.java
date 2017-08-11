@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static edu.pitt.apollo.apollolocationservicesdk.utilities.LocationNameUtility.adminTypeOnes;
+
 /**
  * Created by mas400 on 7/6/16.
  */
@@ -55,8 +57,9 @@ public class ApolloLocationServiceFeature extends Feature {
         int adminLevel = 0;
         List<LinkedHashMap> encompassingRegions = getProperty(ApolloLocationServiceFeatureConstants.LINEAGE);
         for(LinkedHashMap encompassingRegion : encompassingRegions) {
-            if(!encompassingRegion.get("locationTypeName").equals("Planet") && !encompassingRegion.get("locationTypeName").equals("Continent") && !encompassingRegion.get("locationTypeName").equals("Sub-Continent Region")) {
+            if(adminTypeOnes.contains(encompassingRegion.get("locationTypeName").toString()) || adminLevel > 0){
                 adminLevel++;
+
             }
         }
         return SpatialGranularityEnum.fromValue("admin" + Integer.toString(adminLevel + 1));
