@@ -3,15 +3,36 @@ package edu.pitt.apollo.apollolocationservicesdk.utilities;
 import edu.pitt.apollo.apollolocationservicesdk.interfaces.ApolloLocationServiceInterface;
 import edu.pitt.apollo.apollolocationservicesdk.types.ApolloLocationServiceFeature;
 import edu.pitt.apollo.types.v4_0_1.SpatialGranularityEnum;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static edu.pitt.apollo.apollolocationservicesdk.connectors.ApolloLocationServiceWebConnector.callURL;
 
 /**
  * Created by nem41 on 1/25/17.
  */
 public class LocationNameUtility {
+    public static List<String> adminTypeOnes;
+
+    static  {
+        adminTypeOnes = new ArrayList<>();
+        String locationJSON = "";
+        try {
+            locationJSON = callURL("https://betaweb.rods.pitt.edu/ls/api/location-types?superTypeId=3");
+
+            JSONArray jsonArray = new JSONArray(locationJSON);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                adminTypeOnes.add(jsonObject.getString("name"));
+            }
+        } catch (Exception e) {
+        }
+    }
 
     private static String formatCountry(String countryName) {
         String name = countryName.replace(" (the)", "");
@@ -24,9 +45,16 @@ public class LocationNameUtility {
     }
 
     private static void buildLineage(Set<String> adminLevelOne, Set<String> adminLevelTwo,
-                                     ApolloLocationServiceFeature feature, ApolloLocationServiceInterface service) {
+                                     ApolloLocationServiceFeature feature, ApolloLocationServiceInterface service, Boolean atAdminLevelOne) {
 
         if (feature == null) {
+            return;
+        }
+
+        if (adminTypeOnes.contains(feature.getLocationTypeName().toString())) {
+            atAdminLevelOne = true;
+        }
+        if (!adminTypeOnes.contains(feature.getLocationTypeName().toString()) && atAdminLevelOne) {
             return;
         }
 
@@ -43,7 +71,8 @@ public class LocationNameUtility {
 
         String encompassingCode = feature.getEncompassingRegionCode();
         ApolloLocationServiceFeature encompassingFeature = service.getFeatureFromLocationCode(encompassingCode);
-        buildLineage(adminLevelOne, adminLevelTwo, encompassingFeature, service);
+        buildLineage(adminLevelOne, adminLevelTwo, encompassingFeature, service, atAdminLevelOne);
+
     }
 
 
@@ -55,7 +84,7 @@ public class LocationNameUtility {
         ApolloLocationServiceFeature baseFeature = null;
         for (String locationCode : adminLocationList) {
             baseFeature = apolloLocationService.getFeatureFromLocationCode(locationCode);
-            buildLineage(adminLevelOne, adminLevelTwo, baseFeature, apolloLocationService);
+            buildLineage(adminLevelOne, adminLevelTwo, baseFeature, apolloLocationService, false);
 //            lineageList = apolloLocationSpatialInformationCache.getLineageMap().get(locationCode);
 //            if (lineageList == null) {
 //                getApolloLSNameAndPolygonEntry(locationCode, true);

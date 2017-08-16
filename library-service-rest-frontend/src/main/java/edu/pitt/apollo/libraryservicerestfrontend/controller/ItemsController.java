@@ -143,7 +143,7 @@ public class ItemsController {
     String setLibraryItemReleaseVersion(
             @ApiParam(value = "Item URN", required = true) @PathVariable("urn") int urn,
             @ApiParam(value = "Revision", required = true) @PathVariable("revision") int revision,
-            @ApiParam(value = "Comment", required = true) @PathVariable("comment") String comment,
+            @ApiParam(value = "Comment", required = true) @RequestParam("comment") String comment,
             @RequestHeader("Authorization") String authorization) throws UnsupportedSerializationFormatException, SerializationException, UnsupportedAuthorizationTypeException {
         return new SetLibraryItemReleaseVersionMethod(SerializationFormat.XML, authorization).setLibraryItemReleaseVersion(urn, revision, comment);
     }
