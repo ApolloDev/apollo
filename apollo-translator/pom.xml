@@ -4,7 +4,7 @@
 
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>ApolloTranslator</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ApolloTranslator</name>
@@ -69,13 +69,13 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>config-examples</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

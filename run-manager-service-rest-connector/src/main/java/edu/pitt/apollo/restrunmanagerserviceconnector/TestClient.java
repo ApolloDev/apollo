@@ -16,7 +16,7 @@
 package edu.pitt.apollo.restrunmanagerserviceconnector;
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 import java.math.BigInteger;
 import java.util.List;

@@ -16,7 +16,7 @@ package edu.pitt.apollo.apolloclient;
  */
 
 import edu.pitt.apollo.GlobalConstants;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 import javax.xml.namespace.QName;
 import java.io.*;

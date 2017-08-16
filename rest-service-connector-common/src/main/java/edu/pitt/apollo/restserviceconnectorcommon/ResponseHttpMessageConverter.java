@@ -16,7 +16,7 @@
 package edu.pitt.apollo.restserviceconnectorcommon;
 
 
-import edu.pitt.apollo.services_common.v4_0_1.Response;
+import edu.pitt.apollo.services_common.v4_0_2.Response;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;

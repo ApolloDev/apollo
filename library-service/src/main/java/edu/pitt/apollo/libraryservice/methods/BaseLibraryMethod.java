@@ -3,7 +3,7 @@ package edu.pitt.apollo.libraryservice.methods;
 import com.google.gson.JsonObject;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 import edu.pitt.apollo.utilities.AuthorizationUtility;
 
 import java.util.Map;

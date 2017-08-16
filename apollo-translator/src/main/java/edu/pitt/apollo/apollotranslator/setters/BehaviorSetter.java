@@ -3,9 +3,9 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.Behavior;
-import edu.pitt.apollo.types.v4_0_1.HumanBehavior;
-import edu.pitt.apollo.types.v4_0_1.MosquitoBehavior;
+import edu.pitt.apollo.types.v4_0_2.Behavior;
+import edu.pitt.apollo.types.v4_0_2.HumanBehavior;
+import edu.pitt.apollo.types.v4_0_2.MosquitoBehavior;
 
 import java.util.List;
 

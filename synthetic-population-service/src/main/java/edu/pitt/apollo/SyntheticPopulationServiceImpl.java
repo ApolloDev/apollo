@@ -15,12 +15,12 @@
 
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunResponse;
-import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.SyntheticPopulationServiceEI;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.KillRunResponse;
+import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.SyntheticPopulationServiceEI;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.SyntheticPopulationRunStatusMessage;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -42,7 +42,7 @@ import java.util.Properties;
 @WebService(targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/",
 portName="SyntheticPopulationServiceEndpoint",
 serviceName="SyntheticPopulationService_v4.0",
-endpointInterface="edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.SyntheticPopulationServiceEI")
+endpointInterface="edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.SyntheticPopulationServiceEI")
 class SyntheticPopulationServiceImpl implements SyntheticPopulationServiceEI {
 	private void emailAdmin(String message) {
 		String protocol = "smtp";
@@ -114,9 +114,9 @@ System.out.println("Mail sent.");
 	
 	@Override
 	@WebResult(name = "serviceResult", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/")
-	@RequestWrapper(localName = "runSyntheticPopulationGeneration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.RunSyntheticPopulationGeneration")
+	@RequestWrapper(localName = "runSyntheticPopulationGeneration", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.RunSyntheticPopulationGeneration")
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/runSyntheticPopulationGeneration")
-	@ResponseWrapper(localName = "runSyntheticPopulationGenerationResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.RunSyntheticPopulationGenerationResponse")
+	@ResponseWrapper(localName = "runSyntheticPopulationGenerationResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.RunSyntheticPopulationGenerationResponse")
 	public BigInteger runSyntheticPopulationGeneration(
 		@WebParam(name = "runSyntheticPopulationGenerationMessage", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/") RunSyntheticPopulationGenerationMessage runSyntheticPopulationGenerationMessage) {
 		Properties properties = new Properties();
@@ -237,9 +237,9 @@ System.out.println("Mail sent.");
 	
 	@Override
 	@WebResult(name = "runStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/")
-	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.GetRunStatus")
+	@RequestWrapper(localName = "getRunStatus", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.GetRunStatus")
 	@WebMethod(action = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/getRunStatus")
-	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.GetRunStatusResponse")
+	@ResponseWrapper(localName = "getRunStatusResponse", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/", className = "edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.GetRunStatusResponse")
 	public SyntheticPopulationRunStatusMessage getRunStatus(
 			@WebParam(name = "runId", targetNamespace = "http://service.apollo.pitt.edu/syntheticpopulationservice/v4_0/") BigInteger runId) {
 		SyntheticPopulationRunStatusMessage runStatus = new SyntheticPopulationRunStatusMessage();

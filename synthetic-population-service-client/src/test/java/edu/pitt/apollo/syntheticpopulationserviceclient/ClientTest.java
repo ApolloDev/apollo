@@ -1,8 +1,8 @@
 package edu.pitt.apollo.syntheticpopulationserviceclient;
 
-import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunRequest;
-import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_1.KillRunResponse;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.KillRunRequest;
+import edu.pitt.apollo.service.syntheticpopulationservice.v4_0_2.KillRunResponse;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.SyntheticPopulationRunStatusMessage;
 import org.junit.Test;
 
 import java.math.BigInteger;

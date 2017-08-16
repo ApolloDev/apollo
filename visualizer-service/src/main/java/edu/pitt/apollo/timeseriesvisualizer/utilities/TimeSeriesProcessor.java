@@ -1,20 +1,20 @@
 package edu.pitt.apollo.timeseriesvisualizer.utilities;
 
 import edu.pitt.apollo.exception.RunManagementException;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
-import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0_1.FileTypeEnum;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.FileIdentification;
+import edu.pitt.apollo.query_service_types.v4_0_2.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_2.FileTypeEnum;
 import edu.pitt.apollo.timeseriesvisualizer.exception.TimeSeriesVisualizerException;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainer;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesContainerList;
 import edu.pitt.apollo.timeseriesvisualizer.types.TimeSeriesCurveTypeEnum;
-import edu.pitt.apollo.types.v4_0_1.InfectionStateEnum;
-import edu.pitt.apollo.types.v4_0_1.SimulatorCountOutputSpecification;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.types.v4_0_1.TemporalGranularityEnum;
+import edu.pitt.apollo.types.v4_0_2.InfectionStateEnum;
+import edu.pitt.apollo.types.v4_0_2.SimulatorCountOutputSpecification;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_2.TemporalGranularityEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

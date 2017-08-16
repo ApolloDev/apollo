@@ -5,11 +5,11 @@
   <parent>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
   </parent>
   <groupId>edu.pitt.apollo</groupId>
   <artifactId>library-service-rest-connector</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
+  <version>4.0.2-SNAPSHOT</version>
   <name>Library Service Rest Connector</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -26,7 +26,7 @@
       <dependency>
           <groupId>edu.pitt.apollo</groupId>
           <artifactId>rest-service-connector-common</artifactId>
-          <version>4.0.1-SNAPSHOT</version>
+          <version>4.0.2-SNAPSHOT</version>
       </dependency>
 
   </dependencies>

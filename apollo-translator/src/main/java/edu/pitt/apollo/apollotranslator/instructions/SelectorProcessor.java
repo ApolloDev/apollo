@@ -2,7 +2,7 @@ package edu.pitt.apollo.apollotranslator.instructions;
 
 import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationInstructionSelector;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.util.List;
 

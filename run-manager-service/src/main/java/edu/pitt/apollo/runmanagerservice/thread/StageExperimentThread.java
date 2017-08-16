@@ -17,7 +17,7 @@ package edu.pitt.apollo.runmanagerservice.thread;
 
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.ApolloServiceThread;
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.Md5UtilsException;
@@ -28,12 +28,12 @@ import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeExcept
 import edu.pitt.apollo.runmanagerservice.methods.stage.BaseStageMethod;
 import edu.pitt.apollo.runmanagerservice.methods.stage.StageMethod;
 import edu.pitt.apollo.runmanagerservice.utils.ErrorUtils;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.InsertRunResult;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.InsertRunResult;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_2.*;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;

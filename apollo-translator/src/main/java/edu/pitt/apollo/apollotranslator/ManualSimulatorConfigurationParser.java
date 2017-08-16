@@ -3,11 +3,11 @@ package edu.pitt.apollo.apollotranslator;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.setters.*;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v4_0_1.SimulatorTimeSpecification;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0_2.SimulatorTimeSpecification;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

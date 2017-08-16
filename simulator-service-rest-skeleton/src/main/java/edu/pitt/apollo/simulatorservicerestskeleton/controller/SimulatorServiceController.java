@@ -7,7 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.services_common.v4_0_1.RunActionEnum;
+import edu.pitt.apollo.services_common.v4_0_2.RunActionEnum;
 import edu.pitt.apollo.simulatorservicerestskeleton.exception.UnsupportedRunActionException;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;

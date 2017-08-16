@@ -4,7 +4,7 @@ import edu.pitt.apollo.apollotranslator.exception.ApolloTranslatorException;
 import edu.pitt.apollo.apollotranslator.types.translator.SelectorResult;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationInstruction;
 import edu.pitt.apollo.apollotranslator.types.translator.TranslationInstructionSelector;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.io.FileNotFoundException;
 import java.util.*;

@@ -1,7 +1,7 @@
 package edu.pitt.apollo.utilities;
 
-import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_2.SerializationFormat;
 import edu.pitt.isg.objectserializer.Serializer;
 
 /**

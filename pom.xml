@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.pitt.apollo</groupId>
     <artifactId>apollo-ws</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

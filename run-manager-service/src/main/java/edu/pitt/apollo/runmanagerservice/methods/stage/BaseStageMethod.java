@@ -24,8 +24,8 @@ import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeException;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.TranslatorServiceAccessor;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.types.v4_0_2.ApolloSoftwareTypeEnum;
 
 import java.math.BigInteger;
 import java.util.List;

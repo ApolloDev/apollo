@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.CategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.DiseaseOutcomeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.GenderCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_2.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_2.CategoryDefinition;
+import edu.pitt.apollo.types.v4_0_2.DiseaseOutcomeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_2.GenderCategoryDefinition;
 
 import java.util.List;
 

@@ -2,10 +2,10 @@ package edu.pitt.apollo.restlibraryserviceconnector;
 
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
+import edu.pitt.apollo.library_service_types.v4_0_2.*;
 import edu.pitt.apollo.restserviceconnectorcommon.RestServiceUtils;
 import edu.pitt.apollo.restserviceconnectorcommon.exception.RestServiceException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.UnsupportedEncodingException;

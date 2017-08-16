@@ -1,6 +1,6 @@
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_2.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

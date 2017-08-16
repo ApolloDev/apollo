@@ -2,7 +2,7 @@ package edu.pitt.apollo.apollolocationservicesdk.types;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.pitt.apollo.types.v4_0_1.SpatialGranularityEnum;
+import edu.pitt.apollo.types.v4_0_2.SpatialGranularityEnum;
 import org.geojson.*;
 
 import java.text.ParseException;

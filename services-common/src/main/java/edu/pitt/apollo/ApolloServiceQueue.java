@@ -1,7 +1,7 @@
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -10,7 +10,7 @@ import edu.pitt.apollo.apollotranslator.instructions.TranslationInstructionsProc
 import edu.pitt.apollo.apollotranslator.types.js.JsContainer;
 import edu.pitt.apollo.apollotranslator.types.js.JsFunction;
 import edu.pitt.apollo.apollotranslator.types.translator.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 import org.mozilla.javascript.*;
 
 import java.io.FileNotFoundException;

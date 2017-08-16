@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.ApolloPathogenCode;
-import edu.pitt.apollo.types.v4_0_1.Duration;
-import edu.pitt.apollo.types.v4_0_1.Treatment;
-import edu.pitt.apollo.types.v4_0_1.TreatmentContraindication;
+import edu.pitt.apollo.types.v4_0_2.ApolloPathogenCode;
+import edu.pitt.apollo.types.v4_0_2.Duration;
+import edu.pitt.apollo.types.v4_0_2.Treatment;
+import edu.pitt.apollo.types.v4_0_2.TreatmentContraindication;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apolloclient.tutorialv2;
 
-import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_2.UnitOfTimeEnum;
 
 import java.math.BigInteger;
 

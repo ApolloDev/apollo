@@ -4,11 +4,11 @@ import edu.pitt.apollo.apollotranslator.types.translator.TranslationMode;
 import edu.pitt.apollo.db.ApolloDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseKeyNotFoundException;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 import edu.pitt.apollo.translatorservice.exception.TranslatorServiceException;
 import edu.pitt.apollo.translatorservice.types.TranslatorResources;
 import edu.pitt.apollo.translatorservice.utility.TranslatorServiceUtils;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

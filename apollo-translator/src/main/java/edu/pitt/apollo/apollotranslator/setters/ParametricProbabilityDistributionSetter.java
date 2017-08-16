@@ -3,9 +3,9 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.ContinuousUniformDistribution;
-import edu.pitt.apollo.types.v4_0_1.LogNormalDistribution;
-import edu.pitt.apollo.types.v4_0_1.ParametricProbabilityDistribution;
+import edu.pitt.apollo.types.v4_0_2.ContinuousUniformDistribution;
+import edu.pitt.apollo.types.v4_0_2.LogNormalDistribution;
+import edu.pitt.apollo.types.v4_0_2.ParametricProbabilityDistribution;
 
 import java.util.List;
 

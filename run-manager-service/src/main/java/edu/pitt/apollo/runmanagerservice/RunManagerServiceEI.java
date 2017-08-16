@@ -1,14 +1,14 @@
 package edu.pitt.apollo.runmanagerservice;
 
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.RunResult;
-import edu.pitt.apollo.services_common.v4_0_1.TerminateRunRequest;
-import edu.pitt.apollo.services_common.v4_0_1.TerminteRunResult;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.RunResult;
+import edu.pitt.apollo.services_common.v4_0_2.TerminateRunRequest;
+import edu.pitt.apollo.services_common.v4_0_2.TerminteRunResult;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.SyntheticPopulationGenerationResult;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
 
 import java.math.BigInteger;
 

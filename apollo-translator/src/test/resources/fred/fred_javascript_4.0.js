@@ -1,4 +1,4 @@
-var apollo_version = "Apollo 4.0.1";
+var apollo_version = "Apollo 4.0.2";
 var fred_version = "FRED 2.0.2";
 
 function isInt(n) {
@@ -489,7 +489,7 @@ function getSchoolClosureControlStrategyThreshold(triggers) {
     var printedPercentWarning = false;
     for (var i = 0; i < triggers.size(); i++) {
         var trigger = triggers.get(i);
-        if (trigger instanceof edu.pitt.apollo.types.v4_0_1.DiseaseSurveillanceTriggerDefinition) {
+        if (trigger instanceof edu.pitt.apollo.types.v4_0_2.DiseaseSurveillanceTriggerDefinition) {
             var unit = trigger.getUnitOfMeasureForThreshold();
             if (unit == 'PERCENT') {
                 foundThreshold = true;
@@ -519,9 +519,9 @@ function getSchoolClosureControlStrategyDay(triggers) {
     var foundTime = false;
     for (var i = 0; i < triggers.size(); i++) {
         var trigger = triggers.get(i);
-        if (trigger instanceof edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition) {
+        if (trigger instanceof edu.pitt.apollo.types.v4_0_2.TemporalTriggerDefinition) {
             var startTime = trigger.getTimeSinceTimeScaleZero();
-            if (startTime instanceof edu.pitt.apollo.types.v4_0_1.FixedDuration) {
+            if (startTime instanceof edu.pitt.apollo.types.v4_0_2.FixedDuration) {
                 var unitOfTime = startTime.getUnitOfTime();
                 if (unitOfTime == 'DAY') {
                     var val = startTime.getValue();
@@ -560,9 +560,9 @@ function getControlStrategyDay(triggers, type) {
     var foundTime = false;
     for (var i = 0; i < triggers.size(); i++) {
         var trigger = triggers.get(i);
-        if (trigger instanceof edu.pitt.apollo.types.v4_0_1.TemporalTriggerDefinition) {
+        if (trigger instanceof edu.pitt.apollo.types.v4_0_2.TemporalTriggerDefinition) {
             var startTime = trigger.getTimeSinceTimeScaleZero();
-            if (startTime instanceof edu.pitt.apollo.types.v4_0_1.FixedDuration) {
+            if (startTime instanceof edu.pitt.apollo.types.v4_0_2.FixedDuration) {
                 var unitOfTime = startTime.getUnitOfTime();
                 if (unitOfTime == 'DAY') {
                     var val = startTime.getValue();

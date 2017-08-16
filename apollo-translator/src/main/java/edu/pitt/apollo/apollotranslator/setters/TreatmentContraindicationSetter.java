@@ -3,8 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.TargetPopulationDefinition;
-import edu.pitt.apollo.types.v4_0_1.TreatmentContraindication;
+import edu.pitt.apollo.types.v4_0_2.TargetPopulationDefinition;
+import edu.pitt.apollo.types.v4_0_2.TreatmentContraindication;
 
 import java.util.ArrayList;
 import java.util.List;

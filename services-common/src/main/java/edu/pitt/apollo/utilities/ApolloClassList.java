@@ -16,24 +16,24 @@
 package edu.pitt.apollo.utilities;
 
 
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v4_0_1.*;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.*;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
-import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.GetScenarioLocationCodesSupportedBySimulatorResult;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.GetConfigurationFileForSimulationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.RunSyntheticPopulationGenerationMessage;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationGenerationResult;
-import edu.pitt.apollo.synthetic_population_service_types.v4_0_1.SyntheticPopulationRunStatusMessage;
-import edu.pitt.apollo.types.v4_0_1.*;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.GetVisualizerOutputResourcesResult;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationResult;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v4_0_2.*;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.*;
+import edu.pitt.apollo.library_service_types.v4_0_2.*;
+import edu.pitt.apollo.query_service_types.v4_0_2.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.GetScenarioLocationCodesSupportedBySimulatorResult;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.GetConfigurationFileForSimulationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.RunSyntheticPopulationGenerationMessage;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.SyntheticPopulationGenerationResult;
+import edu.pitt.apollo.synthetic_population_service_types.v4_0_2.SyntheticPopulationRunStatusMessage;
+import edu.pitt.apollo.types.v4_0_2.*;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.GetVisualizerOutputResourcesResult;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationResult;
 
 /**
  *
@@ -226,7 +226,7 @@ public class ApolloClassList {
                 BioticEcosystemData.class,
                 BorderControlMeasure.class,
                 Bound.class,
-                CartesianCircleLocationDefinition.class,
+                //CartesianCircleLocationDefinition.class,
                 CaseCount.class,
                 CaseCountArray.class,
                 CaseCountArrayDescription.class,
@@ -436,7 +436,7 @@ public class ApolloClassList {
                 ReproductionNumber.class,
                 RheaHealthcareFacilityEnum.class,
                 RingIndividualTreatmentControlMeasure.class,
-                ScenarioCartesianOrigin.class,
+                //ScenarioCartesianOrigin.class,
                 Schedule.class,
                 ScheduleElement.class,
                 SchoolFacility.class,

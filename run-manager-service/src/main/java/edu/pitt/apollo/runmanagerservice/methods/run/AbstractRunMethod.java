@@ -8,7 +8,7 @@ import edu.pitt.apollo.runmanagerservice.exception.UnrecognizedMessageTypeExcept
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThread;
 import edu.pitt.apollo.runmanagerservice.thread.RunApolloServiceThreadFactory;
 import edu.pitt.apollo.runmanagerservice.types.ReturnObjectForRun;
-import edu.pitt.apollo.services_common.v4_0_1.*;
+import edu.pitt.apollo.services_common.v4_0_2.*;
 import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;

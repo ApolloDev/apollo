@@ -3,7 +3,7 @@
     <parent>
         <groupId>edu.pitt.apollo</groupId>
         <artifactId>apollo-ws</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
+        <version>4.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>synthetic-population-service</artifactId>
     <name>Synthetic Population Service</name>
@@ -166,7 +166,7 @@
                                             <wsdlLocation>classpath:synthetic_population_service_v4.wsdl</wsdlLocation>
                                             <extraargs>
                                                 <extraarg>-nexclude</extraarg>
-                                                <extraarg>http://types.apollo.pitt.edu/v4_0_1/</extraarg>
+                                                <extraarg>http://types.apollo.pitt.edu/v4_0_2/</extraarg>
                                             </extraargs>
                                         </wsdlOption>
                                     </wsdlOptions>

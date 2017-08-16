@@ -6,9 +6,9 @@ import edu.pitt.apollo.db.exceptions.*;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.db.exceptions.library.NoURNFoundException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.library_service_types.v4_0_2.*;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.types.v4_0_2.*;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.JsonUtils;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -399,11 +399,7 @@ public class LibraryDbUtils extends BaseDbUtils {
 
         } else if (item instanceof InfectiousDiseaseScenario) {
             InfectiousDiseaseScenario infectiousDiseaseScenario = (InfectiousDiseaseScenario) item;
-            if (infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition() != null && infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition().getLocationsIncluded().size() > 0) {
-                location = infectiousDiseaseScenario.getScenarioLocation().getLocationDefinition().getLocationsIncluded().get(0);
-            } else {
-                location = infectiousDiseaseScenario.getScenarioLocation().getApolloLocationCode();
-            }
+            location = infectiousDiseaseScenario.getScenarioLocation().getApolloLocationCode();
             startDateStr = infectiousDiseaseScenario.getScenarioDate().toString();
 
         } else {

@@ -4,9 +4,9 @@ import edu.pitt.apollo.exception.DatastoreException;
 import edu.pitt.apollo.exception.FilestoreException;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.types.v4_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
 import edu.pitt.isg.objectserializer.exceptions.JsonUtilsException;
 
 import java.math.BigInteger;

@@ -7,7 +7,7 @@ import edu.pitt.apollo.apollotranslator.file.NativeFileCreatorFactory;
 import edu.pitt.apollo.apollotranslator.file.VerboseFileCreator;
 import edu.pitt.apollo.apollotranslator.file.VerboseFileCreatorFactory;
 import edu.pitt.apollo.apollotranslator.types.translator.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

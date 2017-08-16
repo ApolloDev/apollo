@@ -7,8 +7,8 @@ import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessor;
 import edu.pitt.apollo.runmanagerservice.datastore.accessors.DatastoreAccessorFactory;
 import edu.pitt.apollo.runmanagerservice.serviceaccessors.JobRunningServiceAccessor;
 import edu.pitt.apollo.runmanagerservice.utils.ApolloServiceErrorHandler;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 
 import java.math.BigInteger;
 

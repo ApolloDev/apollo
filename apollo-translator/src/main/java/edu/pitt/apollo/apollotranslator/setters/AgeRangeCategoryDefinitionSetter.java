@@ -3,8 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.AgeRangeCategoryDefinition;
-import edu.pitt.apollo.types.v4_0_1.UnitOfTimeEnum;
+import edu.pitt.apollo.types.v4_0_2.AgeRangeCategoryDefinition;
+import edu.pitt.apollo.types.v4_0_2.UnitOfTimeEnum;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

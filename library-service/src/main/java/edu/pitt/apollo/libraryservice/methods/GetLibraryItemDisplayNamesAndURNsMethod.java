@@ -3,11 +3,11 @@ package edu.pitt.apollo.libraryservice.methods;
 import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemDisplayNamesAndURNsResult;
-import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemDisplayNameAndURN;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v4_0_2.GetLibraryItemDisplayNamesAndURNsResult;
+import edu.pitt.apollo.library_service_types.v4_0_2.LibraryItemDisplayNameAndURN;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 
 import java.util.List;
 import java.util.Map;

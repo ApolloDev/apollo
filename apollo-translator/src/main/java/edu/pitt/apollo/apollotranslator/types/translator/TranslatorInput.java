@@ -1,6 +1,6 @@
 package edu.pitt.apollo.apollotranslator.types.translator;
 
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.util.HashMap;
 import java.util.Map;

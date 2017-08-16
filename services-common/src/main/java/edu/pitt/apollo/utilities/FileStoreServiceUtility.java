@@ -17,11 +17,11 @@ package edu.pitt.apollo.utilities;
 
 import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.exception.FilestoreException;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataFormatEnum;
-import edu.pitt.apollo.services_common.v4_0_1.ContentDataTypeEnum;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.FileIdentification;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.ContentDataFormatEnum;
+import edu.pitt.apollo.services_common.v4_0_2.ContentDataTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
 
 import java.io.File;
 import java.io.IOException;

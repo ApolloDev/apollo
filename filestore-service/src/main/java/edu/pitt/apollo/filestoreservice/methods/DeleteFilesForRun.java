@@ -1,6 +1,6 @@
 package edu.pitt.apollo.filestoreservice.methods;
 
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 import org.apache.cxf.helpers.FileUtils;
 
 import java.io.File;

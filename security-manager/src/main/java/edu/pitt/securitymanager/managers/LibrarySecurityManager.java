@@ -1,8 +1,8 @@
 package edu.pitt.securitymanager.managers;
 
 import com.google.gson.JsonObject;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.AuthorizationTypeEnum;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.exception.UserNotAuthorizedException;
 import edu.pitt.securitymanager.types.UserProfile;

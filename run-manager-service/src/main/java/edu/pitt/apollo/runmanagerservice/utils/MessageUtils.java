@@ -5,9 +5,9 @@
  */
 package edu.pitt.apollo.runmanagerservice.utils;
 
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
-import edu.pitt.apollo.services_common.v4_0_1.RunResult;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_2.RunResult;
 
 import java.math.BigInteger;
 

@@ -75,7 +75,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -193,5 +193,5 @@
     </build>
     <name>Common Services Module</name>
     <groupId>edu.pitt.apollo</groupId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
 </project>

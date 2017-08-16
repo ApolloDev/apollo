@@ -5,16 +5,16 @@
  */
 package edu.pitt.apollo.runmanagerservicerestfrontend.methods;
 
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
-import edu.pitt.apollo.data_service_types.v4_0_1.DataRetrievalRequestMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.data_service_types.v4_0_2.DataRetrievalRequestMessage;
 import edu.pitt.apollo.exception.RunManagementException;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.query_service_types.v4_0_2.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.runmanagerservicerestfrontend.utils.ResponseMessageBuilder;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;
 import edu.pitt.isg.objectserializer.Serializer;

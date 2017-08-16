@@ -1,8 +1,8 @@
 package edu.pitt.apollo.apolloservice.methods.run;
 
 import edu.pitt.apollo.ApolloServiceQueue;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 
 /**
  *

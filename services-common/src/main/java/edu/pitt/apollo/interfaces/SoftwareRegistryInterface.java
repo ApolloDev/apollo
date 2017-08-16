@@ -1,8 +1,8 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.ServiceRecord;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.ServiceRecord;
 
 import java.util.List;
 

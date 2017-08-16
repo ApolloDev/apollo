@@ -1,6 +1,6 @@
 package edu.pitt.apollo.outputtranslator.types.rest;
 
-import edu.pitt.apollo.types.v4_0_1.Epidemic;
+import edu.pitt.apollo.types.v4_0_2.Epidemic;
 
 /**
  * Created by dcs27 on 4/22/15.

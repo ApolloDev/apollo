@@ -15,7 +15,7 @@
  */
 package edu.pitt.apollo.examples;
 
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_2.*;
 import edu.pitt.apollo.utilities.ApolloClassList;
 import edu.pitt.isg.objectserializer.XMLSerializer;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;

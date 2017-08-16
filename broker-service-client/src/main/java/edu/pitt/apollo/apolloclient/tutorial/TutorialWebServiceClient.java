@@ -14,12 +14,12 @@
  */
 package edu.pitt.apollo.apolloclient.tutorial;
 
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV401;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunSimulationsMessage;
+import edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceEI;
+import edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceV402;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
 
 import javax.xml.namespace.QName;
 import java.math.BigInteger;
@@ -30,7 +30,7 @@ public class TutorialWebServiceClient {
 
 	// public static final String WSDL_LOC =
 	// "http://research.rods.pitt.edu/apolloservice2.0.1/services/apolloservice?wsdl";
-	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl";
+	public static final String WSDL_LOC = "http://betaweb.rods.pitt.edu/broker-service-war-4.0.2-SNAPSHOT/services/apolloservice?wsdl";
 	// public static final String WSDL_LOC =
 	// "http://localhost:8080/apolloservice2.0.1/services/apolloservice?wsdl";
 	private static final QName SERVICE_NAME = new QName(
@@ -139,7 +139,7 @@ public class TutorialWebServiceClient {
 	
 	static {
 		try {
-			ApolloServiceV401 ss = new ApolloServiceV401(new URL(WSDL_LOC),
+			ApolloServiceV402 ss = new ApolloServiceV402(new URL(WSDL_LOC),
 					SERVICE_NAME);
 			port = ss.getApolloServiceEndpoint();
 		} catch (MalformedURLException ex) {

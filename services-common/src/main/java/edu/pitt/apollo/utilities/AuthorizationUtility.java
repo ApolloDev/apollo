@@ -3,8 +3,8 @@ package edu.pitt.apollo.utilities;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.AuthorizationTypeEnum;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.AuthorizationTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;

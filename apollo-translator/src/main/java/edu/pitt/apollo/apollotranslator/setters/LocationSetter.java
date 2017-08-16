@@ -3,9 +3,9 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.CartesianCircleLocationDefinition;
-import edu.pitt.apollo.types.v4_0_1.Location;
-import edu.pitt.apollo.types.v4_0_1.LocationDefinition;
+
+import edu.pitt.apollo.types.v4_0_2.Location;
+import edu.pitt.apollo.types.v4_0_2.LocationDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +46,7 @@ public class LocationSetter extends AbstractTypedSetter<Location> {
 		return setter.set(definition);
 	}
 	
-	private List<SetterReturnObject> setCartesianCircleLocationDefinition(CartesianCircleLocationDefinition definition) throws ApolloSetterException {
-		CartesianCircleLocationDefinitionSetter setter = new CartesianCircleLocationDefinitionSetter(apolloTranslationEngine, 
-				type + "." + CARTESIAN_CIRCLE_LOCATION_DEFINITION, section);
-		return setter.set(definition);
-	}
+
 	
 	private List<SetterReturnObject> setTextualDescription(String description) throws ApolloSetterException {
 		return setValue(TEXTUAL_DESCRIPTION, description, section);
@@ -62,10 +58,6 @@ public class LocationSetter extends AbstractTypedSetter<Location> {
 		list.addAll(setLocation());
 		if (t.getApolloLocationCode() != null) {
 			list.addAll(setLocationCode(t.getApolloLocationCode()));
-		} else if (t.getLocationDefinition() != null) {
-			list.addAll(setLocationDefinition(t.getLocationDefinition()));
-		} else if (t.getCartesianCircleLocationDefinition() != null) {
-			list.addAll(setCartesianCircleLocationDefinition(t.getCartesianCircleLocationDefinition()));
 		}
 		list.addAll(setTextualDescription(t.getTextualDescription()));
 

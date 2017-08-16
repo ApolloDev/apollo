@@ -5,9 +5,9 @@
  */
 package edu.pitt.apollo.brokerservicerestfrontend.utils;
 
-import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v4_0_1.Response;
-import edu.pitt.apollo.services_common.v4_0_1.ResponseMeta;
+import edu.pitt.apollo.services_common.v4_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_2.Response;
+import edu.pitt.apollo.services_common.v4_0_2.ResponseMeta;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigInteger;

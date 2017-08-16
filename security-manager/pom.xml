@@ -75,7 +75,7 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>xsd-types</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -120,12 +120,12 @@
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>services-common</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.pitt.apollo</groupId>
             <artifactId>db-common</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.0.2-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
@@ -216,5 +216,5 @@
     </build>
     <name>Security Manager</name>
     <groupId>edu.pitt.apollo</groupId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
 </project>

@@ -1,7 +1,7 @@
 package edu.pitt.apollo.db;
 
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 import junit.framework.TestCase;
 
 

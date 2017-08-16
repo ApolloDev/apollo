@@ -5,13 +5,13 @@ import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseExplicitException;
 import edu.pitt.apollo.db.exceptions.library.NoLibraryItemException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
-import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v4_0_1.CatalogEntry;
-import edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection;
-import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
-import edu.pitt.apollo.types.v4_0_1.IndividualTreatmentControlMeasure;
-import edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario;
-import edu.pitt.apollo.types.v4_0_1.PlaceClosureControlMeasure;
+import edu.pitt.apollo.library_service_types.v4_0_2.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0_2.CatalogEntry;
+import edu.pitt.apollo.library_service_types.v4_0_2.LibraryCollection;
+import edu.pitt.apollo.library_service_types.v4_0_2.LibraryItemContainer;
+import edu.pitt.apollo.types.v4_0_2.IndividualTreatmentControlMeasure;
+import edu.pitt.apollo.types.v4_0_2.InfectiousDiseaseScenario;
+import edu.pitt.apollo.types.v4_0_2.PlaceClosureControlMeasure;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.text.ParseException;
@@ -53,7 +53,7 @@ public class LibraryDBClient {
     private static AddLibraryItemContainerResult addInfectiousDiseaseScenarioCollection(LibraryDbUtils dbUtils, int member) throws UserNotAuthorizedException, ApolloDatabaseException {
         LibraryCollection collection = new LibraryCollection();
         collection.setDescription("H1N1 Infectious Disease Scenarios");
-        collection.setJavaClassNameOfMembers("edu.pitt.apollo.types.v4_0_1.InfectiousDiseaseScenario");
+        collection.setJavaClassNameOfMembers("edu.pitt.apollo.types.v4_0_2.InfectiousDiseaseScenario");
         collection.setName("H1N1 Infectious Disease Scenarios");
         collection.getMembersOfCollection().add(member);
 
@@ -63,7 +63,7 @@ public class LibraryDBClient {
         CatalogEntry entry = new CatalogEntry();
         entry.setDisplayName("H1N1 Infectious Disease Scenarios");
         entry.setTextualIdentifier("H1N1 Infectious Disease Scenarios");
-        entry.setJavaClassName("edu.pitt.apollo.library_service_types.v4_0_1.LibraryCollection");
+        entry.setJavaClassName("edu.pitt.apollo.library_service_types.v4_0_2.LibraryCollection");
         lic.setCatalogEntry(entry);
 
         return dbUtils.addLibraryItem(lic, USER, "Adding H1N1 Infectious Disease Scenario Collections", ROLE);

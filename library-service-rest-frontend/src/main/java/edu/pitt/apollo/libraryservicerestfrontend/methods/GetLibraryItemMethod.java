@@ -2,8 +2,8 @@ package edu.pitt.apollo.libraryservicerestfrontend.methods;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.library_service_types.v4_0_1.GetLibraryItemContainerResult;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.library_service_types.v4_0_2.GetLibraryItemContainerResult;
+import edu.pitt.apollo.services_common.v4_0_2.SerializationFormat;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.http.HttpStatus;

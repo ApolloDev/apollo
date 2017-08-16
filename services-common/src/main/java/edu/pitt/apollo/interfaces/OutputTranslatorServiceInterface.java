@@ -16,7 +16,7 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.OutputTranslatorServiceException;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 import java.math.BigInteger;
 

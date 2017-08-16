@@ -4,11 +4,11 @@ import edu.pitt.apollo.database.LibraryDbUtils;
 import edu.pitt.apollo.db.exceptions.ApolloDatabaseException;
 import edu.pitt.apollo.exception.LibraryServiceException;
 import edu.pitt.apollo.exception.UserNotAuthorizedException;
-import edu.pitt.apollo.library_service_types.v4_0_1.AddLibraryItemContainerResult;
-import edu.pitt.apollo.library_service_types.v4_0_1.LibraryItemContainer;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatus;
-import edu.pitt.apollo.services_common.v4_0_1.MethodCallStatusEnum;
+import edu.pitt.apollo.library_service_types.v4_0_2.AddLibraryItemContainerResult;
+import edu.pitt.apollo.library_service_types.v4_0_2.LibraryItemContainer;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatus;
+import edu.pitt.apollo.services_common.v4_0_2.MethodCallStatusEnum;
 
 import java.util.Map;
 

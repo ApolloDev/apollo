@@ -1,12 +1,12 @@
 package edu.pitt.apollo.apolloclient.tutorialv2;
 
 
-import edu.pitt.apollo.filestore_service_types.v4_0_1.GetFileUrlRequest;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.ListFilesForRunRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.GetFileUrlRequest;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.ListFilesForRunRequest;
 import edu.pitt.apollo.restbrokerserviceconnector.RestBrokerServiceConnector;
-import edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceEI;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.math.BigInteger;
 
@@ -26,11 +26,11 @@ import java.math.BigInteger;
  * In order to begin executing these remote methods, we first connect to the web service as a client and then send
  * requests through this client.  The service that we connect to in this tutorial is the service named
  * ApolloService_v4.0, which is defined by the following WSDL:
- * <a href="http://betaweb.rods.pitt.edu/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl">
- *     http://betaweb.rods.pitt.edu/broker-service-war-4.0.1-SNAPSHOT/services/apolloservice?wsdl</a>.
+ * <a href="http://betaweb.rods.pitt.edu/broker-service-war-4.0.2-SNAPSHOT/services/apolloservice?wsdl">
+ *     http://betaweb.rods.pitt.edu/broker-service-war-4.0.2-SNAPSHOT/services/apolloservice?wsdl</a>.
  * <p/>
  * <h3>Creating a client connection to {@link SoapRun#SERVICE_NAME ApolloService_v4.0}</h3>
- * A {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceV40} is the class that provides the client view of
+ * A {@link edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceV40} is the class that provides the client view of
  * the ApolloService_v4.0.  In this example, we name the variable {@link SoapRun#apolloServiceClientView}.
  * <p/>
  * To create the client view of ApolloService_v4.0, we execute the following code in {@link SoapRun#initializeServiceClientView()}:
@@ -45,8 +45,8 @@ import java.math.BigInteger;
  * explore the capabilities of the service you would see that it contains many confusing looking boilerplate methods
  * that having nothing to do with running simulators.  Luckily SOAP allows us to ask for specific function sets (or "endpoints")
  * that implement an interface.  The interface that defines the web service methods on the Apollo Web Service, is the
- * {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI ApolloServiceEI}
- * We ask for an instance of the object that implements the {@link edu.pitt.apollo.service.apolloservice.v4_0_1.ApolloServiceEI ApolloServiceEI}
+ * {@link edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceEI ApolloServiceEI}
+ * We ask for an instance of the object that implements the {@link edu.pitt.apollo.service.apolloservice.v4_0_2.ApolloServiceEI ApolloServiceEI}
  * by executing the following command in {@link SoapRun#getApolloServiceEndpoint()}:
  * <pre>
  *     {@code
@@ -67,7 +67,7 @@ import java.math.BigInteger;
  * Now that we have an instance of the apolloServiceEndpoint we can run a simulation.  Running a simulation entails
  * calling the following method: {@link ApolloServiceEI#runSimulation(RunSimulationMessage)}
  * <p/>
- * Note that runSimulation takes as input {@link edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage}.
+ * Note that runSimulation takes as input {@link edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage}.
  * This is a farily complicated object that tells the Apollo Web Service three things:
  * <ul>
  * <li>1. A description of the infectious disease scenario that is to be simulated</li>
@@ -96,7 +96,7 @@ import java.math.BigInteger;
  * <p/>
  * <h2>3. Checking the status of a run using {@link RunResult}</h2>
  * To check on the status of a run, we submit a {@link ApolloServiceEI#getRunStatus(RunStatusRequest)}, which takes a
- * {@link edu.pitt.apollo.services_common.v4_0_1.RunStatusRequest}.  The RunStatusRequest class takes a runId, and the cridentals of the user checking the status.
+ * {@link edu.pitt.apollo.services_common.v4_0_2.RunStatusRequest}.  The RunStatusRequest class takes a runId, and the cridentals of the user checking the status.
  * Once the RunStatusRequest is built, we can periodically check back on the status of the run by issuing the following command:
  * <pre>
  *     <code>

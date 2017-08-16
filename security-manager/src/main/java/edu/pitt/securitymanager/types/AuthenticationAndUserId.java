@@ -1,6 +1,6 @@
 package edu.pitt.securitymanager.types;
 
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 /**
  * Created by nem41 on 12/15/16.

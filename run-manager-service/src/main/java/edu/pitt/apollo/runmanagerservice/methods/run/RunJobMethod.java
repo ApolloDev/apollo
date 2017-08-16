@@ -3,8 +3,8 @@ package edu.pitt.apollo.runmanagerservice.methods.run;
 import edu.pitt.apollo.ApolloServiceQueue;
 import edu.pitt.apollo.GlobalConstants;
 import edu.pitt.apollo.exception.DatastoreException;
-import edu.pitt.apollo.types.v4_0_1.ApolloSoftwareTypeEnum;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
+import edu.pitt.apollo.types.v4_0_2.ApolloSoftwareTypeEnum;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

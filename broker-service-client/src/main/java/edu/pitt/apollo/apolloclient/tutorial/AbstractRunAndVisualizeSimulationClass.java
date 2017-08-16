@@ -1,11 +1,11 @@
 package edu.pitt.apollo.apolloclient.tutorial;
 
 import edu.pitt.apollo.apolloclient.tutorial.ApolloServiceTypeFactory.VisualizerIdentificationEnum;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.services_common.v4_0_1.RunIdentificationAndLabel;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.services_common.v4_0_2.RunIdentificationAndLabel;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
 
 import java.math.BigInteger;
 

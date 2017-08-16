@@ -1,6 +1,6 @@
 package edu.pitt.apollo.libraryclient;
 
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.types.v4_0_2.*;
 
 import java.math.BigInteger;
 import java.util.List;

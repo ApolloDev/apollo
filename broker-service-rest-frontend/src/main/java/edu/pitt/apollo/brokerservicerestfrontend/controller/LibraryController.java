@@ -23,7 +23,7 @@ import edu.pitt.apollo.brokerservicerestfrontend.methods.SetLibraryItemAsNotRele
 import edu.pitt.apollo.brokerservicerestfrontend.methods.SetLibraryItemReleaseVersionMethod;
 import edu.pitt.apollo.brokerservicerestfrontend.methods.UpdateLibraryItemMethod;
 import edu.pitt.apollo.exception.UnsupportedAuthorizationTypeException;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_2.SerializationFormat;
 import edu.pitt.isg.objectserializer.exceptions.SerializationException;
 import edu.pitt.isg.objectserializer.exceptions.UnsupportedSerializationFormatException;
 import org.springframework.stereotype.Controller;
@@ -242,7 +242,7 @@ public class LibraryController {
 
     @GET
     @ApiOperation(value = "Retrieve collections from the library matching the specified class", notes = "Retrieves collections from the library with members matching the specified class. The class should be a fully qualified Java class name, e.g. "
-			+ "\"edu.pitt.apollo.types.v4_0_1.Epidemic\".", response = String.class)
+			+ "\"edu.pitt.apollo.types.v4_0_2.Epidemic\".", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "")
     })

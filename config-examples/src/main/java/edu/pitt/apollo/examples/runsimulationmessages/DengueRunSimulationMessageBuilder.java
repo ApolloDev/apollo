@@ -1,8 +1,8 @@
 package edu.pitt.apollo.examples.runsimulationmessages;
 
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0_1.*;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_2.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -538,7 +538,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         Location location = new Location();
         LocationDefinition locationDefinition = new LocationDefinition();
         locationDefinition.getLocationsIncluded().add(DEFAULT_INCITS);
-        location.setLocationDefinition(locationDefinition);
+        //location.setLocationDefinition(locationDefinition);
         return location;
     }
 
@@ -546,7 +546,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         Location location = new Location();
 
-        CartesianCircleLocationDefinition circleDefinition = new CartesianCircleLocationDefinition();
+       /* CartesianCircleLocationDefinition circleDefinition = new CartesianCircleLocationDefinition();
 
         Distance xDistance = new Distance();
         xDistance.setUnitOfDistance(UnitOfDistanceEnum.METERS);
@@ -568,7 +568,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         altitude.setValue(0.0);
         circleDefinition.setAltitudeRelativeToCartesianCenter(altitude);
 
-        location.setCartesianCircleLocationDefinition(circleDefinition);
+        location.setCartesianCircleLocationDefinition(circleDefinition);*/
         return location;
     }
 
@@ -576,7 +576,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         Location location = new Location();
 
-        CartesianCircleLocationDefinition circleDefinition = new CartesianCircleLocationDefinition();
+     /*   CartesianCircleLocationDefinition circleDefinition = new CartesianCircleLocationDefinition();
 
         Distance xDistance = new Distance();
         xDistance.setUnitOfDistance(UnitOfDistanceEnum.METERS);
@@ -598,7 +598,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         altitude.setValue(0.0);
         circleDefinition.setAltitudeRelativeToCartesianCenter(altitude);
 
-        location.setCartesianCircleLocationDefinition(circleDefinition);
+        location.setCartesianCircleLocationDefinition(circleDefinition);*/
         return location;
     }
 

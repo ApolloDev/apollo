@@ -1,10 +1,10 @@
 package edu.pitt.apollo.utils;
 
 
-import edu.pitt.apollo.services_common.v4_0_1.ObjectSerializationInformation;
-import edu.pitt.apollo.services_common.v4_0_1.Request;
-import edu.pitt.apollo.services_common.v4_0_1.RequestMeta;
-import edu.pitt.apollo.services_common.v4_0_1.SerializationFormat;
+import edu.pitt.apollo.services_common.v4_0_2.ObjectSerializationInformation;
+import edu.pitt.apollo.services_common.v4_0_2.Request;
+import edu.pitt.apollo.services_common.v4_0_2.RequestMeta;
+import edu.pitt.apollo.services_common.v4_0_2.SerializationFormat;
 import edu.pitt.isg.objectserializer.Deserializer;
 import edu.pitt.isg.objectserializer.DeserializerFactory;
 import edu.pitt.isg.objectserializer.XMLDeserializer;

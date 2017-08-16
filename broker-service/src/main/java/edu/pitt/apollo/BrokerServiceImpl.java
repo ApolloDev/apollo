@@ -15,7 +15,7 @@
  */
 package edu.pitt.apollo;
 
-import edu.pitt.apollo.apollo_service_types.v4_0_1.RunInfectiousDiseaseTransmissionExperimentMessage;
+import edu.pitt.apollo.apollo_service_types.v4_0_2.RunInfectiousDiseaseTransmissionExperimentMessage;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartQueryMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartSimulationMethod;
 import edu.pitt.apollo.apolloservice.methods.run.InsertAndStartVisualizationMethod;
@@ -23,17 +23,17 @@ import edu.pitt.apollo.connector.FilestoreServiceConnector;
 import edu.pitt.apollo.connector.LibraryServiceConnector;
 import edu.pitt.apollo.connector.RunManagerServiceConnector;
 import edu.pitt.apollo.exception.*;
-import edu.pitt.apollo.filestore_service_types.v4_0_1.FileIdentification;
+import edu.pitt.apollo.filestore_service_types.v4_0_2.FileIdentification;
 import edu.pitt.apollo.interfaces.*;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
-import edu.pitt.apollo.query_service_types.v4_0_1.RunSimulatorOutputQueryMessage;
+import edu.pitt.apollo.library_service_types.v4_0_2.*;
+import edu.pitt.apollo.query_service_types.v4_0_2.RunSimulatorOutputQueryMessage;
 import edu.pitt.apollo.restfilestoreserviceconnector.RestFilestoreServiceConnector;
 import edu.pitt.apollo.restlibraryserviceconnector.RestLibraryServiceConnector;
 import edu.pitt.apollo.restrunmanagerserviceconnector.RestRunManagerServiceConnector;
-import edu.pitt.apollo.services_common.v4_0_1.*;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
-import edu.pitt.apollo.types.v4_0_1.SoftwareIdentification;
-import edu.pitt.apollo.visualizer_service_types.v4_0_1.RunVisualizationMessage;
+import edu.pitt.apollo.services_common.v4_0_2.*;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
+import edu.pitt.apollo.types.v4_0_2.SoftwareIdentification;
+import edu.pitt.apollo.visualizer_service_types.v4_0_2.RunVisualizationMessage;
 import edu.pitt.securitymanager.exception.ApolloSecurityException;
 import edu.pitt.securitymanager.managers.ApolloServicesSecurityManager;
 import edu.pitt.securitymanager.managers.LibrarySecurityManager;
@@ -331,7 +331,7 @@ public class BrokerServiceImpl implements ContentManagementInterface, FilestoreS
     }
 
     public RunResult runSimulations(
-            edu.pitt.apollo.apollo_service_types.v4_0_1.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
+            edu.pitt.apollo.apollo_service_types.v4_0_2.RunSimulationsMessage runSimulationsMessage, Authentication authentication) {
         InsertAndStartSimulationMethod method = null;
         try {
             AuthenticationAndUserId authenticationAndUserId = apolloServicesSecurityManager.authorizeUserForSpecifiedSoftware(authentication,

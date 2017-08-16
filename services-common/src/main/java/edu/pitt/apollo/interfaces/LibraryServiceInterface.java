@@ -1,8 +1,8 @@
 package edu.pitt.apollo.interfaces;
 
 import edu.pitt.apollo.exception.LibraryServiceException;
-import edu.pitt.apollo.library_service_types.v4_0_1.*;
-import edu.pitt.apollo.services_common.v4_0_1.Authentication;
+import edu.pitt.apollo.library_service_types.v4_0_2.*;
+import edu.pitt.apollo.services_common.v4_0_2.Authentication;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 

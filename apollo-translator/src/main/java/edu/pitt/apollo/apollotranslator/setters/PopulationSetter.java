@@ -3,10 +3,10 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.Census;
-import edu.pitt.apollo.types.v4_0_1.IndividualBiologyAndBehavior;
-import edu.pitt.apollo.types.v4_0_1.Population;
-import edu.pitt.apollo.types.v4_0_1.PopulationInfectionAndImmunityCensus;
+import edu.pitt.apollo.types.v4_0_2.Census;
+import edu.pitt.apollo.types.v4_0_2.IndividualBiologyAndBehavior;
+import edu.pitt.apollo.types.v4_0_2.Population;
+import edu.pitt.apollo.types.v4_0_2.PopulationInfectionAndImmunityCensus;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

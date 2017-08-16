@@ -1,7 +1,7 @@
 package edu.pitt.apollo.apollotranslator;
 
 import edu.pitt.apollo.apollotranslator.exception.ApolloParserException;
-import edu.pitt.apollo.simulator_service_types.v4_0_1.RunSimulationMessage;
+import edu.pitt.apollo.simulator_service_types.v4_0_2.RunSimulationMessage;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

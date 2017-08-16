@@ -3,8 +3,8 @@ package edu.pitt.apollo.apollotranslator.setters;
 import edu.pitt.apollo.apollotranslator.ApolloTranslationEngine;
 import edu.pitt.apollo.apollotranslator.exception.ApolloSetterException;
 import edu.pitt.apollo.apollotranslator.types.translator.SetterReturnObject;
-import edu.pitt.apollo.types.v4_0_1.TimeAxisCategoryLabels;
-import edu.pitt.apollo.types.v4_0_1.VaccinationEfficacyConditionedOnTimeSinceDose;
+import edu.pitt.apollo.types.v4_0_2.TimeAxisCategoryLabels;
+import edu.pitt.apollo.types.v4_0_2.VaccinationEfficacyConditionedOnTimeSinceDose;
 
 import java.math.BigInteger;
 import java.util.Arrays;
