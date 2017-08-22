@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/run-manager-service-rest-frontend-4.0.2">
-  <ResourceLink global="jdbc/ApplicationContext_ApolloDB_401" name="jdbc/ApolloDB_401" type="javax.sql.DataSource"/>
+  <ResourceLink global="jdbc/ApplicationContext_ApolloDB_402" name="jdbc/ApolloDB_402" type="javax.sql.DataSource"/>
 </Context>
