@@ -332,7 +332,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		startTime.setValue(0);
+		startTime.setValue(new Double(0));
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -341,7 +341,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		FixedDuration stopTmie = new FixedDuration();
 		stopTmie.setUnitOfTime(UnitOfTimeEnum.DAY);
-		stopTmie.setValue(0);
+		stopTmie.setValue(new Double(0));
 
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -578,7 +578,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		startTime.setValue(0);
+		startTime.setValue(new Double(0));
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -587,7 +587,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		FixedDuration treatmentDetectionDelay = new FixedDuration();
 		treatmentDetectionDelay.setUnitOfTime(UnitOfTimeEnum.DAY);
-		treatmentDetectionDelay.setValue(2);
+		treatmentDetectionDelay.setValue(new Double(2));
 //
 //        TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 //        stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -607,7 +607,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 		TreatmentSurveillanceTriggerDefinition stopTrigger = new TreatmentSurveillanceTriggerDefinition();
 		TreatmentSurveillanceCapability capability = new TreatmentSurveillanceCapability();
 		capability.setLocation(location);
-		capability.setSpecificityOfTreatmentDetection(0);
+		capability.setSpecificityOfTreatmentDetection(new Double(0));
 		capability.setSensitivityOfTreatmentDetection(0.01);
 		capability.setTimeDelayOfTreatmentDetection(treatmentDetectionDelay);
 		capability.setTreatment(IndividualTreatmentEnum.VACCINATION);
@@ -1083,7 +1083,7 @@ public class InfluenzaRunSimulationMessageBuilder extends AbstractRunSimulationM
 
 		if (fixedStartTime) {
 			FixedDuration fst = new FixedDuration();
-			fst.setValue(0);
+			fst.setValue(new Double(0));
 			fst.setUnitOfTime(UnitOfTimeEnum.DAY);
 
 			TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();

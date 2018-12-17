@@ -329,7 +329,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         FixedDuration startTime = new FixedDuration();
         startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-        startTime.setValue(0);
+        startTime.setValue(new Double(0));
 
         TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
         trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -338,7 +338,7 @@ public class AnthraxRunSimulationMessageBuilder extends AbstractRunSimulationMes
 
         FixedDuration stopTmie = new FixedDuration();
         stopTmie.setUnitOfTime(UnitOfTimeEnum.DAY);
-        stopTmie.setValue(0);
+        stopTmie.setValue(new Double(0));
 
         TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
         stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);

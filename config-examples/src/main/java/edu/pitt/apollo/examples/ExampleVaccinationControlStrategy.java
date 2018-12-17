@@ -38,7 +38,7 @@ public class ExampleVaccinationControlStrategy {
 
 		FixedDuration timeDelayOfCaseDetection = new FixedDuration();
 		timeDelayOfCaseDetection.setUnitOfTime(UnitOfTimeEnum.DAY);
-		timeDelayOfCaseDetection.setValue(2);
+		timeDelayOfCaseDetection.setValue(new Double(2));
 
 		DiseaseSurveillanceCapability diseaseSurveillanceCapability = new DiseaseSurveillanceCapability();
 		diseaseSurveillanceCapability.setLocation(diseaseSurveillanceLocation);

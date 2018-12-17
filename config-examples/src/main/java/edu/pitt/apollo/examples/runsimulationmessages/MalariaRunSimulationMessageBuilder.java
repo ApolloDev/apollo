@@ -31,7 +31,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
     protected SimulatorTimeSpecification getSimulatorTimeSpeficiation() {
 
         SimulatorTimeSpecification timeSpecification = new SimulatorTimeSpecification();
-        timeSpecification.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(5);
+        timeSpecification.setNumberOfUnitsOfTimeInOneSimulatorTimeStep(new Double(5));
         timeSpecification.setUnitOfTimeForSimulatorTimeStep(UnitOfTimeEnum.DAY);
         timeSpecification.setRunLength(new BigInteger("200"));
         return timeSpecification;
@@ -246,7 +246,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         IndoorResidualSprayingVectorControlMeasure strategy = new IndoorResidualSprayingVectorControlMeasure();
         setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(new Double(0));
         strategy.setFractionOfVectorIndividualsAffected(0.8);
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
@@ -291,7 +291,7 @@ public class MalariaRunSimulationMessageBuilder extends AbstractRunSimulationMes
         InsecticideTreatedNetControlMeasure strategy = new InsecticideTreatedNetControlMeasure();
         setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(0);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(new Double(0));
 
         LogisticalSystem logisticalSystem = new LogisticalSystem();
         logisticalSystem.setProduct("Insecticide Treated Net");

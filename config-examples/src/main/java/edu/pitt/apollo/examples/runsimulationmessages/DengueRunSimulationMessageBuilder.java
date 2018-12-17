@@ -32,7 +32,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         FixedDuration gonotrophicPeriodDuration = new FixedDuration();
         gonotrophicPeriodDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
-        gonotrophicPeriodDuration.setValue(3);
+        gonotrophicPeriodDuration.setValue(new Double(3));
         reproduction.setGonotrophicPeriodDuration(gonotrophicPeriodDuration);
 
         BigInteger eggsPerBrood = new BigInteger("24");
@@ -113,7 +113,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         eggLifeStage.setStage(DevelopmentalStageEnum.EGG);
         FixedDuration eggDuration = new FixedDuration();
         eggDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
-        eggDuration.setValue(4);
+        eggDuration.setValue(new Double(4));
         eggLifeStage.setDuration(eggDuration);
         Rate eggMortalityRate = new Rate();
         eggMortalityRate.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.DAYS);
@@ -127,7 +127,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         larvalLifeStage.setStage(DevelopmentalStageEnum.LARVAL_AND_PUPAL);
         FixedDuration larvalDuration = new FixedDuration();
         larvalDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
-        larvalDuration.setValue(14);
+        larvalDuration.setValue(new Double(14));
         larvalLifeStage.setDuration(larvalDuration);
         ClaraDensityDependentMortalityFunction larvalMortalityFunction = new ClaraDensityDependentMortalityFunction();
         larvalMortalityFunction.setOmega(1.0);
@@ -140,7 +140,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         adultLifeStage.setStage(DevelopmentalStageEnum.ADULT_FORM);
         FixedDuration adultDuration = new FixedDuration();
         adultDuration.setUnitOfTime(UnitOfTimeEnum.DAY);
-        adultDuration.setValue(21);
+        adultDuration.setValue(new Double(21));
         adultLifeStage.setDuration(adultDuration);
         Rate adultMortalityRate = new Rate();
         adultMortalityRate.setDenominatorUnitOfMeasure(UnitOfMeasureEnum.DAYS);
@@ -195,7 +195,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         IndoorResidualSprayingVectorControlMeasure strategy = new IndoorResidualSprayingVectorControlMeasure();
         setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(new Double(113));
         strategy.setFractionOfVectorIndividualsAffected(0.8);
 
         Distance coverRadius = new Distance();
@@ -211,7 +211,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         LarvicideControlMeasure strategy = new LarvicideControlMeasure();
         setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(new Double(113));
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
@@ -226,7 +226,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
         ContainerReductionControlMeasure strategy = new ContainerReductionControlMeasure();
         setBaseInfectiousDiseaseControlMeasure(strategy);
 
-        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(113);
+        ((TemporalTriggerDefinition) strategy.getControlMeasureStartTime().get(0)).getTimeSinceTimeScaleZero().setValue(new Double(113));
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);

@@ -39,6 +39,15 @@ public class ApolloLocationServiceAsFile implements ApolloLocationServiceAsFileI
         try {
             readPropertiesFile();
             readApolloLocationServiceFile();
+            /*
+            This code is used to convert the type of ApolloLocationServiceEntry objects that are stored inside the serialized files from isg.apollolocationservicesdk to apollo.apollolocationservicesdk
+            if(apolloLocationServiceAsFile.codeToEntryMap.size() > 0) {
+                updateSerializedCodeToEntry(apolloLocationServiceAsFile.codeToEntryMap);
+                updateSerializedNameToEntry(apolloLocationServiceAsFile.nameToEntryMap);
+                updateSerializedNameToEntry(apolloLocationServiceAsFile.letterToEntryMap);
+                serializeApolloLocationServiceAsFile();
+            }
+            */
             createLocationTypeLookup();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +74,31 @@ public class ApolloLocationServiceAsFile implements ApolloLocationServiceAsFileI
         apolloLocationServiceAsFile.addLocationName(locationName, entry);
     }
 
+    /*
+    This code is used to convert the type of ApolloLocationServiceEntry objects that are stored inside the serialized files from isg.apollolocationservicesdk to apollo.apollolocationservicesdk
+
+    public static void updateSerializedCodeToEntry(HashMap mp) {
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            ApolloLocationServiceEntry newEntry = new ApolloLocationServiceEntry(((edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry) pair.getValue()).getLocationName(), ((edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry) pair.getValue()).getApolloLocationCode(), ((edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry) pair.getValue()).getEncompassingRegionCode(), ((edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry) pair.getValue()).getLocationTypeId());
+            pair.setValue(newEntry);
+        }
+    }
+
+    public static void updateSerializedNameToEntry(HashMap mp) {
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            List<ApolloLocationServiceEntry> newEntries = new ArrayList<>();
+            for(edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry oldEntry: (List<edu.pitt.isg.apollolocationservicesdk.types.ApolloLocationServiceEntry>) pair.getValue()) {
+                ApolloLocationServiceEntry newEntry = new ApolloLocationServiceEntry(oldEntry.getLocationName(), oldEntry.getApolloLocationCode(), oldEntry.getEncompassingRegionCode(), oldEntry.getLocationTypeId());
+                newEntries.add(newEntry);
+            }
+            pair.setValue(newEntries);
+        }
+    }
+*/
     public static void serializeApolloLocationServiceAsFile() throws IOException {
         if(apolloLocationServiceAsFile.cacheIsDirty) {
             OutputStream file;

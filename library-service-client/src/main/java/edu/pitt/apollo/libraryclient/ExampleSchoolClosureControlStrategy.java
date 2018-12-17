@@ -61,7 +61,7 @@ public class ExampleSchoolClosureControlStrategy {
 
 		FixedDuration closurePeriod = new FixedDuration();
 		closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
-		closurePeriod.setValue(56);
+		closurePeriod.setValue(new Double(56));
 
 		scm.setClosurePeriod(closurePeriod);
 		scm.setPlaceClass(PlaceEnum.ALL_SCHOOLS);
@@ -115,7 +115,7 @@ public class ExampleSchoolClosureControlStrategy {
 		scm.setDescription("A school closure control strategy where schools with high disease activity are closed to mitigate the spread of an infectious disease.");
 		FixedDuration closurePeriod = new FixedDuration();
 		closurePeriod.setUnitOfTime(UnitOfTimeEnum.DAY);
-		closurePeriod.setValue(56);
+		closurePeriod.setValue(new Double(56));
 
 		scm.setClosurePeriod(closurePeriod);
 		scm.setCloseIndividualPlacesIndependently(true);

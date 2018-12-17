@@ -24,7 +24,7 @@ public class ExampleVaccinationControlStrategy {
 
 		FixedDuration durationOfTreatmentCourse = new FixedDuration();
 		durationOfTreatmentCourse.setUnitOfTime(UnitOfTimeEnum.DAY);
-		durationOfTreatmentCourse.setValue(1);
+		durationOfTreatmentCourse.setValue(new Double(1));
 		vacc.setDurationOfTreatmentCourse(durationOfTreatmentCourse);
 
 //        Vaccine vaccine = new Vaccine();
@@ -57,7 +57,7 @@ public class ExampleVaccinationControlStrategy {
 
 		FixedDuration stopTime = new FixedDuration();
 		stopTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		stopTime.setValue(127);
+		stopTime.setValue(new Double(127));
 
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -78,7 +78,7 @@ public class ExampleVaccinationControlStrategy {
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		startTime.setValue(0);
+		startTime.setValue(new Double(0));
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);

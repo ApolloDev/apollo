@@ -29,7 +29,7 @@ public class ExampleAntiviralControlStrategy {
 
 		FixedDuration durationOfTreatmentCourse = new FixedDuration();
 		durationOfTreatmentCourse.setUnitOfTime(UnitOfTimeEnum.DAY);
-		durationOfTreatmentCourse.setValue(1);
+		durationOfTreatmentCourse.setValue(new Double(1));
 		avt.setDurationOfTreatmentCourse(durationOfTreatmentCourse);
 
 		AntiviralTreatmentEfficacy avefsc = new AntiviralTreatmentEfficacy();
@@ -53,7 +53,7 @@ public class ExampleAntiviralControlStrategy {
 
 		FixedDuration stopTime = new FixedDuration();
 		stopTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		stopTime.setValue(127);
+		stopTime.setValue(new Double(127));
 
 		TemporalTriggerDefinition stopTrigger = new TemporalTriggerDefinition();
 		stopTrigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
@@ -72,7 +72,7 @@ public class ExampleAntiviralControlStrategy {
 
 		FixedDuration startTime = new FixedDuration();
 		startTime.setUnitOfTime(UnitOfTimeEnum.DAY);
-		startTime.setValue(0);
+		startTime.setValue(new Double(0));
 
 		TemporalTriggerDefinition trigger = new TemporalTriggerDefinition();
 		trigger.setTimeScale(TimeScaleEnum.SIMULATOR_TIME_SCALE);
