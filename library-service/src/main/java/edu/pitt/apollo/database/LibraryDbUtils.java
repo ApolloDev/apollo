@@ -950,8 +950,12 @@ public class LibraryDbUtils extends BaseDbUtils {
             ApolloDatabaseExplicitException, NoLibraryItemException, UserNotAuthorizedException {
         String sql = "SELECT json_representation FROM library_item_containers WHERE urn_id = " + urn + " AND version = " + versionId;
         Connection conn = null;
+        int attempts = 0;
         try {
-            conn = existingConnection != null ? existingConnection : getConnection(false);
+            while(conn == null && attempts < 5) {
+                conn = existingConnection != null ? existingConnection : getConnection(false);
+                attempts++;
+            }
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             if (!rs.next()) {

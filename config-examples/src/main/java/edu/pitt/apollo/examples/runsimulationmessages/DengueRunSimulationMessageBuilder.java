@@ -200,7 +200,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
-        coverRadius.setValue(100);
+        coverRadius.setValue(new Double(100));
         strategy.setCoverRadius(coverRadius);
 
         return strategy;
@@ -215,7 +215,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
-        coverRadius.setValue(100);
+        coverRadius.setValue(new Double(100));
         strategy.setCoverRadius(coverRadius);
 
         return strategy;
@@ -230,7 +230,7 @@ public class DengueRunSimulationMessageBuilder extends AbstractRunSimulationMess
 
         Distance coverRadius = new Distance();
         coverRadius.setUnitOfDistance(UnitOfDistanceEnum.METERS);
-        coverRadius.setValue(100);
+        coverRadius.setValue(new Double(100));
         strategy.setCoverRadius(coverRadius);
 
         strategy.setFractionReductionOfEggs(0.6);
