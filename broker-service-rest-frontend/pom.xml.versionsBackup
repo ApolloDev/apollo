@@ -1,33 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>edu.pitt.apollo</groupId>
-        <artifactId>apollo-ws</artifactId>
-        <version>4.0.2-SNAPSHOT</version>
-    </parent>
-    <artifactId>simulator-service-rest-skeleton</artifactId>
+
+    <groupId>edu.pitt.apollo</groupId>
+    <artifactId>broker-service-rest-frontend</artifactId>
     <version>4.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
-    
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
-        </license>
-    </licenses>
 
-    <prerequisites>
-        <maven>3.0</maven>
-    </prerequisites>
+    <name>Broker Service Rest Front-end</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <java.version>1.8</java.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <cglib.version>2.2.2</cglib.version>
     </properties>
+
 
     <dependencies>
         <!-- Spring core & mvc -->
@@ -80,7 +69,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>2.9.9.1</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -96,6 +85,11 @@
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>1.5.10</version>
         </dependency>
         <!-- CGLib for @Configuration -->
         <dependency>
@@ -141,7 +135,18 @@
             <artifactId>commons-math3</artifactId>
             <version>3.2</version>
         </dependency>
-        
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>broker-service</artifactId>
+            <version>4.0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.pitt.apollo</groupId>
+            <artifactId>rest-services-frontend-common</artifactId>
+            <version>4.0.2-SNAPSHOT</version>
+        </dependency>
+
         <!--Jersey imports-->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -167,20 +172,11 @@
         </dependency>
         
         <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>xsd-types</artifactId>
-            <version>4.0.2-SNAPSHOT</version>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.4</version>
         </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>services-common</artifactId>
-            <version>4.0.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.pitt.apollo</groupId>
-            <artifactId>rest-services-frontend-common</artifactId>
-            <version>4.0.2-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -241,41 +237,7 @@
                     <path>/mkyongWebApp</path>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>make-a-jar</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <packaging>jar</packaging>
-                            <artifactId>${project.artifactId}</artifactId>
-                            <groupId>${project.groupId}</groupId>
-                            <version>${project.version}</version>
-                            <file>
-                                ${project.build.directory}/${project.artifactId}-${project.version}.jar
-                            </file>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
-    <name>Simulator Service REST Skeleton</name>
 </project>
